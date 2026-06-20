@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOVEment 2026 - Giao Diện Người Chơi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* CSS từ các component */
+        .player-page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-header {
+            padding: 16px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 0 16px 20px 16px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .team-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .team-name-section {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+            align-items: center;
+        }
+
+        .team-color-indicator {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-details {
+            flex: 1;
+        }
+
+        .team-name {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .team-rank {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .team-points-display {
+            text-align: right;
+        }
+
+        .points-badge {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .points-label {
+            font-size: 12px;
+            opacity: 0.8;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .stat-icon {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            display: block;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .progress-bar-container {
+            position: relative;
+        }
+
+        .progress-bar-background {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #4caf50;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            display: block;
+            font-size: 12px;
+            margin-top: 6px;
+            opacity: 0.9;
+        }
+
+        /* Map styles */
+        .station-map-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f5f5f5;
+            margin: 15px 0;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-background {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+        }
+
+        .map-background.grabbing {
+            cursor: grabbing;
+        }
+
+        .map-wrapper {
+            position: relative;
+            transform-origin: center;
+            width: 100%;
+            height: auto;
+        }
+
+        .map-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 15;
+        }
+
+        .map-btn {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .map-btn:hover {
+            background: #f0f0f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-btn:active {
+            transform: scale(0.95);
+        }
+
+        .station-marker {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%, -50%);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            user-select: none;
+        }
+
+        .station-marker:hover {
+            width: 55px;
+            height: 55px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Ranking Table */
+        .ranking-table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .ranking-title {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .ranking-table {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ranking-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .ranking-row:hover {
+            background: #f0f0f0;
+            transform: translateX(4px);
+        }
+
+        .ranking-row.current-team {
+            background: #e3f2fd;
+            border-left-color: #2196f3;
+            box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2);
+        }
+
+        .rank-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .team-info {
+            flex: 1;
+        }
+
+        .team-name-rank {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .team-stations {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .team-points {
+            text-align: right;
+        }
+
+        .points-value {
+            font-weight: 700;
+            font-size: 16px;
+            color: #ff9800;
+            display: block;
+        }
+
+        .points-label {
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Info Card */
+        .info-card {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+        }
+
+        .info-card ol {
+            margin: 0;
+            padding-left: 20px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .info-card li {
+            margin: 6px 0;
+        }
+
+        @media (max-width: 768px) {
+            .station-map-container {
+                height: 350px;
+            }
+
+            .team-header {
+                padding: 15px;
+            }
+
+            .team-stats {
+                gap: 8px;
+            }
+
+            .stat-item {
+                padding: 8px;
+            }
+
+            .stat-icon {
+                font-size: 18px;
+            }
+
+            .stat-value {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="player-page">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="team-header">
+                <div class="team-header-top">
+                    <div class="team-name-section">
+                        <div class="team-color-indicator" style="background-color: #228B22;"></div>
+                        <div class="team-details">
+                            <h1 class="team-name">Savage Hunters</h1>
+                            <div class="team-rank">Hạng 6</div>
+                        </div>
+                    </div>
+                    <div class="team-points-display">
+                        <div class="points-badge">220</div>
+                        <div class="points-label">Điểm</div>
+                    </div>
+                </div>
+
+                <div class="team-stats">
+                    <div class="stat-item">
+                        <span class="stat-icon">🎮</span>
+                        <span class="stat-value">3/10</span>
+                        <span class="stat-label">Trạm</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">⏱️</span>
+                        <span class="stat-value">1:25</span>
+                        <span class="stat-label">Thời gian</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">📊</span>
+                        <span class="stat-value">30%</span>
+                        <span class="stat-label">Tiến độ</span>
+                    </div>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar-background">
+                        <div class="progress-bar-fill" style="width: 30%;"></div>
+                    </div>
+                    <span class="progress-text">3 trạm hoàn thành</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="page-content">
+            <!-- Map -->
+            <section class="station-map-container">
+                <div class="map-background" id="mapBackground">
+                    <div class="map-wrapper" id="mapWrapper" style="position: relative; width: 100%; height: 100%;">
+                        <img src="file:///e:/Work/MOVEment2026/frontend/public/images/map/suoitien-map1.png" alt="Bản đồ Suối Tiên" class="map-image" id="mapImage" style="width: 100%; height: auto; display: block;" />
+                        
+                        <!-- Station Markers - Vị trí % tương đối -->
+                        <div class="station-marker" id="marker-2" style="left: 18%; top: 35%; background-color: #4caf50;" onclick="handleMarkerClick(event, 'Trạm #2 - Phép Thuật\\n100 điểm\\n[Click để xem chi tiết]')" title="Trạm #2">
+                            ✓
+                            <span style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-size: 11px; font-weight: 600; pointer-events: none;">2</span>
+                        </div>
+                        <div class="station-marker" id="marker-47" style="left: 25%; top: 85%; background-color: #4caf50;" onclick="handleMarkerClick(event, 'Trạm #47 - Khám Phá\\n120 điểm\\n[Click để xem chi tiết]')" title="Trạm #47">
+                            ✓
+                            <span style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-size: 11px; font-weight: 600; pointer-events: none;">47</span>
+                        </div>
+                        <div class="station-marker" id="marker-17" style="left: 65%; top: 22%; background-color: #2196f3;" onclick="handleMarkerClick(event, 'Trạm #17 - Bí Ẩn\\n110 điểm\\n[Click để xem chi tiết]')" title="Trạm #17">
+                            ◯
+                            <span style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-size: 11px; font-weight: 600; pointer-events: none;">17</span>
+                        </div>
+                        <div class="station-marker" id="marker-15a" style="left: 82%; top: 12%; background-color: #2196f3;" onclick="handleMarkerClick(event, 'Trạm #15A - Anh Hùng\\n130 điểm\\n[Click để xem chi tiết]')" title="Trạm #15A">
+                            ◯
+                            <span style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-size: 11px; font-weight: 600; pointer-events: none;">15A</span>
+                        </div>
+                        <div class="station-marker" id="marker-29" style="left: 88%; top: 42%; background-color: #ff9800;" onclick="handleMarkerClick(event, 'Trạm #29 - Thể Thao\\n150 điểm\\n[Click để xem chi tiết]')" title="Trạm #29">
+                            ⚡
+                            <span style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-size: 11px; font-weight: 600; pointer-events: none;">29</span>
+                        </div>
+                        <div class="station-marker" id="marker-3" style="left: 42%; top: 48%; background-color: #f44336;" title="Trạm Sáng Tạo">🔒</div>
+                        <div class="station-marker" id="marker-4" style="left: 55%; top: 65%; background-color: #f44336;" title="Trạm Âm Nhạc">🔒</div>
+                        <div class="station-marker" id="marker-5" style="left: 75%; top: 72%; background-color: #f44336;" title="Trạm Khôi Phục">🔒</div>
+                        <div class="station-marker" id="marker-6" style="left: 48%; top: 38%; background-color: #f44336;" title="Trạm Khách">🔒</div>
+                        <div class="station-marker" id="marker-10" style="left: 92%; top: 60%; background-color: #f44336;" title="Trạm Tuyệt Kỳ">🔒</div>
+
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #4caf50;"></span>
+                                <span>Hoàn thành</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #ff9800;"></span>
+                                <span>Đang chơi</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #2196f3;"></span>
+                                <span>Mở khóa</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #f44336;"></span>
+                                <span>Khóa</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Controls -->
+                    <div class="map-controls">
+                        <button class="map-btn" onclick="zoomMap(1.2)" title="Phóng to">+</button>
+                        <button class="map-btn" onclick="zoomMap(0.8)" title="Thu nhỏ">−</button>
+                        <button class="map-btn" onclick="resetMap()" title="Reset">⟲</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ranking -->
+            <section class="ranking-table-container">
+                <h3 class="ranking-title">🏆 Bảng Xếp Hạng</h3>
+                <div class="ranking-table">
+                    <div class="ranking-row">
+                        <div class="rank-badge" style="background-color: #FF6B6B;">1</div>
+                        <div class="team-info">
+                            <div class="team-name-rank">Dragon Squad</div>
+                        </div>
+                        <div class="team-points">
+                            <span class="points-value">850</span>
+                            <span class="points-label">điểm</span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-row">
+                        <div class="rank-badge" style="background-color: #FFA500;">2</div>
+                        <div class="team-info">
+                            <div class="team-name-rank">Phoenix Rising</div>
+                        </div>
+                        <div class="team-points">
+                            <span class="points-value">820</span>
+                            <span class="points-label">điểm</span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-row">
+                        <div class="rank-badge" style="background-color: #FFD700;">3</div>
+                        <div class="team-info">
+                            <div class="team-name-rank">Tiger Force</div>
+                        </div>
+                        <div class="team-points">
+                            <span class="points-value">790</span>
+                            <span class="points-label">điểm</span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-row">
+                        <div class="rank-badge" style="background-color: #4169E1;">4</div>
+                        <div class="team-info">
+                            <div class="team-name-rank">Eagle Eyes</div>
+                        </div>
+                        <div class="team-points">
+                            <span class="points-value">760</span>
+                            <span class="points-label">điểm</span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-row">
+                        <div class="rank-badge" style="background-color: #FF1493;">5</div>
+                        <div class="team-info">
+                            <div class="team-name-rank">Leopard Knights</div>
+                        </div>
+                        <div class="team-points">
+                            <span class="points-value">730</span>
+                            <span class="points-label">điểm</span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-row current-team">
+                        <div class="rank-badge" style="background-color: #228B22;">6</div>
+                        <div class="team-info">
+                            <div class="team-name-rank">Savage Hunters</div>
+                        </div>
+                        <div class="team-points">
+                            <span class="points-value">220</span>
+                            <span class="points-label">điểm</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info -->
+            <section class="info-card" style="margin: 20px 0 40px 0;">
+                <h3>📖 Hướng dẫn chơi</h3>
+                <ol>
+                    <li>Click vào các trạm trên bản đồ để xem chi tiết</li>
+                    <li>Nhập mật thư để mở khóa trạm</li>
+                    <li>Quét QR để xác nhận và bắt đầu chơi</li>
+                    <li>Hoàn thành trò chơi để nhận điểm</li>
+                    <li>Trạm hoàn thành có thể chơi lại sau 30 phút</li>
+                </ol>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Map zoom & pan functionality
+        let mapScale = 1;
+        let mapTranslateX = 0;
+        let mapTranslateY = 0;
+        let isGrabbing = false;
+        let grabStartX = 0;
+        let grabStartY = 0;
+
+        const mapWrapper = document.getElementById('mapWrapper');
+        const mapBackground = document.getElementById('mapBackground');
+
+        // Zoom map
+        function zoomMap(factor) {
+            const oldScale = mapScale;
+            mapScale = Math.max(0.5, Math.min(3, mapScale * factor));
+            
+            // Zoom to center of container
+            const container = mapBackground;
+            const centerX = container.clientWidth / 2;
+            const centerY = container.clientHeight / 2;
+            
+            const scaleDiff = mapScale - oldScale;
+            mapTranslateX -= centerX * scaleDiff;
+            mapTranslateY -= centerY * scaleDiff;
+            
+            updateMapTransform();
+        }
+
+        // Reset map
+        function resetMap() {
+            mapScale = 1;
+            mapTranslateX = 0;
+            mapTranslateY = 0;
+            updateMapTransform();
+        }
+
+        // Update map transform
+        function updateMapTransform() {
+            mapWrapper.style.transform = `translate(${mapTranslateX}px, ${mapTranslateY}px) scale(${mapScale})`;
+        }
+
+        // Mouse wheel zoom
+        mapBackground.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const factor = e.deltaY > 0 ? 0.9 : 1.1;
+            zoomMap(factor);
+        });
+
+        // Drag pan
+        mapBackground.addEventListener('mousedown', (e) => {
+            // Don't drag if clicking marker or button
+            if (e.target.closest('.station-marker') || e.target.closest('.map-controls')) return;
+            
+            isGrabbing = true;
+            grabStartX = e.clientX - mapTranslateX;
+            grabStartY = e.clientY - mapTranslateY;
+            mapBackground.classList.add('grabbing');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isGrabbing) return;
+            
+            mapTranslateX = e.clientX - grabStartX;
+            mapTranslateY = e.clientY - grabStartY;
+            updateMapTransform();
+        });
+
+        document.addEventListener('mouseup', () => {
+            isGrabbing = false;
+            mapBackground.classList.remove('grabbing');
+        });
+
+        // Handle marker click
+        function handleMarkerClick(event, message) {
+            event.stopPropagation();
+            alert(message);
+        }
+
+        // Mobile touch zoom
+        let lastDistance = 0;
+        mapBackground.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                lastDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+            }
+        });
+
+        mapBackground.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const distance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                if (lastDistance > 0) {
+                    const factor = distance / lastDistance;
+                    if (Math.abs(factor - 1) > 0.05) {
+                        zoomMap(factor);
+                        lastDistance = distance;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
