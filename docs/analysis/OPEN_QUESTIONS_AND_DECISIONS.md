@@ -7,13 +7,24 @@ Tài liệu này ghi các điểm cần chốt trước hoặc trong khi triển
 | Topic | Default recommendation | Status |
 | --- | --- | --- |
 | `Note` có phải requirement cố định không? | Không. Xem là input đang cân nhắc. | Decided |
-| Timer client hay server? | Hybrid: client hiển thị, server lưu timestamp chính thức. | Recommended |
+| Timer client hay server? | Hybrid: client hiển thị, server lưu timestamp chính thức. | Decided |
 | Admin login bằng gì? | Username/password + JWT + bcrypt. | Recommended |
-| Có cần Station Manager MVP không? | Chưa cần nếu team tự scan QR và admin điều hành tập trung. | Recommended |
-| Score do ai nhập? | MVP cho team nhập sau check-out; audit đầy đủ; admin sửa được. | Needs confirmation |
-| Difficulty stars có cần không? | Có, đưa vào game metadata P1 hoặc P0 nếu UI cần ngay. | Recommended |
+| Có cần Station Manager MVP không? | Có Staff/Station Manager tối giản để nhập điểm theo trạm; Admin có toàn quyền. | Decided |
+| Score do ai nhập? | Admin hoặc Staff/Station Manager nhập; team không tự nhập. | Decided |
+| Difficulty stars có cần không? | Có, lưu metadata và hiển thị trong station detail/game list; không ảnh hưởng logic. | Decided |
 | Settings gồm gì? | MVP chỉ team info, logout, camera help. | Recommended |
-| Reopen tạo attempt mới hay sửa attempt cũ? | Tạo attempt mới tốt hơn cho audit; MVP có thể set status `REOPENED` nếu cần nhanh. | Needs confirmation |
+| Một team login trên mấy thiết bị? | Chỉ 1 thiết bị; login mới revoke session cũ và thiết bị cũ nhận `SESSION_REPLACED`. | Decided |
+| Một team check-in mấy trạm cùng lúc? | Chỉ 1 trạm tại 1 thời điểm. | Decided |
+| Cancel trạm xử lý thế nào? | Ghi log/timestamp, đưa về `AVAILABLE`, chờ cooldown 5 phút do admin config. | Decided |
+| Reopen xử lý thế nào? | Admin đưa progress về `AVAILABLE`; không dùng status `REOPENED`. | Decided |
+| Có dùng status `WAITING_SCORE`, `CANCELLED`, `REOPENED` không? | Không. Các case liên quan dùng `AVAILABLE` hoặc log/timestamp. | Decided |
+| Giờ kết thúc tổng? | Mặc định 11:30 theo `Asia/Ho_Chi_Minh`, admin chỉnh được, thông báo trước 15 phút. | Decided |
+| Leaderboard sort thế nào? | Score desc, sau đó tổng thời gian check-in/check-out các trạm asc. | Decided |
+| Admin có xuất report không? | Có, xuất Excel `.xlsx` với Leaderboard, Team Progress, Score Events, Activity Logs. | Decided |
+| Admin reopen sau giờ kết thúc? | Không được reopen sau giờ kết thúc tổng. | Decided |
+| Notification trước 15 phút? | In-app sticky banner + modal; âm thanh/rung nếu trình duyệt cho phép. | Decided |
+| Có hiển thị tổng điểm tối đa không? | Có, player home hiển thị `totalPoints / maxPossiblePoints`. | Decided |
+| Có trạm final sau 11:30 không? | Có, Final Station mở 11:45, giải mật thư, server auto-score top 10. | Decided |
 | UI ưu tiên functional hay neon HUD? | Functional MVP trước, neon HUD polish sau. | Recommended |
 
 ## Product Questions
@@ -37,43 +48,49 @@ Impact:
 
 ### 2. Có cần role Station Manager trong MVP không?
 
-Default:
+Decision:
 
-- Không bắt buộc MVP.
-- Giữ schema/API mở rộng được cho `STATION_MANAGER`.
+- Có Staff/Station Manager MVP tối giản vì điểm do staff/admin nhập.
+- Staff/Station Manager đăng nhập tài khoản riêng.
+- Staff chỉ thấy queue các lượt đã check-out tại trạm được gán và nhập điểm cho trạm đó.
+- Admin có quyền nhập/sửa điểm mọi trạm.
 
 Reason:
 
 - README nhắc role này.
 - Source hiện tại chưa có UI station manager.
-- QR self-service + admin dashboard đủ cho MVP nếu quy trình sự kiện cho phép.
+- Nếu admin là người duy nhất nhập điểm, vận hành thực địa dễ bị nghẽn.
+- Staff score queue là phạm vi nhỏ hơn nhiều so với một app station manager đầy đủ.
 
 Impact:
 
-- Nếu cần station manager, score/check-out có thể phải do manager xác nhận, backlog tăng đáng kể.
+- Cần thêm role `STATION_MANAGER`.
+- Cần API staff score queue.
+- Chưa cần staff quản lý QR hoặc reopen trong MVP.
 
 ### 3. Score do team nhập hay staff nhập?
 
-Default:
+Decision:
 
-- MVP: team nhập điểm sau QR check-out.
-- Admin có quyền sửa điểm.
+- Admin hoặc Staff/Station Manager nhập điểm sau khi team check-out.
+- Team không tự nhập điểm.
 - Mọi điểm ghi `score_events`.
 
-Alternative:
+Reason:
 
-- Station Manager/Admin nhập điểm để giảm gian lận.
+- Giảm gian lận và sai lệch điểm.
+- Phù hợp mô hình staff tại trạm.
 
-Decision needed:
+Impact:
 
-- Sự kiện có cần chống gian lận cao không?
-- Điểm do thử thách tự chấm hay người phụ trách chấm?
+- Player sau check-out sẽ thấy trạng thái/chờ staff nhập điểm hoặc thông báo đã gửi kết quả.
+- Staff/admin UI cần score queue và validation điểm.
 
 ### 4. Có tổng điểm tối đa toàn event không?
 
-Default:
+Decision:
 
-- Có thể tính từ tổng `games.max_points` của các station active.
+- Có. Tổng điểm tối đa là tổng `games.max_points` của các game/trạm active.
 
 Reason:
 
@@ -88,7 +105,7 @@ Impact:
 
 ### 5. Check-in và check-out dùng cùng QR hay hai QR khác nhau?
 
-Default:
+Decision:
 
 - Dùng hai QR purpose khác nhau: `CHECK_IN` và `CHECK_OUT`.
 
@@ -104,7 +121,7 @@ Impact:
 
 ### 6. Team có được chơi nhiều trạm cùng lúc không?
 
-Default:
+Decision:
 
 - Không. Một team chỉ có một progress ở trạng thái `CHECKED_IN`/`PLAYING`.
 
@@ -119,34 +136,101 @@ Impact:
 
 ### 7. Cancel xong trạm quay về trạng thái nào?
 
-Default:
+Decision:
 
-- Progress attempt chuyển `CANCELLED`.
-- Team muốn chơi lại cần admin reopen hoặc policy cho phép tạo attempt mới từ `AVAILABLE`.
-
-Reason:
-
-- Giữ audit rõ.
-
-Decision needed:
-
-- Sự kiện có cho team tự cancel và chơi lại ngay không?
-
-### 8. Reopen nên tạo attempt mới hay sửa attempt cũ?
-
-Default:
-
-- Tạo attempt mới nếu có thời gian triển khai.
-- Nếu cần MVP nhanh, set existing progress `REOPENED` và ghi reason.
+- Không dùng status `CANCELLED`.
+- Khi team cancel trong trạng thái `CHECKED_IN` hoặc `PLAYING`, hệ thống ghi `cancelled_at` và activity log.
+- Progress của team tại trạm đó trở về `AVAILABLE` nếu chưa quá giờ kết thúc.
+- Team chỉ được check-in lại sau cancel cooldown mặc định 5 phút; admin config được.
 
 Reason:
 
-- Attempt mới giữ lịch sử tốt hơn.
-- Existing progress nhanh hơn nhưng audit kém rõ hơn.
+- Trạng thái vận hành đơn giản hơn.
+- Audit vẫn rõ nhờ timestamp/log.
+
+Impact:
+
+- UI map không cần màu riêng cho cancelled.
+- Backlog/test cần kiểm tra cancel completed station bị chặn.
+- Check-in API cần chặn khi chưa hết cooldown.
+
+### 8. Reopen xử lý thế nào?
+
+Decision:
+
+- Không dùng status `REOPENED`.
+- Admin reopen bằng cách đưa progress về `AVAILABLE`, ghi `reopened_at`, reason và activity log.
+- Admin không được reopen sau giờ kết thúc tổng.
+
+Reason:
+
+- Đúng rule mới: các trạng thái liên quan chuyển thành `AVAILABLE`.
+- Giảm số trạng thái UI/API cần xử lý.
+
+Impact:
+
+- Report cần thể hiện reopen qua activity log hoặc timestamp, không qua status.
+- Nếu sau này cần multi-attempt chi tiết, có thể thêm bảng attempt riêng.
+
+### 9. Score waiting có cần status riêng không?
+
+Decision:
+
+- Không dùng `WAITING_SCORE`.
+- Sau check-out hợp lệ, server ghi `checked_out_at` và đưa lượt chơi vào staff/admin score queue.
+- Submit score thành công chuyển progress sang `COMPLETED`.
+
+Impact:
+
+- Nếu user đóng popup giữa chừng, UI có thể mở lại popup dựa trên progress có `checked_out_at` nhưng chưa `completed_at`.
+- API validation dựa vào timestamp/score state thay vì status riêng.
+
+### 10. Thời gian chơi ngắn nhất trong leaderboard tính thế nào?
+
+Decision:
+
+- Tính bằng tổng thời gian check-in đến check-out của các trạm completed.
+- Công thức: `SUM(checked_out_at - checked_in_at)` trên progress đã completed.
+- Chỉ dùng server timestamps.
+
+Impact:
+
+- Team đứng hạng cao hơn khi cùng điểm nhưng tổng thời gian thực chơi trạm ngắn hơn.
+- Thời gian ở ngoài trạm hoặc thời gian chờ staff nhập điểm không tính vào ranking duration.
+
+### 11. Final Station sau 11:30 xử lý thế nào?
+
+Decision:
+
+- Có một Final Station đặc biệt sau khi các trạm thường lock lúc 11:30.
+- Final mở lúc 11:45 theo `Asia/Ho_Chi_Minh`.
+- Final là mật thư, không dùng check-in/check-out/staff scoring như trạm thường.
+- Server chấm đáp án tự động.
+- 10 team đầu tiên submit đúng nhận điểm giảm dần theo cấu hình.
+
+Default config:
+
+- `startsAt = 11:45`
+- `maxWinners = 10`
+- `pointsByRank = [10,9,8,7,6,5,4,3,2,1]`
+
+Scoring:
+
+- Team đúng thứ 1 nhận 10 điểm.
+- Team đúng thứ 2 nhận 9 điểm.
+- Tiếp tục giảm đến team đúng thứ 10 nhận 1 điểm.
+- Team đúng sau top 10 được ghi nhận đúng nhưng không nhận điểm.
+
+Implementation notes:
+
+- Dùng server timestamp và database transaction để xếp hạng.
+- Mỗi team chỉ nhận điểm final một lần.
+- Final points vẫn ghi vào `score_events`.
+- Report Excel thêm sheet `Final Submissions`.
 
 ## UI Questions
 
-### 9. Có cần bám sát ảnh neon HUD ngay MVP không?
+### 12. Có cần bám sát ảnh neon HUD ngay MVP không?
 
 Default:
 
@@ -162,18 +246,18 @@ Impact:
 
 - Nếu bắt buộc demo visual sớm, cần ưu tiên Player UI/HUD trước backend đầy đủ.
 
-### 10. Leaderboard hiển thị bao nhiêu cột trên mobile?
+### 13. Leaderboard hiển thị bao nhiêu cột trên mobile?
 
 Default:
 
-- Mobile compact: rank, team, score, time.
+- Mobile compact: rank, team, score, total play duration.
 - Detail row hoặc landscape/admin view hiển thị captain, last station, completed count.
 
 Reason:
 
 - Ảnh reference có bảng dày, nhưng mobile web thật dễ overflow với tiếng Việt.
 
-### 11. Settings có cần trong MVP không?
+### 14. Settings có cần trong MVP không?
 
 Default:
 
@@ -187,7 +271,7 @@ Reason:
 
 ## Technical Questions
 
-### 12. Dùng Prisma hay TypeORM?
+### 15. Dùng Prisma hay TypeORM?
 
 Default:
 
@@ -202,7 +286,7 @@ Impact:
 
 - Backend build theo NestJS + PrismaService.
 
-### 13. Token lưu ở đâu?
+### 16. Token lưu ở đâu?
 
 Default:
 
@@ -218,7 +302,7 @@ Risk:
 
 - localStorage dễ bị XSS lấy token, cần tránh render HTML không tin cậy.
 
-### 14. Có cần realtime leaderboard không?
+### 17. Có cần realtime leaderboard không?
 
 Default:
 
@@ -230,7 +314,53 @@ Reason:
 - Giảm complexity.
 - Event quy mô nhỏ có thể chấp nhận refresh/polling.
 
-### 15. Có cần offline support không?
+### 18. Có cần export Excel report không?
+
+Decision:
+
+- Có.
+- Admin cần tải `.xlsx` gồm summary leaderboard, team progress, score events, final submissions và activity logs.
+
+Default format:
+
+- Sheet `Leaderboard`: rank, team, captain, total score, total play duration, completed stations.
+- Sheet `Team Progress`: team x station status/score/time.
+- Sheet `Score Events`: score changes and reasons.
+- Sheet `Final Submissions`: final answer submissions, correctness, winner rank and awarded points.
+- Sheet `Activity Logs`: scan, cancel, score, config, report export events.
+
+Impact:
+
+- Backend cần thư viện xuất Excel.
+- Export action cần ghi activity log.
+
+### 19. Notification trước giờ kết thúc nên làm kiểu gì?
+
+Decision:
+
+- MVP dùng in-app sticky banner + modal khi còn 15 phút.
+- Có thể thêm âm thanh/rung nếu trình duyệt và thiết bị cho phép.
+- Không dùng browser push notification trong MVP vì cần permission/service worker và dễ phát sinh rủi ro setup.
+
+Impact:
+
+- Player phải đang mở app mới chắc chắn thấy thông báo.
+- UI cần tránh che QR/map quá nhiều.
+
+### 20. Difficulty stars có cần trong MVP không?
+
+Decision:
+
+- Có, lưu `games.difficulty` từ 1 đến 5.
+- Hiển thị stars trong station detail và game list.
+- Không dùng difficulty để tính điểm, unlock hoặc ranking trong MVP.
+
+Impact:
+
+- UI có thêm metadata giúp team chọn trạm.
+- Admin seed/config game cần nhập difficulty.
+
+### 21. Có cần offline support không?
 
 Default:
 
@@ -246,10 +376,4 @@ Reason:
 Trước khi bắt đầu code production, nên chốt:
 
 - Team login bằng passcode có đúng không.
-- Score do team hay staff nhập.
-- Có Station Manager trong MVP không.
-- Check-in/check-out dùng một hay hai QR.
-- Reopen tạo attempt mới hay dùng trạng thái `REOPENED`.
-- Ranking tie-breaker cuối cùng.
 - UI neon HUD có phải bắt buộc trong bản demo đầu tiên không.
-
