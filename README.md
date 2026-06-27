@@ -51,6 +51,86 @@ Dự án được xây dựng theo mô hình Fullstack TypeScript, đảm bảo 
 
 ---
 
+movement-2026/
+│
+├── backend/                       # Nền tảng server (NestJS + Prisma + PostgreSQL)
+│   ├── prisma/                    # Thư mục của Prisma ORM
+│   │   ├── migrations/            # Lịch sử thay đổi cấu trúc database
+│   │   └── schema.prisma          # File định nghĩa các bảng (Users, Stations, Teams...)
+│   │
+│   ├── src/                       # Mã nguồn chính của Backend
+│   │   ├── auth/                  # Module xác thực (JWT, Login, Guards)
+│   │   │   ├── guards/            # Bảo vệ API (VD: JwtAuthGuard, RolesGuard)
+│   │   │   ├── strategies/        # Logic giải mã token
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   └── auth.module.ts
+│   │   │
+│   │   ├── stations/              # Module quản lý thông tin Trạm
+│   │   │   ├── dto/               # Data Transfer Objects (Định dạng dữ liệu gửi/nhận)
+│   │   │   ├── stations.controller.ts
+│   │   │   ├── stations.service.ts
+│   │   │   └── stations.module.ts
+│   │   │
+│   │   ├── teams/                 # Module quản lý Đội chơi
+│   │   ├── progress/              # Module xử lý check-in, tính điểm, nộp hình ảnh
+│   │   │
+│   │   ├── common/                # Thư mục chứa các file dùng chung toàn hệ thống
+│   │   │   ├── decorators/        # Custom decorators (VD: @Roles('ADMIN'))
+│   │   │   ├── filters/           # Xử lý lỗi (Exception Filters)
+│   │   │   └── utils/             # Các hàm tiện ích (Format thời gian, tính toán...)
+│   │   │
+│   │   ├── app.module.ts          # Module gốc ghép nối tất cả module con
+│   │   └── main.ts                # Entry point khởi chạy server (port 3000)
+│   │
+│   ├── .env                       # Chứa DATABASE_URL và JWT_SECRET
+│   ├── package.json
+│   └── tsconfig.json
+│
+│
+└── frontend/                      # Giao diện người dùng (React + TypeScript + Vite)
+    ├── public/                    # File tĩnh (favicon, icon Zalo, ảnh không cần bundle)
+    │   └── vite.svg
+    │
+    ├── src/                       # Mã nguồn chính của Frontend
+    │   ├── assets/                # Hình ảnh chung, logo dự án, custom CSS
+    │   │
+    │   ├── components/            # Các thành phần giao diện nhỏ, tái sử dụng được
+    │   │   ├── common/            # Nút bấm, Modal, Header, Footer...
+    │   │   ├── map/               # MovementMap.tsx, StationNode.tsx
+    │   │   └── qr/                # Component quét mã QR
+    │   │
+    │   ├── pages/                 # Các trang/màn hình chính của hệ thống
+    │   │   ├── admin/             # Dashboard, quản lý trạm, điểm số
+    │   │   ├── manager/           # Màn hình Trưởng trạm (Quét mã, mở khóa)
+    │   │   ├── player/            # Màn hình Đội chơi (Bản đồ, Mật thư, Bảng xếp hạng)
+    │   │   └── auth/              # Trang đăng nhập (Login)
+    │   │
+    │   ├── services/              # Logic gọi API backend
+    │   │   ├── api.ts             # Cấu hình Axios & Interceptors đính kèm JWT Token
+    │   │   ├── stationService.ts
+    │   │   └── teamService.ts
+    │   │
+    │   ├── types/                 # Khai báo kiểu dữ liệu TypeScript dùng chung
+    │   │   ├── station.type.ts    # interface Station { id: string; name: string... }
+    │   │   ├── team.type.ts
+    │   │   └── auth.type.ts
+    │   │
+    │   ├── store/                 # (Tùy chọn) Quản lý state toàn cục (Zustand/Redux)
+    │   │
+    │   ├── utils/                 # Hàm tiện ích dùng chung ở frontend
+    │   │   └── formatHelper.ts    # Format chuỗi thời gian, tính toán % trên bản đồ...
+    │   │
+    │   ├── App.tsx                # Khai báo Routing (React Router DOM) chuyển trang
+    │   └── main.tsx               # Entry point (nơi import React Bootstrap)
+    │
+    ├── .env                       # Biến môi trường (VD: VITE_API_URL=http://localhost:3000)
+    ├── index.html                 # File HTML gốc
+    ├── package.json
+    ├── tsconfig.json
+    └── vite.config.ts             # Cấu hình Vite (cổng chạy app, proxy...)
+
+
 ## 3. THIẾT KẾ DATABASE SCHEMA (BỔ SUNG QUẢN LÝ TÀI KHOẢN)
 
 Dưới đây là cấu trúc bảng tĩnh, bổ sung thêm bảng `Users` để quản trị quyền bằng JWT:
