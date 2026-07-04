@@ -1,0 +1,58 @@
+name: Deploy Frontend (OBS)
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+    paths:
+      - 'fe/**'
+      - '.github/workflows/fe-deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: fe-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HUAWEI_REGION: ap-southeast-3
+  OBS_BUCKET: movement
+  NODE_VERSION: '20'
+
+jobs:
+  deploy:
+    name: Build and sync to OBS
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fe
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+
+      - name: Install obsutil
+        run: |
+          wget -q https://obs-community-intl.obs.ap-southeast-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz
+          tar -xzf obsutil_linux_amd64.tar.gz
+          chmod 755 obsutil
+
+      - name: Sync dist to OBS bucket
+        run: |
+          ./obsutil config -i="${{ secrets.HUAWEI_ACCESS_KEY }}" \
+            -k="${{ secrets.HUAWEI_SECRET_KEY }}" \
+            -e="https://obs.${{ env.HUAWEI_REGION }}.myhuaweicloud.com"
+          ./obsutil sync dist/ "obs://${{ env.OBS_BUCKET }}/" -f -exclude=.git*
