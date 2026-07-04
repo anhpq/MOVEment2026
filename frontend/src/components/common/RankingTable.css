@@ -1,0 +1,134 @@
+.ranking-table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ranking-title {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.ranking-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.ranking-row:hover {
+  background: #f0f0f0;
+  transform: translateX(4px);
+}
+
+.ranking-row.current-team {
+  background: #e3f2fd;
+  border-left-color: #2196f3;
+  box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2);
+}
+
+.rank-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.team-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.team-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-stations {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.team-points {
+  text-align: right;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.points-value {
+  font-weight: 700;
+  font-size: 16px;
+  color: #ff9800;
+}
+
+.points-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.ranking-note {
+  margin-top: 12px;
+  padding: 10px;
+  background: #fff3cd;
+  border-left: 3px solid #ffc107;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #856404;
+}
+
+@media (max-width: 768px) {
+  .ranking-table-container {
+    padding: 12px;
+    margin: 12px 0;
+  }
+
+  .ranking-row {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .rank-badge {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .team-name {
+    font-size: 13px;
+  }
+
+  .team-stations {
+    font-size: 11px;
+  }
+
+  .points-value {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,401 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 16px 16px 0 0;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 16px;
+}
+
+.modal-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.station-info {
+  flex: 1;
+}
+
+.station-name {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.station-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.game-type {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.points-badge {
+  background: rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.status-bar {
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.status-icon {
+  display: block;
+  white-space: nowrap;
+}
+
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.section-title {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+}
+
+.clue-text {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Video Section */
+.video-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.watch-video-btn {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.watch-video-btn:hover:not(.disabled) {
+  background: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.watch-video-btn.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.cooldown-text {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.youtube-container {
+  border-radius: 8px;
+  overflow: hidden;
+  background: black;
+}
+
+/* Cipher Input Section */
+.cipher-section {
+  background: #fff3cd !important;
+  border-left: 4px solid #ffc107;
+}
+
+.cipher-input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cipher-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 2px solid #ffc107;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+.cipher-input:focus {
+  outline: none;
+  border-color: #ff9800;
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.cipher-submit-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cipher-submit-btn:hover:not(:disabled) {
+  background: #45a049;
+  transform: translateY(-2px);
+}
+
+.cipher-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.cipher-cancel-btn {
+  width: 100%;
+  padding: 8px;
+  background: white;
+  border: 2px solid #ffc107;
+  border-radius: 6px;
+  color: #ffc107;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cipher-cancel-btn:hover {
+  background: #fff8e1;
+}
+
+/* Progress Section */
+.progress-section {
+  background: #e3f2fd !important;
+}
+
+.progress-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  background: white;
+  border-radius: 6px;
+}
+
+.progress-label {
+  font-size: 13px;
+  color: #666;
+}
+
+.progress-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.lock-reason {
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  color: #d32f2f;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.action-btn.primary {
+  background: #4caf50;
+  color: white;
+  flex: 1.5;
+}
+
+.action-btn.primary:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.action-btn.secondary {
+  background: #2196f3;
+  color: white;
+}
+
+.action-btn.secondary:hover {
+  background: #1976d2;
+  transform: translateY(-2px);
+}
+
+.action-btn.playing {
+  background: #ff9800;
+  color: white;
+}
+
+.action-btn.playing:hover {
+  background: #f57c00;
+  transform: translateY(-2px);
+}
+
+.action-btn.disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.cooldown-message {
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  background: #fff3cd;
+  border-radius: 8px;
+  color: #856404;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .modal-content {
+    max-width: 100%;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .station-name {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .modal-footer {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .action-btn {
+    padding: 12px 12px;
+    font-size: 13px;
+  }
+}
