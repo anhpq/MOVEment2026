@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Station, TeamStationProgress } from '../../types/player.type';
+import type { Station, TeamStationProgress } from '../../types/player.type';
 import './StationDetailModal.css';
 
 interface StationDetailModalProps {
@@ -150,7 +150,7 @@ export const StationDetailModal: React.FC<StationDetailModalProps> = ({
                     <iframe
                       width="100%"
                       height="250"
-                      src={station.youtube_url}
+                      src={station.youtubeUrl}
                       title={station.name}
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

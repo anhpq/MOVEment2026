@@ -1,5 +1,5 @@
 import React from 'react';
-import { Team, Station, TeamStationProgress } from '../../types/player.type';
+import type { Team, Station, TeamStationProgress } from '../../types/player.type';
 import './TeamHeader.css';
 
 interface TeamHeaderProps {

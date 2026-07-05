@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Station, TeamStationProgress } from '../../types/player.type';
+import type { Station, TeamStationProgress } from '../../types/player.type';
 import './StationMap.css';
 
 interface StationMapProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Team } from '../../types/player.type';
+import type { Team } from '../../types/player.type';
 import './RankingTable.css';
 
 interface RankingTableProps {
@@ -27,7 +27,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({
     <div className="ranking-table-container">
       <h3 className="ranking-title">🏆 Bảng Xếp Hạng</h3>
       <div className="ranking-table">
-        {displayTeams.map((team, index) => (
+        {displayTeams.map((team) => (
           <div
             key={team.team_id}
             className={`ranking-row ${
