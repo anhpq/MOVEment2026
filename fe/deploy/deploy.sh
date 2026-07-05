@@ -24,9 +24,9 @@ obsutil config -i="${HUAWEI_ACCESS_KEY}" \
   -k="${HUAWEI_SECRET_KEY}" \
   -e="https://obs.${HUAWEI_REGION}.myhuaweicloud.com"
 
-obsutil sync "${DIST_PATH}/" "obs://${OBS_BUCKET}/" -f -acl=public-read -exclude=.git*
+obsutil sync "${DIST_PATH}/" "obs://${OBS_BUCKET}/" -acl=public-read
 
 obsutil cp "${DIST_PATH}/index.html" "obs://${OBS_BUCKET}/index.html" \
-  -f -acl=public-read -sc=cache-control:no-cache,no-store,must-revalidate
+  -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
 
 echo "Deployed to obs://${OBS_BUCKET}/ (${HUAWEI_REGION})"

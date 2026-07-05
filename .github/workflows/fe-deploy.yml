@@ -80,11 +80,11 @@ jobs:
             -e="https://obs.${{ env.HUAWEI_REGION }}.myhuaweicloud.com"
 
           "${OBSUTIL_BIN}" sync dist/ "obs://${{ env.OBS_BUCKET }}/" \
-            -f -acl=public-read -exclude=.git*
+            -acl=public-read
 
           # SPA entry point: always fetch fresh so new JS/CSS hashes are picked up
           "${OBSUTIL_BIN}" cp dist/index.html "obs://${{ env.OBS_BUCKET }}/index.html" \
-            -f -acl=public-read -sc=cache-control:no-cache,no-store,must-revalidate
+            -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
 
       - name: Deployment summary
         run: |
