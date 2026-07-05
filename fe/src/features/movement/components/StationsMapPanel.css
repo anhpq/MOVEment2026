@@ -1,0 +1,67 @@
+.movement-map-card {
+  overflow: hidden;
+}
+
+.movement-map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.movement-map-shell {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: #dfe6ee;
+  overflow: hidden;
+}
+
+.movement-map-viewport {
+  width: 100%;
+  height: clamp(320px, 100vh, 75vh);
+  background: linear-gradient(180deg, #e9eff6 0%, #dbe5ee 100%);
+}
+
+.movement-map-controls {
+  position: absolute;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.movement-map-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.movement-map-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0b1220;
+  font-size: 12px;
+}
+
+.movement-map-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.1);
+}
+
+.konvajs-content {
+  background: black;
+}

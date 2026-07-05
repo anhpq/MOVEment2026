@@ -16,7 +16,7 @@ export interface Station {
   name: string;
   game_type: string;
   points: number;
-  youtube_url: string;
+  youtubeUrl: string;
   clue_text: string;
   latitude: number;
   longitude: number;

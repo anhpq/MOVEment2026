@@ -1,0 +1,172 @@
+.mobile-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 122, 89, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(22, 119, 255, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(180deg, #fff8f3 0%, #f6fbff 100%);
+}
+
+.shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: auto;
+  line-height: normal;
+  padding: 18px 18px 14px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand-mark {
+  font-family:
+    Bahnschrift,
+    Aptos Display,
+    sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #17223b;
+}
+
+.brand-subtitle,
+.muted-copy,
+.compact-copy {
+  color: #5f6c7b;
+}
+
+.logout-button {
+  color: #17223b;
+}
+
+.nav-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 14px 18px 0;
+}
+
+.nav-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.page-stack {
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 18px 18px 32px;
+  box-sizing: border-box;
+}
+
+.surface-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px rgba(22, 33, 62, 0.08);
+}
+
+.compact-card .ant-card-body {
+  padding: 18px;
+}
+
+.section-head,
+.station-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-title,
+.card-title,
+.login-title {
+  margin: 0 !important;
+  color: #17223b !important;
+}
+
+.section-title {
+  font-size: 1.35rem !important;
+}
+
+.live-clock {
+  margin: 0 !important;
+}
+
+.card-title {
+  font-size: 1.08rem !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.card-list .ant-list-item {
+  padding: 0;
+  margin-bottom: 12px;
+  border: 0;
+}
+
+.station-card {
+  width: 100%;
+}
+
+.station-card .ant-card-body {
+  padding: 18px;
+}
+
+.login-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(255, 122, 89, 0.18),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(24, 144, 255, 0.16),
+      transparent 24%
+    ),
+    linear-gradient(180deg, #fff4ea 0%, #f3f9ff 100%);
+}
+
+.login-card {
+  width: min(100%, 420px);
+}
+
+@media (max-width: 480px) {
+  .shell-header {
+    padding: 16px 14px 12px;
+  }
+
+  .nav-strip {
+    padding: 12px 14px 0;
+  }
+
+  .page-stack {
+    padding: 14px 14px 28px;
+  }
+
+  .section-head,
+  .station-row {
+    flex-direction: column;
+  }
+
+  .station-row .ant-space,
+  .station-row .ant-btn {
+    width: 100%;
+  }
+}

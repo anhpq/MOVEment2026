@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Station, TeamStationProgress, Team } from '../../types/player.type';
+import React, { useState } from 'react';
+import type { Station, TeamStationProgress } from '../../types/player.type';
 import { DUMMY_TEAMS, DUMMY_STATIONS, DUMMY_PROGRESS } from '../../services/dummyData';
-import { TeamHeader } from '../common/TeamHeader';
-import { StationMap } from './StationMap';
-import { StationDetailModal } from './StationDetailModal';
-import { RankingTable } from '../common/RankingTable';
+import { TeamHeader } from '../../components/common/TeamHeader';
+import { StationMap } from '../../components/map/StationMap';
+import { StationDetailModal } from '../../components/map/StationDetailModal';
+import { RankingTable } from '../../components/common/RankingTable';
 import './PlayerPage.css';
 
 const PlayerPage: React.FC = () => {
