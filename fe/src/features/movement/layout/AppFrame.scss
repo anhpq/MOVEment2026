@@ -1,0 +1,29 @@
+.shell-footer {
+  position: sticky;
+  bottom: 0;
+  padding: 1rem 0;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+// Loop to generate classes for each margin size from 0 to 10
+@for $i from 0 through 10 {
+  .m-#{$i} {
+    margin: #{$i * 0.25rem};
+  }
+
+  .mt-#{$i} {
+    margin-top: #{$i * 0.25rem};
+  }
+
+  .mb-#{$i} {
+    margin-bottom: #{$i * 0.25rem};
+  }
+
+  .ml-#{$i} {
+    margin-left: #{$i * 0.25rem};
+  }
+
+  .mr-#{$i} {
+    margin-right: #{$i * 0.25rem};
+  }
+}
