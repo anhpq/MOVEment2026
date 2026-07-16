@@ -48,8 +48,7 @@ type ViewportSize = {
 };
 
 type TeamStationWithMeta = TeamStation & {
-  description?: string;
-  duration?: string | number | null;
+  description?: string | null;
 };
 
 const MIN_MAP_SCALE = 0.55;
@@ -513,8 +512,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     2
                   </Descriptions.Item>
                   <Descriptions.Item label="Estimated Duration">
-                    {focusedTeamStation.duration ?
-                      `${focusedTeamStation.duration} minutes`
+                    {focusedTeamStation.durationMinutes ?
+                      `${focusedTeamStation.durationMinutes} minutes`
                     : "N/A"}
                   </Descriptions.Item>
                   <Descriptions.Item label="Score">
@@ -537,7 +536,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     className="full-width"
                     icon={<YoutubeOutlined />}
                     onClick={() =>
-                      openLinkInNewTab(focusedTeamStation.youtubeUrl)
+                      openLinkInNewTab(focusedTeamStation.youtubeUrl as string)
                     }>
                     Watch Video
                   </Button>

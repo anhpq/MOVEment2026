@@ -42,7 +42,10 @@ function createSeededStations(
     return {
       id: `${team.id}-${station.id}`,
       name: station.name,
+      description: station.description,
       status,
+      durationMinutes: station.durationMinutes ?? 0,
+      youtubeUrl: station.youtubeUrl,
       score,
       startTime,
       endTime,
@@ -141,12 +144,13 @@ function buildTeamStationsFromSqlProgress(
 ) {
   const baseline = teams.reduce<Record<string, TeamStation[]>>((acc, team) => {
     acc[team.id] = definitions.map((station) => ({
+      ...station,
       id: `${team.id}-${station.id}`,
       status: "New",
+      durationMinutes: station.durationMinutes ?? 0,
       score: 0,
       startTime: null,
       endTime: null,
-      ...station,
       teamId: team.id,
       stationId: station.id,
     }));

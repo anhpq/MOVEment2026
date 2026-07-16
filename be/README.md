@@ -1,0 +1,106 @@
+# MOVEment 2026 Backend
+
+NestJS + Prisma + PostgreSQL API for the event game flow.
+
+## Setup
+
+```bash
+cd be
+npm install
+copy .env.example .env
+npm run prisma:generate
+npm run seed
+npm run start:dev
+```
+
+Swagger UI is available after the API starts:
+
+```text
+http://localhost:3000/api/docs
+```
+
+Use the **Authorize** button with the JWT returned from
+`POST /api/auth/login` or `POST /api/auth/team-login`.
+
+Local development uses PostgreSQL at:
+
+```text
+postgresql://postgres:postgres@127.0.0.1:55432/movement
+```
+
+On this machine, port `5432` is already used by a local PostgreSQL process, so
+the Docker dev database is exposed on `55432`.
+
+If Prisma migrate fails because of the local schema-engine issue, bootstrap the
+database with the checked-in SQL:
+
+```bash
+docker cp prisma/init.sql movement-postgres-dev:/tmp/init.sql
+docker exec movement-postgres-dev psql -U postgres -d movement -f /tmp/init.sql
+```
+
+## Main APIs
+
+- `POST /api/auth/team-login`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `POST /api/auth/logout`
+- `GET /api/player/me`
+- `GET /api/player/stations`
+- `POST /api/player/stations/:stationId/check-in`
+- `POST /api/player/stations/:stationId/check-out`
+- `POST /api/player/stations/:stationId/score`
+- `POST /api/player/stations/:stationId/cancel`
+- `GET /api/admin/dashboard`
+- `GET /api/admin/score-queue`
+- `GET /api/admin/progress-matrix`
+- `POST /api/admin/progress/:progressId/score`
+- `PATCH /api/admin/progress/:progressId/score`
+- `POST /api/admin/progress/:progressId/reopen`
+- `PATCH /api/admin/progress/:progressId/status`
+- `GET /api/admin/final-config`
+- `PATCH /api/admin/final-config`
+- `GET /api/admin/final/submissions`
+- `GET /api/admin/reports/summary.xlsx`
+- `GET /api/leaderboard`
+- `GET /api/player/final`
+- `POST /api/player/final/submit`
+
+## Seed Accounts
+
+- Admin: `admin` / `admin123`
+- Team accounts:
+  - `dragon` / `dragon123`
+  - `phoenix` / `phoenix123`
+  - `savage` / `savage123`
+
+## Auth Smoke Test
+
+```powershell
+$team = Invoke-RestMethod -Method Post -Uri http://localhost:3000/api/auth/team-login -ContentType 'application/json' -Body '{"username":"savage","password":"savage123","deviceLabel":"local-test"}'
+Invoke-RestMethod -Method Get -Uri http://localhost:3000/api/auth/me -Headers @{ Authorization = "Bearer $($team.accessToken)" }
+Invoke-RestMethod -Method Post -Uri http://localhost:3000/api/auth/logout -Headers @{ Authorization = "Bearer $($team.accessToken)" }
+```
+
+Team logout revokes the active `team_sessions` row. Admin logout records
+an activity log; the client should delete the JWT.
+
+Score flow:
+
+1. Team checks in and checks out at a station.
+2. Staff enters the score on the device already signed in with the team account.
+3. Staff confirms with `SCORING_CODE`; the backend stores only its bcrypt hash.
+4. Client submits `score` and `confirmationCode` to `POST /api/player/stations/:stationId/score`.
+5. Admin can still handle exceptions through the admin score queue and edit endpoint.
+
+The development seed scoring code is `2468`. Set a strong `SCORING_CODE` before
+seeding any shared or production database.
+
+QR seed token format:
+
+- Check-in: `ST002-CHECK_IN`
+- Check-out: `ST002-CHECK_OUT`
+
+Replace `ST002` with any seeded station id.
+
+Both check-in and check-out reject requests without a QR token.

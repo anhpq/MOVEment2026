@@ -1,0 +1,10 @@
+node_modules
+dist
+.pgdata/
+.env
+.env.local
+coverage
+*.log
+
+# PEM certificates and private keys kept in the local certs directory
+prisma/certs/*.pem

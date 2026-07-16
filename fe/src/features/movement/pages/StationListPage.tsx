@@ -16,8 +16,6 @@ import {
   Typography,
   Descriptions,
 } from "antd";
-import find from "lodash/find";
-import sortBy from "lodash/sortBy";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
@@ -47,12 +45,12 @@ export function StationListPage() {
   const [quickEditForm] = Form.useForm<QuickEditFormValues>();
 
   const team = teams.find((item) => item.id === activeTeamId);
-  const sortedStations = sortBy(teamStations[activeTeamId] ?? [], [
-    (station) => STATUS_ORDER[station.status],
-    (station) => station.name,
-  ]);
-  const activeStation = find(
-    sortedStations,
+  const sortedStations = [...(teamStations[activeTeamId] ?? [])].sort(
+    (left, right) =>
+      STATUS_ORDER[left.status] - STATUS_ORDER[right.status] ||
+      left.name.localeCompare(right.name),
+  );
+  const activeStation = sortedStations.find(
     (station) => station.status === "In Progress",
   );
 
@@ -137,8 +135,8 @@ export function StationListPage() {
                         2
                       </Descriptions.Item>
                       <Descriptions.Item label="Estimated Duration">
-                        {station.duration ?
-                          `${station.duration} minutes`
+                        {station.durationMinutes ?
+                          `${station.durationMinutes} minutes`
                         : "N/A"}
                       </Descriptions.Item>
                       <Descriptions.Item label="Score">
@@ -158,9 +156,11 @@ export function StationListPage() {
                       className="full-width mt-4">
                       {station.youtubeUrl && (
                         <Button
-                          severity="primary"
+                          type="primary"
                           icon={<YoutubeOutlined />}
-                          onClick={() => openLinkInNewTab(station.youtubeUrl)}>
+                          onClick={() =>
+                            openLinkInNewTab(station.youtubeUrl as string)
+                          }>
                           Watch Video
                         </Button>
                       )}

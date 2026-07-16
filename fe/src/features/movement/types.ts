@@ -4,14 +4,14 @@ export type StationStatus = "New" | "In Progress" | "Finish";
 
 export type Session = {
   username: string;
-  role: string;
+  role: Role;
   teamId: string | null;
 };
 
 export type AuthAccount = {
   username: string;
   password: string;
-  role: string;
+  role: Role;
 };
 
 export type Team = {
@@ -27,6 +27,9 @@ export type Team = {
 export type StationDefinition = {
   id: string;
   name: string;
+  description?: string | null;
+  durationMinutes?: number;
+  youtubeUrl?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   markerX?: number | null;
@@ -39,6 +42,7 @@ export type TeamStation = {
   status: StationStatus;
   description?: string | null;
   durationMinutes: number;
+  youtubeUrl?: string | null;
   score: number;
   startTime: string | null;
   endTime: string | null;

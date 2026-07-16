@@ -1,10 +1,10 @@
 import type {Role, StationStatus} from "./types";
 
-export enum ROLE {
-  USER = "user",
-  ADMIN = "admin",
-  SYSTEM_ADMIN = "system-admin",
-}
+export const ROLE = {
+  USER: "user",
+  ADMIN: "admin",
+  SYSTEM_ADMIN: "system-admin",
+} as const satisfies Record<string, Role>;
 
 export const ROLE_LABELS: Record<Role, string> = {
   user: "User",

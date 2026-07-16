@@ -72,11 +72,13 @@ function createNewTeamStation(
   teamId: string,
   stationId: string,
   name: string,
+  durationMinutes = 0,
 ): TeamStation {
   return {
     id: `${teamId}-${stationId}`,
     name,
     status: "New",
+    durationMinutes,
     score: 0,
     startTime: null,
     endTime: null,
@@ -147,7 +149,10 @@ function upsertStationDefinition(
   );
 
   if (!hasStation) {
-    return [...stations, createNewTeamStation(teamId, values.id, values.name)];
+    return [
+      ...stations,
+      createNewTeamStation(teamId, values.id, values.name, values.durationMinutes),
+    ];
   }
 
   return stations.map((station) => {
@@ -158,6 +163,8 @@ function upsertStationDefinition(
     return {
       ...station,
       name: values.name,
+      description: values.description,
+      durationMinutes: values.durationMinutes,
       stationId: values.id,
       id: `${teamId}-${values.id}`,
     };
@@ -515,7 +522,12 @@ export const useMovementStore = create<MovementStore>((set) => ({
       const nextTeamStations = {
         ...state.teamStations,
         [values.id]: state.stationDefinitions.map((station) =>
-          createNewTeamStation(values.id, station.id, station.name),
+          createNewTeamStation(
+            values.id,
+            station.id,
+            station.name,
+            station.durationMinutes ?? 0,
+          ),
         ),
       };
 

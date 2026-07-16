@@ -100,7 +100,7 @@ export function StationDetailPage() {
         <Typography.Title level={3} className="section-title">
           {station.name}
         </Typography.Title>
-        <Typography.Paragraph label="Description">
+        <Typography.Paragraph>
           {station.description}
         </Typography.Paragraph>
         <Descriptions column={2} size="small">
@@ -108,7 +108,7 @@ export function StationDetailPage() {
             2
           </Descriptions.Item>
           <Descriptions.Item label="Estimated Duration">
-            {station.duration ? `${station.duration} minutes` : "N/A"}
+            {station.durationMinutes ? `${station.durationMinutes} minutes` : "N/A"}
           </Descriptions.Item>
           <Descriptions.Item label="Score">{station.score}</Descriptions.Item>
           <Descriptions.Item label="Start Time">
@@ -121,10 +121,10 @@ export function StationDetailPage() {
 
         {station.youtubeUrl && (
           <Button
-            severity="primary"
+            type="primary"
             className="full-width mt-4"
             icon={<YoutubeOutlined />}
-            onClick={() => openLinkInNewTab(station.youtubeUrl)}>
+            onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
             Watch Video
           </Button>
         )}
