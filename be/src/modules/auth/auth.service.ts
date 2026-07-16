@@ -56,10 +56,27 @@ export class AuthService {
       throw new UnauthorizedException('Invalid team credentials');
     }
 
-    const revokedSessions = await this.prisma.teamSession.updateMany({
+    // Enforce one active device session per team.
+    // Revoke any existing active team session before creating a new one.
+    const existingSession = await this.prisma.teamSession.findFirst({
       where: { teamId: team.id, revokedAt: null },
-      data: { revokedAt: new Date(), revokeReason: 'NEW_LOGIN' },
     });
+    if (existingSession) {
+      await this.prisma.teamSession.updateMany({
+        where: { teamId: team.id, revokedAt: null },
+        data: { revokedAt: new Date(), revokeReason: 'REPLACED' },
+      });
+      await this.prisma.activityLog.create({
+        data: {
+          actorType: ActorType.TEAM,
+          actorId: String(team.id),
+          action: 'TEAM_SESSION_REPLACED',
+          entityType: 'TEAM_SESSION',
+          entityId: existingSession.id,
+          metadata: { previousDeviceLabel: existingSession.deviceLabel ?? null },
+        },
+      });
+    }
 
     const session = await this.prisma.teamSession.create({
       data: {
@@ -93,21 +110,6 @@ export class AuthService {
         metadata: { deviceLabel: dto.deviceLabel ?? null },
       },
     });
-    if (revokedSessions.count > 0) {
-      await this.prisma.activityLog.create({
-        data: {
-          actorType: ActorType.TEAM,
-          actorId: String(team.id),
-          action: 'TEAM_SESSION_REPLACED',
-          entityType: 'TEAM',
-          entityId: String(team.id),
-          metadata: {
-            revokedSessions: revokedSessions.count,
-            deviceLabel: dto.deviceLabel ?? null,
-          },
-        },
-      });
-    }
 
     return {
       accessToken,

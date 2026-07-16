@@ -10,6 +10,7 @@ import type {PropsWithChildren} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
+import {logout as logoutApi} from "../api";
 import logo from "../../../assets/ST-logo.png";
 import "./AppFrame.scss";
 
@@ -24,6 +25,17 @@ export function AppFrame({children}: AppFrameProps) {
   const logout = useMovementStore((state) => state.logout);
 
   const activeTeam = teams.find((team) => team.id === activeTeamId);
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi()
+    } catch {
+      // ignore backend logout errors and still clear local session
+    }
+
+    logout()
+    navigate('/login')
+  }
   const totalStation = useMovementStore(
     (state) => state.stationDefinitions.length,
   );
@@ -54,10 +66,7 @@ export function AppFrame({children}: AppFrameProps) {
               color="danger"
               variant="filled"
               icon={<LogoutOutlined />}
-              onClick={() => {
-                logout();
-                navigate("/login");
-              }}>
+              onClick={handleLogout}>
               {ROLE_LABELS[session.role]}
             </Button>
           </Flex>

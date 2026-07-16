@@ -11,14 +11,14 @@
 - [x] Admin score/edit/reopen/status override.
 - [x] Leaderboard và activity log.
 - [x] Final auto-scoring và export Excel.
-- [ ] Unit/e2e tests cho auth, QR, scoring và Final concurrency.
+- [ ] Unit/e2e tests cho auth (Đã viết unit tests cho AuthService và AuthController), QR, scoring và Final concurrency.
 - [ ] ESLint flat config cho backend.
 - [ ] Production config phải fail-fast nếu secret còn mặc định.
 
 ## P0 - Frontend integration
 
 - [ ] Thay dữ liệu dummy bằng API client thật.
-- [ ] Login và lưu/thu hồi JWT.
+- [x] Login, lưu JWT và duy trì session 1 ngày.
 - [ ] QR scanner thật cho check-in/check-out.
 - [ ] Form nhập điểm yêu cầu mã xác nhận sau check-out.
 - [ ] Sửa production build trên Windows.

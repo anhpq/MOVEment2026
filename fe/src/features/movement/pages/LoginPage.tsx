@@ -10,9 +10,10 @@ import {
   Typography,
   Image,
 } from "antd";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
+import {loginTeam, loginUser} from "../api";
 import logo from "../../../assets/ST-logo.png";
 
 type LoginFormValues = {
@@ -20,14 +21,17 @@ type LoginFormValues = {
   password: string;
 };
 
+function mapBackendRole(role: string) {
+  return role === "ADMIN" ? "admin" : role === "SYSTEM_ADMIN" ? "system-admin" : "user";
+}
+
 export function LoginPage() {
   const navigate = useNavigate();
   const login = useMovementStore((state) => state.login);
   const session = useMovementStore((state) => state.session);
-  const teams = useMovementStore((state) => state.teams);
-  const authAccounts = useMovementStore((state) => state.authAccounts);
   const [form] = Form.useForm<LoginFormValues>();
   const {message} = AntdApp.useApp();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -69,40 +73,49 @@ export function LoginPage() {
           <Form
             form={form}
             layout="vertical"
-            onFinish={(values) => {
+            onFinish={async (values) => {
               const username = values.username.trim();
               const password = values.password.trim();
 
-              const matchedAccount = authAccounts.find(
-                (account) =>
-                  account.username === username &&
-                  account.password === password,
-              );
+              setIsSubmitting(true);
+              try {
+                try {
+                  const teamResponse = await loginTeam(
+                    username,
+                    password,
+                    "web",
+                  );
+                  login({
+                    username: teamResponse.team.username,
+                    role: "user",
+                    teamId: String(teamResponse.team.id),
+                    accessToken: teamResponse.accessToken,
+                  });
+                  message.success("Login successful");
+                  navigate("/stations");
+                  return;
+                } catch (teamLoginError) {
+                  // Fall back to admin/user login if team login fails.
+                }
 
-              if (matchedAccount) {
-                login({username, role: matchedAccount.role, teamId: null});
-                message.success(`Login successful as ${matchedAccount.role}`);
+                const userResponse = await loginUser(username, password);
+                login({
+                  username: userResponse.user.username,
+                  role: mapBackendRole(userResponse.user.role),
+                  teamId: null,
+                  accessToken: userResponse.accessToken,
+                });
+                message.success("Login successful");
                 navigate("/stations");
-                return;
+              } catch (error) {
+                const messageText =
+                  error instanceof Error
+                    ? error.message
+                    : "Invalid username or password";
+                message.error(messageText || "Invalid username or password");
+              } finally {
+                setIsSubmitting(false);
               }
-
-              const matchedTeam = teams.find(
-                (team) =>
-                  team.username === username && team.password === password,
-              );
-
-              if (!matchedTeam) {
-                message.error("Invalid username or password");
-                return;
-              }
-
-              login({
-                username: matchedTeam.username,
-                role: "user",
-                teamId: matchedTeam.id,
-              });
-              message.success("Login successful");
-              navigate("/stations");
             }}>
             <Form.Item
               label="Username"
@@ -124,7 +137,13 @@ export function LoginPage() {
               <Input.Password prefix={<LockOutlined />} placeholder="••••••" />
             </Form.Item>
 
-            <Button type="primary" htmlType="submit" block size="large">
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              size="large"
+              loading={isSubmitting}
+            >
               Login
             </Button>
           </Form>

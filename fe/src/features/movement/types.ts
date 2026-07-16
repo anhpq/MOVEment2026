@@ -6,6 +6,8 @@ export type Session = {
   username: string;
   role: Role;
   teamId: string | null;
+  accessToken?: string;
+  expiresAt?: string;
 };
 
 export type AuthAccount = {

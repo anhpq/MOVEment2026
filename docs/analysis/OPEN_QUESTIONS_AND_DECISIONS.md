@@ -10,7 +10,7 @@
 | Nhập điểm | Sau check-out, staff nhập điểm trên thiết bị đang đăng nhập account team |
 | Xác nhận điểm | Staff phải nhập mã chấm điểm; backend chỉ lưu hash |
 | QR | Hai QR purpose `CHECK_IN` và `CHECK_OUT`, token luôn bắt buộc |
-| Session | Một thiết bị cho mỗi team; login mới revoke session cũ |
+| Session | Một thiết bị cho mỗi team; login mới sẽ revoke session cũ và chỉ một session team được hoạt động cùng lúc |
 | Trạm đang chơi | Một team chỉ chơi một trạm tại một thời điểm |
 | Cancel | Trở về `AVAILABLE` và áp dụng cooldown 5 phút mặc định |
 | Status | Không dùng `WAITING_SCORE`, `CANCELLED`, `REOPENED` |
