@@ -1,0 +1,4 @@
+[agents]
+# Keep delegation shallow and bounded: one cost-optimized worker at a time.
+max_threads = 2
+max_depth = 1
