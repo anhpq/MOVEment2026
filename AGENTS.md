@@ -1,5 +1,17 @@
 ## graphify
 
+## Project memory docs
+
+Before implementation, review the relevant files in `docs/analysis/` and `docs/prompts/` after using Graphify:
+
+- Use `docs/analysis/PROJECT_ANALYSIS_SPEC.md` for product scope and current accepted behavior.
+- Use `docs/analysis/IMPLEMENTATION_BACKLOG.md` for P0/P1 status and acceptance gaps.
+- Use `docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md` for decisions that should override older prompts or stale notes.
+- Use focused files such as `docs/analysis/BACKEND_AUDIT.md` and `docs/analysis/TEAM_LOGIN_DATA.md` when the task touches those areas.
+- Use `docs/prompts/00_WORKFLOW.md` to select the relevant prompt/checklist for analysis, API, UI, QR, admin, backlog, or implementation sync work.
+
+After implementation or verification, update the matching `docs/analysis/` files whenever status, decisions, credentials, smoke-test results, acceptance gaps, or operational runbooks changed. Update `docs/prompts/` only when the workflow/checklist itself changed or a new repeatable task pattern appears; do not rewrite prompts for ordinary code changes.
+
 ## Cost-aware request routing
 
 Before doing substantive work, classify the request by scope and risk.

@@ -1463,8 +1463,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "score.dto.ts"
     },
     {
@@ -1474,8 +1474,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_submitscoredto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "submitscoredto"
     },
     {
@@ -1485,8 +1485,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isint",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isint"
     },
     {
@@ -1496,8 +1496,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_min",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "min"
     },
     {
@@ -1507,8 +1507,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isoptional",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isoptional"
     },
     {
@@ -1518,8 +1518,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isstring",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isstring"
     },
     {
@@ -1529,8 +1529,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "maxlength",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "maxlength"
     },
     {
@@ -1540,8 +1540,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_teamsubmitscoredto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "teamsubmitscoredto"
     },
     {
@@ -1551,8 +1551,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_minlength",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "minlength"
     },
     {
@@ -1562,8 +1562,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_reopenprogressdto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "reopenprogressdto"
     },
     {
@@ -1573,8 +1573,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_forceprogressstatusdto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "forceprogressstatusdto"
     },
     {
@@ -1584,8 +1584,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "isenum",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isenum"
     },
     {
@@ -2112,8 +2112,8 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_reopen",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "PlayerService",
       "norm_label": ".reopen()"
     },
     {
@@ -2277,8 +2277,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xlsx-report.ts"
     },
     {
@@ -2288,8 +2288,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxcell",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xlsxcell"
     },
     {
@@ -2299,8 +2299,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxsheet",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xlsxsheet"
     },
     {
@@ -2310,8 +2310,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipentry",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "zipentry"
     },
     {
@@ -2321,8 +2321,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crctable",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "crctable"
     },
     {
@@ -2332,8 +2332,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_createworkbookxlsx",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "createworkbookxlsx()"
     },
     {
@@ -2343,8 +2343,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sheetxml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "sheetxml()"
     },
     {
@@ -2354,8 +2354,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_cellxml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "cellxml()"
     },
     {
@@ -2365,8 +2365,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_columnname",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "columnname()"
     },
     {
@@ -2376,8 +2376,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xmldeclaration",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xmldeclaration()"
     },
     {
@@ -2387,8 +2387,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_escapexml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "escapexml()"
     },
     {
@@ -2398,8 +2398,8 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sanitizesheetname",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "sanitizesheetname()"
     },
     {
@@ -2409,8 +2409,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crc32",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "crc32()"
     },
     {
@@ -2420,8 +2420,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipfiles",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 56,
+      "community_name": "xlsx-report.ts",
       "norm_label": "zipfiles()"
     },
     {
@@ -2684,8 +2684,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 55,
+      "community_name": "auth.controller.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3036,8 +3036,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getconfig",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 3,
+      "community_name": "PlayerService",
       "norm_label": ".getconfig()"
     },
     {
@@ -3069,8 +3069,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispasteventend",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 3,
+      "community_name": "PlayerService",
       "norm_label": ".ispasteventend()"
     },
     {
@@ -6278,8 +6278,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createstorestate",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 7,
+      "community_name": "utils.ts",
       "norm_label": "createstorestate()"
     },
     {
@@ -6487,8 +6487,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_session",
-      "community": 7,
-      "community_name": "utils.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "session"
     },
     {
@@ -8365,7 +8365,7 @@
       "label": "Backend work still required",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L13",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_work_still_required",
       "community": 17,
@@ -8376,7 +8376,7 @@
       "label": "P0 remaining work",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L15",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p0_remaining_work",
       "community": 17,
@@ -8387,7 +8387,7 @@
       "label": "P1 event-readiness checks",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L19",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p1_event_readiness_checks",
       "community": 17,
@@ -8398,7 +8398,7 @@
       "label": "Maintenance findings",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L27",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_maintenance_findings",
       "community": 17,
@@ -8409,7 +8409,7 @@
       "label": "Next recommended task",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L33",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_next_recommended_task",
       "community": 17,
@@ -8591,6 +8591,28 @@
       "community": 33,
       "community_name": "MOVEment 2026 - Current Specification",
       "norm_label": "event va final"
+    },
+    {
+      "label": "TEAM_LOGIN_DATA.md",
+      "file_type": "document",
+      "source_file": "docs/analysis/TEAM_LOGIN_DATA.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_analysis_team_login_data",
+      "community": 57,
+      "community_name": "TEAM_LOGIN_DATA.md",
+      "norm_label": "team_login_data.md"
+    },
+    {
+      "label": "Team Login Data",
+      "file_type": "document",
+      "source_file": "docs/analysis/TEAM_LOGIN_DATA.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_analysis_team_login_data_team_login_data",
+      "community": 57,
+      "community_name": "TEAM_LOGIN_DATA.md",
+      "norm_label": "team login data"
     },
     {
       "label": "00_WORKFLOW.md",
@@ -25247,7 +25269,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L13",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -25258,7 +25280,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L27",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -25269,7 +25291,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L33",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -25291,7 +25313,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L15",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -25302,7 +25324,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L19",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -25450,6 +25472,17 @@
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
       "target": "docs_analysis_project_analysis_spec_tr\u1ea1ng_th\u00e1i",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/TEAM_LOGIN_DATA.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_team_login_data",
+      "target": "docs_analysis_team_login_data_team_login_data",
       "confidence_score": 1.0
     },
     {

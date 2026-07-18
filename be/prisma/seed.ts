@@ -17,11 +17,29 @@ const stations = [
   ['ST010', 'Tram Tuyet Ky', 'FINAL', 200, 92, 60],
 ] as const;
 
-const teams = [
-  ['Dragon Squad', 'dragon', 'An', 'dragon123', '#FF6B6B'],
-  ['Phoenix Rising', 'phoenix', 'Binh', 'phoenix123', '#FFA500'],
-  ['Savage Hunters', 'savage', 'Chi', 'savage123', '#228B22'],
+const teamColors = [
+  '#FF6B6B',
+  '#FFA500',
+  '#228B22',
+  '#1677FF',
+  '#722ED1',
+  '#13C2C2',
+  '#EB2F96',
+  '#52C41A',
+  '#FAAD14',
+  '#2F54EB',
 ] as const;
+
+const teams = Array.from({ length: 25 }, (_, index) => {
+  const number = String(index + 1).padStart(2, '0');
+  return {
+    name: `Team ${number}`,
+    username: `team${number}`,
+    captainName: `Captain ${number}`,
+    password: `team${number}`,
+    color: teamColors[index % teamColors.length],
+  };
+});
 
 async function main() {
   const adminPassword = await bcrypt.hash('admin123', 10);
@@ -83,7 +101,7 @@ async function main() {
   }
 
   const totalMaxPoints = stations.reduce((sum, item) => sum + item[3], 0);
-  for (const [name, username, captainName, password, color] of teams) {
+  for (const { name, username, captainName, password, color } of teams) {
     const team = await prisma.team.upsert({
       where: { username },
       create: {

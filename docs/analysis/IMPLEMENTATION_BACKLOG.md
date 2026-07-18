@@ -21,11 +21,11 @@
 - [x] Login, lưu JWT và duy trì session 1 ngày.
 - [ ] QR scanner thật cho check-in/check-out.
 - [ ] Form nhập điểm yêu cầu mã xác nhận sau check-out.
-- [ ] Sửa production build trên Windows.
+- [x] Sửa production build trên Windows.
 
 ## P1 - Event readiness
 
-- [ ] Migration + seed trên database trống.
+- [x] Migration + seed trên database trống.
 - [ ] Smoke test toàn bộ flow bằng hai team session.
 - [ ] Thêm `prisma migrate deploy` vào deployment.
 - [ ] Cấu hình CORS và secret production.

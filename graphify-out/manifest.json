@@ -35,9 +35,9 @@
     "semantic_hash": "1c1ea64ebd1db70d58c572a744a4915b"
   },
   "be/prisma/seed.ts": {
-    "mtime": 1784386805.6055903,
-    "ast_hash": "2e7d45b4647e681666511146a3ae9ff5",
-    "semantic_hash": "2e7d45b4647e681666511146a3ae9ff5"
+    "mtime": 1784392351.389189,
+    "ast_hash": "c70ed15de29578f3a2c55fbafd126185",
+    "semantic_hash": ""
   },
   "be/src/app.module.ts": {
     "mtime": 1784388296.4658122,
@@ -295,9 +295,9 @@
     "semantic_hash": "4de5fa755f60bd51afce9ae1e819d7ca"
   },
   "fe/src/features/movement/pages/LoginPage.tsx": {
-    "mtime": 1784386805.615387,
-    "ast_hash": "ef9c3b94bf7493c3b10224e96fb810ac",
-    "semantic_hash": "ef9c3b94bf7493c3b10224e96fb810ac"
+    "mtime": 1784392731.097922,
+    "ast_hash": "981f50888dc9a4d47d96f7acaf0a05ed",
+    "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
     "mtime": 1784386805.615387,
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1784391886.144431,
-    "ast_hash": "f2326fb9c4a7a30e9164650374efe479",
+    "mtime": 1784394829.0345917,
+    "ast_hash": "d2541159725e4890ecaf03bfd6b50114",
     "semantic_hash": ""
   },
   "README.md": {
@@ -480,13 +480,13 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784391591.439634,
-    "ast_hash": "3e1e75e898e62a178292bd9d61849d5d",
+    "mtime": 1784394891.741148,
+    "ast_hash": "df45ba5966b641da5d458237ececf3a2",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784386805.6138816,
-    "ast_hash": "a3ece838b43b507511638cb1202ab56c",
+    "mtime": 1784394901.3597,
+    "ast_hash": "afb447ed3569299c575f139aff4689a5",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
-    "mtime": 1784386509.0344944,
-    "ast_hash": "48cfc27cb71cd0afeb04fe194298341a",
+    "mtime": 1784394861.9035048,
+    "ast_hash": "1e3bc736dc03d0ebc2871fc3abddd124",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {
@@ -605,8 +605,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784391765.4607396,
-    "ast_hash": "d275c1c4a18149c74924f995cfa91bfd",
+    "mtime": 1784394622.2519882,
+    "ast_hash": "81d737204c328a4a0c4302877218b584",
+    "semantic_hash": ""
+  },
+  "docs/analysis/TEAM_LOGIN_DATA.md": {
+    "mtime": 1784392714.424155,
+    "ast_hash": "1e37b5bde137bf1364d8b9e529574c9f",
+    "semantic_hash": ""
+  },
+  "docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md": {
+    "mtime": 1784394874.9058723,
+    "ast_hash": "841b226362335c36169887b5d49a517d",
     "semantic_hash": ""
   }
 }

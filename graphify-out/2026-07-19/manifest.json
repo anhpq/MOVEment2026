@@ -295,8 +295,8 @@
     "semantic_hash": "4de5fa755f60bd51afce9ae1e819d7ca"
   },
   "fe/src/features/movement/pages/LoginPage.tsx": {
-    "mtime": 1784392403.0947423,
-    "ast_hash": "7cee12faf171cbe9b4f9874cde6999bb",
+    "mtime": 1784392731.097922,
+    "ast_hash": "981f50888dc9a4d47d96f7acaf0a05ed",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
@@ -605,8 +605,13 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784392056.3434556,
-    "ast_hash": "ed6ac995a647c4f3ff17c0056af37b49",
+    "mtime": 1784394622.2519882,
+    "ast_hash": "81d737204c328a4a0c4302877218b584",
+    "semantic_hash": ""
+  },
+  "docs/analysis/TEAM_LOGIN_DATA.md": {
+    "mtime": 1784392714.424155,
+    "ast_hash": "1e37b5bde137bf1364d8b9e529574c9f",
     "semantic_hash": ""
   }
 }

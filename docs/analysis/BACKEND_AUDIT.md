@@ -1,6 +1,6 @@
 # Backend Audit Status
 
-Last updated: 2026-07-18
+Last updated: 2026-07-19
 
 ## Verification completed
 
@@ -9,6 +9,10 @@ Last updated: 2026-07-18
 - `npm run build`: **passed**.
 - `npm run lint`: **passed** after adding the backend ESLint flat configuration.
 - Production startup validation now rejects missing or development-default `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, and wildcard `CORS_ORIGIN` when `NODE_ENV=production`.
+- `npm run prisma:deploy` applied the initial migration against local PostgreSQL at `127.0.0.1:55432/movement`.
+- `npm run seed` completed and created 25 team accounts (`team01/team01` through `team25/team25`), 10 stations, and 20 station QR tokens.
+- Team login smoke test passed for `team01/team01`, and `GET /api/auth/me` returned a `TEAM` session for `team01`.
+- Frontend build passed after QR login support was added. Frontend lint passes with one existing `StationMap.tsx` hook dependency warning.
 
 ## Backend work still required
 
@@ -18,7 +22,7 @@ Last updated: 2026-07-18
 
 ### P1 event-readiness checks
 
-- [ ] Validate migration and seed against a clean database.
+- [x] Validate migration and seed against a clean database.
 - [ ] Run an end-to-end smoke test using two simultaneous team sessions.
 - [ ] Add `prisma migrate deploy` to the deployment path.
 - [ ] Validate production CORS and secrets in the deployed environment.
@@ -32,4 +36,4 @@ Last updated: 2026-07-18
 
 ## Next recommended task
 
-Add automated coverage for QR check-in/check-out, score confirmation rejection/acceptance, and Final transaction retry/concurrency behavior. After that, validate migrations and seed data against a clean local database before frontend integration smoke testing.
+Add automated coverage for QR check-in/check-out, score confirmation rejection/acceptance, and Final transaction retry/concurrency behavior. After that, run a two-team end-to-end smoke test with real frontend sessions.
