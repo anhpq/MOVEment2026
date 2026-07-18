@@ -10,9 +10,9 @@
     "semantic_hash": "e3254324b485994b03e5f27bc746920c"
   },
   "be/jest.config.ts": {
-    "mtime": 1784386805.6020577,
-    "ast_hash": "be013c0c5fc7c29f265d635ca82e32cb",
-    "semantic_hash": "be013c0c5fc7c29f265d635ca82e32cb"
+    "mtime": 1784391625.6731691,
+    "ast_hash": "0023ba0d12c244ca6f166863190d2ba2",
+    "semantic_hash": ""
   },
   "be/nest-cli.json": {
     "mtime": 1784386805.6020577,
@@ -20,9 +20,9 @@
     "semantic_hash": "fa439650fa28a1a7aa8c2b6d81c8cc20"
   },
   "be/package.json": {
-    "mtime": 1784386805.6040668,
-    "ast_hash": "b0a53d9402e074fb3308d35f5502ef1a",
-    "semantic_hash": "b0a53d9402e074fb3308d35f5502ef1a"
+    "mtime": 1784391479.836238,
+    "ast_hash": "223588939efe6bd11d66b84d2527cbfc",
+    "semantic_hash": ""
   },
   "be/prisma/init.sql": {
     "mtime": 1784386805.6045685,
@@ -395,8 +395,8 @@
     "semantic_hash": "6b7c1e6a59ec08c1fa65aac6a44a4806"
   },
   "be/src/config/validate-environment.spec.ts": {
-    "mtime": 1784388295.8169675,
-    "ast_hash": "70209c50b4a343a325c9d3a006859713",
+    "mtime": 1784391552.6505291,
+    "ast_hash": "367211c81f2e23aa2e766b2f8c48c4e4",
     "semantic_hash": ""
   },
   "be/src/config/validate-environment.ts": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1784388002.0065837,
-    "ast_hash": "2d5eb697a20e9de8490fed3f3bf3ff3a",
+    "mtime": 1784391886.144431,
+    "ast_hash": "f2326fb9c4a7a30e9164650374efe479",
     "semantic_hash": ""
   },
   "README.md": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784386805.612885,
-    "ast_hash": "ecb00ce9a3e80bfc1da87ea6c9c06fd1",
+    "mtime": 1784391591.439634,
+    "ast_hash": "3e1e75e898e62a178292bd9d61849d5d",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -592,6 +592,21 @@
   "fe/src/assets/vite.svg": {
     "mtime": 1784386509.051068,
     "ast_hash": "6d5180a782d64c8cf51ba01c2a2184d8",
+    "semantic_hash": ""
+  },
+  "be/eslint.config.mjs": {
+    "mtime": 1784391493.6720684,
+    "ast_hash": "5b82dc6321ab4111932f31be1a8f9ae7",
+    "semantic_hash": ""
+  },
+  "be/src/modules/final/final.service.spec.ts": {
+    "mtime": 1784391719.3896787,
+    "ast_hash": "bd89daa4c883a85978cb54379675bd8f",
+    "semantic_hash": ""
+  },
+  "docs/analysis/BACKEND_AUDIT.md": {
+    "mtime": 1784391765.4607396,
+    "ast_hash": "d275c1c4a18149c74924f995cfa91bfd",
     "semantic_hash": ""
   }
 }

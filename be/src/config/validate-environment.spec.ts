@@ -16,17 +16,20 @@ describe('validateEnvironment', () => {
   })
 
   it.each([
-    ['JWT_SECRET', 'change-me'],
-    ['SCORING_CODE', '2468'],
-    ['CORS_ORIGIN', '*'],
-  ])('rejects a default production %s', (key, value) => {
+    ['JWT_SECRET', 'change-me', 'development default'],
+    ['SCORING_CODE', '2468', 'development default'],
+    ['CORS_ORIGIN', '*', 'must not be "*"'],
+  ])('rejects an insecure production %s', (key, value, message) => {
     expect(() =>
       validateEnvironment({ ...productionEnvironment, [key]: value }),
-    ).toThrow('development default')
+    ).toThrow(message)
   })
 
   it('requires all production settings', () => {
-    const { JWT_SECRET: _jwtSecret, ...withoutJwtSecret } = productionEnvironment
+    const withoutJwtSecret: Record<string, string | undefined> = {
+      ...productionEnvironment,
+    }
+    delete withoutJwtSecret.JWT_SECRET
 
     expect(() => validateEnvironment(withoutJwtSecret)).toThrow(
       'JWT_SECRET must be set',

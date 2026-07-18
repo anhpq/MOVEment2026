@@ -6,14 +6,14 @@ const config: Config.InitialOptions = {
   roots: ['<rootDir>/src'],
   moduleFileExtensions: ['ts', 'js', 'json'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+      tsconfig: 'tsconfig.json',
+      },
+    ],
   },
   testRegex: '\\.spec\\.ts$',
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
-  },
 }
 
 export default config

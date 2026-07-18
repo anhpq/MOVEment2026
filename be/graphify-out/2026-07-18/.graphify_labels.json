@@ -1,0 +1,22 @@
+{
+  "0": "final.controller.ts",
+  "1": "PrismaService",
+  "2": "AuthContext",
+  "3": "AdminService",
+  "4": "devDependencies",
+  "5": "auth.controller.ts",
+  "6": "dependencies",
+  "7": "app.module.ts",
+  "8": "PlayerService",
+  "9": "scripts",
+  "10": "compilerOptions",
+  "11": "player.controller.ts",
+  "12": "exclude",
+  "13": "nest-cli.json",
+  "14": "MOVEment 2026 Backend",
+  "15": "seed.ts",
+  "16": "deploy.sh",
+  "17": "jest.config.ts",
+  "18": "README.md",
+  "19": "eslint.config.mjs"
+}

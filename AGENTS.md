@@ -4,6 +4,16 @@
 
 Before doing substantive work, classify the request by scope and risk.
 
+- Route request categories by this default model lane:
+  - Fix bug: GPT-5.5
+  - Refactor: GPT-5.5
+  - Review PR: GPT-5.5
+  - Write a new feature: GPT-5.5
+  - Architecture design: GPT-5.6
+  - Research/root-cause analysis: GPT-5.6
+  - Write a long spec: GPT-5.6
+- When the exact GPT-5.5 model ID is not available in the current Codex runtime, treat the GPT-5.5 lane as the lowest-cost capable worker/model available, such as `simple_worker`.
+- Keep GPT-5.6 lane work in the primary agent unless the user explicitly asks for delegation.
 - Delegate to the `simple_worker` agent when the request is clearly bounded, reversible or read-only, affects at most one small area, has no external side effect, and needs only straightforward verification. Examples: explain a local error, rename a symbol in one file, make a trivial style/text correction, or run a focused read-only check.
 - Keep work with the primary agent when it is ambiguous, spans multiple components, needs design judgment, changes dependencies/configuration/data, touches authentication/security, makes external changes, or could cause material regression.
 - If unsure, treat the request as non-simple. Do not split one simple task across multiple workers.

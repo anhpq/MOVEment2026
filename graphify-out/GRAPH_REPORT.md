@@ -1,13 +1,18 @@
 # Graph Report - MOVEment2026  (2026-07-18)
 
 ## Corpus Check
-- 107 files · ~139,021 words
+- 110 files · ~139,748 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 800 nodes · 1419 edges · 55 communities (45 shown, 10 thin omitted)
+- 818 nodes · 1436 edges · 55 communities (45 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `ff236a20`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - AuthContext
@@ -30,7 +35,6 @@
 - app.module.ts
 - api.ts
 - EventConfigService
-- xlsx-report.ts
 - UpdateFinalConfigDto
 - AppFrame.tsx
 - exclude
@@ -71,21 +75,21 @@
 5. `useMovementStore` - 25 edges
 6. `PlayerService` - 23 edges
 7. `AdminController` - 20 edges
-8. `FinalService` - 18 edges
+8. `FinalService` - 19 edges
 9. `compilerOptions` - 18 edges
 10. `ActivityLogService` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `bootstrap()` --indirect_call--> `AppModule`  [INFERRED]
   be/src/main.ts → be/src/app.module.ts
+- `AdminController` --references--> `Roles()`  [EXTRACTED]
+  be/src/modules/admin/admin.controller.ts → be/src/common/auth/auth.decorators.ts
 - `App()` --calls--> `getMe()`  [EXTRACTED]
   fe/src/App.tsx → fe/src/features/movement/api.ts
 - `App()` --calls--> `logout()`  [EXTRACTED]
   fe/src/App.tsx → fe/src/features/movement/api.ts
 - `RankingTableProps` --references--> `Team`  [EXTRACTED]
   fe/src/components/common/RankingTable.tsx → fe/src/types/player.type.ts
-- `StationsMapPanel()` --calls--> `useMovementStore`  [EXTRACTED]
-  fe/src/features/movement/components/StationsMapPanel.tsx → fe/src/features/movement/store.ts
 
 ## Import Cycles
 - None detected.
@@ -94,27 +98,27 @@
 
 ### Community 0 - "AuthContext"
 Cohesion: 0.07
-Nodes (41): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, Roles() (+33 more)
+Nodes (35): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, JwtAuthGuard (+27 more)
 
 ### Community 1 - "AdminService"
-Cohesion: 0.10
-Nodes (4): Get, AdminService, Injectable, Get
+Cohesion: 0.07
+Nodes (20): ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, IsInt, IsOptional, IsString, Min, AdminController (+12 more)
 
 ### Community 2 - "dependencies"
 Cohesion: 0.04
 Nodes (48): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+40 more)
 
 ### Community 3 - "PlayerService"
-Cohesion: 0.09
-Nodes (16): QrActionDto, SubmitCipherDto, IsString, MinLength, LeaderboardController, Controller, Get, PlayerController (+8 more)
+Cohesion: 0.08
+Nodes (16): TeamSubmitScoreDto, MinLength, EventConfigController, Controller, Get, EventConfigService, Injectable, QrActionDto (+8 more)
 
 ### Community 4 - "dependencies"
 Cohesion: 0.06
 Nodes (31): @ant-design/icons, antd, dependencies, @ant-design/icons, antd, konva, lodash, react (+23 more)
 
 ### Community 5 - "devDependencies"
-Cohesion: 0.07
-Nodes (29): devDependencies, eslint, jest, @nestjs/cli, @nestjs/schematics, @nestjs/testing, prisma, source-map-support (+21 more)
+Cohesion: 0.06
+Nodes (33): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schematics, @nestjs/testing, prisma (+25 more)
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.07
@@ -142,11 +146,11 @@ Nodes (19): buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), cl
 
 ### Community 12 - "PrismaService"
 Cohesion: 0.06
-Nodes (34): AppModule, Module, ActivityLogService, Injectable, Environment, requiredProductionValue(), productionEnvironment, validateEnvironment() (+26 more)
+Nodes (43): AppModule, Module, ActivityLogService, Injectable, Environment, requiredProductionValue(), productionEnvironment, validateEnvironment() (+35 more)
 
 ### Community 13 - "FinalService"
-Cohesion: 0.13
-Nodes (12): ArrayMinSize, SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto, FinalService (+4 more)
+Cohesion: 0.08
+Nodes (24): ArrayMinSize, Roles(), SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto (+16 more)
 
 ### Community 14 - "compilerOptions"
 Cohesion: 0.10
@@ -161,8 +165,8 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, noEmit, noFallthroughCasesInSwitch (+11 more)
 
 ### Community 17 - "app.module.ts"
-Cohesion: 0.16
-Nodes (14): AuthController, mockAuthService, Body, Controller, Post, AuthService, mockJwtService, mockPrisma (+6 more)
+Cohesion: 0.25
+Nodes (7): Backend Audit Status, Backend work still required, Maintenance findings, Next recommended task, P0 remaining work, P1 event-readiness checks, Verification completed
 
 ### Community 18 - "api.ts"
 Cohesion: 0.21
@@ -171,10 +175,6 @@ Nodes (15): apiGet(), apiPost(), apiRequest(), AuthMeResponse, getAccessToken(),
 ### Community 19 - "EventConfigService"
 Cohesion: 0.08
 Nodes (24): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+16 more)
-
-### Community 20 - "xlsx-report.ts"
-Cohesion: 0.26
-Nodes (13): cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml(), sanitizeSheetName(), sheetXml() (+5 more)
 
 ### Community 21 - "UpdateFinalConfigDto"
 Cohesion: 0.22
@@ -261,24 +261,24 @@ Cohesion: 0.50
 Nodes (3): Expanding the ESLint configuration, React Compiler, React + TypeScript + Vite
 
 ## Knowledge Gaps
-- **261 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+256 more)
+- **272 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+267 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AuthContext` connect `AuthContext` to `app.module.ts`, `PlayerService`?**
+- **Why does `AuthContext` connect `AuthContext` to `AdminService`, `PlayerService`, `FinalService`?**
   _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `AdminService` connect `AdminService` to `AuthContext`, `PrismaService`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `PrismaService` to `AuthContext`, `AdminService`, `PlayerService`, `FinalService`, `app.module.ts`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `PrismaService` connect `PrismaService` to `AuthContext`, `AdminService`, `PlayerService`, `FinalService`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `NODE_ENV`, `config` to the rest of the system?**
-  _261 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _272 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.0711849957374254 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07382039573820395 - nodes in this community are weakly interconnected._
 - **Should `AdminService` be split into smaller, more focused modules?**
-  _Cohesion score 0.0962566844919786 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07330827067669173 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._

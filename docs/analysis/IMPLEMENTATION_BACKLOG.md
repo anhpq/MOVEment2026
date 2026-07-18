@@ -12,8 +12,8 @@
 - [x] Leaderboard và activity log.
 - [x] Final auto-scoring và export Excel.
 - [ ] Unit/e2e tests cho auth (Đã viết unit tests cho AuthService và AuthController), QR, scoring và Final concurrency.
-- [ ] ESLint flat config cho backend.
-- [ ] Production config phải fail-fast nếu secret còn mặc định.
+- [x] ESLint flat config cho backend.
+- [x] Production config phải fail-fast nếu secret còn mặc định.
 
 ## P0 - Frontend integration
 
