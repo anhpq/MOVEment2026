@@ -30,3 +30,73 @@
 - [x] Thêm `prisma migrate deploy` vào deployment.
 - [ ] Cấu hình CORS và secret production trên môi trường deploy.
 - [ ] Rehearsal export report và recovery database (script export và lệnh backup/restore đã documented, cần chạy trên DB rehearsal).
+
+## Next execution checklist
+
+Chạy lần lượt từ trên xuống. Sau mỗi cụm chạy xong, cập nhật file này, `docs/analysis/BACKEND_AUDIT.md`, chạy verify phù hợp, `python -m graphify update .`, rồi commit riêng.
+
+### 1. Chuẩn bị rehearsal database và API
+
+- [ ] Xác nhận PostgreSQL rehearsal/disposable đang chạy và không trỏ nhầm production.
+- [ ] Trong `be/`, chạy `npm run prisma:deploy`.
+- [ ] Trong `be/`, chạy `npm run seed`.
+- [ ] Start backend API với env rehearsal: `NODE_ENV=development`, `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE=2468`, `CORS_ORIGIN=http://localhost:5173`.
+- [ ] Kiểm tra `GET http://localhost:3000/api/docs` hoặc login health bằng `POST /api/auth/login`.
+
+Acceptance:
+
+- API phản hồi trên `http://localhost:3000`.
+- Seed có `team01/team01`, `team02/team02`, admin `admin/admin123`, QR `ST002-CHECK_IN`, `ST002-CHECK_OUT`, `ST047-CHECK_IN`, `ST047-CHECK_OUT`.
+
+### 2. Chạy two-team station smoke
+
+- [ ] Từ repo root chạy:
+  `pwsh -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468`
+- [ ] Xác nhận script báo team01/team02 có điểm và completed station.
+- [ ] Nếu smoke fail, lưu lỗi vào `docs/analysis/BACKEND_AUDIT.md` trước khi sửa code.
+- [ ] Nếu smoke pass, mark P1 smoke test là `[x]`.
+
+Acceptance:
+
+- Team 01 hoàn thành `ST002` với điểm smoke.
+- Team 02 hoàn thành `ST047` với điểm smoke.
+- `GET /api/player/me` của cả hai team phản ánh `totalPoints` và `completedStations`.
+
+### 3. Validate production env trên môi trường deploy
+
+- [ ] Set production secrets thật trên host/deploy target: `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, `CORS_ORIGIN`.
+- [ ] Đảm bảo `CORS_ORIGIN` là domain frontend thật hoặc CSV domains, không có `*`.
+- [ ] Chạy backend với `NODE_ENV=production` để xác nhận fail-fast không chặn nhầm.
+- [ ] Từ frontend deployed origin, gọi login/team-login để xác nhận CORS credentials hoạt động.
+- [ ] Mark P1 CORS/secrets là `[x]` chỉ sau khi test trên deploy target.
+
+Acceptance:
+
+- Production API start thành công với secrets thật.
+- API từ origin frontend thật không bị CORS block.
+- Production startup fail nếu đổi tạm `JWT_SECRET=change-me`, `SCORING_CODE=2468`, hoặc `CORS_ORIGIN=*`.
+
+### 4. Rehearse report export và database recovery
+
+- [ ] Trước smoke/rehearsal, backup DB:
+  `pg_dump "$DATABASE_URL" --format=custom --file movement-backup.dump`
+- [ ] Restore backup vào DB disposable:
+  `createdb movement_restore`
+  `pg_restore --dbname movement_restore --clean --if-exists movement-backup.dump`
+- [ ] Start temporary API instance trỏ vào restored DB.
+- [ ] Chạy export:
+  `pwsh -File be/scripts/export-summary-report.ps1 -ApiBaseUrl http://localhost:3000 -Username admin -Password admin123`
+- [ ] Mở hoặc kiểm tra file `.xlsx` không rỗng.
+- [ ] Mark P1 export/recovery là `[x]` sau khi restore + export đều pass.
+
+Acceptance:
+
+- Restore tạo DB đọc được bởi API.
+- `GET /api/admin/dashboard` thành công trên restored DB.
+- Export summary `.xlsx` tạo file non-empty.
+
+### 5. Maintenance sau event-readiness
+
+- [ ] Chạy `npm audit` trong `be/`, ghi rõ 2 high-severity findings vào `docs/analysis/BACKEND_AUDIT.md`.
+- [ ] Đánh giá upgrade/fix dependency có phá build/test không; chỉ apply khi test xanh.
+- [ ] Lên việc riêng cho Prisma 7: chuyển `package.json#prisma` sang `prisma.config.ts`.
