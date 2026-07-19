@@ -470,8 +470,8 @@
     "semantic_hash": ""
   },
   "be/README.md": {
-    "mtime": 1784431880.3910475,
-    "ast_hash": "31901fc92105c44f451e920e8049f435",
+    "mtime": 1784432219.7843094,
+    "ast_hash": "c313aa55b8a1f61ae2c80ab35a23ec18",
     "semantic_hash": ""
   },
   "be/prisma/certs/README.md": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784432118.141355,
-    "ast_hash": "1d0fe8aa6d3f27f27f55c4fe64c7249a",
+    "mtime": 1784432234.5913277,
+    "ast_hash": "1cbb826fb3cfbd72693546880f641a1f",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -605,8 +605,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784432128.3804827,
-    "ast_hash": "eba1c2745af4d872b5ec0014245f9ee5",
+    "mtime": 1784432228.5133083,
+    "ast_hash": "f6d03ac905c88d1b432ac815d1385711",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -627,6 +627,11 @@
   "be/src/modules/player/player.service.spec.ts": {
     "mtime": 1784432001.6105065,
     "ast_hash": "fea23c0046cd0714b49ba662c66d6eae",
+    "semantic_hash": ""
+  },
+  "be/scripts/smoke-two-team.ps1": {
+    "mtime": 1784432208.3472068,
+    "ast_hash": "77689b6b6928a80935aec0520b359585",
     "semantic_hash": ""
   }
 }

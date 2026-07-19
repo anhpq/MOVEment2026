@@ -13,6 +13,7 @@ Last updated: 2026-07-19
 - `npm run prisma:deploy` applied the initial migration against local PostgreSQL at `127.0.0.1:55432/movement`.
 - `npm run seed` completed and created 25 team accounts (`team01/team01` through `team25/team25`), 10 stations, and 20 station QR tokens.
 - Team login smoke test passed for `team01/team01`, and `GET /api/auth/me` returned a `TEAM` session for `team01`.
+- Two-team API smoke script added at `be/scripts/smoke-two-team.ps1`; run it against a freshly seeded or disposable rehearsal database because it mutates station progress and scores.
 - Frontend build passed after QR login support was added. Frontend lint passes with one existing `StationMap.tsx` hook dependency warning.
 
 ## Backend work still required
@@ -24,7 +25,7 @@ Last updated: 2026-07-19
 ### P1 event-readiness checks
 
 - [x] Validate migration and seed against a clean database.
-- [ ] Run an end-to-end smoke test using two simultaneous team sessions.
+- [ ] Run an end-to-end smoke test using two simultaneous team sessions. Script is available but still needs to be executed against a running API and disposable seeded database.
 - [x] Add `prisma migrate deploy` to the deployment path.
 - [ ] Validate production CORS and secrets in the deployed environment.
 - [ ] Rehearse report export and database recovery.

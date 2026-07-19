@@ -26,7 +26,7 @@
 ## P1 - Event readiness
 
 - [x] Migration + seed trên database trống.
-- [ ] Smoke test toàn bộ flow bằng hai team session.
+- [ ] Smoke test toàn bộ flow bằng hai team session (script `be/scripts/smoke-two-team.ps1` đã sẵn sàng, cần chạy trên API + DB rehearsal).
 - [x] Thêm `prisma migrate deploy` vào deployment.
 - [ ] Cấu hình CORS và secret production trên môi trường deploy.
 - [ ] Rehearsal export report và recovery database.

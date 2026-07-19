@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-07-19)
 
 ## Corpus Check
-- 114 files · ~143,266 words
+- 115 files · ~143,680 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 886 nodes · 1572 edges · 66 communities (55 shown, 11 thin omitted)
+- 891 nodes · 1578 edges · 62 communities (52 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a86aa1d0`
+- Built from commit: `60e681e8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -70,13 +70,9 @@
 - xlsx-report.ts
 - TEAM_LOGIN_DATA.md
 - QrTokenInput.tsx
-- EventConfigService
 - xlsx-report.ts
 - init.sql
 - migration.sql
-- validate-environment.ts
-- UpdateEventConfigDto
-- LeaderboardController
 
 ## God Nodes (most connected - your core abstractions)
 1. `AuthContext` - 33 edges
@@ -105,19 +101,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (66 total, 11 thin omitted)
+## Communities (62 total, 10 thin omitted)
 
 ### Community 0 - "AuthContext"
 Cohesion: 0.06
-Nodes (47): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, Roles() (+39 more)
+Nodes (48): ArrayMinSize, AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth (+40 more)
 
 ### Community 1 - "AdminService"
-Cohesion: 0.11
-Nodes (3): Get, AdminService, Injectable
+Cohesion: 0.08
+Nodes (15): Get, AdminService, Injectable, cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx() (+7 more)
 
 ### Community 2 - "dependencies"
 Cohesion: 0.04
 Nodes (48): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+40 more)
+
+### Community 3 - "PlayerService"
+Cohesion: 0.17
+Nodes (14): AuthController, mockAuthService, Body, Controller, Post, AuthService, mockJwtService, mockPrisma (+6 more)
 
 ### Community 4 - "dependencies"
 Cohesion: 0.06
@@ -152,12 +152,12 @@ Cohesion: 0.11
 Nodes (37): apiGet(), apiPost(), apiRequest(), AuthMeResponse, checkInStation(), checkOutStation(), getAccessToken(), getPlayerDashboard() (+29 more)
 
 ### Community 12 - "PrismaService"
-Cohesion: 0.18
-Nodes (13): AdminModule, Module, AuthModule, Module, EventConfigModule, Module, FinalModule, Module (+5 more)
+Cohesion: 0.06
+Nodes (37): AppModule, Module, ActivityLogService, Injectable, Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment (+29 more)
 
 ### Community 13 - "FinalService"
-Cohesion: 0.09
-Nodes (20): ArrayMinSize, SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto, FinalController (+12 more)
+Cohesion: 0.19
+Nodes (6): FinalService, challenge, mockActivityLog, mockPrisma, mockTx, Injectable
 
 ### Community 14 - "compilerOptions"
 Cohesion: 0.10
@@ -184,8 +184,8 @@ Cohesion: 0.08
 Nodes (24): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+16 more)
 
 ### Community 21 - "UpdateFinalConfigDto"
-Cohesion: 0.20
-Nodes (8): Auth Smoke Test, Main APIs, MOVEment 2026 Backend, Production Deploy Notes, Seed Accounts, Setup, MOVEment 2026, Quyền và đăng nhập
+Cohesion: 0.18
+Nodes (9): Auth Smoke Test, Main APIs, MOVEment 2026 Backend, Production Deploy Notes, Seed Accounts, Setup, Two-Team Smoke Test, MOVEment 2026 (+1 more)
 
 ### Community 22 - "AppFrame.tsx"
 Cohesion: 0.23
@@ -272,8 +272,8 @@ Cohesion: 0.50
 Nodes (3): Cost-aware request routing, graphify, Project memory docs
 
 ### Community 55 - "auth.controller.ts"
-Cohesion: 0.19
-Nodes (4): ActivityLogService, Injectable, PrismaService, Injectable
+Cohesion: 0.83
+Nodes (3): Complete-Station(), Invoke-JsonRequest(), Login-Team()
 
 ### Community 56 - "xlsx-report.ts"
 Cohesion: 0.33
@@ -283,13 +283,9 @@ Nodes (5): Context, Output, Prompt 08 - Implementation Sync, Rules, Task
 Cohesion: 0.40
 Nodes (5): BarcodeDetectorConstructor, BarcodeDetectorLike, getBarcodeDetector(), QrTokenInput(), QrTokenInputProps
 
-### Community 59 - "EventConfigService"
-Cohesion: 0.23
-Nodes (5): EventConfigController, Controller, Get, EventConfigService, Injectable
-
 ### Community 60 - "xlsx-report.ts"
-Cohesion: 0.10
-Nodes (32): ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, TeamSubmitScoreDto, IsInt, IsOptional, IsString, Min (+24 more)
+Cohesion: 0.07
+Nodes (23): ForceProgressStatusDto, SubmitScoreDto, TeamSubmitScoreDto, IsInt, IsOptional, IsString, Min, MinLength (+15 more)
 
 ### Community 61 - "init.sql"
 Cohesion: 0.32
@@ -299,37 +295,25 @@ Nodes (12): "activity_logs", "event_config", "final_challenges", "final_submissi
 Cohesion: 0.32
 Nodes (12): "activity_logs", "event_config", "final_challenges", "final_submissions", "games", "qr_tokens", "score_events", "stations" (+4 more)
 
-### Community 63 - "validate-environment.ts"
-Cohesion: 0.31
-Nodes (8): AppModule, Module, Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment, validateEnvironment(), bootstrap()
-
-### Community 64 - "UpdateEventConfigDto"
-Cohesion: 0.25
-Nodes (6): IsInt, IsOptional, IsString, Min, UpdateEventConfigDto, Matches
-
-### Community 66 - "LeaderboardController"
-Cohesion: 0.33
-Nodes (3): LeaderboardController, Controller, Get
-
 ## Knowledge Gaps
-- **294 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+289 more)
+- **295 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+290 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AuthContext` connect `AuthContext` to `xlsx-report.ts`, `FinalService`?**
+- **Why does `AuthContext` connect `AuthContext` to `PlayerService`, `xlsx-report.ts`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `AdminService` connect `AdminService` to `AuthContext`, `UpdateEventConfigDto`, `PrismaService`, `auth.controller.ts`, `xlsx-report.ts`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `auth.controller.ts` to `AuthContext`, `AdminService`, `UpdateEventConfigDto`, `PlayerService`, `PrismaService`, `FinalService`, `xlsx-report.ts`?**
+- **Why does `AdminService` connect `AdminService` to `AuthContext`, `PrismaService`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `PrismaService` connect `PrismaService` to `AuthContext`, `AdminService`, `PlayerService`, `FinalService`, `xlsx-report.ts`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `NODE_ENV`, `config` to the rest of the system?**
-  _294 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _295 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.05733482642777156 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05515832482124617 - nodes in this community are weakly interconnected._
 - **Should `AdminService` be split into smaller, more focused modules?**
-  _Cohesion score 0.1103448275862069 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08084163898117387 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._

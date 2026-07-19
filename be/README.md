@@ -105,6 +105,20 @@ Replace `ST002` with any seeded station id.
 
 Both check-in and check-out reject requests without a QR token.
 
+## Two-Team Smoke Test
+
+After applying migrations, running seed, and starting the API, run the two-team
+station flow smoke test from the repo root:
+
+```powershell
+pwsh -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468
+```
+
+The script logs in `team01` and `team02`, completes `ST002` and `ST047` with
+seed QR tokens, submits staff scores with the scoring code, and verifies each
+team dashboard reflects the points. Run it against a freshly seeded or disposable
+rehearsal database because it intentionally mutates station progress and scores.
+
 ## Production Deploy Notes
 
 Run database migrations before restarting the API:
