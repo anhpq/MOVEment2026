@@ -11,7 +11,7 @@
 - [x] Admin score/edit/reopen/status override.
 - [x] Leaderboard và activity log.
 - [x] Final auto-scoring và export Excel.
-- [ ] Unit/e2e tests cho auth (Đã viết unit tests cho AuthService và AuthController), QR, scoring và Final concurrency.
+- [ ] Unit/e2e tests cho auth, QR, scoring và Final concurrency (Đã viết unit tests cho AuthService/AuthController, PlayerService QR + scoring, Final rank award/idempotency).
 - [x] ESLint flat config cho backend.
 - [x] Production config phải fail-fast nếu secret còn mặc định.
 

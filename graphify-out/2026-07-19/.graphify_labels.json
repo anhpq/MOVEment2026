@@ -63,7 +63,6 @@
   "61": "init.sql",
   "62": "migration.sql",
   "63": "validate-environment.ts",
-  "64": "UpdateEventConfigDto",
   "65": "player.service.ts",
   "66": "LeaderboardController"
 }

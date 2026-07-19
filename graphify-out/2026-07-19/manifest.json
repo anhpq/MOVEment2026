@@ -80,9 +80,9 @@
     "semantic_hash": "8a2a8d57d112dec07fc9952b15762231"
   },
   "be/src/main.ts": {
-    "mtime": 1784201877.957106,
-    "ast_hash": "29e4ce77a46108b38f41646cf6a32976",
-    "semantic_hash": "29e4ce77a46108b38f41646cf6a32976"
+    "mtime": 1784431860.3121803,
+    "ast_hash": "4dcd9a7f9419cd4699d79b3cf25ce39f",
+    "semantic_hash": ""
   },
   "be/src/modules/admin/admin.controller.ts": {
     "mtime": 1784201877.958155,
@@ -395,13 +395,13 @@
     "semantic_hash": "6b7c1e6a59ec08c1fa65aac6a44a4806"
   },
   "be/src/config/validate-environment.spec.ts": {
-    "mtime": 1784430271.457991,
-    "ast_hash": "f0fc6fe0d9ca471a0e70f7fa0a71fe19",
+    "mtime": 1784431867.1760607,
+    "ast_hash": "e8922a2a17f56e171d672d5bab1a440f",
     "semantic_hash": ""
   },
   "be/src/config/validate-environment.ts": {
-    "mtime": 1784430271.4585311,
-    "ast_hash": "7c08cd383c7a2227ba45b0fa2bc045dc",
+    "mtime": 1784431853.8331246,
+    "ast_hash": "b39f1c9700f4c036a162481af823990e",
     "semantic_hash": ""
   },
   ".codex/skills/graphify/SKILL.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1784201877.608451,
-    "ast_hash": "b38ef350e396fe420aff29c32b797db9",
+    "mtime": 1784431872.5374932,
+    "ast_hash": "f8de0a4cad3d7f9a2ae3145d0e30b5cf",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
@@ -470,8 +470,8 @@
     "semantic_hash": ""
   },
   "be/README.md": {
-    "mtime": 1784201877.6799142,
-    "ast_hash": "b4b00de52382d281706e1677fbfdffde",
+    "mtime": 1784431880.3910475,
+    "ast_hash": "31901fc92105c44f451e920e8049f435",
     "semantic_hash": ""
   },
   "be/prisma/certs/README.md": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784430788.707335,
-    "ast_hash": "ca28beb49ea6a36ef838678181b84013",
+    "mtime": 1784431886.5364487,
+    "ast_hash": "1db5cefb5ac51cfd162a0dc3cd9d1b4d",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -605,8 +605,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784430271.4596665,
-    "ast_hash": "a6da390d223db5e421a5f3002389944d",
+    "mtime": 1784431894.951377,
+    "ast_hash": "bb0cd03b2d52847e3cab6963db32fcc3",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
