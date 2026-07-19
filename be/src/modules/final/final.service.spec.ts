@@ -1,5 +1,6 @@
 import { FinalService } from './final.service'
 import * as bcrypt from 'bcryptjs'
+import { Prisma } from '@prisma/client'
 
 const challenge = {
   id: 1,
@@ -106,5 +107,49 @@ describe('FinalService', () => {
     expect(mockTx.scoreEvent.create).not.toHaveBeenCalled()
     expect(mockTx.team.update).not.toHaveBeenCalled()
     expect(result).toEqual(previousSubmission)
+  })
+
+  it('retries a serializable transaction conflict before awarding final points', async () => {
+    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
+    const conflict = new Prisma.PrismaClientKnownRequestError(
+      'Transaction conflict',
+      { code: 'P2034', clientVersion: 'test' },
+    )
+    mockPrisma.$transaction
+      .mockRejectedValueOnce(conflict)
+      .mockImplementationOnce((callback: (tx: typeof mockTx) => unknown) =>
+        callback(mockTx),
+      )
+    mockTx.finalSubmission.findFirst.mockResolvedValue(null)
+    mockTx.finalSubmission.count.mockResolvedValue(1)
+    mockTx.team.findUniqueOrThrow.mockResolvedValue({ totalPoints: 30 })
+    mockTx.scoreEvent.create.mockResolvedValue({ id: 10 })
+    mockTx.finalSubmission.create.mockResolvedValue({
+      id: 8,
+      finalChallengeId: 1,
+      teamId: 5,
+      isCorrect: true,
+      winnerRank: 2,
+      pointsAwarded: 10,
+      submittedAt: new Date(),
+      scoreEventId: 10,
+    })
+
+    const result = await service.submitFinal(5, { answer: 'answer' })
+
+    expect(mockPrisma.$transaction).toHaveBeenCalledTimes(2)
+    expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 10 })
+  })
+
+  it('does not retry non-retryable transaction failures', async () => {
+    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
+    const failure = new Error('database is unavailable')
+    mockPrisma.$transaction.mockRejectedValueOnce(failure)
+
+    await expect(service.submitFinal(5, { answer: 'answer' })).rejects.toThrow(
+      'database is unavailable',
+    )
+    expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1)
+    expect(mockActivityLog.log).not.toHaveBeenCalled()
   })
 })

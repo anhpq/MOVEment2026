@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784431886.5364487,
-    "ast_hash": "1db5cefb5ac51cfd162a0dc3cd9d1b4d",
+    "mtime": 1784432030.746054,
+    "ast_hash": "2d98df8d25c2699c4e7aeb5dfa9b709c",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -605,8 +605,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784431894.951377,
-    "ast_hash": "bb0cd03b2d52847e3cab6963db32fcc3",
+    "mtime": 1784432038.5096939,
+    "ast_hash": "7f5bb9b6bec5a97a5f07f9cdda136b62",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -622,6 +622,11 @@
   "fe/src/features/movement/components/QrTokenInput.tsx": {
     "mtime": 1784430756.3588793,
     "ast_hash": "5c8ccdd1aa0f4f79733269d5690a0a7f",
+    "semantic_hash": ""
+  },
+  "be/src/modules/player/player.service.spec.ts": {
+    "mtime": 1784432001.6105065,
+    "ast_hash": "fea23c0046cd0714b49ba662c66d6eae",
     "semantic_hash": ""
   }
 }

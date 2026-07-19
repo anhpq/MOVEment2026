@@ -5,7 +5,7 @@ Last updated: 2026-07-19
 ## Verification completed
 
 - `npm ci` completed and Prisma Client was generated with `npm run prisma:generate`.
-- `npm test -- --runInBand`: **30 passed**, across auth service/controller, JWT guard, production environment validation, Player QR/scoring flow, and Final scoring/idempotency.
+- `npm test -- --runInBand`: **32 passed**, across auth service/controller, JWT guard, production environment validation, Player QR/scoring flow, and Final scoring/idempotency/retry handling.
 - `npm run build`: **passed**.
 - `npm run lint`: **passed** after adding the backend ESLint flat configuration.
 - Production startup validation now rejects missing or development-default `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, and wildcard `CORS_ORIGIN` when `NODE_ENV=production`.
@@ -19,7 +19,7 @@ Last updated: 2026-07-19
 
 ### P0 remaining work
 
-- [ ] Add remaining automated coverage for Final submission concurrency/transaction retry behavior. Auth, QR check-in/check-out, score confirmation rejection/acceptance, Final rank award, and same-team idempotency are covered.
+- [x] Automated coverage exists for auth, QR check-in/check-out, score confirmation rejection/acceptance, Final rank award, same-team idempotency, and Final transaction retry behavior.
 
 ### P1 event-readiness checks
 
@@ -37,4 +37,4 @@ Last updated: 2026-07-19
 
 ## Next recommended task
 
-Add automated coverage for Final transaction retry/concurrency behavior. After that, run a two-team end-to-end smoke test with real frontend sessions.
+Run a two-team end-to-end smoke test with real frontend sessions, then rehearse report export and database recovery.
