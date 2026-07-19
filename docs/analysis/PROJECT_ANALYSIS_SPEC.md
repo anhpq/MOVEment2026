@@ -16,11 +16,17 @@ MOVEment 2026 là web app trò chơi theo trạm. Team xem bản đồ, quét QR
 1. Team quét QR `CHECK_IN` của đúng trạm.
 2. Backend kiểm tra event time, QR, cooldown và active station.
 3. Team chơi và quét QR `CHECK_OUT`.
-4. Backend ghi `checked_out_at`; progress chưa completed.
-5. Staff nhập điểm trên thiết bị của team và nhập mã xác nhận chấm điểm.
-6. Backend kiểm tra mã, giới hạn điểm và hoàn tất progress trong transaction.
+4. Backend ghi thời gian theo cấu hình station:
+   - `BOTH`: `checked_in_at` là thời điểm quét start, `checked_out_at` là thời điểm quét end, sau đó cần nhập điểm.
+   - `TIME`: `checked_in_at` là thời điểm quét start, `checked_out_at` là thời điểm quét end, backend tự complete với score 0 và cộng duration.
+   - `SCORE`: vẫn yêu cầu QR start/end, nhưng `checked_out_at = checked_in_at` để station không cộng thời lượng.
+5. Progress chưa completed sau check-out.
+6. Staff nhập điểm trên thiết bị của team và nhập mã xác nhận chấm điểm.
+7. Backend kiểm tra mã, giới hạn điểm và hoàn tất progress trong transaction.
 
 QR token là bắt buộc. Không truyền token phải trả validation error.
+
+Mỗi station có `tracking_mode`: `SCORE`, `TIME`, hoặc `BOTH`. Admin chỉnh được mode này trong System Config và backend lưu vào DB. `TIME` không nhận submit score; `SCORE` và `BOTH` nhận score theo flow xác nhận mã.
 
 ## Scoring
 

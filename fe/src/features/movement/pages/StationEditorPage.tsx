@@ -1,8 +1,9 @@
-import {App as AntdApp, Button, Drawer, Form, Input} from "antd";
+import {App as AntdApp, Button, Drawer, Form, Input, Select} from "antd";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {StationFormValues} from "../types";
+import {updateAdminStation} from "../api";
 
 export function StationEditorPage() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export function StationEditorPage() {
   const saveStationDefinition = useMovementStore(
     (state) => state.saveStationDefinition,
   );
+  const session = useMovementStore((state) => state.session);
   const [form] = Form.useForm<StationFormValues>();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -28,11 +30,11 @@ export function StationEditorPage() {
 
   useEffect(() => {
     if (station) {
-      form.setFieldsValue(station);
+      form.setFieldsValue({...station, trackingMode: station.trackingMode ?? "BOTH"});
       return;
     }
 
-    form.setFieldsValue({id: "", name: ""});
+    form.setFieldsValue({id: "", name: "", trackingMode: "BOTH"});
   }, [form, station]);
 
   const handleClose = () => {
@@ -67,7 +69,14 @@ export function StationEditorPage() {
               "The station list for all teams will be synchronized with this change.",
             okText: "Confirm",
             cancelText: "Cancel",
-            onOk: () => {
+            onOk: async () => {
+              if (station && session?.role === "admin") {
+                await updateAdminStation(station.id, {
+                  name: values.name,
+                  description: values.description ?? null,
+                  trackingMode: values.trackingMode,
+                });
+              }
               saveStationDefinition(values, station?.id);
               message.success(
                 isEditing ?
@@ -96,6 +105,24 @@ export function StationEditorPage() {
         </Form.Item>
         <Form.Item label="Description" name="description">
           <Input placeholder="Station description" />
+        </Form.Item>
+        <Form.Item
+          label="Tracking Mode"
+          name="trackingMode"
+          tooltip="Score: no duration; Time: QR start/end record duration; Both: record duration and allow points"
+          rules={[
+            {
+              required: true,
+              message: "Please choose how this station is counted",
+            },
+          ]}>
+          <Select
+            options={[
+              {value: "BOTH", label: "Both time and score"},
+              {value: "SCORE", label: "Score only"},
+              {value: "TIME", label: "Time only"},
+            ]}
+          />
         </Form.Item>
         <Form.Item
           label="Estimated Duration (minutes)"

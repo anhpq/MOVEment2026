@@ -23,6 +23,7 @@ import {
 } from '../../common/dto/score.dto';
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { AdminService } from './admin.service';
+import { UpdateStationDto } from './dto/update-station.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.ADMIN)
@@ -53,6 +54,19 @@ export class AdminController {
   @Get('progress-matrix')
   progressMatrix() {
     return this.adminService.progressMatrix();
+  }
+
+  @Patch('stations/:stationId')
+  updateStation(
+    @CurrentAuth() auth: AuthContext,
+    @Param('stationId') stationId: string,
+    @Body() dto: UpdateStationDto,
+  ) {
+    return this.adminService.updateStation(
+      this.requireAdminId(auth),
+      stationId,
+      dto,
+    );
   }
 
   @Post('progress/:progressId/score')

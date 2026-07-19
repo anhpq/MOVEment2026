@@ -36,6 +36,12 @@ enum ActorType {
   SYSTEM
 }
 
+enum StationTrackingMode {
+  SCORE
+  TIME
+  BOTH
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   username     String   @unique
@@ -92,17 +98,18 @@ model TeamSession {
 }
 
 model Station {
-  id          String   @id
-  name        String
-  description String?
-  mapX        Float    @map("map_x")
-  mapY        Float    @map("map_y")
-  latitude    Decimal? @db.Decimal(10, 7)
-  longitude   Decimal? @db.Decimal(10, 7)
-  isActive    Boolean  @default(true) @map("is_active")
-  sortOrder   Int      @default(0) @map("sort_order")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id           String              @id
+  name         String
+  description  String?
+  mapX         Float               @map("map_x")
+  mapY         Float               @map("map_y")
+  latitude     Decimal?            @db.Decimal(10, 7)
+  longitude    Decimal?            @db.Decimal(10, 7)
+  trackingMode StationTrackingMode @default(BOTH) @map("tracking_mode")
+  isActive     Boolean             @default(true) @map("is_active")
+  sortOrder    Int                 @default(0) @map("sort_order")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
 
   games       Game[]
   progress    TeamStationProgress[]

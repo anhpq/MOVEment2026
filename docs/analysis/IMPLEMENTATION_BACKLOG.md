@@ -6,6 +6,7 @@
 - [x] Một active session cho mỗi team.
 - [x] QR check-in/check-out bắt buộc và phân biệt purpose.
 - [x] Mỗi station có QR check-in và QR check-out riêng, token/fingerprint unique.
+- [x] Mỗi station có tracking mode lưu DB: `SCORE`, `TIME`, hoặc `BOTH`; mode `SCORE` không cộng thời lượng vì check-out time bằng check-in time, mode `TIME` auto-complete ở QR end với score 0.
 - [x] Một active station cho mỗi team.
 - [x] Cancel về `AVAILABLE` với cooldown.
 - [x] Staff nhập điểm trên team session với mã xác nhận.

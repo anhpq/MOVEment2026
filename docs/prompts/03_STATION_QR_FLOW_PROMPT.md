@@ -8,6 +8,10 @@ Bạn là senior business analyst kiêm backend engineer. Hãy phân tích chi t
 - Team scan QR để check in.
 - Mỗi team có 1 QR login riêng, unique, không dùng chung với QR trạm; login team phải giữ rule một active device session cho mỗi team.
 - Mỗi station có 2 QR riêng và unique: QR bắt đầu/check-in và QR kết thúc/check-out.
+- Mỗi station cần cấu hình cách tính kết quả: `SCORE`, `TIME`, hoặc `BOTH`, lưu DB và chỉnh được trong admin UI.
+- Nếu station có tính thời gian và điểm (`BOTH`), QR start/end ghi nhận đúng thời gian quét thực tế rồi tiếp tục flow nhập điểm.
+- Nếu station chỉ tính thời gian (`TIME`), QR end tự complete station với score 0 và cộng duration, không mở flow nhập điểm.
+- Nếu station chỉ tính điểm (`SCORE`), vẫn dùng QR start/end nhưng backend đặt thời gian end bằng thời gian start để không cộng duration.
 - Team có thể cancel nếu chưa hoàn thành.
 - Khi hoàn thành, team scan QR kết thúc.
 - Sau scan QR kết thúc, hiện popup nhập điểm.

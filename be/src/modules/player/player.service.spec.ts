@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException } from '@nestjs/common'
-import { ActorType, ProgressStatus, QrPurpose } from '@prisma/client'
+import { ActorType, ProgressStatus, QrPurpose, StationTrackingMode } from '@prisma/client'
 import * as bcrypt from 'bcryptjs'
 import { PlayerService } from './player.service'
 
@@ -16,6 +16,7 @@ const progress = {
   nextCheckInAllowedAt: null,
   scoreAchieved: 0,
   attemptNo: 0,
+  station: { trackingMode: StationTrackingMode.BOTH },
 }
 
 const mockPrisma = {
@@ -148,6 +149,77 @@ describe('PlayerService station flow', () => {
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'CHECK_OUT' }),
     )
+  })
+
+  it('uses the check-in time as check-out time for score-only stations', async () => {
+    const checkedInAt = new Date('2026-07-19T01:00:00.000Z')
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt,
+      station: { trackingMode: StationTrackingMode.SCORE },
+    }
+    const checkedOut = {
+      ...activeProgress,
+      checkedOutAt: checkedInAt,
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+
+    await expect(
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_OUT' }),
+    ).resolves.toEqual(checkedOut)
+
+    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
+      where: { id: progress.id },
+      data: { checkedOutAt: checkedInAt },
+    })
+  })
+
+  it('auto-completes time-only stations on check-out and increments play time', async () => {
+    const checkedInAt = new Date('2026-07-19T01:00:00.000Z')
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt,
+      station: { trackingMode: StationTrackingMode.TIME },
+    }
+    const completed = {
+      ...activeProgress,
+      status: ProgressStatus.COMPLETED,
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+      completedAt: new Date('2026-07-19T01:10:00.000Z'),
+      scoreAchieved: 0,
+    }
+    const tx = {
+      teamStationProgress: {
+        update: jest.fn().mockResolvedValue(completed),
+      },
+      team: { update: jest.fn() },
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+    mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
+      callback(tx),
+    )
+
+    await expect(
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_OUT' }),
+    ).resolves.toEqual(completed)
+
+    expect(tx.teamStationProgress.update).toHaveBeenCalledWith({
+      where: { id: progress.id },
+      data: expect.objectContaining({
+        status: ProgressStatus.COMPLETED,
+        scoreAchieved: 0,
+        completedAt: expect.any(Date),
+      }),
+    })
+    expect(tx.team.update).toHaveBeenCalledWith({
+      where: { id: 2 },
+      data: {
+        totalPlaySeconds: { increment: expect.any(Number) },
+      },
+    })
   })
 
   it('submits score only after check-out and with the confirmation code', async () => {

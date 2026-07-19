@@ -1,8 +1,10 @@
 import {EditOutlined, DeleteOutlined} from "@ant-design/icons";
-import {App as AntdApp, Button, Card, Flex, List, Tabs, Typography} from "antd";
+import {App as AntdApp, Button, Card, Flex, List, Select, Tabs, Typography} from "antd";
 import {useNavigate} from "react-router-dom";
 import {StationsMapPanel} from "../components/StationsMapPanel";
 import {useMovementStore} from "../store";
+import type {StationTrackingMode} from "../types";
+import {updateAdminStation} from "../api";
 
 export function SystemConfigPage() {
   const navigate = useNavigate();
@@ -17,7 +19,32 @@ export function SystemConfigPage() {
   const deleteStationDefinition = useMovementStore(
     (state) => state.deleteStationDefinition,
   );
+  const saveStationDefinition = useMovementStore(
+    (state) => state.saveStationDefinition,
+  );
   const deleteTeam = useMovementStore((state) => state.deleteTeam);
+  const session = useMovementStore((state) => state.session);
+
+  const handleTrackingModeChange = async (
+    station: (typeof stationDefinitions)[number],
+    trackingMode: StationTrackingMode,
+  ) => {
+    if (session?.role === "admin") {
+      await updateAdminStation(station.id, {trackingMode});
+    }
+
+    saveStationDefinition(
+      {
+        id: station.id,
+        name: station.name,
+        description: station.description,
+        durationMinutes: station.durationMinutes ?? 0,
+        trackingMode,
+      },
+      station.id,
+    );
+    message.success("Station tracking mode updated");
+  };
 
   return (
     <Tabs
@@ -50,6 +77,18 @@ export function SystemConfigPage() {
                           <Typography.Text className="muted-copy compact-copy">
                             {station.description}
                           </Typography.Text>
+                          <Select
+                            value={station.trackingMode ?? "BOTH"}
+                            style={{width: 220}}
+                            options={[
+                              {value: "BOTH", label: "Both time and score"},
+                              {value: "SCORE", label: "Score only"},
+                              {value: "TIME", label: "Time only"},
+                            ]}
+                            onChange={(value) =>
+                              void handleTrackingModeChange(station, value)
+                            }
+                          />
                         </Flex>
                         <Flex gap={8} className="full-width">
                           <Button

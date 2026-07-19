@@ -20,6 +20,7 @@
 | QR login | Mỗi team có 1 token QR login riêng dạng `MV26-TEAM-01-LOGIN`; backend lưu bcrypt hash và SHA-256 fingerprint unique, endpoint `/api/auth/team-qr-login` dùng chung rule một active session/team. Frontend vẫn giữ credential payload cũ chỉ để rehearsal fallback. |
 | Test team data | Local seed tạo 25 team tên `Team 01` đến `Team 25`, username/password `team01/team01` đến `team25/team25`, kèm 25 team QR login token unique. |
 | Station QR | Mỗi station có 2 QR riêng biệt: `MV26-STATION-<stationId>-CHECK_IN` và `MV26-STATION-<stationId>-CHECK_OUT`; seed lưu bcrypt hash và SHA-256 fingerprint unique cho từng token. |
+| Station tracking mode | Mỗi station có `tracking_mode` lưu DB với 3 giá trị `SCORE`, `TIME`, `BOTH`. `BOTH` ghi thời gian thật rồi nhập điểm; `TIME` ghi thời gian thật, tự complete score 0 và không nhập điểm; `SCORE` đặt check-out time bằng check-in time để không cộng duration rồi nhập điểm. |
 | Git commits | User cho phép Codex tự tạo local git commit sau khi hoàn tất và verify task, với title rõ ràng và detail dạng bullet. Không tự push/deploy/rewrite history/reset nếu chưa được yêu cầu rõ. |
 
 Các prompt cũ có đề cập passcode hoặc Station Manager chỉ là đầu vào phân tích ban đầu và không được ưu tiên hơn tài liệu này.

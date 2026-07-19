@@ -1,4 +1,5 @@
 import type { Session } from "./types"
+import type { StationTrackingMode } from "./types"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 const SESSION_STORAGE_KEY = 'movement-session'
@@ -66,6 +67,13 @@ async function apiGet<T>(path: string): Promise<T> {
 async function apiPost<T>(path: string, body: unknown): Promise<T> {
   return apiRequest<T>(path, {
     method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
+async function apiPatch<T>(path: string, body: unknown): Promise<T> {
+  return apiRequest<T>(path, {
+    method: 'PATCH',
     body: JSON.stringify(body),
   })
 }
@@ -166,6 +174,7 @@ export type PlayerStationResponse = {
   description: string | null
   mapX: number | null
   mapY: number | null
+  trackingMode: StationTrackingMode
   game: {
     id: string
     title: string
@@ -243,4 +252,17 @@ export async function submitStationScore(
     confirmationCode,
     reason,
   })
+}
+
+export type AdminStationUpdateInput = {
+  name?: string
+  description?: string | null
+  trackingMode?: StationTrackingMode
+}
+
+export async function updateAdminStation(
+  stationId: string,
+  values: AdminStationUpdateInput,
+): Promise<PlayerStationResponse> {
+  return apiPatch<PlayerStationResponse>(`/api/admin/stations/${stationId}`, values)
 }

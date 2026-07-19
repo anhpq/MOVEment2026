@@ -90,12 +90,14 @@ function createNewTeamStation(
   stationId: string,
   name: string,
   durationMinutes = 0,
+  trackingMode: TeamStation["trackingMode"] = "BOTH",
 ): TeamStation {
   return {
     id: `${teamId}-${stationId}`,
     name,
     status: "New",
     durationMinutes,
+    trackingMode,
     score: 0,
     startTime: null,
     endTime: null,
@@ -168,7 +170,13 @@ function upsertStationDefinition(
   if (!hasStation) {
     return [
       ...stations,
-      createNewTeamStation(teamId, values.id, values.name, values.durationMinutes),
+      createNewTeamStation(
+        teamId,
+        values.id,
+        values.name,
+        values.durationMinutes,
+        values.trackingMode,
+      ),
     ];
   }
 
@@ -182,6 +190,7 @@ function upsertStationDefinition(
       name: values.name,
       description: values.description,
       durationMinutes: values.durationMinutes,
+      trackingMode: values.trackingMode,
       stationId: values.id,
       id: `${teamId}-${values.id}`,
     };
@@ -544,6 +553,7 @@ export const useMovementStore = create<MovementStore>((set) => ({
             station.id,
             station.name,
             station.durationMinutes ?? 0,
+            station.trackingMode ?? "BOTH",
           ),
         ),
       };

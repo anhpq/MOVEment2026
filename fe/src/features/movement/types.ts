@@ -1,6 +1,7 @@
 export type Role = "user" | "admin" | "system-admin";
 
 export type StationStatus = "New" | "In Progress" | "Finish";
+export type StationTrackingMode = "SCORE" | "TIME" | "BOTH";
 
 export type Session = {
   username: string;
@@ -36,6 +37,7 @@ export type StationDefinition = {
   longitude?: number | null;
   markerX?: number | null;
   markerY?: number | null;
+  trackingMode?: StationTrackingMode;
 };
 
 export type TeamStation = {
@@ -44,6 +46,7 @@ export type TeamStation = {
   status: StationStatus;
   description?: string | null;
   durationMinutes: number;
+  trackingMode: StationTrackingMode;
   youtubeUrl?: string | null;
   score: number;
   startTime: string | null;
@@ -57,6 +60,7 @@ export type StationFormValues = {
   name: string;
   description?: string | null;
   durationMinutes: number;
+  trackingMode: StationTrackingMode;
 };
 
 export type TeamFormValues = {

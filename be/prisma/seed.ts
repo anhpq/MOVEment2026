@@ -1,5 +1,11 @@
 import 'dotenv/config';
-import { PrismaClient, ProgressStatus, QrPurpose, UserRole } from '@prisma/client';
+import {
+  PrismaClient,
+  ProgressStatus,
+  QrPurpose,
+  StationTrackingMode,
+  UserRole,
+} from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import {
   buildStationQrToken,
@@ -69,6 +75,7 @@ async function main() {
         description: `${name} station`,
         mapX,
         mapY,
+        trackingMode: StationTrackingMode.BOTH,
         sortOrder: index + 1,
       },
       update: { name, mapX, mapY, sortOrder: index + 1 },

@@ -69,6 +69,7 @@ function buildPlayerSeed(
       name: station.name,
       description: station.description ?? station.game?.clueText ?? null,
       durationMinutes: 0,
+      trackingMode: station.trackingMode ?? "BOTH",
       youtubeUrl: station.game?.mediaUrl ?? null,
       markerX: station.mapX,
       markerY: station.mapY,
@@ -80,6 +81,7 @@ function buildPlayerSeed(
         status: mapProgressStatus(station.progress?.status ?? "AVAILABLE"),
         description: station.description ?? station.game?.clueText ?? null,
         durationMinutes: 0,
+        trackingMode: station.trackingMode ?? "BOTH",
         youtubeUrl: station.game?.mediaUrl ?? null,
         score: station.progress?.scoreAchieved ?? station.game?.maxPoints ?? 0,
         startTime: station.progress?.checkedInAt ?? null,
@@ -302,6 +304,12 @@ export function StationDetailPage() {
         onOk={async () => {
           if (session.role !== "user") {
             setIsFinishScannerOpen(false);
+            if (station.trackingMode === "TIME") {
+              finishStation(activeTeamId, station.stationId, 0);
+              message.success("Time-only station completed");
+              navigate("/stations");
+              return;
+            }
             scoreForm.setFieldsValue({score: station.score});
             setIsScoreModalOpen(true);
             return;
@@ -319,6 +327,12 @@ export function StationDetailPage() {
             message.success("Check-out QR accepted");
             setCheckOutQrToken("");
             setIsFinishScannerOpen(false);
+            if (station.trackingMode === "TIME") {
+              message.success("Time-only station completed");
+              navigate("/stations");
+              return;
+            }
+
             scoreForm.setFieldsValue({
               score: station.score,
               confirmationCode: "",

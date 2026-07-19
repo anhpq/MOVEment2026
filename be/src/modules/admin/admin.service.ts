@@ -9,6 +9,7 @@ import {
 import { EventConfigService } from '../event-config/event-config.service';
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { UpdateStationDto } from './dto/update-station.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
 
 @Injectable()
@@ -128,10 +129,37 @@ export class AdminService {
     };
   }
 
+  async updateStation(userId: number, stationId: string, dto: UpdateStationDto) {
+    const station = await this.prisma.station.update({
+      where: { id: stationId },
+      data: {
+        name: dto.name,
+        description: dto.description,
+        trackingMode: dto.trackingMode,
+      },
+    });
+
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'UPDATE_STATION',
+      entityType: 'STATION',
+      entityId: stationId,
+      metadata: {
+        name: dto.name ?? null,
+        description: dto.description ?? null,
+        trackingMode: dto.trackingMode ?? null,
+      },
+    });
+
+    return station;
+  }
+
   async submitScore(userId: number, progressId: number, dto: SubmitScoreDto) {
     const progress = await this.prisma.teamStationProgress.findUniqueOrThrow({
       where: { id: progressId },
-      include: { team: true, game: true },
+      include: { team: true, game: true, station: true },
     });
     if (!progress.checkedOutAt || progress.completedAt) {
       throw new BadRequestException('Progress is not waiting for score');
@@ -495,13 +523,16 @@ export class AdminService {
   ) {
     const progress = await this.prisma.teamStationProgress.findUniqueOrThrow({
       where: { id: progressId },
-      include: { team: true, game: true },
+      include: { team: true, game: true, station: true },
     });
     if (isEdit && progress.status !== ProgressStatus.COMPLETED) {
       throw new BadRequestException('Only completed progress can be edited');
     }
     if (!isEdit && (!progress.checkedOutAt || progress.completedAt)) {
       throw new BadRequestException('Progress is not waiting for score');
+    }
+    if (progress.station.trackingMode === 'TIME') {
+      throw new BadRequestException('Time-only station does not accept score');
     }
     if (score > progress.game.maxPoints) {
       throw new BadRequestException('Score exceeds game max points');
