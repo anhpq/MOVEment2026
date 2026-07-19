@@ -11,6 +11,20 @@ function requiredProductionValue(env: Environment, key: string): string {
   return value
 }
 
+export function parseCorsOrigin(value: string | undefined): string | string[] {
+  const origin = value?.trim()
+  if (!origin) {
+    return '*'
+  }
+
+  const origins = origin
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
+
+  return origins.length <= 1 ? origins[0] ?? '*' : origins
+}
+
 export function validateEnvironment(env: Environment): Environment {
   if (env.NODE_ENV?.toLowerCase() !== 'production') {
     return env
@@ -30,7 +44,10 @@ export function validateEnvironment(env: Environment): Environment {
   if (scoringCode === '2468') {
     throw new Error('SCORING_CODE must not use the development default in production')
   }
-  if (corsOrigin === '*') {
+  const corsOrigins = parseCorsOrigin(corsOrigin)
+  const includesWildcard =
+    corsOrigins === '*' || (Array.isArray(corsOrigins) && corsOrigins.includes('*'))
+  if (includesWildcard) {
     throw new Error('CORS_ORIGIN must not be "*" in production')
   }
 

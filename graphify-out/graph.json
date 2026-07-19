@@ -1419,8 +1419,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_app_module_appmodule",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 63,
+      "community_name": "validate-environment.ts",
       "norm_label": "appmodule"
     },
     {
@@ -1430,8 +1430,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_app_module_ts_module",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 63,
+      "community_name": "validate-environment.ts",
       "norm_label": "module"
     },
     {
@@ -1496,8 +1496,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_tojson",
-      "community": 55,
-      "community_name": "auth.controller.ts",
+      "community": 3,
+      "community_name": "PlayerService",
       "norm_label": ".tojson()"
     },
     {
@@ -1749,8 +1749,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 65,
+      "community_name": "player.service.ts",
       "norm_label": "score.dto.ts"
     },
     {
@@ -1826,8 +1826,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_teamsubmitscoredto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 65,
+      "community_name": "player.service.ts",
       "norm_label": "teamsubmitscoredto"
     },
     {
@@ -1837,8 +1837,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_minlength",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 65,
+      "community_name": "player.service.ts",
       "norm_label": "minlength"
     },
     {
@@ -1930,10 +1930,21 @@
       "norm_label": "requiredproductionvalue()"
     },
     {
-      "label": "validateEnvironment()",
+      "label": "parseCorsOrigin()",
       "file_type": "code",
       "source_file": "be/src/config/validate-environment.ts",
       "source_location": "L14",
+      "_origin": "ast",
+      "id": "be_src_config_validate_environment_parsecorsorigin",
+      "community": 63,
+      "community_name": "validate-environment.ts",
+      "norm_label": "parsecorsorigin()"
+    },
+    {
+      "label": "validateEnvironment()",
+      "file_type": "code",
+      "source_file": "be/src/config/validate-environment.ts",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_validateenvironment",
       "community": 63,
@@ -1947,19 +1958,19 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_main",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 63,
+      "community_name": "validate-environment.ts",
       "norm_label": "main.ts"
     },
     {
       "label": "bootstrap()",
       "file_type": "code",
       "source_file": "be/src/main.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_main_bootstrap",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 63,
+      "community_name": "validate-environment.ts",
       "norm_label": "bootstrap()"
     },
     {
@@ -1980,8 +1991,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "admincontroller"
     },
     {
@@ -1991,8 +2002,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_useguards",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "useguards"
     },
     {
@@ -2002,8 +2013,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_controller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "controller"
     },
     {
@@ -2024,8 +2035,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_param",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "param"
     },
     {
@@ -2035,8 +2046,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_post",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "post"
     },
     {
@@ -2046,8 +2057,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_body",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "body"
     },
     {
@@ -2057,8 +2068,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_patch",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "patch"
     },
     {
@@ -2068,8 +2079,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "res",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "res"
     },
     {
@@ -2112,8 +2123,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamprogress",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".teamprogress()"
     },
     {
@@ -2145,8 +2156,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_submitscore",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".submitscore()"
     },
     {
@@ -2156,8 +2167,8 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_editscore",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".editscore()"
     },
     {
@@ -2167,8 +2178,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_reopen",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".reopen()"
     },
     {
@@ -2178,8 +2189,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_forcestatus",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".forcestatus()"
     },
     {
@@ -2222,8 +2233,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_summaryreport",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".summaryreport()"
     },
     {
@@ -2233,8 +2244,8 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_requireadminid",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".requireadminid()"
     },
     {
@@ -2310,8 +2321,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_constructor",
-      "community": 59,
-      "community_name": "EventConfigService",
+      "community": 55,
+      "community_name": "auth.controller.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -2530,8 +2541,8 @@
       "source_location": "L650",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_toreportcell",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".toreportcell()"
     },
     {
@@ -3113,8 +3124,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_updateeventconfigdto",
-      "community": 64,
-      "community_name": "UpdateEventConfigDto",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": "updateeventconfigdto"
     },
     {
@@ -3124,8 +3135,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isoptional",
-      "community": 64,
-      "community_name": "UpdateEventConfigDto",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": "isoptional"
     },
     {
@@ -3135,8 +3146,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isstring",
-      "community": 64,
-      "community_name": "UpdateEventConfigDto",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": "isstring"
     },
     {
@@ -3146,8 +3157,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "matches",
-      "community": 64,
-      "community_name": "UpdateEventConfigDto",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": "matches"
     },
     {
@@ -3157,8 +3168,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isint",
-      "community": 64,
-      "community_name": "UpdateEventConfigDto",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": "isint"
     },
     {
@@ -3168,8 +3179,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_min",
-      "community": 64,
-      "community_name": "UpdateEventConfigDto",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": "min"
     },
     {
@@ -3311,8 +3322,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_constructor",
-      "community": 59,
-      "community_name": "EventConfigService",
+      "community": 55,
+      "community_name": "auth.controller.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3322,8 +3333,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getconfig",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": ".getconfig()"
     },
     {
@@ -3355,8 +3366,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispasteventend",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 59,
+      "community_name": "EventConfigService",
       "norm_label": ".ispasteventend()"
     },
     {
@@ -3531,8 +3542,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "finalcontroller"
     },
     {
@@ -3542,8 +3553,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_useguards",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "useguards"
     },
     {
@@ -3553,8 +3564,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_controller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "controller"
     },
     {
@@ -3564,8 +3575,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_get",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "get"
     },
     {
@@ -3608,8 +3619,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_constructor",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".constructor()"
     },
     {
@@ -3619,8 +3630,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_getplayerfinal",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".getplayerfinal()"
     },
     {
@@ -3641,8 +3652,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_getfinalconfig",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".getfinalconfig()"
     },
     {
@@ -3652,8 +3663,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_getsubmissions",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".getsubmissions()"
     },
     {
@@ -3674,8 +3685,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_module",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 55,
+      "community_name": "auth.controller.ts",
       "norm_label": "final.module.ts"
     },
     {
@@ -4059,8 +4070,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 65,
+      "community_name": "player.service.ts",
       "norm_label": "player.controller.ts"
     },
     {
@@ -8824,6 +8835,17 @@
       "norm_label": "auth smoke test"
     },
     {
+      "label": "Production Deploy Notes",
+      "file_type": "document",
+      "source_file": "be/README.md",
+      "source_location": "L108",
+      "_origin": "ast",
+      "id": "be_readme_production_deploy_notes",
+      "community": 21,
+      "community_name": "UpdateFinalConfigDto",
+      "norm_label": "production deploy notes"
+    },
+    {
       "label": "README.md",
       "file_type": "document",
       "source_file": "be/prisma/certs/README.md",
@@ -8882,7 +8904,7 @@
       "label": "Backend work still required",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L17",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_work_still_required",
       "community": 17,
@@ -8893,7 +8915,7 @@
       "label": "P0 remaining work",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L19",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p0_remaining_work",
       "community": 17,
@@ -8904,7 +8926,7 @@
       "label": "P1 event-readiness checks",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L23",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p1_event_readiness_checks",
       "community": 17,
@@ -8915,7 +8937,7 @@
       "label": "Maintenance findings",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_maintenance_findings",
       "community": 17,
@@ -8926,7 +8948,7 @@
       "label": "Next recommended task",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L37",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_next_recommended_task",
       "community": 17,
@@ -11529,7 +11551,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "be/src/main.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_main_bootstrap",
@@ -13997,6 +14019,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/config/validate-environment.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_config_validate_environment_spec",
+      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.spec.ts",
@@ -14034,6 +14068,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_config_validate_environment",
+      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/config/validate-environment.ts",
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
@@ -14045,7 +14090,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.ts",
-      "source_location": "L14",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment",
@@ -14053,11 +14098,23 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/main.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_main",
+      "target": "be_src_config_validate_environment",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.ts",
-      "source_location": "L19",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment_validateenvironment",
@@ -14065,10 +14122,46 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/config/validate-environment.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_config_validate_environment_validateenvironment",
+      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/main.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_main",
+      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/main.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_main_bootstrap",
+      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/src/main.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_main",
@@ -27046,6 +27139,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/README.md",
+      "source_location": "L108",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_readme_movement_2026_backend",
+      "target": "be_readme_production_deploy_notes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "be/README.md",
       "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
@@ -27090,7 +27194,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -27101,7 +27205,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -27112,7 +27216,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -27134,7 +27238,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -27145,7 +27249,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -27748,5 +27852,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "38c6e635a2eaa87796bc4694b3c3cd49a113784c"
+  "built_at_commit": "5bfb52eddba347f59985b750d48b8d76ba81e5ed"
 }

@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-07-19)
 
 ## Corpus Check
-- 113 files · ~142,390 words
+- 113 files · ~142,560 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 879 nodes · 1559 edges · 67 communities (56 shown, 11 thin omitted)
+- 881 nodes · 1566 edges · 66 communities (55 shown, 11 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `38c6e635`
+- Built from commit: `5bfb52ed`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -75,7 +75,6 @@
 - init.sql
 - migration.sql
 - validate-environment.ts
-- UpdateEventConfigDto
 - player.service.ts
 - LeaderboardController
 
@@ -96,25 +95,25 @@
   fe/src/features/movement/store.ts → fe/src/features/movement/utils.ts
 - `bootstrap()` --indirect_call--> `AppModule`  [INFERRED]
   be/src/main.ts → be/src/app.module.ts
+- `AdminController` --references--> `Roles()`  [EXTRACTED]
+  be/src/modules/admin/admin.controller.ts → be/src/common/auth/auth.decorators.ts
 - `App()` --calls--> `logout()`  [EXTRACTED]
   fe/src/App.tsx → fe/src/features/movement/api.ts
 - `RankingTableProps` --references--> `Team`  [EXTRACTED]
   fe/src/components/common/RankingTable.tsx → fe/src/types/player.type.ts
-- `getMarkerFill()` --calls--> `getStationStatusColor()`  [EXTRACTED]
-  fe/src/features/movement/components/StationsMapPanel.tsx → fe/src/features/movement/utils.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (67 total, 11 thin omitted)
+## Communities (66 total, 11 thin omitted)
 
 ### Community 0 - "AuthContext"
 Cohesion: 0.06
-Nodes (47): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, Roles() (+39 more)
+Nodes (43): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, Roles() (+35 more)
 
 ### Community 1 - "AdminService"
 Cohesion: 0.08
-Nodes (14): ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, TeamSubmitScoreDto, IsInt, IsOptional, IsString, Min (+6 more)
+Nodes (20): ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, IsInt, IsOptional, IsString, Min, AdminController (+12 more)
 
 ### Community 2 - "dependencies"
 Cohesion: 0.04
@@ -153,12 +152,12 @@ Cohesion: 0.11
 Nodes (37): apiGet(), apiPost(), apiRequest(), AuthMeResponse, checkInStation(), checkOutStation(), getAccessToken(), getPlayerDashboard() (+29 more)
 
 ### Community 12 - "PrismaService"
-Cohesion: 0.15
-Nodes (16): AppModule, Module, bootstrap(), AdminModule, Module, AuthModule, Module, EventConfigModule (+8 more)
+Cohesion: 0.18
+Nodes (13): AdminModule, Module, AuthModule, Module, EventConfigModule, Module, FinalModule, Module (+5 more)
 
 ### Community 13 - "FinalService"
-Cohesion: 0.09
-Nodes (20): ArrayMinSize, SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto, FinalController (+12 more)
+Cohesion: 0.11
+Nodes (16): ArrayMinSize, SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto, FinalService (+8 more)
 
 ### Community 14 - "compilerOptions"
 Cohesion: 0.10
@@ -185,8 +184,8 @@ Cohesion: 0.08
 Nodes (24): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+16 more)
 
 ### Community 21 - "UpdateFinalConfigDto"
-Cohesion: 0.22
-Nodes (7): Auth Smoke Test, Main APIs, MOVEment 2026 Backend, Seed Accounts, Setup, MOVEment 2026, Quyền và đăng nhập
+Cohesion: 0.20
+Nodes (8): Auth Smoke Test, Main APIs, MOVEment 2026 Backend, Production Deploy Notes, Seed Accounts, Setup, MOVEment 2026, Quyền và đăng nhập
 
 ### Community 22 - "AppFrame.tsx"
 Cohesion: 0.23
@@ -273,7 +272,7 @@ Cohesion: 0.50
 Nodes (3): Cost-aware request routing, graphify, Project memory docs
 
 ### Community 55 - "auth.controller.ts"
-Cohesion: 0.23
+Cohesion: 0.22
 Nodes (4): ActivityLogService, Injectable, PrismaService, Injectable
 
 ### Community 56 - "xlsx-report.ts"
@@ -285,11 +284,11 @@ Cohesion: 0.40
 Nodes (5): BarcodeDetectorConstructor, BarcodeDetectorLike, getBarcodeDetector(), QrTokenInput(), QrTokenInputProps
 
 ### Community 59 - "EventConfigService"
-Cohesion: 0.18
-Nodes (5): EventConfigController, Controller, Get, EventConfigService, Injectable
+Cohesion: 0.14
+Nodes (11): IsInt, IsOptional, IsString, Min, UpdateEventConfigDto, EventConfigController, Controller, Get (+3 more)
 
 ### Community 60 - "xlsx-report.ts"
-Cohesion: 0.26
+Cohesion: 0.24
 Nodes (13): cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml(), sanitizeSheetName(), sheetXml() (+5 more)
 
 ### Community 61 - "init.sql"
@@ -301,40 +300,36 @@ Cohesion: 0.32
 Nodes (12): "activity_logs", "event_config", "final_challenges", "final_submissions", "games", "qr_tokens", "score_events", "stations" (+4 more)
 
 ### Community 63 - "validate-environment.ts"
-Cohesion: 0.47
-Nodes (4): Environment, requiredProductionValue(), productionEnvironment, validateEnvironment()
-
-### Community 64 - "UpdateEventConfigDto"
-Cohesion: 0.33
-Nodes (6): IsInt, IsOptional, IsString, Min, UpdateEventConfigDto, Matches
+Cohesion: 0.31
+Nodes (8): AppModule, Module, Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment, validateEnvironment(), bootstrap()
 
 ### Community 65 - "player.service.ts"
-Cohesion: 0.60
-Nodes (4): QrActionDto, SubmitCipherDto, IsString, MinLength
+Cohesion: 0.42
+Nodes (6): TeamSubmitScoreDto, MinLength, QrActionDto, SubmitCipherDto, IsString, MinLength
 
 ### Community 66 - "LeaderboardController"
 Cohesion: 0.33
 Nodes (3): LeaderboardController, Controller, Get
 
 ## Knowledge Gaps
-- **289 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+284 more)
+- **290 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+285 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AuthContext` connect `AuthContext` to `FinalService`?**
+- **Why does `AuthContext` connect `AuthContext` to `player.service.ts`, `AdminService`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `AdminService` connect `AdminService` to `AuthContext`, `EventConfigService`, `PrismaService`, `auth.controller.ts`?**
+- **Why does `AdminService` connect `AdminService` to `AuthContext`, `PrismaService`, `auth.controller.ts`, `EventConfigService`, `xlsx-report.ts`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `auth.controller.ts` to `AuthContext`, `AdminService`, `player.service.ts`, `PlayerService`, `PrismaService`, `FinalService`, `EventConfigService`?**
+- **Why does `PrismaService` connect `auth.controller.ts` to `AuthContext`, `AdminService`, `player.service.ts`, `PlayerService`, `PrismaService`, `FinalService`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `NODE_ENV`, `config` to the rest of the system?**
-  _289 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _290 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.05788149164950812 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.059917920656634746 - nodes in this community are weakly interconnected._
 - **Should `AdminService` be split into smaller, more focused modules?**
-  _Cohesion score 0.07973421926910298 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07617051013277429 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._

@@ -1,4 +1,4 @@
-import { validateEnvironment } from './validate-environment'
+import { parseCorsOrigin, validateEnvironment } from './validate-environment'
 
 const productionEnvironment = {
   NODE_ENV: 'production',
@@ -15,10 +15,17 @@ describe('validateEnvironment', () => {
     )
   })
 
+  it('parses comma-separated CORS origins', () => {
+    expect(
+      parseCorsOrigin('https://movement.example, https://admin.example'),
+    ).toEqual(['https://movement.example', 'https://admin.example'])
+  })
+
   it.each([
     ['JWT_SECRET', 'change-me', 'development default'],
     ['SCORING_CODE', '2468', 'development default'],
     ['CORS_ORIGIN', '*', 'must not be "*"'],
+    ['CORS_ORIGIN', 'https://movement.example, *', 'must not be "*"'],
   ])('rejects an insecure production %s', (key, value, message) => {
     expect(() =>
       validateEnvironment({ ...productionEnvironment, [key]: value }),

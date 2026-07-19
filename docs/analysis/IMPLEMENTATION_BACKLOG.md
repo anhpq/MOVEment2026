@@ -27,6 +27,6 @@
 
 - [x] Migration + seed trên database trống.
 - [ ] Smoke test toàn bộ flow bằng hai team session.
-- [ ] Thêm `prisma migrate deploy` vào deployment.
-- [ ] Cấu hình CORS và secret production.
+- [x] Thêm `prisma migrate deploy` vào deployment.
+- [ ] Cấu hình CORS và secret production trên môi trường deploy.
 - [ ] Rehearsal export report và recovery database.

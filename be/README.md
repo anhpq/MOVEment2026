@@ -104,3 +104,22 @@ QR seed token format:
 Replace `ST002` with any seeded station id.
 
 Both check-in and check-out reject requests without a QR token.
+
+## Production Deploy Notes
+
+Run database migrations before restarting the API:
+
+```bash
+npm run prisma:deploy
+```
+
+`be/deploy/deploy.sh` and the backend GitHub Actions SSH deploy template both
+run this step after `npm run build` and before restarting the process manager.
+
+Production must set non-development values for `DATABASE_URL`, `JWT_SECRET`,
+`SCORING_CODE`, and `CORS_ORIGIN`. `CORS_ORIGIN` may be one frontend origin or a
+comma-separated list, for example:
+
+```text
+CORS_ORIGIN=https://movement.example,https://admin.movement.example
+```

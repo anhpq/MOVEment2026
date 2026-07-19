@@ -9,6 +9,7 @@ Last updated: 2026-07-19
 - `npm run build`: **passed**.
 - `npm run lint`: **passed** after adding the backend ESLint flat configuration.
 - Production startup validation now rejects missing or development-default `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, and wildcard `CORS_ORIGIN` when `NODE_ENV=production`.
+- Runtime CORS now accepts a comma-separated `CORS_ORIGIN` list while production validation rejects wildcard origins, including wildcard entries inside a list.
 - `npm run prisma:deploy` applied the initial migration against local PostgreSQL at `127.0.0.1:55432/movement`.
 - `npm run seed` completed and created 25 team accounts (`team01/team01` through `team25/team25`), 10 stations, and 20 station QR tokens.
 - Team login smoke test passed for `team01/team01`, and `GET /api/auth/me` returned a `TEAM` session for `team01`.
@@ -24,7 +25,7 @@ Last updated: 2026-07-19
 
 - [x] Validate migration and seed against a clean database.
 - [ ] Run an end-to-end smoke test using two simultaneous team sessions.
-- [ ] Add `prisma migrate deploy` to the deployment path.
+- [x] Add `prisma migrate deploy` to the deployment path.
 - [ ] Validate production CORS and secrets in the deployed environment.
 - [ ] Rehearse report export and database recovery.
 
