@@ -135,3 +135,102 @@ export async function getMe(): Promise<AuthMeResponse> {
 export async function logout(): Promise<{ success: boolean }> {
   return apiPost('/api/auth/logout', {})
 }
+
+export type PlayerDashboardResponse = {
+  team: {
+    id: number
+    name: string
+    username?: string
+    totalPoints: number
+    totalPlaySeconds: number
+    rank: number | null
+    color?: string | null
+  }
+  completedStations: number
+  serverNow: string
+}
+
+export type PlayerStationResponse = {
+  id: string
+  name: string
+  description: string | null
+  mapX: number | null
+  mapY: number | null
+  game: {
+    id: string
+    title: string
+    type: string
+    difficulty: number
+    maxPoints: number
+    clueText: string | null
+    mediaUrl: string | null
+  } | null
+  progress: PlayerProgressResponse | null
+}
+
+export type PlayerProgressResponse = {
+  id: number
+  teamId: number
+  stationId: string
+  status: 'LOCKED' | 'AVAILABLE' | 'CHECKED_IN' | 'PLAYING' | 'COMPLETED'
+  checkedInAt: string | null
+  checkedOutAt: string | null
+  completedAt: string | null
+  cancelledAt: string | null
+  nextCheckInAllowedAt: string | null
+  scoreAchieved: number
+  attemptNo: number
+  game?: PlayerStationResponse['game']
+}
+
+export type LeaderboardEntryResponse = {
+  rank: number
+  teamId: number
+  teamName: string
+  totalPoints: number
+  completedStations: number
+  totalPlaySeconds: number
+}
+
+export async function getPlayerDashboard(): Promise<PlayerDashboardResponse> {
+  return apiGet<PlayerDashboardResponse>('/api/player/me')
+}
+
+export async function getPlayerStations(): Promise<PlayerStationResponse[]> {
+  return apiGet<PlayerStationResponse[]>('/api/player/stations')
+}
+
+export async function getPlayerProgress(): Promise<PlayerProgressResponse[]> {
+  return apiGet<PlayerProgressResponse[]>('/api/player/progress')
+}
+
+export async function checkInStation(
+  stationId: string,
+  qrToken: string,
+): Promise<PlayerProgressResponse> {
+  return apiPost<PlayerProgressResponse>(`/api/player/stations/${stationId}/check-in`, {
+    qrToken,
+  })
+}
+
+export async function checkOutStation(
+  stationId: string,
+  qrToken: string,
+): Promise<PlayerProgressResponse> {
+  return apiPost<PlayerProgressResponse>(`/api/player/stations/${stationId}/check-out`, {
+    qrToken,
+  })
+}
+
+export async function submitStationScore(
+  stationId: string,
+  score: number,
+  confirmationCode: string,
+  reason?: string,
+): Promise<PlayerProgressResponse> {
+  return apiPost<PlayerProgressResponse>(`/api/player/stations/${stationId}/score`, {
+    score,
+    confirmationCode,
+    reason,
+  })
+}

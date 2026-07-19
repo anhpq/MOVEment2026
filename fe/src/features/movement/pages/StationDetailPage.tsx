@@ -13,6 +13,7 @@ import {
   Empty,
   Flex,
   Form,
+  Input,
   InputNumber,
   Modal,
   Space,
@@ -22,10 +23,73 @@ import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {formatDateTime, formatDurationFromMs} from "../utils";
+import {
+  checkOutStation,
+  getPlayerDashboard,
+  getPlayerProgress,
+  getPlayerStations,
+  submitStationScore,
+  type PlayerProgressResponse,
+  type PlayerStationResponse,
+} from "../api";
+import {QrTokenInput} from "../components/QrTokenInput";
 
 type ScoreFormValues = {
   score: number;
+  confirmationCode: string;
+  reason?: string;
 };
+
+function mapProgressStatus(status: PlayerProgressResponse["status"]) {
+  if (status === "COMPLETED") return "Finish" as const;
+  if (status === "PLAYING" || status === "CHECKED_IN") return "In Progress" as const;
+  return "New" as const;
+}
+
+function buildPlayerSeed(
+  stations: PlayerStationResponse[],
+  dashboardTeam: Awaited<ReturnType<typeof getPlayerDashboard>>["team"],
+) {
+  const teamId = String(dashboardTeam.id);
+  return {
+    activeTeamId: teamId,
+    teams: [
+      {
+        id: teamId,
+        name: dashboardTeam.name,
+        username: dashboardTeam.username ?? `team${dashboardTeam.id}`,
+        password: "",
+        score: dashboardTeam.totalPoints,
+        finish: 0,
+        totalTimeMinutes: Math.round(dashboardTeam.totalPlaySeconds / 60),
+      },
+    ],
+    stationDefinitions: stations.map((station) => ({
+      id: station.id,
+      name: station.name,
+      description: station.description ?? station.game?.clueText ?? null,
+      durationMinutes: 0,
+      youtubeUrl: station.game?.mediaUrl ?? null,
+      markerX: station.mapX,
+      markerY: station.mapY,
+    })),
+    teamStations: {
+      [teamId]: stations.map((station) => ({
+        id: `${teamId}-${station.id}`,
+        name: station.name,
+        status: mapProgressStatus(station.progress?.status ?? "AVAILABLE"),
+        description: station.description ?? station.game?.clueText ?? null,
+        durationMinutes: 0,
+        youtubeUrl: station.game?.mediaUrl ?? null,
+        score: station.progress?.scoreAchieved ?? station.game?.maxPoints ?? 0,
+        startTime: station.progress?.checkedInAt ?? null,
+        endTime: station.progress?.completedAt ?? station.progress?.checkedOutAt ?? null,
+        teamId,
+        stationId: station.id,
+      })),
+    },
+  };
+}
 
 export function StationDetailPage() {
   const navigate = useNavigate();
@@ -37,11 +101,15 @@ export function StationDetailPage() {
   const teamStations = useMovementStore((state) => state.teamStations);
   const finishStation = useMovementStore((state) => state.finishStation);
   const resetStation = useMovementStore((state) => state.resetStation);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [adminForm] = Form.useForm<ScoreFormValues>();
   const [scoreForm] = Form.useForm<ScoreFormValues>();
   const [clockTick, setClockTick] = useState(() => Date.now());
   const [isFinishScannerOpen, setIsFinishScannerOpen] = useState(false);
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
+  const [checkOutQrToken, setCheckOutQrToken] = useState("");
+  const [isSubmittingCheckOut, setIsSubmittingCheckOut] = useState(false);
+  const [isSubmittingScore, setIsSubmittingScore] = useState(false);
 
   const team = teams.find((item) => item.id === activeTeamId);
   const station = (teamStations[activeTeamId] ?? []).find(
@@ -92,6 +160,24 @@ export function StationDetailPage() {
       return;
     }
     window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const refreshPlayerData = async () => {
+    const [dashboard, stations, progress] = await Promise.all([
+      getPlayerDashboard(),
+      getPlayerStations(),
+      getPlayerProgress(),
+    ]);
+    const progressByStation = new Map(progress.map((item) => [item.stationId, item]));
+    loadDatabase(
+      buildPlayerSeed(
+        stations.map((item) => ({
+          ...item,
+          progress: progressByStation.get(item.id) ?? item.progress,
+        })),
+        dashboard.team,
+      ),
+    );
   };
 
   return (
@@ -209,27 +295,57 @@ export function StationDetailPage() {
         centered
         title="Scan QR to Complete Station"
         open={isFinishScannerOpen}
-        onCancel={() => setIsFinishScannerOpen(false)}
-        onOk={() => {
+        onCancel={() => {
+          setCheckOutQrToken("");
           setIsFinishScannerOpen(false);
-          scoreForm.setFieldsValue({score: station.score});
-          setIsScoreModalOpen(true);
         }}
-        okText="Scan QR code successfully"
-        cancelText="Close">
-        <Alert
-          type="info"
-          showIcon
-          description={
-            <Flex vertical gap={4}>
-              <Typography.Text strong>Camera mobile simulation</Typography.Text>
-              <Typography.Text>
-                After a successful scan, the app will prompt for score input
-                before closing the game session.
-              </Typography.Text>
-            </Flex>
+        onOk={async () => {
+          if (session.role !== "user") {
+            setIsFinishScannerOpen(false);
+            scoreForm.setFieldsValue({score: station.score});
+            setIsScoreModalOpen(true);
+            return;
           }
-        />
+
+          if (!checkOutQrToken.trim()) {
+            message.warning("Please enter or scan the check-out QR token");
+            return;
+          }
+
+          setIsSubmittingCheckOut(true);
+          try {
+            await checkOutStation(station.stationId, checkOutQrToken.trim());
+            await refreshPlayerData();
+            message.success("Check-out QR accepted");
+            setCheckOutQrToken("");
+            setIsFinishScannerOpen(false);
+            scoreForm.setFieldsValue({
+              score: station.score,
+              confirmationCode: "",
+              reason: "",
+            });
+            setIsScoreModalOpen(true);
+          } catch (error: unknown) {
+            message.error(error instanceof Error ? error.message : "Check-out failed");
+          } finally {
+            setIsSubmittingCheckOut(false);
+          }
+        }}
+        confirmLoading={isSubmittingCheckOut}
+        okText="Submit check-out QR"
+        cancelText="Close">
+        <Flex vertical gap={12}>
+          <QrTokenInput
+            value={checkOutQrToken}
+            placeholder="Check-out QR token"
+            onChange={setCheckOutQrToken}
+          />
+          <Alert
+            type="info"
+            showIcon
+            description="After a valid check-out QR, staff can enter score and confirmation code on this team device."
+          />
+        </Flex>
       </Modal>
 
       <Modal
@@ -246,14 +362,37 @@ export function StationDetailPage() {
               centered: true,
               title: "Confirm Station Completion",
               content:
-                "The score will be saved and the endTime will be updated according to the successful scan time.",
+                "The score will be submitted with the staff confirmation code.",
               okText: "Confirm",
               cancelText: "Cancel",
-              onOk: () => {
-                finishStation(activeTeamId, station.stationId, values.score);
-                message.success("Station completed successfully");
-                setIsScoreModalOpen(false);
-                navigate("/stations");
+              onOk: async () => {
+                if (session.role !== "user") {
+                  finishStation(activeTeamId, station.stationId, values.score);
+                  message.success("Station completed successfully");
+                  setIsScoreModalOpen(false);
+                  navigate("/stations");
+                  return;
+                }
+
+                setIsSubmittingScore(true);
+                try {
+                  await submitStationScore(
+                    station.stationId,
+                    values.score,
+                    values.confirmationCode,
+                    values.reason,
+                  );
+                  await refreshPlayerData();
+                  message.success("Station completed successfully");
+                  setIsScoreModalOpen(false);
+                  navigate("/stations");
+                } catch (error: unknown) {
+                  message.error(
+                    error instanceof Error ? error.message : "Score submission failed",
+                  );
+                } finally {
+                  setIsSubmittingScore(false);
+                }
               },
             });
           }}>
@@ -264,7 +403,16 @@ export function StationDetailPage() {
             rules={[{required: true}]}>
             <InputNumber min={0} max={1000} className="full-width" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" block>
+          <Form.Item
+            label="Confirmation Code"
+            name="confirmationCode"
+            rules={[{required: session.role === "user"}]}>
+            <Input.Password placeholder="Staff confirmation code" />
+          </Form.Item>
+          <Form.Item label="Reason" name="reason">
+            <Input.TextArea rows={2} placeholder="Optional note" />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" block loading={isSubmittingScore}>
             Save Score
           </Button>
         </Form>

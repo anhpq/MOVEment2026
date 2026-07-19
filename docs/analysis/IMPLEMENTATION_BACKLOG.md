@@ -17,10 +17,10 @@
 
 ## P0 - Frontend integration
 
-- [ ] Thay dữ liệu dummy bằng API client thật.
+- [x] Thay dữ liệu dummy bằng API client thật cho màn player map/detail.
 - [x] Login, lưu JWT và duy trì session 1 ngày.
-- [ ] QR scanner thật cho check-in/check-out.
-- [ ] Form nhập điểm yêu cầu mã xác nhận sau check-out.
+- [x] QR scanner thật cho check-in/check-out qua camera `BarcodeDetector`, có fallback nhập token thủ công.
+- [x] Form nhập điểm yêu cầu mã xác nhận sau check-out.
 - [x] Sửa production build trên Windows.
 
 ## P1 - Event readiness

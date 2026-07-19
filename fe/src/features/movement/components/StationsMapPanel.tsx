@@ -32,6 +32,15 @@ import {
 } from "../utils";
 import "./StationsMapPanel.css";
 import {ReloadOutlined, YoutubeOutlined} from "@ant-design/icons";
+import {
+  checkInStation,
+  getPlayerDashboard,
+  getPlayerProgress,
+  getPlayerStations,
+  type PlayerProgressResponse,
+  type PlayerStationResponse,
+} from "../api";
+import {QrTokenInput} from "./QrTokenInput";
 
 type StationsMapPanelProps = Readonly<{
   editable?: boolean;
@@ -139,6 +148,57 @@ function buildFallbackPositions(stations: StationDefinition[]) {
   );
 }
 
+function mapProgressStatus(status: PlayerProgressResponse["status"]): TeamStation["status"] {
+  if (status === "COMPLETED") return "Finish";
+  if (status === "PLAYING" || status === "CHECKED_IN") return "In Progress";
+  return "New";
+}
+
+function buildPlayerSeed(
+  stations: PlayerStationResponse[],
+  dashboardTeam: Awaited<ReturnType<typeof getPlayerDashboard>>["team"],
+) {
+  const teamId = String(dashboardTeam.id);
+  return {
+    activeTeamId: teamId,
+    teams: [
+      {
+        id: teamId,
+        name: dashboardTeam.name,
+        username: dashboardTeam.username ?? `team${dashboardTeam.id}`,
+        password: "",
+        score: dashboardTeam.totalPoints,
+        finish: 0,
+        totalTimeMinutes: Math.round(dashboardTeam.totalPlaySeconds / 60),
+      },
+    ],
+    stationDefinitions: stations.map((station) => ({
+      id: station.id,
+      name: station.name,
+      description: station.description ?? station.game?.clueText ?? null,
+      durationMinutes: 0,
+      youtubeUrl: station.game?.mediaUrl ?? null,
+      markerX: station.mapX,
+      markerY: station.mapY,
+    })),
+    teamStations: {
+      [teamId]: stations.map((station) => ({
+        id: `${teamId}-${station.id}`,
+        name: station.name,
+        status: mapProgressStatus(station.progress?.status ?? "AVAILABLE"),
+        description: station.description ?? station.game?.clueText ?? null,
+        durationMinutes: 0,
+        youtubeUrl: station.game?.mediaUrl ?? null,
+        score: station.progress?.scoreAchieved ?? station.game?.maxPoints ?? 0,
+        startTime: station.progress?.checkedInAt ?? null,
+        endTime: station.progress?.completedAt ?? station.progress?.checkedOutAt ?? null,
+        teamId,
+        stationId: station.id,
+      })),
+    },
+  };
+}
+
 export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const navigate = useNavigate();
   const {modal, message} = AntdApp.useApp();
@@ -149,6 +209,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   );
   const teamStations = useMovementStore((state) => state.teamStations);
   const startStation = useMovementStore((state) => state.startStation);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const updateStationMarker = useMovementStore(
     (state) => state.updateStationMarker,
   );
@@ -167,7 +228,53 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const [scanTarget, setScanTarget] = useState<TeamStationWithMeta | null>(
     null,
   );
+  const [qrToken, setQrToken] = useState("");
+  const [isSyncingPlayerData, setIsSyncingPlayerData] = useState(false);
+  const [isSubmittingQr, setIsSubmittingQr] = useState(false);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (session?.role !== "user") {
+      return;
+    }
+
+    let isMounted = true;
+    setIsSyncingPlayerData(true);
+
+    Promise.all([getPlayerDashboard(), getPlayerStations(), getPlayerProgress()])
+      .then(([dashboard, stations, progress]) => {
+        if (!isMounted) {
+          return;
+        }
+
+        const progressByStation = new Map(
+          progress.map((item) => [item.stationId, item]),
+        );
+        const stationsWithProgress = stations.map((station) => ({
+          ...station,
+          progress: progressByStation.get(station.id) ?? station.progress,
+        }));
+
+        loadDatabase(buildPlayerSeed(stationsWithProgress, dashboard.team));
+      })
+      .catch((error: unknown) => {
+        if (!isMounted) {
+          return;
+        }
+        message.error(
+          error instanceof Error ? error.message : "Cannot load player data",
+        );
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsSyncingPlayerData(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [loadDatabase, message, session?.role]);
 
   const activeTeamStations = useMemo(
     () => (teamStations[activeTeamId] ?? []) as TeamStationWithMeta[],
@@ -379,9 +486,30 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     }
   };
 
+  const refreshPlayerData = async () => {
+    const [dashboard, stations, progress] = await Promise.all([
+      getPlayerDashboard(),
+      getPlayerStations(),
+      getPlayerProgress(),
+    ]);
+    const progressByStation = new Map(progress.map((item) => [item.stationId, item]));
+    loadDatabase(
+      buildPlayerSeed(
+        stations.map((station) => ({
+          ...station,
+          progress: progressByStation.get(station.id) ?? station.progress,
+        })),
+        dashboard.team,
+      ),
+    );
+  };
+
   return (
     <div className="movement-map-card">
       <div className="movement-map-shell">
+        {isSyncingPlayerData && (
+          <Alert type="info" showIcon message="Syncing player data..." />
+        )}
         <div className="movement-map-controls">
           {session?.role === "user" && (
             <Flex className="movement-map-legend" wrap>
@@ -575,38 +703,63 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         centered
         title="Scan QR to Start Game"
         open={Boolean(scanTarget)}
-        onCancel={() => setScanTarget(null)}
-        onOk={() => {
+        onCancel={() => {
+          setQrToken("");
+          setScanTarget(null);
+        }}
+        onOk={async () => {
           if (!scanTarget) {
             return;
           }
 
-          startStation(scanTarget.teamId, scanTarget.stationId);
-          message.success("Scan QR code successfully");
-          const stationId = scanTarget.stationId;
-          setFocusedStationId(null);
-          setScanTarget(null);
-          navigate(`/stations/${stationId}`);
+          if (session?.role !== "user") {
+            startStation(scanTarget.teamId, scanTarget.stationId);
+            message.success("Scan QR code successfully");
+            const stationId = scanTarget.stationId;
+            setFocusedStationId(null);
+            setScanTarget(null);
+            navigate(`/stations/${stationId}`);
+            return;
+          }
+
+          if (!qrToken.trim()) {
+            message.warning("Please enter or scan the check-in QR token");
+            return;
+          }
+
+          setIsSubmittingQr(true);
+          try {
+            await checkInStation(scanTarget.stationId, qrToken.trim());
+            await refreshPlayerData();
+            message.success("Check-in QR accepted");
+            const stationId = scanTarget.stationId;
+            setFocusedStationId(null);
+            setScanTarget(null);
+            setQrToken("");
+            navigate(`/stations/${stationId}`);
+          } catch (error: unknown) {
+            message.error(error instanceof Error ? error.message : "Check-in failed");
+          } finally {
+            setIsSubmittingQr(false);
+          }
         }}
-        okText="Scan QR code successfully"
+        confirmLoading={isSubmittingQr}
+        okText="Submit check-in QR"
         cancelText="Close">
         <Flex vertical gap={12} style={{width: "100%"}}>
           <Typography.Text>
-            Simulating phone camera for station{" "}
+            Scan or enter the check-in QR token for station{" "}
             <strong>{scanTarget?.name}</strong>.
           </Typography.Text>
+          <QrTokenInput
+            value={qrToken}
+            placeholder="Check-in QR token"
+            onChange={setQrToken}
+          />
           <Alert
-            type="success"
+            type="info"
             showIcon
-            description={
-              <Flex vertical gap={4}>
-                <Typography.Text strong>User Flow</Typography.Text>
-                <Typography.Text>
-                  After a successful scan, the status will change to In Progress
-                  and navigate to the Station Detail screen.
-                </Typography.Text>
-              </Flex>
-            }
+            description="Camera scanning can paste the decoded token here; manual entry remains available for rehearsal devices."
           />
         </Flex>
       </Modal>
