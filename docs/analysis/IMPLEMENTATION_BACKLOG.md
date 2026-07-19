@@ -99,4 +99,8 @@ Acceptance:
 
 - [x] Chạy `npm audit` trong `be/`, ghi rõ findings vào `docs/analysis/BACKEND_AUDIT.md`.
 - [x] Đánh giá upgrade/fix dependency có phá build/test không; chỉ apply khi test xanh.
-- [ ] Lên việc riêng cho Prisma 7: chuyển `package.json#prisma` sang `prisma.config.ts`.
+- [x] Chuyển Prisma seed config từ deprecated `package.json#prisma` sang `be/prisma.config.ts` để sẵn sàng Prisma 7.
+
+## Remaining external handoff
+
+- [ ] Cấu hình và validate production CORS/secrets trên deploy target thật. Local code đã fail-fast cho secret mặc định và wildcard CORS, nhưng chỉ mark `[x]` sau khi có domain frontend production, secret production, và API deployed để test login/CORS credentials.

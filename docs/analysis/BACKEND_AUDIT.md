@@ -8,6 +8,7 @@ Last updated: 2026-07-19
 - `npm test -- --runInBand`: **32 passed**, across auth service/controller, JWT guard, production environment validation, Player QR/scoring flow, and Final scoring/idempotency/retry handling.
 - `npm run build`: **passed**.
 - `npm run lint`: **passed** after adding the backend ESLint flat configuration.
+- Prisma config has been migrated from deprecated `package.json#prisma` to `be/prisma.config.ts`; `npm run prisma:generate`, `npm run prisma:deploy`, and `npm run seed` all load the new config without the Prisma 7 deprecation warning.
 - Production startup validation now rejects missing or development-default `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, and wildcard `CORS_ORIGIN` when `NODE_ENV=production`.
 - Runtime CORS now accepts a comma-separated `CORS_ORIGIN` list while production validation rejects wildcard origins, including wildcard entries inside a list.
 - `npm run prisma:deploy` applied the initial migration against local PostgreSQL at `127.0.0.1:55432/movement`.
@@ -18,7 +19,8 @@ Last updated: 2026-07-19
 - Two-team API smoke test passed against the local API after opening the rehearsal event window to `23:59`: `team01` completed `ST002` for 25 points and `team02` completed `ST047` for 30 points.
 - Report export passed against the local API and produced a non-empty `.xlsx` workbook.
 - Database recovery rehearsal passed: `pg_dump` created a custom-format backup, `pg_restore` restored it into `movement_restore_codex_20260719`, a temporary API on port `3001` returned admin dashboard data, and report export from the restored database produced a non-empty workbook.
-- Frontend build passed after QR login support was added. Frontend lint passes with one existing `StationMap.tsx` hook dependency warning.
+- Frontend lint now passes cleanly after fixing `StationMap.tsx` hook dependencies and the `StationsMapPanel.tsx` effect-state lint violation.
+- Frontend production build passes; Vite still reports a non-blocking large chunk warning for the bundled app.
 
 ## Backend work still required
 
@@ -37,9 +39,9 @@ Last updated: 2026-07-19
 ## Maintenance findings
 
 - `npm audit fix` upgraded `@nestjs/platform-express` to `11.1.28` and `multer` to `2.2.0`; `npm audit --audit-level=high` now reports 0 vulnerabilities.
-- Prisma warns that `package.json#prisma` is deprecated; migrate to `prisma.config.ts` before Prisma 7.
+- Prisma 7 readiness item complete: seed config now lives in `be/prisma.config.ts`, and `be/package.json` no longer uses deprecated `package.json#prisma`.
 - The `ts-jest` configuration was migrated from deprecated `globals` to `transform`.
 
 ## Next recommended task
 
-Validate production CORS and secrets in the deployed environment, then plan the Prisma 7 config migration.
+Validate production CORS and secrets in the deployed environment. This cannot be marked complete from the local workspace without the real deploy target, production frontend origin, and production secret values.

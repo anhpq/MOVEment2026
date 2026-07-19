@@ -66,5 +66,7 @@
   "64": "PrismaService",
   "65": "player.controller.ts",
   "66": "admin.controller.ts",
-  "67": "final.controller.ts"
+  "67": "final.controller.ts",
+  "68": "vite",
+  "69": "prisma.config.ts"
 }

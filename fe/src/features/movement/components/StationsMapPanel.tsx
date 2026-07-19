@@ -239,10 +239,27 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     }
 
     let isMounted = true;
-    setIsSyncingPlayerData(true);
 
-    Promise.all([getPlayerDashboard(), getPlayerStations(), getPlayerProgress()])
-      .then(([dashboard, stations, progress]) => {
+    void Promise.resolve()
+      .then(() => {
+        if (!isMounted) {
+          return null;
+        }
+
+        setIsSyncingPlayerData(true);
+        return Promise.all([
+          getPlayerDashboard(),
+          getPlayerStations(),
+          getPlayerProgress(),
+        ]);
+      })
+      .then((result) => {
+        if (!result) {
+          return;
+        }
+
+        const [dashboard, stations, progress] = result;
+
         if (!isMounted) {
           return;
         }

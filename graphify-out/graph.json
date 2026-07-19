@@ -1028,26 +1028,15 @@
       "norm_label": "typescript-eslint"
     },
     {
-      "label": "prisma",
+      "label": "prisma.config.ts",
       "file_type": "code",
-      "source_file": "be/package.json",
-      "source_location": "L54",
+      "source_file": "be/prisma.config.ts",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "be_package_prisma",
-      "community": 2,
-      "community_name": "dependencies",
-      "norm_label": "prisma"
-    },
-    {
-      "label": "seed",
-      "file_type": "code",
-      "source_file": "be/package.json",
-      "source_location": "L55",
-      "_origin": "ast",
-      "id": "be_package_prisma_seed",
-      "community": 2,
-      "community_name": "dependencies",
-      "norm_label": "seed"
+      "id": "be_prisma_config",
+      "community": 69,
+      "community_name": "prisma.config.ts",
+      "norm_label": "prisma.config.ts"
     },
     {
       "label": "seed.ts",
@@ -1232,7 +1221,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "activity-log.service.ts"
     },
@@ -1243,7 +1232,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "activitylogservice"
     },
@@ -1254,7 +1243,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_ts_injectable",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "injectable"
     },
@@ -1265,7 +1254,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_constructor",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
@@ -1276,8 +1265,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_log",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".log()"
     },
     {
@@ -1287,8 +1276,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_tojson",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".tojson()"
     },
     {
@@ -1298,8 +1287,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "auth-context.ts"
     },
     {
@@ -1309,8 +1298,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authtype",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "authtype"
     },
     {
@@ -1331,8 +1320,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_adminauthcontext",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "adminauthcontext"
     },
     {
@@ -1342,8 +1331,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_teamauthcontext",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "teamauthcontext"
     },
     {
@@ -1353,8 +1342,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_isadmin",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isadmin()"
     },
     {
@@ -1364,8 +1353,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_isteam",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isteam()"
     },
     {
@@ -1375,8 +1364,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_decorators",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "auth.decorators.ts"
     },
     {
@@ -1386,8 +1375,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_decorators_roles",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "roles()"
     },
     {
@@ -1408,8 +1397,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_spec",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "jwt-auth.guard.spec.ts"
     },
     {
@@ -1419,8 +1408,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "jwt-auth.guard.ts"
     },
     {
@@ -1430,8 +1419,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtpayload",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "jwtpayload"
     },
     {
@@ -1441,8 +1430,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "jwtauthguard"
     },
     {
@@ -1452,8 +1441,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_ts_injectable",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "injectable"
     },
     {
@@ -1463,8 +1452,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_constructor",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".constructor()"
     },
     {
@@ -1474,8 +1463,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_canactivate",
-      "community": 67,
-      "community_name": "final.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".canactivate()"
     },
     {
@@ -1485,8 +1474,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "roles.guard.ts"
     },
     {
@@ -1496,8 +1485,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "rolesguard"
     },
     {
@@ -1507,8 +1496,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_ts_injectable",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "injectable"
     },
     {
@@ -1518,8 +1507,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_constructor",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".constructor()"
     },
     {
@@ -1529,8 +1518,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_canactivate",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".canactivate()"
     },
     {
@@ -1540,8 +1529,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "score.dto.ts"
     },
     {
@@ -1617,8 +1606,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_teamsubmitscoredto",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "teamsubmitscoredto"
     },
     {
@@ -1628,8 +1617,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_minlength",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "minlength"
     },
     {
@@ -1771,8 +1760,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "admin.controller.ts"
     },
     {
@@ -1815,8 +1804,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_get",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "get"
     },
     {
@@ -1892,8 +1881,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_dashboard",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".dashboard()"
     },
     {
@@ -1903,8 +1892,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teams",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".teams()"
     },
     {
@@ -1925,8 +1914,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_scorequeue",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".scorequeue()"
     },
     {
@@ -1936,8 +1925,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_progressmatrix",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".progressmatrix()"
     },
     {
@@ -1991,8 +1980,8 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_eventconfig",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".eventconfig()"
     },
     {
@@ -2013,8 +2002,8 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_activitylogs",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".activitylogs()"
     },
     {
@@ -2079,8 +2068,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "admin.service.ts"
     },
     {
@@ -2112,7 +2101,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_constructor",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
@@ -2123,8 +2112,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_dashboard",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".dashboard()"
     },
     {
@@ -2200,8 +2189,8 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_reopen",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".reopen()"
     },
     {
@@ -2211,8 +2200,8 @@
       "source_location": "L219",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_geteventconfig",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".geteventconfig()"
     },
     {
@@ -2222,8 +2211,8 @@
       "source_location": "L223",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_updateeventconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".updateeventconfig()"
     },
     {
@@ -2233,8 +2222,8 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_forcestatus",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".forcestatus()"
     },
     {
@@ -2244,8 +2233,8 @@
       "source_location": "L302",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_activitylogs",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".activitylogs()"
     },
     {
@@ -2354,8 +2343,8 @@
       "source_location": "L701",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_getplayseconds",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": ".getplayseconds()"
     },
     {
@@ -2365,8 +2354,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "xlsx-report.ts"
     },
     {
@@ -2376,8 +2365,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxcell",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "xlsxcell"
     },
     {
@@ -2387,8 +2376,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxsheet",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "xlsxsheet"
     },
     {
@@ -2398,8 +2387,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipentry",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "zipentry"
     },
     {
@@ -2409,8 +2398,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crctable",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "crctable"
     },
     {
@@ -2420,8 +2409,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_createworkbookxlsx",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "createworkbookxlsx()"
     },
     {
@@ -2431,8 +2420,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sheetxml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "sheetxml()"
     },
     {
@@ -2442,8 +2431,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_cellxml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "cellxml()"
     },
     {
@@ -2453,8 +2442,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_columnname",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "columnname()"
     },
     {
@@ -2464,8 +2453,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xmldeclaration",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "xmldeclaration()"
     },
     {
@@ -2475,8 +2464,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_escapexml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "escapexml()"
     },
     {
@@ -2486,8 +2475,8 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sanitizesheetname",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "sanitizesheetname()"
     },
     {
@@ -2497,8 +2486,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crc32",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "crc32()"
     },
     {
@@ -2508,8 +2497,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipfiles",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 61,
+      "community_name": "init.sql",
       "norm_label": "zipfiles()"
     },
     {
@@ -2805,8 +2794,8 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_me",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".me()"
     },
     {
@@ -2904,8 +2893,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "event-config.dto.ts"
     },
     {
@@ -2915,8 +2904,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_updateeventconfigdto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "updateeventconfigdto"
     },
     {
@@ -2926,8 +2915,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isoptional",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isoptional"
     },
     {
@@ -2937,8 +2926,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isstring",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isstring"
     },
     {
@@ -2948,8 +2937,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "matches",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "matches"
     },
     {
@@ -2959,8 +2948,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isint",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "isint"
     },
     {
@@ -2970,8 +2959,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_min",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "min"
     },
     {
@@ -2981,7 +2970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "event-config.controller.ts"
     },
@@ -2992,7 +2981,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "eventconfigcontroller"
     },
@@ -3003,7 +2992,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_ts_controller",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "controller"
     },
@@ -3014,8 +3003,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_ts_get",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "get"
     },
     {
@@ -3025,7 +3014,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller_constructor",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
@@ -3036,8 +3025,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller_getpublicconfig",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".getpublicconfig()"
     },
     {
@@ -3047,7 +3036,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_module",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "event-config.module.ts"
     },
@@ -3080,7 +3069,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "event-config.service.ts"
     },
@@ -3091,8 +3080,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "eventconfigservice"
     },
     {
@@ -3102,8 +3091,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_ts_injectable",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "injectable"
     },
     {
@@ -3113,7 +3102,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_constructor",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
@@ -3124,8 +3113,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getconfig",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getconfig()"
     },
     {
@@ -3135,8 +3124,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getpublicconfig",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".getpublicconfig()"
     },
     {
@@ -3146,8 +3135,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_updateconfig",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".updateconfig()"
     },
     {
@@ -3157,8 +3146,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispasteventend",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".ispasteventend()"
     },
     {
@@ -3168,8 +3157,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispastlocaltime",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".ispastlocaltime()"
     },
     {
@@ -3179,8 +3168,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_assertvalidtimezone",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".assertvalidtimezone()"
     },
     {
@@ -3190,8 +3179,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getlocaldatetimeparts",
-      "community": 65,
-      "community_name": "player.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".getlocaldatetimeparts()"
     },
     {
@@ -3322,8 +3311,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "final.controller.ts"
     },
     {
@@ -3333,8 +3322,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "finalcontroller"
     },
     {
@@ -3344,8 +3333,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_useguards",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "useguards"
     },
     {
@@ -3355,8 +3344,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_controller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "controller"
     },
     {
@@ -3366,8 +3355,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_get",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "get"
     },
     {
@@ -3377,8 +3366,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_post",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "post"
     },
     {
@@ -3388,8 +3377,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_body",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "body"
     },
     {
@@ -3399,8 +3388,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_ts_patch",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "patch"
     },
     {
@@ -3421,8 +3410,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_getplayerfinal",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".getplayerfinal()"
     },
     {
@@ -3432,8 +3421,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_submitfinal",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".submitfinal()"
     },
     {
@@ -3443,8 +3432,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_getfinalconfig",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".getfinalconfig()"
     },
     {
@@ -3454,8 +3443,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_getsubmissions",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".getsubmissions()"
     },
     {
@@ -3465,8 +3454,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_updatefinalconfig",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".updatefinalconfig()"
     },
     {
@@ -3564,8 +3553,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "final.service.ts"
     },
     {
@@ -3597,7 +3586,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service_finalservice_constructor",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
@@ -3740,8 +3729,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "player-actions.dto.ts"
     },
     {
@@ -3751,8 +3740,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_qractiondto",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "qractiondto"
     },
     {
@@ -3762,8 +3751,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_isstring",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isstring"
     },
     {
@@ -3773,8 +3762,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_minlength",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "minlength"
     },
     {
@@ -3784,8 +3773,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_submitcipherdto",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "submitcipherdto"
     },
     {
@@ -3795,8 +3784,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "leaderboard.controller.ts"
     },
     {
@@ -3861,8 +3850,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "player.controller.ts"
     },
     {
@@ -4103,8 +4092,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec",
-      "community": 62,
-      "community_name": "player.service.spec.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "player.service.spec.ts"
     },
     {
@@ -4114,8 +4103,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_progress",
-      "community": 62,
-      "community_name": "player.service.spec.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "progress"
     },
     {
@@ -4125,8 +4114,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockprisma",
-      "community": 62,
-      "community_name": "player.service.spec.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "mockprisma"
     },
     {
@@ -4136,8 +4125,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockeventconfig",
-      "community": 62,
-      "community_name": "player.service.spec.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "mockeventconfig"
     },
     {
@@ -4147,8 +4136,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockactivitylog",
-      "community": 62,
-      "community_name": "player.service.spec.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "mockactivitylog"
     },
     {
@@ -4158,8 +4147,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service",
-      "community": 66,
-      "community_name": "admin.controller.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "player.service.ts"
     },
     {
@@ -4191,7 +4180,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_constructor",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
@@ -4257,8 +4246,8 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_checkin",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".checkin()"
     },
     {
@@ -4268,8 +4257,8 @@
       "source_location": "L204",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_checkout",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".checkout()"
     },
     {
@@ -4279,8 +4268,8 @@
       "source_location": "L232",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_cancel",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".cancel()"
     },
     {
@@ -4290,8 +4279,8 @@
       "source_location": "L267",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitscore",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".submitscore()"
     },
     {
@@ -4301,8 +4290,8 @@
       "source_location": "L344",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitcipher",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".submitcipher()"
     },
     {
@@ -4312,8 +4301,8 @@
       "source_location": "L366",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getprogressforaction",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getprogressforaction()"
     },
     {
@@ -4323,8 +4312,8 @@
       "source_location": "L376",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_validateqr",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".validateqr()"
     },
     {
@@ -4334,8 +4323,8 @@
       "source_location": "L397",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_normalizeanswer",
-      "community": 61,
-      "community_name": "init.sql",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".normalizeanswer()"
     },
     {
@@ -4411,7 +4400,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "prisma.service.ts"
     },
@@ -4422,7 +4411,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "prismaservice"
     },
@@ -4433,7 +4422,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_ts_injectable",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": "injectable"
     },
@@ -4444,7 +4433,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduleinit",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".onmoduleinit()"
     },
@@ -4455,7 +4444,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduledestroy",
-      "community": 64,
+      "community": 12,
       "community_name": "PrismaService",
       "norm_label": ".onmoduledestroy()"
     },
@@ -4826,8 +4815,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_package",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "package.json"
     },
     {
@@ -4837,8 +4826,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "fe_package_name",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "name"
     },
     {
@@ -4848,8 +4837,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "fe_package_private",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "private"
     },
     {
@@ -4859,8 +4848,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_package_version",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "version"
     },
     {
@@ -4870,8 +4859,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_package_type",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "type"
     },
     {
@@ -4881,8 +4870,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "fe_package_scripts",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 62,
+      "community_name": "player.service.spec.ts",
       "norm_label": "scripts"
     },
     {
@@ -4892,8 +4881,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "fe_package_scripts_dev",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 62,
+      "community_name": "player.service.spec.ts",
       "norm_label": "dev"
     },
     {
@@ -4903,8 +4892,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "fe_package_scripts_build",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 62,
+      "community_name": "player.service.spec.ts",
       "norm_label": "build"
     },
     {
@@ -4914,8 +4903,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_package_scripts_build_prod",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 62,
+      "community_name": "player.service.spec.ts",
       "norm_label": "build:prod"
     },
     {
@@ -4925,8 +4914,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "fe_package_scripts_lint",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 62,
+      "community_name": "player.service.spec.ts",
       "norm_label": "lint"
     },
     {
@@ -4936,8 +4925,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "fe_package_scripts_preview",
-      "community": 4,
-      "community_name": "dependencies",
+      "community": 62,
+      "community_name": "player.service.spec.ts",
       "norm_label": "preview"
     },
     {
@@ -5189,8 +5178,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "fe_package_devdependencies_eslint_js",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 65,
+      "community_name": "player.controller.ts",
       "norm_label": "@eslint/js"
     },
     {
@@ -5200,8 +5189,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "eslint_js",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 65,
+      "community_name": "player.controller.ts",
       "norm_label": "@eslint/js"
     },
     {
@@ -5233,8 +5222,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "fe_package_devdependencies_types_react",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 67,
+      "community_name": "final.controller.ts",
       "norm_label": "@types/react"
     },
     {
@@ -5244,8 +5233,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "types_react",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 67,
+      "community_name": "final.controller.ts",
       "norm_label": "@types/react"
     },
     {
@@ -5321,8 +5310,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "fe_package_devdependencies_eslint_plugin_react_hooks",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 66,
+      "community_name": "admin.controller.ts",
       "norm_label": "eslint-plugin-react-hooks"
     },
     {
@@ -5332,8 +5321,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "eslint_plugin_react_hooks",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 66,
+      "community_name": "admin.controller.ts",
       "norm_label": "eslint-plugin-react-hooks"
     },
     {
@@ -5453,8 +5442,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "fe_package_devdependencies_vite",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 68,
+      "community_name": "vite",
       "norm_label": "vite"
     },
     {
@@ -5464,8 +5453,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "vite",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 68,
+      "community_name": "vite",
       "norm_label": "vite"
     },
     {
@@ -8783,7 +8772,7 @@
       "label": "Backend work still required",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L23",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_work_still_required",
       "community": 17,
@@ -8794,7 +8783,7 @@
       "label": "P0 remaining work",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L25",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p0_remaining_work",
       "community": 17,
@@ -8805,7 +8794,7 @@
       "label": "P1 event-readiness checks",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L29",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p1_event_readiness_checks",
       "community": 17,
@@ -8816,7 +8805,7 @@
       "label": "Maintenance findings",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L37",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_maintenance_findings",
       "community": 17,
@@ -8827,7 +8816,7 @@
       "label": "Next recommended task",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L43",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_next_recommended_task",
       "community": 17,
@@ -8954,6 +8943,17 @@
       "community": 36,
       "community_name": "MOVEment 2026 - Implementation Backlog",
       "norm_label": "5. maintenance sau event-readiness"
+    },
+    {
+      "label": "Remaining external handoff",
+      "file_type": "document",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "docs_analysis_implementation_backlog_remaining_external_handoff",
+      "community": 36,
+      "community_name": "MOVEment 2026 - Implementation Backlog",
+      "norm_label": "remaining external handoff"
     },
     {
       "label": "OPEN_QUESTIONS_AND_DECISIONS.md",
@@ -9808,17 +9808,6 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/package.json",
-      "source_location": "L54",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "be_package",
-      "target": "be_package_prisma",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "be/package.json",
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
@@ -10657,17 +10646,6 @@
       "_origin": "ast",
       "source": "be_package_devdependencies_typescript_eslint",
       "target": "be_package_json_typescript_eslint",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "be/package.json",
-      "source_location": "L55",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "be_package_prisma",
-      "target": "be_package_prisma_seed",
       "confidence_score": 1.0
     },
     {
@@ -22040,7 +22018,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L244",
+      "source_location": "L251",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22088,7 +22066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L244",
+      "source_location": "L252",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22136,7 +22114,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L244",
+      "source_location": "L253",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22184,7 +22162,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L732",
+      "source_location": "L749",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22633,7 +22611,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L398",
+      "source_location": "L415",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22657,7 +22635,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L520",
+      "source_location": "L537",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22681,7 +22659,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L454",
+      "source_location": "L471",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22693,7 +22671,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L311",
+      "source_location": "L328",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22705,7 +22683,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L303",
+      "source_location": "L320",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22729,7 +22707,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L258",
+      "source_location": "L275",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22754,7 +22732,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L651",
+      "source_location": "L668",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -22766,7 +22744,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
-      "source_location": "L676",
+      "source_location": "L693",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
@@ -26789,7 +26767,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L23",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -26800,7 +26778,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L37",
+      "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -26811,7 +26789,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L43",
+      "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -26833,7 +26811,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L25",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -26844,7 +26822,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L29",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -26904,6 +26882,17 @@
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
       "target": "docs_analysis_implementation_backlog_p1_event_readiness",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L104",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
+      "target": "docs_analysis_implementation_backlog_remaining_external_handoff",
       "confidence_score": 1.0
     },
     {
@@ -27513,5 +27502,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7b7844916a17980b05015e19c4d9b97145231b14"
+  "built_at_commit": "0d79203e1ac934f4e2de0d97751fc36be2b57cc5"
 }

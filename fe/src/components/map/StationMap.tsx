@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import type { Station, TeamStationProgress } from '../../types/player.type';
 import './StationMap.css';
 
@@ -57,50 +57,52 @@ export const StationMap: React.FC<StationMapProps> = ({
     }
   };
 
-  const updateMapTransform = (scale: number, translateX: number, translateY: number) => {
+  const updateMapTransform = useCallback((scale: number, translateX: number, translateY: number) => {
     if (mapWrapperRef.current) {
       mapWrapperRef.current.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     }
-  };
+  }, []);
 
-  const zoomMap = (factor: number) => {
-    const oldScale = mapScale;
-    const newScale = Math.max(0.5, Math.min(3, mapScale * factor));
-    setMapScale(newScale);
+  const zoomMap = useCallback((factor: number) => {
+    setMapScale((oldScale) => {
+      const newScale = Math.max(0.5, Math.min(3, oldScale * factor));
 
-    if (mapBackgroundRef.current) {
-      const centerX = mapBackgroundRef.current.clientWidth / 2;
-      const centerY = mapBackgroundRef.current.clientHeight / 2;
-      const scaleDiff = newScale - oldScale;
-      
-      const newTranslateX = mapTranslateX - centerX * scaleDiff;
-      const newTranslateY = mapTranslateY - centerY * scaleDiff;
-      
-      setMapTranslateX(newTranslateX);
-      setMapTranslateY(newTranslateY);
-      updateMapTransform(newScale, newTranslateX, newTranslateY);
-    }
-  };
+      if (mapBackgroundRef.current) {
+        const centerX = mapBackgroundRef.current.clientWidth / 2;
+        const centerY = mapBackgroundRef.current.clientHeight / 2;
+        const scaleDiff = newScale - oldScale;
 
-  const resetMap = () => {
+        const newTranslateX = mapTranslateX - centerX * scaleDiff;
+        const newTranslateY = mapTranslateY - centerY * scaleDiff;
+
+        setMapTranslateX(newTranslateX);
+        setMapTranslateY(newTranslateY);
+        updateMapTransform(newScale, newTranslateX, newTranslateY);
+      }
+
+      return newScale;
+    });
+  }, [mapTranslateX, mapTranslateY, updateMapTransform]);
+
+  const resetMap = useCallback(() => {
     setMapScale(1);
     setMapTranslateX(0);
     setMapTranslateY(0);
     updateMapTransform(1, 0, 0);
-  };
+  }, [updateMapTransform]);
 
   // Update transform whenever scale/translate changes
   useEffect(() => {
     updateMapTransform(mapScale, mapTranslateX, mapTranslateY);
-  }, [mapScale, mapTranslateX, mapTranslateY]);
+  }, [mapScale, mapTranslateX, mapTranslateY, updateMapTransform]);
 
-  const handleMouseWheel = (e: WheelEvent) => {
+  const handleMouseWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
     const factor = e.deltaY > 0 ? 0.9 : 1.1;
     zoomMap(factor);
-  };
+  }, [zoomMap]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     // Don't grab if clicking marker or button
     if ((e.target as HTMLElement).closest('.station-marker') || 
         (e.target as HTMLElement).closest('.map-controls')) {
@@ -112,9 +114,9 @@ export const StationMap: React.FC<StationMapProps> = ({
       x: e.clientX - mapTranslateX,
       y: e.clientY - mapTranslateY,
     };
-  };
+  }, [mapTranslateX, mapTranslateY]);
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isGrabbing) return;
     
     const newTranslateX = e.clientX - grabStartRef.current.x;
@@ -122,11 +124,11 @@ export const StationMap: React.FC<StationMapProps> = ({
     
     setMapTranslateX(newTranslateX);
     setMapTranslateY(newTranslateY);
-  };
+  }, [isGrabbing]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsGrabbing(false);
-  };
+  }, []);
 
   useEffect(() => {
     const mapBg = mapBackgroundRef.current;
@@ -141,7 +143,7 @@ export const StationMap: React.FC<StationMapProps> = ({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isGrabbing, mapTranslateX, mapTranslateY]);
+  }, [handleMouseMove, handleMouseUp, handleMouseWheel]);
 
   const handleMarkerClick = (station: Station, e: React.MouseEvent) => {
     e.stopPropagation();
