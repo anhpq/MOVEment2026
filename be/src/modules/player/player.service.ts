@@ -8,6 +8,7 @@ import { ActorType, Game, ProgressStatus, QrPurpose } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { TeamSubmitScoreDto } from '../../common/dto/score.dto';
+import { createQrTokenFingerprint } from '../../common/qr/qr-token';
 import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { QrActionDto, SubmitCipherDto } from './dto/player-actions.dto';
@@ -378,12 +379,16 @@ export class PlayerService {
     purpose: QrPurpose,
     rawToken: string,
   ) {
+    const tokenFingerprint = createQrTokenFingerprint(rawToken);
     const tokens = await this.prisma.qrToken.findMany({
       where: {
         stationId,
         purpose,
         isActive: true,
-        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        AND: [
+          { OR: [{ tokenFingerprint }, { tokenFingerprint: null }] },
+          { OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] },
+        ],
       },
     });
     for (const token of tokens) {

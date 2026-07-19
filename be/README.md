@@ -95,8 +95,8 @@ seeding any shared or production database.
 
 QR seed token format:
 
-- Check-in: `ST002-CHECK_IN`
-- Check-out: `ST002-CHECK_OUT`
+- Check-in: `MV26-STATION-ST002-CHECK_IN`
+- Check-out: `MV26-STATION-ST002-CHECK_OUT`
 
 Replace `ST002` with any seeded station id.
 

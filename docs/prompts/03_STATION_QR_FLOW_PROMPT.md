@@ -6,6 +6,8 @@ Bạn là senior business analyst kiêm backend engineer. Hãy phân tích chi t
 
 - Team chọn hoặc đi tới một trạm trên map.
 - Team scan QR để check in.
+- Mỗi team có 1 QR login riêng, unique, không dùng chung với QR trạm; login team phải giữ rule một active device session cho mỗi team.
+- Mỗi station có 2 QR riêng và unique: QR bắt đầu/check-in và QR kết thúc/check-out.
 - Team có thể cancel nếu chưa hoàn thành.
 - Khi hoàn thành, team scan QR kết thúc.
 - Sau scan QR kết thúc, hiện popup nhập điểm.

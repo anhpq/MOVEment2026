@@ -68,5 +68,6 @@
   "66": "admin.controller.ts",
   "67": "final.controller.ts",
   "68": "vite",
-  "69": "prisma.config.ts"
+  "69": "prisma.config.ts",
+  "70": "eslint"
 }

@@ -52,7 +52,12 @@ describe('PlayerService station flow', () => {
     jest.clearAllMocks()
     mockEventConfig.isPastEventEnd.mockResolvedValue(false)
     mockPrisma.qrToken.findMany.mockResolvedValue([
-      { id: 1, tokenHash: 'hashed-qr-token', purpose: QrPurpose.CHECK_IN },
+      {
+        id: 1,
+        tokenHash: 'hashed-qr-token',
+        tokenFingerprint: 'fingerprint',
+        purpose: QrPurpose.CHECK_IN,
+      },
     ])
     jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
   })
@@ -69,7 +74,7 @@ describe('PlayerService station flow', () => {
     mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
 
     await expect(
-      service.checkIn(2, 'ST002', { qrToken: 'ST002-CHECK_IN' }),
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_IN' }),
     ).resolves.toEqual(updated)
 
     expect(mockPrisma.qrToken.findMany).toHaveBeenCalledWith({
@@ -77,7 +82,15 @@ describe('PlayerService station flow', () => {
         stationId: 'ST002',
         purpose: QrPurpose.CHECK_IN,
         isActive: true,
-        OR: [{ expiresAt: null }, { expiresAt: { gt: expect.any(Date) } }],
+        AND: [
+          {
+            OR: [
+              { tokenFingerprint: expect.any(String) },
+              { tokenFingerprint: null },
+            ],
+          },
+          { OR: [{ expiresAt: null }, { expiresAt: { gt: expect.any(Date) } }] },
+        ],
       },
     })
     expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
@@ -120,7 +133,7 @@ describe('PlayerService station flow', () => {
     mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
 
     await expect(
-      service.checkOut(2, 'ST002', { qrToken: 'ST002-CHECK_OUT' }),
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_OUT' }),
     ).resolves.toEqual(checkedOut)
 
     expect(mockPrisma.qrToken.findMany).toHaveBeenCalledWith(

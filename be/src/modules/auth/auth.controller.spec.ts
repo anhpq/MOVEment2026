@@ -3,10 +3,12 @@ import { AuthService } from './auth.service'
 import { UnauthorizedException } from '@nestjs/common'
 import { AuthContext } from '../../common/auth/auth-context'
 import { TeamLoginDto, UserLoginDto } from './dto/login.dto'
+import { TeamQrLoginDto } from './dto/team-qr-login.dto'
 
 const mockAuthService = {
   loginUser: jest.fn(),
   loginTeam: jest.fn(),
+  loginTeamWithQr: jest.fn(),
   me: jest.fn(),
   logout: jest.fn(),
 }
@@ -37,9 +39,18 @@ describe('AuthController', () => {
     expect(mockAuthService.loginTeam).toHaveBeenCalledWith(dto)
   })
 
-  it('should throw UnauthorizedException when team already has an active session', async () => {
+  it('should delegate loginTeamWithQr to AuthService', async () => {
+    const dto: TeamQrLoginDto = { qrToken: 'MV26-TEAM-01-LOGIN', deviceLabel: 'web-qr' }
+    const expected = { accessToken: 'token', team: { id: 2, username: 'team01', name: 'Team 01' } }
+    mockAuthService.loginTeamWithQr.mockResolvedValue(expected)
+
+    await expect(controller.loginTeamWithQr(dto)).resolves.toEqual(expected)
+    expect(mockAuthService.loginTeamWithQr).toHaveBeenCalledWith(dto)
+  })
+
+  it('should throw UnauthorizedException when team login is rejected', async () => {
     const dto: TeamLoginDto = { username: 'team01', password: 'team01', deviceLabel: 'web' }
-    mockAuthService.loginTeam.mockRejectedValue(new UnauthorizedException('Team is already logged in on another device'))
+    mockAuthService.loginTeam.mockRejectedValue(new UnauthorizedException('Invalid team credentials'))
 
     await expect(controller.loginTeam(dto)).rejects.toThrow(UnauthorizedException)
     expect(mockAuthService.loginTeam).toHaveBeenCalledWith(dto)

@@ -84,13 +84,13 @@ function Complete-Station {
     -Method "Post" `
     -Path "/api/player/stations/$StationId/check-in" `
     -Token $Token `
-    -Body @{ qrToken = "$StationId-CHECK_IN" } | Out-Null
+    -Body @{ qrToken = "MV26-STATION-$StationId-CHECK_IN" } | Out-Null
 
   Invoke-JsonRequest `
     -Method "Post" `
     -Path "/api/player/stations/$StationId/check-out" `
     -Token $Token `
-    -Body @{ qrToken = "$StationId-CHECK_OUT" } | Out-Null
+    -Body @{ qrToken = "MV26-STATION-$StationId-CHECK_OUT" } | Out-Null
 
   Invoke-JsonRequest `
     -Method "Post" `

@@ -3,8 +3,13 @@ import { JwtService } from '@nestjs/jwt';
 import { ActorType } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { AuthContext, isTeam } from '../../common/auth/auth-context';
+import {
+  createQrTokenFingerprint,
+  normalizeQrToken,
+} from '../../common/qr/qr-token';
 import { PrismaService } from '../prisma/prisma.service';
 import { TeamLoginDto, UserLoginDto } from './dto/login.dto';
+import { TeamQrLoginDto } from './dto/team-qr-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -56,6 +61,41 @@ export class AuthService {
       throw new UnauthorizedException('Invalid team credentials');
     }
 
+    return this.issueTeamSession(team, dto.deviceLabel, 'TEAM_LOGIN');
+  }
+
+  async loginTeamWithQr(dto: TeamQrLoginDto) {
+    const qrToken = normalizeQrToken(dto.qrToken);
+    const team = await this.prisma.team.findFirst({
+      where: {
+        loginQrFingerprint: createQrTokenFingerprint(qrToken),
+        status: 'ACTIVE',
+      },
+    });
+
+    if (!team?.loginQrHash || !(await bcrypt.compare(qrToken, team.loginQrHash))) {
+      throw new UnauthorizedException('Invalid team QR token');
+    }
+
+    return this.issueTeamSession(team, dto.deviceLabel, 'TEAM_QR_LOGIN');
+  }
+
+  private async issueTeamSession(
+    team: {
+      id: number;
+      name: string;
+      username: string;
+      captainName: string;
+      totalPoints: number;
+      maxPossiblePoints: number;
+      totalPlaySeconds: number;
+      startedAt: Date | null;
+      status: string;
+      color: string | null;
+    },
+    deviceLabel: string | undefined,
+    loginAction: 'TEAM_LOGIN' | 'TEAM_QR_LOGIN',
+  ) {
     // Enforce one active device session per team.
     // Revoke any existing active team session before creating a new one.
     const existingSession = await this.prisma.teamSession.findFirst({
@@ -82,7 +122,7 @@ export class AuthService {
       data: {
         teamId: team.id,
         tokenHash: 'pending',
-        deviceLabel: dto.deviceLabel,
+        deviceLabel,
       },
     });
 
@@ -104,10 +144,10 @@ export class AuthService {
       data: {
         actorType: ActorType.TEAM,
         actorId: String(team.id),
-        action: 'TEAM_LOGIN',
+        action: loginAction,
         entityType: 'TEAM',
         entityId: String(team.id),
-        metadata: { deviceLabel: dto.deviceLabel ?? null },
+        metadata: { deviceLabel: deviceLabel ?? null },
       },
     });
 

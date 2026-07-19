@@ -4,6 +4,7 @@ import { AuthContext } from '../../common/auth/auth-context';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { TeamLoginDto, UserLoginDto } from './dto/login.dto';
+import { TeamQrLoginDto } from './dto/team-qr-login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,6 +18,11 @@ export class AuthController {
   @Post('team-login')
   loginTeam(@Body() dto: TeamLoginDto) {
     return this.authService.loginTeam(dto);
+  }
+
+  @Post('team-qr-login')
+  loginTeamWithQr(@Body() dto: TeamQrLoginDto) {
+    return this.authService.loginTeamWithQr(dto);
   }
 
   @UseGuards(JwtAuthGuard)

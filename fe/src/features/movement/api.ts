@@ -128,6 +128,16 @@ export async function loginTeam(
   })
 }
 
+export async function loginTeamWithQr(
+  qrToken: string,
+  deviceLabel: string,
+): Promise<TeamLoginResponse> {
+  return apiPost<TeamLoginResponse>('/api/auth/team-qr-login', {
+    qrToken,
+    deviceLabel,
+  })
+}
+
 export async function getMe(): Promise<AuthMeResponse> {
   return apiGet<AuthMeResponse>('/api/auth/me')
 }

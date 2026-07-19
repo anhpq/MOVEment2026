@@ -1,6 +1,11 @@
 import 'dotenv/config';
 import { PrismaClient, ProgressStatus, QrPurpose, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import {
+  buildStationQrToken,
+  buildTeamLoginQrToken,
+  createQrTokenFingerprint,
+} from '../src/common/qr/qr-token';
 
 const prisma = new PrismaClient();
 
@@ -93,7 +98,16 @@ async function main() {
           data: {
             stationId: id,
             purpose,
-            tokenHash: await bcrypt.hash(`${id}-${purpose}`, 10),
+            tokenHash: await bcrypt.hash(buildStationQrToken(id, purpose), 10),
+            tokenFingerprint: createQrTokenFingerprint(buildStationQrToken(id, purpose)),
+          },
+        });
+      } else if (!existing.tokenFingerprint) {
+        await prisma.qrToken.update({
+          where: { id: existing.id },
+          data: {
+            tokenHash: await bcrypt.hash(buildStationQrToken(id, purpose), 10),
+            tokenFingerprint: createQrTokenFingerprint(buildStationQrToken(id, purpose)),
           },
         });
       }
@@ -102,6 +116,8 @@ async function main() {
 
   const totalMaxPoints = stations.reduce((sum, item) => sum + item[3], 0);
   for (const { name, username, captainName, password, color } of teams) {
+    const teamNumber = username.replace('team', '').padStart(2, '0');
+    const loginQrToken = buildTeamLoginQrToken(teamNumber);
     const team = await prisma.team.upsert({
       where: { username },
       create: {
@@ -109,6 +125,8 @@ async function main() {
         username,
         captainName,
         passwordHash: await bcrypt.hash(password, 10),
+        loginQrHash: await bcrypt.hash(loginQrToken, 10),
+        loginQrFingerprint: createQrTokenFingerprint(loginQrToken),
         startedAt: new Date(),
         color,
         maxPossiblePoints: totalMaxPoints,
@@ -117,6 +135,8 @@ async function main() {
         name,
         captainName,
         passwordHash: await bcrypt.hash(password, 10),
+        loginQrHash: await bcrypt.hash(loginQrToken, 10),
+        loginQrFingerprint: createQrTokenFingerprint(loginQrToken),
         color,
         maxPossiblePoints: totalMaxPoints,
       },
