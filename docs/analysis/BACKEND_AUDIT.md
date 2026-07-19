@@ -15,6 +15,9 @@ Last updated: 2026-07-19
 - Team login smoke test passed for `team01/team01`, and `GET /api/auth/me` returned a `TEAM` session for `team01`.
 - Two-team API smoke script added at `be/scripts/smoke-two-team.ps1`; run it against a freshly seeded or disposable rehearsal database because it mutates station progress and scores.
 - Report export helper added at `be/scripts/export-summary-report.ps1`; README now documents export verification plus PostgreSQL backup/restore rehearsal commands.
+- Two-team API smoke test passed against the local API after opening the rehearsal event window to `23:59`: `team01` completed `ST002` for 25 points and `team02` completed `ST047` for 30 points.
+- Report export passed against the local API and produced a non-empty `.xlsx` workbook.
+- Database recovery rehearsal passed: `pg_dump` created a custom-format backup, `pg_restore` restored it into `movement_restore_codex_20260719`, a temporary API on port `3001` returned admin dashboard data, and report export from the restored database produced a non-empty workbook.
 - Frontend build passed after QR login support was added. Frontend lint passes with one existing `StationMap.tsx` hook dependency warning.
 
 ## Backend work still required
@@ -26,17 +29,17 @@ Last updated: 2026-07-19
 ### P1 event-readiness checks
 
 - [x] Validate migration and seed against a clean database.
-- [ ] Run an end-to-end smoke test using two simultaneous team sessions. Script is available but still needs to be executed against a running API and disposable seeded database.
+- [x] Run an end-to-end smoke test using two simultaneous team sessions.
 - [x] Add `prisma migrate deploy` to the deployment path.
 - [ ] Validate production CORS and secrets in the deployed environment.
-- [ ] Rehearse report export and database recovery. Scripts/commands are documented, but need execution against a disposable restored database.
+- [x] Rehearse report export and database recovery.
 
 ## Maintenance findings
 
-- `npm ci` reported **2 high-severity dependency vulnerabilities**. Triage with `npm audit` before upgrading or applying fixes.
+- `npm audit fix` upgraded `@nestjs/platform-express` to `11.1.28` and `multer` to `2.2.0`; `npm audit --audit-level=high` now reports 0 vulnerabilities.
 - Prisma warns that `package.json#prisma` is deprecated; migrate to `prisma.config.ts` before Prisma 7.
 - The `ts-jest` configuration was migrated from deprecated `globals` to `transform`.
 
 ## Next recommended task
 
-Run a two-team end-to-end smoke test with real frontend sessions, then rehearse report export and database recovery.
+Validate production CORS and secrets in the deployed environment, then plan the Prisma 7 config migration.

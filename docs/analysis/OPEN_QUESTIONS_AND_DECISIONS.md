@@ -19,5 +19,6 @@
 | Final | Server tự chấm; 10 team đúng đầu tiên nhận điểm theo thứ hạng |
 | QR login | Frontend hỗ trợ QR login bằng credential payload (`team01:team01`, `team01/team01`, hoặc JSON `{"username":"team01","password":"team01"}`); đây là login shortcut, không phải model QR token riêng trong backend |
 | Test team data | Local seed tạo 25 team `team01/team01` đến `team25/team25` để test frontend login và smoke flow |
+| Git commits | User cho phép Codex tự tạo local git commit sau khi hoàn tất và verify task, với title rõ ràng và detail dạng bullet. Không tự push/deploy/rewrite history/reset nếu chưa được yêu cầu rõ. |
 
 Các prompt cũ có đề cập passcode hoặc Station Manager chỉ là đầu vào phân tích ban đầu và không được ưu tiên hơn tài liệu này.

@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-07-19)
 
 ## Corpus Check
-- 116 files · ~144,425 words
+- 116 files · ~144,702 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 899 nodes · 1585 edges · 70 communities (60 shown, 10 thin omitted)
+- 876 nodes · 1540 edges · 68 communities (58 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `68cfe9e5`
+- Built from commit: `7b784491`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -72,14 +72,11 @@
 - QrTokenInput.tsx
 - validate-environment.ts
 - xlsx-report.ts
-- init.sql
-- migration.sql
+- player.service.spec.ts
 - PrismaService
 - player.controller.ts
 - admin.controller.ts
 - final.controller.ts
-- UpdateFinalConfigDto
-- jwt-auth.guard.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `AuthContext` - 33 edges
@@ -108,23 +105,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (70 total, 10 thin omitted)
+## Communities (68 total, 10 thin omitted)
 
 ### Community 0 - "AuthContext"
-Cohesion: 0.10
-Nodes (24): AuthContext, isTeam(), CurrentAuth, AdminController, Body, Controller, Get, Param (+16 more)
+Cohesion: 0.11
+Nodes (20): AuthContext, CurrentAuth, AdminController, Body, Controller, Get, Param, Patch (+12 more)
 
 ### Community 1 - "AdminService"
-Cohesion: 0.10
-Nodes (15): AdminService, Injectable, cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml() (+7 more)
+Cohesion: 0.07
+Nodes (30): ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, IsInt, IsOptional, IsString, Min, AdminService (+22 more)
 
 ### Community 2 - "dependencies"
 Cohesion: 0.04
 Nodes (48): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+40 more)
 
 ### Community 3 - "PlayerService"
-Cohesion: 0.16
-Nodes (14): AuthController, mockAuthService, Body, Controller, Post, AuthService, mockJwtService, mockPrisma (+6 more)
+Cohesion: 0.13
+Nodes (18): AdminAuthContext, AuthType, isTeam(), TeamAuthContext, AuthController, mockAuthService, Body, Controller (+10 more)
 
 ### Community 4 - "dependencies"
 Cohesion: 0.06
@@ -159,12 +156,12 @@ Cohesion: 0.11
 Nodes (37): apiGet(), apiPost(), apiRequest(), AuthMeResponse, checkInStation(), checkOutStation(), getAccessToken(), getPlayerDashboard() (+29 more)
 
 ### Community 12 - "PrismaService"
-Cohesion: 0.19
-Nodes (11): AdminModule, Module, AuthModule, Module, FinalModule, Module, PlayerModule, Module (+3 more)
+Cohesion: 0.18
+Nodes (13): AdminModule, Module, AuthModule, Module, EventConfigModule, Module, FinalModule, Module (+5 more)
 
 ### Community 13 - "FinalService"
-Cohesion: 0.14
-Nodes (10): FinalController, Controller, Get, UseGuards, FinalService, challenge, mockActivityLog, mockPrisma (+2 more)
+Cohesion: 0.07
+Nodes (27): ArrayMinSize, isAdmin(), Roles(), RolesGuard, Injectable, SubmitFinalDto, IsInt, IsOptional (+19 more)
 
 ### Community 14 - "compilerOptions"
 Cohesion: 0.10
@@ -275,12 +272,12 @@ Cohesion: 0.50
 Nodes (3): Expanding the ESLint configuration, React Compiler, React + TypeScript + Vite
 
 ### Community 48 - "AGENTS.md"
-Cohesion: 0.50
-Nodes (3): Cost-aware request routing, graphify, Project memory docs
+Cohesion: 0.40
+Nodes (4): Cost-aware request routing, Git autonomy, graphify, Project memory docs
 
 ### Community 55 - "auth.controller.ts"
-Cohesion: 0.83
-Nodes (3): Complete-Station(), Invoke-JsonRequest(), Login-Team()
+Cohesion: 0.60
+Nodes (5): Complete-Station(), Invoke-JsonRequest(), Login-Admin(), Login-Team(), Open-RehearsalWindow()
 
 ### Community 56 - "xlsx-report.ts"
 Cohesion: 0.33
@@ -295,60 +292,48 @@ Cohesion: 0.31
 Nodes (8): AppModule, Module, Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment, validateEnvironment(), bootstrap()
 
 ### Community 60 - "xlsx-report.ts"
-Cohesion: 0.06
-Nodes (20): IsInt, IsOptional, IsString, Min, UpdateEventConfigDto, EventConfigController, Controller, Get (+12 more)
+Cohesion: 0.18
+Nodes (5): LeaderboardController, Controller, Get, PlayerService, Injectable
 
-### Community 61 - "init.sql"
-Cohesion: 0.32
-Nodes (12): "activity_logs", "event_config", "final_challenges", "final_submissions", "games", "qr_tokens", "score_events", "stations" (+4 more)
-
-### Community 62 - "migration.sql"
-Cohesion: 0.32
-Nodes (12): "activity_logs", "event_config", "final_challenges", "final_submissions", "games", "qr_tokens", "score_events", "stations" (+4 more)
+### Community 62 - "player.service.spec.ts"
+Cohesion: 0.40
+Nodes (4): mockActivityLog, mockEventConfig, mockPrisma, progress
 
 ### Community 64 - "PrismaService"
 Cohesion: 0.18
-Nodes (4): ActivityLogService, Injectable, PrismaService, Injectable
+Nodes (6): ActivityLogService, Injectable, EventConfigController, Controller, PrismaService, Injectable
 
 ### Community 65 - "player.controller.ts"
-Cohesion: 0.27
-Nodes (6): EventConfigModule, Module, QrActionDto, SubmitCipherDto, IsString, MinLength
+Cohesion: 0.33
+Nodes (3): Get, EventConfigService, Injectable
 
 ### Community 66 - "admin.controller.ts"
-Cohesion: 0.28
-Nodes (11): ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, TeamSubmitScoreDto, IsInt, IsOptional, IsString, Min (+3 more)
+Cohesion: 0.42
+Nodes (6): TeamSubmitScoreDto, MinLength, QrActionDto, SubmitCipherDto, IsString, MinLength
 
 ### Community 67 - "final.controller.ts"
-Cohesion: 0.22
-Nodes (7): AdminAuthContext, AuthType, isAdmin(), TeamAuthContext, Roles(), RolesGuard, Injectable
-
-### Community 68 - "UpdateFinalConfigDto"
-Cohesion: 0.21
-Nodes (10): ArrayMinSize, SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto, IsArray (+2 more)
-
-### Community 69 - "jwt-auth.guard.ts"
 Cohesion: 0.33
 Nodes (3): JwtAuthGuard, JwtPayload, Injectable
 
 ## Knowledge Gaps
-- **301 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+296 more)
+- **300 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+295 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AuthContext` connect `AuthContext` to `player.controller.ts`, `admin.controller.ts`, `PlayerService`, `final.controller.ts`, `jwt-auth.guard.ts`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `AdminService` connect `AdminService` to `PrismaService`, `admin.controller.ts`, `PrismaService`, `xlsx-report.ts`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `PrismaService` to `player.controller.ts`, `admin.controller.ts`, `PlayerService`, `AdminService`, `jwt-auth.guard.ts`, `UpdateFinalConfigDto`, `PrismaService`, `FinalService`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `AuthContext` connect `AuthContext` to `admin.controller.ts`, `final.controller.ts`, `PlayerService`, `FinalService`?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `AdminService` connect `AdminService` to `AuthContext`, `PrismaService`, `PrismaService`, `FinalService`, `init.sql`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `PrismaService` connect `PrismaService` to `AdminService`, `admin.controller.ts`, `PlayerService`, `final.controller.ts`, `PrismaService`, `FinalService`, `init.sql`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `NODE_ENV`, `config` to the rest of the system?**
-  _301 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _300 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.0962962962962963 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10612244897959183 - nodes in this community are weakly interconnected._
 - **Should `AdminService` be split into smaller, more focused modules?**
-  _Cohesion score 0.09747899159663866 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06857142857142857 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._

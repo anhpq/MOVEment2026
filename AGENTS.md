@@ -12,6 +12,28 @@ Before implementation, review the relevant files in `docs/analysis/` and `docs/p
 
 After implementation or verification, update the matching `docs/analysis/` files whenever status, decisions, credentials, smoke-test results, acceptance gaps, or operational runbooks changed. Update `docs/prompts/` only when the workflow/checklist itself changed or a new repeatable task pattern appears; do not rewrite prompts for ordinary code changes.
 
+## Git autonomy
+
+The user allows Codex to create local git commits for completed project work without asking again, as long as the commit only includes the completed in-scope changes and relevant generated Graphify/doc updates.
+
+Before committing:
+
+- Verify the work in proportion to risk, and include the verification result in the final response.
+- Review `git status` and avoid staging unrelated user changes.
+- Use a clear commit title and a detailed body.
+- Do not commit if tests/verification are failing unless the commit explicitly documents a known failing state requested by the user.
+- Do not push, deploy, open PRs, rewrite history, reset, or run destructive git commands unless the user explicitly asks.
+
+Commit message format:
+
+```text
+<short imperative title>
+
+- <specific completed change>
+- <verification or smoke-test result when relevant>
+- <docs/analysis/Graphify update when relevant>
+```
+
 ## Cost-aware request routing
 
 Before doing substantive work, classify the request by scope and risk.

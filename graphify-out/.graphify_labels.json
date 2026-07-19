@@ -61,12 +61,10 @@
   "59": "validate-environment.ts",
   "60": "xlsx-report.ts",
   "61": "init.sql",
-  "62": "migration.sql",
+  "62": "player.service.spec.ts",
   "63": "export-summary-report.ps1",
   "64": "PrismaService",
   "65": "player.controller.ts",
   "66": "admin.controller.ts",
-  "67": "final.controller.ts",
-  "68": "UpdateFinalConfigDto",
-  "69": "jwt-auth.guard.ts"
+  "67": "final.controller.ts"
 }

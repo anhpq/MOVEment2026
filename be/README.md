@@ -69,15 +69,12 @@ docker exec movement-postgres-dev psql -U postgres -d movement -f /tmp/init.sql
 ## Seed Accounts
 
 - Admin: `admin` / `admin123`
-- Team accounts:
-  - `dragon` / `dragon123`
-  - `phoenix` / `phoenix123`
-  - `savage` / `savage123`
+- Team accounts: `team01` / `team01` through `team25` / `team25`
 
 ## Auth Smoke Test
 
 ```powershell
-$team = Invoke-RestMethod -Method Post -Uri http://localhost:3000/api/auth/team-login -ContentType 'application/json' -Body '{"username":"savage","password":"savage123","deviceLabel":"local-test"}'
+$team = Invoke-RestMethod -Method Post -Uri http://localhost:3000/api/auth/team-login -ContentType 'application/json' -Body '{"username":"team01","password":"team01","deviceLabel":"local-test"}'
 Invoke-RestMethod -Method Get -Uri http://localhost:3000/api/auth/me -Headers @{ Authorization = "Bearer $($team.accessToken)" }
 Invoke-RestMethod -Method Post -Uri http://localhost:3000/api/auth/logout -Headers @{ Authorization = "Bearer $($team.accessToken)" }
 ```
@@ -111,20 +108,22 @@ After applying migrations, running seed, and starting the API, run the two-team
 station flow smoke test from the repo root:
 
 ```powershell
-pwsh -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468
+powershell -ExecutionPolicy Bypass -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468
 ```
 
 The script logs in `team01` and `team02`, completes `ST002` and `ST047` with
 seed QR tokens, submits staff scores with the scoring code, and verifies each
-team dashboard reflects the points. Run it against a freshly seeded or disposable
-rehearsal database because it intentionally mutates station progress and scores.
+team dashboard reflects the points. It opens the rehearsal event window by
+setting `eventEndTime` to `23:59` through the admin API before station actions.
+Run it against a freshly seeded or disposable rehearsal database because it
+intentionally mutates event config, station progress, and scores.
 
 ## Report Export and Database Recovery Rehearsal
 
 After the API is running with an admin account, export the summary workbook:
 
 ```powershell
-pwsh -File be/scripts/export-summary-report.ps1 -ApiBaseUrl http://localhost:3000 -Username admin -Password admin123
+powershell -ExecutionPolicy Bypass -File be/scripts/export-summary-report.ps1 -ApiBaseUrl http://localhost:3000 -Username admin -Password admin123
 ```
 
 For PostgreSQL recovery rehearsal, take a compressed backup before smoke tests or

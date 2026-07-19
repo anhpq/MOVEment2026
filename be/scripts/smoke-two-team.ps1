@@ -1,6 +1,9 @@
 param(
   [string]$ApiBaseUrl = "http://localhost:3000",
-  [string]$ScoringCode = "2468"
+  [string]$ScoringCode = "2468",
+  [string]$AdminUsername = "admin",
+  [string]$AdminPassword = "admin123",
+  [string]$EventEndTime = "23:59"
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,6 +51,28 @@ function Login-Team {
     }
 }
 
+function Login-Admin {
+  Invoke-JsonRequest `
+    -Method "Post" `
+    -Path "/api/auth/login" `
+    -Body @{
+      username = $AdminUsername
+      password = $AdminPassword
+    }
+}
+
+function Open-RehearsalWindow {
+  param([string]$Token)
+
+  Invoke-JsonRequest `
+    -Method "Patch" `
+    -Path "/api/admin/event-config" `
+    -Token $Token `
+    -Body @{
+      eventEndTime = $EventEndTime
+    } | Out-Null
+}
+
 function Complete-Station {
   param(
     [string]$Token,
@@ -77,6 +102,10 @@ function Complete-Station {
       reason = "two-team smoke test"
     } | Out-Null
 }
+
+Write-Host "Smoke: opening rehearsal event window until $EventEndTime"
+$admin = Login-Admin
+Open-RehearsalWindow -Token $admin.accessToken
 
 Write-Host "Smoke: logging in team01 and team02 against $ApiBaseUrl"
 $team01 = Login-Team -Username "team01" -Password "team01" -DeviceLabel "smoke-team01"
