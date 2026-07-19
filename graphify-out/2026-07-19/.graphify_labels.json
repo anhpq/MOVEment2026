@@ -58,11 +58,7 @@
   "56": "xlsx-report.ts",
   "57": "TEAM_LOGIN_DATA.md",
   "58": "QrTokenInput.tsx",
-  "59": "EventConfigService",
   "60": "xlsx-report.ts",
   "61": "init.sql",
-  "62": "migration.sql",
-  "63": "validate-environment.ts",
-  "64": "UpdateEventConfigDto",
-  "66": "LeaderboardController"
+  "62": "migration.sql"
 }

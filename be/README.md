@@ -119,6 +119,31 @@ seed QR tokens, submits staff scores with the scoring code, and verifies each
 team dashboard reflects the points. Run it against a freshly seeded or disposable
 rehearsal database because it intentionally mutates station progress and scores.
 
+## Report Export and Database Recovery Rehearsal
+
+After the API is running with an admin account, export the summary workbook:
+
+```powershell
+pwsh -File be/scripts/export-summary-report.ps1 -ApiBaseUrl http://localhost:3000 -Username admin -Password admin123
+```
+
+For PostgreSQL recovery rehearsal, take a compressed backup before smoke tests or
+event operations:
+
+```bash
+pg_dump "$DATABASE_URL" --format=custom --file movement-backup.dump
+```
+
+Restore into a disposable database first, never directly over production:
+
+```bash
+createdb movement_restore
+pg_restore --dbname movement_restore --clean --if-exists movement-backup.dump
+```
+
+Then point a temporary API instance at the restored database and verify
+`GET /api/admin/dashboard` and the report export script both succeed.
+
 ## Production Deploy Notes
 
 Run database migrations before restarting the API:
