@@ -78,5 +78,14 @@
   "76": "@types/react",
   "77": "package.json",
   "78": "RolesGuard",
-  "79": "eslint"
+  "79": "eslint",
+  "80": "helmet",
+  "81": "@nestjs/common",
+  "82": "@nestjs/config",
+  "83": "@nestjs/platform-express",
+  "84": "@nestjs/swagger",
+  "85": "@prisma/client",
+  "86": "rxjs",
+  "87": "swagger-ui-express",
+  "88": "vite"
 }

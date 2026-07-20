@@ -5,8 +5,8 @@
     "semantic_hash": "f3ac3b2a9ea0318f3996ee96fd1f8cac"
   },
   "be/deploy/deploy.sh": {
-    "mtime": 1784563987.846705,
-    "ast_hash": "7a84ba9fc56e9f78551c0924ec417ba0",
+    "mtime": 1784567977.9221036,
+    "ast_hash": "22c5d23ac5fab1d1dcb6c9d66f68e95d",
     "semantic_hash": ""
   },
   "be/jest.config.ts": {
@@ -20,8 +20,8 @@
     "semantic_hash": ""
   },
   "be/package.json": {
-    "mtime": 1784560861.0588589,
-    "ast_hash": "d47b4c12e62cfe03016fbd9144ab7f82",
+    "mtime": 1784567977.928102,
+    "ast_hash": "8bb58b0a2b75d39d78ea6c525b4dd284",
     "semantic_hash": ""
   },
   "be/prisma/init.sql": {
@@ -240,8 +240,8 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784566604.3015933,
-    "ast_hash": "34fea6926ce966adb963fd9df20bc636",
+    "mtime": 1784567083.9366207,
+    "ast_hash": "f0455d1b9246531c9c66f364d6e48e34",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -350,8 +350,8 @@
     "semantic_hash": "74cde0261ad0a13045ca0a05ab1542ae"
   },
   "fe/vite.config.ts": {
-    "mtime": 1784566611.6317127,
-    "ast_hash": "65f0cb515160ded86c4f3416fbd7c6ff",
+    "mtime": 1784567083.9366207,
+    "ast_hash": "419a4dbfbab000a88b17bc5279ff4eb6",
     "semantic_hash": ""
   },
   "be/src/config/validate-environment.spec.ts": {
@@ -415,7 +415,7 @@
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
-    "mtime": 1784566448.686154,
+    "mtime": 1784567083.9306214,
     "ast_hash": "6cf7cdc30d943575c33425cb736effe2",
     "semantic_hash": ""
   },
@@ -425,23 +425,23 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1784566448.687148,
+    "mtime": 1784567083.9316201,
     "ast_hash": "1722b46fd2456461896b8c52baafbbe7",
     "semantic_hash": ""
   },
   "be/README.md": {
-    "mtime": 1784561889.346837,
-    "ast_hash": "d4cb7a1f0a206f2b1487c28da66336e3",
+    "mtime": 1784567977.9091024,
+    "ast_hash": "bd962959c1810aa2bc4c42160fe335c6",
     "semantic_hash": ""
   },
   "be/prisma/certs/README.md": {
-    "mtime": 1784566448.7112768,
+    "mtime": 1784567083.9326212,
     "ast_hash": "6bbca99c0af3394dc047c8a60cfb18e2",
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784566448.7392838,
-    "ast_hash": "5c3a6210422eb26345f89974b52e46f0",
+    "mtime": 1784567977.9401033,
+    "ast_hash": "1152a55c1a9b44ee9ea97ec508f3e3bd",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -500,7 +500,7 @@
     "semantic_hash": ""
   },
   "fe/README.md": {
-    "mtime": 1784566448.7402775,
+    "mtime": 1784567083.9356198,
     "ast_hash": "29e3a97d7c693725d176861cf1284fed",
     "semantic_hash": ""
   },
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784566965.011124,
-    "ast_hash": "0933daad052934a6a3714c1074d52c06",
+    "mtime": 1784567977.9341092,
+    "ast_hash": "f6af54ad213e3aa6556f647539378625",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -665,28 +665,33 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1784560861.0933735,
-    "ast_hash": "07b982937e5bc6e997dea60a3b70cb18",
+    "mtime": 1784567977.94511,
+    "ast_hash": "ef2e5583bb32e319366288dd708389c4",
     "semantic_hash": ""
   },
   "scripts/tester-run.ps1": {
-    "mtime": 1784566449.784918,
+    "mtime": 1784567083.9466214,
     "ast_hash": "0411c5062630a6d56c4a4743dd171c74",
     "semantic_hash": ""
   },
   "docker-compose.tester.yml": {
-    "mtime": 1784566620.2796364,
-    "ast_hash": "e16f26f2cb2d44a0cbaff4e7c07f03e4",
+    "mtime": 1784567083.9336205,
+    "ast_hash": "428fe26ddb46d1112992c447535af519",
     "semantic_hash": ""
   },
   "fe/src/features/movement/apiClient.ts": {
-    "mtime": 1784566448.7532773,
+    "mtime": 1784567083.9366207,
     "ast_hash": "71794524fe079b8c12e231c00bbb61e4",
     "semantic_hash": ""
   },
   "deploy/nginx/README.md": {
-    "mtime": 1784566448.7202778,
+    "mtime": 1784567083.9336205,
     "ast_hash": "2cb80221c692e07ee2861a3ae53f0f1b",
+    "semantic_hash": ""
+  },
+  "be/scripts/verify-seed.ts": {
+    "mtime": 1784567977.9971085,
+    "ast_hash": "1ce3d82bed04c6f69632a33abdc5d6fb",
     "semantic_hash": ""
   }
 }

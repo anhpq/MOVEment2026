@@ -161,14 +161,26 @@ Then point a temporary API instance at the restored database and verify
 
 ## Production Deploy Notes
 
-Run database migrations before restarting the API:
+Run database initialization before restarting the API:
 
 ```bash
+npm run prisma:generate
 npm run prisma:deploy
+npm run prisma:seed
+npm run db:verify
+npm run build
 ```
 
 `be/deploy/deploy.sh` and the backend GitHub Actions SSH deploy template both
-run this step after `npm run build` and before restarting the process manager.
+run these steps before restarting the process manager. Production deploy must
+fail if migration, seed, verification, or build fails. Do not run
+`prisma migrate reset` in production.
+
+For local development only, a disposable database can be reset and reseeded:
+
+```bash
+npm run db:reset
+```
 
 Production must set non-development values for `DATABASE_URL`, `JWT_SECRET`,
 `SCORING_CODE`, and `CORS_ORIGIN`. `CORS_ORIGIN` may be one frontend origin or a

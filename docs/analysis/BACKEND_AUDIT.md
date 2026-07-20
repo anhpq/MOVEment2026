@@ -1,5 +1,13 @@
 # Backend Audit Status
 
+## 2026-07-21 Deployment database initialization audit
+
+- Root cause confirmed: production backend deploy refreshed code, installed dependencies, built the backend, ran `prisma migrate deploy`, and restarted PM2/systemd, but never executed the Prisma seed. Local tester and Docker tester did run seed, so CI/CD differed from local setup and deploy could be green with an initialized schema but missing admin/team/station/progress seed data.
+- Fixed `be/deploy/deploy.sh` to run `prisma generate`, `prisma migrate deploy`, `prisma db seed`, seed verification, backend build, process restart, and a post-restart seed verification. The deploy script uses `set -euo pipefail`, so migration, seed, verification, or build failures fail the deployment.
+- Added `db:reset` for local development only and `db:verify` for deployment smoke checks. Production must not use `migrate reset`; seed remains idempotent and is executed after migrations against the configured `DATABASE_URL`.
+- Aligned `be/deploy/.env.example` with the production Nginx/API expectation: `PORT=8080`, `CORS_ORIGIN=https://heroes.nalth.top`, and `JWT_EXPIRES_IN`.
+- Verification: `npm run prisma:generate`, `npm run prisma:deploy`, `npm run prisma:seed`, `npm run db:verify`, and `npm run build` passed locally against `127.0.0.1:55432/movement`. `db:verify` reported 25 teams, 10 active stations, 250 progress rows, and 20 station QR fingerprints.
+
 ## 2026-07-21 Local tester fail-fast fix
 
 - Root cause confirmed: backend dependencies are installed inside `be/`, not through a root npm workspace. The required local dev/runtime packages are already declared in `be/package.json`: `prisma`, `@prisma/client`, `ts-node`, `@nestjs/cli`, and `typescript`.

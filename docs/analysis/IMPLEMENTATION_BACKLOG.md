@@ -31,7 +31,7 @@
 
 - [x] Migration + seed trên database trống.
 - [x] Smoke test toàn bộ flow bằng hai team session.
-- [x] Thêm `prisma migrate deploy` vào deployment.
+- [x] Thêm `prisma generate`, `prisma migrate deploy`, seed idempotent, và seed verification vào backend deployment.
 - [ ] Cấu hình CORS và secret production trên môi trường deploy.
 - [x] Rehearsal export report và recovery database.
 
@@ -71,7 +71,7 @@ Acceptance:
 - [x] Bật workflow Deploy Backend (ECS) trên `master` + `workflow_dispatch`; workflow truyền `DEPLOY_BRANCH=master` vào `be/deploy/deploy.sh`.
 - [x] GitHub secrets `ECS_HOST` / `ECS_USER` / `ECS_SSH_KEY` aligned to the production ECS host / `root` / PEM (2026-07-20).
 - [x] One-time ECS host bootstrap: `/opt/movement/app` on `master`, Node 20 + pm2 startup, `be/.env` complete (`PORT=8080`, CORS → OBS website), Postgres `movement` login fixed, Nest `movement-api` online; `GET :8080/api/docs` = 200.
-- [ ] Merge latest `be-deploy.yml` + `deploy.sh` (`npm ci --include=dev`) to `master` and confirm Actions `workflow_dispatch` succeeds.
+- [ ] Merge latest `be-deploy.yml` + `deploy.sh` (`npm ci --include=dev`, `prisma generate`, `prisma migrate deploy`, `prisma db seed`, `db:verify`) to `master` and confirm Actions `workflow_dispatch` succeeds.
 - [ ] Từ frontend HTTPS origin, gọi login/team-login qua same-origin `/api` để xác nhận reverse proxy và CORS.
 - [ ] Mark P1 CORS/secrets là `[x]` chỉ sau khi CORS login test trên deploy target pass.
 
