@@ -8,6 +8,9 @@ import {StationsMapPage} from "./pages/StationsMapPage";
 import {SystemConfigPage} from "./pages/SystemConfigPage";
 import {TeamEditorPage} from "./pages/TeamEditorPage";
 import {TeamListPage} from "./pages/TeamListPage";
+import {LeaderboardPage} from "./pages/LeaderboardPage";
+import {FinalPage} from "./pages/FinalPage";
+import {AdminOperationsPage} from "./pages/AdminOperationsPage";
 
 export function MovementRoutes() {
   return (
@@ -36,6 +39,18 @@ export function MovementRoutes() {
             <StationDetailPage />
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/leaderboard"
+        element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>}
+      />
+      <Route
+        path="/final"
+        element={<ProtectedRoute allow={["user"]}><FinalPage /></ProtectedRoute>}
+      />
+      <Route
+        path="/admin/operations"
+        element={<ProtectedRoute allow={["admin"]}><AdminOperationsPage /></ProtectedRoute>}
       />
       <Route
         path="/teams"

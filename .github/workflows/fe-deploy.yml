@@ -20,8 +20,8 @@ env:
   NODE_VERSION: '20'
 
 jobs:
-  deploy:
-    name: Build and sync to OBS
+  build:
+    name: Build frontend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,24 +35,59 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: fe/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build production bundle
-        run: npm run build
+        run: npm run build:prod
         env:
-          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fe-dist
+          path: fe/dist
+          retention-days: 1
+
+  deploy:
+    name: Deploy to OBS
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fe-dist
+          path: dist
 
       - name: Install obsutil
         run: |
           wget -q https://obs-community-intl.obs.ap-southeast-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz
           tar -xzf obsutil_linux_amd64.tar.gz
-          chmod 755 obsutil
+          OBSUTIL_BIN="$(find . -maxdepth 2 -name obsutil -type f | head -1)"
+          chmod 755 "${OBSUTIL_BIN}"
+          echo "OBSUTIL_BIN=${OBSUTIL_BIN}" >> "${GITHUB_ENV}"
 
       - name: Sync dist to OBS bucket
         run: |
-          ./obsutil config -i="${{ secrets.HUAWEI_ACCESS_KEY }}" \
+          "${OBSUTIL_BIN}" config -i="${{ secrets.HUAWEI_ACCESS_KEY }}" \
             -k="${{ secrets.HUAWEI_SECRET_KEY }}" \
             -e="https://obs.${{ env.HUAWEI_REGION }}.myhuaweicloud.com"
-          ./obsutil sync dist/ "obs://${{ env.OBS_BUCKET }}/" -f -exclude=.git*
+
+          "${OBSUTIL_BIN}" sync dist/ "obs://${{ env.OBS_BUCKET }}/" \
+            -acl=public-read
+
+          # SPA entry point: always fetch fresh so new JS/CSS hashes are picked up
+          "${OBSUTIL_BIN}" cp dist/index.html "obs://${{ env.OBS_BUCKET }}/index.html" \
+            -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
+
+      - name: Deployment summary
+        run: |
+          echo "Frontend deployed to obs://${{ env.OBS_BUCKET }}/"
+          echo "Region: ${{ env.HUAWEI_REGION }}"
+          echo "Ensure OBS static website hosting has index.html as both index and error document."

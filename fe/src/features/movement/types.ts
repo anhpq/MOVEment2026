@@ -1,17 +1,20 @@
-export type Role = "user" | "admin" | "system-admin";
+export type Role = "user" | "admin";
 
-export type StationStatus = "New" | "In Progress" | "Finish";
+export type StationStatus = "New" | "In Progress" | "Finished";
+export type StationTrackingMode = "SCORE" | "TIME" | "BOTH";
 
 export type Session = {
   username: string;
-  role: string;
+  role: Role;
   teamId: string | null;
+  accessToken?: string;
+  expiresAt?: string;
 };
 
 export type AuthAccount = {
   username: string;
   password: string;
-  role: string;
+  role: Role;
 };
 
 export type Team = {
@@ -22,15 +25,20 @@ export type Team = {
   score: number;
   finish: number;
   totalTimeMinutes: number;
+  captainName?: string;
 };
 
 export type StationDefinition = {
   id: string;
   name: string;
+  description?: string | null;
+  durationMinutes?: number;
+  youtubeUrl?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   markerX?: number | null;
   markerY?: number | null;
+  trackingMode?: StationTrackingMode;
 };
 
 export type TeamStation = {
@@ -39,11 +47,17 @@ export type TeamStation = {
   status: StationStatus;
   description?: string | null;
   durationMinutes: number;
+  trackingMode: StationTrackingMode;
+  youtubeUrl?: string | null;
   score: number;
   startTime: string | null;
   endTime: string | null;
   teamId: string;
   stationId: string;
+  progressId?: number;
+  maxPoints?: number;
+  backendStatus?: "LOCKED" | "AVAILABLE" | "CHECKED_IN" | "PLAYING" | "COMPLETED";
+  gameType?: string;
 };
 
 export type StationFormValues = {
@@ -51,6 +65,12 @@ export type StationFormValues = {
   name: string;
   description?: string | null;
   durationMinutes: number;
+  trackingMode: StationTrackingMode;
+  markerX?: number;
+  markerY?: number;
+  gameType?: string;
+  maxPoints?: number;
+  youtubeUrl?: string | null;
 };
 
 export type TeamFormValues = {
@@ -61,6 +81,7 @@ export type TeamFormValues = {
   score: number;
   finish: number;
   totalTimeMinutes: number;
+  captainName?: string;
 };
 
 export type SqlUser = {

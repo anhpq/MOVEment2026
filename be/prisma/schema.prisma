@@ -1,0 +1,271 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+}
+
+enum TeamStatus {
+  ACTIVE
+  LOCKED
+  FINISHED
+}
+
+enum ProgressStatus {
+  LOCKED
+  AVAILABLE
+  CHECKED_IN
+  PLAYING
+  COMPLETED
+}
+
+enum QrPurpose {
+  CHECK_IN
+  CHECK_OUT
+}
+
+enum ActorType {
+  TEAM
+  USER
+  SYSTEM
+}
+
+enum StationTrackingMode {
+  SCORE
+  TIME
+  BOTH
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  scoreEvents  ScoreEvent[]
+  activityLogs ActivityLog[]
+
+  @@map("users")
+}
+
+model Team {
+  id                 Int        @id @default(autoincrement())
+  name               String     @unique
+  username           String     @unique
+  captainName        String     @map("captain_name")
+  passwordHash       String     @map("password_hash")
+  loginQrHash        String?    @map("login_qr_hash")
+  loginQrFingerprint String?    @unique @map("login_qr_fingerprint")
+  totalPoints        Int        @default(0) @map("total_points")
+  maxPossiblePoints  Int        @default(0) @map("max_possible_points")
+  totalPlaySeconds   Int        @default(0) @map("total_play_seconds")
+  startedAt          DateTime?  @map("started_at")
+  status             TeamStatus @default(ACTIVE)
+  color              String?
+  activeSessionId    String?    @map("active_session_id")
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @updatedAt @map("updated_at")
+
+  sessions         TeamSession[]
+  progress         TeamStationProgress[]
+  scoreEvents      ScoreEvent[]
+  finalSubmissions FinalSubmission[]
+
+  @@map("teams")
+}
+
+model TeamSession {
+  id           String    @id @default(uuid())
+  teamId       Int       @map("team_id")
+  team         Team      @relation(fields: [teamId], references: [id])
+  tokenHash    String    @map("token_hash")
+  deviceLabel  String?   @map("device_label")
+  issuedAt     DateTime  @default(now()) @map("issued_at")
+  lastSeenAt   DateTime  @default(now()) @map("last_seen_at")
+  revokedAt    DateTime? @map("revoked_at")
+  revokeReason String?   @map("revoke_reason")
+
+  @@index([teamId, revokedAt])
+  @@map("team_sessions")
+}
+
+model Station {
+  id           String              @id
+  name         String
+  description  String?
+  mapX         Float               @map("map_x")
+  mapY         Float               @map("map_y")
+  latitude     Decimal?            @db.Decimal(10, 7)
+  longitude    Decimal?            @db.Decimal(10, 7)
+  trackingMode StationTrackingMode @default(BOTH) @map("tracking_mode")
+  isActive     Boolean             @default(true) @map("is_active")
+  sortOrder    Int                 @default(0) @map("sort_order")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  games       Game[]
+  progress    TeamStationProgress[]
+  qrTokens    QrToken[]
+  scoreEvents ScoreEvent[]
+
+  @@map("stations")
+}
+
+model Game {
+  id         Int      @id @default(autoincrement())
+  stationId  String   @map("station_id")
+  station    Station  @relation(fields: [stationId], references: [id])
+  title      String
+  type       String
+  difficulty Int      @default(1)
+  maxPoints  Int      @map("max_points")
+  clueText   String?  @map("clue_text")
+  mediaUrl   String?  @map("media_url")
+  answerHash String?  @map("answer_hash")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  progress TeamStationProgress[]
+
+  @@index([stationId])
+  @@map("games")
+}
+
+model TeamStationProgress {
+  id                   Int            @id @default(autoincrement())
+  teamId               Int            @map("team_id")
+  stationId            String         @map("station_id")
+  gameId               Int            @map("game_id")
+  team                 Team           @relation(fields: [teamId], references: [id])
+  station              Station        @relation(fields: [stationId], references: [id])
+  game                 Game           @relation(fields: [gameId], references: [id])
+  status               ProgressStatus @default(LOCKED)
+  attemptNo            Int            @default(0) @map("attempt_no")
+  checkedInAt          DateTime?      @map("checked_in_at")
+  checkedOutAt         DateTime?      @map("checked_out_at")
+  completedAt          DateTime?      @map("completed_at")
+  cancelledAt          DateTime?      @map("cancelled_at")
+  reopenedAt           DateTime?      @map("reopened_at")
+  nextCheckInAllowedAt DateTime?      @map("next_check_in_allowed_at")
+  scoreAchieved        Int            @default(0) @map("score_achieved")
+  scoreEnteredByUserId Int?           @map("score_entered_by_user_id")
+  notes                String?
+  createdAt            DateTime       @default(now()) @map("created_at")
+  updatedAt            DateTime       @updatedAt @map("updated_at")
+
+  scoreEvents ScoreEvent[]
+
+  @@unique([teamId, stationId])
+  @@index([status])
+  @@index([checkedOutAt, completedAt])
+  @@map("team_station_progress")
+}
+
+model ScoreEvent {
+  id              Int                  @id @default(autoincrement())
+  teamId          Int                  @map("team_id")
+  progressId      Int?                 @map("progress_id")
+  stationId       String?              @map("station_id")
+  team            Team                 @relation(fields: [teamId], references: [id])
+  progress        TeamStationProgress? @relation(fields: [progressId], references: [id])
+  station         Station?             @relation(fields: [stationId], references: [id])
+  scoreBefore     Int                  @map("score_before")
+  scoreAfter      Int                  @map("score_after")
+  delta           Int
+  reason          String?
+  createdByUserId Int?                 @map("created_by_user_id")
+  createdByUser   User?                @relation(fields: [createdByUserId], references: [id])
+  createdAt       DateTime             @default(now()) @map("created_at")
+
+  @@index([teamId, createdAt])
+  @@map("score_events")
+}
+
+model QrToken {
+  id               Int       @id @default(autoincrement())
+  stationId        String    @map("station_id")
+  station          Station   @relation(fields: [stationId], references: [id])
+  tokenHash        String    @map("token_hash")
+  tokenFingerprint String?   @unique @map("token_fingerprint")
+  purpose          QrPurpose
+  expiresAt        DateTime? @map("expires_at")
+  isActive         Boolean   @default(true) @map("is_active")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  @@index([stationId, purpose])
+  @@map("qr_tokens")
+}
+
+model EventConfig {
+  id                    Int      @id @default(1)
+  eventEndTime          String   @default("11:30") @map("event_end_time")
+  finalStartsAt         String   @default("11:45") @map("final_starts_at")
+  notifyBeforeMinutes   Int      @default(15) @map("notify_before_minutes")
+  cancelCooldownMinutes Int      @default(5) @map("cancel_cooldown_minutes")
+  scoringCodeHash       String   @default("$2b$10$Tn8oLEDmV3DOJjeKcFBz3.9UH/GFsatnF1wlmNfhWJP7dfTaSKwAO") @map("scoring_code_hash")
+  timezone              String   @default("Asia/Ho_Chi_Minh")
+  updatedByUserId       Int?     @map("updated_by_user_id")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@map("event_config")
+}
+
+model FinalChallenge {
+  id           Int      @id @default(autoincrement())
+  title        String
+  clueText     String   @map("clue_text")
+  answerHash   String   @map("answer_hash")
+  startsAt     DateTime @map("starts_at")
+  maxWinners   Int      @default(10) @map("max_winners")
+  pointsByRank Json     @map("points_by_rank")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  submissions FinalSubmission[]
+
+  @@map("final_challenges")
+}
+
+model FinalSubmission {
+  id               Int            @id @default(autoincrement())
+  finalChallengeId Int            @map("final_challenge_id")
+  finalChallenge   FinalChallenge @relation(fields: [finalChallengeId], references: [id])
+  teamId           Int            @map("team_id")
+  team             Team           @relation(fields: [teamId], references: [id])
+  answerSubmitted  String         @map("answer_submitted")
+  isCorrect        Boolean        @default(false) @map("is_correct")
+  winnerRank       Int?           @map("winner_rank")
+  pointsAwarded    Int            @default(0) @map("points_awarded")
+  submittedAt      DateTime       @default(now()) @map("submitted_at")
+  scoreEventId     Int?           @map("score_event_id")
+
+  @@unique([finalChallengeId, winnerRank])
+  @@index([finalChallengeId, isCorrect, submittedAt])
+  @@map("final_submissions")
+}
+
+model ActivityLog {
+  id         Int       @id @default(autoincrement())
+  actorType  ActorType @map("actor_type")
+  actorId    String    @map("actor_id")
+  action     String
+  entityType String    @map("entity_type")
+  entityId   String    @map("entity_id")
+  metadata   Json?
+  createdAt  DateTime  @default(now()) @map("created_at")
+  userId     Int?      @map("user_id")
+  user       User?     @relation(fields: [userId], references: [id])
+
+  @@index([action, createdAt])
+  @@map("activity_logs")
+}

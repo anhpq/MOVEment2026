@@ -1,8 +1,11 @@
 import {EditOutlined, DeleteOutlined} from "@ant-design/icons";
-import {App as AntdApp, Button, Card, Flex, List, Tabs, Typography} from "antd";
+import {App as AntdApp, Button, Card, Flex, List, Select, Tabs, Typography} from "antd";
 import {useNavigate} from "react-router-dom";
 import {StationsMapPanel} from "../components/StationsMapPanel";
 import {useMovementStore} from "../store";
+import type {StationTrackingMode} from "../types";
+import {deleteAdminStation, deleteAdminTeam, updateAdminStation} from "../api";
+import {fetchAdminDatabase} from "../adminData";
 
 export function SystemConfigPage() {
   const navigate = useNavigate();
@@ -14,10 +17,16 @@ export function SystemConfigPage() {
   const totalStations = useMovementStore(
     (state) => state.stationDefinitions.length,
   );
-  const deleteStationDefinition = useMovementStore(
-    (state) => state.deleteStationDefinition,
-  );
-  const deleteTeam = useMovementStore((state) => state.deleteTeam);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
+
+  const handleTrackingModeChange = async (
+    station: (typeof stationDefinitions)[number],
+    trackingMode: StationTrackingMode,
+  ) => {
+    await updateAdminStation(station.id, {trackingMode});
+    loadDatabase(await fetchAdminDatabase());
+    message.success("Station tracking mode updated");
+  };
 
   return (
     <Tabs
@@ -50,6 +59,18 @@ export function SystemConfigPage() {
                           <Typography.Text className="muted-copy compact-copy">
                             {station.description}
                           </Typography.Text>
+                          <Select
+                            value={station.trackingMode ?? "BOTH"}
+                            style={{width: 220}}
+                            options={[
+                              {value: "BOTH", label: "Both time and score"},
+                              {value: "SCORE", label: "Score only"},
+                              {value: "TIME", label: "Time only"},
+                            ]}
+                            onChange={(value) =>
+                              void handleTrackingModeChange(station, value)
+                            }
+                          />
                         </Flex>
                         <Flex gap={8} className="full-width">
                           <Button
@@ -68,14 +89,13 @@ export function SystemConfigPage() {
                                 centered: true,
                                 title: "Delete station?",
                                 content:
-                                  "All progress for this station will be removed from the dummy data.",
+                                  "The station and its QR tokens will be deactivated. Historical progress is retained.",
                                 okText: "Delete",
                                 cancelText: "Cancel",
-                                onOk: () => {
-                                  deleteStationDefinition(station.id);
-                                  message.success(
-                                    "Station deleted successfully",
-                                  );
+                                onOk: async () => {
+                                  await deleteAdminStation(station.id);
+                                  loadDatabase(await fetchAdminDatabase());
+                                  message.success("Station deactivated successfully");
                                 },
                               });
                             }}>
@@ -115,7 +135,7 @@ export function SystemConfigPage() {
                             {team.id} · Score {team.score}
                           </Typography.Text>
                           <Typography.Text className="muted-copy compact-copy">
-                            Finish {team.finish}/{totalStations} in{" "}
+                            Finished {team.finish}/{totalStations} in{" "}
                             {team.totalTimeMinutes} min
                           </Typography.Text>
                         </Flex>
@@ -139,9 +159,15 @@ export function SystemConfigPage() {
                                   "Team will be removed from the system and all progress will be lost.",
                                 okText: "Delete",
                                 cancelText: "Cancel",
-                                onOk: () => {
-                                  deleteTeam(team.id);
-                                  message.success("Team deleted successfully");
+                                onOk: async () => {
+                                  try {
+                                    await deleteAdminTeam(team.id);
+                                    loadDatabase(await fetchAdminDatabase());
+                                    message.success("Team deleted successfully");
+                                  } catch (error) {
+                                    message.error(error instanceof Error ? error.message : "Unable to delete team");
+                                    throw error;
+                                  }
                                 },
                               });
                             }}>

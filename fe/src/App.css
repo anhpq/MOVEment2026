@@ -147,6 +147,19 @@
   width: min(100%, 420px);
 }
 
+.qr-scanner-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.qr-scanner-video {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  background: #17223b;
+  object-fit: cover;
+}
+
 @media (max-width: 480px) {
   .shell-header {
     padding: 16px 14px 12px;

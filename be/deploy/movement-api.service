@@ -1,0 +1,15 @@
+[Unit]
+Description=MOVEment 2026 API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/movement/app/be
+EnvironmentFile=/opt/movement/app/be/.env
+ExecStart=/usr/bin/node dist/main.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
