@@ -1,26 +1,26 @@
 import { useEffect } from 'react'
 import { useMovementStore } from '../store'
-import type { LocalDatabaseSeed } from '../types'
+import {fetchAdminDatabase} from '../adminData'
 
 export function useMovementBootstrap() {
   const loadDatabase = useMovementStore((state) => state.loadDatabase)
+  const sessionRole = useMovementStore((state) => state.session?.role)
 
   useEffect(() => {
+    if (sessionRole !== 'admin') {
+      return
+    }
+
     let isMounted = true
 
     const bootstrapDatabase = async () => {
       try {
-        const response = await fetch('/assets/database.json')
-        if (!response.ok) {
-          throw new Error(`Failed to load local database: ${response.status}`)
-        }
-
-        const seed = (await response.json()) as LocalDatabaseSeed
+        const seed = await fetchAdminDatabase()
         if (isMounted) {
           loadDatabase(seed)
         }
       } catch (error) {
-        console.warn('Using in-code fallback database seed.', error)
+        console.error('Unable to load admin data from the API.', error)
       }
     }
 
@@ -29,5 +29,5 @@ export function useMovementBootstrap() {
     return () => {
       isMounted = false
     }
-  }, [loadDatabase])
+  }, [loadDatabase, sessionRole])
 }

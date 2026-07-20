@@ -17,8 +17,13 @@ git reset --hard "origin/${DEPLOY_BRANCH}"
 
 cd be
 export NODE_ENV=production
-npm ci
+if [ -f package-lock.json ]; then
+  npm ci
+else
+  npm install
+fi
 npm run build
+npm run prisma:deploy
 
 if command -v pm2 >/dev/null 2>&1; then
   pm2 restart "${APP_NAME}" 2>/dev/null || pm2 start dist/main.js --name "${APP_NAME}" --cwd "$(pwd)"

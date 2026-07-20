@@ -14,6 +14,7 @@ import type {
 
 const SESSION_STORAGE_KEY = "movement-session";
 const ACTIVE_TEAM_STORAGE_KEY = "movement-active-team";
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
 function readPersistedSession(): Session | null {
   if (typeof window === "undefined") {
@@ -27,8 +28,20 @@ function readPersistedSession(): Session | null {
       return null;
     }
 
-    return JSON.parse(value) as Session;
+    const session = JSON.parse(value) as Session;
+    if (!session.expiresAt) {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+
+    if (new Date(session.expiresAt).getTime() <= Date.now()) {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+
+    return session;
   } catch {
+    window.localStorage.removeItem(SESSION_STORAGE_KEY);
     return null;
   }
 }
@@ -43,7 +56,11 @@ function persistSession(session: Session | null) {
     return;
   }
 
-  window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+  const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
+  window.localStorage.setItem(
+    SESSION_STORAGE_KEY,
+    JSON.stringify({...session, expiresAt}),
+  );
 }
 
 function readPersistedActiveTeamId() {
@@ -72,11 +89,15 @@ function createNewTeamStation(
   teamId: string,
   stationId: string,
   name: string,
+  durationMinutes = 0,
+  trackingMode: TeamStation["trackingMode"] = "BOTH",
 ): TeamStation {
   return {
     id: `${teamId}-${stationId}`,
     name,
     status: "New",
+    durationMinutes,
+    trackingMode,
     score: 0,
     startTime: null,
     endTime: null,
@@ -147,7 +168,16 @@ function upsertStationDefinition(
   );
 
   if (!hasStation) {
-    return [...stations, createNewTeamStation(teamId, values.id, values.name)];
+    return [
+      ...stations,
+      createNewTeamStation(
+        teamId,
+        values.id,
+        values.name,
+        values.durationMinutes,
+        values.trackingMode,
+      ),
+    ];
   }
 
   return stations.map((station) => {
@@ -158,6 +188,9 @@ function upsertStationDefinition(
     return {
       ...station,
       name: values.name,
+      description: values.description,
+      durationMinutes: values.durationMinutes,
+      trackingMode: values.trackingMode,
       stationId: values.id,
       id: `${teamId}-${values.id}`,
     };
@@ -181,7 +214,7 @@ function createFinishedStation(
 ): TeamStation {
   return {
     ...station,
-    status: "Finish",
+    status: "Finished",
     score,
     startTime: station.startTime ?? now,
     endTime: now,
@@ -515,7 +548,13 @@ export const useMovementStore = create<MovementStore>((set) => ({
       const nextTeamStations = {
         ...state.teamStations,
         [values.id]: state.stationDefinitions.map((station) =>
-          createNewTeamStation(values.id, station.id, station.name),
+          createNewTeamStation(
+            values.id,
+            station.id,
+            station.name,
+            station.durationMinutes ?? 0,
+            station.trackingMode ?? "BOTH",
+          ),
         ),
       };
 

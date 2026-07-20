@@ -4,12 +4,15 @@ import {
   QrcodeOutlined,
   SettingOutlined,
   TeamOutlined,
+  TrophyOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import {Button, Layout, Typography, Image, Flex} from "antd";
 import type {PropsWithChildren} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
+import {logout as logoutApi} from "../api";
 import logo from "../../../assets/ST-logo.png";
 import "./AppFrame.scss";
 
@@ -24,6 +27,17 @@ export function AppFrame({children}: AppFrameProps) {
   const logout = useMovementStore((state) => state.logout);
 
   const activeTeam = teams.find((team) => team.id === activeTeamId);
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi()
+    } catch {
+      // ignore backend logout errors and still clear local session
+    }
+
+    logout()
+    navigate('/login')
+  }
   const totalStation = useMovementStore(
     (state) => state.stationDefinitions.length,
   );
@@ -54,10 +68,7 @@ export function AppFrame({children}: AppFrameProps) {
               color="danger"
               variant="filled"
               icon={<LogoutOutlined />}
-              onClick={() => {
-                logout();
-                navigate("/login");
-              }}>
+              onClick={handleLogout}>
               {ROLE_LABELS[session.role]}
             </Button>
           </Flex>
@@ -104,6 +115,16 @@ export function AppFrame({children}: AppFrameProps) {
               `Stations (${totalStation})`
             : totalStation}
           </Button>
+          <Button size="large" shape="round"
+            type={location.pathname.startsWith("/leaderboard") ? "primary" : "default"}
+            icon={<TrophyOutlined />} onClick={() => navigate("/leaderboard")}>
+            Rank
+          </Button>
+          {session.role === "user" && (
+            <Button size="large" shape="round"
+              type={location.pathname.startsWith("/final") ? "primary" : "default"}
+              onClick={() => navigate("/final")}>Final</Button>
+          )}
           {session.role === "user" && (
             <Button
               size="large"
@@ -116,6 +137,13 @@ export function AppFrame({children}: AppFrameProps) {
               icon={<EnvironmentOutlined />}
               onClick={() => navigate("/stations/map")}>
               Map
+            </Button>
+          )}
+          {session.role !== "user" && (
+            <Button size="large" shape="round"
+              type={location.pathname.startsWith("/admin/operations") ? "primary" : "default"}
+              icon={<DashboardOutlined />} onClick={() => navigate("/admin/operations")}>
+              Ops
             </Button>
           )}
           {session.role !== "user" && (

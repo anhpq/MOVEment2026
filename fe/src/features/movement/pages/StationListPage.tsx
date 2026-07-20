@@ -8,6 +8,7 @@ import {
   Empty,
   Flex,
   Form,
+  Input,
   InputNumber,
   List,
   Modal,
@@ -16,20 +17,22 @@ import {
   Typography,
   Descriptions,
 } from "antd";
-import find from "lodash/find";
-import sortBy from "lodash/sortBy";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
+import {checkInStation, editAdminProgressScore, forceAdminProgressStatus} from "../api";
+import {QrTokenInput} from "../components/QrTokenInput";
+import {fetchPlayerDatabase} from "../playerData";
+import {fetchAdminDatabase} from "../adminData";
 import {
   formatDateTime,
   getDisabledReason,
   getStationStatusColor,
 } from "../utils";
 
-type QuickEditFormValues = Pick<TeamStation, "status" | "score">;
+type QuickEditFormValues = Pick<TeamStation, "status" | "score"> & {reason: string};
 
 export function StationListPage() {
   const navigate = useNavigate();
@@ -38,27 +41,38 @@ export function StationListPage() {
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
-  const startStation = useMovementStore((state) => state.startStation);
-  const patchTeamStation = useMovementStore((state) => state.patchTeamStation);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [editingStation, setEditingStation] = useState<TeamStation | null>(
     null,
   );
   const [scanTarget, setScanTarget] = useState<TeamStation | null>(null);
+  const [checkInQrToken, setCheckInQrToken] = useState("");
+  const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
   const [quickEditForm] = Form.useForm<QuickEditFormValues>();
 
   const team = teams.find((item) => item.id === activeTeamId);
-  const sortedStations = sortBy(teamStations[activeTeamId] ?? [], [
-    (station) => STATUS_ORDER[station.status],
-    (station) => station.name,
-  ]);
-  const activeStation = find(
-    sortedStations,
+  const sortedStations = [...(teamStations[activeTeamId] ?? [])].sort(
+    (left, right) =>
+      STATUS_ORDER[left.status] - STATUS_ORDER[right.status] ||
+      left.name.localeCompare(right.name),
+  );
+  const activeStation = sortedStations.find(
     (station) => station.status === "In Progress",
   );
+  const playingTeamCount = (stationId: string) =>
+    Object.values(teamStations).filter((stations) =>
+      stations.some(
+        (item) =>
+          item.stationId === stationId &&
+          (item.backendStatus === "CHECKED_IN" ||
+            item.backendStatus === "PLAYING"),
+      ),
+    ).length;
 
   if (!session || !team) {
     return null;
   }
+
 
   const handleStationClick = (station: TeamStation) => {
     if (session.role !== "user") {
@@ -77,6 +91,7 @@ export function StationListPage() {
       return;
     }
 
+    setCheckInQrToken("");
     setScanTarget(station);
   };
 
@@ -98,7 +113,7 @@ export function StationListPage() {
               <Descriptions.Item label="Total Score">
                 {team.score}
               </Descriptions.Item>
-              <Descriptions.Item label="Finish">
+              <Descriptions.Item label="Finished">
                 {team.finish}/{sortedStations.length}
               </Descriptions.Item>
             </Descriptions>
@@ -134,12 +149,7 @@ export function StationListPage() {
 
                     <Descriptions column={2} size="small">
                       <Descriptions.Item label="Playing Teams" span={2}>
-                        2
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Estimated Duration">
-                        {station.duration ?
-                          `${station.duration} minutes`
-                        : "N/A"}
+                        {playingTeamCount(station.stationId)}
                       </Descriptions.Item>
                       <Descriptions.Item label="Score">
                         {station.score}
@@ -158,9 +168,11 @@ export function StationListPage() {
                       className="full-width mt-4">
                       {station.youtubeUrl && (
                         <Button
-                          severity="primary"
+                          type="primary"
                           icon={<YoutubeOutlined />}
-                          onClick={() => openLinkInNewTab(station.youtubeUrl)}>
+                          onClick={() =>
+                            openLinkInNewTab(station.youtubeUrl as string)
+                          }>
                           Watch Video
                         </Button>
                       )}
@@ -172,8 +184,7 @@ export function StationListPage() {
                     </Flex>
                   </div>
 
-                  {(session.role === "admin" ||
-                    session.role === "system-admin") && (
+                  {session.role === "admin" && (
                     <Button
                       icon={<EditOutlined />}
                       onClick={(event) => {
@@ -212,29 +223,31 @@ export function StationListPage() {
               centered: true,
               title: "Confirm Station Update",
               content:
-                "This change will overwrite the current dummy data status.",
+                "This change will be saved to the backend and recorded in the audit log.",
               okText: "Save",
               cancelText: "Cancel",
-              onOk: () => {
-                const now = new Date().toISOString();
-                patchTeamStation(
-                  editingStation.teamId,
-                  editingStation.stationId,
-                  {
-                    status: values.status,
-                    score: values.score,
-                    startTime:
-                      values.status === "New" ?
-                        null
-                      : (editingStation.startTime ?? now),
-                    endTime:
-                      values.status === "Finish" ?
-                        (editingStation.endTime ?? now)
-                      : null,
-                  },
-                );
-                message.success("Station updated successfully");
-                setEditingStation(null);
+              onOk: async () => {
+                if (!editingStation.progressId) throw new Error("Progress record is unavailable");
+                try {
+                  if (values.status === "Finished") {
+                    if (editingStation.backendStatus !== "COMPLETED") {
+                      throw new Error("Complete check-out before assigning a finished score");
+                    }
+                    await editAdminProgressScore(editingStation.progressId, values.score, values.reason);
+                  } else {
+                    await forceAdminProgressStatus(
+                      editingStation.progressId,
+                      values.status === "New" ? "AVAILABLE" : "PLAYING",
+                      values.reason,
+                    );
+                  }
+                  loadDatabase(await fetchAdminDatabase());
+                  message.success("Station updated successfully");
+                  setEditingStation(null);
+                } catch (error) {
+                  message.error(error instanceof Error ? error.message : "Unable to update station");
+                  throw error;
+                }
               },
             });
           }}>
@@ -243,12 +256,15 @@ export function StationListPage() {
               options={[
                 {label: "New", value: "New"},
                 {label: "In Progress", value: "In Progress"},
-                {label: "Finish", value: "Finish"},
+                {label: "Finished", value: "Finished"},
               ]}
             />
           </Form.Item>
           <Form.Item label="Score" name="score" rules={[{required: true}]}>
             <InputNumber min={0} max={1000} className="full-width" />
+          </Form.Item>
+          <Form.Item label="Reason" name="reason" rules={[{required: true, message: "Reason is required for audit"}]}>
+            <Input placeholder="Reason for this admin change" maxLength={500} />
           </Form.Item>
 
           <Button
@@ -265,34 +281,62 @@ export function StationListPage() {
         centered
         title="Scan QR to Start"
         open={Boolean(scanTarget)}
-        onCancel={() => setScanTarget(null)}
-        onOk={() => {
+        onCancel={() => {
+          setCheckInQrToken("");
+          setScanTarget(null);
+        }}
+        onOk={async () => {
           if (!scanTarget) {
             return;
           }
 
-          startStation(scanTarget.teamId, scanTarget.stationId);
-          message.success("Scan QR code successfully");
-          const stationId = scanTarget.stationId;
-          setScanTarget(null);
-          navigate(`/stations/${stationId}`);
+          if (!checkInQrToken.trim()) {
+            message.warning("Please scan or enter the check-in QR token");
+            return;
+          }
+
+          setIsSubmittingCheckIn(true);
+          try {
+            await checkInStation(
+              scanTarget.stationId,
+              checkInQrToken.trim(),
+            );
+            loadDatabase(await fetchPlayerDatabase());
+            message.success("QR code scanned successfully");
+            const stationId = scanTarget.stationId;
+            setCheckInQrToken("");
+            setScanTarget(null);
+            navigate(`/stations/${stationId}`);
+          } catch (error: unknown) {
+            message.error(
+              error instanceof Error ? error.message : "Check-in failed",
+            );
+          } finally {
+            setIsSubmittingCheckIn(false);
+          }
         }}
-        okText="Scan QR code successfully"
+        confirmLoading={isSubmittingCheckIn}
+        okText="Submit Check-in QR"
         cancelText="Close">
         <Flex vertical gap={12} className="full-width">
           <Typography.Text>
-            Simulate phone camera for station{" "}
+            Scan the check-in QR code for station{" "}
             <strong>{scanTarget?.name}</strong>.
           </Typography.Text>
+          <QrTokenInput
+            value={checkInQrToken}
+            placeholder="Check-in QR token"
+            onChange={setCheckInQrToken}
+          />
           <Alert
-            type="success"
+            type="info"
             showIcon
             description={
               <Flex vertical gap={4}>
                 <Typography.Text strong>User Flow</Typography.Text>
                 <Typography.Text>
-                  After a successful scan, the status will change to In Progress
-                  and navigate to the Station Detail screen.
+                  After the backend accepts the QR, the status changes to In
+                  Progress and the Station Detail screen opens.
                 </Typography.Text>
               </Flex>
             }

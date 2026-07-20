@@ -7,6 +7,7 @@ export function TeamListPage() {
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
+  const totalStations = useMovementStore((state) => state.stationDefinitions.length);
 
   const sortedTeams = [...teams].sort((left, right) => {
     if (right.finish !== left.finish) {
@@ -62,7 +63,7 @@ export function TeamListPage() {
                 </div>
 
                 <Flex gap={4} align="flex-end">
-                  <Tag color="blue">Finish {team.finish}/5</Tag>
+                  <Tag color="blue">Finished {team.finish}/{totalStations}</Tag>
                   <Tag color="geekblue">{team.totalTimeMinutes} min</Tag>
                 </Flex>
               </div>

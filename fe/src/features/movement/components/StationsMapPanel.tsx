@@ -32,6 +32,13 @@ import {
 } from "../utils";
 import "./StationsMapPanel.css";
 import {ReloadOutlined, YoutubeOutlined} from "@ant-design/icons";
+import {checkInStation, updateAdminStation} from "../api";
+import {
+  fetchPlayerDatabase,
+  PLAYER_MAP_IMAGE_SRC,
+} from "../playerData";
+import {QrTokenInput} from "./QrTokenInput";
+import {fetchAdminDatabase} from "../adminData";
 
 type StationsMapPanelProps = Readonly<{
   editable?: boolean;
@@ -48,18 +55,15 @@ type ViewportSize = {
 };
 
 type TeamStationWithMeta = TeamStation & {
-  description?: string;
-  duration?: string | number | null;
+  description?: string | null;
 };
 
 const MIN_MAP_SCALE = 0.55;
 const MAX_MAP_SCALE = 4;
-const MAP_IMAGE_SRC = "/images/map/suoitien-map1.png";
-
 const USER_STATUS_LEGEND: Array<{label: TeamStation["status"]}> = [
   {label: "New"},
   {label: "In Progress"},
-  {label: "Finish"},
+  {label: "Finished"},
 ];
 
 function clampMapScale(value: number) {
@@ -149,10 +153,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     (state) => state.stationDefinitions,
   );
   const teamStations = useMovementStore((state) => state.teamStations);
-  const startStation = useMovementStore((state) => state.startStation);
-  const updateStationMarker = useMovementStore(
-    (state) => state.updateStationMarker,
-  );
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
 
   const [selectedStationId, setSelectedStationId] = useState<
     string | undefined
@@ -168,6 +169,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const [scanTarget, setScanTarget] = useState<TeamStationWithMeta | null>(
     null,
   );
+  const [qrToken, setQrToken] = useState("");
+  const [isSubmittingQr, setIsSubmittingQr] = useState(false);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
 
   const activeTeamStations = useMemo(
@@ -248,7 +251,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     let cancelled = false;
     const image = new globalThis.Image();
 
-    image.src = MAP_IMAGE_SRC;
+    image.src = PLAYER_MAP_IMAGE_SRC;
     image.onload = () => {
       if (!cancelled) {
         setMapImage(image);
@@ -358,8 +361,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       content: `${selectedStation.name} will be updated with the new position.`,
       okText: "Update",
       cancelText: "Cancel",
-      onOk: () => {
-        updateStationMarker(selectedStation.id, {markerX, markerY});
+      onOk: async () => {
+        await updateAdminStation(selectedStation.id, {mapX: markerX, mapY: markerY});
+        loadDatabase(await fetchAdminDatabase());
         message.success(`Updated position for station ${selectedStation.name}`);
       },
     });
@@ -378,6 +382,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     if (newWindow) {
       newWindow.opener = null;
     }
+  };
+
+  const refreshPlayerData = async () => {
+    loadDatabase(await fetchPlayerDatabase());
   };
 
   return (
@@ -510,12 +518,14 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
                 <Descriptions column={2} size="small">
                   <Descriptions.Item label="Playing Teams" span={2}>
-                    2
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Estimated Duration">
-                    {focusedTeamStation.duration ?
-                      `${focusedTeamStation.duration} minutes`
-                    : "N/A"}
+                    {Object.values(teamStations).filter((stations) =>
+                      stations.some(
+                        (item) =>
+                          item.stationId === focusedTeamStation.stationId &&
+                          (item.backendStatus === "CHECKED_IN" ||
+                            item.backendStatus === "PLAYING"),
+                      ),
+                    ).length}
                   </Descriptions.Item>
                   <Descriptions.Item label="Score">
                     {focusedTeamStation.score}
@@ -537,7 +547,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     className="full-width"
                     icon={<YoutubeOutlined />}
                     onClick={() =>
-                      openLinkInNewTab(focusedTeamStation.youtubeUrl)
+                      openLinkInNewTab(focusedTeamStation.youtubeUrl as string)
                     }>
                     Watch Video
                   </Button>
@@ -576,38 +586,59 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         centered
         title="Scan QR to Start Game"
         open={Boolean(scanTarget)}
-        onCancel={() => setScanTarget(null)}
-        onOk={() => {
+        onCancel={() => {
+          setQrToken("");
+          setScanTarget(null);
+        }}
+        onOk={async () => {
           if (!scanTarget) {
             return;
           }
 
-          startStation(scanTarget.teamId, scanTarget.stationId);
-          message.success("Scan QR code successfully");
-          const stationId = scanTarget.stationId;
-          setFocusedStationId(null);
-          setScanTarget(null);
-          navigate(`/stations/${stationId}`);
+          if (session?.role !== "user") {
+            setScanTarget(null);
+            message.info("Admin cannot simulate team QR check-in");
+            return;
+          }
+
+          if (!qrToken.trim()) {
+            message.warning("Please enter or scan the check-in QR token");
+            return;
+          }
+
+          setIsSubmittingQr(true);
+          try {
+            await checkInStation(scanTarget.stationId, qrToken.trim());
+            await refreshPlayerData();
+            message.success("Check-in QR accepted");
+            const stationId = scanTarget.stationId;
+            setFocusedStationId(null);
+            setScanTarget(null);
+            setQrToken("");
+            navigate(`/stations/${stationId}`);
+          } catch (error: unknown) {
+            message.error(error instanceof Error ? error.message : "Check-in failed");
+          } finally {
+            setIsSubmittingQr(false);
+          }
         }}
-        okText="Scan QR code successfully"
+        confirmLoading={isSubmittingQr}
+        okText="Submit check-in QR"
         cancelText="Close">
         <Flex vertical gap={12} style={{width: "100%"}}>
           <Typography.Text>
-            Simulating phone camera for station{" "}
+            Scan or enter the check-in QR token for station{" "}
             <strong>{scanTarget?.name}</strong>.
           </Typography.Text>
+          <QrTokenInput
+            value={qrToken}
+            placeholder="Check-in QR token"
+            onChange={setQrToken}
+          />
           <Alert
-            type="success"
+            type="info"
             showIcon
-            description={
-              <Flex vertical gap={4}>
-                <Typography.Text strong>User Flow</Typography.Text>
-                <Typography.Text>
-                  After a successful scan, the status will change to In Progress
-                  and navigate to the Station Detail screen.
-                </Typography.Text>
-              </Flex>
-            }
+            description="Camera scanning can paste the decoded token here; manual entry remains available for rehearsal devices."
           />
         </Flex>
       </Modal>

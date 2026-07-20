@@ -1,0 +1,35 @@
+- trang chủ: số điểm/ tổng điểm, tên team, 
+- map 
+- detail: man hinh quet ma cua tung chang (check in, check out, cancel)
+- setting: của người dùng ???
+
+danh sách trò chơi: có hiển thị độ khó (mấy *) ???
+
+danh sách chức năng
+check in
+check out
+cancel
+
+
+khi hoàn thành, scan QR kết thúc, hiển thị popup nhập số điểm
+đếm thời gian ở client hay server ?? client
+
+react/typescript/postgresql 
+
+admin
+- dn bang gì ???
+- có những chức năng gì: đổi điểm, reopen trạm (flag, có thể bật lại để team tham gia)
+
+update: 
++ player/team: 
+- có thể cancel trạm, chỉ có 1 thiết bị được login tại 1 thời điểm
+- bỏ các trạng thái, WAITING_SCORE: đã check-out, chờ nhập/xác nhận điểm,CANCELLED: đã hủy., REOPENED: admin mở lại.Các trjang thai liên quan đổi thành AVAILABLE
++ admin: xuất report (file excel)
++ sắp xếp đội theo thời gian chơi ngắn nhất + điểm cao nhất
++ có thời gian kết thúc tổng: 11h30 (có thể modify), thông báo cho các đội chơi trước 15p (noti), chuyển trạng thái các  trạm sang LOCKED, các đội đang trong trạng thái checkin sẽ được chơi cho đến khi hoàn thành trạm đó
++ 1 team chỉ được check in tại 1 trạm duy nhất
+
+- 
+
+
+

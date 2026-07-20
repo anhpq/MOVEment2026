@@ -20,11 +20,16 @@ Mục tiêu của bộ prompt này là biến các ghi chú ban đầu trong `No
    - Phân tích style UI dựa trên ảnh tham chiếu: neon mobile HUD, map, QR dock, leaderboard.
 7. `07_ACCEPTANCE_BACKLOG_PROMPT.md`
    - Tạo backlog, mức ưu tiên, tiêu chí nghiệm thu, rủi ro còn mở.
+8. `08_IMPLEMENTATION_SYNC_PROMPT.md`
+   - Dùng sau mỗi đợt code/verify để cập nhật analysis docs, backlog, audit, decision và login/runbook data.
 
 ## Quy tắc phân tích
 
 - Luôn phân biệt rõ: đã chắc chắn, đang giả định, cần hỏi lại.
 - Nếu có mâu thuẫn giữa `README.md`, source hiện tại và `Note`, ghi rõ mâu thuẫn thay vì tự lấp.
+- Trước khi code, cập nhật tài liệu hoặc verify, xem nhanh `docs/analysis/` để lấy trạng thái mới nhất và dùng prompt liên quan như checklist.
+- Sau khi code, seed, smoke test hoặc thay đổi quyết định, cập nhật file analysis tương ứng. Không để audit/backlog/decision lệch với source hiện tại.
+- Chỉ cập nhật `docs/prompts/` khi quy trình làm việc hoặc checklist lặp lại thay đổi; không cập nhật prompt chỉ vì một bugfix nhỏ.
 - Ưu tiên thiết kế theo mobile-first vì ảnh tham chiếu là giao diện điện thoại.
 - Với mỗi màn hình, cần có: mục tiêu, dữ liệu hiển thị, hành động, trạng thái lỗi, quyền truy cập, API cần dùng.
 - Với mỗi chức năng, cần có: actor, precondition, main flow, alternate flow, side effect, audit/log.
