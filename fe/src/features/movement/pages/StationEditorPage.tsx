@@ -1,9 +1,10 @@
-import {App as AntdApp, Button, Drawer, Form, Input, Select} from "antd";
+import {App as AntdApp, Button, Drawer, Form, Input, InputNumber, Select} from "antd";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {StationFormValues} from "../types";
-import {updateAdminStation} from "../api";
+import {createAdminStation, updateAdminStation} from "../api";
+import {fetchAdminDatabase} from "../adminData";
 
 export function StationEditorPage() {
   const navigate = useNavigate();
@@ -12,9 +13,7 @@ export function StationEditorPage() {
   const stationDefinitions = useMovementStore(
     (state) => state.stationDefinitions,
   );
-  const saveStationDefinition = useMovementStore(
-    (state) => state.saveStationDefinition,
-  );
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const session = useMovementStore((state) => state.session);
   const [form] = Form.useForm<StationFormValues>();
   const [isOpen, setIsOpen] = useState(true);
@@ -30,11 +29,16 @@ export function StationEditorPage() {
 
   useEffect(() => {
     if (station) {
-      form.setFieldsValue({...station, trackingMode: station.trackingMode ?? "BOTH"});
+      form.setFieldsValue({
+        ...station,
+        markerX: station.markerX ?? 50,
+        markerY: station.markerY ?? 50,
+        trackingMode: station.trackingMode ?? "BOTH",
+      });
       return;
     }
 
-    form.setFieldsValue({id: "", name: "", trackingMode: "BOTH"});
+    form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "QUIZ", maxPoints: 100});
   }, [form, station]);
 
   const handleClose = () => {
@@ -75,9 +79,24 @@ export function StationEditorPage() {
                   name: values.name,
                   description: values.description ?? null,
                   trackingMode: values.trackingMode,
+                  mapX: values.markerX,
+                  mapY: values.markerY,
+                  mediaUrl: values.youtubeUrl ?? null,
+                });
+              } else {
+                await createAdminStation({
+                  id: values.id,
+                  name: values.name,
+                  description: values.description ?? null,
+                  trackingMode: values.trackingMode,
+                  mapX: values.markerX ?? 50,
+                  mapY: values.markerY ?? 50,
+                  gameType: values.gameType ?? "QUIZ",
+                  maxPoints: values.maxPoints ?? 100,
+                  mediaUrl: values.youtubeUrl ?? null,
                 });
               }
-              saveStationDefinition(values, station?.id);
+              loadDatabase(await fetchAdminDatabase());
               message.success(
                 isEditing ?
                   "Station updated successfully"
@@ -124,19 +143,20 @@ export function StationEditorPage() {
             ]}
           />
         </Form.Item>
-        <Form.Item
-          label="Estimated Duration (minutes)"
-          name="durationMinutes"
-          rules={[
-            {
-              required: true,
-              message: "Please enter the estimated duration for the station",
-            },
-          ]}>
-          <Input placeholder="Estimated duration" type="number" />
-        </Form.Item>
         <Form.Item label="YouTube Video URL" name="youtubeUrl">
           <Input placeholder="YouTube video URL" />
+        </Form.Item>
+        <Form.Item label="Map X (%)" name="markerX" rules={[{required: true}]}>
+          <InputNumber min={0} max={100} className="full-width" />
+        </Form.Item>
+        <Form.Item label="Map Y (%)" name="markerY" rules={[{required: true}]}>
+          <InputNumber min={0} max={100} className="full-width" />
+        </Form.Item>
+        <Form.Item label="Game Type" name="gameType" rules={[{required: !isEditing}]}>
+          <Input disabled={isEditing} />
+        </Form.Item>
+        <Form.Item label="Max Points" name="maxPoints" rules={[{required: !isEditing}]}>
+          <InputNumber disabled={isEditing} min={0} className="full-width" />
         </Form.Item>
         <Button type="primary" htmlType="submit" block>
           {isEditing ? "Update Station Info" : "Create Station"}

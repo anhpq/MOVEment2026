@@ -10,50 +10,24 @@ import type {
   TeamStation,
 } from "./types";
 
-function toIsoFromNow(minutesAgo: number) {
-  return new Date(Date.now() - minutesAgo * 60_000).toISOString();
-}
-
 function createSeededStations(
   team: Team,
   definitions: StationDefinition[],
-  index: number,
 ) {
-  return definitions.map((station, stationIndex) => {
-    let status: TeamStation["status"] = "New";
-    let score = 0;
-    let startTime: string | null = null;
-    let endTime: string | null = null;
-
-    if (stationIndex < team.finish) {
-      status = "Finish";
-      score = 70 + stationIndex * 20 + (index % 3) * 5;
-      startTime = toIsoFromNow(120 + stationIndex * 18 + index * 5);
-      endTime = toIsoFromNow(95 + stationIndex * 16 + index * 4);
-    }
-
-    if (team.id === "TEAM01" && stationIndex === 1) {
-      status = "New";
-      score = 0;
-      startTime = null;
-      endTime = null;
-    }
-
-    return {
+  return definitions.map((station) => ({
       id: `${team.id}-${station.id}`,
       name: station.name,
       description: station.description,
-      status,
+      status: "New" as const,
       durationMinutes: station.durationMinutes ?? 0,
       trackingMode: station.trackingMode ?? "BOTH",
       youtubeUrl: station.youtubeUrl,
-      score,
-      startTime,
-      endTime,
+      score: 0,
+      startTime: null,
+      endTime: null,
       teamId: team.id,
       stationId: station.id,
-    };
-  });
+    }));
 }
 
 export function createInitialTeamStations(
@@ -61,8 +35,8 @@ export function createInitialTeamStations(
   definitions: StationDefinition[] = [],
 ) {
   return teams.reduce<Record<string, TeamStation[]>>(
-    (accumulator, team, index) => {
-      accumulator[team.id] = createSeededStations(team, definitions, index);
+    (accumulator, team) => {
+      accumulator[team.id] = createSeededStations(team, definitions);
       return accumulator;
     },
     {},
@@ -106,6 +80,11 @@ function normalizeSqlTeams(seed?: LocalDatabaseSeed) {
     return null;
   }
 
+  const firstTeam = seed.teams[0] as Team | SqlTeam;
+  if (!("team_id" in firstTeam)) {
+    return null;
+  }
+
   const rawTeams = seed.teams as unknown as SqlTeam[];
 
   return rawTeams.map<Team>((team) => {
@@ -130,7 +109,7 @@ function mapSqlProgressStatus(
 ): TeamStation["status"] {
   switch (status) {
     case "COMPLETED":
-      return "Finish";
+      return "Finished";
     case "IN_PROGRESS":
       return "In Progress";
     default:
@@ -195,7 +174,7 @@ function normalizeAuthAccounts(accounts?: AuthAccount[]) {
 
 function computeTeamStats(team: Team, teamStations: TeamStation[]) {
   const completedStations = teamStations.filter(
-    (station) => station.status === "Finish",
+    (station) => station.status === "Finished",
   );
   const score = completedStations.reduce(
     (total, station) => total + station.score,
@@ -298,7 +277,7 @@ export function getDisabledReason(
   station: TeamStation,
   activeStation: TeamStation | undefined,
 ) {
-  if (station.status === "Finish") {
+  if (station.status === "Finished") {
     return "Station has already been completed";
   }
 
@@ -311,7 +290,7 @@ export function getDisabledReason(
 
 export function getStationStatusColor(status: TeamStation["status"]) {
   switch (status) {
-    case "Finish":
+    case "Finished":
       return "green";
     case "In Progress":
       return "orange";

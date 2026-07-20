@@ -1,6 +1,5 @@
 import {CameraOutlined, LockOutlined, QrcodeOutlined, UserOutlined} from "@ant-design/icons";
 import {
-  Alert,
   App as AntdApp,
   Button,
   Card,
@@ -15,16 +14,13 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {loginTeam, loginTeamWithQr, loginUser} from "../api";
+import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
 import logo from "../../../assets/ST-logo.png";
 
 type LoginFormValues = {
   username: string;
   password: string;
 };
-
-type ParsedQrLoginPayload =
-  | {kind: "credentials"; credentials: LoginFormValues}
-  | {kind: "teamQr"; qrToken: string};
 
 type DetectedBarcode = {
   rawValue: string;
@@ -39,50 +35,33 @@ type BarcodeDetectorConstructor = {
 };
 
 function mapBackendRole(role: string) {
-  return role === "ADMIN" ? "admin" : role === "SYSTEM_ADMIN" ? "system-admin" : "user";
+  return role === "ADMIN" ? "admin" : "user";
 }
 
-function parseQrLoginPayload(rawValue: string): ParsedQrLoginPayload | null {
+function parseQrLoginPayload(rawValue: string): string | null {
   const value = rawValue.trim();
   if (!value) {
     return null;
   }
 
   try {
-    const parsed = JSON.parse(value) as Partial<LoginFormValues> & {
+    const parsed = JSON.parse(value) as {
       qrToken?: string;
       token?: string;
       loginQrToken?: string;
-      u?: string;
-      p?: string;
     };
     const qrToken = parsed.qrToken ?? parsed.loginQrToken ?? parsed.token;
     if (qrToken) {
-      return {kind: "teamQr", qrToken};
-    }
-
-    const username = parsed.username ?? parsed.u;
-    const password = parsed.password ?? parsed.p;
-    if (username && password) {
-      return {kind: "credentials", credentials: {username, password}};
+      return qrToken.trim();
     }
   } catch {
     // Plain text QR payloads are handled below.
   }
 
   if (/^MV26-TEAM-\d{2}-LOGIN$/i.test(value)) {
-    return {kind: "teamQr", qrToken: value};
+    return value;
   }
-
-  const separator = value.includes(":") ? ":" : value.includes("/") ? "/" : null;
-  if (!separator) {
-    return null;
-  }
-
-  const [username, password] = value.split(separator).map((part) => part.trim());
-  return username && password
-    ? {kind: "credentials", credentials: {username, password}}
-    : null;
+  return null;
 }
 
 function getBarcodeDetector() {
@@ -93,6 +72,7 @@ function getBarcodeDetector() {
 export function LoginPage() {
   const navigate = useNavigate();
   const login = useMovementStore((state) => state.login);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const session = useMovementStore((state) => state.session);
   const [form] = Form.useForm<LoginFormValues>();
   const {message} = AntdApp.useApp();
@@ -130,8 +110,14 @@ export function LoginPage() {
           teamId: String(teamResponse.team.id),
           accessToken: teamResponse.accessToken,
         });
+        preloadPlayerMapImage();
+        try {
+          loadDatabase(await fetchPlayerDatabase());
+        } catch {
+          message.warning("Login succeeded. Player data will retry on the next screen.");
+        }
         message.success("Login successful");
-        navigate("/stations");
+        navigate("/stations/map");
         return;
       } catch {
         // Fall back to admin/user login if team login fails.
@@ -158,30 +144,30 @@ export function LoginPage() {
   };
 
   const submitQrPayload = async (rawValue: string) => {
-    const parsed = parseQrLoginPayload(rawValue);
-    if (!parsed) {
-      message.error("QR code must contain a team QR token or username/password credentials");
+    const qrToken = parseQrLoginPayload(rawValue);
+    if (!qrToken) {
+      message.error("QR code must contain a valid team QR login token");
       return;
     }
 
     stopQrScanner();
-    if (parsed.kind === "credentials") {
-      form.setFieldsValue(parsed.credentials);
-      window.setTimeout(() => form.submit(), 0);
-      return;
-    }
-
     setIsSubmitting(true);
     try {
-      const teamResponse = await loginTeamWithQr(parsed.qrToken, "web-qr");
+      const teamResponse = await loginTeamWithQr(qrToken, "web-qr");
       login({
         username: teamResponse.team.username,
         role: "user",
         teamId: String(teamResponse.team.id),
         accessToken: teamResponse.accessToken,
       });
+      preloadPlayerMapImage();
+      try {
+        loadDatabase(await fetchPlayerDatabase());
+      } catch {
+        message.warning("Login succeeded. Player data will retry on the next screen.");
+      }
       message.success("QR login successful");
-      navigate("/stations");
+      navigate("/stations/map");
     } catch (error) {
       const messageText =
         error instanceof Error ? error.message : "Invalid team QR token";
@@ -232,10 +218,12 @@ export function LoginPage() {
   };
 
   useEffect(() => {
-    if (session) {
-      navigate("/stations", {replace: true});
+    if (session && !isSubmitting) {
+      navigate(session.role === "user" ? "/stations/map" : "/stations", {
+        replace: true,
+      });
     }
-  }, [navigate, session]);
+  }, [isSubmitting, navigate, session]);
 
   useEffect(() => stopQrScanner, []);
 
@@ -255,20 +243,6 @@ export function LoginPage() {
             </Typography.Title>
           </div>
 
-          <Alert
-            type="info"
-            showIcon
-            description={
-              <Flex vertical gap={4}>
-                <Typography.Text strong>Demo Account</Typography.Text>
-                <Typography.Text>
-                  Example teams use unique QR login tokens or `team01/team01` through `team25/team25`.
-                  Admin account is `admin/admin123`.
-                </Typography.Text>
-              </Flex>
-            }
-          />
-
           <Flex vertical gap={10}>
             <Space.Compact block>
               <Button
@@ -282,7 +256,7 @@ export function LoginPage() {
                 icon={<QrcodeOutlined />}
                 onClick={() => {
                   const payload = window.prompt(
-                    "Paste QR payload, for example MV26-TEAM-01-LOGIN",
+                    "Paste the team QR login token",
                   );
                   if (payload) {
                     void submitQrPayload(payload);

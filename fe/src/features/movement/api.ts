@@ -215,6 +215,10 @@ export async function getPlayerDashboard(): Promise<PlayerDashboardResponse> {
   return apiGet<PlayerDashboardResponse>('/api/player/me')
 }
 
+async function apiDelete<T>(path: string): Promise<T> {
+  return apiRequest<T>(path, {method: 'DELETE'})
+}
+
 export async function getPlayerStations(): Promise<PlayerStationResponse[]> {
   return apiGet<PlayerStationResponse[]>('/api/player/stations')
 }
@@ -258,6 +262,9 @@ export type AdminStationUpdateInput = {
   name?: string
   description?: string | null
   trackingMode?: StationTrackingMode
+  mapX?: number
+  mapY?: number
+  mediaUrl?: string | null
 }
 
 export async function updateAdminStation(
@@ -265,4 +272,130 @@ export async function updateAdminStation(
   values: AdminStationUpdateInput,
 ): Promise<PlayerStationResponse> {
   return apiPatch<PlayerStationResponse>(`/api/admin/stations/${stationId}`, values)
+}
+
+export type AdminTeamResponse = {
+  id: number
+  name: string
+  username: string
+  captainName: string
+  totalPoints: number
+  totalPlaySeconds: number
+}
+
+export type AdminProgressMatrixResponse = {
+  stations: Array<{
+    id: string
+    name: string
+    description: string | null
+    mapX: number | null
+    mapY: number | null
+    trackingMode: StationTrackingMode
+    games?: Array<{type: string; maxPoints: number; mediaUrl: string | null}>
+  }>
+  rows: Array<{
+    team: AdminTeamResponse
+    cells: Array<null | {
+      progressId: number
+      stationId: string
+      status: PlayerProgressResponse['status']
+      scoreAchieved: number
+      maxPoints: number
+      checkedInAt: string | null
+      checkedOutAt: string | null
+      completedAt: string | null
+    }>
+  }>
+}
+
+export const getAdminProgressMatrix = () =>
+  apiGet<AdminProgressMatrixResponse>('/api/admin/progress-matrix')
+
+export const createAdminTeam = (values: {
+  name: string; username: string; password: string; captainName?: string
+}) => apiPost<AdminTeamResponse>('/api/admin/teams', values)
+
+export const updateAdminTeam = (teamId: string, values: {
+  name?: string; username?: string; password?: string; captainName?: string
+}) => apiPatch<AdminTeamResponse>(`/api/admin/teams/${teamId}`, values)
+
+export const deleteAdminTeam = (teamId: string) =>
+  apiDelete<{success: boolean}>(`/api/admin/teams/${teamId}`)
+
+export const forceAdminProgressStatus = (
+  progressId: number,
+  status: Exclude<PlayerProgressResponse['status'], 'COMPLETED'>,
+  reason: string,
+) => apiPatch(`/api/admin/progress/${progressId}/status`, {status, reason})
+
+export const editAdminProgressScore = (
+  progressId: number,
+  score: number,
+  reason: string,
+) => apiPatch(`/api/admin/progress/${progressId}/score`, {score, reason})
+
+export const submitAdminProgressScore = (
+  progressId: number,
+  score: number,
+  reason?: string,
+) => apiPost(`/api/admin/progress/${progressId}/score`, {score, reason})
+
+export const reopenAdminProgress = (progressId: number, reason: string) =>
+  apiPost(`/api/admin/progress/${progressId}/reopen`, {reason})
+
+export const createAdminStation = (values: {
+  id: string; name: string; description?: string | null
+  trackingMode: StationTrackingMode; mapX: number; mapY: number
+  gameType: string; maxPoints: number; mediaUrl?: string | null
+}) => apiPost('/api/admin/stations', values)
+
+export const deleteAdminStation = (stationId: string) =>
+  apiDelete(`/api/admin/stations/${stationId}`)
+
+export const cancelPlayerStation = (stationId: string) =>
+  apiPost(`/api/player/stations/${stationId}/cancel`, {})
+
+export const submitCipherAnswer = (stationId: string, answer: string) =>
+  apiPost(`/api/player/stations/${stationId}/submit-cipher`, {answer})
+
+export const getLeaderboard = () =>
+  apiGet<LeaderboardEntryResponse[]>('/api/leaderboard')
+
+export type FinalResponse = {
+  id: number; title: string; clueText: string | null; startsAt: string
+  maxWinners: number; pointsByRank: number[]; isOpen: boolean
+  teamSubmission: FinalSubmissionResponse | null; serverNow: string
+}
+export type FinalSubmissionResponse = {
+  id: number; teamId: number; isCorrect: boolean; winnerRank: number | null
+  pointsAwarded: number; submittedAt: string
+}
+export const getPlayerFinal = () => apiGet<FinalResponse>('/api/player/final')
+export const submitFinalAnswer = (answer: string) =>
+  apiPost<FinalSubmissionResponse>('/api/player/final/submit', {answer})
+
+export const getAdminDashboard = () => apiGet<Record<string, unknown>>('/api/admin/dashboard')
+export const getAdminScoreQueue = () => apiGet<Array<Record<string, unknown>>>('/api/admin/score-queue')
+export const getAdminEventConfig = () => apiGet<Record<string, unknown>>('/api/admin/event-config')
+export const updateAdminEventConfig = (values: Record<string, unknown>) =>
+  apiPatch('/api/admin/event-config', values)
+export const getAdminActivityLogs = () => apiGet<Array<Record<string, unknown>>>('/api/admin/activity-logs')
+export const getAdminFinalConfig = () => apiGet<Record<string, unknown>>('/api/admin/final-config')
+export const getAdminFinalSubmissions = () => apiGet<Array<Record<string, unknown>>>('/api/admin/final/submissions')
+export const updateAdminFinalConfig = (values: Record<string, unknown>) =>
+  apiPatch('/api/admin/final-config', values)
+
+export async function downloadAdminSummary() {
+  const token = getAccessToken()
+  const response = await fetch(`${API_BASE_URL}/api/admin/reports/summary.xlsx`, {
+    headers: token ? {Authorization: `Bearer ${token}`} : {},
+  })
+  if (!response.ok) throw new Error(await response.text())
+  const blob = await response.blob()
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'movement-summary.xlsx'
+  link.click()
+  URL.revokeObjectURL(url)
 }

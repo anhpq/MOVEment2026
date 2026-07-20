@@ -32,15 +32,13 @@ import {
 } from "../utils";
 import "./StationsMapPanel.css";
 import {ReloadOutlined, YoutubeOutlined} from "@ant-design/icons";
+import {checkInStation, updateAdminStation} from "../api";
 import {
-  checkInStation,
-  getPlayerDashboard,
-  getPlayerProgress,
-  getPlayerStations,
-  type PlayerProgressResponse,
-  type PlayerStationResponse,
-} from "../api";
+  fetchPlayerDatabase,
+  PLAYER_MAP_IMAGE_SRC,
+} from "../playerData";
 import {QrTokenInput} from "./QrTokenInput";
+import {fetchAdminDatabase} from "../adminData";
 
 type StationsMapPanelProps = Readonly<{
   editable?: boolean;
@@ -62,12 +60,10 @@ type TeamStationWithMeta = TeamStation & {
 
 const MIN_MAP_SCALE = 0.55;
 const MAX_MAP_SCALE = 4;
-const MAP_IMAGE_SRC = "/images/map/suoitien-map1.png";
-
 const USER_STATUS_LEGEND: Array<{label: TeamStation["status"]}> = [
   {label: "New"},
   {label: "In Progress"},
-  {label: "Finish"},
+  {label: "Finished"},
 ];
 
 function clampMapScale(value: number) {
@@ -148,59 +144,6 @@ function buildFallbackPositions(stations: StationDefinition[]) {
   );
 }
 
-function mapProgressStatus(status: PlayerProgressResponse["status"]): TeamStation["status"] {
-  if (status === "COMPLETED") return "Finish";
-  if (status === "PLAYING" || status === "CHECKED_IN") return "In Progress";
-  return "New";
-}
-
-function buildPlayerSeed(
-  stations: PlayerStationResponse[],
-  dashboardTeam: Awaited<ReturnType<typeof getPlayerDashboard>>["team"],
-) {
-  const teamId = String(dashboardTeam.id);
-  return {
-    activeTeamId: teamId,
-    teams: [
-      {
-        id: teamId,
-        name: dashboardTeam.name,
-        username: dashboardTeam.username ?? `team${dashboardTeam.id}`,
-        password: "",
-        score: dashboardTeam.totalPoints,
-        finish: 0,
-        totalTimeMinutes: Math.round(dashboardTeam.totalPlaySeconds / 60),
-      },
-    ],
-    stationDefinitions: stations.map((station) => ({
-      id: station.id,
-      name: station.name,
-      description: station.description ?? station.game?.clueText ?? null,
-      durationMinutes: 0,
-      trackingMode: station.trackingMode ?? "BOTH",
-      youtubeUrl: station.game?.mediaUrl ?? null,
-      markerX: station.mapX,
-      markerY: station.mapY,
-    })),
-    teamStations: {
-      [teamId]: stations.map((station) => ({
-        id: `${teamId}-${station.id}`,
-        name: station.name,
-        status: mapProgressStatus(station.progress?.status ?? "AVAILABLE"),
-        description: station.description ?? station.game?.clueText ?? null,
-        durationMinutes: 0,
-        trackingMode: station.trackingMode ?? "BOTH",
-        youtubeUrl: station.game?.mediaUrl ?? null,
-        score: station.progress?.scoreAchieved ?? station.game?.maxPoints ?? 0,
-        startTime: station.progress?.checkedInAt ?? null,
-        endTime: station.progress?.completedAt ?? station.progress?.checkedOutAt ?? null,
-        teamId,
-        stationId: station.id,
-      })),
-    },
-  };
-}
-
 export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const navigate = useNavigate();
   const {modal, message} = AntdApp.useApp();
@@ -210,11 +153,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     (state) => state.stationDefinitions,
   );
   const teamStations = useMovementStore((state) => state.teamStations);
-  const startStation = useMovementStore((state) => state.startStation);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
-  const updateStationMarker = useMovementStore(
-    (state) => state.updateStationMarker,
-  );
 
   const [selectedStationId, setSelectedStationId] = useState<
     string | undefined
@@ -231,69 +170,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     null,
   );
   const [qrToken, setQrToken] = useState("");
-  const [isSyncingPlayerData, setIsSyncingPlayerData] = useState(false);
   const [isSubmittingQr, setIsSubmittingQr] = useState(false);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (session?.role !== "user") {
-      return;
-    }
-
-    let isMounted = true;
-
-    void Promise.resolve()
-      .then(() => {
-        if (!isMounted) {
-          return null;
-        }
-
-        setIsSyncingPlayerData(true);
-        return Promise.all([
-          getPlayerDashboard(),
-          getPlayerStations(),
-          getPlayerProgress(),
-        ]);
-      })
-      .then((result) => {
-        if (!result) {
-          return;
-        }
-
-        const [dashboard, stations, progress] = result;
-
-        if (!isMounted) {
-          return;
-        }
-
-        const progressByStation = new Map(
-          progress.map((item) => [item.stationId, item]),
-        );
-        const stationsWithProgress = stations.map((station) => ({
-          ...station,
-          progress: progressByStation.get(station.id) ?? station.progress,
-        }));
-
-        loadDatabase(buildPlayerSeed(stationsWithProgress, dashboard.team));
-      })
-      .catch((error: unknown) => {
-        if (!isMounted) {
-          return;
-        }
-        message.error(
-          error instanceof Error ? error.message : "Cannot load player data",
-        );
-      })
-      .finally(() => {
-        if (isMounted) {
-          setIsSyncingPlayerData(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [loadDatabase, message, session?.role]);
 
   const activeTeamStations = useMemo(
     () => (teamStations[activeTeamId] ?? []) as TeamStationWithMeta[],
@@ -373,7 +251,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     let cancelled = false;
     const image = new globalThis.Image();
 
-    image.src = MAP_IMAGE_SRC;
+    image.src = PLAYER_MAP_IMAGE_SRC;
     image.onload = () => {
       if (!cancelled) {
         setMapImage(image);
@@ -483,8 +361,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       content: `${selectedStation.name} will be updated with the new position.`,
       okText: "Update",
       cancelText: "Cancel",
-      onOk: () => {
-        updateStationMarker(selectedStation.id, {markerX, markerY});
+      onOk: async () => {
+        await updateAdminStation(selectedStation.id, {mapX: markerX, mapY: markerY});
+        loadDatabase(await fetchAdminDatabase());
         message.success(`Updated position for station ${selectedStation.name}`);
       },
     });
@@ -506,29 +385,12 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   };
 
   const refreshPlayerData = async () => {
-    const [dashboard, stations, progress] = await Promise.all([
-      getPlayerDashboard(),
-      getPlayerStations(),
-      getPlayerProgress(),
-    ]);
-    const progressByStation = new Map(progress.map((item) => [item.stationId, item]));
-    loadDatabase(
-      buildPlayerSeed(
-        stations.map((station) => ({
-          ...station,
-          progress: progressByStation.get(station.id) ?? station.progress,
-        })),
-        dashboard.team,
-      ),
-    );
+    loadDatabase(await fetchPlayerDatabase());
   };
 
   return (
     <div className="movement-map-card">
       <div className="movement-map-shell">
-        {isSyncingPlayerData && (
-          <Alert type="info" showIcon message="Syncing player data..." />
-        )}
         <div className="movement-map-controls">
           {session?.role === "user" && (
             <Flex className="movement-map-legend" wrap>
@@ -656,12 +518,14 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
                 <Descriptions column={2} size="small">
                   <Descriptions.Item label="Playing Teams" span={2}>
-                    2
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Estimated Duration">
-                    {focusedTeamStation.durationMinutes ?
-                      `${focusedTeamStation.durationMinutes} minutes`
-                    : "N/A"}
+                    {Object.values(teamStations).filter((stations) =>
+                      stations.some(
+                        (item) =>
+                          item.stationId === focusedTeamStation.stationId &&
+                          (item.backendStatus === "CHECKED_IN" ||
+                            item.backendStatus === "PLAYING"),
+                      ),
+                    ).length}
                   </Descriptions.Item>
                   <Descriptions.Item label="Score">
                     {focusedTeamStation.score}
@@ -732,12 +596,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
           }
 
           if (session?.role !== "user") {
-            startStation(scanTarget.teamId, scanTarget.stationId);
-            message.success("Scan QR code successfully");
-            const stationId = scanTarget.stationId;
-            setFocusedStationId(null);
             setScanTarget(null);
-            navigate(`/stations/${stationId}`);
+            message.info("Admin cannot simulate team QR check-in");
             return;
           }
 

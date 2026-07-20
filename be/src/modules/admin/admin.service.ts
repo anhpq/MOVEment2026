@@ -1,5 +1,6 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { ActorType, Game, ProgressStatus, Team } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import {
   ForceProgressStatusDto,
@@ -10,6 +11,13 @@ import { EventConfigService } from '../event-config/event-config.service';
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateStationDto } from './dto/update-station.dto';
+import { CreateStationDto } from './dto/create-station.dto';
+import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
+import {
+  buildTeamLoginQrToken,
+  buildStationQrToken,
+  createQrTokenFingerprint,
+} from '../../common/qr/qr-token';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
 
 @Injectable()
@@ -69,6 +77,99 @@ export class AdminService {
     return progress.map((item) => this.toPublicProgress(item));
   }
 
+  async createTeam(userId: number, dto: CreateTeamDto) {
+    const games = await this.prisma.game.findMany({
+      where: { isActive: true, station: { isActive: true } },
+      orderBy: [{ station: { sortOrder: 'asc' } }, { id: 'asc' }],
+      distinct: ['stationId'],
+    });
+    const passwordHash = await bcrypt.hash(dto.password, 10);
+
+    const team = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.team.create({
+        data: {
+          name: dto.name.trim(),
+          username: dto.username.trim(),
+          captainName: dto.captainName?.trim() || dto.name.trim(),
+          passwordHash,
+          maxPossiblePoints: games.reduce((sum, game) => sum + game.maxPoints, 0),
+        },
+      });
+      const loginToken = buildTeamLoginQrToken(String(created.id));
+      await tx.team.update({
+        where: { id: created.id },
+        data: {
+          loginQrHash: await bcrypt.hash(loginToken, 10),
+          loginQrFingerprint: createQrTokenFingerprint(loginToken),
+        },
+      });
+      if (games.length) {
+        await tx.teamStationProgress.createMany({
+          data: games.map((game) => ({
+            teamId: created.id,
+            stationId: game.stationId,
+            gameId: game.id,
+            status: ProgressStatus.AVAILABLE,
+          })),
+        });
+      }
+      return tx.team.findUniqueOrThrow({ where: { id: created.id } });
+    });
+
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'CREATE_TEAM',
+      entityType: 'TEAM',
+      entityId: team.id,
+      metadata: { name: team.name, username: team.username },
+    });
+    return this.toPublicTeam(team);
+  }
+
+  async updateTeam(userId: number, teamId: number, dto: UpdateTeamDto) {
+    const team = await this.prisma.team.update({
+      where: { id: teamId },
+      data: {
+        name: dto.name?.trim(),
+        username: dto.username?.trim(),
+        captainName: dto.captainName?.trim(),
+        passwordHash: dto.password ? await bcrypt.hash(dto.password, 10) : undefined,
+      },
+    });
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'UPDATE_TEAM',
+      entityType: 'TEAM',
+      entityId: teamId,
+      metadata: { name: dto.name ?? null, username: dto.username ?? null },
+    });
+    return this.toPublicTeam(team);
+  }
+
+  async deleteTeam(userId: number, teamId: number) {
+    await this.prisma.team.findUniqueOrThrow({ where: { id: teamId } });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.scoreEvent.deleteMany({ where: { teamId } });
+      await tx.finalSubmission.deleteMany({ where: { teamId } });
+      await tx.teamStationProgress.deleteMany({ where: { teamId } });
+      await tx.teamSession.deleteMany({ where: { teamId } });
+      await tx.team.delete({ where: { id: teamId } });
+    });
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'DELETE_TEAM',
+      entityType: 'TEAM',
+      entityId: teamId,
+    });
+    return { success: true };
+  }
+
   async scoreQueue() {
     const progress = await this.prisma.teamStationProgress.findMany({
       where: {
@@ -90,6 +191,14 @@ export class AdminService {
       this.prisma.station.findMany({
         where: { isActive: true },
         orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+        include: {
+          games: {
+            where: { isActive: true },
+            orderBy: { id: 'asc' },
+            take: 1,
+            select: { type: true, maxPoints: true, mediaUrl: true },
+          },
+        },
       }),
       this.prisma.team.findMany({
         orderBy: [{ totalPoints: 'desc' }, { totalPlaySeconds: 'asc' }, { id: 'asc' }],
@@ -130,13 +239,24 @@ export class AdminService {
   }
 
   async updateStation(userId: number, stationId: string, dto: UpdateStationDto) {
-    const station = await this.prisma.station.update({
-      where: { id: stationId },
-      data: {
-        name: dto.name,
-        description: dto.description,
-        trackingMode: dto.trackingMode,
-      },
+    const station = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.station.update({
+        where: { id: stationId },
+        data: {
+          name: dto.name,
+          description: dto.description,
+          trackingMode: dto.trackingMode,
+          mapX: dto.mapX,
+          mapY: dto.mapY,
+        },
+      });
+      if (dto.mediaUrl !== undefined) {
+        await tx.game.updateMany({
+          where: { stationId, isActive: true },
+          data: { mediaUrl: dto.mediaUrl },
+        });
+      }
+      return updated;
     });
 
     await this.activityLog.log({
@@ -150,10 +270,119 @@ export class AdminService {
         name: dto.name ?? null,
         description: dto.description ?? null,
         trackingMode: dto.trackingMode ?? null,
+        mapX: dto.mapX ?? null,
+        mapY: dto.mapY ?? null,
+        mediaUrl: dto.mediaUrl ?? null,
       },
     });
 
     return station;
+  }
+
+  async createStation(userId: number, dto: CreateStationDto) {
+    const stationId = dto.id.trim().toUpperCase();
+    const [teamIds, sortOrder] = await Promise.all([
+      this.prisma.team.findMany({ select: { id: true } }),
+      this.prisma.station.count(),
+    ]);
+    const station = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.station.create({
+        data: {
+          id: stationId,
+          name: dto.name.trim(),
+          description: dto.description?.trim() || null,
+          trackingMode: dto.trackingMode,
+          mapX: dto.mapX,
+          mapY: dto.mapY,
+          sortOrder: sortOrder + 1,
+        },
+      });
+      const game = await tx.game.create({
+        data: {
+          stationId,
+          title: `${created.name} Game`,
+          type: dto.gameType.trim().toUpperCase(),
+          maxPoints: dto.maxPoints,
+          mediaUrl: dto.mediaUrl ?? null,
+        },
+      });
+      for (const purpose of ['CHECK_IN', 'CHECK_OUT'] as const) {
+        const rawToken = buildStationQrToken(stationId, purpose);
+        await tx.qrToken.create({
+          data: {
+            stationId,
+            purpose,
+            tokenHash: await bcrypt.hash(rawToken, 10),
+            tokenFingerprint: createQrTokenFingerprint(rawToken),
+          },
+        });
+      }
+      if (teamIds.length) {
+        await tx.teamStationProgress.createMany({
+          data: teamIds.map(({ id }) => ({
+            teamId: id,
+            stationId,
+            gameId: game.id,
+            status: ProgressStatus.AVAILABLE,
+          })),
+        });
+        await tx.team.updateMany({
+          data: { maxPossiblePoints: { increment: dto.maxPoints } },
+        });
+      }
+      return created;
+    });
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'CREATE_STATION',
+      entityType: 'STATION',
+      entityId: stationId,
+      metadata: { maxPoints: dto.maxPoints, gameType: dto.gameType },
+    });
+    return station;
+  }
+
+  async deleteStation(userId: number, stationId: string) {
+    const game = await this.prisma.game.findFirst({
+      where: { stationId, isActive: true },
+    });
+    const station = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.station.update({
+        where: { id: stationId },
+        data: { isActive: false },
+      });
+      await tx.qrToken.updateMany({
+        where: { stationId },
+        data: { isActive: false },
+      });
+      await tx.game.updateMany({
+        where: { stationId },
+        data: { isActive: false },
+      });
+      if (game?.maxPoints) {
+        const teams = await tx.team.findMany({
+          select: { id: true, maxPossiblePoints: true },
+        });
+        for (const team of teams) {
+          await tx.team.update({
+            where: { id: team.id },
+            data: { maxPossiblePoints: Math.max(0, team.maxPossiblePoints - game.maxPoints) },
+          });
+        }
+      }
+      return updated;
+    });
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'DEACTIVATE_STATION',
+      entityType: 'STATION',
+      entityId: stationId,
+    });
+    return { success: true, station };
   }
 
   async submitScore(userId: number, progressId: number, dto: SubmitScoreDto) {

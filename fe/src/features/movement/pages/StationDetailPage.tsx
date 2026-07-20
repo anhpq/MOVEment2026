@@ -25,73 +25,23 @@ import {useMovementStore} from "../store";
 import {formatDateTime, formatDurationFromMs} from "../utils";
 import {
   checkOutStation,
-  getPlayerDashboard,
-  getPlayerProgress,
-  getPlayerStations,
+  cancelPlayerStation,
+  submitCipherAnswer,
+  editAdminProgressScore,
+  forceAdminProgressStatus,
+  reopenAdminProgress,
+  submitAdminProgressScore,
   submitStationScore,
-  type PlayerProgressResponse,
-  type PlayerStationResponse,
 } from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
+import {fetchPlayerDatabase} from "../playerData";
+import {fetchAdminDatabase} from "../adminData";
 
 type ScoreFormValues = {
   score: number;
   confirmationCode: string;
   reason?: string;
 };
-
-function mapProgressStatus(status: PlayerProgressResponse["status"]) {
-  if (status === "COMPLETED") return "Finish" as const;
-  if (status === "PLAYING" || status === "CHECKED_IN") return "In Progress" as const;
-  return "New" as const;
-}
-
-function buildPlayerSeed(
-  stations: PlayerStationResponse[],
-  dashboardTeam: Awaited<ReturnType<typeof getPlayerDashboard>>["team"],
-) {
-  const teamId = String(dashboardTeam.id);
-  return {
-    activeTeamId: teamId,
-    teams: [
-      {
-        id: teamId,
-        name: dashboardTeam.name,
-        username: dashboardTeam.username ?? `team${dashboardTeam.id}`,
-        password: "",
-        score: dashboardTeam.totalPoints,
-        finish: 0,
-        totalTimeMinutes: Math.round(dashboardTeam.totalPlaySeconds / 60),
-      },
-    ],
-    stationDefinitions: stations.map((station) => ({
-      id: station.id,
-      name: station.name,
-      description: station.description ?? station.game?.clueText ?? null,
-      durationMinutes: 0,
-      trackingMode: station.trackingMode ?? "BOTH",
-      youtubeUrl: station.game?.mediaUrl ?? null,
-      markerX: station.mapX,
-      markerY: station.mapY,
-    })),
-    teamStations: {
-      [teamId]: stations.map((station) => ({
-        id: `${teamId}-${station.id}`,
-        name: station.name,
-        status: mapProgressStatus(station.progress?.status ?? "AVAILABLE"),
-        description: station.description ?? station.game?.clueText ?? null,
-        durationMinutes: 0,
-        trackingMode: station.trackingMode ?? "BOTH",
-        youtubeUrl: station.game?.mediaUrl ?? null,
-        score: station.progress?.scoreAchieved ?? station.game?.maxPoints ?? 0,
-        startTime: station.progress?.checkedInAt ?? null,
-        endTime: station.progress?.completedAt ?? station.progress?.checkedOutAt ?? null,
-        teamId,
-        stationId: station.id,
-      })),
-    },
-  };
-}
 
 export function StationDetailPage() {
   const navigate = useNavigate();
@@ -101,8 +51,6 @@ export function StationDetailPage() {
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
-  const finishStation = useMovementStore((state) => state.finishStation);
-  const resetStation = useMovementStore((state) => state.resetStation);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [adminForm] = Form.useForm<ScoreFormValues>();
   const [scoreForm] = Form.useForm<ScoreFormValues>();
@@ -118,6 +66,16 @@ export function StationDetailPage() {
     (item) => item.stationId === params.stationId,
   );
   const stationStartTime = station?.startTime ?? null;
+  const playingTeamCount = station
+    ? Object.values(teamStations).filter((stations) =>
+        stations.some(
+          (item) =>
+            item.stationId === station.stationId &&
+            (item.backendStatus === "CHECKED_IN" ||
+              item.backendStatus === "PLAYING"),
+        ),
+      ).length
+    : 0;
   const canShowLiveClock = Boolean(
     stationStartTime && session?.role === "user",
   );
@@ -165,21 +123,11 @@ export function StationDetailPage() {
   };
 
   const refreshPlayerData = async () => {
-    const [dashboard, stations, progress] = await Promise.all([
-      getPlayerDashboard(),
-      getPlayerStations(),
-      getPlayerProgress(),
-    ]);
-    const progressByStation = new Map(progress.map((item) => [item.stationId, item]));
-    loadDatabase(
-      buildPlayerSeed(
-        stations.map((item) => ({
-          ...item,
-          progress: progressByStation.get(item.id) ?? item.progress,
-        })),
-        dashboard.team,
-      ),
-    );
+    loadDatabase(await fetchPlayerDatabase());
+  };
+
+  const refreshAdminData = async () => {
+    loadDatabase(await fetchAdminDatabase());
   };
 
   return (
@@ -193,10 +141,7 @@ export function StationDetailPage() {
         </Typography.Paragraph>
         <Descriptions column={2} size="small">
           <Descriptions.Item label="Playing Teams" span={2}>
-            2
-          </Descriptions.Item>
-          <Descriptions.Item label="Estimated Duration">
-            {station.durationMinutes ? `${station.durationMinutes} minutes` : "N/A"}
+            {playingTeamCount}
           </Descriptions.Item>
           <Descriptions.Item label="Score">{station.score}</Descriptions.Item>
           <Descriptions.Item label="Start Time">
@@ -235,8 +180,26 @@ export function StationDetailPage() {
               shape="round"
               icon={<CheckCircleOutlined />}
               onClick={() => setIsFinishScannerOpen(true)}>
-              Finish
+              Finished
             </Button>
+            {station.gameType === "CIPHER" && (
+              <Button onClick={() => {
+                const answer = window.prompt("Enter cipher answer");
+                if (answer) void submitCipherAnswer(station.stationId, answer)
+                  .then(() => message.success("Cipher answer accepted"))
+                  .catch((error: unknown) => message.error(error instanceof Error ? error.message : "Wrong answer"));
+              }}>Submit Cipher</Button>
+            )}
+            <Button danger icon={<ReloadOutlined />} onClick={async () => {
+              try {
+                await cancelPlayerStation(station.stationId);
+                await refreshPlayerData();
+                message.success("Station cancelled; cooldown applied");
+                navigate("/stations/map");
+              } catch (error) {
+                message.error(error instanceof Error ? error.message : "Cancel failed");
+              }
+            }}>Cancel Station</Button>
           </Flex>
         </Card>
       : <Card className="surface-card">
@@ -251,10 +214,22 @@ export function StationDetailPage() {
                   "The score and endTime will be updated to the current time.",
                 okText: "Save",
                 cancelText: "Cancel",
-                onOk: () => {
-                  finishStation(activeTeamId, station.stationId, values.score);
-                  message.success("Score saved successfully");
-                  navigate("/stations");
+                onOk: async () => {
+                  if (!station.progressId) throw new Error("Progress record is unavailable");
+                  try {
+                    if (station.backendStatus === "COMPLETED") {
+                      if (!values.reason?.trim()) throw new Error("Reason is required when editing score");
+                      await editAdminProgressScore(station.progressId, values.score, values.reason.trim());
+                    } else {
+                      await submitAdminProgressScore(station.progressId, values.score, values.reason?.trim());
+                    }
+                    await refreshAdminData();
+                    message.success("Score saved successfully");
+                    navigate("/stations");
+                  } catch (error) {
+                    message.error(error instanceof Error ? error.message : "Unable to save score");
+                    throw error;
+                  }
                 },
               });
             }}>
@@ -263,6 +238,9 @@ export function StationDetailPage() {
               name="score"
               rules={[{required: true}]}>
               <InputNumber min={0} max={1000} className="full-width" />
+            </Form.Item>
+            <Form.Item label="Reason" name="reason" rules={[{required: station.backendStatus === "COMPLETED"}]}>
+              <Input.TextArea rows={2} placeholder="Required when editing an existing score" />
             </Form.Item>
             <Space className="full-width" size={12}>
               <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
@@ -279,10 +257,22 @@ export function StationDetailPage() {
                       "The status will revert to New and start/end time will be cleared.",
                     okText: "Reset",
                     cancelText: "Cancel",
-                    onOk: () => {
-                      resetStation(activeTeamId, station.stationId);
-                      message.success("Status reset successfully");
-                      navigate("/stations");
+                    onOk: async () => {
+                      if (!station.progressId) throw new Error("Progress record is unavailable");
+                      try {
+                        const reason = "Reset by admin from station detail";
+                        if (station.backendStatus === "COMPLETED") {
+                          await reopenAdminProgress(station.progressId, reason);
+                        } else {
+                          await forceAdminProgressStatus(station.progressId, "AVAILABLE", reason);
+                        }
+                        await refreshAdminData();
+                        message.success("Status reset successfully");
+                        navigate("/stations");
+                      } catch (error) {
+                        message.error(error instanceof Error ? error.message : "Unable to reset status");
+                        throw error;
+                      }
                     },
                   });
                 }}>
@@ -304,12 +294,6 @@ export function StationDetailPage() {
         onOk={async () => {
           if (session.role !== "user") {
             setIsFinishScannerOpen(false);
-            if (station.trackingMode === "TIME") {
-              finishStation(activeTeamId, station.stationId, 0);
-              message.success("Time-only station completed");
-              navigate("/stations");
-              return;
-            }
             scoreForm.setFieldsValue({score: station.score});
             setIsScoreModalOpen(true);
             return;
@@ -381,11 +365,23 @@ export function StationDetailPage() {
               cancelText: "Cancel",
               onOk: async () => {
                 if (session.role !== "user") {
-                  finishStation(activeTeamId, station.stationId, values.score);
-                  message.success("Station completed successfully");
-                  setIsScoreModalOpen(false);
-                  navigate("/stations");
-                  return;
+                  if (!station.progressId) throw new Error("Progress record is unavailable");
+                  try {
+                    if (station.backendStatus === "COMPLETED") {
+                      if (!values.reason?.trim()) throw new Error("Reason is required when editing score");
+                      await editAdminProgressScore(station.progressId, values.score, values.reason.trim());
+                    } else {
+                      await submitAdminProgressScore(station.progressId, values.score, values.reason?.trim());
+                    }
+                    await refreshAdminData();
+                    message.success("Station completed successfully");
+                    setIsScoreModalOpen(false);
+                    navigate("/stations");
+                    return;
+                  } catch (error) {
+                    message.error(error instanceof Error ? error.message : "Unable to submit score");
+                    throw error;
+                  }
                 }
 
                 setIsSubmittingScore(true);

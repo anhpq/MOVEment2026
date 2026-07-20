@@ -3,13 +3,15 @@ import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {TeamFormValues} from "../types";
+import {createAdminTeam, updateAdminTeam} from "../api";
+import {fetchAdminDatabase} from "../adminData";
 
 export function TeamEditorPage() {
   const navigate = useNavigate();
   const params = useParams<{teamId: string}>();
   const {modal, message} = AntdApp.useApp();
   const teams = useMovementStore((state) => state.teams);
-  const saveTeam = useMovementStore((state) => state.saveTeam);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [form] = Form.useForm<TeamFormValues>();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -47,17 +49,6 @@ export function TeamEditorPage() {
         form={form}
         layout="horizontal"
         onFinish={(values) => {
-          const duplicate = teams.some(
-            (item) => item.id === values.id && item.id !== team?.id,
-          );
-
-          if (duplicate) {
-            message.error(
-              "Team ID already exists. Please choose a different ID.",
-            );
-            return;
-          }
-
           modal.confirm({
             centered: true,
             title: isEditing ? "Update Team?" : "Create New Team?",
@@ -65,23 +56,34 @@ export function TeamEditorPage() {
               "The new team will have all stations initialized to the 'New' state.",
             okText: "Confirm",
             cancelText: "Cancel",
-            onOk: () => {
-              saveTeam(values, team?.id);
-              message.success(
-                isEditing ?
-                  "Team updated successfully"
-                : "New team created successfully",
-              );
-              handleClose();
+            onOk: async () => {
+              try {
+                if (team) {
+                  await updateAdminTeam(team.id, {
+                    name: values.name,
+                    username: values.username,
+                    captainName: values.captainName,
+                    password: values.password || undefined,
+                  });
+                } else {
+                  await createAdminTeam({
+                    name: values.name,
+                    username: values.username,
+                    captainName: values.captainName,
+                    password: values.password,
+                  });
+                }
+                loadDatabase(await fetchAdminDatabase());
+                message.success(isEditing ? "Team updated successfully" : "New team created successfully");
+                handleClose();
+              } catch (error) {
+                message.error(error instanceof Error ? error.message : "Unable to save team");
+                throw error;
+              }
             },
           });
         }}>
-        <Form.Item
-          label="ID"
-          name="id"
-          rules={[{required: true, message: "Please enter a team ID"}]}>
-          <Input disabled={isEditing} placeholder="TEAM11" />
-        </Form.Item>
+        {isEditing && <Form.Item label="ID"><Input disabled value={team?.id} /></Form.Item>}
         <Form.Item
           label="Name"
           name="name"
@@ -95,25 +97,30 @@ export function TeamEditorPage() {
           <Input placeholder="team11" />
         </Form.Item>
         <Form.Item
+          label="Captain"
+          name="captainName">
+          <Input placeholder="Captain name" />
+        </Form.Item>
+        <Form.Item
           label="Password"
           name="password"
           rules={[
-            {required: true, message: "Please enter a team password"},
+            {required: !isEditing, message: "Please enter a team password"},
             {min: 5, message: "Password must be at least 5 characters long"},
           ]}>
-          <Input.Password placeholder="team11" />
+          <Input.Password placeholder={isEditing ? "Leave blank to keep current password" : "team11"} />
         </Form.Item>
         <Form.Item label="Score" name="score" rules={[{required: true}]}>
-          <InputNumber min={0} className="full-width" />
+          <InputNumber disabled min={0} className="full-width" />
         </Form.Item>
-        <Form.Item label="Finish" name="finish" rules={[{required: true}]}>
-          <InputNumber min={0} max={99} className="full-width" />
+        <Form.Item label="Finished" name="finish" rules={[{required: true}]}>
+          <InputNumber disabled min={0} max={99} className="full-width" />
         </Form.Item>
         <Form.Item
           label="Total Time (min)"
           name="totalTimeMinutes"
           rules={[{required: true}]}>
-          <InputNumber min={0} className="full-width" />
+          <InputNumber disabled min={0} className="full-width" />
         </Form.Item>
         <Button type="primary" htmlType="submit" block>
           {isEditing ? "Update Team Info" : "Create Team"}

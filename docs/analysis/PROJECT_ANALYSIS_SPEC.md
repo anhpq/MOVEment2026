@@ -41,6 +41,8 @@ Mỗi station có `tracking_mode`: `SCORE`, `TIME`, hoặc `BOTH`. Admin chỉnh
 
 `LOCKED`, `AVAILABLE`, `CHECKED_IN`, `PLAYING`, `COMPLETED`.
 
+Mọi trạm thường đang active được khởi tạo ở trạng thái `AVAILABLE` cho mỗi team. Hệ thống không khóa theo thứ tự trạm; rule một active station cho mỗi team vẫn ngăn team chơi đồng thời nhiều trạm. `LOCKED` chỉ dùng khi admin khóa thủ công hoặc khi backend áp dụng giới hạn thời gian sự kiện.
+
 Không tạo status riêng cho waiting score, cancel hoặc reopen. Waiting score được xác định bằng `checked_out_at != null` và `completed_at == null`.
 
 ## Event và Final

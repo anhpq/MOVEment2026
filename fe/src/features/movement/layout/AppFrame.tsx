@@ -4,6 +4,8 @@ import {
   QrcodeOutlined,
   SettingOutlined,
   TeamOutlined,
+  TrophyOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import {Button, Layout, Typography, Image, Flex} from "antd";
 import type {PropsWithChildren} from "react";
@@ -113,6 +115,16 @@ export function AppFrame({children}: AppFrameProps) {
               `Stations (${totalStation})`
             : totalStation}
           </Button>
+          <Button size="large" shape="round"
+            type={location.pathname.startsWith("/leaderboard") ? "primary" : "default"}
+            icon={<TrophyOutlined />} onClick={() => navigate("/leaderboard")}>
+            Rank
+          </Button>
+          {session.role === "user" && (
+            <Button size="large" shape="round"
+              type={location.pathname.startsWith("/final") ? "primary" : "default"}
+              onClick={() => navigate("/final")}>Final</Button>
+          )}
           {session.role === "user" && (
             <Button
               size="large"
@@ -125,6 +137,13 @@ export function AppFrame({children}: AppFrameProps) {
               icon={<EnvironmentOutlined />}
               onClick={() => navigate("/stations/map")}>
               Map
+            </Button>
+          )}
+          {session.role !== "user" && (
+            <Button size="large" shape="round"
+              type={location.pathname.startsWith("/admin/operations") ? "primary" : "default"}
+              icon={<DashboardOutlined />} onClick={() => navigate("/admin/operations")}>
+              Ops
             </Button>
           )}
           {session.role !== "user" && (

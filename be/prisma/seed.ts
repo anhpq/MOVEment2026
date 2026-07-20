@@ -149,8 +149,7 @@ async function main() {
       },
     });
 
-    for (let index = 0; index < stations.length; index += 1) {
-      const stationId = stations[index][0];
+    for (const [stationId] of stations) {
       const game = await prisma.game.findFirstOrThrow({ where: { stationId } });
       await prisma.teamStationProgress.upsert({
         where: { teamId_stationId: { teamId: team.id, stationId } },
@@ -158,7 +157,7 @@ async function main() {
           teamId: team.id,
           stationId,
           gameId: game.id,
-          status: index < 2 ? ProgressStatus.AVAILABLE : ProgressStatus.LOCKED,
+          status: ProgressStatus.AVAILABLE,
         },
         update: {},
       });

@@ -8,6 +8,7 @@
 - [x] Mỗi station có QR check-in và QR check-out riêng, token/fingerprint unique.
 - [x] Mỗi station có tracking mode lưu DB: `SCORE`, `TIME`, hoặc `BOTH`; mode `SCORE` không cộng thời lượng vì check-out time bằng check-in time, mode `TIME` auto-complete ở QR end với score 0.
 - [x] Một active station cho mỗi team.
+- [x] Mọi station active được seed `AVAILABLE`; không khóa/mở tuần tự theo vị trí station.
 - [x] Cancel về `AVAILABLE` với cooldown.
 - [x] Staff nhập điểm trên team session với mã xác nhận.
 - [x] Admin score/edit/reopen/status override.
@@ -107,3 +108,6 @@ Acceptance:
 ## Remaining external handoff
 
 - [ ] Cấu hình và validate production CORS/secrets trên deploy target thật. Local code đã fail-fast cho secret mặc định và wildcard CORS, nhưng chỉ mark `[x]` sau khi có domain frontend production, secret production, và API deployed để test login/CORS credentials.
+- [x] Integrate Admin bootstrap, team CRUD, and station quick status/score updates with backend APIs (verified 2026-07-20).
+- [x] Remove legacy frontend dummy data/database fallback and hard-coded station metrics (verified 2026-07-20).
+- [x] Integrate Station CRUD/map/media, Player leaderboard/cancel/cipher/Final, and Admin operations screens (verified 2026-07-20).

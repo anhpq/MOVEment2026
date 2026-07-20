@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Param,
@@ -24,6 +25,8 @@ import {
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { AdminService } from './admin.service';
 import { UpdateStationDto } from './dto/update-station.dto';
+import { CreateStationDto } from './dto/create-station.dto';
+import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.ADMIN)
@@ -39,6 +42,28 @@ export class AdminController {
   @Get('teams')
   teams() {
     return this.adminService.teams();
+  }
+
+  @Post('teams')
+  createTeam(@CurrentAuth() auth: AuthContext, @Body() dto: CreateTeamDto) {
+    return this.adminService.createTeam(this.requireAdminId(auth), dto);
+  }
+
+  @Patch('teams/:teamId')
+  updateTeam(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Body() dto: UpdateTeamDto,
+  ) {
+    return this.adminService.updateTeam(this.requireAdminId(auth), teamId, dto);
+  }
+
+  @Delete('teams/:teamId')
+  deleteTeam(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+  ) {
+    return this.adminService.deleteTeam(this.requireAdminId(auth), teamId);
   }
 
   @Get('teams/:teamId/progress')
@@ -67,6 +92,19 @@ export class AdminController {
       stationId,
       dto,
     );
+  }
+
+  @Post('stations')
+  createStation(@CurrentAuth() auth: AuthContext, @Body() dto: CreateStationDto) {
+    return this.adminService.createStation(this.requireAdminId(auth), dto);
+  }
+
+  @Delete('stations/:stationId')
+  deleteStation(
+    @CurrentAuth() auth: AuthContext,
+    @Param('stationId') stationId: string,
+  ) {
+    return this.adminService.deleteStation(this.requireAdminId(auth), stationId);
   }
 
   @Post('progress/:progressId/score')

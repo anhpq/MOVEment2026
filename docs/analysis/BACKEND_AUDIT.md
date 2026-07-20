@@ -1,5 +1,23 @@
 # Backend Audit Status
 
+## 2026-07-20 Remaining feature integration
+
+- Added audited Admin Station create/update/deactivate APIs. Creation provisions a game, two purpose-specific QR tokens, and AVAILABLE progress for every team; deactivation preserves history and disables game/QR use.
+- Added frontend Player leaderboard, station cancel, cipher submission, and Final Challenge routes.
+- Added Admin Operations UI for dashboard, score queue, event config, activity logs, report export, Final config and submissions.
+- Removed the legacy `system-admin` role and remaining Admin simulated check-in branch; map marker/media changes now persist through the backend.
+- Backend build, frontend build/lint and read-only runtime smoke checks passed.
+- The current backend `node_modules` is production-only/incomplete, so backend lint/tests could not be rerun locally (`typescript-eslint` and `jest` are absent). This does not affect the successful Nest build or runtime smoke result; rerun `npm ci` before the full backend quality gate.
+
+## 2026-07-20 Runtime test-data cleanup
+
+- Removed the legacy frontend dummy dataset/page/components and `public/assets/database.json`.
+- Removed credential-bearing QR rehearsal fallback and demo credentials from the login screen; QR login now accepts only team QR tokens.
+- Removed generated fake station scores/timestamps from the local normalization fallback.
+- Replaced hard-coded `Playing Teams = 2` with a count derived from backend progress state.
+- Removed the unsupported estimated-duration field from station cards and the Admin station editor.
+- PostgreSQL rehearsal seed and automated test fixtures remain intentionally isolated from production runtime data.
+
 Last updated: 2026-07-19
 
 ## Verification completed
@@ -27,6 +45,11 @@ Last updated: 2026-07-19
 - Database recovery rehearsal passed: `pg_dump` created a custom-format backup, `pg_restore` restored it into `movement_restore_codex_20260719`, a temporary API on port `3001` returned admin dashboard data, and report export from the restored database produced a non-empty workbook.
 - Frontend lint now passes cleanly after fixing `StationMap.tsx` hook dependencies and the `StationsMapPanel.tsx` effect-state lint violation.
 - Frontend production build passes; Vite still reports a non-blocking large chunk warning for the bundled app.
+- Player startup bootstrap was consolidated on 2026-07-19: team, station, and progress APIs load in parallel through one shared mapper; authenticated player routes wait for backend data instead of rendering the local seed; login no longer races the persisted-session redirect; and the large map image begins preloading immediately after team authentication. Frontend lint and production build both pass after the change.
+- Player bootstrap regression fixed on 2026-07-20: `normalizeSqlTeams()` now distinguishes normalized frontend `Team` objects (`id`/`name`) from raw SQL team rows (`team_id`/`team_name`) before calling SQL-only normalization. This removes the post-login `Cannot read properties of undefined (reading 'trim')` error. Frontend lint and production build pass.
+- Station list check-in flow was corrected on 2026-07-20: the former simulated success action now uses the shared camera/manual QR input, submits the decoded token to the backend check-in endpoint, refreshes player data, and navigates only after backend acceptance. Frontend lint and production build pass.
+- Initial station availability was corrected on 2026-07-20: seed now creates every active team/station progress as `AVAILABLE` instead of opening only the first two stations. Existing `LOCKED` progress rows in the local rehearsal API were force-opened through the audited admin status endpoint; the one-active-station and event-time guards remain authoritative.
+- Frontend completed-state copy was standardized on 2026-07-20: the player/admin UI now displays `Finished` consistently while the backend/API status remains `COMPLETED`.
 
 ## Backend work still required
 
@@ -51,3 +74,10 @@ Last updated: 2026-07-19
 ## Next recommended task
 
 Validate production CORS and secrets in the deployed environment. This cannot be marked complete from the local workspace without the real deploy target, production frontend origin, and production secret values.
+## 2026-07-20 Admin integration verification
+
+- Admin bootstrap now reads `/api/admin/progress-matrix`; the local JSON seed is no longer the source of truth for the Admin role.
+- Team create/update/delete are backed by audited Admin endpoints. Creation initializes AVAILABLE progress for every active station and generates a team login QR credential; deletion removes related sessions, progress, scores and final submissions transactionally.
+- Station quick status/score updates now use the existing audited progress status and score endpoints. `COMPLETED` remains score-driven and cannot be forced directly.
+- Backend build, frontend build and frontend lint passed.
+- Runtime smoke test passed against the rehearsal database: Admin login, 25-team/10-station progress matrix, team create (10 progress rows initialized), update, and transactional delete.

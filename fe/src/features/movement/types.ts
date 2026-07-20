@@ -1,6 +1,6 @@
-export type Role = "user" | "admin" | "system-admin";
+export type Role = "user" | "admin";
 
-export type StationStatus = "New" | "In Progress" | "Finish";
+export type StationStatus = "New" | "In Progress" | "Finished";
 export type StationTrackingMode = "SCORE" | "TIME" | "BOTH";
 
 export type Session = {
@@ -25,6 +25,7 @@ export type Team = {
   score: number;
   finish: number;
   totalTimeMinutes: number;
+  captainName?: string;
 };
 
 export type StationDefinition = {
@@ -53,6 +54,10 @@ export type TeamStation = {
   endTime: string | null;
   teamId: string;
   stationId: string;
+  progressId?: number;
+  maxPoints?: number;
+  backendStatus?: "LOCKED" | "AVAILABLE" | "CHECKED_IN" | "PLAYING" | "COMPLETED";
+  gameType?: string;
 };
 
 export type StationFormValues = {
@@ -61,6 +66,11 @@ export type StationFormValues = {
   description?: string | null;
   durationMinutes: number;
   trackingMode: StationTrackingMode;
+  markerX?: number;
+  markerY?: number;
+  gameType?: string;
+  maxPoints?: number;
+  youtubeUrl?: string | null;
 };
 
 export type TeamFormValues = {
@@ -71,6 +81,7 @@ export type TeamFormValues = {
   score: number;
   finish: number;
   totalTimeMinutes: number;
+  captainName?: string;
 };
 
 export type SqlUser = {

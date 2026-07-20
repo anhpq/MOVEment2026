@@ -214,7 +214,7 @@ function createFinishedStation(
 ): TeamStation {
   return {
     ...station,
-    status: "Finish",
+    status: "Finished",
     score,
     startTime: station.startTime ?? now,
     endTime: now,

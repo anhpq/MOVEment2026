@@ -1,5 +1,5 @@
 import { StationTrackingMode } from '@prisma/client';
-import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, Min } from 'class-validator';
 
 export class UpdateStationDto {
   @IsOptional()
@@ -15,4 +15,21 @@ export class UpdateStationDto {
   @IsOptional()
   @IsEnum(StationTrackingMode)
   trackingMode?: StationTrackingMode;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  mapX?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  mapY?: number;
+
+  @IsOptional()
+  @IsUrl()
+  @MaxLength(500)
+  mediaUrl?: string | null;
 }
