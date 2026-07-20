@@ -61,9 +61,22 @@ This starts:
 - Backend API: `http://localhost:3000`
 - Frontend: `http://localhost:4173`
 
+The Docker frontend uses same-origin browser requests such as
+`/api/auth/team-login`. Vite preview proxies those requests inside Docker to
+`http://api:3000` via the server-side `API_PROXY_TARGET` environment variable.
+That Docker service URL is not exposed in the browser bundle.
+
 The first run installs dependencies inside Docker volumes, applies migrations,
 seeds local test data, and builds both apps. Keep the terminal open while
 testing. Press `Ctrl+C` to stop the app.
+
+Useful Docker smoke checks:
+
+```powershell
+docker compose -f docker-compose.tester.yml exec frontend node -e "fetch('http://api:3000/api/docs').then(r => console.log(r.status))"
+curl.exe -i http://localhost:3000/api/docs
+curl.exe -i -X POST http://localhost:4173/api/auth/team-login -H "Content-Type: application/json" -d "{\"username\":\"team01\",\"password\":\"team01\",\"deviceLabel\":\"curl\"}"
+```
 
 To remove the tester database and start fresh:
 

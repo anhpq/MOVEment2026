@@ -39,12 +39,23 @@ By default the frontend calls the API with relative paths such as:
 /api/auth/team-login
 ```
 
-Vite development proxies `/api` to the local backend at `http://localhost:3000`
-through `vite.config.ts`. For local preview modes that do not use the Vite dev
-proxy, set an explicit API origin:
+Vite development and preview both proxy `/api` to the backend target from
+`API_PROXY_TARGET`. When running Vite directly on the host, it defaults to
+`http://localhost:3000`.
+
+For Docker Compose, the frontend container sets:
+
+```text
+API_PROXY_TARGET=http://api:3000
+```
+
+`API_PROXY_TARGET` is a server-side Vite setting and is not exposed in the
+browser bundle. Do not set `VITE_API_BASE_URL` for the Docker tester flow.
+
+For local preview against a non-default backend, set:
 
 ```powershell
-$env:VITE_API_BASE_URL="http://localhost:3000"
+$env:API_PROXY_TARGET="http://localhost:3000"
 npm run build
 npm run preview -- --host 0.0.0.0 --port 4173
 ```

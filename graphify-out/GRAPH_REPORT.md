@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-07-20)
 
 ## Corpus Check
-- 126 files · ~148,373 words
+- 126 files · ~148,681 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1012 nodes · 1913 edges · 73 communities (59 shown, 14 thin omitted)
+- 1014 nodes · 1915 edges · 90 communities (64 shown, 26 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3b9e984e`
+- Built from commit: `e2dffc1d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -45,6 +45,7 @@
 - tsconfig.json
 - jest.config.ts
 - deploy.sh
+- vite.config.ts
 - MOVEment 2026 - Current Specification
 - graphify reference: query, path, explain
 - Prompt 02 - Phân tích màn hình Player
@@ -76,11 +77,28 @@
 - PrismaService
 - validate-environment.ts
 - admin.controller.ts
+- admin.service.ts
+- scripts
+- UpdateStationDto
 - scripts
 - package.json
+- UpdateEventConfigDto
 - @eslint/js
 - eslint-plugin-react-hooks
 - @types/react
+- package.json
+- RolesGuard
+- eslint
+- globals
+- @nestjs/schematics
+- @nestjs/testing
+- source-map-support
+- ts-node
+- @types/bcryptjs
+- @types/node
+- typescript
+- typescript-eslint
+- vite
 
 ## God Nodes (most connected - your core abstractions)
 1. `AuthContext` - 39 edges
@@ -97,8 +115,8 @@
 ## Surprising Connections (you probably didn't know these)
 - `bootstrap()` --indirect_call--> `AppModule`  [INFERRED]
   be/src/main.ts → be/src/app.module.ts
-- `App()` --calls--> `logout()`  [EXTRACTED]
-  fe/src/App.tsx → fe/src/features/movement/api.ts
+- `AdminController` --references--> `Roles()`  [EXTRACTED]
+  be/src/modules/admin/admin.controller.ts → be/src/common/auth/auth.decorators.ts
 - `StationsMapPanel()` --calls--> `fetchAdminDatabase()`  [EXTRACTED]
   fe/src/features/movement/components/StationsMapPanel.tsx → fe/src/features/movement/adminData.ts
 - `useMovementBootstrap()` --calls--> `fetchAdminDatabase()`  [EXTRACTED]
@@ -109,43 +127,43 @@
 ## Import Cycles
 - None detected.
 
-## Communities (73 total, 14 thin omitted)
+## Communities (90 total, 26 thin omitted)
 
 ### Community 0 - "AuthContext"
 Cohesion: 0.06
-Nodes (44): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, Roles() (+36 more)
+Nodes (47): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, JwtAuthGuard (+39 more)
 
 ### Community 1 - "AdminService"
-Cohesion: 0.26
-Nodes (13): cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml(), sanitizeSheetName(), sheetXml() (+5 more)
+Cohesion: 0.29
+Nodes (12): cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml(), sanitizeSheetName(), sheetXml() (+4 more)
 
 ### Community 2 - "dependencies"
-Cohesion: 0.04
-Nodes (46): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+38 more)
+Cohesion: 0.07
+Nodes (29): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+21 more)
 
 ### Community 3 - "PlayerService"
-Cohesion: 0.06
-Nodes (53): logout(), ROLE_LABELS, STATUS_ORDER, AppFrame(), AppFrameProps, ProtectedRoute(), ProtectedRouteProps, buildFinishedTeamStations() (+45 more)
+Cohesion: 0.11
+Nodes (28): ROLE_LABELS, STATUS_ORDER, createStoreState(), AuthAccount, LocalDatabase, LocalDatabaseSeed, Role, SqlProgressStatus (+20 more)
 
 ### Community 4 - "dependencies"
 Cohesion: 0.10
 Nodes (21): @ant-design/icons, antd, dependencies, @ant-design/icons, antd, konva, lodash, react (+13 more)
 
 ### Community 5 - "devDependencies"
-Cohesion: 0.06
-Nodes (33): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schematics, @nestjs/testing, prisma (+25 more)
+Cohesion: 0.15
+Nodes (13): devDependencies, jest, @nestjs/cli, prisma, ts-jest, @types/express, @types/jest, jest (+5 more)
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.11
-Nodes (19): eslint-plugin-react-refresh, devDependencies, eslint-plugin-react-refresh, globals, sass, @types/node, @types/react-dom, typescript (+11 more)
+Nodes (19): eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-refresh, globals, sass, @types/node, @types/react-dom (+11 more)
 
 ### Community 7 - "utils.ts"
 Cohesion: 0.25
 Nodes (15): apiDownloadBlob(), ApiError, apiRequest(), buildApiUrl(), fetchApi(), getAccessToken(), getConfiguredApiBaseUrl(), getContentType() (+7 more)
 
 ### Community 8 - "store.ts"
-Cohesion: 0.09
-Nodes (27): main(), prisma, stations, teamColors, teams, buildStationQrToken(), buildTeamLoginQrToken(), createQrTokenFingerprint() (+19 more)
+Cohesion: 0.29
+Nodes (9): main(), prisma, stations, teamColors, teams, buildStationQrToken(), buildTeamLoginQrToken(), createQrTokenFingerprint() (+1 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.08
@@ -156,16 +174,16 @@ Cohesion: 0.25
 Nodes (7): name, private, scripts, tester, tester:docker, tester:no-seed, version
 
 ### Community 11 - "StationsMapPanel.tsx"
-Cohesion: 0.19
-Nodes (19): checkInStation(), editAdminProgressScore(), forceAdminProgressStatus(), buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent(), getMarkerFill() (+11 more)
+Cohesion: 0.15
+Nodes (22): checkInStation(), BarcodeDetectorConstructor, BarcodeDetectorLike, getBarcodeDetector(), QrTokenInput(), QrTokenInputProps, buildFallbackPositions(), buildMarkerPosition() (+14 more)
 
 ### Community 12 - "PrismaService"
-Cohesion: 0.06
-Nodes (36): AppModule, Module, ActivityLogService, Injectable, Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment (+28 more)
+Cohesion: 0.07
+Nodes (30): AppModule, Module, ActivityLogService, Injectable, Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment (+22 more)
 
 ### Community 13 - "FinalService"
-Cohesion: 0.11
-Nodes (16): ArrayMinSize, SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto, FinalService (+8 more)
+Cohesion: 0.08
+Nodes (23): ArrayMinSize, Roles(), SubmitFinalDto, IsInt, IsOptional, IsString, Min, UpdateFinalConfigDto (+15 more)
 
 ### Community 14 - "compilerOptions"
 Cohesion: 0.10
@@ -181,7 +199,7 @@ Nodes (19): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib
 
 ### Community 17 - "app.module.ts"
 Cohesion: 0.11
-Nodes (17): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration, 2026-07-20 Runtime test-data cleanup (+9 more)
+Nodes (18): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 Docker frontend API proxy fix, 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration (+10 more)
 
 ### Community 18 - "api.ts"
 Cohesion: 0.14
@@ -212,8 +230,8 @@ Cohesion: 0.22
 Nodes (8): graphify reference: extra exports and benchmark, Step 6b - Wiki (only if --wiki flag), Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag), Step 7a - FalkorDB export (only if --falkordb or --falkordb-push flag), Step 7b - SVG export (only if --svg flag), Step 7c - GraphML export (only if --graphml flag), Step 7d - MCP server (only if --mcp flag), Step 8 - Token reduction benchmark (only if total_words > 5000)
 
 ### Community 26 - "seed.ts"
-Cohesion: 0.22
-Nodes (15): cancelPlayerStation(), checkOutStation(), reopenAdminProgress(), submitAdminProgressScore(), submitCipherAnswer(), submitStationScore(), apiPost(), BarcodeDetectorConstructor (+7 more)
+Cohesion: 0.33
+Nodes (12): cancelPlayerStation(), checkOutStation(), editAdminProgressScore(), forceAdminProgressStatus(), reopenAdminProgress(), submitAdminProgressScore(), submitCipherAnswer(), submitStationScore() (+4 more)
 
 ### Community 33 - "MOVEment 2026 - Current Specification"
 Cohesion: 0.25
@@ -288,28 +306,44 @@ Cohesion: 0.33
 Nodes (5): Context, Output, Prompt 08 - Implementation Sync, Rules, Task
 
 ### Community 59 - "validate-environment.ts"
-Cohesion: 0.17
+Cohesion: 0.18
 Nodes (11): CreateStationDto, IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUrl, Matches (+3 more)
 
 ### Community 60 - "xlsx-report.ts"
-Cohesion: 0.07
-Nodes (12): Get, AdminService, Injectable, IsEnum, IsNumber, IsOptional, IsString, IsUrl (+4 more)
+Cohesion: 0.10
+Nodes (3): Get, AdminService, Injectable
 
 ### Community 61 - "init.sql"
 Cohesion: 0.33
 Nodes (5): Build Frontend, Install Nginx Config, Nginx Frontend Deploy, Publish Static Files, Verify
 
 ### Community 62 - "routes.tsx"
-Cohesion: 0.22
-Nodes (11): App(), createAdminTeam(), getMe(), updateAdminTeam(), useMovementBootstrap(), StationsMapPage(), TeamEditorPage(), TeamListPage() (+3 more)
+Cohesion: 0.16
+Nodes (16): App(), createAdminTeam(), getMe(), logout(), updateAdminTeam(), useMovementBootstrap(), AppFrame(), AppFrameProps (+8 more)
 
 ### Community 64 - "PrismaService"
 Cohesion: 0.15
 Nodes (21): getPlayerDashboard(), getPlayerProgress(), getPlayerStations(), loginTeam(), loginTeamWithQr(), loginUser(), PlayerProgressResponse, PlayerStationResponse (+13 more)
 
+### Community 65 - "validate-environment.ts"
+Cohesion: 0.12
+Nodes (20): buildFinishedTeamStations(), buildPatchedTeamStations(), buildResetTeamStations(), buildStartedTeamStations(), buildTeamStationsWithoutStation(), buildTeamStationsWithUpdatedStation(), createFinishedStation(), createNewTeamStation() (+12 more)
+
 ### Community 66 - "admin.controller.ts"
 Cohesion: 0.50
 Nodes (3): MOVEment 2026 QR Payloads, Station QR payloads, Team login QR payloads
+
+### Community 67 - "admin.service.ts"
+Cohesion: 0.31
+Nodes (7): CreateTeamDto, IsOptional, IsString, MaxLength, MinLength, UpdateTeamDto, XlsxSheet
+
+### Community 68 - "scripts"
+Cohesion: 0.17
+Nodes (12): scripts, build, lint, prisma:deploy, prisma:generate, prisma:migrate, seed, start (+4 more)
+
+### Community 70 - "UpdateStationDto"
+Cohesion: 0.22
+Nodes (9): IsEnum, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, Min (+1 more)
 
 ### Community 71 - "scripts"
 Cohesion: 0.33
@@ -319,25 +353,33 @@ Nodes (6): scripts, build, build:prod, dev, lint, preview
 Cohesion: 0.40
 Nodes (4): name, private, type, version
 
+### Community 73 - "UpdateEventConfigDto"
+Cohesion: 0.29
+Nodes (6): IsInt, IsOptional, IsString, Matches, Min, UpdateEventConfigDto
+
+### Community 77 - "package.json"
+Cohesion: 0.33
+Nodes (5): description, license, name, private, version
+
 ## Knowledge Gaps
-- **333 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+328 more)
+- **335 isolated node(s):** `deploy.sh script`, `NODE_ENV`, `config`, `$schema`, `collection` (+330 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AdminService` connect `xlsx-report.ts` to `AuthContext`, `store.ts`, `PrismaService`, `AppFrame.tsx`?**
+- **Why does `AdminService` connect `xlsx-report.ts` to `store.ts`, `UpdateEventConfigDto`, `admin.service.ts`, `PrismaService`?**
   _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **Why does `AuthContext` connect `AuthContext` to `store.ts`, `AppFrame.tsx`?**
+- **Why does `AuthContext` connect `AuthContext` to `admin.service.ts`, `FinalService`, `AppFrame.tsx`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `PrismaService` connect `PrismaService` to `AuthContext`, `store.ts`, `FinalService`, `AppFrame.tsx`, `xlsx-report.ts`?**
+- **Why does `PrismaService` connect `PrismaService` to `AuthContext`, `admin.service.ts`, `store.ts`, `FinalService`, `AppFrame.tsx`, `xlsx-report.ts`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `NODE_ENV`, `config` to the rest of the system?**
-  _333 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _335 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.062172284644194754 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05656565656565657 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
 - **Should `PlayerService` be split into smaller, more focused modules?**
-  _Cohesion score 0.05704365079365079 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11397849462365592 - nodes in this community are weakly interconnected._

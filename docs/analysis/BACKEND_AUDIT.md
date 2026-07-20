@@ -1,5 +1,13 @@
 # Backend Audit Status
 
+## 2026-07-20 Docker frontend API proxy fix
+
+- Root cause confirmed: `fe/vite.config.ts` proxied `/api` to `http://localhost:3000`, which points at the frontend container when Vite preview runs inside Docker; `docker-compose.tester.yml` also set client-side `VITE_API_BASE_URL=http://localhost:3000`.
+- Fixed Vite config to use server-side `API_PROXY_TARGET`, defaulting to `http://localhost:3000` for host-local Vite runs, and applied the same proxy to both `server.proxy` and `preview.proxy`.
+- Docker frontend now sets `API_PROXY_TARGET=http://api:3000` and no longer sets `VITE_API_BASE_URL`, so browser requests stay same-origin `/api/...` and Docker service URLs are not exposed in the bundle.
+- Added an API healthcheck for `GET http://127.0.0.1:3000/api/docs` and made the frontend wait for the API service to be healthy before starting preview. Backend route `POST /api/auth/team-login` exists in `AuthController`, and the API command applies Prisma deploy/seed before `start:prod`.
+- Verification: frontend lint/build passed; `docker compose -f docker-compose.tester.yml config` validated the resolved compose model; built bundle search found no `api:3000`, `localhost:3000`, or `/api/api`. Live compose smoke could not run on this machine because Docker daemon is not running (`docker_engine` pipe missing).
+
 ## 2026-07-20 heroes.nalth.top SPA routing fallback
 
 - Confirmed frontend uses React Router `BrowserRouter` in `fe/src/main.tsx`; `/login`, `/teams`, `/stations`, and related paths are client-side routes in `fe/src/features/movement/routes.tsx`, not physical files in `fe/dist`.
