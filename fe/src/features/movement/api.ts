@@ -1,7 +1,7 @@
 import type { Session } from "./types"
 import type { StationTrackingMode } from "./types"
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() || 'http://localhost:3000'
 const SESSION_STORAGE_KEY = 'movement-session'
 
 export class ApiError extends Error {

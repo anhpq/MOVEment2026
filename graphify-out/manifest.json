@@ -5,8 +5,8 @@
     "semantic_hash": "f3ac3b2a9ea0318f3996ee96fd1f8cac"
   },
   "be/deploy/deploy.sh": {
-    "mtime": 1784560861.0458517,
-    "ast_hash": "e3254324b485994b03e5f27bc746920c",
+    "mtime": 1784563726.6093395,
+    "ast_hash": "7a84ba9fc56e9f78551c0924ec417ba0",
     "semantic_hash": ""
   },
   "be/jest.config.ts": {
@@ -240,8 +240,8 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784563501.2966912,
-    "ast_hash": "798b91499d00ba537c178bc5d83231a6",
+    "mtime": 1784563816.2367852,
+    "ast_hash": "affb91a9075ecc907b457c4b981a4512",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -270,8 +270,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/LoginPage.tsx": {
-    "mtime": 1784563481.090567,
-    "ast_hash": "33dc4088e79d636895ac608ea44c9a2d",
+    "mtime": 1784563701.3581011,
+    "ast_hash": "bd6e46e54ff54ea69fdcc72ad2fe05f6",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
@@ -410,13 +410,13 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1784562031.9631317,
-    "ast_hash": "601fbd06d5e0e8da19e286fe929b28fa",
+    "mtime": 1784563726.6093395,
+    "ast_hash": "f7dca6f477e5a51ae75f7873c5e7a035",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
-    "mtime": 1784560861.0438523,
-    "ast_hash": "36576ab35f3e6035c8ff39d41c0301a7",
+    "mtime": 1784563805.6598413,
+    "ast_hash": "30a753c5b5c706004f4ad2d2b96d7bc0",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784562031.9651325,
-    "ast_hash": "eaff775ef164e6c3a0f4ac00f6dc9683",
+    "mtime": 1784563726.6113448,
+    "ast_hash": "5b0648629718a566a63333fffbeaec6e",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784563532.7147775,
-    "ast_hash": "ad2839dc684e628734b677e7363fa15b",
+    "mtime": 1784563842.8905537,
+    "ast_hash": "c8012658096294373f4121a64ad8bc4e",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
