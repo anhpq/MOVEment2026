@@ -68,13 +68,12 @@ Acceptance:
 
 ### 3. Validate production env trên môi trường deploy
 
-- [x] Bật workflow Deploy Backend (ECS) trên `master` + `workflow_dispatch`; workflow truyền `DEPLOY_BRANCH=master` vào `be/deploy/deploy.sh` (không sửa app code `be/`/`fe/`).
-- [x] GitHub secrets `ECS_HOST`, `ECS_USER`, `ECS_SSH_KEY` đã có trên repo (verified 2026-07-20).
-- [ ] Set production secrets thật trên host `/opt/movement/app/be/.env`: `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, `CORS_ORIGIN`.
-- [ ] Đảm bảo `CORS_ORIGIN` là domain frontend thật hoặc CSV domains, không có `*`.
-- [ ] Merge workflow lên `master`, chạy `workflow_dispatch`, xác nhận API start với `NODE_ENV=production`.
-- [ ] Từ frontend deployed origin, gọi login/team-login để xác nhận CORS credentials hoạt động.
-- [ ] Mark P1 CORS/secrets là `[x]` chỉ sau khi test trên deploy target.
+- [x] Bật workflow Deploy Backend (ECS) trên `master` + `workflow_dispatch`; workflow truyền `DEPLOY_BRANCH=master` vào `be/deploy/deploy.sh`.
+- [x] GitHub secrets `ECS_HOST` / `ECS_USER` / `ECS_SSH_KEY` aligned to `101.46.14.57` / `root` / PEM (2026-07-20).
+- [x] One-time ECS host bootstrap: `/opt/movement/app` on `master`, Node 20 + pm2 startup, `be/.env` complete (`PORT=8080`, CORS → OBS website), Postgres `movement` login fixed, Nest `movement-api` online; `GET :8080/api/docs` = 200.
+- [ ] Merge latest `be-deploy.yml` + `deploy.sh` (`npm ci --include=dev`) to `master` and confirm Actions `workflow_dispatch` succeeds.
+- [ ] Từ frontend OBS origin (`https://movement.obs-website.ap-southeast-3.myhuaweicloud.com`), gọi login/team-login để xác nhận CORS credentials.
+- [ ] Mark P1 CORS/secrets là `[x]` chỉ sau khi CORS login test trên deploy target pass.
 
 Acceptance:
 

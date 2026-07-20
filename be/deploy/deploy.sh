@@ -16,12 +16,13 @@ git checkout "${DEPLOY_BRANCH}"
 git reset --hard "origin/${DEPLOY_BRANCH}"
 
 cd be
-export NODE_ENV=production
+# nest CLI lives in devDependencies; include them for build even when NODE_ENV=production
 if [ -f package-lock.json ]; then
-  npm ci
+  npm ci --include=dev
 else
   npm install
 fi
+export NODE_ENV=production
 npm run build
 npm run prisma:deploy
 

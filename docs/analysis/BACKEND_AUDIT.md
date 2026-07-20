@@ -74,16 +74,24 @@ Last updated: 2026-07-19
 ## 2026-07-20 Backend production CI/CD
 
 - Re-enabled [`.github/workflows/be-deploy.yml`](../../.github/workflows/be-deploy.yml): push/merge to `master` on `be/**` (or the workflow file) deploys via SSH to Huawei ECS; `workflow_dispatch` supported for manual runs.
-- Workflow sets `DEPLOY_BRANCH=master` and calls existing `be/deploy/deploy.sh` (no app-code changes under `be/` / `fe/`).
-- Host path: `/opt/movement/app` → refresh `master` → require `be/.env` → `npm ci` / build / `prisma migrate deploy` → PM2 (`movement-api`) or systemd.
-- Required host env: `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, `CORS_ORIGIN` (FE prod origin; no `*`). Required GitHub secrets: `ECS_HOST`, `ECS_USER`, `ECS_SSH_KEY` (already present on the repo as of 2026-07-20).
-- FE remains path-filtered to OBS; future apps should add a separate path-filtered workflow per app.
-- Ops checklist (one-time): Node 20+ and pm2/systemd on ECS; git SSH access to clone/fetch the repo; production `.env` at `/opt/movement/app/be/.env`; then merge this workflow to `master` and run Actions → Deploy Backend (ECS).
-- Local verification (2026-07-20): workflow YAML parses; `ECS_*` secrets listed via `gh secret list`. Live `workflow_dispatch` still pending until the enabled workflow is on `master`. After first successful deploy, validate CORS/login from the FE origin and mark P1 CORS/secrets complete.
+- Workflow sets `DEPLOY_BRANCH=master` and calls `be/deploy/deploy.sh` (`npm ci --include=dev` so Nest CLI is available for build).
+- Host path: `/opt/movement/app` → refresh `master` → require `be/.env` → build → `prisma migrate deploy` → PM2 (`movement-api`).
+
+## 2026-07-20 BE host bootstrap (`101.46.14.57`)
+
+- One-time host setup completed on Ubuntu 22.04 as `root` (PEM `backend_test_poc.pem`).
+- Runtime present: Node 20.20.2, npm 10.8.2, pm2 7.0.3, git 2.34.1; `pm2-root` systemd enabled.
+- Git checkout repaired: clean `master` clone at `/opt/movement/app` (previous empty `.git` tree moved aside). Host git uses HTTPS credentials (`url.insteadOf` + `/root/.git-credentials`) because the GitHub token lacked deploy-key/admin scopes.
+- Production `be/.env` restored and completed: `PORT=8080`, `SCORING_CODE` set (non-`2468`), `CORS_ORIGIN=https://movement.obs-website.ap-southeast-3.myhuaweicloud.com`. Existing `DATABASE_URL`/`JWT_SECRET` preserved. Postgres role `movement` granted LOGIN and password synced to `.env`.
+- Legacy Python API `movement-be.service` (uvicorn on `:8080`) stopped/disabled so Nest can bind the FE-facing port.
+- Manual deploy smoke: migrations applied, `pm2` process `movement-api` online, `GET http://101.46.14.57:8080/api/docs` → **200**.
+- GitHub secrets `ECS_HOST` / `ECS_USER` / `ECS_SSH_KEY` refreshed to this host + PEM. `*.pem` added to `.gitignore`.
+- Remaining: merge latest workflow + `deploy.sh` fix to `master`, run Actions `workflow_dispatch`, then confirm browser CORS login from the OBS FE origin. Note `SCORING_CODE` lives only on the host `.env` (not in git).
 
 ## Next recommended task
 
-Validate production CORS and secrets on the live ECS host after the first successful Actions deploy (set real `.env`, confirm API start, login from the deployed FE origin). This cannot be marked complete from the local workspace without the real deploy target, production frontend origin, and production secret values.
+Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` changes, then validate login/CORS from `https://movement.obs-website.ap-southeast-3.myhuaweicloud.com`.
+
 ## 2026-07-20 Admin integration verification
 
 - Admin bootstrap now reads `/api/admin/progress-matrix`; the local JSON seed is no longer the source of truth for the Admin role.

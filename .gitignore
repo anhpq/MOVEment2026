@@ -19,6 +19,8 @@ fe/coverage/
 !be/.env.example
 !be/deploy/.env.example
 !fe/.env.example
+*.pem
+backend_test_poc.pem
 
 # Logs
 logs/
