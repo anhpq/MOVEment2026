@@ -114,3 +114,12 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - The compose runner uses a dedicated PostgreSQL volume, applies Prisma migrations, seeds test data, builds backend/frontend, and exposes frontend on `http://localhost:4173` and API docs on `http://localhost:3000/api/docs`.
 - Added root `npm.cmd run tester:docker` as a convenience wrapper around `docker compose -f docker-compose.tester.yml up --build`.
 - Verification note: root npm script listing passed. Docker compose config/runtime verification could not be run on this machine because Docker CLI is not installed.
+
+## 2026-07-20 Agent and Markdown docs refresh
+
+- Standardized `AGENTS.md` into a clearer agent contract: `AGENTS.md` first, relevant project docs second, Graphify only when useful, source files last, and small scoped edits.
+- Clarified that Graphify is advisory and must not override direct user instructions, privacy rules, `AGENTS.md`, or architecture docs.
+- Replaced the frontend template README with MOVEment-specific frontend run/build/verification notes.
+- Updated the backlog execution checklist so Graphify update follows `AGENTS.md` and runs when useful/available rather than being treated as an unconditional first step.
+- Compared Markdown docs against backend controllers, frontend routes, frontend API client, and Prisma schema. Updated `be/README.md` API route list and `fe/README.md` frontend route list to match source.
+- Verification: reviewed Markdown diffs; no source code changed. `graphify update .` completed and regenerated `graphify-out/` artifacts, with warnings that `hooks.json` produced zero nodes and SQL extraction needs `tree_sitter_sql`.
