@@ -154,8 +154,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_package",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "package.json"
     },
     {
@@ -165,8 +165,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "be_package_name",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "name"
     },
     {
@@ -176,8 +176,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_package_version",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "version"
     },
     {
@@ -187,8 +187,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_package_private",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "private"
     },
     {
@@ -198,8 +198,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_package_description",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "description"
     },
     {
@@ -209,8 +209,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_package_license",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "license"
     },
     {
@@ -220,8 +220,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_package_scripts",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "scripts"
     },
     {
@@ -231,8 +231,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_package_scripts_build",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "build"
     },
     {
@@ -242,8 +242,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_package_scripts_start",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "start"
     },
     {
@@ -253,8 +253,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "be_package_scripts_start_dev",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "start:dev"
     },
     {
@@ -264,8 +264,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "be_package_scripts_start_prod",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "start:prod"
     },
     {
@@ -275,8 +275,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_package_scripts_lint",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "lint"
     },
     {
@@ -286,8 +286,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_package_scripts_test",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "test"
     },
     {
@@ -297,8 +297,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_package_scripts_test_watch",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "test:watch"
     },
     {
@@ -308,8 +308,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_package_scripts_prisma_generate",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "prisma:generate"
     },
     {
@@ -319,8 +319,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_package_scripts_prisma_migrate",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "prisma:migrate"
     },
     {
@@ -330,8 +330,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_package_scripts_prisma_deploy",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "prisma:deploy"
     },
     {
@@ -341,8 +341,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "be_package_scripts_seed",
-      "community": 68,
-      "community_name": "scripts",
+      "community": 2,
+      "community_name": "dependencies",
       "norm_label": "seed"
     },
     {
@@ -704,8 +704,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_schematics",
-      "community": 81,
-      "community_name": "@nestjs/schematics",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/schematics"
     },
     {
@@ -715,8 +715,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "nestjs_schematics",
-      "community": 81,
-      "community_name": "@nestjs/schematics",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/schematics"
     },
     {
@@ -726,8 +726,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_testing",
-      "community": 82,
-      "community_name": "@nestjs/testing",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -737,8 +737,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "nestjs_testing",
-      "community": 82,
-      "community_name": "@nestjs/testing",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -748,8 +748,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_package_devdependencies_types_bcryptjs",
-      "community": 85,
-      "community_name": "@types/bcryptjs",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@types/bcryptjs"
     },
     {
@@ -759,8 +759,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "types_bcryptjs",
-      "community": 85,
-      "community_name": "@types/bcryptjs",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@types/bcryptjs"
     },
     {
@@ -814,8 +814,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_package_devdependencies_types_node",
-      "community": 86,
-      "community_name": "@types/node",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@types/node"
     },
     {
@@ -825,8 +825,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_package_json_types_node",
-      "community": 86,
-      "community_name": "@types/node",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@types/node"
     },
     {
@@ -836,8 +836,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "be_package_devdependencies_eslint",
-      "community": 79,
-      "community_name": "eslint",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -847,8 +847,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "be_package_json_eslint",
-      "community": 79,
-      "community_name": "eslint",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "eslint"
     },
     {
@@ -858,8 +858,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "be_package_devdependencies_globals",
-      "community": 80,
-      "community_name": "globals",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "globals"
     },
     {
@@ -869,8 +869,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "be_package_json_globals",
-      "community": 80,
-      "community_name": "globals",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "globals"
     },
     {
@@ -924,8 +924,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "be_package_devdependencies_source_map_support",
-      "community": 83,
-      "community_name": "source-map-support",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "source-map-support"
     },
     {
@@ -935,8 +935,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "source_map_support",
-      "community": 83,
-      "community_name": "source-map-support",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "source-map-support"
     },
     {
@@ -968,8 +968,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "be_package_devdependencies_ts_node",
-      "community": 84,
-      "community_name": "ts-node",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "ts-node"
     },
     {
@@ -979,8 +979,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "ts_node",
-      "community": 84,
-      "community_name": "ts-node",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "ts-node"
     },
     {
@@ -990,8 +990,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "be_package_devdependencies_typescript",
-      "community": 87,
-      "community_name": "typescript",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "typescript"
     },
     {
@@ -1001,8 +1001,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "be_package_json_typescript",
-      "community": 87,
-      "community_name": "typescript",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "typescript"
     },
     {
@@ -1012,8 +1012,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "be_package_devdependencies_typescript_eslint",
-      "community": 88,
-      "community_name": "typescript-eslint",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "typescript-eslint"
     },
     {
@@ -1023,8 +1023,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "be_package_json_typescript_eslint",
-      "community": 88,
-      "community_name": "typescript-eslint",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "typescript-eslint"
     },
     {
@@ -1199,8 +1199,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_app_module_appmodule",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "appmodule"
     },
     {
@@ -1210,8 +1210,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_app_module_ts_module",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "module"
     },
     {
@@ -1232,8 +1232,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "activitylogservice"
     },
     {
@@ -1243,8 +1243,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_ts_injectable",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "injectable"
     },
     {
@@ -1254,8 +1254,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".constructor()"
     },
     {
@@ -1276,8 +1276,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_tojson",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".tojson()"
     },
     {
@@ -1287,8 +1287,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "auth-context.ts"
     },
     {
@@ -1298,8 +1298,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authtype",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "authtype"
     },
     {
@@ -1320,8 +1320,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_adminauthcontext",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "adminauthcontext"
     },
     {
@@ -1331,8 +1331,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_teamauthcontext",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "teamauthcontext"
     },
     {
@@ -1342,8 +1342,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_isadmin",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "isadmin()"
     },
     {
@@ -1364,8 +1364,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_decorators",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "auth.decorators.ts"
     },
     {
@@ -1397,8 +1397,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_spec",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": "jwt-auth.guard.spec.ts"
     },
     {
@@ -1408,8 +1408,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": "jwt-auth.guard.ts"
     },
     {
@@ -1419,8 +1419,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtpayload",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": "jwtpayload"
     },
     {
@@ -1430,8 +1430,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": "jwtauthguard"
     },
     {
@@ -1441,8 +1441,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_ts_injectable",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": "injectable"
     },
     {
@@ -1452,8 +1452,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_constructor",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": ".constructor()"
     },
     {
@@ -1463,8 +1463,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_canactivate",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 77,
+      "community_name": "package.json",
       "norm_label": ".canactivate()"
     },
     {
@@ -1474,8 +1474,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "roles.guard.ts"
     },
     {
@@ -1485,8 +1485,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard",
-      "community": 78,
-      "community_name": "RolesGuard",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "rolesguard"
     },
     {
@@ -1496,8 +1496,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_ts_injectable",
-      "community": 78,
-      "community_name": "RolesGuard",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "injectable"
     },
     {
@@ -1507,8 +1507,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_constructor",
-      "community": 78,
-      "community_name": "RolesGuard",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -1518,8 +1518,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_canactivate",
-      "community": 78,
-      "community_name": "RolesGuard",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": ".canactivate()"
     },
     {
@@ -1529,8 +1529,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "score.dto.ts"
     },
     {
@@ -1540,8 +1540,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_submitscoredto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "submitscoredto"
     },
     {
@@ -1551,8 +1551,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isint",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "isint"
     },
     {
@@ -1562,8 +1562,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_min",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "min"
     },
     {
@@ -1573,8 +1573,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isoptional",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "isoptional"
     },
     {
@@ -1584,8 +1584,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isstring",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "isstring"
     },
     {
@@ -1595,8 +1595,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_maxlength",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "maxlength"
     },
     {
@@ -1606,8 +1606,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_teamsubmitscoredto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "teamsubmitscoredto"
     },
     {
@@ -1617,8 +1617,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_minlength",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "minlength"
     },
     {
@@ -1628,8 +1628,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_reopenprogressdto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "reopenprogressdto"
     },
     {
@@ -1639,8 +1639,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_forceprogressstatusdto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "forceprogressstatusdto"
     },
     {
@@ -1650,8 +1650,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isenum",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "isenum"
     },
     {
@@ -1716,8 +1716,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_spec",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "validate-environment.spec.ts"
     },
     {
@@ -1727,8 +1727,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_spec_productionenvironment",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "productionenvironment"
     },
     {
@@ -1738,8 +1738,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_config_validate_environment",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "validate-environment.ts"
     },
     {
@@ -1749,8 +1749,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_environment",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "environment"
     },
     {
@@ -1760,8 +1760,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_requiredproductionvalue",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "requiredproductionvalue()"
     },
     {
@@ -1771,8 +1771,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_parsecorsorigin",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "parsecorsorigin()"
     },
     {
@@ -1782,8 +1782,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_validateenvironment",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "validateenvironment()"
     },
     {
@@ -1793,8 +1793,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_main",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "main.ts"
     },
     {
@@ -1804,8 +1804,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_main_bootstrap",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 70,
+      "community_name": "UpdateStationDto",
       "norm_label": "bootstrap()"
     },
     {
@@ -1859,8 +1859,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_get",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "get"
     },
     {
@@ -1947,8 +1947,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_dashboard",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".dashboard()"
     },
     {
@@ -1958,8 +1958,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teams",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".teams()"
     },
     {
@@ -2013,8 +2013,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_scorequeue",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".scorequeue()"
     },
     {
@@ -2024,8 +2024,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_progressmatrix",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".progressmatrix()"
     },
     {
@@ -2112,8 +2112,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_eventconfig",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".eventconfig()"
     },
     {
@@ -2134,8 +2134,8 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_activitylogs",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": ".activitylogs()"
     },
     {
@@ -2233,8 +2233,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".constructor()"
     },
     {
@@ -2398,8 +2398,8 @@
       "source_location": "L476",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_geteventconfig",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".geteventconfig()"
     },
     {
@@ -2552,8 +2552,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto",
-      "community": 67,
-      "community_name": "admin.service.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "create-station.dto.ts"
     },
     {
@@ -2772,8 +2772,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_updatestationdto",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "updatestationdto"
     },
     {
@@ -2783,8 +2783,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isoptional",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isoptional"
     },
     {
@@ -2794,8 +2794,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isstring",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isstring"
     },
     {
@@ -2805,8 +2805,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_maxlength",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "maxlength"
     },
     {
@@ -2816,8 +2816,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isenum",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isenum"
     },
     {
@@ -2827,8 +2827,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isnumber",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isnumber"
     },
     {
@@ -2838,8 +2838,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_min",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "min"
     },
     {
@@ -2849,8 +2849,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_max",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "max"
     },
     {
@@ -2860,8 +2860,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isurl",
-      "community": 70,
-      "community_name": "UpdateStationDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isurl"
     },
     {
@@ -2871,8 +2871,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xlsx-report.ts"
     },
     {
@@ -2882,8 +2882,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxcell",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xlsxcell"
     },
     {
@@ -2893,8 +2893,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxsheet",
-      "community": 67,
-      "community_name": "admin.service.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xlsxsheet"
     },
     {
@@ -2904,8 +2904,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipentry",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "zipentry"
     },
     {
@@ -2915,8 +2915,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crctable",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "crctable"
     },
     {
@@ -2926,8 +2926,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_createworkbookxlsx",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "createworkbookxlsx()"
     },
     {
@@ -2937,8 +2937,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sheetxml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "sheetxml()"
     },
     {
@@ -2948,8 +2948,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_cellxml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "cellxml()"
     },
     {
@@ -2959,8 +2959,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_columnname",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "columnname()"
     },
     {
@@ -2970,8 +2970,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xmldeclaration",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "xmldeclaration()"
     },
     {
@@ -2981,8 +2981,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_escapexml",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "escapexml()"
     },
     {
@@ -2992,8 +2992,8 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sanitizesheetname",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "sanitizesheetname()"
     },
     {
@@ -3003,8 +3003,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crc32",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "crc32()"
     },
     {
@@ -3014,8 +3014,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipfiles",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "zipfiles()"
     },
     {
@@ -3025,8 +3025,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_spec",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "auth.controller.spec.ts"
     },
     {
@@ -3036,8 +3036,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_spec_mockauthservice",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "mockauthservice"
     },
     {
@@ -3047,8 +3047,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "auth.controller.ts"
     },
     {
@@ -3058,8 +3058,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "authcontroller"
     },
     {
@@ -3069,8 +3069,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_controller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "controller"
     },
     {
@@ -3080,8 +3080,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_post",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "post"
     },
     {
@@ -3091,8 +3091,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_body",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "body"
     },
     {
@@ -3124,8 +3124,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_constructor",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3135,8 +3135,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginuser",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".loginuser()"
     },
     {
@@ -3146,8 +3146,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginteam",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".loginteam()"
     },
     {
@@ -3157,8 +3157,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginteamwithqr",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".loginteamwithqr()"
     },
     {
@@ -3223,8 +3223,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_spec",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "auth.service.spec.ts"
     },
     {
@@ -3234,8 +3234,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_spec_mockprisma",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "mockprisma"
     },
     {
@@ -3245,8 +3245,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_spec_mockjwtservice",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "mockjwtservice"
     },
     {
@@ -3256,8 +3256,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "auth.service.ts"
     },
     {
@@ -3267,8 +3267,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "authservice"
     },
     {
@@ -3278,8 +3278,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_ts_injectable",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "injectable"
     },
     {
@@ -3289,8 +3289,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".constructor()"
     },
     {
@@ -3300,8 +3300,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginuser",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".loginuser()"
     },
     {
@@ -3311,8 +3311,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginteam",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".loginteam()"
     },
     {
@@ -3322,8 +3322,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginteamwithqr",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".loginteamwithqr()"
     },
     {
@@ -3333,8 +3333,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_issueteamsession",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".issueteamsession()"
     },
     {
@@ -3366,8 +3366,8 @@
       "source_location": "L218",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_toteamresponse",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".toteamresponse()"
     },
     {
@@ -3377,8 +3377,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_login_dto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "login.dto.ts"
     },
     {
@@ -3388,8 +3388,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_login_dto_userlogindto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "userlogindto"
     },
     {
@@ -3399,8 +3399,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_login_dto_ts_isstring",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "isstring"
     },
     {
@@ -3410,8 +3410,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_login_dto_ts_minlength",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "minlength"
     },
     {
@@ -3421,8 +3421,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_login_dto_teamlogindto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "teamlogindto"
     },
     {
@@ -3432,8 +3432,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_login_dto_ts_isoptional",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "isoptional"
     },
     {
@@ -3443,8 +3443,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_team_qr_login_dto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "team-qr-login.dto.ts"
     },
     {
@@ -3454,8 +3454,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_team_qr_login_dto_teamqrlogindto",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "teamqrlogindto"
     },
     {
@@ -3465,8 +3465,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_team_qr_login_dto_ts_isstring",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "isstring"
     },
     {
@@ -3476,8 +3476,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_team_qr_login_dto_ts_minlength",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "minlength"
     },
     {
@@ -3487,8 +3487,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_dto_team_qr_login_dto_ts_isoptional",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "isoptional"
     },
     {
@@ -3509,8 +3509,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_updateeventconfigdto",
-      "community": 73,
-      "community_name": "UpdateEventConfigDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "updateeventconfigdto"
     },
     {
@@ -3520,8 +3520,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isoptional",
-      "community": 73,
-      "community_name": "UpdateEventConfigDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isoptional"
     },
     {
@@ -3531,8 +3531,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isstring",
-      "community": 73,
-      "community_name": "UpdateEventConfigDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isstring"
     },
     {
@@ -3542,8 +3542,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_matches",
-      "community": 73,
-      "community_name": "UpdateEventConfigDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "matches"
     },
     {
@@ -3553,8 +3553,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isint",
-      "community": 73,
-      "community_name": "UpdateEventConfigDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "isint"
     },
     {
@@ -3564,8 +3564,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_min",
-      "community": 73,
-      "community_name": "UpdateEventConfigDto",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "min"
     },
     {
@@ -3575,8 +3575,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "event-config.controller.ts"
     },
     {
@@ -3586,8 +3586,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "eventconfigcontroller"
     },
     {
@@ -3597,8 +3597,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_ts_controller",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "controller"
     },
     {
@@ -3608,8 +3608,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_ts_get",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "get"
     },
     {
@@ -3619,8 +3619,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".constructor()"
     },
     {
@@ -3630,8 +3630,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller_getpublicconfig",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".getpublicconfig()"
     },
     {
@@ -3674,8 +3674,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "event-config.service.ts"
     },
     {
@@ -3685,8 +3685,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "eventconfigservice"
     },
     {
@@ -3696,8 +3696,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_ts_injectable",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "injectable"
     },
     {
@@ -3707,8 +3707,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".constructor()"
     },
     {
@@ -3718,8 +3718,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getconfig",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".getconfig()"
     },
     {
@@ -3729,8 +3729,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getpublicconfig",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".getpublicconfig()"
     },
     {
@@ -3740,8 +3740,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_updateconfig",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".updateconfig()"
     },
     {
@@ -3751,8 +3751,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispasteventend",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".ispasteventend()"
     },
     {
@@ -3762,8 +3762,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispastlocaltime",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".ispastlocaltime()"
     },
     {
@@ -3773,8 +3773,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_assertvalidtimezone",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".assertvalidtimezone()"
     },
     {
@@ -3784,8 +3784,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getlocaldatetimeparts",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 73,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".getlocaldatetimeparts()"
     },
     {
@@ -3916,8 +3916,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "final.controller.ts"
     },
     {
@@ -4158,8 +4158,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 13,
+      "community_name": "FinalService",
       "norm_label": "final.service.ts"
     },
     {
@@ -4191,8 +4191,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service_finalservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".constructor()"
     },
     {
@@ -4334,8 +4334,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "player-actions.dto.ts"
     },
     {
@@ -4345,8 +4345,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_qractiondto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "qractiondto"
     },
     {
@@ -4356,8 +4356,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_isstring",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "isstring"
     },
     {
@@ -4367,8 +4367,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_minlength",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "minlength"
     },
     {
@@ -4378,8 +4378,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_submitcipherdto",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "submitcipherdto"
     },
     {
@@ -4455,8 +4455,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "player.controller.ts"
     },
     {
@@ -4697,8 +4697,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 78,
+      "community_name": "RolesGuard",
       "norm_label": "player.service.spec.ts"
     },
     {
@@ -4708,8 +4708,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_progress",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 78,
+      "community_name": "RolesGuard",
       "norm_label": "progress"
     },
     {
@@ -4719,8 +4719,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockprisma",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 78,
+      "community_name": "RolesGuard",
       "norm_label": "mockprisma"
     },
     {
@@ -4730,8 +4730,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockeventconfig",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 78,
+      "community_name": "RolesGuard",
       "norm_label": "mockeventconfig"
     },
     {
@@ -4741,8 +4741,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockactivitylog",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 78,
+      "community_name": "RolesGuard",
       "norm_label": "mockactivitylog"
     },
     {
@@ -4752,8 +4752,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "player.service.ts"
     },
     {
@@ -4785,8 +4785,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_constructor",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".constructor()"
     },
     {
@@ -4884,8 +4884,8 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitscore",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".submitscore()"
     },
     {
@@ -5016,8 +5016,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 67,
+      "community_name": "admin.service.ts",
       "norm_label": "prisma.service.ts"
     },
     {
@@ -5027,8 +5027,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "prismaservice"
     },
     {
@@ -5038,8 +5038,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_ts_injectable",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "injectable"
     },
     {
@@ -5049,8 +5049,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduleinit",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".onmoduleinit()"
     },
     {
@@ -5060,8 +5060,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduledestroy",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": ".onmoduledestroy()"
     },
     {
@@ -5904,8 +5904,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "fe_package_devdependencies_eslint",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 79,
+      "community_name": "eslint",
       "norm_label": "eslint"
     },
     {
@@ -5915,8 +5915,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "fe_package_json_eslint",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 79,
+      "community_name": "eslint",
       "norm_label": "eslint"
     },
     {
@@ -6058,8 +6058,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "fe_package_devdependencies_vite",
-      "community": 89,
-      "community_name": "vite",
+      "community": 6,
+      "community_name": "devDependencies",
       "norm_label": "vite"
     },
     {
@@ -6069,8 +6069,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "vite",
-      "community": 89,
-      "community_name": "vite",
+      "community": 6,
+      "community_name": "devDependencies",
       "norm_label": "vite"
     },
     {
@@ -6102,8 +6102,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "admindata.ts"
     },
     {
@@ -6113,8 +6113,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata_displaystatus",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "displaystatus()"
     },
     {
@@ -6124,8 +6124,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata_fetchadmindatabase",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "fetchadmindatabase()"
     },
     {
@@ -6223,8 +6223,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_logout",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "logout()"
     },
     {
@@ -6355,8 +6355,8 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminstation",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "updateadminstation()"
     },
     {
@@ -6388,8 +6388,8 @@
       "source_location": "L238",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminprogressmatrix",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "getadminprogressmatrix()"
     },
     {
@@ -6421,8 +6421,8 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminteam",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "deleteadminteam()"
     },
     {
@@ -6432,8 +6432,8 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_forceadminprogressstatus",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "forceadminprogressstatus()"
     },
     {
@@ -6443,8 +6443,8 @@
       "source_location": "L258",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_editadminprogressscore",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "editadminprogressscore()"
     },
     {
@@ -6476,8 +6476,8 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_createadminstation",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "createadminstation()"
     },
     {
@@ -6487,8 +6487,8 @@
       "source_location": "L279",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminstation",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "deleteadminstation()"
     },
     {
@@ -6883,8 +6883,8 @@
       "source_location": "L216",
       "_origin": "ast",
       "id": "fe_src_features_movement_apiclient_apipatch",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "apipatch()"
     },
     {
@@ -6894,8 +6894,8 @@
       "source_location": "L223",
       "_origin": "ast",
       "id": "fe_src_features_movement_apiclient_apidelete",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "apidelete()"
     },
     {
@@ -6916,8 +6916,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput",
-      "community": 11,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 26,
+      "community_name": "seed.ts",
       "norm_label": "qrtokeninput.tsx"
     },
     {
@@ -6927,8 +6927,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_barcodedetectorlike",
-      "community": 11,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 26,
+      "community_name": "seed.ts",
       "norm_label": "barcodedetectorlike"
     },
     {
@@ -6938,8 +6938,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_barcodedetectorconstructor",
-      "community": 11,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 26,
+      "community_name": "seed.ts",
       "norm_label": "barcodedetectorconstructor"
     },
     {
@@ -6949,8 +6949,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_qrtokeninputprops",
-      "community": 11,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 26,
+      "community_name": "seed.ts",
       "norm_label": "qrtokeninputprops"
     },
     {
@@ -6960,8 +6960,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_getbarcodedetector",
-      "community": 11,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 26,
+      "community_name": "seed.ts",
       "norm_label": "getbarcodedetector()"
     },
     {
@@ -6971,8 +6971,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
-      "community": 11,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 26,
+      "community_name": "seed.ts",
       "norm_label": "qrtokeninput()"
     },
     {
@@ -7114,8 +7114,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "constants.ts"
     },
     {
@@ -7125,8 +7125,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_role_labels",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "role_labels"
     },
     {
@@ -7136,8 +7136,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_status_order",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "status_order"
     },
     {
@@ -7169,8 +7169,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_appframe",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "appframe.tsx"
     },
     {
@@ -7180,8 +7180,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_appframe_appframeprops",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "appframeprops"
     },
     {
@@ -7191,8 +7191,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_appframe_appframe",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "appframe()"
     },
     {
@@ -7202,8 +7202,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_protectedroute",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "protectedroute.tsx"
     },
     {
@@ -7213,8 +7213,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_protectedroute_protectedrouteprops",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "protectedrouteprops"
     },
     {
@@ -7224,8 +7224,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_protectedroute_protectedroute",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "protectedroute()"
     },
     {
@@ -7444,8 +7444,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationeditorpage",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "stationeditorpage.tsx"
     },
     {
@@ -7455,8 +7455,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationeditorpage_stationeditorpage",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "stationeditorpage()"
     },
     {
@@ -7521,8 +7521,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_systemconfigpage",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "systemconfigpage.tsx"
     },
     {
@@ -7532,8 +7532,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_systemconfigpage_systemconfigpage",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "systemconfigpage()"
     },
     {
@@ -7950,8 +7950,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_role",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "role"
     },
     {
@@ -7961,8 +7961,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationstatus",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 68,
+      "community_name": "scripts",
       "norm_label": "stationstatus"
     },
     {
@@ -7972,8 +7972,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationtrackingmode",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "stationtrackingmode"
     },
     {
@@ -8016,8 +8016,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationdefinition",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationdefinition"
     },
     {
@@ -8027,8 +8027,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamstation",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "teamstation"
     },
     {
@@ -8038,8 +8038,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationformvalues",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "stationformvalues"
     },
     {
@@ -8115,8 +8115,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_localdatabaseseed",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "localdatabaseseed"
     },
     {
@@ -9000,10 +9000,21 @@
       "norm_label": "step()"
     },
     {
-      "label": "Read-EnvValue()",
+      "label": "Invoke-Checked()",
       "file_type": "code",
       "source_file": "scripts/tester-run.ps1",
       "source_location": "L25",
+      "_origin": "ast",
+      "id": "scripts_tester_run_invoke_checked",
+      "community": 58,
+      "community_name": "QrTokenInput.tsx",
+      "norm_label": "invoke-checked()"
+    },
+    {
+      "label": "Read-EnvValue()",
+      "file_type": "code",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "scripts_tester_run_read_envvalue",
       "community": 58,
@@ -9014,7 +9025,7 @@
       "label": "Ensure-LocalDatabase()",
       "file_type": "code",
       "source_file": "scripts/tester-run.ps1",
-      "source_location": "L41",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "scripts_tester_run_ensure_localdatabase",
       "community": 58,
@@ -9022,10 +9033,32 @@
       "norm_label": "ensure-localdatabase()"
     },
     {
+      "label": "Test-LocalBin()",
+      "file_type": "code",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "scripts_tester_run_test_localbin",
+      "community": 58,
+      "community_name": "QrTokenInput.tsx",
+      "norm_label": "test-localbin()"
+    },
+    {
+      "label": "Ensure-Dependencies()",
+      "file_type": "code",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L92",
+      "_origin": "ast",
+      "id": "scripts_tester_run_ensure_dependencies",
+      "community": 58,
+      "community_name": "QrTokenInput.tsx",
+      "norm_label": "ensure-dependencies()"
+    },
+    {
       "label": "Wait-Http()",
       "file_type": "code",
       "source_file": "scripts/tester-run.ps1",
-      "source_location": "L56",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "scripts_tester_run_wait_http",
       "community": 58,
@@ -9033,10 +9066,21 @@
       "norm_label": "wait-http()"
     },
     {
+      "label": "Assert-PortAvailable()",
+      "file_type": "code",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L127",
+      "_origin": "ast",
+      "id": "scripts_tester_run_assert_portavailable",
+      "community": 58,
+      "community_name": "QrTokenInput.tsx",
+      "norm_label": "assert-portavailable()"
+    },
+    {
       "label": "Stop-RunnerJobs()",
       "file_type": "code",
       "source_file": "scripts/tester-run.ps1",
-      "source_location": "L70",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "scripts_tester_run_stop_runnerjobs",
       "community": 58,
@@ -10067,10 +10111,21 @@
       "norm_label": "backend audit status"
     },
     {
-      "label": "2026-07-20 Docker frontend API proxy fix",
+      "label": "2026-07-21 Local tester fail-fast fix",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_analysis_backend_audit_2026_07_21_local_tester_fail_fast_fix",
+      "community": 17,
+      "community_name": "app.module.ts",
+      "norm_label": "2026-07-21 local tester fail-fast fix"
+    },
+    {
+      "label": "2026-07-20 Docker frontend API proxy fix",
+      "file_type": "document",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_docker_frontend_api_proxy_fix",
       "community": 17,
@@ -10081,7 +10136,7 @@
       "label": "2026-07-20 heroes.nalth.top SPA routing fallback",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L11",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_heroes_nalth_top_spa_routing_fallback",
       "community": 17,
@@ -10092,7 +10147,7 @@
       "label": "2026-07-20 Login 405 object-storage investigation",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L19",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_login_405_object_storage_investigation",
       "community": 17,
@@ -10103,7 +10158,7 @@
       "label": "2026-07-20 Remaining feature integration",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L31",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_remaining_feature_integration",
       "community": 17,
@@ -10114,7 +10169,7 @@
       "label": "2026-07-20 Runtime test-data cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L40",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_runtime_test_data_cleanup",
       "community": 17,
@@ -10125,7 +10180,7 @@
       "label": "Verification completed",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L51",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_verification_completed",
       "community": 17,
@@ -10136,7 +10191,7 @@
       "label": "Backend work still required",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L82",
+      "source_location": "L89",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_work_still_required",
       "community": 17,
@@ -10147,7 +10202,7 @@
       "label": "P0 remaining work",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L84",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p0_remaining_work",
       "community": 17,
@@ -10158,7 +10213,7 @@
       "label": "P1 event-readiness checks",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L88",
+      "source_location": "L95",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p1_event_readiness_checks",
       "community": 17,
@@ -10169,7 +10224,7 @@
       "label": "Maintenance findings",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L96",
+      "source_location": "L103",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_maintenance_findings",
       "community": 17,
@@ -10180,7 +10235,7 @@
       "label": "2026-07-20 Backend production CI/CD",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L102",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_backend_production_ci_cd",
       "community": 17,
@@ -10191,7 +10246,7 @@
       "label": "2026-07-20 BE host bootstrap (production ECS host)",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L108",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_be_host_bootstrap_production_ecs_host",
       "community": 17,
@@ -10202,7 +10257,7 @@
       "label": "Next recommended task",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L119",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_next_recommended_task",
       "community": 17,
@@ -10213,7 +10268,7 @@
       "label": "2026-07-20 Admin integration verification",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L123",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_admin_integration_verification",
       "community": 17,
@@ -10224,7 +10279,7 @@
       "label": "2026-07-20 Tester one-command runner",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L131",
+      "source_location": "L138",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_tester_one_command_runner",
       "community": 17,
@@ -10235,7 +10290,7 @@
       "label": "2026-07-20 Tester Docker compose runner",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L139",
+      "source_location": "L146",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_tester_docker_compose_runner",
       "community": 17,
@@ -10246,7 +10301,7 @@
       "label": "2026-07-20 Agent and Markdown docs refresh",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L146",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_agent_and_markdown_docs_refresh",
       "community": 17,
@@ -31571,7 +31626,29 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/tester-run.ps1",
-      "source_location": "L41",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run",
+      "target": "scripts_tester_run_assert_portavailable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run",
+      "target": "scripts_tester_run_ensure_dependencies",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "scripts_tester_run",
@@ -31583,6 +31660,17 @@
       "confidence": "EXTRACTED",
       "source_file": "scripts/tester-run.ps1",
       "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run",
+      "target": "scripts_tester_run_invoke_checked",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
       "source": "scripts_tester_run",
@@ -31604,7 +31692,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/tester-run.ps1",
-      "source_location": "L70",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast",
       "source": "scripts_tester_run",
@@ -31615,11 +31703,55 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/tester-run.ps1",
-      "source_location": "L56",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run",
+      "target": "scripts_tester_run_test_localbin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "scripts_tester_run",
       "target": "scripts_tester_run_wait_http",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run_invoke_checked",
+      "target": "scripts_tester_run_step",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run_ensure_dependencies",
+      "target": "scripts_tester_run_invoke_checked",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/tester-run.ps1",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_tester_run_ensure_dependencies",
+      "target": "scripts_tester_run_test_localbin",
       "confidence_score": 1.0
     },
     {
@@ -32495,7 +32627,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L123",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32506,7 +32638,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L146",
+      "source_location": "L153",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32517,7 +32649,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L102",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32528,7 +32660,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L108",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32539,7 +32671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L3",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32550,7 +32682,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L11",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32561,7 +32693,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L19",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32572,7 +32704,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L31",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32583,7 +32715,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L40",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32594,7 +32726,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L139",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32605,7 +32737,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L131",
+      "source_location": "L138",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32616,7 +32748,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L82",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_backend_audit_backend_audit_status",
+      "target": "docs_analysis_backend_audit_2026_07_21_local_tester_fail_fast_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32627,7 +32770,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L96",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32638,7 +32781,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L119",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32649,7 +32792,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L51",
+      "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32660,7 +32803,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L84",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -32671,7 +32814,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L88",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -33428,5 +33571,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e2dffc1d9e04b81d402dcb9874b3de3ce8173671"
+  "built_at_commit": "918793632624d22a6cd9bcc93a71e96f74116f32"
 }

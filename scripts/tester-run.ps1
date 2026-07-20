@@ -22,6 +22,37 @@ function Step($Message) {
   Write-Host "==> $Message" -ForegroundColor Cyan
 }
 
+function Invoke-Checked {
+  param(
+    [string]$Name,
+    [string]$WorkingDirectory,
+    [string]$FilePath,
+    [string[]]$Arguments,
+    [hashtable]$Environment = @{}
+  )
+
+  Step $Name
+  Push-Location $WorkingDirectory
+  try {
+    $previousValues = @{}
+    foreach ($key in $Environment.Keys) {
+      $previousValues[$key] = [Environment]::GetEnvironmentVariable($key, "Process")
+      [Environment]::SetEnvironmentVariable($key, [string]$Environment[$key], "Process")
+    }
+
+    & $FilePath @Arguments
+    $exitCode = if ($null -eq $LASTEXITCODE) { 0 } else { $LASTEXITCODE }
+    if ($exitCode -ne 0) {
+      throw "$Name failed with exit code $exitCode. Command: $FilePath $($Arguments -join ' ')"
+    }
+  } finally {
+    foreach ($key in $Environment.Keys) {
+      [Environment]::SetEnvironmentVariable($key, $previousValues[$key], "Process")
+    }
+    Pop-Location
+  }
+}
+
 function Read-EnvValue($Path, $Name) {
   if (!(Test-Path -LiteralPath $Path)) {
     return $null
@@ -53,6 +84,32 @@ function Ensure-LocalDatabase($DatabaseUrl) {
   }
 }
 
+function Test-LocalBin($Directory, $Name) {
+  $extension = if ($IsWindows -or $env:OS -eq "Windows_NT") { ".cmd" } else { "" }
+  return Test-Path -LiteralPath (Join-Path $Directory "node_modules/.bin/$Name$extension")
+}
+
+function Ensure-Dependencies($Name, $Directory, $RequiredBins) {
+  $nodeModules = Join-Path $Directory "node_modules"
+  $needsInstall = !(Test-Path -LiteralPath $nodeModules)
+
+  if (!$needsInstall) {
+    foreach ($bin in $RequiredBins) {
+      if (!(Test-LocalBin $Directory $bin)) {
+        Write-Host "$Name dependency install is incomplete: missing local binary '$bin'." -ForegroundColor Yellow
+        $needsInstall = $true
+        break
+      }
+    }
+  }
+
+  if ($needsInstall) {
+    Invoke-Checked "$Name npm ci" $Directory "npm.cmd" @("ci")
+  } else {
+    Write-Host "$Name dependencies already installed." -ForegroundColor Green
+  }
+}
+
 function Wait-Http($Url, $Name) {
   for ($i = 1; $i -le 40; $i++) {
     try {
@@ -64,7 +121,16 @@ function Wait-Http($Url, $Name) {
     }
   }
 
-  Write-Host "$Name did not respond yet. Check logs in $LogDir." -ForegroundColor Yellow
+  throw "$Name did not respond at $Url. Check logs in $LogDir."
+}
+
+function Assert-PortAvailable($Port, $Name) {
+  $connection = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue |
+    Select-Object -First 1
+
+  if ($connection) {
+    throw "$Name port $Port is already in use by PID $($connection.OwningProcess). Stop that process or pass a different port before running tester."
+  }
 }
 
 function Stop-RunnerJobs {
@@ -96,37 +162,21 @@ Ensure-LocalDatabase $DatabaseUrl
 
 if (!$SkipInstall) {
   Step "Installing dependencies when needed"
-  if (!(Test-Path -LiteralPath (Join-Path $BackendDir "node_modules"))) {
-    Push-Location $BackendDir
-    npm.cmd ci
-    Pop-Location
-  }
-  if (!(Test-Path -LiteralPath (Join-Path $FrontendDir "node_modules"))) {
-    Push-Location $FrontendDir
-    npm.cmd ci
-    Pop-Location
-  }
+  Ensure-Dependencies "Backend" $BackendDir @("prisma", "ts-node", "nest", "tsc")
+  Ensure-Dependencies "Frontend" $FrontendDir @("vite", "tsc")
 }
 
-Step "Preparing database"
-Push-Location $BackendDir
-npm.cmd run prisma:generate
-npm.cmd run prisma:deploy
+Invoke-Checked "Backend Prisma generate" $BackendDir "npm.cmd" @("run", "prisma:generate")
+Invoke-Checked "Backend Prisma migrate deploy" $BackendDir "npm.cmd" @("run", "prisma:deploy")
 if (!$SkipSeed) {
-  npm.cmd run seed
+  Invoke-Checked "Backend seed database" $BackendDir "npm.cmd" @("run", "seed")
 }
-Pop-Location
 
-Step "Building backend"
-Push-Location $BackendDir
-npm.cmd run build
-Pop-Location
+Invoke-Checked "Backend build" $BackendDir "npm.cmd" @("run", "build")
+Invoke-Checked "Frontend build" $FrontendDir "npm.cmd" @("run", "build") @{VITE_API_BASE_URL = ""}
 
-Step "Building frontend"
-Push-Location $FrontendDir
-$env:VITE_API_BASE_URL = $ApiOrigin
-npm.cmd run build
-Pop-Location
+Assert-PortAvailable $ApiPort "Backend API"
+Assert-PortAvailable $FrontendPort "Frontend"
 
 Step "Starting test servers"
 $ApiLog = Join-Path $LogDir "backend.log"
@@ -140,13 +190,20 @@ $script:ApiJob = Start-Job -Name "movement-api" -ScriptBlock {
   $env:PORT = "$Port"
   $env:CORS_ORIGIN = $CorsOrigin
   npm.cmd run start:prod *> $LogPath
+  if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+  }
 } -ArgumentList $BackendDir, $ApiPort, $FrontendOrigin, $ApiLog
 
 $script:FrontendJob = Start-Job -Name "movement-frontend" -ScriptBlock {
-  param($Dir, $Port, $ApiBaseUrl, $LogPath)
+  param($Dir, $Port, $ApiProxyTarget, $LogPath)
   Set-Location $Dir
-  $env:VITE_API_BASE_URL = $ApiBaseUrl
+  $env:API_PROXY_TARGET = $ApiProxyTarget
+  [Environment]::SetEnvironmentVariable("VITE_API_BASE_URL", $null, "Process")
   npm.cmd run preview -- --host 0.0.0.0 --port $Port *> $LogPath
+  if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+  }
 } -ArgumentList $FrontendDir, $FrontendPort, $ApiOrigin, $FrontendLog
 
 Wait-Http "$ApiOrigin/api/docs" "Backend API"

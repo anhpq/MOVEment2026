@@ -240,8 +240,8 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784564929.5642397,
-    "ast_hash": "ff9588b68a2d49ab1cf3c689e69fdddf",
+    "mtime": 1784566604.3015933,
+    "ast_hash": "34fea6926ce966adb963fd9df20bc636",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -350,8 +350,8 @@
     "semantic_hash": "74cde0261ad0a13045ca0a05ab1542ae"
   },
   "fe/vite.config.ts": {
-    "mtime": 1784565600.7189379,
-    "ast_hash": "9acc51ff9f8571fee32bc6a38f00c477",
+    "mtime": 1784566611.6317127,
+    "ast_hash": "65f0cb515160ded86c4f3416fbd7c6ff",
     "semantic_hash": ""
   },
   "be/src/config/validate-environment.spec.ts": {
@@ -415,8 +415,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
-    "mtime": 1784564831.904667,
-    "ast_hash": "11f1e2dff37cd464b876768459b98835",
+    "mtime": 1784566448.686154,
+    "ast_hash": "6cf7cdc30d943575c33425cb736effe2",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -425,8 +425,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1784565676.6867893,
-    "ast_hash": "2d6a2d3d956cb5430fbd5b8d9123996f",
+    "mtime": 1784566448.687148,
+    "ast_hash": "1722b46fd2456461896b8c52baafbbe7",
     "semantic_hash": ""
   },
   "be/README.md": {
@@ -435,13 +435,13 @@
     "semantic_hash": ""
   },
   "be/prisma/certs/README.md": {
-    "mtime": 1784564775.766082,
-    "ast_hash": "6e8f07cd557679ec892538fad471fd52",
+    "mtime": 1784566448.7112768,
+    "ast_hash": "6bbca99c0af3394dc047c8a60cfb18e2",
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784564794.4649174,
-    "ast_hash": "e2429f78b365231fd097e274ddec761e",
+    "mtime": 1784566448.7392838,
+    "ast_hash": "5c3a6210422eb26345f89974b52e46f0",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "fe/README.md": {
-    "mtime": 1784565668.0421538,
-    "ast_hash": "11f40d05e17e3d5a3947f90570259071",
+    "mtime": 1784566448.7402775,
+    "ast_hash": "29e3a97d7c693725d176861cf1284fed",
     "semantic_hash": ""
   },
   "fe/index.html": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784565702.6493554,
-    "ast_hash": "e761c9590f83136307c1fbe21e19833c",
+    "mtime": 1784566965.011124,
+    "ast_hash": "0933daad052934a6a3714c1074d52c06",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -670,23 +670,23 @@
     "semantic_hash": ""
   },
   "scripts/tester-run.ps1": {
-    "mtime": 1784560861.0943751,
-    "ast_hash": "6da6cbc504919146e88ff718af55d71c",
+    "mtime": 1784566449.784918,
+    "ast_hash": "0411c5062630a6d56c4a4743dd171c74",
     "semantic_hash": ""
   },
   "docker-compose.tester.yml": {
-    "mtime": 1784565657.1157007,
-    "ast_hash": "fa4a25049c0783d68045593cc0241bf1",
+    "mtime": 1784566620.2796364,
+    "ast_hash": "e16f26f2cb2d44a0cbaff4e7c07f03e4",
     "semantic_hash": ""
   },
   "fe/src/features/movement/apiClient.ts": {
-    "mtime": 1784564876.3814325,
-    "ast_hash": "5bd14f7e7fddc20869a1b7bf97adec6e",
+    "mtime": 1784566448.7532773,
+    "ast_hash": "71794524fe079b8c12e231c00bbb61e4",
     "semantic_hash": ""
   },
   "deploy/nginx/README.md": {
-    "mtime": 1784565318.3586104,
-    "ast_hash": "12f5dc6a701a2372a322854239025fa9",
+    "mtime": 1784566448.7202778,
+    "ast_hash": "2cb80221c692e07ee2861a3ae53f0f1b",
     "semantic_hash": ""
   }
 }

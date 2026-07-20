@@ -1,5 +1,12 @@
 # Backend Audit Status
 
+## 2026-07-21 Local tester fail-fast fix
+
+- Root cause confirmed: backend dependencies are installed inside `be/`, not through a root npm workspace. The required local dev/runtime packages are already declared in `be/package.json`: `prisma`, `@prisma/client`, `ts-node`, `@nestjs/cli`, and `typescript`.
+- Fixed `scripts/tester-run.ps1` so it detects incomplete `node_modules` installs by checking required local binaries, runs `npm ci` in the affected app directory, checks `$LASTEXITCODE` after each npm command, and stops immediately with the failed command name and exit code.
+- The runner now fails if backend/frontend ports are already occupied, throws if readiness checks do not pass, and clears `VITE_API_BASE_URL` for the frontend build so local tester traffic stays same-origin through `/api`.
+- Verification: backend Prisma generate/deploy, seed, backend build, and frontend build passed locally. User smoke confirmed `http://localhost:4173/api/docs` serves Swagger through the frontend preview proxy.
+
 ## 2026-07-20 Docker frontend API proxy fix
 
 - Root cause confirmed: `fe/vite.config.ts` proxied `/api` to `http://localhost:3000`, which points at the frontend container when Vite preview runs inside Docker; `docker-compose.tester.yml` also set client-side `VITE_API_BASE_URL=http://localhost:3000`.
