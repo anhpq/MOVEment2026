@@ -37,7 +37,7 @@
 
 ## Next execution checklist
 
-Chạy lần lượt từ trên xuống. Sau mỗi cụm chạy xong, cập nhật file này, `docs/analysis/BACKEND_AUDIT.md`, chạy verify phù hợp, `python -m graphify update .`, rồi commit riêng.
+Chạy lần lượt từ trên xuống. Sau mỗi cụm chạy xong, cập nhật file này, `docs/analysis/BACKEND_AUDIT.md`, chạy verify phù hợp, chạy Graphify update khi hữu ích/khả dụng theo `AGENTS.md`, rồi commit riêng.
 
 ### 1. Chuẩn bị rehearsal database và API
 
