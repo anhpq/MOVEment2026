@@ -39,8 +39,22 @@ jobs:
           script: |
             set -euo pipefail
 
+            # Handle three cases without deleting the tree (preserves be/.env):
+            # 1) no .git + non-empty dir -> init/fetch/checkout in place
+            # 2) no .git + missing/empty dir -> clone
+            # 3) .git present -> fetch + hard reset to DEPLOY_BRANCH
             if [ ! -d "${DEPLOY_PATH}/.git" ]; then
-              git clone --branch "${DEPLOY_BRANCH}" "${GIT_REPO_URL}" "${DEPLOY_PATH}"
+              if [ -d "${DEPLOY_PATH}" ] && [ -n "$(ls -A "${DEPLOY_PATH}" 2>/dev/null || true)" ]; then
+                cd "${DEPLOY_PATH}"
+                git init
+                git remote add origin "${GIT_REPO_URL}" 2>/dev/null \
+                  || git remote set-url origin "${GIT_REPO_URL}"
+                git fetch --depth=1 origin "${DEPLOY_BRANCH}"
+                git checkout -B "${DEPLOY_BRANCH}" "origin/${DEPLOY_BRANCH}"
+              else
+                mkdir -p "$(dirname "${DEPLOY_PATH}")"
+                git clone --branch "${DEPLOY_BRANCH}" "${GIT_REPO_URL}" "${DEPLOY_PATH}"
+              fi
             else
               cd "${DEPLOY_PATH}"
               git fetch origin
