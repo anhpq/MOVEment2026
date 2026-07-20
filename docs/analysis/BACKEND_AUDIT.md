@@ -1,5 +1,14 @@
 # Backend Audit Status
 
+## 2026-07-20 Login 405 object-storage investigation
+
+- Traced login, QR login, QR paste, station check-in, and station check-out requests. Frontend API calls are centralized in `fe/src/features/movement/api.ts` and target `VITE_API_BASE_URL` plus `/api/...` paths.
+- Confirmed backend routes accept `POST /api/auth/team-login`, `POST /api/auth/login`, `POST /api/auth/team-qr-login`, `POST /api/player/stations/:stationId/check-in`, and `POST /api/player/stations/:stationId/check-out`.
+- Root-cause finding: a 405 response with `Code=MethodNotAllowed`, `Method=POST`, and `ResourceType=OBJECT` indicates the login POST reached static object storage instead of the Nest backend API. The failing runtime URL is `POST <VITE_API_BASE_URL>/api/auth/team-login` first for username/password team login, then `POST <VITE_API_BASE_URL>/api/auth/login` during admin fallback; QR login uses `POST <VITE_API_BASE_URL>/api/auth/team-qr-login`.
+- Recommended deployment fix: build frontend with `VITE_API_BASE_URL` set to the backend API/proxy origin, or configure the production reverse proxy so `/api/*` goes to the ECS/API service rather than the OBS/static bucket. Direct blob uploads are not present in the runtime app; OBS usage is limited to the frontend deploy script, so no frontend upload endpoint needs POST-to-PUT correction.
+- Frontend error handling now strips raw HTML/XML/object-storage bodies from user-facing messages and preserves method/status/URL in a sanitized `ApiError`. Login fallback from team to admin now only happens on auth failures, so infrastructure/routing errors are not masked by a second request.
+- Verification: frontend lint and production build passed; Vite reported the known large chunk warning.
+
 ## 2026-07-20 Remaining feature integration
 
 - Added audited Admin Station create/update/deactivate APIs. Creation provisions a game, two purpose-specific QR tokens, and AVAILABLE progress for every team; deactivation preserves history and disables game/QR use.
