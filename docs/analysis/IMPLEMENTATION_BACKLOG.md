@@ -68,9 +68,11 @@ Acceptance:
 
 ### 3. Validate production env trên môi trường deploy
 
-- [ ] Set production secrets thật trên host/deploy target: `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, `CORS_ORIGIN`.
+- [x] Bật workflow Deploy Backend (ECS) trên `master` + `workflow_dispatch`; workflow truyền `DEPLOY_BRANCH=master` vào `be/deploy/deploy.sh` (không sửa app code `be/`/`fe/`).
+- [x] GitHub secrets `ECS_HOST`, `ECS_USER`, `ECS_SSH_KEY` đã có trên repo (verified 2026-07-20).
+- [ ] Set production secrets thật trên host `/opt/movement/app/be/.env`: `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, `CORS_ORIGIN`.
 - [ ] Đảm bảo `CORS_ORIGIN` là domain frontend thật hoặc CSV domains, không có `*`.
-- [ ] Chạy backend với `NODE_ENV=production` để xác nhận fail-fast không chặn nhầm.
+- [ ] Merge workflow lên `master`, chạy `workflow_dispatch`, xác nhận API start với `NODE_ENV=production`.
 - [ ] Từ frontend deployed origin, gọi login/team-login để xác nhận CORS credentials hoạt động.
 - [ ] Mark P1 CORS/secrets là `[x]` chỉ sau khi test trên deploy target.
 
@@ -107,6 +109,7 @@ Acceptance:
 
 ## Remaining external handoff
 
+- [x] Bật BE production CI/CD trên `master` (`.github/workflows/be-deploy.yml` gọi `be/deploy/deploy.sh` với `DEPLOY_BRANCH=master`); FE/BE path-filtered riêng. Cần file `.env` trên ECS trước lần deploy thật.
 - [ ] Cấu hình và validate production CORS/secrets trên deploy target thật. Local code đã fail-fast cho secret mặc định và wildcard CORS, nhưng chỉ mark `[x]` sau khi có domain frontend production, secret production, và API deployed để test login/CORS credentials.
 - [x] Integrate Admin bootstrap, team CRUD, and station quick status/score updates with backend APIs (verified 2026-07-20).
 - [x] Remove legacy frontend dummy data/database fallback and hard-coded station metrics (verified 2026-07-20).

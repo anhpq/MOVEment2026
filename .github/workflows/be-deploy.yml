@@ -1,69 +1,58 @@
-# Backend deploy is commented out while FE OBS hosting is prioritized.
-# To re-enable: uncomment the block below.
+name: Deploy Backend (ECS)
 
-# name: Deploy Backend (ECS)
-#
-# on:
-#   push:
-#     branches:
-#       - develop
-#       - master
-#     paths:
-#       - 'be/**'
-#       - '.github/workflows/be-deploy.yml'
-#   workflow_dispatch:
-#
-# concurrency:
-#   group: be-deploy-${{ github.ref }}
-#   cancel-in-progress: true
-#
-# env:
-#   DEPLOY_PATH: /opt/movement/app
-#   APP_NAME: movement-api
-#
-# jobs:
-#   deploy:
-#     name: Pull code and restart on ECS
-#     runs-on: ubuntu-latest
-#
-#     steps:
-#       - name: Deploy backend via SSH
-#         uses: appleboy/ssh-action@v1.2.0
-#         env:
-#           DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
-#           DEPLOY_BRANCH: ${{ github.ref_name }}
-#           GIT_REPO_URL: git@github.com:${{ github.repository }}.git
-#           APP_NAME: ${{ env.APP_NAME }}
-#         with:
-#           host: ${{ secrets.ECS_HOST }}
-#           username: ${{ secrets.ECS_USER }}
-#           key: ${{ secrets.ECS_SSH_KEY }}
-#           port: 22
-#           envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,APP_NAME
-#           script: |
-#             set -euo pipefail
-#
-#             if [ ! -d "${DEPLOY_PATH}/.git" ]; then
-#               git clone --branch "${DEPLOY_BRANCH}" "${GIT_REPO_URL}" "${DEPLOY_PATH}"
-#             fi
-#
-#             cd "${DEPLOY_PATH}"
-#             git fetch origin
-#             git checkout "${DEPLOY_BRANCH}"
-#             git reset --hard "origin/${DEPLOY_BRANCH}"
-#
-#             cd be
-#             export NODE_ENV=production
-#             npm ci
-#             npm run build
-#             npm run prisma:deploy
-#
-#             if command -v pm2 >/dev/null 2>&1; then
-#               pm2 restart "${APP_NAME}" 2>/dev/null || pm2 start dist/main.js --name "${APP_NAME}" --cwd "$(pwd)"
-#               pm2 save
-#             elif systemctl list-unit-files | grep -q "^${APP_NAME}.service"; then
-#               sudo systemctl restart "${APP_NAME}"
-#             else
-#               echo "No process manager found. Install pm2 or copy be/deploy/movement-api.service to systemd."
-#               exit 1
-#             fi
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'be/**'
+      - '.github/workflows/be-deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: be-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEPLOY_PATH: /opt/movement/app
+  APP_NAME: movement-api
+
+jobs:
+  deploy:
+    name: Pull code and restart on ECS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy backend via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
+          DEPLOY_BRANCH: master
+          GIT_REPO_URL: git@github.com:${{ github.repository }}.git
+          APP_NAME: ${{ env.APP_NAME }}
+        with:
+          host: ${{ secrets.ECS_HOST }}
+          username: ${{ secrets.ECS_USER }}
+          key: ${{ secrets.ECS_SSH_KEY }}
+          port: 22
+          envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,APP_NAME
+          script: |
+            set -euo pipefail
+
+            if [ ! -d "${DEPLOY_PATH}/.git" ]; then
+              git clone --branch "${DEPLOY_BRANCH}" "${GIT_REPO_URL}" "${DEPLOY_PATH}"
+            else
+              cd "${DEPLOY_PATH}"
+              git fetch origin
+              git checkout "${DEPLOY_BRANCH}"
+              git reset --hard "origin/${DEPLOY_BRANCH}"
+            fi
+
+            if [ ! -f "${DEPLOY_PATH}/be/.env" ]; then
+              echo "Missing ${DEPLOY_PATH}/be/.env on the ECS host."
+              echo "Create it from be/deploy/.env.example with production DATABASE_URL, JWT_SECRET, SCORING_CODE, CORS_ORIGIN."
+              exit 1
+            fi
+
+            export DEPLOY_PATH DEPLOY_BRANCH GIT_REPO_URL APP_NAME
+            bash "${DEPLOY_PATH}/be/deploy/deploy.sh"

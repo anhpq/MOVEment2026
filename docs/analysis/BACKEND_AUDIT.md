@@ -71,9 +71,19 @@ Last updated: 2026-07-19
 - Prisma 7 readiness item complete: seed config now lives in `be/prisma.config.ts`, and `be/package.json` no longer uses deprecated `package.json#prisma`.
 - The `ts-jest` configuration was migrated from deprecated `globals` to `transform`.
 
+## 2026-07-20 Backend production CI/CD
+
+- Re-enabled [`.github/workflows/be-deploy.yml`](../../.github/workflows/be-deploy.yml): push/merge to `master` on `be/**` (or the workflow file) deploys via SSH to Huawei ECS; `workflow_dispatch` supported for manual runs.
+- Workflow sets `DEPLOY_BRANCH=master` and calls existing `be/deploy/deploy.sh` (no app-code changes under `be/` / `fe/`).
+- Host path: `/opt/movement/app` → refresh `master` → require `be/.env` → `npm ci` / build / `prisma migrate deploy` → PM2 (`movement-api`) or systemd.
+- Required host env: `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, `CORS_ORIGIN` (FE prod origin; no `*`). Required GitHub secrets: `ECS_HOST`, `ECS_USER`, `ECS_SSH_KEY` (already present on the repo as of 2026-07-20).
+- FE remains path-filtered to OBS; future apps should add a separate path-filtered workflow per app.
+- Ops checklist (one-time): Node 20+ and pm2/systemd on ECS; git SSH access to clone/fetch the repo; production `.env` at `/opt/movement/app/be/.env`; then merge this workflow to `master` and run Actions → Deploy Backend (ECS).
+- Local verification (2026-07-20): workflow YAML parses; `ECS_*` secrets listed via `gh secret list`. Live `workflow_dispatch` still pending until the enabled workflow is on `master`. After first successful deploy, validate CORS/login from the FE origin and mark P1 CORS/secrets complete.
+
 ## Next recommended task
 
-Validate production CORS and secrets in the deployed environment. This cannot be marked complete from the local workspace without the real deploy target, production frontend origin, and production secret values.
+Validate production CORS and secrets on the live ECS host after the first successful Actions deploy (set real `.env`, confirm API start, login from the deployed FE origin). This cannot be marked complete from the local workspace without the real deploy target, production frontend origin, and production secret values.
 ## 2026-07-20 Admin integration verification
 
 - Admin bootstrap now reads `/api/admin/progress-matrix`; the local JSON seed is no longer the source of truth for the Admin role.
