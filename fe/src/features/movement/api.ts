@@ -4,6 +4,86 @@ import type { StationTrackingMode } from "./types"
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 const SESSION_STORAGE_KEY = 'movement-session'
 
+export class ApiError extends Error {
+  readonly status: number
+  readonly method: string
+  readonly url: string
+
+  constructor(
+    message: string,
+    status: number,
+    method: string,
+    url: string,
+  ) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+    this.method = method
+    this.url = url
+  }
+}
+
+export function isAuthFailure(error: unknown): boolean {
+  return error instanceof ApiError && (error.status === 401 || error.status === 403)
+}
+
+function getContentType(response: Response): string {
+  return response.headers.get('content-type')?.toLowerCase() ?? ''
+}
+
+function looksLikeMarkup(text: string): boolean {
+  const value = text.trim().toLowerCase()
+  return (
+    value.startsWith('<!doctype html') ||
+    value.startsWith('<html') ||
+    value.startsWith('<?xml') ||
+    value.startsWith('<error')
+  )
+}
+
+function readErrorMessageFromJson(value: unknown): string | null {
+  if (!value || typeof value !== 'object') {
+    return null
+  }
+
+  const record = value as Record<string, unknown>
+  const message = record.message
+  if (Array.isArray(message)) {
+    return message.filter((item) => typeof item === 'string').join('; ') || null
+  }
+  if (typeof message === 'string') {
+    return message
+  }
+  if (typeof record.error === 'string') {
+    return record.error
+  }
+  if (typeof record.Code === 'string' && typeof record.Method === 'string') {
+    return 'The API request reached object storage instead of the backend API. Check VITE_API_BASE_URL or /api reverse-proxy routing.'
+  }
+
+  return null
+}
+
+async function readApiErrorMessage(response: Response, method: string, url: string) {
+  const fallback = `${method} ${url} failed with HTTP ${response.status}`
+  const contentType = getContentType(response)
+  const text = await response.text()
+
+  if (contentType.includes('application/json')) {
+    try {
+      return readErrorMessageFromJson(JSON.parse(text)) ?? fallback
+    } catch {
+      return fallback
+    }
+  }
+
+  if (contentType.includes('html') || contentType.includes('xml') || looksLikeMarkup(text)) {
+    return fallback
+  }
+
+  return text.trim() || response.statusText || fallback
+}
+
 function getStoredSession(): Session | null {
   if (typeof window === 'undefined') {
     return null
@@ -40,21 +120,27 @@ function getAccessToken(): string | undefined {
 async function apiRequest<T>(path: string, options: RequestInit): Promise<T> {
   const headers = new Headers(options.headers)
   headers.set('Content-Type', 'application/json')
+  const method = options.method ?? 'GET'
+  const url = `${API_BASE_URL}${path}`
 
   const token = getAccessToken()
   if (token) {
     headers.set('Authorization', `Bearer ${token}`)
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(url, {
     ...options,
     headers,
     credentials: 'include',
   })
 
   if (!response.ok) {
-    const text = await response.text()
-    throw new Error(text || response.statusText)
+    throw new ApiError(
+      await readApiErrorMessage(response, method, url),
+      response.status,
+      method,
+      url,
+    )
   }
 
   return response.json()
@@ -387,15 +473,24 @@ export const updateAdminFinalConfig = (values: Record<string, unknown>) =>
 
 export async function downloadAdminSummary() {
   const token = getAccessToken()
-  const response = await fetch(`${API_BASE_URL}/api/admin/reports/summary.xlsx`, {
+  const method = 'GET'
+  const url = `${API_BASE_URL}/api/admin/reports/summary.xlsx`
+  const response = await fetch(url, {
     headers: token ? {Authorization: `Bearer ${token}`} : {},
   })
-  if (!response.ok) throw new Error(await response.text())
+  if (!response.ok) {
+    throw new ApiError(
+      await readApiErrorMessage(response, method, url),
+      response.status,
+      method,
+      url,
+    )
+  }
   const blob = await response.blob()
-  const url = URL.createObjectURL(blob)
+  const objectUrl = URL.createObjectURL(blob)
   const link = document.createElement('a')
-  link.href = url
+  link.href = objectUrl
   link.download = 'movement-summary.xlsx'
   link.click()
-  URL.revokeObjectURL(url)
+  URL.revokeObjectURL(objectUrl)
 }

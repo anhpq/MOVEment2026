@@ -13,7 +13,7 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
-import {loginTeam, loginTeamWithQr, loginUser} from "../api";
+import {isAuthFailure, loginTeam, loginTeamWithQr, loginUser} from "../api";
 import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
 import logo from "../../../assets/ST-logo.png";
 
@@ -119,7 +119,10 @@ export function LoginPage() {
         message.success("Login successful");
         navigate("/stations/map");
         return;
-      } catch {
+      } catch (error) {
+        if (!isAuthFailure(error)) {
+          throw error;
+        }
         // Fall back to admin/user login if team login fails.
       }
 
