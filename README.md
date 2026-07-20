@@ -45,3 +45,28 @@ npm.cmd run tester:no-seed
 
 The script refuses to migrate/seed a non-local database by default. Only use
 `-AllowRemoteDatabase` for a disposable test database.
+
+## Tester Docker Run
+
+If the tester has Docker Desktop, they can run the whole app with PostgreSQL in
+Docker:
+
+```powershell
+docker compose -f docker-compose.tester.yml up --build
+```
+
+This starts:
+
+- PostgreSQL container, exposed on host port `55432`
+- Backend API: `http://localhost:3000`
+- Frontend: `http://localhost:4173`
+
+The first run installs dependencies inside Docker volumes, applies migrations,
+seeds local test data, and builds both apps. Keep the terminal open while
+testing. Press `Ctrl+C` to stop the app.
+
+To remove the tester database and start fresh:
+
+```powershell
+docker compose -f docker-compose.tester.yml down -v
+```

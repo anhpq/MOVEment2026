@@ -89,3 +89,10 @@ Validate production CORS and secrets in the deployed environment. This cannot be
 - The runner refuses to migrate/seed non-local database URLs unless explicitly run with `-AllowRemoteDatabase`.
 - Verification passed: PowerShell syntax check, root npm script listing, backend build, and frontend build. Frontend build still reports the known non-blocking Vite large chunk warning.
 - Graphify update was attempted after the code/doc change but could not run because `graphify` is not installed, the Windows Python alias is unusable, and `graphifyy` is not present in the local `uv` cache. Installing `graphifyy` from PyPI requires explicit user approval for the external package fetch.
+
+## 2026-07-20 Tester Docker compose runner
+
+- Added `docker-compose.tester.yml` so testers can run PostgreSQL, backend API, and frontend preview with Docker Desktop.
+- The compose runner uses a dedicated PostgreSQL volume, applies Prisma migrations, seeds test data, builds backend/frontend, and exposes frontend on `http://localhost:4173` and API docs on `http://localhost:3000/api/docs`.
+- Added root `npm.cmd run tester:docker` as a convenience wrapper around `docker compose -f docker-compose.tester.yml up --build`.
+- Verification note: root npm script listing passed. Docker compose config/runtime verification could not be run on this machine because Docker CLI is not installed.

@@ -1,0 +1,67 @@
+name: movement2026-tester
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: movement
+    ports:
+      - "55432:5432"
+    volumes:
+      - tester-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d movement"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    image: node:24-bookworm-slim
+    working_dir: /workspace/be
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/movement
+      JWT_SECRET: tester-local-secret
+      JWT_EXPIRES_IN: 12h
+      CORS_ORIGIN: http://localhost:4173
+      SCORING_CODE: 2468
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/workspace
+      - tester-backend-node-modules:/workspace/be/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -lc "npm ci &&
+      npm run prisma:generate &&
+      npm run prisma:deploy &&
+      npm run seed &&
+      npm run build &&
+      npm run start:prod"
+
+  frontend:
+    image: node:24-bookworm-slim
+    working_dir: /workspace/fe
+    environment:
+      VITE_API_BASE_URL: http://localhost:3000
+    ports:
+      - "4173:4173"
+    volumes:
+      - .:/workspace
+      - tester-frontend-node-modules:/workspace/fe/node_modules
+    depends_on:
+      - api
+    command: >
+      sh -lc "npm ci &&
+      npm run build &&
+      npm run preview -- --host 0.0.0.0 --port 4173"
+
+volumes:
+  tester-postgres-data:
+  tester-backend-node-modules:
+  tester-frontend-node-modules:
