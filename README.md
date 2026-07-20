@@ -1,17 +1,47 @@
 # MOVEment 2026
 
-Hệ thống trò chơi theo trạm gồm:
+MOVEment 2026 is a station-based event game system.
 
-- `fe/`: React + TypeScript + Vite.
-- `be/`: NestJS + Prisma + PostgreSQL.
-- `docs/analysis/`: đặc tả và backlog đã chốt.
-- `docs/prompts/`: prompt phân tích ban đầu, chỉ dùng làm tài liệu tham khảo.
+- `fe/`: React + TypeScript + Vite frontend.
+- `be/`: NestJS + Prisma + PostgreSQL backend API.
+- `docs/analysis/`: accepted product scope, backlog, decisions, and audit notes.
+- `docs/prompts/`: analysis workflow prompts and checklists.
 
-## Quyền và đăng nhập
+## Roles And Login
 
-- `ADMIN`: quản trị sự kiện, sửa điểm, reopen, cấu hình và xuất báo cáo.
-- `TEAM`: đăng nhập bằng `username/password`, mỗi team chỉ có một session thiết bị đang hoạt động.
-- Không có role hoặc tài khoản Staff/Station Manager.
-- Sau khi team quét QR check-out, staff nhập điểm trên chính thiết bị của team và xác nhận bằng mã chấm điểm.
+- `ADMIN`: manages event operations, teams, stations, scores, reopen/status overrides, config, logs, and report export.
+- `TEAM`: logs in with username/password or a team QR token. Each team can have only one active device session.
+- There is no Staff or Station Manager account. After team check-out, staff enters the score on the team device and confirms with the scoring code.
 
-Xem hướng dẫn backend tại [`be/README.md`](be/README.md).
+See backend details in [be/README.md](be/README.md).
+
+## Tester One-Command Run
+
+From the repo root, testers can build everything and start the local test app:
+
+```powershell
+npm.cmd run tester
+```
+
+The command installs missing dependencies, prepares Prisma, applies migrations,
+seeds the local database, builds backend and frontend, then starts:
+
+- Frontend: `http://localhost:4173`
+- API docs: `http://localhost:3000/api/docs`
+
+Keep the terminal open while testing. Press `Ctrl+C` to stop both servers.
+
+Seed accounts:
+
+- Admin: `admin` / `admin123`
+- Team: `team01` / `team01` through `team25` / `team25`
+
+Use this variant when the database already has test data and should not be
+reseeded:
+
+```powershell
+npm.cmd run tester:no-seed
+```
+
+The script refuses to migrate/seed a non-local database by default. Only use
+`-AllowRemoteDatabase` for a disposable test database.
