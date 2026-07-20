@@ -66,12 +66,10 @@
   "64": "PrismaService",
   "65": "validate-environment.ts",
   "66": "admin.controller.ts",
-  "67": "playerData.ts",
   "69": "prisma.config.ts",
   "71": "scripts",
   "72": "package.json",
   "74": "@eslint/js",
   "75": "eslint-plugin-react-hooks",
-  "76": "@types/react",
-  "80": "xlsx-report.ts"
+  "76": "@types/react"
 }

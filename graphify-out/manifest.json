@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784564962.5895917,
-    "ast_hash": "a7c191682cb395ad70878634a750e502",
+    "mtime": 1784565330.0263493,
+    "ast_hash": "5a42e8380f4b929468daf7cd47b0982d",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -682,6 +682,11 @@
   "fe/src/features/movement/apiClient.ts": {
     "mtime": 1784564876.3814325,
     "ast_hash": "5bd14f7e7fddc20869a1b7bf97adec6e",
+    "semantic_hash": ""
+  },
+  "deploy/nginx/README.md": {
+    "mtime": 1784565318.3586104,
+    "ast_hash": "12f5dc6a701a2372a322854239025fa9",
     "semantic_hash": ""
   }
 }

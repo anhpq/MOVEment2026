@@ -1,5 +1,13 @@
 # Backend Audit Status
 
+## 2026-07-20 heroes.nalth.top SPA routing fallback
+
+- Confirmed frontend uses React Router `BrowserRouter` in `fe/src/main.tsx`; `/login`, `/teams`, `/stations`, and related paths are client-side routes in `fe/src/features/movement/routes.tsx`, not physical files in `fe/dist`.
+- Production check before applying the config: `GET https://heroes.nalth.top/` returned `200 text/html`, while `GET https://heroes.nalth.top/login` returned `404 text/html`; `GET https://heroes.nalth.top/api/docs` also returned `404 text/html`. This indicates the live web server/static host is serving the root document but is not applying SPA history fallback or the `/api` reverse proxy.
+- Updated `deploy/nginx/movement.conf` for `heroes.nalth.top`: `/api/` is a separate reverse proxy to the local Nest backend, static assets use `try_files $uri =404`, and `location /` uses `try_files $uri $uri/ /index.html` so BrowserRouter routes refresh correctly.
+- Added `deploy/nginx/README.md` with build, publish, Nginx install/reload, and verification commands.
+- Verification in repo: frontend lint/build passed; `fe/dist` contains `index.html` and assets but no physical `/login`, `/teams`, or `/stations` files. Nginx binary is not installed in this workspace, so `nginx -t` must be run on the server after copying the config.
+
 ## 2026-07-20 Login 405 object-storage investigation
 
 - Traced login, QR login, QR paste, station check-in, and station check-out requests. Frontend API calls are centralized in `fe/src/features/movement/api.ts` and target `VITE_API_BASE_URL` plus `/api/...` paths.
