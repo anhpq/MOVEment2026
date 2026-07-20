@@ -33,18 +33,33 @@ npm install
 npm run dev
 ```
 
-The frontend expects the backend API at:
+By default the frontend calls the API with relative paths such as:
 
 ```text
-http://localhost:3000
+/api/auth/team-login
 ```
 
-Override it with:
+Vite development proxies `/api` to the local backend at `http://localhost:3000`
+through `vite.config.ts`. For local preview modes that do not use the Vite dev
+proxy, set an explicit API origin:
 
 ```powershell
 $env:VITE_API_BASE_URL="http://localhost:3000"
-npm run dev
+npm run build
+npm run preview -- --host 0.0.0.0 --port 4173
 ```
+
+## API Configuration
+
+- Local dev: leave `VITE_API_BASE_URL` unset and run the Vite dev server; `/api`
+  is proxied to the backend.
+- Staging/production with reverse proxy: leave `VITE_API_BASE_URL` unset and
+  configure HTTPS Nginx so `/api/*` proxies to the backend service.
+- Static hosting without reverse proxy: set `VITE_API_BASE_URL` to an HTTPS API
+  origin. Do not use a raw IP address or HTTP URL for deployed HTTPS builds.
+
+See `deploy/nginx/movement.conf` for the recommended production same-origin
+reverse-proxy configuration.
 
 ## Build And Preview
 

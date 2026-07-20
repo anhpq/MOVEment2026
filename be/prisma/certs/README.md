@@ -14,7 +14,7 @@ For the remote PostgreSQL server, copy the following template into `be/.env`
 and replace `YOUR_URL_ENCODED_PASSWORD`:
 
 ```env
-DATABASE_URL="postgresql://root:YOUR_URL_ENCODED_PASSWORD@101.46.14.57:5432/movement?schema=public&sslmode=require&sslcert=certs/postgres-ca.pem&sslaccept=strict"
+DATABASE_URL="postgresql://root:YOUR_URL_ENCODED_PASSWORD@DB_HOST:5432/movement?schema=public&sslmode=require&sslcert=certs/postgres-ca.pem&sslaccept=strict"
 ```
 
 Prisma resolves `sslcert` relative to the `be/prisma` directory, so the URL uses

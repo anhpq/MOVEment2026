@@ -45,7 +45,8 @@ jobs:
         run: |
           if [ -z "${VITE_API_BASE_URL:-}" ]; then
             echo "VITE_API_BASE_URL repository variable is missing or empty."
-            echo "Set it to the backend API origin before deploying the OBS frontend."
+            echo "This workflow deploys directly to OBS, which cannot reverse proxy same-origin /api requests."
+            echo "Set VITE_API_BASE_URL to an HTTPS API origin, or deploy the frontend behind deploy/nginx/movement.conf instead."
             exit 1
           fi
 
@@ -53,6 +54,16 @@ jobs:
             *obs-website*|*obs.*myhuaweicloud.com*)
               echo "VITE_API_BASE_URL points at OBS/static hosting, not the backend API."
               echo "Current value: ${VITE_API_BASE_URL}"
+              exit 1
+              ;;
+          esac
+
+          case "${VITE_API_BASE_URL}" in
+            https://*)
+              ;;
+            *)
+              echo "VITE_API_BASE_URL must be HTTPS when set for deployed frontend builds."
+              echo "Use an HTTPS API origin for OBS static hosting, or serve /api through the production reverse proxy."
               exit 1
               ;;
           esac

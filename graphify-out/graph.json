@@ -1045,8 +1045,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_prisma_seed",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "seed.ts"
     },
     {
@@ -1056,8 +1056,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_prisma_seed_prisma",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "prisma"
     },
     {
@@ -1067,8 +1067,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "be_prisma_seed_stations",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "stations"
     },
     {
@@ -1078,8 +1078,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_prisma_seed_teamcolors",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "teamcolors"
     },
     {
@@ -1089,8 +1089,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "be_prisma_seed_teams",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "teams"
     },
     {
@@ -1100,8 +1100,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_prisma_seed_main",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "main()"
     },
     {
@@ -1199,8 +1199,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_app_module_appmodule",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "appmodule"
     },
     {
@@ -1210,8 +1210,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_app_module_ts_module",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "module"
     },
     {
@@ -1221,8 +1221,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "activity-log.service.ts"
     },
     {
@@ -1232,8 +1232,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "activitylogservice"
     },
     {
@@ -1243,8 +1243,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_ts_injectable",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "injectable"
     },
     {
@@ -1254,8 +1254,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_constructor",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
     {
@@ -1276,8 +1276,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_tojson",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".tojson()"
     },
     {
@@ -1287,8 +1287,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "auth-context.ts"
     },
     {
@@ -1298,8 +1298,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authtype",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "authtype"
     },
     {
@@ -1320,8 +1320,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_adminauthcontext",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "adminauthcontext"
     },
     {
@@ -1331,8 +1331,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_teamauthcontext",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "teamauthcontext"
     },
     {
@@ -1342,8 +1342,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_isadmin",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "isadmin()"
     },
     {
@@ -1364,8 +1364,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_decorators",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "auth.decorators.ts"
     },
     {
@@ -1397,8 +1397,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_spec",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "jwt-auth.guard.spec.ts"
     },
     {
@@ -1408,8 +1408,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "jwt-auth.guard.ts"
     },
     {
@@ -1419,8 +1419,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtpayload",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "jwtpayload"
     },
     {
@@ -1430,8 +1430,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "jwtauthguard"
     },
     {
@@ -1441,8 +1441,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_ts_injectable",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "injectable"
     },
     {
@@ -1452,8 +1452,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_constructor",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -1463,8 +1463,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_canactivate",
-      "community": 68,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".canactivate()"
     },
     {
@@ -1474,8 +1474,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "roles.guard.ts"
     },
     {
@@ -1485,8 +1485,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "rolesguard"
     },
     {
@@ -1496,8 +1496,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_ts_injectable",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "injectable"
     },
     {
@@ -1507,8 +1507,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_constructor",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
     {
@@ -1518,8 +1518,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_canactivate",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".canactivate()"
     },
     {
@@ -1661,8 +1661,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "qr-token.ts"
     },
     {
@@ -1672,8 +1672,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_normalizeqrtoken",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "normalizeqrtoken()"
     },
     {
@@ -1683,8 +1683,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_createqrtokenfingerprint",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "createqrtokenfingerprint()"
     },
     {
@@ -1694,8 +1694,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_buildteamloginqrtoken",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "buildteamloginqrtoken()"
     },
     {
@@ -1705,8 +1705,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_buildstationqrtoken",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "buildstationqrtoken()"
     },
     {
@@ -1716,8 +1716,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_spec",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "validate-environment.spec.ts"
     },
     {
@@ -1727,8 +1727,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_spec_productionenvironment",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "productionenvironment"
     },
     {
@@ -1738,8 +1738,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_config_validate_environment",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "validate-environment.ts"
     },
     {
@@ -1749,8 +1749,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_environment",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "environment"
     },
     {
@@ -1760,8 +1760,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_requiredproductionvalue",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "requiredproductionvalue()"
     },
     {
@@ -1771,8 +1771,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_parsecorsorigin",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "parsecorsorigin()"
     },
     {
@@ -1782,8 +1782,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_validateenvironment",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "validateenvironment()"
     },
     {
@@ -1793,8 +1793,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_main",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "main.ts"
     },
     {
@@ -1804,8 +1804,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_main_bootstrap",
-      "community": 65,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "bootstrap()"
     },
     {
@@ -2233,8 +2233,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_constructor",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -2277,7 +2277,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_createteam",
-      "community": 80,
+      "community": 60,
       "community_name": "xlsx-report.ts",
       "norm_label": ".createteam()"
     },
@@ -2332,8 +2332,8 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_updatestation",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": ".updatestation()"
     },
     {
@@ -2343,8 +2343,8 @@
       "source_location": "L282",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_createstation",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".createstation()"
     },
     {
@@ -2398,8 +2398,8 @@
       "source_location": "L476",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_geteventconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".geteventconfig()"
     },
     {
@@ -2409,7 +2409,7 @@
       "source_location": "L480",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_updateeventconfig",
-      "community": 80,
+      "community": 60,
       "community_name": "xlsx-report.ts",
       "norm_label": ".updateeventconfig()"
     },
@@ -2563,8 +2563,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_createstationdto",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "createstationdto"
     },
     {
@@ -2574,8 +2574,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isstring",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "isstring"
     },
     {
@@ -2585,8 +2585,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_matches",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "matches"
     },
     {
@@ -2596,8 +2596,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_maxlength",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "maxlength"
     },
     {
@@ -2607,8 +2607,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isoptional",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "isoptional"
     },
     {
@@ -2618,8 +2618,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isenum",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "isenum"
     },
     {
@@ -2629,8 +2629,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isnumber",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "isnumber"
     },
     {
@@ -2640,8 +2640,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_min",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "min"
     },
     {
@@ -2651,8 +2651,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_max",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "max"
     },
     {
@@ -2662,8 +2662,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isint",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "isint"
     },
     {
@@ -2673,8 +2673,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isurl",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "isurl"
     },
     {
@@ -2772,8 +2772,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_updatestationdto",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "updatestationdto"
     },
     {
@@ -2783,8 +2783,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isoptional",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "isoptional"
     },
     {
@@ -2794,8 +2794,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isstring",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "isstring"
     },
     {
@@ -2805,8 +2805,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_maxlength",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "maxlength"
     },
     {
@@ -2816,8 +2816,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isenum",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "isenum"
     },
     {
@@ -2827,8 +2827,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isnumber",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "isnumber"
     },
     {
@@ -2838,8 +2838,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_min",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "min"
     },
     {
@@ -2849,8 +2849,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_max",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "max"
     },
     {
@@ -2860,8 +2860,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto_ts_isurl",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 65,
+      "community_name": "validate-environment.ts",
       "norm_label": "isurl"
     },
     {
@@ -2871,8 +2871,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "xlsx-report.ts"
     },
     {
@@ -2882,8 +2882,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxcell",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "xlsxcell"
     },
     {
@@ -2893,8 +2893,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxsheet",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "xlsxsheet"
     },
     {
@@ -2904,8 +2904,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipentry",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "zipentry"
     },
     {
@@ -2915,8 +2915,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crctable",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "crctable"
     },
     {
@@ -2926,8 +2926,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_createworkbookxlsx",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "createworkbookxlsx()"
     },
     {
@@ -2937,8 +2937,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sheetxml",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "sheetxml()"
     },
     {
@@ -2948,8 +2948,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_cellxml",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "cellxml()"
     },
     {
@@ -2959,8 +2959,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_columnname",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "columnname()"
     },
     {
@@ -2970,8 +2970,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xmldeclaration",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "xmldeclaration()"
     },
     {
@@ -2981,8 +2981,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_escapexml",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "escapexml()"
     },
     {
@@ -2992,8 +2992,8 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_sanitizesheetname",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "sanitizesheetname()"
     },
     {
@@ -3003,8 +3003,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_crc32",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "crc32()"
     },
     {
@@ -3014,8 +3014,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_zipfiles",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "zipfiles()"
     },
     {
@@ -3289,8 +3289,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_constructor",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3575,8 +3575,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "event-config.controller.ts"
     },
     {
@@ -3586,8 +3586,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "eventconfigcontroller"
     },
     {
@@ -3597,8 +3597,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_ts_controller",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "controller"
     },
     {
@@ -3608,8 +3608,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_ts_get",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "get"
     },
     {
@@ -3619,8 +3619,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller_constructor",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3630,8 +3630,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller_eventconfigcontroller_getpublicconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getpublicconfig()"
     },
     {
@@ -3641,8 +3641,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_module",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "event-config.module.ts"
     },
     {
@@ -3674,8 +3674,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 80,
+      "community_name": "xlsx-report.ts",
       "norm_label": "event-config.service.ts"
     },
     {
@@ -3685,8 +3685,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "eventconfigservice"
     },
     {
@@ -3696,8 +3696,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_ts_injectable",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "injectable"
     },
     {
@@ -3707,8 +3707,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_constructor",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
     {
@@ -3718,8 +3718,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getconfig()"
     },
     {
@@ -3729,8 +3729,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getpublicconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getpublicconfig()"
     },
     {
@@ -3740,8 +3740,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_updateconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".updateconfig()"
     },
     {
@@ -3751,8 +3751,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispasteventend",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".ispasteventend()"
     },
     {
@@ -3762,8 +3762,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispastlocaltime",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".ispastlocaltime()"
     },
     {
@@ -3773,8 +3773,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_assertvalidtimezone",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".assertvalidtimezone()"
     },
     {
@@ -3784,8 +3784,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_getlocaldatetimeparts",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getlocaldatetimeparts()"
     },
     {
@@ -4191,8 +4191,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service_finalservice_constructor",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
     {
@@ -4389,8 +4389,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "leaderboard.controller.ts"
     },
     {
@@ -4400,8 +4400,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "leaderboardcontroller"
     },
     {
@@ -4411,8 +4411,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_ts_controller",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "controller"
     },
     {
@@ -4422,8 +4422,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_ts_get",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": "get"
     },
     {
@@ -4433,8 +4433,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller_constructor",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".constructor()"
     },
     {
@@ -4444,8 +4444,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller_getleaderboard",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 12,
+      "community_name": "PrismaService",
       "norm_label": ".getleaderboard()"
     },
     {
@@ -4543,8 +4543,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_constructor",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -4697,8 +4697,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 67,
+      "community_name": "playerData.ts",
       "norm_label": "player.service.spec.ts"
     },
     {
@@ -4708,8 +4708,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_progress",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 67,
+      "community_name": "playerData.ts",
       "norm_label": "progress"
     },
     {
@@ -4719,8 +4719,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockprisma",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 67,
+      "community_name": "playerData.ts",
       "norm_label": "mockprisma"
     },
     {
@@ -4730,8 +4730,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockeventconfig",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 67,
+      "community_name": "playerData.ts",
       "norm_label": "mockeventconfig"
     },
     {
@@ -4741,8 +4741,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_spec_mockactivitylog",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 67,
+      "community_name": "playerData.ts",
       "norm_label": "mockactivitylog"
     },
     {
@@ -4763,8 +4763,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "playerservice"
     },
     {
@@ -4774,8 +4774,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_ts_injectable",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": "injectable"
     },
     {
@@ -4785,8 +4785,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_constructor",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -4796,8 +4796,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getdashboard",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getdashboard()"
     },
     {
@@ -4807,8 +4807,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getstations",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getstations()"
     },
     {
@@ -4818,8 +4818,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getprogress",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getprogress()"
     },
     {
@@ -4829,8 +4829,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getactivitylog",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getactivitylog()"
     },
     {
@@ -4840,8 +4840,8 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getleaderboard",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getleaderboard()"
     },
     {
@@ -4851,8 +4851,8 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_checkin",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".checkin()"
     },
     {
@@ -4862,8 +4862,8 @@
       "source_location": "L206",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_checkout",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".checkout()"
     },
     {
@@ -4873,8 +4873,8 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_cancel",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".cancel()"
     },
     {
@@ -4884,8 +4884,8 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitscore",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".submitscore()"
     },
     {
@@ -4895,8 +4895,8 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitcipher",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".submitcipher()"
     },
     {
@@ -4906,8 +4906,8 @@
       "source_location": "L408",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getprogressforaction",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getprogressforaction()"
     },
     {
@@ -4917,8 +4917,8 @@
       "source_location": "L419",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_validateqr",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".validateqr()"
     },
     {
@@ -4928,8 +4928,8 @@
       "source_location": "L444",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_normalizeanswer",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".normalizeanswer()"
     },
     {
@@ -4939,8 +4939,8 @@
       "source_location": "L448",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getplayseconds",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".getplayseconds()"
     },
     {
@@ -4950,8 +4950,8 @@
       "source_location": "L458",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_toeffectiveprogressstatus",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".toeffectiveprogressstatus()"
     },
     {
@@ -4961,8 +4961,8 @@
       "source_location": "L468",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_topublicgame",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 60,
+      "community_name": "xlsx-report.ts",
       "norm_label": ".topublicgame()"
     },
     {
@@ -4972,8 +4972,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module",
-      "community": 12,
-      "community_name": "PrismaService",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "prisma.module.ts"
     },
     {
@@ -5016,8 +5016,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "prisma.service.ts"
     },
     {
@@ -5027,8 +5027,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "prismaservice"
     },
     {
@@ -5038,8 +5038,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_ts_injectable",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": "injectable"
     },
     {
@@ -5049,8 +5049,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduleinit",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".onmoduleinit()"
     },
     {
@@ -5060,8 +5060,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduledestroy",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 8,
+      "community_name": "store.ts",
       "norm_label": ".onmoduledestroy()"
     },
     {
@@ -6140,153 +6140,10 @@
       "norm_label": "api.ts"
     },
     {
-      "label": "ApiError",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L7",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apierror",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "apierror"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apierror_constructor",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": ".constructor()"
-    },
-    {
-      "label": "isAuthFailure()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L26",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_isauthfailure",
-      "community": 64,
-      "community_name": "PrismaService",
-      "norm_label": "isauthfailure()"
-    },
-    {
-      "label": "getContentType()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L30",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_getcontenttype",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "getcontenttype()"
-    },
-    {
-      "label": "looksLikeMarkup()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L34",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_lookslikemarkup",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "lookslikemarkup()"
-    },
-    {
-      "label": "readErrorMessageFromJson()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L44",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_readerrormessagefromjson",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "readerrormessagefromjson()"
-    },
-    {
-      "label": "readApiErrorMessage()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L67",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_readapierrormessage",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "readapierrormessage()"
-    },
-    {
-      "label": "getStoredSession()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L87",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_getstoredsession",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "getstoredsession()"
-    },
-    {
-      "label": "getAccessToken()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L116",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_getaccesstoken",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "getaccesstoken()"
-    },
-    {
-      "label": "apiRequest()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L120",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apirequest",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "apirequest()"
-    },
-    {
-      "label": "apiGet()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L149",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apiget",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "apiget()"
-    },
-    {
-      "label": "apiPost()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L153",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apipost",
-      "community": 26,
-      "community_name": "seed.ts",
-      "norm_label": "apipost()"
-    },
-    {
-      "label": "apiPatch()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L160",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apipatch",
-      "community": 18,
-      "community_name": "api.ts",
-      "norm_label": "apipatch()"
-    },
-    {
       "label": "UserLoginResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L167",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_userloginresponse",
       "community": 18,
@@ -6297,7 +6154,7 @@
       "label": "TeamLoginResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L176",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_teamloginresponse",
       "community": 18,
@@ -6308,7 +6165,7 @@
       "label": "AuthMeResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L185",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_authmeresponse",
       "community": 18,
@@ -6319,7 +6176,7 @@
       "label": "loginUser()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L203",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_loginuser",
       "community": 64,
@@ -6330,7 +6187,7 @@
       "label": "loginTeam()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L213",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_loginteam",
       "community": 64,
@@ -6341,7 +6198,7 @@
       "label": "loginTeamWithQr()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L225",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_loginteamwithqr",
       "community": 64,
@@ -6352,7 +6209,7 @@
       "label": "getMe()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L235",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getme",
       "community": 7,
@@ -6363,7 +6220,7 @@
       "label": "logout()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L239",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_logout",
       "community": 7,
@@ -6374,7 +6231,7 @@
       "label": "PlayerDashboardResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L243",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playerdashboardresponse",
       "community": 18,
@@ -6385,29 +6242,29 @@
       "label": "PlayerStationResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L257",
+      "source_location": "L102",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playerstationresponse",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "playerstationresponse"
     },
     {
       "label": "PlayerProgressResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L276",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playerprogressresponse",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "playerprogressresponse"
     },
     {
       "label": "LeaderboardEntryResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L291",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_leaderboardentryresponse",
       "community": 62,
@@ -6418,62 +6275,51 @@
       "label": "getPlayerDashboard()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L300",
+      "source_location": "L145",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerdashboard",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "getplayerdashboard()"
-    },
-    {
-      "label": "apiDelete()",
-      "file_type": "code",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L304",
-      "_origin": "ast",
-      "id": "fe_src_features_movement_api_apidelete",
-      "community": 15,
-      "community_name": "useMovementStore",
-      "norm_label": "apidelete()"
     },
     {
       "label": "getPlayerStations()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L308",
+      "source_location": "L149",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerstations",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "getplayerstations()"
     },
     {
       "label": "getPlayerProgress()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L312",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerprogress",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "getplayerprogress()"
     },
     {
       "label": "checkInStation()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L316",
+      "source_location": "L157",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_checkinstation",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "checkinstation()"
     },
     {
       "label": "checkOutStation()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L325",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_checkoutstation",
       "community": 26,
@@ -6484,7 +6330,7 @@
       "label": "submitStationScore()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L334",
+      "source_location": "L175",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitstationscore",
       "community": 26,
@@ -6495,7 +6341,7 @@
       "label": "AdminStationUpdateInput",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L347",
+      "source_location": "L188",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_adminstationupdateinput",
       "community": 18,
@@ -6506,7 +6352,7 @@
       "label": "updateAdminStation()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L356",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminstation",
       "community": 15,
@@ -6517,7 +6363,7 @@
       "label": "AdminTeamResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L363",
+      "source_location": "L204",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_adminteamresponse",
       "community": 18,
@@ -6528,7 +6374,7 @@
       "label": "AdminProgressMatrixResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L372",
+      "source_location": "L213",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_adminprogressmatrixresponse",
       "community": 18,
@@ -6539,7 +6385,7 @@
       "label": "getAdminProgressMatrix()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L397",
+      "source_location": "L238",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminprogressmatrix",
       "community": 15,
@@ -6550,29 +6396,29 @@
       "label": "createAdminTeam()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L400",
+      "source_location": "L241",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_createadminteam",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "createadminteam()"
     },
     {
       "label": "updateAdminTeam()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L404",
+      "source_location": "L245",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminteam",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "updateadminteam()"
     },
     {
       "label": "deleteAdminTeam()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L408",
+      "source_location": "L249",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminteam",
       "community": 15,
@@ -6583,7 +6429,7 @@
       "label": "forceAdminProgressStatus()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L411",
+      "source_location": "L252",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_forceadminprogressstatus",
       "community": 26,
@@ -6594,7 +6440,7 @@
       "label": "editAdminProgressScore()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L417",
+      "source_location": "L258",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_editadminprogressscore",
       "community": 26,
@@ -6605,7 +6451,7 @@
       "label": "submitAdminProgressScore()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L423",
+      "source_location": "L264",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitadminprogressscore",
       "community": 26,
@@ -6616,7 +6462,7 @@
       "label": "reopenAdminProgress()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L429",
+      "source_location": "L270",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_reopenadminprogress",
       "community": 26,
@@ -6627,7 +6473,7 @@
       "label": "createAdminStation()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L432",
+      "source_location": "L273",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_createadminstation",
       "community": 15,
@@ -6638,7 +6484,7 @@
       "label": "deleteAdminStation()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L438",
+      "source_location": "L279",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminstation",
       "community": 15,
@@ -6649,7 +6495,7 @@
       "label": "cancelPlayerStation()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L441",
+      "source_location": "L282",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_cancelplayerstation",
       "community": 26,
@@ -6660,7 +6506,7 @@
       "label": "submitCipherAnswer()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L444",
+      "source_location": "L285",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitcipheranswer",
       "community": 26,
@@ -6671,7 +6517,7 @@
       "label": "getLeaderboard()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L447",
+      "source_location": "L288",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getleaderboard",
       "community": 62,
@@ -6682,18 +6528,18 @@
       "label": "FinalResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L450",
+      "source_location": "L291",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_finalresponse",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "finalresponse"
     },
     {
       "label": "FinalSubmissionResponse",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L455",
+      "source_location": "L296",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_finalsubmissionresponse",
       "community": 18,
@@ -6704,29 +6550,29 @@
       "label": "getPlayerFinal()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L459",
+      "source_location": "L300",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerfinal",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getplayerfinal()"
     },
     {
       "label": "submitFinalAnswer()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L460",
+      "source_location": "L301",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitfinalanswer",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "submitfinalanswer()"
     },
     {
       "label": "getAdminDashboard()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L463",
+      "source_location": "L304",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadmindashboard",
       "community": 18,
@@ -6737,7 +6583,7 @@
       "label": "getAdminScoreQueue()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L464",
+      "source_location": "L305",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminscorequeue",
       "community": 18,
@@ -6748,7 +6594,7 @@
       "label": "getAdminEventConfig()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L465",
+      "source_location": "L306",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadmineventconfig",
       "community": 18,
@@ -6759,7 +6605,7 @@
       "label": "updateAdminEventConfig()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L466",
+      "source_location": "L307",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadmineventconfig",
       "community": 18,
@@ -6770,7 +6616,7 @@
       "label": "getAdminActivityLogs()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L468",
+      "source_location": "L309",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminactivitylogs",
       "community": 18,
@@ -6781,7 +6627,7 @@
       "label": "getAdminFinalConfig()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L469",
+      "source_location": "L310",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminfinalconfig",
       "community": 18,
@@ -6792,7 +6638,7 @@
       "label": "getAdminFinalSubmissions()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L470",
+      "source_location": "L311",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminfinalsubmissions",
       "community": 18,
@@ -6803,7 +6649,7 @@
       "label": "updateAdminFinalConfig()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L471",
+      "source_location": "L312",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminfinalconfig",
       "community": 18,
@@ -6814,12 +6660,254 @@
       "label": "downloadAdminSummary()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L474",
+      "source_location": "L315",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_downloadadminsummary",
       "community": 18,
       "community_name": "api.ts",
       "norm_label": "downloadadminsummary()"
+    },
+    {
+      "label": "apiClient.ts",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "apiclient.ts"
+    },
+    {
+      "label": "ApiError",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apierror",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "apierror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apierror_constructor",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "isAuthFailure()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_isauthfailure",
+      "community": 64,
+      "community_name": "PrismaService",
+      "norm_label": "isauthfailure()"
+    },
+    {
+      "label": "normalizeApiBaseUrl()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_normalizeapibaseurl",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "normalizeapibaseurl()"
+    },
+    {
+      "label": "getConfiguredApiBaseUrl()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_getconfiguredapibaseurl",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "getconfiguredapibaseurl()"
+    },
+    {
+      "label": "isHttpsPage()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_ishttpspage",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "ishttpspage()"
+    },
+    {
+      "label": "buildApiUrl()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_buildapiurl",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "buildapiurl()"
+    },
+    {
+      "label": "getFriendlyErrorMessage()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_getfriendlyerrormessage",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "getfriendlyerrormessage()"
+    },
+    {
+      "label": "getContentType()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_getcontenttype",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "getcontenttype()"
+    },
+    {
+      "label": "looksLikeMarkup()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_lookslikemarkup",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "lookslikemarkup()"
+    },
+    {
+      "label": "readErrorMessageFromJson()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_readerrormessagefromjson",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "readerrormessagefromjson()"
+    },
+    {
+      "label": "readApiErrorMessage()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_readapierrormessage",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "readapierrormessage()"
+    },
+    {
+      "label": "getStoredSession()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L129",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_getstoredsession",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "getstoredsession()"
+    },
+    {
+      "label": "getAccessToken()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L158",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_getaccesstoken",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "getaccesstoken()"
+    },
+    {
+      "label": "fetchApi()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L162",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_fetchapi",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "fetchapi()"
+    },
+    {
+      "label": "apiRequest()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L177",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apirequest",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "apirequest()"
+    },
+    {
+      "label": "apiGet()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L205",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apiget",
+      "community": 18,
+      "community_name": "api.ts",
+      "norm_label": "apiget()"
+    },
+    {
+      "label": "apiPost()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L209",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apipost",
+      "community": 26,
+      "community_name": "seed.ts",
+      "norm_label": "apipost()"
+    },
+    {
+      "label": "apiPatch()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L216",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apipatch",
+      "community": 18,
+      "community_name": "api.ts",
+      "norm_label": "apipatch()"
+    },
+    {
+      "label": "apiDelete()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L223",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apidelete",
+      "community": 15,
+      "community_name": "useMovementStore",
+      "norm_label": "apidelete()"
+    },
+    {
+      "label": "apiDownloadBlob()",
+      "file_type": "code",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L227",
+      "_origin": "ast",
+      "id": "fe_src_features_movement_apiclient_apidownloadblob",
+      "community": 3,
+      "community_name": "PlayerService",
+      "norm_label": "apidownloadblob()"
     },
     {
       "label": "QrTokenInput.tsx",
@@ -6828,8 +6916,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "qrtokeninput.tsx"
     },
     {
@@ -6839,8 +6927,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_barcodedetectorlike",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "barcodedetectorlike"
     },
     {
@@ -6850,8 +6938,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_barcodedetectorconstructor",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "barcodedetectorconstructor"
     },
     {
@@ -6861,8 +6949,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_qrtokeninputprops",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "qrtokeninputprops"
     },
     {
@@ -6872,8 +6960,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_getbarcodedetector",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "getbarcodedetector()"
     },
     {
@@ -6883,8 +6971,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "qrtokeninput()"
     },
     {
@@ -7114,8 +7202,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_protectedroute",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 7,
+      "community_name": "utils.ts",
       "norm_label": "protectedroute.tsx"
     },
     {
@@ -7125,8 +7213,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_protectedroute_protectedrouteprops",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 7,
+      "community_name": "utils.ts",
       "norm_label": "protectedrouteprops"
     },
     {
@@ -7136,8 +7224,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "fe_src_features_movement_layout_protectedroute_protectedroute",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 7,
+      "community_name": "utils.ts",
       "norm_label": "protectedroute()"
     },
     {
@@ -7180,8 +7268,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_finalpage",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "finalpage.tsx"
     },
     {
@@ -7191,8 +7279,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_finalpage_finalpage",
-      "community": 62,
-      "community_name": "routes.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "finalpage()"
     },
     {
@@ -7378,8 +7466,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationlistpage",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationlistpage.tsx"
     },
     {
@@ -7389,8 +7477,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationlistpage_quickeditformvalues",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "quickeditformvalues"
     },
     {
@@ -7400,8 +7488,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationlistpage_stationlistpage",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationlistpage()"
     },
     {
@@ -7455,8 +7543,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teameditorpage",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "teameditorpage.tsx"
     },
     {
@@ -7466,8 +7554,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teameditorpage_teameditorpage",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "teameditorpage()"
     },
     {
@@ -7499,8 +7587,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "playerdata.ts"
     },
     {
@@ -7521,8 +7609,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_mapprogressstatus",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "mapprogressstatus()"
     },
     {
@@ -7532,8 +7620,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_buildplayerseed",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "buildplayerseed()"
     },
     {
@@ -7543,8 +7631,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_fetchplayerdatabase",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "fetchplayerdatabase()"
     },
     {
@@ -7884,8 +7972,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationtrackingmode",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "stationtrackingmode"
     },
     {
@@ -7928,8 +8016,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationdefinition",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationdefinition"
     },
     {
@@ -7939,8 +8027,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamstation",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamstation"
     },
     {
@@ -7950,8 +8038,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationformvalues",
-      "community": 3,
-      "community_name": "PlayerService",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "stationformvalues"
     },
     {
@@ -7961,8 +8049,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamformvalues",
-      "community": 15,
-      "community_name": "useMovementStore",
+      "community": 62,
+      "community_name": "routes.tsx",
       "norm_label": "teamformvalues"
     },
     {
@@ -8027,8 +8115,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_localdatabaseseed",
-      "community": 67,
-      "community_name": "playerData.ts",
+      "community": 15,
+      "community_name": "useMovementStore",
       "norm_label": "localdatabaseseed"
     },
     {
@@ -8214,8 +8302,8 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_formatdatetime",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "formatdatetime()"
     },
     {
@@ -8236,8 +8324,8 @@
       "source_location": "L276",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getdisabledreason",
-      "community": 26,
-      "community_name": "seed.ts",
+      "community": 11,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "getdisabledreason()"
     },
     {
@@ -9916,7 +10004,7 @@
       "label": "2026-07-20 Remaining feature integration",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L13",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_remaining_feature_integration",
       "community": 17,
@@ -9927,7 +10015,7 @@
       "label": "2026-07-20 Runtime test-data cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L22",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_runtime_test_data_cleanup",
       "community": 17,
@@ -9938,7 +10026,7 @@
       "label": "Verification completed",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L33",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_verification_completed",
       "community": 17,
@@ -9949,7 +10037,7 @@
       "label": "Backend work still required",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L64",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_work_still_required",
       "community": 17,
@@ -9960,7 +10048,7 @@
       "label": "P0 remaining work",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L66",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p0_remaining_work",
       "community": 17,
@@ -9971,7 +10059,7 @@
       "label": "P1 event-readiness checks",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L70",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p1_event_readiness_checks",
       "community": 17,
@@ -9982,7 +10070,7 @@
       "label": "Maintenance findings",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L78",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_maintenance_findings",
       "community": 17,
@@ -9993,7 +10081,7 @@
       "label": "2026-07-20 Backend production CI/CD",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L84",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_backend_production_ci_cd",
       "community": 17,
@@ -10001,21 +10089,21 @@
       "norm_label": "2026-07-20 backend production ci/cd"
     },
     {
-      "label": "2026-07-20 BE host bootstrap (`101.46.14.57`)",
+      "label": "2026-07-20 BE host bootstrap (production ECS host)",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L90",
+      "source_location": "L92",
       "_origin": "ast",
-      "id": "docs_analysis_backend_audit_2026_07_20_be_host_bootstrap_101_46_14_57",
+      "id": "docs_analysis_backend_audit_2026_07_20_be_host_bootstrap_production_ecs_host",
       "community": 17,
       "community_name": "app.module.ts",
-      "norm_label": "2026-07-20 be host bootstrap (`101.46.14.57`)"
+      "norm_label": "2026-07-20 be host bootstrap (production ecs host)"
     },
     {
       "label": "Next recommended task",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L101",
+      "source_location": "L103",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_next_recommended_task",
       "community": 17,
@@ -10026,7 +10114,7 @@
       "label": "2026-07-20 Admin integration verification",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L105",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_admin_integration_verification",
       "community": 17,
@@ -10037,7 +10125,7 @@
       "label": "2026-07-20 Tester one-command runner",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L113",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_tester_one_command_runner",
       "community": 17,
@@ -10048,7 +10136,7 @@
       "label": "2026-07-20 Tester Docker compose runner",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L121",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_tester_docker_compose_runner",
       "community": 17,
@@ -10059,7 +10147,7 @@
       "label": "2026-07-20 Agent and Markdown docs refresh",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L128",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_agent_and_markdown_docs_refresh",
       "community": 17,
@@ -10958,10 +11046,21 @@
       "norm_label": "local development"
     },
     {
+      "label": "API Configuration",
+      "file_type": "document",
+      "source_file": "fe/README.md",
+      "source_location": "L52",
+      "_origin": "ast",
+      "id": "fe_readme_api_configuration",
+      "community": 47,
+      "community_name": "React + TypeScript + Vite",
+      "norm_label": "api configuration"
+    },
+    {
       "label": "Build And Preview",
       "file_type": "document",
       "source_file": "fe/README.md",
-      "source_location": "L49",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "fe_readme_build_and_preview",
       "community": 47,
@@ -10972,7 +11071,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "fe/README.md",
-      "source_location": "L62",
+      "source_location": "L77",
       "_origin": "ast",
       "id": "fe_readme_verification",
       "community": 47,
@@ -24623,7 +24722,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L372",
+      "source_location": "L213",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24634,7 +24733,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L347",
+      "source_location": "L188",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24645,7 +24744,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L363",
+      "source_location": "L204",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24656,73 +24755,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L304",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_apidelete",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_apierror",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L149",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L160",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L153",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L120",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_apirequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L185",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24733,7 +24766,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L441",
+      "source_location": "L282",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24744,7 +24777,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L316",
+      "source_location": "L157",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24755,7 +24788,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L325",
+      "source_location": "L166",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24766,7 +24799,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L432",
+      "source_location": "L273",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24777,7 +24810,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L400",
+      "source_location": "L241",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24788,7 +24821,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L438",
+      "source_location": "L279",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24799,7 +24832,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L408",
+      "source_location": "L249",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24810,7 +24843,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L474",
+      "source_location": "L315",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24821,7 +24854,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L417",
+      "source_location": "L258",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24832,7 +24865,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L450",
+      "source_location": "L291",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24843,7 +24876,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L455",
+      "source_location": "L296",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24854,7 +24887,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L411",
+      "source_location": "L252",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24865,18 +24898,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L116",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_getaccesstoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L468",
+      "source_location": "L309",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24887,7 +24909,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L463",
+      "source_location": "L304",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24898,7 +24920,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L465",
+      "source_location": "L306",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24909,7 +24931,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L469",
+      "source_location": "L310",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24920,7 +24942,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L470",
+      "source_location": "L311",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24931,7 +24953,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L397",
+      "source_location": "L238",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24942,7 +24964,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L464",
+      "source_location": "L305",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24953,18 +24975,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_getcontenttype",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L447",
+      "source_location": "L288",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24975,7 +24986,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L235",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24986,7 +24997,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L300",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -24997,7 +25008,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L459",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25008,7 +25019,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L312",
+      "source_location": "L153",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25019,7 +25030,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L308",
+      "source_location": "L149",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25030,29 +25041,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L87",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_getstoredsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L26",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_isauthfailure",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L291",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25063,7 +25052,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L213",
+      "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25074,7 +25063,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L225",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25085,7 +25074,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L203",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25096,7 +25085,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L239",
+      "source_location": "L84",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25107,18 +25096,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L34",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_lookslikemarkup",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L243",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25129,7 +25107,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L276",
+      "source_location": "L121",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25140,7 +25118,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L257",
+      "source_location": "L102",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25151,29 +25129,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L67",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_readapierrormessage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L44",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_api_readerrormessagefromjson",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L429",
+      "source_location": "L270",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25184,7 +25140,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L423",
+      "source_location": "L264",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25195,7 +25151,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L444",
+      "source_location": "L285",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25206,7 +25162,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L460",
+      "source_location": "L301",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25217,7 +25173,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L334",
+      "source_location": "L175",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25228,7 +25184,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L176",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25239,7 +25195,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L466",
+      "source_location": "L307",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25250,7 +25206,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L471",
+      "source_location": "L312",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25261,7 +25217,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L356",
+      "source_location": "L197",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25272,7 +25228,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L404",
+      "source_location": "L245",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25283,7 +25239,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L167",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25291,11 +25247,107 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
       "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_apidelete",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_apidownloadblob",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_apierror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_apiget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_apipatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_apipost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api",
+      "target": "fe_src_features_movement_apiclient_isauthfailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25308,18 +25360,6 @@
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
       "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api",
-      "target": "fe_src_features_movement_types_session",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api",
@@ -25471,579 +25511,16 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apierror",
-      "target": "fe_src_features_movement_api_apierror_constructor",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/pages/LoginPage.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_pages_loginpage",
-      "target": "fe_src_features_movement_api_isauthfailure",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "fe/src/features/movement/pages/LoginPage.tsx",
-      "source_location": "L123",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_pages_loginpage_loginpage",
-      "target": "fe_src_features_movement_api_isauthfailure"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L69",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_readapierrormessage",
-      "target": "fe_src_features_movement_api_getcontenttype",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L80",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_readapierrormessage",
-      "target": "fe_src_features_movement_api_lookslikemarkup",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L74",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_readapierrormessage",
-      "target": "fe_src_features_movement_api_readerrormessagefromjson",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L139",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apirequest",
-      "target": "fe_src_features_movement_api_readapierrormessage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L483",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_downloadadminsummary",
-      "target": "fe_src_features_movement_api_readapierrormessage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L117",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getaccesstoken",
-      "target": "fe_src_features_movement_api_getstoredsession",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L126",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apirequest",
-      "target": "fe_src_features_movement_api_getaccesstoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L475",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_downloadadminsummary",
-      "target": "fe_src_features_movement_api_getaccesstoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L305",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apidelete",
-      "target": "fe_src_features_movement_api_apirequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L150",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apiget",
-      "target": "fe_src_features_movement_api_apirequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L161",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apipatch",
-      "target": "fe_src_features_movement_api_apirequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L154",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_apipost",
-      "target": "fe_src_features_movement_api_apirequest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L468",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadminactivitylogs",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L463",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadmindashboard",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L465",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadmineventconfig",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L469",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadminfinalconfig",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L470",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadminfinalsubmissions",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L398",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadminprogressmatrix",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L464",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getadminscorequeue",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L448",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getleaderboard",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L236",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getme",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L301",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getplayerdashboard",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L459",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getplayerfinal",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L313",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getplayerprogress",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L309",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_getplayerstations",
-      "target": "fe_src_features_movement_api_apiget",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L442",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_cancelplayerstation",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L320",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_checkinstation",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L329",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_checkoutstation",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L436",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_createadminstation",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L402",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_createadminteam",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L218",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_loginteam",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L229",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_loginteamwithqr",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L207",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_api_loginuser",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L240",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_logout",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L430",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_reopenadminprogress",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L427",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_submitadminprogressscore",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L445",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_submitcipheranswer",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L461",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_submitfinalanswer",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L340",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_submitstationscore",
-      "target": "fe_src_features_movement_api_apipost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L421",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_editadminprogressscore",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L415",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_forceadminprogressstatus",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L467",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_updateadmineventconfig",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L472",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_updateadminfinalconfig",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L360",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_updateadminstation",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L406",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_updateadminteam",
-      "target": "fe_src_features_movement_api_apipatch",
-      "confidence_score": 1.0
+      "target": "fe_src_features_movement_apiclient_apipost"
     },
     {
       "relation": "imports",
@@ -26070,6 +25547,18 @@
       "target": "fe_src_features_movement_api_loginuser"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_loginteam",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26094,6 +25583,18 @@
       "target": "fe_src_features_movement_api_loginteam"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_loginteamwithqr",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26116,6 +25617,30 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_loginpage_loginpage",
       "target": "fe_src_features_movement_api_loginteamwithqr"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getme",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_logout",
+      "target": "fe_src_features_movement_apiclient_apipost"
     },
     {
       "relation": "imports",
@@ -26178,6 +25703,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getplayerdashboard",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26205,25 +25742,13 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L439",
+      "source_location": "L150",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "fe_src_features_movement_api_deleteadminstation",
-      "target": "fe_src_features_movement_api_apidelete",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "fe/src/features/movement/api.ts",
-      "source_location": "L409",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "fe_src_features_movement_api_deleteadminteam",
-      "target": "fe_src_features_movement_api_apidelete",
-      "confidence_score": 1.0
+      "source": "fe_src_features_movement_api_getplayerstations",
+      "target": "fe_src_features_movement_apiclient_apiget"
     },
     {
       "relation": "imports",
@@ -26250,6 +25775,18 @@
       "target": "fe_src_features_movement_api_getplayerstations"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L154",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getplayerprogress",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26272,6 +25809,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_playerdata_fetchplayerdatabase",
       "target": "fe_src_features_movement_api_getplayerprogress"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L161",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_checkinstation",
+      "target": "fe_src_features_movement_apiclient_apipost"
     },
     {
       "relation": "imports",
@@ -26322,6 +25871,18 @@
       "target": "fe_src_features_movement_api_checkinstation"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_checkoutstation",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26346,6 +25907,18 @@
       "target": "fe_src_features_movement_api_checkoutstation"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L181",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_submitstationscore",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26368,6 +25941,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationdetailpage_stationdetailpage",
       "target": "fe_src_features_movement_api_submitstationscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L201",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_updateadminstation",
+      "target": "fe_src_features_movement_apiclient_apipatch"
     },
     {
       "relation": "imports",
@@ -26442,6 +26027,30 @@
       "target": "fe_src_features_movement_api_updateadminstation"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L239",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadminprogressmatrix",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L243",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_createadminteam",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26464,6 +26073,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_teameditorpage_teameditorpage",
       "target": "fe_src_features_movement_api_createadminteam"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L247",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_updateadminteam",
+      "target": "fe_src_features_movement_apiclient_apipatch"
     },
     {
       "relation": "imports",
@@ -26490,6 +26111,18 @@
       "target": "fe_src_features_movement_api_updateadminteam"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L250",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_deleteadminteam",
+      "target": "fe_src_features_movement_apiclient_apidelete"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26512,6 +26145,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_systemconfigpage_systemconfigpage",
       "target": "fe_src_features_movement_api_deleteadminteam"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L256",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_forceadminprogressstatus",
+      "target": "fe_src_features_movement_apiclient_apipatch"
     },
     {
       "relation": "imports",
@@ -26562,6 +26207,18 @@
       "target": "fe_src_features_movement_api_forceadminprogressstatus"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L262",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_editadminprogressscore",
+      "target": "fe_src_features_movement_apiclient_apipatch"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26610,6 +26267,18 @@
       "target": "fe_src_features_movement_api_editadminprogressscore"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L268",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_submitadminprogressscore",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26632,6 +26301,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationdetailpage_stationdetailpage",
       "target": "fe_src_features_movement_api_submitadminprogressscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L271",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_reopenadminprogress",
+      "target": "fe_src_features_movement_apiclient_apipost"
     },
     {
       "relation": "imports",
@@ -26658,6 +26339,18 @@
       "target": "fe_src_features_movement_api_reopenadminprogress"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L277",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_createadminstation",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26680,6 +26373,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationeditorpage_stationeditorpage",
       "target": "fe_src_features_movement_api_createadminstation"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L280",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_deleteadminstation",
+      "target": "fe_src_features_movement_apiclient_apidelete"
     },
     {
       "relation": "imports",
@@ -26706,6 +26411,18 @@
       "target": "fe_src_features_movement_api_deleteadminstation"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L283",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_cancelplayerstation",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26730,6 +26447,18 @@
       "target": "fe_src_features_movement_api_cancelplayerstation"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L286",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_submitcipheranswer",
+      "target": "fe_src_features_movement_apiclient_apipost"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26752,6 +26481,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationdetailpage_stationdetailpage",
       "target": "fe_src_features_movement_api_submitcipheranswer"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L289",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getleaderboard",
+      "target": "fe_src_features_movement_apiclient_apiget"
     },
     {
       "relation": "imports",
@@ -26790,6 +26531,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L300",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getplayerfinal",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26812,6 +26565,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_finalpage_finalpage",
       "target": "fe_src_features_movement_api_getplayerfinal"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L302",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_submitfinalanswer",
+      "target": "fe_src_features_movement_apiclient_apipost"
     },
     {
       "relation": "imports",
@@ -26838,6 +26603,18 @@
       "target": "fe_src_features_movement_api_submitfinalanswer"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L304",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadmindashboard",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26860,6 +26637,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_adminoperationspage_adminoperationspage",
       "target": "fe_src_features_movement_api_getadmindashboard"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L305",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadminscorequeue",
+      "target": "fe_src_features_movement_apiclient_apiget"
     },
     {
       "relation": "imports",
@@ -26886,6 +26675,18 @@
       "target": "fe_src_features_movement_api_getadminscorequeue"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L306",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadmineventconfig",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26908,6 +26709,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_adminoperationspage_adminoperationspage",
       "target": "fe_src_features_movement_api_getadmineventconfig"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L308",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_updateadmineventconfig",
+      "target": "fe_src_features_movement_apiclient_apipatch"
     },
     {
       "relation": "imports",
@@ -26934,6 +26747,18 @@
       "target": "fe_src_features_movement_api_updateadmineventconfig"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L309",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadminactivitylogs",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -26956,6 +26781,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_adminoperationspage_adminoperationspage",
       "target": "fe_src_features_movement_api_getadminactivitylogs"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L310",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadminfinalconfig",
+      "target": "fe_src_features_movement_apiclient_apiget"
     },
     {
       "relation": "imports",
@@ -26982,6 +26819,18 @@
       "target": "fe_src_features_movement_api_getadminfinalconfig"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L311",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_getadminfinalsubmissions",
+      "target": "fe_src_features_movement_apiclient_apiget"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -27004,6 +26853,18 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_adminoperationspage_adminoperationspage",
       "target": "fe_src_features_movement_api_getadminfinalsubmissions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L313",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_updateadminfinalconfig",
+      "target": "fe_src_features_movement_apiclient_apipatch"
     },
     {
       "relation": "imports",
@@ -27030,6 +26891,18 @@
       "target": "fe_src_features_movement_api_updateadminfinalconfig"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/api.ts",
+      "source_location": "L316",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_api_downloadadminsummary",
+      "target": "fe_src_features_movement_apiclient_apidownloadblob"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -27052,6 +26925,549 @@
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_adminoperationspage_adminoperationspage",
       "target": "fe_src_features_movement_api_downloadadminsummary"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L223",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apidelete",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L227",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apidownloadblob",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apierror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L205",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apiget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L216",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apipatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L209",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apipost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L177",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_apirequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_buildapiurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L162",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_fetchapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L158",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_getaccesstoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_getconfiguredapibaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_getcontenttype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_getfriendlyerrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_getstoredsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_isauthfailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_ishttpspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_lookslikemarkup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_normalizeapibaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_readapierrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_apiclient_readerrormessagefromjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient",
+      "target": "fe_src_features_movement_types_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apierror",
+      "target": "fe_src_features_movement_apiclient_apierror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/pages/LoginPage.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_pages_loginpage",
+      "target": "fe_src_features_movement_apiclient_isauthfailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "fe/src/features/movement/pages/LoginPage.tsx",
+      "source_location": "L123",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_pages_loginpage_loginpage",
+      "target": "fe_src_features_movement_apiclient_isauthfailure"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_getconfiguredapibaseurl",
+      "target": "fe_src_features_movement_apiclient_normalizeapibaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_buildapiurl",
+      "target": "fe_src_features_movement_apiclient_getconfiguredapibaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_buildapiurl",
+      "target": "fe_src_features_movement_apiclient_ishttpspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L229",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apidownloadblob",
+      "target": "fe_src_features_movement_apiclient_buildapiurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L179",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apirequest",
+      "target": "fe_src_features_movement_apiclient_buildapiurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L164",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_fetchapi",
+      "target": "fe_src_features_movement_apiclient_buildapiurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_fetchapi",
+      "target": "fe_src_features_movement_apiclient_getfriendlyerrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_readapierrormessage",
+      "target": "fe_src_features_movement_apiclient_getfriendlyerrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_readapierrormessage",
+      "target": "fe_src_features_movement_apiclient_getcontenttype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L122",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_readapierrormessage",
+      "target": "fe_src_features_movement_apiclient_lookslikemarkup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_readapierrormessage",
+      "target": "fe_src_features_movement_apiclient_readerrormessagefromjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L238",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apidownloadblob",
+      "target": "fe_src_features_movement_apiclient_readapierrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L195",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apirequest",
+      "target": "fe_src_features_movement_apiclient_readapierrormessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L159",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_getaccesstoken",
+      "target": "fe_src_features_movement_apiclient_getstoredsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L230",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apidownloadblob",
+      "target": "fe_src_features_movement_apiclient_getaccesstoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L183",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apirequest",
+      "target": "fe_src_features_movement_apiclient_getaccesstoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L231",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apidownloadblob",
+      "target": "fe_src_features_movement_apiclient_fetchapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apirequest",
+      "target": "fe_src_features_movement_apiclient_fetchapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L224",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apidelete",
+      "target": "fe_src_features_movement_apiclient_apirequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L206",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apiget",
+      "target": "fe_src_features_movement_apiclient_apirequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L217",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apipatch",
+      "target": "fe_src_features_movement_apiclient_apirequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/src/features/movement/apiClient.ts",
+      "source_location": "L210",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_src_features_movement_apiclient_apipost",
+      "target": "fe_src_features_movement_apiclient_apirequest",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -31914,7 +32330,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L105",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -31925,7 +32341,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L128",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -31936,7 +32352,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L84",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -31947,11 +32363,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L90",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
-      "target": "docs_analysis_backend_audit_2026_07_20_be_host_bootstrap_101_46_14_57",
+      "target": "docs_analysis_backend_audit_2026_07_20_be_host_bootstrap_production_ecs_host",
       "confidence_score": 1.0
     },
     {
@@ -31969,7 +32385,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -31980,7 +32396,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -31991,7 +32407,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L121",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32002,7 +32418,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L113",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32013,7 +32429,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L64",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32024,7 +32440,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L78",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32035,7 +32451,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L101",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32046,7 +32462,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L33",
+      "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -32057,7 +32473,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L66",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -32068,7 +32484,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L70",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -32761,7 +33177,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/README.md",
-      "source_location": "L49",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "fe_readme_movement_2026_frontend",
+      "target": "fe_readme_api_configuration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fe/README.md",
+      "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_readme_movement_2026_frontend",
@@ -32794,7 +33221,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/README.md",
-      "source_location": "L62",
+      "source_location": "L77",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_readme_movement_2026_frontend",
@@ -32814,5 +33241,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "34bd55adc05eff8b8c25260d191761b115879b30"
+  "built_at_commit": "393b15a20fb3d357ffad07e00153aa700460b377"
 }

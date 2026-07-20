@@ -8,7 +8,9 @@
 - Recommended deployment fix: build frontend with `VITE_API_BASE_URL` set to the backend API/proxy origin, or configure the production reverse proxy so `/api/*` goes to the ECS/API service rather than the OBS/static bucket. Direct blob uploads are not present in the runtime app; OBS usage is limited to the frontend deploy script, so no frontend upload endpoint needs POST-to-PUT correction.
 - Frontend error handling now strips raw HTML/XML/object-storage bodies from user-facing messages and preserves method/status/URL in a sanitized `ApiError`. Login fallback from team to admin now only happens on auth failures, so infrastructure/routing errors are not masked by a second request.
 - After pulling deploy workflows, confirmed `.github/workflows/fe-deploy.yml` builds with `vars.VITE_API_BASE_URL`. Added a workflow guard so FE deploy fails if that repository variable is missing/empty or points to OBS/static hosting; frontend code also ignores blank env values instead of using a same-origin API base.
-- Verification: frontend lint and production build passed; Vite reported the known large chunk warning.
+- Production-standard refactor: frontend API calls now default to relative `/api/...` paths, with `VITE_API_BASE_URL` only as an optional environment override. Added `deploy/nginx/movement.conf` for HTTPS same-origin frontend hosting plus `/api` reverse proxy to the local Nest process. Deployed HTTPS builds reject insecure HTTP API overrides to avoid mixed-content failures.
+- API client structure split endpoint contracts from HTTP/config/error handling in `fe/src/features/movement/apiClient.ts`; user-facing errors are sanitized and mapped to short operator-friendly messages.
+- Verification: frontend lint and production build passed; Vite reported the known large chunk warning. Repo search found no hardcoded public backend IP URLs outside generated build artifacts.
 
 ## 2026-07-20 Remaining feature integration
 
@@ -87,20 +89,20 @@ Last updated: 2026-07-19
 - Workflow sets `DEPLOY_BRANCH=master` and calls `be/deploy/deploy.sh` (`npm ci --include=dev` so Nest CLI is available for build).
 - Host path: `/opt/movement/app` → refresh `master` → require `be/.env` → build → `prisma migrate deploy` → PM2 (`movement-api`).
 
-## 2026-07-20 BE host bootstrap (`101.46.14.57`)
+## 2026-07-20 BE host bootstrap (production ECS host)
 
 - One-time host setup completed on Ubuntu 22.04 as `root` (PEM `backend_test_poc.pem`).
 - Runtime present: Node 20.20.2, npm 10.8.2, pm2 7.0.3, git 2.34.1; `pm2-root` systemd enabled.
 - Git checkout repaired: clean `master` clone at `/opt/movement/app` (previous empty `.git` tree moved aside). Host git uses HTTPS credentials (`url.insteadOf` + `/root/.git-credentials`) because the GitHub token lacked deploy-key/admin scopes.
-- Production `be/.env` restored and completed: `PORT=8080`, `SCORING_CODE` set (non-`2468`), `CORS_ORIGIN=https://movement.obs-website.ap-southeast-3.myhuaweicloud.com`. Existing `DATABASE_URL`/`JWT_SECRET` preserved. Postgres role `movement` granted LOGIN and password synced to `.env`.
+- Production `be/.env` restored and completed: `PORT=8080`, `SCORING_CODE` set (non-`2468`), `CORS_ORIGIN` set to the frontend HTTPS origin. Existing `DATABASE_URL`/`JWT_SECRET` preserved. Postgres role `movement` granted LOGIN and password synced to `.env`.
 - Legacy Python API `movement-be.service` (uvicorn on `:8080`) stopped/disabled so Nest can bind the FE-facing port.
-- Manual deploy smoke: migrations applied, `pm2` process `movement-api` online, `GET http://101.46.14.57:8080/api/docs` → **200**.
+- Manual deploy smoke: migrations applied, `pm2` process `movement-api` online, backend `/api/docs` returned **200** on the ECS host.
 - GitHub secrets `ECS_HOST` / `ECS_USER` / `ECS_SSH_KEY` refreshed to this host + PEM. `*.pem` added to `.gitignore`.
 - Remaining: merge latest workflow + `deploy.sh` fix to `master`, run Actions `workflow_dispatch`, then confirm browser CORS login from the OBS FE origin. Note `SCORING_CODE` lives only on the host `.env` (not in git).
 
 ## Next recommended task
 
-Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` changes, then validate login/CORS from `https://movement.obs-website.ap-southeast-3.myhuaweicloud.com`.
+Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` changes, then validate login/CORS from the frontend HTTPS origin through same-origin `/api`.
 
 ## 2026-07-20 Admin integration verification
 

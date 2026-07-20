@@ -5,7 +5,7 @@
     "semantic_hash": "f3ac3b2a9ea0318f3996ee96fd1f8cac"
   },
   "be/deploy/deploy.sh": {
-    "mtime": 1784563726.6093395,
+    "mtime": 1784563987.846705,
     "ast_hash": "7a84ba9fc56e9f78551c0924ec417ba0",
     "semantic_hash": ""
   },
@@ -240,8 +240,8 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784563816.2367852,
-    "ast_hash": "affb91a9075ecc907b457c4b981a4512",
+    "mtime": 1784564929.5642397,
+    "ast_hash": "ff9588b68a2d49ab1cf3c689e69fdddf",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -410,13 +410,13 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1784563726.6093395,
+    "mtime": 1784563987.8447044,
     "ast_hash": "f7dca6f477e5a51ae75f7873c5e7a035",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
-    "mtime": 1784563805.6598413,
-    "ast_hash": "30a753c5b5c706004f4ad2d2b96d7bc0",
+    "mtime": 1784564831.904667,
+    "ast_hash": "11f1e2dff37cd464b876768459b98835",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -435,13 +435,13 @@
     "semantic_hash": ""
   },
   "be/prisma/certs/README.md": {
-    "mtime": 1784560861.0598593,
-    "ast_hash": "5fbeae510ad52c0f9529b6a6c098eed1",
+    "mtime": 1784564775.766082,
+    "ast_hash": "6e8f07cd557679ec892538fad471fd52",
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784563726.6113448,
-    "ast_hash": "5b0648629718a566a63333fffbeaec6e",
+    "mtime": 1784564794.4649174,
+    "ast_hash": "e2429f78b365231fd097e274ddec761e",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "fe/README.md": {
-    "mtime": 1784561889.3598409,
-    "ast_hash": "bb857c909e5761e7c99cb4db8113eaab",
+    "mtime": 1784564764.065696,
+    "ast_hash": "c1bfbd873cc539e3a80694e0df38bca6",
     "semantic_hash": ""
   },
   "fe/index.html": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784563842.8905537,
-    "ast_hash": "c8012658096294373f4121a64ad8bc4e",
+    "mtime": 1784564962.5895917,
+    "ast_hash": "a7c191682cb395ad70878634a750e502",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -677,6 +677,11 @@
   "docker-compose.tester.yml": {
     "mtime": 1784560861.0738566,
     "ast_hash": "455d2db7a229cdbf5b8ad635bb57cb0c",
+    "semantic_hash": ""
+  },
+  "fe/src/features/movement/apiClient.ts": {
+    "mtime": 1784564876.3814325,
+    "ast_hash": "5bd14f7e7fddc20869a1b7bf97adec6e",
     "semantic_hash": ""
   }
 }
