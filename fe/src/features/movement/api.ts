@@ -269,6 +269,7 @@ export type AdminQrLoginTokenResponse = {
   id: number
   teamId: number
   loginUrl?: string
+  qrLoginUrl?: string
   expiresAt: string
   consumedAt?: string | null
   revokedAt?: string | null

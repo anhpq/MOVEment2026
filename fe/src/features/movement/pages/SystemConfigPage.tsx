@@ -50,7 +50,7 @@ export function SystemConfigPage() {
             <Typography.Text>
               This one-time URL is shown only now. Generate a new QR to rotate it.
             </Typography.Text>
-            <Input.TextArea value={token.loginUrl} readOnly autoSize />
+            <Input.TextArea value={token.qrLoginUrl ?? token.loginUrl} readOnly autoSize />
             <Typography.Text className="muted-copy compact-copy">
               Expires at {new Date(token.expiresAt).toLocaleString("vi-VN")}
             </Typography.Text>

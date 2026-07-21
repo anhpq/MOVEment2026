@@ -90,6 +90,43 @@ export class AdminController {
     );
   }
 
+  @Post('teams/:teamId/qr-login')
+  generateTeamQrLogin(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Body() dto: GenerateQrLoginTokenDto,
+  ) {
+    return this.adminService.generateTeamQrLoginToken(
+      this.requireAdminId(auth),
+      teamId,
+      dto,
+    );
+  }
+
+  @Post('teams/:teamId/qr-login/rotate')
+  rotateTeamQrLogin(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Body() dto: GenerateQrLoginTokenDto,
+  ) {
+    return this.adminService.generateTeamQrLoginToken(
+      this.requireAdminId(auth),
+      teamId,
+      dto,
+    );
+  }
+
+  @Delete('teams/:teamId/qr-login')
+  revokeTeamQrLogin(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+  ) {
+    return this.adminService.revokeActiveTeamQrLoginToken(
+      this.requireAdminId(auth),
+      teamId,
+    );
+  }
+
   @Post('qr-login-tokens/:tokenId/revoke')
   revokeQrLoginToken(
     @CurrentAuth() auth: AuthContext,

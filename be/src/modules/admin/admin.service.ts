@@ -17,6 +17,7 @@ import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
 import {
   buildTeamLoginQrToken,
   buildStationQrToken,
+  buildQrLoginUrl,
   createSecureQrLoginToken,
   createQrTokenFingerprint,
 } from '../../common/qr/qr-token';
@@ -250,10 +251,12 @@ export class AdminService {
       },
     });
 
+    const qrLoginUrl = this.buildQrLoginUrl(rawToken);
     return {
       id: token.id,
       teamId: token.teamId,
-      loginUrl: this.buildQrLoginUrl(rawToken),
+      qrLoginUrl,
+      loginUrl: qrLoginUrl,
       expiresAt: token.expiresAt,
       usageCount: token.usageCount,
       maxUsageCount: token.maxUsageCount,
@@ -284,6 +287,25 @@ export class AdminService {
       revokedAt: token.revokedAt,
       success: true,
     };
+  }
+
+  async revokeActiveTeamQrLoginToken(userId: number, teamId: number) {
+    await this.prisma.team.findUniqueOrThrow({ where: { id: teamId } });
+    const activeToken = await this.prisma.qrLoginToken.findFirst({
+      where: {
+        teamId,
+        consumedAt: null,
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!activeToken) {
+      return { success: true, teamId, revokedAt: null };
+    }
+
+    return this.revokeQrLoginToken(userId, activeToken.id);
   }
 
   async scoreQueue() {
@@ -1033,12 +1055,11 @@ export class AdminService {
 
   private buildQrLoginUrl(rawToken: string) {
     const configured =
+      this.config.get<string>('FRONTEND_PUBLIC_URL')?.trim() ??
       this.config.get<string>('PUBLIC_FRONTEND_URL')?.trim() ??
       this.config.get<string>('CORS_ORIGIN')?.split(',')[0]?.trim() ??
       'http://localhost:4173';
-    const url = new URL('/qr-login', configured.endsWith('/') ? configured : `${configured}/`);
-    url.searchParams.set('token', rawToken);
-    return url.toString();
+    return buildQrLoginUrl(configured, rawToken);
   }
 
   private getQrLoginTokenStatus(

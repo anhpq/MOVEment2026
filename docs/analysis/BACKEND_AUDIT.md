@@ -5,10 +5,18 @@
 - Added a separate one-time QR login flow instead of reusing the legacy predictable team QR token format. The legacy `POST /api/auth/team-qr-login` remains for compatibility; new HTTPS QR URLs exchange an opaque token through `POST /api/auth/qr-login`.
 - Added `qr_login_tokens` with a unique SHA-256 token hash, team association, expiry, consumed/revoked timestamps, usage counters, creator, and last-used metadata. Raw QR tokens are returned only in the admin generation response and are not stored in the database.
 - Backend exchange consumes tokens with a conditional update inside a transaction before issuing the normal team JWT/session. Concurrent scans/replay attempts cannot both create sessions; the losing request is rejected as consumed.
-- Admin can generate, inspect, and revoke QR login tokens from the team list in System Config. Generation rotates outstanding active QR login tokens for the team and builds the URL from `PUBLIC_FRONTEND_URL`.
+- Admin can generate, inspect, and revoke QR login tokens from the team list in System Config. Generation rotates outstanding active QR login tokens for the team and builds the URL from `FRONTEND_PUBLIC_URL`.
 - Frontend added public `/qr-login`, removes `?token=` from the visible URL immediately, prevents duplicate submissions in the page lifecycle, maps safe backend error codes to user-friendly Vietnamese messages, and redirects successful team QR login to the normal team map flow.
-- Deployment config now requires `PUBLIC_FRONTEND_URL` to be HTTPS in production and documents `QR_LOGIN_TOKEN_TTL_MINUTES`. Existing Nginx SPA fallback covers `/qr-login`; `/api/` remains a separate reverse proxy and must not be rewritten to `index.html`.
+- Deployment config now requires `FRONTEND_PUBLIC_URL` to be HTTPS in production and documents `QR_LOGIN_TOKEN_TTL_MINUTES`. Existing Nginx SPA fallback covers `/qr-login`; `/api/` remains a separate reverse proxy and must not be rewritten to `index.html`.
 - Verification: `npm.cmd --prefix be run prisma:generate`, backend build, full backend Jest suite (47 tests), and frontend build passed. Frontend has no existing test runner, so QR route behavior is build-verified only.
+
+## 2026-07-21 QR login URL and seed structure
+
+- Standardized generated QR URLs on `FRONTEND_PUBLIC_URL` with `PUBLIC_FRONTEND_URL` kept as a backward-compatible fallback. The URL builder normalizes trailing slashes and always emits `/qr-login?token=...`.
+- Development seed now creates missing one-time `QrLoginToken` records for seeded teams only outside production, stores hashes only, and writes newly generated raw URLs to ignored local artifact `.tester-logs/dev-qr-login-urls.txt`. Re-running seed preserves active QR tokens and does not rotate printed QR codes.
+- Production deploy still runs seed, but `NODE_ENV=production` prevents seed from generating or logging raw QR login secrets. Production QR generation remains an authenticated Admin action.
+- Added Admin route aliases matching the public runbook: `POST /api/admin/teams/:teamId/qr-login`, `POST /api/admin/teams/:teamId/qr-login/rotate`, and `DELETE /api/admin/teams/:teamId/qr-login`.
+- Added `docs/analysis/QR_LOGIN.md` covering local browser QR, physical-phone LAN QR, production HTTPS QR, Team 1 development QR generation, regeneration/revocation, and raw-token security warnings.
 
 ## 2026-07-21 Final Challenge event-end flow
 

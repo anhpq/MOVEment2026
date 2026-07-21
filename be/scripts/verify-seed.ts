@@ -22,6 +22,7 @@ async function main() {
     teams,
     teamLoginQrFingerprints,
     stationQrFingerprints,
+    activeQrLoginTokens,
     progressRows,
     eventConfig,
     activeFinalChallenges,
@@ -31,6 +32,13 @@ async function main() {
     prisma.team.count(),
     prisma.team.count({where: {loginQrFingerprint: {not: null}}}),
     prisma.qrToken.count({where: {tokenFingerprint: {not: null}}}),
+    prisma.qrLoginToken.count({
+      where: {
+        consumedAt: null,
+        revokedAt: null,
+        expiresAt: {gt: new Date()},
+      },
+    }),
     prisma.teamStationProgress.count(),
     prisma.eventConfig.count({where: {id: 1}}),
     prisma.finalChallenge.count({where: {isActive: true}}),
@@ -49,6 +57,13 @@ async function main() {
     actual: stationQrFingerprints,
     expected: activeStations * 2,
   });
+  if (process.env.NODE_ENV !== 'production' && process.env.SEED_QR_LOGIN_TOKENS !== 'false') {
+    assertAtLeast({
+      name: 'active QR login tokens',
+      actual: activeQrLoginTokens,
+      expected: teams,
+    });
+  }
   assertAtLeast({
     name: 'team station progress rows',
     actual: progressRows,
@@ -68,6 +83,7 @@ async function main() {
       `${activeStations} active stations`,
       `${progressRows} progress rows`,
       `${stationQrFingerprints} station QR fingerprints`,
+      `${activeQrLoginTokens} active QR login tokens`,
     ].join(' '),
   );
 }
