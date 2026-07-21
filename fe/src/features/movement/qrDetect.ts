@@ -22,6 +22,42 @@ export function supportsCameraQrScan(): boolean {
   return Boolean(navigator.mediaDevices?.getUserMedia);
 }
 
+export function normalizeDecodedQrValue(rawValue: string): string {
+  const value = rawValue.trim();
+  if (!value) {
+    return "";
+  }
+
+  try {
+    const url = new URL(value);
+    const token =
+      url.searchParams.get("token") ??
+      url.searchParams.get("qrToken") ??
+      url.searchParams.get("stationToken");
+    if (token?.trim()) {
+      return token.trim();
+    }
+  } catch {
+    // Non-URL payloads are handled below.
+  }
+
+  try {
+    const parsed = JSON.parse(value) as {
+      qrToken?: string;
+      token?: string;
+      stationToken?: string;
+    };
+    const token = parsed.qrToken ?? parsed.stationToken ?? parsed.token;
+    if (token?.trim()) {
+      return token.trim();
+    }
+  } catch {
+    // Plain text station tokens are already valid input.
+  }
+
+  return value;
+}
+
 export function createQrFrameDetector() {
   const Detector = getBarcodeDetector();
   const barcodeDetector = Detector

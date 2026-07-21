@@ -31,6 +31,30 @@ function mapBackendRole(role: string) {
   return role === "ADMIN" ? "admin" : "user";
 }
 
+function waitForVideoMetadata(video: HTMLVideoElement): Promise<void> {
+  if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    const cleanup = () => {
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("error", handleError);
+    };
+    const handleLoadedMetadata = () => {
+      cleanup();
+      resolve();
+    };
+    const handleError = () => {
+      cleanup();
+      reject(new Error("Video metadata failed to load"));
+    };
+
+    video.addEventListener("loadedmetadata", handleLoadedMetadata, {once: true});
+    video.addEventListener("error", handleError, {once: true});
+  });
+}
+
 function parseQrLoginPayload(rawValue: string): {type: "url"; token: string} | {type: "legacy"; token: string} | null {
   const value = rawValue.trim();
   if (!value) {
@@ -235,6 +259,7 @@ export function LoginPage() {
       }
       streamRef.current = stream;
       video.srcObject = stream;
+      await waitForVideoMetadata(video);
       await video.play();
 
       const detector = createQrFrameDetector();
@@ -334,6 +359,7 @@ export function LoginPage() {
               <div className="qr-scanner-panel">
                 <video
                   ref={videoRef}
+                  autoPlay
                   muted
                   playsInline
                   className="qr-scanner-video"

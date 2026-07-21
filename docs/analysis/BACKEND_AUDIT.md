@@ -7,6 +7,14 @@
 - Login QR and station check-in/check-out QR inputs now share the detector helper, keep `muted`/`playsInline` video elements, avoid overlapping frame decode work, stop streams/timers/animation frames on stop/success/error/unmount, and preserve Paste QR/manual token entry.
 - Verification: `npm.cmd install jsqr`, frontend lint, and frontend production build (`tsc -b && vite build`) passed. No frontend test files are present. Real iPhone Safari/Chrome iOS HTTPS camera verification is pending manual device testing.
 
+## 2026-07-21 iOS QR camera lifecycle audit
+
+- Root cause confirmed after the first fallback fix: station QR camera start was driven by a React effect after toggling `isCameraOpen`, so lifecycle cleanup could stop the stream during normal modal rerenders; the video also lacked `autoPlay` and decoding could begin before loaded metadata/non-zero dimensions. This matches the iPhone Safari symptom where a black preview appears briefly and the scanner resets without a decode.
+- Reworked `QrTokenInput` so `getUserMedia` runs from the button handler, scanner state is explicit (`idle`, `requestingPermission`, `active`, `decoding`, `success`, `error`), start/stop are idempotent, streams/scanner runs live in refs, and decoding starts only after `loadedmetadata`, successful `video.play()`, and non-zero `videoWidth`/`videoHeight`.
+- Added Vietnamese safe error categories for denied permission, missing camera, camera in use, browser/camera constraint failure, video playback failure, and QR scanner initialization failure. Development-only console diagnostics log secure context, `mediaDevices`, selected camera label after permission, stream state, video ready state/dimensions, play success/failure, and stop reason.
+- Login QR video was aligned with iOS requirements by adding `autoPlay` and waiting for metadata before `video.play()`.
+- Verification: frontend lint, standalone TypeScript build, frontend production build, and `build:prod` passed. Real iPhone Safari HTTPS verification is still pending on device.
+
 ## 2026-07-21 QR automatic login
 
 - Added a separate one-time QR login flow instead of reusing the legacy predictable team QR token format. The legacy `POST /api/auth/team-qr-login` remains for compatibility; new HTTPS QR URLs exchange an opaque token through `POST /api/auth/qr-login`.
