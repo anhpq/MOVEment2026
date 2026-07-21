@@ -17,12 +17,12 @@ import {
   Typography,
   Descriptions,
 } from "antd";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
-import {checkInStation, editAdminProgressScore, forceAdminProgressStatus} from "../api";
+import {checkInStation, editAdminProgressScore, forceAdminProgressStatus, getPlayerFinal} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
@@ -48,6 +48,7 @@ export function StationListPage() {
   const [scanTarget, setScanTarget] = useState<TeamStation | null>(null);
   const [checkInQrToken, setCheckInQrToken] = useState("");
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
+  const [isFinalReady, setIsFinalReady] = useState(false);
   const [quickEditForm] = Form.useForm<QuickEditFormValues>();
 
   const team = teams.find((item) => item.id === activeTeamId);
@@ -68,6 +69,33 @@ export function StationListPage() {
             item.backendStatus === "PLAYING"),
       ),
     ).length;
+
+  useEffect(() => {
+    if (session?.role !== "user") {
+      return;
+    }
+
+    let cancelled = false;
+    const checkFinal = async () => {
+      try {
+        const final = await getPlayerFinal();
+        if (!cancelled) {
+          setIsFinalReady(final.isOpen && !final.blockedByActiveStation);
+        }
+      } catch {
+        if (!cancelled) {
+          setIsFinalReady(false);
+        }
+      }
+    };
+
+    void checkFinal();
+    const timer = window.setInterval(() => void checkFinal(), 5000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [session?.role]);
 
   if (!session || !team) {
     return null;
@@ -120,6 +148,16 @@ export function StationListPage() {
           </>
         }
       />
+
+      {session.role === "user" && isFinalReady && (
+        <Alert
+          type="success"
+          showIcon
+          message="Final Challenge is open"
+          description="Your team is free to enter the Final Challenge."
+          action={<Button onClick={() => navigate("/final")}>Enter Final</Button>}
+        />
+      )}
 
       <List
         className="card-list"

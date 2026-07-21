@@ -1,6 +1,7 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 import {ProtectedRoute} from "./layout/ProtectedRoute";
 import {LoginPage} from "./pages/LoginPage";
+import {QrLoginPage} from "./pages/QrLoginPage";
 import {StationDetailPage} from "./pages/StationDetailPage";
 import {StationEditorPage} from "./pages/StationEditorPage";
 import {StationListPage} from "./pages/StationListPage";
@@ -16,6 +17,7 @@ export function MovementRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/qr-login" element={<QrLoginPage />} />
       <Route
         path="/stations"
         element={

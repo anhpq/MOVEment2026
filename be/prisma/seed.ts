@@ -8,12 +8,36 @@ import {
 } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import {
+  buildQrLoginUrl,
   buildStationQrToken,
   buildTeamLoginQrToken,
+  createSecureQrLoginToken,
   createQrTokenFingerprint,
 } from '../src/common/qr/qr-token';
+import { mkdirSync, writeFileSync } from 'fs';
+import { dirname, resolve } from 'path';
 
 const prisma = new PrismaClient();
+const isProduction = process.env.NODE_ENV === 'production';
+const seedQrLoginTokens = !isProduction && process.env.SEED_QR_LOGIN_TOKENS !== 'false';
+const frontendPublicUrl =
+  process.env.FRONTEND_PUBLIC_URL ??
+  process.env.PUBLIC_FRONTEND_URL ??
+  'http://localhost:4173';
+const qrLoginTokenTtlMinutes = Number.parseInt(
+  process.env.QR_LOGIN_TOKEN_TTL_MINUTES ?? '',
+  10,
+);
+const safeQrLoginTokenTtlMinutes =
+  Number.isInteger(qrLoginTokenTtlMinutes) && qrLoginTokenTtlMinutes > 0
+    ? qrLoginTokenTtlMinutes
+    : 24 * 60;
+const devQrArtifactPath = resolve(
+  process.cwd(),
+  '..',
+  '.tester-logs',
+  'dev-qr-login-urls.txt',
+);
 
 const stations = [
   ['ST002', 'Tram #2', 'CIPHER', 100, 18, 35],
@@ -53,6 +77,7 @@ const teams = Array.from({ length: 25 }, (_, index) => {
 });
 
 async function main() {
+  const generatedDevQrUrls: string[] = [];
   const adminPassword = await bcrypt.hash('admin123', 10);
   const scoringCodeHash = await bcrypt.hash(process.env.SCORING_CODE ?? '2468', 10);
   await prisma.user.upsert({
@@ -162,6 +187,42 @@ async function main() {
         update: {},
       });
     }
+
+    if (seedQrLoginTokens) {
+      const activeQrLoginToken = await prisma.qrLoginToken.findFirst({
+        where: {
+          teamId: team.id,
+          consumedAt: null,
+          revokedAt: null,
+          expiresAt: { gt: new Date() },
+          usageCount: { lt: 1 },
+        },
+      });
+
+      if (!activeQrLoginToken) {
+        const rawToken = createSecureQrLoginToken();
+        const expiresAt = new Date(
+          Date.now() + safeQrLoginTokenTtlMinutes * 60_000,
+        );
+        await prisma.qrLoginToken.create({
+          data: {
+            teamId: team.id,
+            tokenHash: createQrTokenFingerprint(rawToken),
+            expiresAt,
+            maxUsageCount: 1,
+          },
+        });
+        generatedDevQrUrls.push(
+          [
+            `Team: ${team.name}`,
+            `Username: ${team.username}`,
+            `Status: ACTIVE`,
+            `ExpiresAt: ${expiresAt.toISOString()}`,
+            `QrLoginUrl: ${buildQrLoginUrl(frontendPublicUrl, rawToken)}`,
+          ].join('\n'),
+        );
+      }
+    }
   }
 
   await prisma.eventConfig.upsert({
@@ -172,18 +233,40 @@ async function main() {
 
   const final = await prisma.finalChallenge.findFirst({ where: { isActive: true } });
   if (!final) {
-    const startsAt = new Date();
-    startsAt.setHours(11, 45, 0, 0);
     await prisma.finalChallenge.create({
       data: {
         title: 'Final Cipher',
         clueText: 'Giai mat thu cuoi cung',
         answerHash: await bcrypt.hash('movement2026', 10),
-        startsAt,
+        startsAt: new Date(),
         maxWinners: 10,
         pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
       },
     });
+  }
+
+  if (generatedDevQrUrls.length) {
+    mkdirSync(dirname(devQrArtifactPath), { recursive: true });
+    writeFileSync(
+      devQrArtifactPath,
+      [
+        'MOVEment 2026 development-only QR login URLs',
+        'Do not commit this file. Do not use these tokens in production.',
+        `GeneratedAt: ${new Date().toISOString()}`,
+        `FrontendPublicUrl: ${frontendPublicUrl}`,
+        '',
+        generatedDevQrUrls.join('\n\n---\n\n'),
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    console.log(
+      `Development QR login URLs written to ${devQrArtifactPath}. Do not commit this file.`,
+    );
+  } else if (seedQrLoginTokens) {
+    console.log(
+      'Development QR login tokens already exist; seed preserved them and did not rotate printed QR codes.',
+    );
   }
 }
 

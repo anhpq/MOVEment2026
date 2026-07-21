@@ -1,43 +1,85 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ActorType, FinalChallenge, Prisma, Team } from '@prisma/client';
+import { ActorType, FinalChallenge, Prisma, ProgressStatus, Team } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
+import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubmitFinalDto, UpdateFinalConfigDto } from './dto/final.dto';
 
 @Injectable()
 export class FinalService {
   private readonly finalSubmitMaxAttempts = 3;
+  private readonly maxFinalBonusRank = 10;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly activityLog: ActivityLogService,
+    private readonly eventConfig: EventConfigService,
   ) {}
 
   async getPlayerFinal(teamId: number) {
-    const challenge = await this.getActiveChallenge();
-    const submission = await this.prisma.finalSubmission.findFirst({
-      where: { finalChallengeId: challenge.id, teamId, isCorrect: true },
-      orderBy: { submittedAt: 'asc' },
-    });
     const now = new Date();
+    const [challenge, eventConfig] = await Promise.all([
+      this.getActiveChallenge(),
+      this.eventConfig.getPublicConfig(),
+    ]);
+    const [submission, activeProgress, cooldown] = await Promise.all([
+      this.prisma.finalSubmission.findFirst({
+        where: { finalChallengeId: challenge.id, teamId, isCorrect: true },
+        orderBy: { submittedAt: 'asc' },
+      }),
+      this.getActiveStationProgress(teamId),
+      this.getCooldownState(challenge.id, teamId, now),
+    ]);
+    const isPastEventEnd = eventConfig.isPastEventEnd;
+    const isOpen = isPastEventEnd && !activeProgress;
+
     return {
       id: challenge.id,
       title: challenge.title,
-      clueText: now >= challenge.startsAt ? challenge.clueText : null,
+      clueText: isOpen ? challenge.clueText : null,
       startsAt: challenge.startsAt,
-      maxWinners: challenge.maxWinners,
-      pointsByRank: challenge.pointsByRank,
-      isOpen: now >= challenge.startsAt,
+      eventEndTime: eventConfig.eventEndTime,
+      maxWinners: this.maxFinalBonusRank,
+      pointsByRank: Array.from(
+        { length: this.maxFinalBonusRank },
+        (_, index) => this.calculateFinalBonus(index + 1),
+      ),
+      isOpen,
+      canSubmit: isOpen && !submission && !cooldown.isCoolingDown,
+      blockedByActiveStation: Boolean(activeProgress),
+      activeStationId: activeProgress?.stationId ?? null,
       teamSubmission: submission ? this.toPublicSubmission(submission) : null,
+      wrongAttemptCount: cooldown.wrongAttemptCount,
+      cooldownSeconds: cooldown.cooldownSeconds,
+      nextAttemptAt: cooldown.nextAttemptAt,
       serverNow: now.toISOString(),
     };
   }
 
   async submitFinal(teamId: number, dto: SubmitFinalDto) {
     const challenge = await this.getActiveChallenge();
-    if (new Date() < challenge.startsAt) {
+    const now = new Date();
+    if (!(await this.eventConfig.isPastEventEnd(now))) {
       throw new BadRequestException('Final challenge is not open yet');
+    }
+    const activeProgress = await this.getActiveStationProgress(teamId);
+    if (activeProgress) {
+      throw new BadRequestException('Finish the active station before entering Final Challenge');
+    }
+
+    const priorCorrect = await this.prisma.finalSubmission.findFirst({
+      where: { finalChallengeId: challenge.id, teamId, isCorrect: true },
+    });
+    if (priorCorrect) {
+      return this.toPublicSubmission(priorCorrect);
+    }
+
+    const cooldown = await this.getCooldownState(challenge.id, teamId, now);
+    if (cooldown.isCoolingDown) {
+      throw new BadRequestException(
+        `Final answer cooldown is active until ${cooldown.nextAttemptAt}`,
+      );
     }
 
     const normalized = this.normalizeAnswer(dto.answer);
@@ -90,11 +132,7 @@ export class FinalService {
                 where: { finalChallengeId: challenge.id, isCorrect: true },
               });
               winnerRank = correctCount + 1;
-              const pointsByRank = challenge.pointsByRank as number[];
-              pointsAwarded =
-                winnerRank <= challenge.maxWinners
-                  ? pointsByRank[winnerRank - 1] ?? 0
-                  : 0;
+              pointsAwarded = this.calculateFinalBonus(winnerRank);
 
               if (pointsAwarded > 0) {
                 const team = await tx.team.findUniqueOrThrow({ where: { id: teamId } });
@@ -168,22 +206,12 @@ export class FinalService {
 
   async updateFinalConfig(userId: number, dto: UpdateFinalConfigDto) {
     const challenge = await this.getActiveChallenge();
-    if (new Date() >= challenge.startsAt) {
+    if (await this.eventConfig.isPastEventEnd()) {
       throw new BadRequestException('Cannot update final config after it opens');
     }
-    const nextMaxWinners = dto.maxWinners ?? challenge.maxWinners;
-    const nextPointsByRank = (dto.pointsByRank ??
-      (challenge.pointsByRank as number[])) as number[];
-    if (nextPointsByRank.length < nextMaxWinners) {
-      throw new BadRequestException('pointsByRank must cover maxWinners');
-    }
-
     const data = {
       title: dto.title,
       clueText: dto.clueText,
-      startsAt: dto.startsAt ? new Date(dto.startsAt) : undefined,
-      maxWinners: dto.maxWinners,
-      pointsByRank: dto.pointsByRank,
       isActive: dto.isActive,
       answerHash: dto.answer
         ? await bcrypt.hash(this.normalizeAnswer(dto.answer), 10)
@@ -218,6 +246,48 @@ export class FinalService {
 
   private normalizeAnswer(answer: string) {
     return answer.trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  private async getActiveStationProgress(teamId: number) {
+    return this.prisma.teamStationProgress.findFirst({
+      where: {
+        teamId,
+        status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
+      },
+      select: { id: true, stationId: true },
+    });
+  }
+
+  private async getCooldownState(
+    finalChallengeId: number,
+    teamId: number,
+    now: Date,
+  ) {
+    const [wrongAttemptCount, latestWrong] = await Promise.all([
+      this.prisma.finalSubmission.count({
+        where: { finalChallengeId, teamId, isCorrect: false },
+      }),
+      this.prisma.finalSubmission.findFirst({
+        where: { finalChallengeId, teamId, isCorrect: false },
+        orderBy: { submittedAt: 'desc' },
+      }),
+    ]);
+    const cooldownSeconds = Math.min(wrongAttemptCount, 10);
+    const nextAttemptAt =
+      latestWrong && cooldownSeconds > 0
+        ? new Date(latestWrong.submittedAt.getTime() + cooldownSeconds * 1000)
+        : null;
+
+    return {
+      wrongAttemptCount,
+      cooldownSeconds,
+      nextAttemptAt: nextAttemptAt?.toISOString() ?? null,
+      isCoolingDown: Boolean(nextAttemptAt && nextAttemptAt > now),
+    };
+  }
+
+  private calculateFinalBonus(rank: number) {
+    return Math.max(11 - rank, 0);
   }
 
   private toPublicChallenge(challenge: FinalChallenge, includeClue: boolean) {

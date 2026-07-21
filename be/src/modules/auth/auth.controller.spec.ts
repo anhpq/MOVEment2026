@@ -3,12 +3,14 @@ import { AuthService } from './auth.service'
 import { UnauthorizedException } from '@nestjs/common'
 import { AuthContext } from '../../common/auth/auth-context'
 import { TeamLoginDto, UserLoginDto } from './dto/login.dto'
+import { QrLoginDto } from './dto/qr-login.dto'
 import { TeamQrLoginDto } from './dto/team-qr-login.dto'
 
 const mockAuthService = {
   loginUser: jest.fn(),
   loginTeam: jest.fn(),
   loginTeamWithQr: jest.fn(),
+  loginWithQr: jest.fn(),
   me: jest.fn(),
   logout: jest.fn(),
 }
@@ -46,6 +48,15 @@ describe('AuthController', () => {
 
     await expect(controller.loginTeamWithQr(dto)).resolves.toEqual(expected)
     expect(mockAuthService.loginTeamWithQr).toHaveBeenCalledWith(dto)
+  })
+
+  it('should delegate loginWithQr to AuthService', async () => {
+    const dto: QrLoginDto = { token: 'opaque-random-qr-login-token', deviceLabel: 'web-qr-url' }
+    const expected = { accessToken: 'token', team: { id: 2, username: 'team01', name: 'Team 01' } }
+    mockAuthService.loginWithQr.mockResolvedValue(expected)
+
+    await expect(controller.loginWithQr(dto)).resolves.toEqual(expected)
+    expect(mockAuthService.loginWithQr).toHaveBeenCalledWith(dto)
   })
 
   it('should throw UnauthorizedException when team login is rejected', async () => {

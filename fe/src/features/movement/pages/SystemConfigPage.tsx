@@ -1,10 +1,18 @@
-import {EditOutlined, DeleteOutlined} from "@ant-design/icons";
-import {App as AntdApp, Button, Card, Flex, List, Select, Tabs, Typography} from "antd";
+import {DeleteOutlined, EditOutlined, QrcodeOutlined, StopOutlined} from "@ant-design/icons";
+import {App as AntdApp, Button, Card, Flex, Input, List, Select, Tabs, Tag, Typography} from "antd";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {StationsMapPanel} from "../components/StationsMapPanel";
 import {useMovementStore} from "../store";
 import type {StationTrackingMode} from "../types";
-import {deleteAdminStation, deleteAdminTeam, updateAdminStation} from "../api";
+import {
+  deleteAdminStation,
+  deleteAdminTeam,
+  generateAdminTeamQrLoginToken,
+  getAdminTeamQrLoginTokens,
+  revokeAdminQrLoginToken,
+  updateAdminStation,
+} from "../api";
 import {fetchAdminDatabase} from "../adminData";
 
 export function SystemConfigPage() {
@@ -18,6 +26,7 @@ export function SystemConfigPage() {
     (state) => state.stationDefinitions.length,
   );
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
+  const [qrBusyTeamId, setQrBusyTeamId] = useState<string | null>(null);
 
   const handleTrackingModeChange = async (
     station: (typeof stationDefinitions)[number],
@@ -26,6 +35,86 @@ export function SystemConfigPage() {
     await updateAdminStation(station.id, {trackingMode});
     loadDatabase(await fetchAdminDatabase());
     message.success("Station tracking mode updated");
+  };
+
+  const handleGenerateQrLogin = async (team: (typeof teams)[number]) => {
+    setQrBusyTeamId(team.id);
+    try {
+      const token = await generateAdminTeamQrLoginToken(team.id);
+      modal.info({
+        centered: true,
+        width: 680,
+        title: `QR login for ${team.name}`,
+        content: (
+          <Flex vertical gap={12}>
+            <Typography.Text>
+              This one-time URL is shown only now. Generate a new QR to rotate it.
+            </Typography.Text>
+            <Input.TextArea value={token.qrLoginUrl ?? token.loginUrl} readOnly autoSize />
+            <Typography.Text className="muted-copy compact-copy">
+              Expires at {new Date(token.expiresAt).toLocaleString("vi-VN")}
+            </Typography.Text>
+          </Flex>
+        ),
+      });
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to generate QR login");
+    } finally {
+      setQrBusyTeamId(null);
+    }
+  };
+
+  const handleShowQrStatus = async (team: (typeof teams)[number]) => {
+    setQrBusyTeamId(team.id);
+    try {
+      const tokens = await getAdminTeamQrLoginTokens(team.id);
+      modal.info({
+        centered: true,
+        width: 720,
+        title: `QR login status for ${team.name}`,
+        content: (
+          <List
+            dataSource={tokens.slice(0, 5)}
+            locale={{emptyText: "No QR login tokens generated"}}
+            renderItem={(token) => (
+              <List.Item>
+                <Flex vertical gap={4} className="full-width">
+                  <Flex justify="space-between" align="center">
+                    <Typography.Text>#{token.id}</Typography.Text>
+                    <Tag>{token.status}</Tag>
+                  </Flex>
+                  <Typography.Text className="muted-copy compact-copy">
+                    Expires {new Date(token.expiresAt).toLocaleString("vi-VN")} · Uses {token.usageCount}/{token.maxUsageCount}
+                  </Typography.Text>
+                </Flex>
+              </List.Item>
+            )}
+          />
+        ),
+      });
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to load QR login status");
+    } finally {
+      setQrBusyTeamId(null);
+    }
+  };
+
+  const handleRevokeActiveQr = async (team: (typeof teams)[number]) => {
+    setQrBusyTeamId(team.id);
+    try {
+      const tokens = await getAdminTeamQrLoginTokens(team.id);
+      const activeToken = tokens.find((token) => token.status === "ACTIVE");
+      if (!activeToken) {
+        message.info("No active QR login token to revoke");
+        return;
+      }
+      await revokeAdminQrLoginToken(activeToken.id);
+      message.success("QR login token revoked");
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to revoke QR login");
+    } finally {
+      setQrBusyTeamId(null);
+    }
   };
 
   return (
@@ -139,7 +228,28 @@ export function SystemConfigPage() {
                             {team.totalTimeMinutes} min
                           </Typography.Text>
                         </Flex>
-                        <Flex gap={8} className="full-width">
+                        <Flex gap={8} className="full-width" wrap>
+                          <Button
+                            icon={<QrcodeOutlined />}
+                            loading={qrBusyTeamId === team.id}
+                            onClick={() => void handleGenerateQrLogin(team)}
+                          >
+                            Generate QR
+                          </Button>
+                          <Button
+                            icon={<QrcodeOutlined />}
+                            loading={qrBusyTeamId === team.id}
+                            onClick={() => void handleShowQrStatus(team)}
+                          >
+                            QR status
+                          </Button>
+                          <Button
+                            icon={<StopOutlined />}
+                            loading={qrBusyTeamId === team.id}
+                            onClick={() => void handleRevokeActiveQr(team)}
+                          >
+                            Revoke QR
+                          </Button>
                           <Button
                             icon={<EditOutlined />}
                             onClick={() =>
