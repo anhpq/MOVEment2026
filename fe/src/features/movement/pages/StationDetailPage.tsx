@@ -29,6 +29,7 @@ import {
   submitCipherAnswer,
   editAdminProgressScore,
   forceAdminProgressStatus,
+  getPlayerFinal,
   reopenAdminProgress,
   submitAdminProgressScore,
   submitStationScore,
@@ -128,6 +129,15 @@ export function StationDetailPage() {
 
   const refreshAdminData = async () => {
     loadDatabase(await fetchAdminDatabase());
+  };
+
+  const navigateAfterTeamStationFinished = async () => {
+    try {
+      const final = await getPlayerFinal();
+      navigate(final.isOpen && !final.blockedByActiveStation ? "/final" : "/stations");
+    } catch {
+      navigate("/stations");
+    }
   };
 
   return (
@@ -313,7 +323,7 @@ export function StationDetailPage() {
             setIsFinishScannerOpen(false);
             if (station.trackingMode === "TIME") {
               message.success("Time-only station completed");
-              navigate("/stations");
+              await navigateAfterTeamStationFinished();
               return;
             }
 
@@ -395,7 +405,7 @@ export function StationDetailPage() {
                   await refreshPlayerData();
                   message.success("Station completed successfully");
                   setIsScoreModalOpen(false);
-                  navigate("/stations");
+                  await navigateAfterTeamStationFinished();
                 } catch (error: unknown) {
                   message.error(
                     error instanceof Error ? error.message : "Score submission failed",

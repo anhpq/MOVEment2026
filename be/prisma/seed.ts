@@ -172,14 +172,12 @@ async function main() {
 
   const final = await prisma.finalChallenge.findFirst({ where: { isActive: true } });
   if (!final) {
-    const startsAt = new Date();
-    startsAt.setHours(11, 45, 0, 0);
     await prisma.finalChallenge.create({
       data: {
         title: 'Final Cipher',
         clueText: 'Giai mat thu cuoi cung',
         answerHash: await bcrypt.hash('movement2026', 10),
-        startsAt,
+        startsAt: new Date(),
         maxWinners: 10,
         pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
       },

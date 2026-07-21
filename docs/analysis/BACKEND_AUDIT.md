@@ -1,5 +1,14 @@
 # Backend Audit Status
 
+## 2026-07-21 Final Challenge event-end flow
+
+- Replaced the legacy Final opening rule with server-side event end time from Admin Event Config. `FinalService` now uses `EventConfigService.isPastEventEnd()` and blocks Final submission until the event has ended.
+- Preserved station lifecycle requirements: new station check-in remains blocked after event end, while existing station check-out and score submission still work. Final entry is blocked while the team has an active `CHECKED_IN`/`PLAYING` station.
+- Added wrong-answer cooldown without a database migration by deriving state from existing incorrect `final_submissions`: cooldown seconds are `min(wrongAttemptCount, 10)`. Bonus points now use the fixed rank formula `max(11 - rank, 0)`.
+- Frontend Final page now polls `/api/player/final`, shows active-station blocking, wrong-attempt cooldown, and correct rank/bonus result. Station list polls for Final availability and shows an automatic CTA when the team is free.
+- Admin UI no longer exposes Final start time or rank-point configuration; Final opens from Event Config event end time and rank points are fixed by rule.
+- Verification: backend build/lint passed, full backend Jest suite passed (41 tests), frontend lint/build passed. Vite still reports the known large chunk warning.
+
 ## 2026-07-21 Deployment database initialization audit
 
 - Root cause confirmed: production backend deploy refreshed code, installed dependencies, built the backend, ran `prisma migrate deploy`, and restarted PM2/systemd, but never executed the Prisma seed. Local tester and Docker tester did run seed, so CI/CD differed from local setup and deploy could be green with an initialized schema but missing admin/team/station/progress seed data.

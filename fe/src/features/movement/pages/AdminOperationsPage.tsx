@@ -30,10 +30,7 @@ export function AdminOperationsPage() {
       getAdminActivityLogs(), getAdminFinalConfig(), getAdminFinalSubmissions(),
     ]);
     setDashboard(d); setQueue(q); setLogs(l); setSubmissions(s);
-    eventForm.setFieldsValue(e); finalForm.setFieldsValue({
-      ...f,
-      pointsByRank: Array.isArray(f.pointsByRank) ? f.pointsByRank.join(",") : "",
-    });
+    eventForm.setFieldsValue(e); finalForm.setFieldsValue(f);
   }, [eventForm, finalForm]);
   useEffect(() => {
     const timer = window.setTimeout(() => void refresh(), 0);
@@ -51,7 +48,6 @@ export function AdminOperationsPage() {
         await updateAdminEventConfig(v); message.success("Event config updated"); await refresh();
       }}>
         <Form.Item name="eventEndTime" label="Event end"><Input /></Form.Item>
-        <Form.Item name="finalStartsAt" label="Final starts"><Input /></Form.Item>
         <Form.Item name="notifyBeforeMinutes" label="Notify before"><InputNumber min={1} /></Form.Item>
         <Form.Item name="cancelCooldownMinutes" label="Cancel cooldown"><InputNumber min={0} /></Form.Item>
         <Form.Item name="timezone" label="Timezone"><Input /></Form.Item>
@@ -60,16 +56,15 @@ export function AdminOperationsPage() {
     {key: "final", label: "Final Config", children:
       <Space direction="vertical" className="full-width">
         <Card><Form form={finalForm} layout="vertical" onFinish={async (v) => {
-          const pointsByRank = String(v.pointsByRank).split(",").map(Number);
-          await updateAdminFinalConfig({...v, pointsByRank});
+          await updateAdminFinalConfig(v);
           message.success("Final config updated"); await refresh();
         }}>
           <Form.Item name="title" label="Title"><Input /></Form.Item>
           <Form.Item name="clueText" label="Clue"><Input.TextArea /></Form.Item>
           <Form.Item name="answer" label="New answer"><Input.Password /></Form.Item>
-          <Form.Item name="startsAt" label="Starts at (ISO)"><Input /></Form.Item>
-          <Form.Item name="maxWinners" label="Max winners"><InputNumber min={1} /></Form.Item>
-          <Form.Item name="pointsByRank" label="Points by rank (CSV)"><Input /></Form.Item>
+          <Typography.Paragraph>
+            Final opens automatically at the event end time. Bonus points use rank formula: Rank 1 = 10, Rank 10 = 1, Rank 11+ = 0.
+          </Typography.Paragraph>
           <Button type="primary" htmlType="submit">Save Final config</Button>
         </Form></Card>
         <Card title={`Submissions (${submissions.length})`}><JsonList items={submissions} /></Card>

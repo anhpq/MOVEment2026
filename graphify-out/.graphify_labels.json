@@ -87,5 +87,6 @@
   "85": "@prisma/client",
   "86": "rxjs",
   "87": "swagger-ui-express",
-  "88": "vite"
+  "88": "vite",
+  "89": "eslint"
 }

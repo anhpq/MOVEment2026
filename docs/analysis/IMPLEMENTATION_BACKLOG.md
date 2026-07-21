@@ -14,6 +14,7 @@
 - [x] Admin score/edit/reopen/status override.
 - [x] Leaderboard và activity log.
 - [x] Final auto-scoring và export Excel.
+- [x] Final Challenge opens from Admin Event Config event end time, blocks active-station teams until they finish, applies wrong-answer cooldown, and awards fixed rank bonus points.
 - [x] Unit/e2e tests cho auth, QR, scoring và Final concurrency/retry.
 - [x] ESLint flat config cho backend.
 - [x] Production config phải fail-fast nếu secret còn mặc định.

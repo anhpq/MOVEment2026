@@ -32,25 +32,47 @@ const mockTx = {
 
 const mockPrisma = {
   finalChallenge: { findFirst: jest.fn() },
-  finalSubmission: { findFirst: jest.fn(), findMany: jest.fn() },
+  finalSubmission: { findFirst: jest.fn(), findMany: jest.fn(), count: jest.fn() },
+  teamStationProgress: { findFirst: jest.fn() },
   $transaction: jest.fn(),
 }
 
 const mockActivityLog = { log: jest.fn() }
+const mockEventConfig = {
+  getPublicConfig: jest.fn(),
+  isPastEventEnd: jest.fn(),
+}
 
 describe('FinalService', () => {
   let service: FinalService
 
   beforeEach(() => {
-    service = new FinalService(mockPrisma as never, mockActivityLog as never)
+    service = new FinalService(
+      mockPrisma as never,
+      mockActivityLog as never,
+      mockEventConfig as never,
+    )
     jest.clearAllMocks()
     mockPrisma.finalChallenge.findFirst.mockResolvedValue(challenge)
+    mockPrisma.finalSubmission.findFirst.mockResolvedValue(null)
+    mockPrisma.finalSubmission.count.mockResolvedValue(0)
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
+    mockEventConfig.getPublicConfig.mockResolvedValue({
+      eventEndTime: '11:30',
+      finalStartsAt: '11:45',
+      notifyBeforeMinutes: 15,
+      cancelCooldownMinutes: 5,
+      timezone: 'Asia/Ho_Chi_Minh',
+      serverNow: new Date().toISOString(),
+      isPastEventEnd: true,
+    })
+    mockEventConfig.isPastEventEnd.mockResolvedValue(true)
     mockPrisma.$transaction.mockImplementation((callback: (tx: typeof mockTx) => unknown) =>
       callback(mockTx),
     )
   })
 
-  it('awards the next available rank once for a correct submission', async () => {
+  it('awards the next available rank with the fixed final bonus formula', async () => {
     jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     mockTx.finalSubmission.findFirst.mockResolvedValue(null)
     mockTx.finalSubmission.count.mockResolvedValue(0)
@@ -62,7 +84,7 @@ describe('FinalService', () => {
       teamId: 4,
       isCorrect: true,
       winnerRank: 1,
-      pointsAwarded: 20,
+      pointsAwarded: 10,
       submittedAt: new Date(),
       scoreEventId: 9,
     })
@@ -74,17 +96,17 @@ describe('FinalService', () => {
         data: expect.objectContaining({
           teamId: 4,
           scoreBefore: 50,
-          scoreAfter: 70,
-          delta: 20,
+          scoreAfter: 60,
+          delta: 10,
           reason: 'Final rank 1',
         }),
       }),
     )
     expect(mockTx.team.update).toHaveBeenCalledWith({
       where: { id: 4 },
-      data: { totalPoints: { increment: 20 } },
+      data: { totalPoints: { increment: 10 } },
     })
-    expect(result).toMatchObject({ winnerRank: 1, pointsAwarded: 20 })
+    expect(result).toMatchObject({ winnerRank: 1, pointsAwarded: 10 })
   })
 
   it('returns the prior correct submission without awarding points again', async () => {
@@ -130,7 +152,7 @@ describe('FinalService', () => {
       teamId: 5,
       isCorrect: true,
       winnerRank: 2,
-      pointsAwarded: 10,
+      pointsAwarded: 9,
       submittedAt: new Date(),
       scoreEventId: 10,
     })
@@ -138,7 +160,51 @@ describe('FinalService', () => {
     const result = await service.submitFinal(5, { answer: 'answer' })
 
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(2)
-    expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 10 })
+    expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 9 })
+  })
+
+  it('does not open final before event end', async () => {
+    mockEventConfig.getPublicConfig.mockResolvedValue({
+      eventEndTime: '11:30',
+      finalStartsAt: '11:45',
+      notifyBeforeMinutes: 15,
+      cancelCooldownMinutes: 5,
+      timezone: 'Asia/Ho_Chi_Minh',
+      serverNow: new Date().toISOString(),
+      isPastEventEnd: false,
+    })
+    mockPrisma.finalSubmission.count = jest.fn().mockResolvedValue(0)
+
+    const result = await service.getPlayerFinal(4)
+
+    expect(result).toMatchObject({
+      isOpen: false,
+      canSubmit: false,
+      clueText: null,
+    })
+  })
+
+  it('blocks final submission while the team has an active station', async () => {
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue({
+      id: 12,
+      stationId: 'ST15A',
+    })
+
+    await expect(service.submitFinal(4, { answer: 'answer' })).rejects.toThrow(
+      'Finish the active station before entering Final Challenge',
+    )
+  })
+
+  it('blocks submission during wrong-answer cooldown', async () => {
+    const submittedAt = new Date(Date.now() - 500)
+    mockPrisma.finalSubmission.count = jest.fn().mockResolvedValue(1)
+    mockPrisma.finalSubmission.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({ submittedAt })
+
+    await expect(service.submitFinal(4, { answer: 'answer' })).rejects.toThrow(
+      'Final answer cooldown is active',
+    )
   })
 
   it('does not retry non-retryable transaction failures', async () => {

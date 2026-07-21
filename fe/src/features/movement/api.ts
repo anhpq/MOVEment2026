@@ -290,8 +290,10 @@ export const getLeaderboard = () =>
 
 export type FinalResponse = {
   id: number; title: string; clueText: string | null; startsAt: string
-  maxWinners: number; pointsByRank: number[]; isOpen: boolean
-  teamSubmission: FinalSubmissionResponse | null; serverNow: string
+  eventEndTime: string; maxWinners: number; pointsByRank: number[]; isOpen: boolean
+  canSubmit: boolean; blockedByActiveStation: boolean; activeStationId: string | null
+  teamSubmission: FinalSubmissionResponse | null; wrongAttemptCount: number
+  cooldownSeconds: number; nextAttemptAt: string | null; serverNow: string
 }
 export type FinalSubmissionResponse = {
   id: number; teamId: number; isCorrect: boolean; winnerRank: number | null
