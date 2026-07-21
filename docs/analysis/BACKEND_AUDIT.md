@@ -1,5 +1,12 @@
 # Backend Audit Status
 
+## 2026-07-21 iOS QR camera fallback
+
+- Root cause confirmed in the current frontend: `LoginPage` returned before opening the camera when `BarcodeDetector` was unavailable, and `QrTokenInput` disabled the camera button from the same native-detector check. iPhone Safari and Chrome iOS do not expose `BarcodeDetector`, so camera QR scan could not start even when `getUserMedia` was available over HTTPS.
+- Added shared frontend QR detection that gates camera availability on `navigator.mediaDevices.getUserMedia`, opens the rear-preferred camera with `facingMode: {ideal: "environment"}`, prefers native `BarcodeDetector`, and falls back to canvas-frame `jsQR` decoding for iOS/WebKit browsers.
+- Login QR and station check-in/check-out QR inputs now share the detector helper, keep `muted`/`playsInline` video elements, avoid overlapping frame decode work, stop streams/timers/animation frames on stop/success/error/unmount, and preserve Paste QR/manual token entry.
+- Verification: `npm.cmd install jsqr`, frontend lint, and frontend production build (`tsc -b && vite build`) passed. No frontend test files are present. Real iPhone Safari/Chrome iOS HTTPS camera verification is pending manual device testing.
+
 ## 2026-07-21 QR automatic login
 
 - Added a separate one-time QR login flow instead of reusing the legacy predictable team QR token format. The legacy `POST /api/auth/team-qr-login` remains for compatibility; new HTTPS QR URLs exchange an opaque token through `POST /api/auth/qr-login`.

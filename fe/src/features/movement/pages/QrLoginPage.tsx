@@ -80,11 +80,12 @@ export function QrLoginPage() {
   const login = useMovementStore((state) => state.login);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const session = useMovementStore((state) => state.session);
-  const tokenRef = useRef(extractQrToken(location.search));
+  const initialToken = extractQrToken(location.search);
+  const tokenRef = useRef(initialToken);
   const submittedRef = useRef(false);
   const inFlightRef = useRef(false);
   const [state, setState] = useState<QrLoginState>(() =>
-    tokenRef.current
+    initialToken
       ? {type: "loading", message: "Đang xác thực mã QR..."}
       : {
           type: "error",

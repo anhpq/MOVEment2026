@@ -24,7 +24,7 @@
 - [x] Thay dữ liệu dummy bằng API client thật cho màn player map/detail.
 - [x] Login, lưu JWT và duy trì session 1 ngày.
 - [x] QR login bằng token riêng cho từng team; login bằng QR vẫn revoke session cũ để đảm bảo một team chỉ có một thiết bị active.
-- [x] QR scanner thật cho check-in/check-out qua camera `BarcodeDetector`, có fallback nhập token thủ công.
+- [x] QR scanner thật cho login/check-in/check-out qua camera: ưu tiên native `BarcodeDetector`, fallback `jsQR` trên iOS/Safari, có fallback nhập/paste token thủ công.
 - [x] Form nhập điểm yêu cầu mã xác nhận sau check-out.
 - [x] Sửa production build trên Windows.
 

@@ -1,14 +1,11 @@
 import {CameraOutlined} from "@ant-design/icons";
 import {Alert, Button, Flex, Input, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
-
-type BarcodeDetectorLike = {
-  detect: (source: HTMLVideoElement) => Promise<Array<{rawValue?: string}>>;
-};
-
-type BarcodeDetectorConstructor = new (options: {
-  formats: string[];
-}) => BarcodeDetectorLike;
+import {
+  createQrFrameDetector,
+  openQrCameraStream,
+  supportsCameraQrScan,
+} from "../qrDetect";
 
 type QrTokenInputProps = Readonly<{
   value: string;
@@ -16,58 +13,62 @@ type QrTokenInputProps = Readonly<{
   placeholder: string;
 }>;
 
-function getBarcodeDetector(): BarcodeDetectorConstructor | null {
-  const candidate = (globalThis as typeof globalThis & {
-    BarcodeDetector?: BarcodeDetectorConstructor;
-  }).BarcodeDetector;
-
-  return candidate ?? null;
-}
-
 export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
-  const canUseBarcodeDetector = Boolean(getBarcodeDetector());
+  const canUseCamera = supportsCameraQrScan();
 
   useEffect(() => {
-    if (!isCameraOpen || !canUseBarcodeDetector) {
+    if (!isCameraOpen || !canUseCamera) {
       return;
     }
 
     let cancelled = false;
     let animationFrame = 0;
+    let videoElement: HTMLVideoElement | null = null;
 
     const startCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {facingMode: "environment"},
-        });
+        const stream = await openQrCameraStream();
+        if (cancelled) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
         streamRef.current = stream;
 
-        if (!videoRef.current) {
+        videoElement = videoRef.current;
+        if (!videoElement) {
+          stream.getTracks().forEach((track) => track.stop());
+          streamRef.current = null;
           return;
         }
 
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        videoElement.srcObject = stream;
+        await videoElement.play();
 
-        const Detector = getBarcodeDetector();
-        if (!Detector) {
-          return;
-        }
-
-        const detector = new Detector({formats: ["qr_code"]});
+        const detector = createQrFrameDetector();
         const scan = async () => {
-          if (cancelled || !videoRef.current) {
+          if (cancelled || !videoElement) {
             return;
           }
 
-          const [result] = await detector.detect(videoRef.current);
-          if (result?.rawValue) {
-            onChange(result.rawValue);
-            setIsCameraOpen(false);
+          try {
+            const result = await detector.detect(videoElement);
+            if (result) {
+              cancelled = true;
+              onChange(result);
+              setIsCameraOpen(false);
+              return;
+            }
+          } catch (error) {
+            if (!cancelled) {
+              setCameraError(
+                error instanceof Error ? error.message : "Cannot scan QR code",
+              );
+              setIsCameraOpen(false);
+            }
             return;
           }
 
@@ -78,9 +79,12 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
 
         void scan();
       } catch (error) {
-        setCameraError(
-          error instanceof Error ? error.message : "Cannot open camera",
-        );
+        if (!cancelled) {
+          setCameraError(
+            error instanceof Error ? error.message : "Cannot open camera",
+          );
+          setIsCameraOpen(false);
+        }
       }
     };
 
@@ -89,10 +93,14 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
     return () => {
       cancelled = true;
       cancelAnimationFrame(animationFrame);
+      if (videoElement) {
+        videoElement.pause();
+        videoElement.srcObject = null;
+      }
       streamRef.current?.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     };
-  }, [canUseBarcodeDetector, isCameraOpen, onChange]);
+  }, [canUseCamera, isCameraOpen, onChange]);
 
   return (
     <Flex vertical gap={12}>
@@ -104,18 +112,18 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
       />
       <Button
         icon={<CameraOutlined />}
-        disabled={!canUseBarcodeDetector}
+        disabled={!canUseCamera}
         onClick={() => {
           setCameraError(null);
           setIsCameraOpen((current) => !current);
         }}>
         {isCameraOpen ? "Stop Camera" : "Scan with Camera"}
       </Button>
-      {!canUseBarcodeDetector && (
+      {!canUseCamera && (
         <Alert
           type="warning"
           showIcon
-          description="This browser does not expose QR camera scanning, so enter the decoded token manually."
+          description="Camera scanning requires browser camera access, usually HTTPS or localhost. Enter the decoded token manually if camera access is unavailable."
         />
       )}
       {cameraError && <Alert type="error" showIcon description={cameraError} />}

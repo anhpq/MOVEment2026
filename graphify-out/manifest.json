@@ -230,9 +230,9 @@
     "semantic_hash": "75a0286de267d5393020e4439ed72f6a"
   },
   "fe/package.json": {
-    "mtime": 1784386509.0381405,
-    "ast_hash": "2ef5a03b29c64a6829ebb77cb5941a25",
-    "semantic_hash": "2ef5a03b29c64a6829ebb77cb5941a25"
+    "mtime": 1784645586.9822502,
+    "ast_hash": "be89ca03f084cfa2c6c32d4acdae717a",
+    "semantic_hash": ""
   },
   "fe/src/App.tsx": {
     "mtime": 1784560861.0773733,
@@ -270,8 +270,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/LoginPage.tsx": {
-    "mtime": 1784636921.1813602,
-    "ast_hash": "90d804a1ad17dbfeb82cbfb42b336be9",
+    "mtime": 1784645676.5775862,
+    "ast_hash": "2fe2218698451fce6982ffc7349a6d1e",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
@@ -440,13 +440,13 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784618944.6795046,
-    "ast_hash": "6cd859b6e79c7d83f966da90d6fa47ce",
+    "mtime": 1784645766.338493,
+    "ast_hash": "3305eb8c36e67327c04cfea43d22b14f",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784560861.0748637,
-    "ast_hash": "87f6fac2d6f3561291c51187e185f005",
+    "mtime": 1784645773.9335403,
+    "ast_hash": "47f516b80590860fd87b1f6b4384578b",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784638773.025856,
-    "ast_hash": "23fa8c336d93e47ad5cac965a3b59089",
+    "mtime": 1784645786.2361276,
+    "ast_hash": "2cd953113f0b4c6c558f16228237420f",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -575,8 +575,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/QrTokenInput.tsx": {
-    "mtime": 1784560861.0783744,
-    "ast_hash": "31a296b2118f43fd6909e5c379dcb45c",
+    "mtime": 1784645718.2746503,
+    "ast_hash": "d7c81da803692ba9197d8555b77be1df",
     "semantic_hash": ""
   },
   "be/src/modules/player/player.service.spec.ts": {
@@ -710,8 +710,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/QrLoginPage.tsx": {
-    "mtime": 1784637172.146491,
-    "ast_hash": "654b6b82edf2a0346701064003d863c2",
+    "mtime": 1784645725.083792,
+    "ast_hash": "200f34bb4f5212d92661a1ba6b0398bf",
     "semantic_hash": ""
   },
   "be/src/common/qr/qr-token.spec.ts": {
@@ -722,6 +722,16 @@
   "docs/analysis/QR_LOGIN.md": {
     "mtime": 1784638748.3954785,
     "ast_hash": "57ebcb5b69f75ce5abde49e98a769e07",
+    "semantic_hash": ""
+  },
+  "fe/src/features/movement/qrDetect.ts": {
+    "mtime": 1784645609.7878458,
+    "ast_hash": "532ad5cbf075d1676088de213f58c4c7",
+    "semantic_hash": ""
+  },
+  "docs/analysis/IOS_SAFARI_QR_CAMERA_FIX.md": {
+    "mtime": 1784644346.5625534,
+    "ast_hash": "58ee609c1287d8aae671055870818180",
     "semantic_hash": ""
   }
 }

@@ -10,28 +10,21 @@ import {
   Typography,
   Image,
 } from "antd";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {isAuthFailure, loginTeam, loginTeamWithQr, loginUser, loginWithQrToken} from "../api";
 import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
+import {
+  createQrFrameDetector,
+  openQrCameraStream,
+  supportsCameraQrScan,
+} from "../qrDetect";
 import logo from "../../../assets/ST-logo.png";
 
 type LoginFormValues = {
   username: string;
   password: string;
-};
-
-type DetectedBarcode = {
-  rawValue: string;
-};
-
-type BarcodeDetectorInstance = {
-  detect: (source: HTMLVideoElement) => Promise<DetectedBarcode[]>;
-};
-
-type BarcodeDetectorConstructor = {
-  new (options?: {formats?: string[]}): BarcodeDetectorInstance;
 };
 
 function mapBackendRole(role: string) {
@@ -74,11 +67,6 @@ function parseQrLoginPayload(rawValue: string): {type: "url"; token: string} | {
   return null;
 }
 
-function getBarcodeDetector() {
-  return (window as Window & {BarcodeDetector?: BarcodeDetectorConstructor})
-    .BarcodeDetector;
-}
-
 export function LoginPage() {
   const navigate = useNavigate();
   const login = useMovementStore((state) => state.login);
@@ -91,16 +79,28 @@ export function LoginPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const scanTimerRef = useRef<number | null>(null);
+  const scanFrameRef = useRef<number | null>(null);
+  const scanRunRef = useRef(0);
+  const qrSubmittingRef = useRef(false);
 
-  const stopQrScanner = () => {
+  const stopQrScanner = useCallback(() => {
+    scanRunRef.current += 1;
     if (scanTimerRef.current !== null) {
       window.clearInterval(scanTimerRef.current);
       scanTimerRef.current = null;
     }
+    if (scanFrameRef.current !== null) {
+      window.cancelAnimationFrame(scanFrameRef.current);
+      scanFrameRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.srcObject = null;
+    }
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
     setIsScanningQr(false);
-  };
+  }, []);
 
   const submitLogin = async (values: LoginFormValues) => {
     const username = values.username.trim();
@@ -157,12 +157,17 @@ export function LoginPage() {
   };
 
   const submitQrPayload = async (rawValue: string) => {
+    if (qrSubmittingRef.current) {
+      return;
+    }
+
     const qrPayload = parseQrLoginPayload(rawValue);
     if (!qrPayload) {
       message.error("QR code must contain a valid login URL or team QR token");
       return;
     }
 
+    qrSubmittingRef.current = true;
     stopQrScanner();
     setIsSubmitting(true);
     try {
@@ -189,19 +194,32 @@ export function LoginPage() {
         error instanceof Error ? error.message : "Invalid team QR token";
       message.error(messageText || "Invalid team QR token");
     } finally {
+      qrSubmittingRef.current = false;
       setIsSubmitting(false);
     }
   };
 
   const startQrScanner = async () => {
-    const BarcodeDetector = getBarcodeDetector();
-    if (!BarcodeDetector || !navigator.mediaDevices?.getUserMedia) {
-      message.error("This browser does not support camera QR scanning");
+    if (!supportsCameraQrScan()) {
+      message.error(
+        "This browser does not support camera QR scanning. Use Paste QR or open the site over HTTPS.",
+      );
       return;
     }
 
+    const scanRun = scanRunRef.current + 1;
+    scanRunRef.current = scanRun;
     setIsScanningQr(true);
-    await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    await new Promise<void>((resolve) => {
+      scanFrameRef.current = window.requestAnimationFrame(() => {
+        scanFrameRef.current = null;
+        resolve();
+      });
+    });
+
+    if (scanRunRef.current !== scanRun) {
+      return;
+    }
 
     const video = videoRef.current;
     if (!video) {
@@ -210,20 +228,49 @@ export function LoginPage() {
     }
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {facingMode: "environment"},
-      });
+      const stream = await openQrCameraStream();
+      if (scanRunRef.current !== scanRun) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
       streamRef.current = stream;
       video.srcObject = stream;
       await video.play();
 
-      const detector = new BarcodeDetector({formats: ["qr_code"]});
-      scanTimerRef.current = window.setInterval(async () => {
-        const codes = await detector.detect(video);
-        const firstCode = codes[0]?.rawValue;
-        if (firstCode) {
-          void submitQrPayload(firstCode);
+      const detector = createQrFrameDetector();
+      let isDetecting = false;
+      scanTimerRef.current = window.setInterval(() => {
+        if (
+          isDetecting ||
+          qrSubmittingRef.current ||
+          scanRunRef.current !== scanRun
+        ) {
+          return;
         }
+
+        isDetecting = true;
+        void detector
+          .detect(video)
+          .then((firstCode) => {
+            if (
+              firstCode &&
+              !qrSubmittingRef.current &&
+              scanRunRef.current === scanRun
+            ) {
+              void submitQrPayload(firstCode);
+            }
+          })
+          .catch((error: unknown) => {
+            if (scanRunRef.current === scanRun) {
+              stopQrScanner();
+              const messageText =
+                error instanceof Error ? error.message : "Unable to scan QR code";
+              message.error(messageText);
+            }
+          })
+          .finally(() => {
+            isDetecting = false;
+          });
       }, 500);
     } catch (error) {
       stopQrScanner();
@@ -241,7 +288,7 @@ export function LoginPage() {
     }
   }, [isSubmitting, navigate, session]);
 
-  useEffect(() => stopQrScanner, []);
+  useEffect(() => stopQrScanner, [stopQrScanner]);
 
   return (
     <div className="login-screen">

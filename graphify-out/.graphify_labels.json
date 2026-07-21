@@ -91,9 +91,5 @@
   "89": "eslint",
   "90": ".getPublicConfig",
   "91": "UpdateEventConfigDto",
-  "92": "SystemConfigPage.tsx",
-  "93": "jwt-auth.guard.ts",
-  "96": "player.service.spec.ts",
-  "97": "prisma.module.ts",
   "98": "eslint-plugin-react-hooks"
 }
