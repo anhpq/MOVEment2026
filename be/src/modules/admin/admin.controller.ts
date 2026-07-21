@@ -26,6 +26,7 @@ import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { AdminService } from './admin.service';
 import { UpdateStationDto } from './dto/update-station.dto';
 import { CreateStationDto } from './dto/create-station.dto';
+import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -69,6 +70,35 @@ export class AdminController {
   @Get('teams/:teamId/progress')
   teamProgress(@Param('teamId', ParseIntPipe) teamId: number) {
     return this.adminService.teamProgress(teamId);
+  }
+
+  @Get('teams/:teamId/qr-login-tokens')
+  teamQrLoginTokens(@Param('teamId', ParseIntPipe) teamId: number) {
+    return this.adminService.listTeamQrLoginTokens(teamId);
+  }
+
+  @Post('teams/:teamId/qr-login-tokens')
+  generateTeamQrLoginToken(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Body() dto: GenerateQrLoginTokenDto,
+  ) {
+    return this.adminService.generateTeamQrLoginToken(
+      this.requireAdminId(auth),
+      teamId,
+      dto,
+    );
+  }
+
+  @Post('qr-login-tokens/:tokenId/revoke')
+  revokeQrLoginToken(
+    @CurrentAuth() auth: AuthContext,
+    @Param('tokenId', ParseIntPipe) tokenId: number,
+  ) {
+    return this.adminService.revokeQrLoginToken(
+      this.requireAdminId(auth),
+      tokenId,
+    );
   }
 
   @Get('score-queue')

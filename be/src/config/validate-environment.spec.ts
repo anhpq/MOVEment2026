@@ -6,6 +6,7 @@ const productionEnvironment = {
   JWT_SECRET: 'a-strong-production-jwt-secret',
   SCORING_CODE: '9157',
   CORS_ORIGIN: 'https://movement.example',
+  PUBLIC_FRONTEND_URL: 'https://movement.example',
 }
 
 describe('validateEnvironment', () => {
@@ -26,6 +27,7 @@ describe('validateEnvironment', () => {
     ['SCORING_CODE', '2468', 'development default'],
     ['CORS_ORIGIN', '*', 'must not be "*"'],
     ['CORS_ORIGIN', 'https://movement.example, *', 'must not be "*"'],
+    ['PUBLIC_FRONTEND_URL', 'http://movement.example', 'must be HTTPS'],
   ])('rejects an insecure production %s', (key, value, message) => {
     expect(() =>
       validateEnvironment({ ...productionEnvironment, [key]: value }),

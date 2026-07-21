@@ -88,5 +88,14 @@
   "86": "rxjs",
   "87": "swagger-ui-express",
   "88": "vite",
-  "89": "eslint"
+  "89": "eslint",
+  "90": ".getPublicConfig",
+  "91": "UpdateEventConfigDto",
+  "92": "SystemConfigPage.tsx",
+  "93": "jwt-auth.guard.ts",
+  "94": "player.service.ts",
+  "95": "LeaderboardController",
+  "96": "player.service.spec.ts",
+  "97": "prisma.module.ts",
+  "98": "eslint-plugin-react-hooks"
 }

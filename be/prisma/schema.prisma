@@ -52,6 +52,7 @@ model User {
 
   scoreEvents  ScoreEvent[]
   activityLogs ActivityLog[]
+  qrLoginTokens QrLoginToken[]
 
   @@map("users")
 }
@@ -75,6 +76,7 @@ model Team {
   updatedAt          DateTime   @updatedAt @map("updated_at")
 
   sessions         TeamSession[]
+  qrLoginTokens    QrLoginToken[]
   progress         TeamStationProgress[]
   scoreEvents      ScoreEvent[]
   finalSubmissions FinalSubmission[]
@@ -203,6 +205,26 @@ model QrToken {
 
   @@index([stationId, purpose])
   @@map("qr_tokens")
+}
+
+model QrLoginToken {
+  id              Int       @id @default(autoincrement())
+  teamId          Int       @map("team_id")
+  team            Team      @relation(fields: [teamId], references: [id])
+  tokenHash       String    @unique @map("token_hash")
+  expiresAt       DateTime  @map("expires_at")
+  consumedAt      DateTime? @map("consumed_at")
+  revokedAt       DateTime? @map("revoked_at")
+  usageCount      Int       @default(0) @map("usage_count")
+  maxUsageCount   Int       @default(1) @map("max_usage_count")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  createdByUserId Int?      @map("created_by_user_id")
+  createdByUser   User?     @relation(fields: [createdByUserId], references: [id])
+  lastUsedAt      DateTime? @map("last_used_at")
+
+  @@index([teamId])
+  @@index([expiresAt])
+  @@map("qr_login_tokens")
 }
 
 model EventConfig {

@@ -1,5 +1,15 @@
 # Backend Audit Status
 
+## 2026-07-21 QR automatic login
+
+- Added a separate one-time QR login flow instead of reusing the legacy predictable team QR token format. The legacy `POST /api/auth/team-qr-login` remains for compatibility; new HTTPS QR URLs exchange an opaque token through `POST /api/auth/qr-login`.
+- Added `qr_login_tokens` with a unique SHA-256 token hash, team association, expiry, consumed/revoked timestamps, usage counters, creator, and last-used metadata. Raw QR tokens are returned only in the admin generation response and are not stored in the database.
+- Backend exchange consumes tokens with a conditional update inside a transaction before issuing the normal team JWT/session. Concurrent scans/replay attempts cannot both create sessions; the losing request is rejected as consumed.
+- Admin can generate, inspect, and revoke QR login tokens from the team list in System Config. Generation rotates outstanding active QR login tokens for the team and builds the URL from `PUBLIC_FRONTEND_URL`.
+- Frontend added public `/qr-login`, removes `?token=` from the visible URL immediately, prevents duplicate submissions in the page lifecycle, maps safe backend error codes to user-friendly Vietnamese messages, and redirects successful team QR login to the normal team map flow.
+- Deployment config now requires `PUBLIC_FRONTEND_URL` to be HTTPS in production and documents `QR_LOGIN_TOKEN_TTL_MINUTES`. Existing Nginx SPA fallback covers `/qr-login`; `/api/` remains a separate reverse proxy and must not be rewritten to `index.html`.
+- Verification: `npm.cmd --prefix be run prisma:generate`, backend build, full backend Jest suite (47 tests), and frontend build passed. Frontend has no existing test runner, so QR route behavior is build-verified only.
+
 ## 2026-07-21 Final Challenge event-end flow
 
 - Replaced the legacy Final opening rule with server-side event end time from Admin Event Config. `FinalService` now uses `EventConfigService.isPastEventEnd()` and blocks Final submission until the event has ended.

@@ -1,6 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ActorType } from '@prisma/client';
+import { ActorType, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { AuthContext, isTeam } from '../../common/auth/auth-context';
 import {
@@ -9,10 +15,31 @@ import {
 } from '../../common/qr/qr-token';
 import { PrismaService } from '../prisma/prisma.service';
 import { TeamLoginDto, UserLoginDto } from './dto/login.dto';
+import { QrLoginDto } from './dto/qr-login.dto';
 import { TeamQrLoginDto } from './dto/team-qr-login.dto';
+
+type TeamForSession = {
+  id: number;
+  name: string;
+  username: string;
+  captainName: string;
+  totalPoints: number;
+  maxPossiblePoints: number;
+  totalPlaySeconds: number;
+  startedAt: Date | null;
+  status: string;
+  color: string | null;
+};
+
+type PrismaSessionClient = PrismaService | Prisma.TransactionClient;
 
 @Injectable()
 export class AuthService {
+  private readonly qrLoginAttempts = new Map<
+    string,
+    { count: number; resetAt: number }
+  >();
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
@@ -80,33 +107,97 @@ export class AuthService {
     return this.issueTeamSession(team, dto.deviceLabel, 'TEAM_QR_LOGIN');
   }
 
+  async loginWithQr(dto: QrLoginDto) {
+    const qrToken = normalizeQrToken(dto.token);
+    const tokenHash = createQrTokenFingerprint(qrToken);
+    this.assertQrLoginRateLimit(tokenHash);
+
+    const now = new Date();
+    const existing = await this.prisma.qrLoginToken.findUnique({
+      where: { tokenHash },
+      include: { team: true },
+    });
+    const preflightError = this.getQrLoginRejectCode(existing, now);
+    if (preflightError) {
+      await this.logQrLoginRejected(preflightError, existing);
+      this.throwQrLoginError(preflightError);
+    }
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.qrLoginToken.updateMany({
+        where: {
+          id: existing!.id,
+          consumedAt: null,
+          revokedAt: null,
+          expiresAt: { gt: now },
+          usageCount: { lt: existing!.maxUsageCount },
+        },
+        data: {
+          consumedAt: now,
+          lastUsedAt: now,
+          usageCount: { increment: 1 },
+        },
+      });
+
+      if (updated.count !== 1) {
+        const current = await tx.qrLoginToken.findUnique({
+          where: { id: existing!.id },
+          include: { team: true },
+        });
+        return {
+          authResult: null,
+          error: this.getQrLoginRejectCode(current, now) ?? 'QR_LOGIN_INVALID',
+        };
+      }
+
+      const authResult = await this.issueTeamSession(
+        existing!.team,
+        dto.deviceLabel,
+        'TEAM_QR_AUTO_LOGIN',
+        tx,
+      );
+
+      await tx.activityLog.create({
+        data: {
+          actorType: ActorType.TEAM,
+          actorId: String(existing!.teamId),
+          action: 'QR_LOGIN_SUCCESS',
+          entityType: 'QR_LOGIN_TOKEN',
+          entityId: String(existing!.id),
+          metadata: {
+            deviceLabel: dto.deviceLabel ?? null,
+          },
+        },
+      });
+
+      return { authResult, error: null };
+    });
+
+    if (result.error) {
+      await this.logQrLoginRejected(result.error, existing);
+      this.throwQrLoginError(result.error);
+    }
+
+    return result.authResult!;
+  }
+
   private async issueTeamSession(
-    team: {
-      id: number;
-      name: string;
-      username: string;
-      captainName: string;
-      totalPoints: number;
-      maxPossiblePoints: number;
-      totalPlaySeconds: number;
-      startedAt: Date | null;
-      status: string;
-      color: string | null;
-    },
+    team: TeamForSession,
     deviceLabel: string | undefined,
-    loginAction: 'TEAM_LOGIN' | 'TEAM_QR_LOGIN',
+    loginAction: 'TEAM_LOGIN' | 'TEAM_QR_LOGIN' | 'TEAM_QR_AUTO_LOGIN',
+    prisma: PrismaSessionClient = this.prisma,
   ) {
     // Enforce one active device session per team.
     // Revoke any existing active team session before creating a new one.
-    const existingSession = await this.prisma.teamSession.findFirst({
+    const existingSession = await prisma.teamSession.findFirst({
       where: { teamId: team.id, revokedAt: null },
     });
     if (existingSession) {
-      await this.prisma.teamSession.updateMany({
+      await prisma.teamSession.updateMany({
         where: { teamId: team.id, revokedAt: null },
         data: { revokedAt: new Date(), revokeReason: 'REPLACED' },
       });
-      await this.prisma.activityLog.create({
+      await prisma.activityLog.create({
         data: {
           actorType: ActorType.TEAM,
           actorId: String(team.id),
@@ -118,7 +209,7 @@ export class AuthService {
       });
     }
 
-    const session = await this.prisma.teamSession.create({
+    const session = await prisma.teamSession.create({
       data: {
         teamId: team.id,
         tokenHash: 'pending',
@@ -132,15 +223,15 @@ export class AuthService {
       sessionId: session.id,
     });
 
-    await this.prisma.teamSession.update({
+    await prisma.teamSession.update({
       where: { id: session.id },
       data: { tokenHash: await bcrypt.hash(accessToken, 10) },
     });
-    await this.prisma.team.update({
+    await prisma.team.update({
       where: { id: team.id },
       data: { activeSessionId: session.id },
     });
-    await this.prisma.activityLog.create({
+    await prisma.activityLog.create({
       data: {
         actorType: ActorType.TEAM,
         actorId: String(team.id),
@@ -155,6 +246,77 @@ export class AuthService {
       accessToken,
       team: this.toTeamResponse(team),
     };
+  }
+
+  private assertQrLoginRateLimit(tokenHash: string) {
+    const now = Date.now();
+    const windowMs = 60_000;
+    const maxAttempts = 20;
+    const current = this.qrLoginAttempts.get(tokenHash);
+    if (!current || current.resetAt <= now) {
+      this.qrLoginAttempts.set(tokenHash, {
+        count: 1,
+        resetAt: now + windowMs,
+      });
+      return;
+    }
+
+    current.count += 1;
+    if (current.count > maxAttempts) {
+      throw new HttpException(
+        'QR_LOGIN_RATE_LIMITED',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+  }
+
+  private getQrLoginRejectCode(
+    token:
+      | (Prisma.QrLoginTokenGetPayload<{ include: { team: true } }>)
+      | null,
+    now: Date,
+  ) {
+    if (!token) {
+      return 'QR_LOGIN_INVALID';
+    }
+    if (token.revokedAt) {
+      return 'QR_LOGIN_REVOKED';
+    }
+    if (token.expiresAt.getTime() <= now.getTime()) {
+      return 'QR_LOGIN_EXPIRED';
+    }
+    if (token.consumedAt || token.usageCount >= token.maxUsageCount) {
+      return 'QR_LOGIN_CONSUMED';
+    }
+    if (token.team.status !== 'ACTIVE') {
+      return 'QR_LOGIN_INACTIVE_TEAM';
+    }
+    return null;
+  }
+
+  private async logQrLoginRejected(
+    reason: string,
+    token: Prisma.QrLoginTokenGetPayload<{ include: { team: true } }> | null,
+  ) {
+    await this.prisma.activityLog.create({
+      data: {
+        actorType: token ? ActorType.TEAM : ActorType.SYSTEM,
+        actorId: token ? String(token.teamId) : 'QR_LOGIN',
+        action: 'QR_LOGIN_REJECTED',
+        entityType: 'QR_LOGIN_TOKEN',
+        entityId: token ? String(token.id) : 'unknown',
+        metadata: {
+          reason,
+        },
+      },
+    });
+  }
+
+  private throwQrLoginError(reason: string): never {
+    if (reason === 'QR_LOGIN_INACTIVE_TEAM') {
+      throw new ForbiddenException(reason);
+    }
+    throw new UnauthorizedException(reason);
   }
 
   async me(auth: AuthContext) {

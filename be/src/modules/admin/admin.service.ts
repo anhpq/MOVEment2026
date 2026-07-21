@@ -1,4 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ActorType, Game, ProgressStatus, Team } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
@@ -16,8 +17,10 @@ import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
 import {
   buildTeamLoginQrToken,
   buildStationQrToken,
+  createSecureQrLoginToken,
   createQrTokenFingerprint,
 } from '../../common/qr/qr-token';
+import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
 
 @Injectable()
@@ -26,6 +29,7 @@ export class AdminService {
     private readonly prisma: PrismaService,
     private readonly eventConfig: EventConfigService,
     private readonly activityLog: ActivityLogService,
+    private readonly config: ConfigService,
   ) {}
 
   async dashboard() {
@@ -155,6 +159,7 @@ export class AdminService {
     await this.prisma.$transaction(async (tx) => {
       await tx.scoreEvent.deleteMany({ where: { teamId } });
       await tx.finalSubmission.deleteMany({ where: { teamId } });
+      await tx.qrLoginToken.deleteMany({ where: { teamId } });
       await tx.teamStationProgress.deleteMany({ where: { teamId } });
       await tx.teamSession.deleteMany({ where: { teamId } });
       await tx.team.delete({ where: { id: teamId } });
@@ -168,6 +173,117 @@ export class AdminService {
       entityId: teamId,
     });
     return { success: true };
+  }
+
+  async listTeamQrLoginTokens(teamId: number) {
+    await this.prisma.team.findUniqueOrThrow({ where: { id: teamId } });
+    const tokens = await this.prisma.qrLoginToken.findMany({
+      where: { teamId },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+    });
+    const now = new Date();
+    return tokens.map((token) => ({
+      id: token.id,
+      teamId: token.teamId,
+      expiresAt: token.expiresAt,
+      consumedAt: token.consumedAt,
+      revokedAt: token.revokedAt,
+      usageCount: token.usageCount,
+      maxUsageCount: token.maxUsageCount,
+      createdAt: token.createdAt,
+      lastUsedAt: token.lastUsedAt,
+      status: this.getQrLoginTokenStatus(token, now),
+    }));
+  }
+
+  async generateTeamQrLoginToken(
+    userId: number,
+    teamId: number,
+    dto: GenerateQrLoginTokenDto,
+  ) {
+    const rawToken = createSecureQrLoginToken();
+    const tokenHash = createQrTokenFingerprint(rawToken);
+    const ttlMinutes = dto.expiresInMinutes ?? this.getQrLoginTtlMinutes();
+    const expiresAt = new Date(Date.now() + ttlMinutes * 60_000);
+    const maxUsageCount = dto.maxUsageCount ?? 1;
+
+    const token = await this.prisma.$transaction(async (tx) => {
+      const team = await tx.team.findUniqueOrThrow({ where: { id: teamId } });
+      if (team.status !== 'ACTIVE') {
+        throw new ForbiddenException('QR_LOGIN_INACTIVE_TEAM');
+      }
+
+      await tx.qrLoginToken.updateMany({
+        where: {
+          teamId,
+          consumedAt: null,
+          revokedAt: null,
+        },
+        data: {
+          revokedAt: new Date(),
+        },
+      });
+
+      return tx.qrLoginToken.create({
+        data: {
+          teamId,
+          tokenHash,
+          expiresAt,
+          maxUsageCount,
+          createdByUserId: userId,
+        },
+      });
+    });
+
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'QR_LOGIN_GENERATED',
+      entityType: 'QR_LOGIN_TOKEN',
+      entityId: token.id,
+      metadata: {
+        teamId,
+        expiresAt: token.expiresAt,
+        maxUsageCount: token.maxUsageCount,
+      },
+    });
+
+    return {
+      id: token.id,
+      teamId: token.teamId,
+      loginUrl: this.buildQrLoginUrl(rawToken),
+      expiresAt: token.expiresAt,
+      usageCount: token.usageCount,
+      maxUsageCount: token.maxUsageCount,
+      createdAt: token.createdAt,
+      status: 'ACTIVE',
+    };
+  }
+
+  async revokeQrLoginToken(userId: number, tokenId: number) {
+    const token = await this.prisma.qrLoginToken.update({
+      where: { id: tokenId },
+      data: { revokedAt: new Date() },
+    });
+
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'QR_LOGIN_REVOKED',
+      entityType: 'QR_LOGIN_TOKEN',
+      entityId: token.id,
+      metadata: { teamId: token.teamId },
+    });
+
+    return {
+      id: token.id,
+      teamId: token.teamId,
+      revokedAt: token.revokedAt,
+      success: true,
+    };
   }
 
   async scoreQueue() {
@@ -905,6 +1021,40 @@ export class AdminService {
       return '';
     }
     return JSON.stringify(metadata);
+  }
+
+  private getQrLoginTtlMinutes() {
+    const configured = Number(this.config.get<string>('QR_LOGIN_TOKEN_TTL_MINUTES'));
+    if (Number.isInteger(configured) && configured > 0) {
+      return configured;
+    }
+    return 24 * 60;
+  }
+
+  private buildQrLoginUrl(rawToken: string) {
+    const configured =
+      this.config.get<string>('PUBLIC_FRONTEND_URL')?.trim() ??
+      this.config.get<string>('CORS_ORIGIN')?.split(',')[0]?.trim() ??
+      'http://localhost:4173';
+    const url = new URL('/qr-login', configured.endsWith('/') ? configured : `${configured}/`);
+    url.searchParams.set('token', rawToken);
+    return url.toString();
+  }
+
+  private getQrLoginTokenStatus(
+    token: {
+      expiresAt: Date;
+      consumedAt: Date | null;
+      revokedAt: Date | null;
+      usageCount: number;
+      maxUsageCount: number;
+    },
+    now: Date,
+  ) {
+    if (token.revokedAt) return 'REVOKED';
+    if (token.consumedAt || token.usageCount >= token.maxUsageCount) return 'CONSUMED';
+    if (token.expiresAt.getTime() <= now.getTime()) return 'EXPIRED';
+    return 'ACTIVE';
   }
 
   private toReportCell(cell: unknown): XlsxCell {

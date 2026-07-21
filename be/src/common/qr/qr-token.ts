@@ -1,4 +1,4 @@
-import { createHash } from 'crypto';
+import { createHash, randomBytes } from 'crypto';
 import { QrPurpose } from '@prisma/client';
 
 export function normalizeQrToken(rawToken: string) {
@@ -9,6 +9,10 @@ export function createQrTokenFingerprint(rawToken: string) {
   return createHash('sha256')
     .update(normalizeQrToken(rawToken), 'utf8')
     .digest('hex');
+}
+
+export function createSecureQrLoginToken() {
+  return randomBytes(32).toString('base64url');
 }
 
 export function buildTeamLoginQrToken(teamNumber: string) {

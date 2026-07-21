@@ -34,6 +34,7 @@ export function validateEnvironment(env: Environment): Environment {
   const jwtSecret = requiredProductionValue(env, 'JWT_SECRET')
   const scoringCode = requiredProductionValue(env, 'SCORING_CODE')
   const corsOrigin = requiredProductionValue(env, 'CORS_ORIGIN')
+  const publicFrontendUrl = requiredProductionValue(env, 'PUBLIC_FRONTEND_URL')
 
   if (databaseUrl === defaultDatabaseUrl) {
     throw new Error('DATABASE_URL must not use the development default in production')
@@ -49,6 +50,9 @@ export function validateEnvironment(env: Environment): Environment {
     corsOrigins === '*' || (Array.isArray(corsOrigins) && corsOrigins.includes('*'))
   if (includesWildcard) {
     throw new Error('CORS_ORIGIN must not be "*" in production')
+  }
+  if (!publicFrontendUrl.startsWith('https://')) {
+    throw new Error('PUBLIC_FRONTEND_URL must be HTTPS in production')
   }
 
   return env

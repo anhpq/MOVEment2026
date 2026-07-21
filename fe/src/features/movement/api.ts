@@ -5,6 +5,7 @@ import {
   apiGet,
   apiPatch,
   apiPost,
+  apiRequest,
 } from "./apiClient"
 
 export {ApiError, isAuthFailure} from "./apiClient"
@@ -74,6 +75,21 @@ export async function loginTeamWithQr(
   return apiPost<TeamLoginResponse>('/api/auth/team-qr-login', {
     qrToken,
     deviceLabel,
+  })
+}
+
+export async function loginWithQrToken(
+  token: string,
+  deviceLabel: string,
+  signal?: AbortSignal,
+): Promise<TeamLoginResponse> {
+  return apiRequest<TeamLoginResponse>('/api/auth/qr-login', {
+    method: 'POST',
+    body: JSON.stringify({
+      token,
+      deviceLabel,
+    }),
+    signal,
   })
 }
 
@@ -248,6 +264,38 @@ export const updateAdminTeam = (teamId: string, values: {
 
 export const deleteAdminTeam = (teamId: string) =>
   apiDelete<{success: boolean}>(`/api/admin/teams/${teamId}`)
+
+export type AdminQrLoginTokenResponse = {
+  id: number
+  teamId: number
+  loginUrl?: string
+  expiresAt: string
+  consumedAt?: string | null
+  revokedAt?: string | null
+  usageCount: number
+  maxUsageCount: number
+  createdAt: string
+  lastUsedAt?: string | null
+  status: 'ACTIVE' | 'EXPIRED' | 'CONSUMED' | 'REVOKED'
+}
+
+export const getAdminTeamQrLoginTokens = (teamId: string) =>
+  apiGet<AdminQrLoginTokenResponse[]>(`/api/admin/teams/${teamId}/qr-login-tokens`)
+
+export const generateAdminTeamQrLoginToken = (
+  teamId: string,
+  values: {expiresInMinutes?: number; maxUsageCount?: number} = {},
+) =>
+  apiPost<AdminQrLoginTokenResponse>(
+    `/api/admin/teams/${teamId}/qr-login-tokens`,
+    values,
+  )
+
+export const revokeAdminQrLoginToken = (tokenId: number) =>
+  apiPost<{success: boolean; id: number; teamId: number; revokedAt: string | null}>(
+    `/api/admin/qr-login-tokens/${tokenId}/revoke`,
+    {},
+  )
 
 export const forceAdminProgressStatus = (
   progressId: number,

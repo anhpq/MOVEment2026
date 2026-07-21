@@ -13,7 +13,7 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
-import {isAuthFailure, loginTeam, loginTeamWithQr, loginUser} from "../api";
+import {isAuthFailure, loginTeam, loginTeamWithQr, loginUser, loginWithQrToken} from "../api";
 import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
 import logo from "../../../assets/ST-logo.png";
 
@@ -38,10 +38,20 @@ function mapBackendRole(role: string) {
   return role === "ADMIN" ? "admin" : "user";
 }
 
-function parseQrLoginPayload(rawValue: string): string | null {
+function parseQrLoginPayload(rawValue: string): {type: "url"; token: string} | {type: "legacy"; token: string} | null {
   const value = rawValue.trim();
   if (!value) {
     return null;
+  }
+
+  try {
+    const url = new URL(value);
+    const token = url.searchParams.get("token")?.trim();
+    if (url.pathname === "/qr-login" && token) {
+      return {type: "url", token};
+    }
+  } catch {
+    // Non-URL QR payloads are handled below.
   }
 
   try {
@@ -52,14 +62,14 @@ function parseQrLoginPayload(rawValue: string): string | null {
     };
     const qrToken = parsed.qrToken ?? parsed.loginQrToken ?? parsed.token;
     if (qrToken) {
-      return qrToken.trim();
+      return {type: "legacy", token: qrToken.trim()};
     }
   } catch {
     // Plain text QR payloads are handled below.
   }
 
   if (/^MV26-TEAM-\d{2}-LOGIN$/i.test(value)) {
-    return value;
+    return {type: "legacy", token: value};
   }
   return null;
 }
@@ -147,16 +157,19 @@ export function LoginPage() {
   };
 
   const submitQrPayload = async (rawValue: string) => {
-    const qrToken = parseQrLoginPayload(rawValue);
-    if (!qrToken) {
-      message.error("QR code must contain a valid team QR login token");
+    const qrPayload = parseQrLoginPayload(rawValue);
+    if (!qrPayload) {
+      message.error("QR code must contain a valid login URL or team QR token");
       return;
     }
 
     stopQrScanner();
     setIsSubmitting(true);
     try {
-      const teamResponse = await loginTeamWithQr(qrToken, "web-qr");
+      const teamResponse =
+        qrPayload.type === "url"
+          ? await loginWithQrToken(qrPayload.token, "web-qr")
+          : await loginTeamWithQr(qrPayload.token, "web-qr");
       login({
         username: teamResponse.team.username,
         role: "user",
