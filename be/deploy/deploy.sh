@@ -16,6 +16,20 @@ git checkout "${DEPLOY_BRANCH}"
 git reset --hard "origin/${DEPLOY_BRANCH}"
 
 cd be
+
+if [ ! -f .env ]; then
+  echo "Missing ${DEPLOY_PATH}/be/.env"
+  echo "Create it from be/deploy/.env.example. Deploy never overwrites this file."
+  exit 1
+fi
+
+# Host be/.env is the source of truth for NODE_ENV, SCORING_CODE, secrets, etc.
+# Do not force NODE_ENV=production here — that would override the host file via pm2 --update-env.
+set -a
+# shellcheck disable=SC1091
+source .env
+set +a
+
 # nest CLI lives in devDependencies; include them for build even when NODE_ENV=production
 if [ -f package-lock.json ]; then
   npm ci --include=dev
@@ -23,7 +37,6 @@ else
   npm install
 fi
 
-export NODE_ENV=production
 npm run prisma:generate
 npm run prisma:deploy
 npm run prisma:seed
