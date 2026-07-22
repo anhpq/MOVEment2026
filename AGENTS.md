@@ -39,8 +39,8 @@ docs/prompts/00_WORKFLOW.md
 
 ## Response Language
 
-- Luôn trả lời user bằng tiếng Việt.
-- Giữ nguyên các technical terms phổ biến bằng tiếng Anh khi cần rõ nghĩa, ví dụ:
+- Luôn trả lời user bằng tiếng Việt, trừ khi user yêu cầu rõ một ngôn ngữ khác.
+- Giữ nguyên code, command, file path, identifier, commit message và các technical terms phổ biến bằng tiếng Anh khi phù hợp, ví dụ:
   - Source of Truth
   - Business Rule
   - Feature
@@ -53,9 +53,7 @@ docs/prompts/00_WORKFLOW.md
   - Production
   - Backend
   - Frontend
-- Không tự chuyển sang tiếng Anh toàn bộ câu trả lời, trừ khi user yêu cầu rõ.
-- Khi viết code, command, file path, commit message hoặc tên biến, giữ nguyên ngôn ngữ kỹ thuật phù hợp.
-- Final report, audit report và implementation summary phải viết bằng tiếng Việt.
+- Final report, audit report và implementation summary phải được viết bằng tiếng Việt.
 
 ---
 
