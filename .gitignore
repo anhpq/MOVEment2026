@@ -25,16 +25,26 @@ backend_test_poc.pem
 # Logs
 logs/
 .tester-logs/
+.cline-telegram/
+*.cline-telegram.log
 *.log
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Local Cline Telegram workspace automation
+.vscode/settings.json
+.vscode/tasks.json
+docs/CLINE_TELEGRAM.md
+scripts/check-powershell-syntax.ps1
+scripts/start-cline-telegram.ps1
+scripts/stop-cline-telegram.ps1
+scripts/test-cline-telegram.ps1
+
 # Editor and OS files
 .clinerules/
-.vscode/*
-!.vscode/extensions.json
+.vscode/extensions.json
 .idea/
 .DS_Store
 Thumbs.db
