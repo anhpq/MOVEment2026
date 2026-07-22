@@ -25,6 +25,21 @@ export function parseCorsOrigin(value: string | undefined): string | string[] {
   return origins.length <= 1 ? origins[0] ?? '*' : origins
 }
 
+export function buildCorsOrigin(value: string | undefined) {
+  const corsOrigins = parseCorsOrigin(value)
+  if (corsOrigins === '*') {
+    return corsOrigins
+  }
+
+  const allowedOrigins = Array.isArray(corsOrigins) ? corsOrigins : [corsOrigins]
+  return (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void,
+  ) => {
+    callback(null, !origin || allowedOrigins.includes(origin))
+  }
+}
+
 export function validateEnvironment(env: Environment): Environment {
   if (env.NODE_ENV?.toLowerCase() !== 'production') {
     return env

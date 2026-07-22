@@ -1,4 +1,8 @@
-import { parseCorsOrigin, validateEnvironment } from './validate-environment'
+import {
+  buildCorsOrigin,
+  parseCorsOrigin,
+  validateEnvironment,
+} from './validate-environment'
 
 const productionEnvironment = {
   NODE_ENV: 'production',
@@ -20,6 +24,25 @@ describe('validateEnvironment', () => {
     expect(
       parseCorsOrigin('https://movement.example, https://admin.example'),
     ).toEqual(['https://movement.example', 'https://admin.example'])
+  })
+
+  it('allows only a configured single CORS origin', () => {
+    const origin = buildCorsOrigin('https://movement.example')
+    if (typeof origin !== 'function') {
+      throw new Error('Expected CORS origin callback')
+    }
+    const callback = jest.fn()
+
+    origin('https://movement.example', callback)
+    origin('https://evil.example', callback)
+
+    expect(callback).toHaveBeenNthCalledWith(1, null, true)
+    expect(callback).toHaveBeenNthCalledWith(2, null, false)
+  })
+
+  it('allows any origin only when wildcard CORS is configured', () => {
+    expect(buildCorsOrigin(undefined)).toBe('*')
+    expect(buildCorsOrigin('*')).toBe('*')
   })
 
   it.each([

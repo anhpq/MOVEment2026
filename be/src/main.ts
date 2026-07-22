@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { parseCorsOrigin } from './config/validate-environment';
+import { buildCorsOrigin } from './config/validate-environment';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,7 +14,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(helmet());
   app.enableCors({
-    origin: parseCorsOrigin(config.get<string>('CORS_ORIGIN')),
+    origin: buildCorsOrigin(config.get<string>('CORS_ORIGIN')),
     credentials: true,
   });
   app.useGlobalPipes(

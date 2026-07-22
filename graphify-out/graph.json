@@ -513,8 +513,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "be_package_dependencies_prisma_client",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "@prisma/client"
     },
     {
@@ -524,8 +524,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "prisma_client",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "@prisma/client"
     },
     {
@@ -1063,8 +1063,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_prisma_seed",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "seed.ts"
     },
     {
@@ -1074,8 +1074,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "be_prisma_seed_prisma",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "prisma"
     },
     {
@@ -1085,8 +1085,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "be_prisma_seed_qrlogintokenttlminutes",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "qrlogintokenttlminutes"
     },
     {
@@ -1096,8 +1096,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "be_prisma_seed_devqrartifactpath",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "devqrartifactpath"
     },
     {
@@ -1107,8 +1107,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_prisma_seed_devstationqrartifactpath",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "devstationqrartifactpath"
     },
     {
@@ -1118,8 +1118,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "be_prisma_seed_stations",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "stations"
     },
     {
@@ -1129,8 +1129,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "be_prisma_seed_teamcolors",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "teamcolors"
     },
     {
@@ -1140,8 +1140,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "be_prisma_seed_teams",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "teams"
     },
     {
@@ -1151,8 +1151,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "be_prisma_seed_main",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "main()"
     },
     {
@@ -1162,8 +1162,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "be_prisma_seed_ensurestationqrtoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "ensurestationqrtoken()"
     },
     {
@@ -1173,8 +1173,8 @@
       "source_location": "L351",
       "_origin": "ast",
       "id": "be_prisma_seed_createuniquestationqrtoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "createuniquestationqrtoken()"
     },
     {
@@ -1404,8 +1404,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_log",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 92,
+      "community_name": "jwt-auth.guard.ts",
       "norm_label": ".log()"
     },
     {
@@ -1415,8 +1415,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_tojson",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 92,
+      "community_name": "jwt-auth.guard.ts",
       "norm_label": ".tojson()"
     },
     {
@@ -1426,8 +1426,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "auth-context.ts"
     },
     {
@@ -1437,8 +1437,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authtype",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "authtype"
     },
     {
@@ -1448,7 +1448,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authcontext",
-      "community": 0,
+      "community": 111,
       "community_name": "AuthContext",
       "norm_label": "authcontext"
     },
@@ -1459,8 +1459,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_adminauthcontext",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "adminauthcontext"
     },
     {
@@ -1470,8 +1470,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_teamauthcontext",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "teamauthcontext"
     },
     {
@@ -1481,8 +1481,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_isadmin",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "isadmin()"
     },
     {
@@ -1492,8 +1492,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_isteam",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "isteam()"
     },
     {
@@ -1503,8 +1503,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_decorators",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "auth.decorators.ts"
     },
     {
@@ -1536,8 +1536,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_spec",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "jwt-auth.guard.spec.ts"
     },
     {
@@ -1547,8 +1547,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "jwt-auth.guard.ts"
     },
     {
@@ -1558,8 +1558,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtpayload",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "jwtpayload"
     },
     {
@@ -1569,8 +1569,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "jwtauthguard"
     },
     {
@@ -1580,8 +1580,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_ts_injectable",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "injectable"
     },
     {
@@ -1602,8 +1602,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_canactivate",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": ".canactivate()"
     },
     {
@@ -1613,8 +1613,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "roles.guard.ts"
     },
     {
@@ -1624,8 +1624,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "rolesguard"
     },
     {
@@ -1635,8 +1635,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_ts_injectable",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "injectable"
     },
     {
@@ -1646,8 +1646,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_constructor",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -1657,8 +1657,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_auth_roles_guard_rolesguard_canactivate",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": ".canactivate()"
     },
     {
@@ -1668,8 +1668,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "score.dto.ts"
     },
     {
@@ -1679,8 +1679,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_submitscoredto",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "submitscoredto"
     },
     {
@@ -1690,8 +1690,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isint",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isint"
     },
     {
@@ -1701,8 +1701,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_min",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "min"
     },
     {
@@ -1712,8 +1712,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isoptional",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isoptional"
     },
     {
@@ -1723,8 +1723,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isstring",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isstring"
     },
     {
@@ -1734,8 +1734,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_maxlength",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "maxlength"
     },
     {
@@ -1745,8 +1745,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_teamsubmitscoredto",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "teamsubmitscoredto"
     },
     {
@@ -1756,8 +1756,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_minlength",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "minlength"
     },
     {
@@ -1767,8 +1767,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_reopenprogressdto",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "reopenprogressdto"
     },
     {
@@ -1778,8 +1778,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_forceprogressstatusdto",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "forceprogressstatusdto"
     },
     {
@@ -1789,8 +1789,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_dto_score_dto_ts_isenum",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 0,
+      "community_name": "AuthContext",
       "norm_label": "isenum"
     },
     {
@@ -1800,8 +1800,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_spec",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "qr-token.spec.ts"
     },
     {
@@ -1811,8 +1811,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "qr-token.ts"
     },
     {
@@ -1822,8 +1822,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_normalizeqrtoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "normalizeqrtoken()"
     },
     {
@@ -1833,8 +1833,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_createqrtokenfingerprint",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "createqrtokenfingerprint()"
     },
     {
@@ -1844,8 +1844,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_createsecureqrlogintoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "createsecureqrlogintoken()"
     },
     {
@@ -1855,8 +1855,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_tobase32",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "tobase32()"
     },
     {
@@ -1866,8 +1866,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_buildqrloginurl",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "buildqrloginurl()"
     },
     {
@@ -1877,8 +1877,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_buildteamloginqrtoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "buildteamloginqrtoken()"
     },
     {
@@ -1888,8 +1888,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_createsecurestationqrtoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "createsecurestationqrtoken()"
     },
     {
@@ -1899,8 +1899,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "be_src_common_qr_qr_token_isofficialstationqrtoken",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 35,
+      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
       "norm_label": "isofficialstationqrtoken()"
     },
     {
@@ -1918,7 +1918,7 @@
       "label": "productionEnvironment",
       "file_type": "code",
       "source_file": "be/src/config/validate-environment.spec.ts",
-      "source_location": "L3",
+      "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_spec_productionenvironment",
       "community": 70,
@@ -1970,10 +1970,21 @@
       "norm_label": "parsecorsorigin()"
     },
     {
-      "label": "validateEnvironment()",
+      "label": "buildCorsOrigin()",
       "file_type": "code",
       "source_file": "be/src/config/validate-environment.ts",
       "source_location": "L28",
+      "_origin": "ast",
+      "id": "be_src_config_validate_environment_buildcorsorigin",
+      "community": 70,
+      "community_name": "UpdateStationDto",
+      "norm_label": "buildcorsorigin()"
+    },
+    {
+      "label": "validateEnvironment()",
+      "file_type": "code",
+      "source_file": "be/src/config/validate-environment.ts",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "be_src_config_validate_environment_validateenvironment",
       "community": 70,
@@ -2009,8 +2020,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "admin.controller.ts"
     },
     {
@@ -2504,8 +2515,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_spec",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 155,
+      "community_name": "admin.service.spec.ts",
       "norm_label": "admin.service.spec.ts"
     },
     {
@@ -2515,8 +2526,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_spec_team",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 155,
+      "community_name": "admin.service.spec.ts",
       "norm_label": "team"
     },
     {
@@ -2526,8 +2537,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_spec_mockprisma",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 155,
+      "community_name": "admin.service.spec.ts",
       "norm_label": "mockprisma"
     },
     {
@@ -2537,8 +2548,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_spec_mockactivitylog",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 155,
+      "community_name": "admin.service.spec.ts",
       "norm_label": "mockactivitylog"
     },
     {
@@ -2548,8 +2559,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_spec_mockconfig",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 155,
+      "community_name": "admin.service.spec.ts",
       "norm_label": "mockconfig"
     },
     {
@@ -2658,8 +2669,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_deleteteam",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 92,
+      "community_name": "jwt-auth.guard.ts",
       "norm_label": ".deleteteam()"
     },
     {
@@ -2790,8 +2801,8 @@
       "source_location": "L594",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_deletestation",
-      "community": 0,
-      "community_name": "AuthContext",
+      "community": 92,
+      "community_name": "jwt-auth.guard.ts",
       "norm_label": ".deletestation()"
     },
     {
@@ -2845,8 +2856,8 @@
       "source_location": "L727",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_updateeventconfig",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": ".updateeventconfig()"
     },
     {
@@ -3340,8 +3351,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_update_station_dto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 67,
+      "community_name": "UpdateStationDto",
       "norm_label": "update-station.dto.ts"
     },
     {
@@ -3472,8 +3483,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxsheet",
-      "community": 77,
-      "community_name": "package.json",
+      "community": 1,
+      "community_name": "AdminService",
       "norm_label": "xlsxsheet"
     },
     {
@@ -3637,8 +3648,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": "authcontroller"
     },
     {
@@ -3648,8 +3659,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_controller",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": "controller"
     },
     {
@@ -3659,8 +3670,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_post",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": "post"
     },
     {
@@ -3670,8 +3681,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_body",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": "body"
     },
     {
@@ -3681,8 +3692,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_useguards",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": "useguards"
     },
     {
@@ -3692,8 +3703,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_get",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": "get"
     },
     {
@@ -3703,8 +3714,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_constructor",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".constructor()"
     },
     {
@@ -3714,8 +3725,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginuser",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".loginuser()"
     },
     {
@@ -3725,8 +3736,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginteam",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".loginteam()"
     },
     {
@@ -3736,8 +3747,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginteamwithqr",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".loginteamwithqr()"
     },
     {
@@ -3747,8 +3758,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_loginwithqr",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".loginwithqr()"
     },
     {
@@ -3758,8 +3769,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_me",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".me()"
     },
     {
@@ -3769,8 +3780,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_logout",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".logout()"
     },
     {
@@ -3780,8 +3791,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_module",
-      "community": 22,
-      "community_name": "AppFrame.tsx",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "auth.module.ts"
     },
     {
@@ -3879,8 +3890,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": "authservice"
     },
     {
@@ -3890,8 +3901,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_ts_injectable",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": "injectable"
     },
     {
@@ -3901,8 +3912,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_constructor",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".constructor()"
     },
     {
@@ -3912,8 +3923,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginuser",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".loginuser()"
     },
     {
@@ -3923,8 +3934,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginteam",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".loginteam()"
     },
     {
@@ -3934,8 +3945,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginteamwithqr",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".loginteamwithqr()"
     },
     {
@@ -3945,8 +3956,8 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_loginwithqr",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".loginwithqr()"
     },
     {
@@ -3956,8 +3967,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_issueteamsession",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".issueteamsession()"
     },
     {
@@ -3967,8 +3978,8 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_assertqrloginratelimit",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".assertqrloginratelimit()"
     },
     {
@@ -3978,8 +3989,8 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_getqrloginrejectcode",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".getqrloginrejectcode()"
     },
     {
@@ -3989,8 +4000,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_logqrloginrejected",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".logqrloginrejected()"
     },
     {
@@ -4000,8 +4011,8 @@
       "source_location": "L317",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_throwqrloginerror",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".throwqrloginerror()"
     },
     {
@@ -4011,8 +4022,8 @@
       "source_location": "L324",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_me",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".me()"
     },
     {
@@ -4022,8 +4033,8 @@
       "source_location": "L345",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_logout",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 118,
+      "community_name": "AuthController",
       "norm_label": ".logout()"
     },
     {
@@ -4033,8 +4044,8 @@
       "source_location": "L382",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_toteamresponse",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 112,
+      "community_name": "AuthService",
       "norm_label": ".toteamresponse()"
     },
     {
@@ -4231,8 +4242,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "event-config.dto.ts"
     },
     {
@@ -4242,8 +4253,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_updateeventconfigdto",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "updateeventconfigdto"
     },
     {
@@ -4253,8 +4264,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isoptional",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "isoptional"
     },
     {
@@ -4264,8 +4275,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isstring",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "isstring"
     },
     {
@@ -4275,8 +4286,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_matches",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "matches"
     },
     {
@@ -4286,8 +4297,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_isint",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "isint"
     },
     {
@@ -4297,8 +4308,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_event_config_dto_event_config_dto_ts_min",
-      "community": 1,
-      "community_name": "AdminService",
+      "community": 154,
+      "community_name": "UpdateEventConfigDto",
       "norm_label": "min"
     },
     {
@@ -4407,8 +4418,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "event-config.service.ts"
     },
     {
@@ -4594,8 +4605,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "final.controller.ts"
     },
     {
@@ -4682,8 +4693,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_modules_final_final_controller_finalcontroller_constructor",
-      "community": 13,
-      "community_name": "FinalService",
+      "community": 7,
+      "community_name": "utils.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -5111,8 +5122,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "leaderboard.controller.ts"
     },
     {
@@ -5122,8 +5133,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "leaderboardcontroller"
     },
     {
@@ -5133,8 +5144,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_ts_controller",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "controller"
     },
     {
@@ -5177,8 +5188,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 91,
+      "community_name": "admin.controller.ts",
       "norm_label": "player.controller.ts"
     },
     {
@@ -5188,8 +5199,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "playercontroller"
     },
     {
@@ -5199,8 +5210,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_ts_useguards",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "useguards"
     },
     {
@@ -5210,8 +5221,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_ts_controller",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "controller"
     },
     {
@@ -5221,8 +5232,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_ts_get",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "get"
     },
     {
@@ -5232,8 +5243,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_ts_post",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "post"
     },
     {
@@ -5243,8 +5254,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_ts_param",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "param"
     },
     {
@@ -5254,8 +5265,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_ts_body",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": "body"
     },
     {
@@ -5276,8 +5287,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_getme",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".getme()"
     },
     {
@@ -5287,8 +5298,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_getstations",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".getstations()"
     },
     {
@@ -5298,8 +5309,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_getprogress",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".getprogress()"
     },
     {
@@ -5309,8 +5320,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_getactivitylog",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".getactivitylog()"
     },
     {
@@ -5320,8 +5331,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_checkin",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".checkin()"
     },
     {
@@ -5331,8 +5342,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_checkout",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".checkout()"
     },
     {
@@ -5342,8 +5353,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_submitscore",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".submitscore()"
     },
     {
@@ -5353,8 +5364,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_cancel",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".cancel()"
     },
     {
@@ -5364,8 +5375,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_submitcipher",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".submitcipher()"
     },
     {
@@ -5375,8 +5386,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller_playercontroller_requireteam",
-      "community": 8,
-      "community_name": "store.ts",
+      "community": 111,
+      "community_name": "AuthContext",
       "norm_label": ".requireteam()"
     },
     {
@@ -5474,8 +5485,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "player.service.ts"
     },
     {
@@ -5606,8 +5617,8 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitscore",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 92,
+      "community_name": "jwt-auth.guard.ts",
       "norm_label": ".submitscore()"
     },
     {
@@ -5672,8 +5683,8 @@
       "source_location": "L470",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_validatescorevalue",
-      "community": 60,
-      "community_name": "xlsx-report.ts",
+      "community": 92,
+      "community_name": "jwt-auth.guard.ts",
       "norm_label": ".validatescorevalue()"
     },
     {
@@ -5705,8 +5716,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "prisma.module.ts"
     },
     {
@@ -5716,8 +5727,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module_prismamodule",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "prismamodule"
     },
     {
@@ -5727,8 +5738,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "global",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "global"
     },
     {
@@ -5738,8 +5749,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module_ts_module",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "module"
     },
     {
@@ -5749,8 +5760,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service",
-      "community": 92,
-      "community_name": "jwt-auth.guard.ts",
+      "community": 22,
+      "community_name": "AppFrame.tsx",
       "norm_label": "prisma.service.ts"
     },
     {
@@ -6549,8 +6560,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "fe_package_devdependencies_eslint_js",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 78,
+      "community_name": "@vitejs/plugin-react",
       "norm_label": "@eslint/js"
     },
     {
@@ -6560,8 +6571,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "eslint_js",
-      "community": 6,
-      "community_name": "devDependencies",
+      "community": 78,
+      "community_name": "@vitejs/plugin-react",
       "norm_label": "@eslint/js"
     },
     {
@@ -6637,8 +6648,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "fe_package_devdependencies_vitejs_plugin_react",
-      "community": 78,
-      "community_name": "@vitejs/plugin-react",
+      "community": 6,
+      "community_name": "devDependencies",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -6648,8 +6659,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "vitejs_plugin_react",
-      "community": 78,
-      "community_name": "@vitejs/plugin-react",
+      "community": 6,
+      "community_name": "devDependencies",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -8705,8 +8716,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_store",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "store.ts"
     },
     {
@@ -8716,8 +8727,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_readpersistedsession",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "readpersistedsession()"
     },
     {
@@ -8727,8 +8738,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_persistsession",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "persistsession()"
     },
     {
@@ -8738,8 +8749,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_readpersistedactiveteamid",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "readpersistedactiveteamid()"
     },
     {
@@ -8749,8 +8760,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_persistactiveteamid",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "persistactiveteamid()"
     },
     {
@@ -8760,8 +8771,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_initialsession",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "initialsession"
     },
     {
@@ -8771,8 +8782,8 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createnewteamstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "createnewteamstation()"
     },
     {
@@ -8782,8 +8793,8 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_updateteamstationcollection",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "updateteamstationcollection()"
     },
     {
@@ -8793,8 +8804,8 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_mapteamstations",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "mapteamstations()"
     },
     {
@@ -8815,8 +8826,8 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_updatestationfields",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "updatestationfields()"
     },
     {
@@ -8826,8 +8837,8 @@
       "source_location": "L152",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_replaceteamidinstations",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "replaceteamidinstations()"
     },
     {
@@ -8837,8 +8848,8 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_upsertstationdefinition",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "upsertstationdefinition()"
     },
     {
@@ -8848,8 +8859,8 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createstartedstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "createstartedstation()"
     },
     {
@@ -8859,8 +8870,8 @@
       "source_location": "L210",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createfinishedstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "createfinishedstation()"
     },
     {
@@ -8870,8 +8881,8 @@
       "source_location": "L224",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createresetstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "createresetstation()"
     },
     {
@@ -8881,8 +8892,8 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createpatchedstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "createpatchedstation()"
     },
     {
@@ -8892,8 +8903,8 @@
       "source_location": "L244",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_removestationfromteam",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "removestationfromteam()"
     },
     {
@@ -8903,8 +8914,8 @@
       "source_location": "L248",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_buildteamstationswithupdatedstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "buildteamstationswithupdatedstation()"
     },
     {
@@ -8914,8 +8925,8 @@
       "source_location": "L259",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_buildstartedteamstations",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "buildstartedteamstations()"
     },
     {
@@ -8925,8 +8936,8 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_buildfinishedteamstations",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "buildfinishedteamstations()"
     },
     {
@@ -8936,8 +8947,8 @@
       "source_location": "L288",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_buildresetteamstations",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "buildresetteamstations()"
     },
     {
@@ -8947,8 +8958,8 @@
       "source_location": "L301",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_buildpatchedteamstations",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "buildpatchedteamstations()"
     },
     {
@@ -8958,8 +8969,8 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_buildteamstationswithoutstation",
-      "community": 35,
-      "community_name": "Prompt 02 - Ph\u00e2n t\u00edch m\u00e0n h\u00ecnh Player",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "buildteamstationswithoutstation()"
     },
     {
@@ -10039,6 +10050,193 @@
       "community": 10,
       "community_name": "PlayerPage.tsx",
       "norm_label": "db:verify"
+    },
+    {
+      "label": "production-like-smoke.ps1",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "production-like-smoke.ps1"
+    },
+    {
+      "label": "Step()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_step",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "step()"
+    },
+    {
+      "label": "Invoke-Checked()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_invoke_checked",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "invoke-checked()"
+    },
+    {
+      "label": "Assert-PortAvailable()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_assert_portavailable",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "assert-portavailable()"
+    },
+    {
+      "label": "Invoke-Json()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_invoke_json",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "invoke-json()"
+    },
+    {
+      "label": "Invoke-DirectJson()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_invoke_directjson",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "invoke-directjson()"
+    },
+    {
+      "label": "Wait-Http()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L138",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_wait_http",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "wait-http()"
+    },
+    {
+      "label": "Write-SmokeRequestScript()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L158",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_write_smokerequestscript",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "write-smokerequestscript()"
+    },
+    {
+      "label": "Invoke-SmokeRequest()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L190",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_invoke_smokerequest",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "invoke-smokerequest()"
+    },
+    {
+      "label": "Stop-Smoke()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L233",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_stop_smoke",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "stop-smoke()"
+    },
+    {
+      "label": "Write-PostgresAdminScript()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L257",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_write_postgresadminscript",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "write-postgresadminscript()"
+    },
+    {
+      "label": "Invoke-PostgresAdminSql()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L279",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_invoke_postgresadminsql",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "invoke-postgresadminsql()"
+    },
+    {
+      "label": "Test-DockerReady()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L301",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_test_dockerready",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "test-dockerready()"
+    },
+    {
+      "label": "New-SmokeCertificate()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L314",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_new_smokecertificate",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "new-smokecertificate()"
+    },
+    {
+      "label": "Write-ProxyScript()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L343",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_write_proxyscript",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "write-proxyscript()"
+    },
+    {
+      "label": "Assert()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L444",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_assert",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "assert()"
+    },
+    {
+      "label": "Get-RawTokenFromUrl()",
+      "file_type": "code",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L450",
+      "_origin": "ast",
+      "id": "scripts_production_like_smoke_get_rawtokenfromurl",
+      "community": 16,
+      "community_name": "compilerOptions",
+      "norm_label": "get-rawtokenfromurl()"
     },
     {
       "label": "tester-run.ps1",
@@ -11449,10 +11647,21 @@
       "norm_label": "backend_audit.md"
     },
     {
-      "label": "2026-07-22 Final Challenge Event Config, Keyword, Cooldown, and Ranking",
+      "label": "2026-07-22 Production-like Integration Verification",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
       "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_analysis_backend_audit_2026_07_22_production_like_integration_verification",
+      "community": 17,
+      "community_name": "app.module.ts",
+      "norm_label": "2026-07-22 production-like integration verification"
+    },
+    {
+      "label": "2026-07-22 Final Challenge Event Config, Keyword, Cooldown, and Ranking",
+      "file_type": "document",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_22_final_challenge_event_config_keyword_cooldown_and_ranking",
       "community": 17,
@@ -11463,7 +11672,7 @@
       "label": "2026-07-22 Station Tracking Mode and Station Scoring",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L13",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_22_station_tracking_mode_and_station_scoring",
       "community": 17,
@@ -11474,7 +11683,7 @@
       "label": "2026-07-22 Secure Station QR provisioning and migration",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L24",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_22_secure_station_qr_provisioning_and_migration",
       "community": 17,
@@ -11485,7 +11694,7 @@
       "label": "2026-07-22 Reusable Automatic URL Team QR Login",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L38",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_22_reusable_automatic_url_team_qr_login",
       "community": 17,
@@ -11496,7 +11705,7 @@
       "label": "2026-07-22 Source of Truth and QR documentation reconciliation",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L51",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_22_source_of_truth_and_qr_documentation_reconciliation",
       "community": 17,
@@ -11507,7 +11716,7 @@
       "label": "Backend Audit Status",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L63",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_audit_status",
       "community": 17,
@@ -11518,7 +11727,7 @@
       "label": "2026-07-21 iOS QR camera fallback",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L65",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_ios_qr_camera_fallback",
       "community": 17,
@@ -11529,7 +11738,7 @@
       "label": "2026-07-21 iOS QR camera lifecycle audit",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L72",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_ios_qr_camera_lifecycle_audit",
       "community": 17,
@@ -11540,7 +11749,7 @@
       "label": "2026-07-21 QR automatic login",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L80",
+      "source_location": "L89",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_qr_automatic_login",
       "community": 17,
@@ -11551,7 +11760,7 @@
       "label": "2026-07-21 QR login URL and seed structure",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L90",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_qr_login_url_and_seed_structure",
       "community": 17,
@@ -11562,7 +11771,7 @@
       "label": "2026-07-21 Final Challenge event-end flow",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L98",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_final_challenge_event_end_flow",
       "community": 17,
@@ -11573,7 +11782,7 @@
       "label": "2026-07-21 Deployment database initialization audit",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L107",
+      "source_location": "L116",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_deployment_database_initialization_audit",
       "community": 17,
@@ -11584,7 +11793,7 @@
       "label": "2026-07-21 Local tester fail-fast fix",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L115",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_21_local_tester_fail_fast_fix",
       "community": 17,
@@ -11595,7 +11804,7 @@
       "label": "2026-07-20 Docker frontend API proxy fix",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L122",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_docker_frontend_api_proxy_fix",
       "community": 17,
@@ -11606,7 +11815,7 @@
       "label": "2026-07-20 heroes.nalth.top SPA routing fallback",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L130",
+      "source_location": "L139",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_heroes_nalth_top_spa_routing_fallback",
       "community": 17,
@@ -11617,7 +11826,7 @@
       "label": "2026-07-20 Login 405 object-storage investigation",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L138",
+      "source_location": "L147",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_login_405_object_storage_investigation",
       "community": 17,
@@ -11628,7 +11837,7 @@
       "label": "2026-07-20 Remaining feature integration",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L150",
+      "source_location": "L159",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_remaining_feature_integration",
       "community": 17,
@@ -11639,7 +11848,7 @@
       "label": "2026-07-20 Runtime test-data cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L159",
+      "source_location": "L168",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_runtime_test_data_cleanup",
       "community": 17,
@@ -11650,7 +11859,7 @@
       "label": "Verification completed",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L170",
+      "source_location": "L179",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_verification_completed",
       "community": 17,
@@ -11661,7 +11870,7 @@
       "label": "Backend work still required",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L201",
+      "source_location": "L210",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_backend_work_still_required",
       "community": 17,
@@ -11672,7 +11881,7 @@
       "label": "P0 remaining work",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L203",
+      "source_location": "L212",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p0_remaining_work",
       "community": 17,
@@ -11683,7 +11892,7 @@
       "label": "P1 event-readiness checks",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L207",
+      "source_location": "L216",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_p1_event_readiness_checks",
       "community": 17,
@@ -11694,7 +11903,7 @@
       "label": "Maintenance findings",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L215",
+      "source_location": "L224",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_maintenance_findings",
       "community": 17,
@@ -11705,7 +11914,7 @@
       "label": "2026-07-20 Backend production CI/CD",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L221",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_backend_production_ci_cd",
       "community": 17,
@@ -11716,7 +11925,7 @@
       "label": "2026-07-20 BE host bootstrap (production ECS host)",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L227",
+      "source_location": "L236",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_be_host_bootstrap_production_ecs_host",
       "community": 17,
@@ -11727,7 +11936,7 @@
       "label": "Next recommended task",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L238",
+      "source_location": "L247",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_next_recommended_task",
       "community": 17,
@@ -11738,7 +11947,7 @@
       "label": "2026-07-20 Admin integration verification",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L242",
+      "source_location": "L251",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_admin_integration_verification",
       "community": 17,
@@ -11749,7 +11958,7 @@
       "label": "2026-07-20 Tester one-command runner",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L250",
+      "source_location": "L259",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_tester_one_command_runner",
       "community": 17,
@@ -11760,7 +11969,7 @@
       "label": "2026-07-20 Tester Docker compose runner",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L258",
+      "source_location": "L267",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_tester_docker_compose_runner",
       "community": 17,
@@ -11771,7 +11980,7 @@
       "label": "2026-07-20 Agent and Markdown docs refresh",
       "file_type": "document",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L265",
+      "source_location": "L274",
       "_origin": "ast",
       "id": "docs_analysis_backend_audit_2026_07_20_agent_and_markdown_docs_refresh",
       "community": 17,
@@ -12577,8 +12786,8 @@
       "source_location": "L608",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_prompt_routing",
-      "community": 42,
-      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
+      "community": 68,
+      "community_name": "Change Classification",
       "norm_label": "prompt routing"
     },
     {
@@ -12588,8 +12797,8 @@
       "source_location": "L610",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_documentation_and_workflow",
-      "community": 42,
-      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
+      "community": 68,
+      "community_name": "Change Classification",
       "norm_label": "documentation and workflow"
     },
     {
@@ -12599,8 +12808,8 @@
       "source_location": "L617",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_automatic_url_qr_login_and_seed_tokens",
-      "community": 42,
-      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
+      "community": 68,
+      "community_name": "Change Classification",
       "norm_label": "automatic url qr login and seed tokens"
     },
     {
@@ -12610,8 +12819,8 @@
       "source_location": "L623",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_final_challenge",
-      "community": 42,
-      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
+      "community": 68,
+      "community_name": "Change Classification",
       "norm_label": "final challenge"
     },
     {
@@ -12621,8 +12830,8 @@
       "source_location": "L629",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_station_score_entry_and_limits",
-      "community": 42,
-      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
+      "community": 68,
+      "community_name": "Change Classification",
       "norm_label": "station score entry and limits"
     },
     {
@@ -12632,8 +12841,8 @@
       "source_location": "L641",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_change_classification",
-      "community": 68,
-      "community_name": "Change Classification",
+      "community": 42,
+      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
       "norm_label": "change classification"
     },
     {
@@ -12643,8 +12852,8 @@
       "source_location": "L645",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_business_rule_change",
-      "community": 68,
-      "community_name": "Change Classification",
+      "community": 42,
+      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
       "norm_label": "business rule change"
     },
     {
@@ -12654,8 +12863,8 @@
       "source_location": "L665",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_documentation_reconciliation",
-      "community": 68,
-      "community_name": "Change Classification",
+      "community": 42,
+      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
       "norm_label": "documentation reconciliation"
     },
     {
@@ -12665,8 +12874,8 @@
       "source_location": "L682",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_implementation_fix",
-      "community": 68,
-      "community_name": "Change Classification",
+      "community": 42,
+      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
       "norm_label": "implementation fix"
     },
     {
@@ -12676,8 +12885,8 @@
       "source_location": "L703",
       "_origin": "ast",
       "id": "docs_analysis_feature_index_refactor",
-      "community": 68,
-      "community_name": "Change Classification",
+      "community": 42,
+      "community_name": "Prompt 07 - T\u1ea1o backlog v\u00e0 ti\u00eau ch\u00ed nghi\u1ec7m thu",
       "norm_label": "refactor"
     },
     {
@@ -12725,10 +12934,21 @@
       "norm_label": "movement 2026 - implementation backlog"
     },
     {
-      "label": "2026-07-22 Final Challenge completion",
+      "label": "2026-07-22 Production-like integration verification completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_analysis_implementation_backlog_2026_07_22_production_like_integration_verification_completion",
+      "community": 36,
+      "community_name": "MOVEment 2026 - Implementation Backlog",
+      "norm_label": "2026-07-22 production-like integration verification completion"
+    },
+    {
+      "label": "2026-07-22 Final Challenge completion",
+      "file_type": "document",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_final_challenge_completion",
       "community": 36,
@@ -12739,7 +12959,7 @@
       "label": "2026-07-22 Station tracking and scoring completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L16",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_station_tracking_and_scoring_completion",
       "community": 36,
@@ -12750,7 +12970,7 @@
       "label": "2026-07-22 Secure Station QR completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L29",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_secure_station_qr_completion",
       "community": 36,
@@ -12761,7 +12981,7 @@
       "label": "2026-07-22 Automatic URL Team QR completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L41",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_automatic_url_team_qr_completion",
       "community": 36,
@@ -12772,7 +12992,7 @@
       "label": "Rules",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L50",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_rules",
       "community": 36,
@@ -12783,7 +13003,7 @@
       "label": "P0 \u2014 QR Security and Provisioning",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L58",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_qr_security_and_provisioning",
       "community": 36,
@@ -12794,7 +13014,7 @@
       "label": "P0 \u2014 Authentication and Session",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L84",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_authentication_and_session",
       "community": 36,
@@ -12805,7 +13025,7 @@
       "label": "P0 \u2014 Station Flow and Scoring",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L93",
+      "source_location": "L103",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_station_flow_and_scoring",
       "community": 36,
@@ -12816,7 +13036,7 @@
       "label": "P0 \u2014 Final Challenge",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L107",
+      "source_location": "L117",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_final_challenge",
       "community": 36,
@@ -12827,7 +13047,7 @@
       "label": "P0 \u2014 Documentation and Prompt Consistency",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L118",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_documentation_and_prompt_consistency",
       "community": 36,
@@ -12838,7 +13058,7 @@
       "label": "P1 \u2014 iOS QR Camera",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L137",
+      "source_location": "L147",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p1_ios_qr_camera",
       "community": 36,
@@ -12849,7 +13069,7 @@
       "label": "P1 \u2014 Production Readiness",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L148",
+      "source_location": "L158",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p1_production_readiness",
       "community": 36,
@@ -12860,7 +13080,7 @@
       "label": "P2 \u2014 Legacy Removal",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L160",
+      "source_location": "L171",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_legacy_removal",
       "community": 36,
@@ -12871,7 +13091,7 @@
       "label": "Next Execution Order",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L171",
+      "source_location": "L182",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_next_execution_order",
       "community": 36,
@@ -23910,6 +24130,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment_spec",
+      "target": "be_src_config_validate_environment_buildcorsorigin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/config/validate-environment.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_config_validate_environment_spec",
       "target": "be_src_config_validate_environment_parsecorsorigin",
       "confidence_score": 1.0
     },
@@ -23917,7 +24149,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.spec.ts",
-      "source_location": "L3",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment_spec",
@@ -23934,6 +24166,17 @@
       "_origin": "ast",
       "source": "be_src_config_validate_environment_spec",
       "target": "be_src_config_validate_environment_validateenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/config/validate-environment.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_config_validate_environment",
+      "target": "be_src_config_validate_environment_buildcorsorigin",
       "confidence_score": 1.0
     },
     {
@@ -23973,7 +24216,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.ts",
-      "source_location": "L28",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment",
@@ -23997,7 +24240,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.ts",
-      "source_location": "L33",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment_validateenvironment",
@@ -24009,7 +24252,19 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "be/src/config/validate-environment.ts",
-      "source_location": "L50",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "be_src_config_validate_environment_buildcorsorigin",
+      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "be/src/config/validate-environment.ts",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_config_validate_environment_validateenvironment",
@@ -24025,7 +24280,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_main",
-      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "target": "be_src_config_validate_environment_buildcorsorigin",
       "confidence_score": 1.0
     },
     {
@@ -24037,7 +24292,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "be_src_main_bootstrap",
-      "target": "be_src_config_validate_environment_parsecorsorigin",
+      "target": "be_src_config_validate_environment_buildcorsorigin",
       "confidence_score": 1.0
     },
     {
@@ -42518,6 +42773,30 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L290",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_invoke_postgresadminsql",
+      "target": "ref_node"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L217",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_invoke_smokerequest",
+      "target": "ref_node"
+    },
+    {
       "relation": "extends",
       "confidence": "EXTRACTED",
       "source_file": "fe/tsconfig.node.json",
@@ -42637,6 +42916,248 @@
       "_origin": "ast",
       "source": "package_scripts",
       "target": "package_scripts_tester_no_seed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L444",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_assert",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_assert_portavailable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L450",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_get_rawtokenfromurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_invoke_checked",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_invoke_directjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_invoke_json",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L279",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_invoke_postgresadminsql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L190",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_invoke_smokerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L314",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_new_smokecertificate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_step",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_stop_smoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L301",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_test_dockerready",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L138",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_wait_http",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L257",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_write_postgresadminscript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L343",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_write_proxyscript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L158",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke",
+      "target": "scripts_production_like_smoke_write_smokerequestscript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_invoke_checked",
+      "target": "scripts_production_like_smoke_step",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_invoke_json",
+      "target": "scripts_production_like_smoke_invoke_smokerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L142",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_wait_http",
+      "target": "scripts_production_like_smoke_invoke_smokerequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L199",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_invoke_smokerequest",
+      "target": "scripts_production_like_smoke_write_smokerequestscript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L250",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_stop_smoke",
+      "target": "scripts_production_like_smoke_invoke_postgresadminsql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/production-like-smoke.ps1",
+      "source_location": "L281",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_production_like_smoke_invoke_postgresadminsql",
+      "target": "scripts_production_like_smoke_write_postgresadminscript",
       "confidence_score": 1.0
     },
     {
@@ -43919,7 +44440,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L1",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit",
@@ -43930,7 +44451,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L38",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_backend_audit",
+      "target": "docs_analysis_backend_audit_2026_07_22_production_like_integration_verification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit",
@@ -43941,7 +44473,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L24",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit",
@@ -43952,7 +44484,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L51",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit",
@@ -43963,7 +44495,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L13",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit",
@@ -43974,7 +44506,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L63",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit",
@@ -43985,7 +44517,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L242",
+      "source_location": "L251",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -43996,7 +44528,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L265",
+      "source_location": "L274",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44007,7 +44539,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L221",
+      "source_location": "L230",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44018,7 +44550,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L227",
+      "source_location": "L236",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44029,7 +44561,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L122",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44040,7 +44572,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L130",
+      "source_location": "L139",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44051,7 +44583,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L138",
+      "source_location": "L147",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44062,7 +44594,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L150",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44073,7 +44605,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L159",
+      "source_location": "L168",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44084,7 +44616,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L258",
+      "source_location": "L267",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44095,7 +44627,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L250",
+      "source_location": "L259",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44106,7 +44638,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L107",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44117,7 +44649,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L98",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44128,7 +44660,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L65",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44139,7 +44671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L72",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44150,7 +44682,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L115",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44161,7 +44693,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L80",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44172,7 +44704,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L90",
+      "source_location": "L99",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44183,7 +44715,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L201",
+      "source_location": "L210",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44194,7 +44726,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L215",
+      "source_location": "L224",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44205,7 +44737,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L238",
+      "source_location": "L247",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44216,7 +44748,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L170",
+      "source_location": "L179",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_audit_status",
@@ -44227,7 +44759,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L203",
+      "source_location": "L212",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -44238,7 +44770,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
-      "source_location": "L207",
+      "source_location": "L216",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_backend_audit_backend_work_still_required",
@@ -45173,7 +45705,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L41",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45184,7 +45716,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L3",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45195,7 +45727,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L29",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
+      "target": "docs_analysis_implementation_backlog_2026_07_22_production_like_integration_verification_completion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45206,7 +45749,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L16",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45217,7 +45760,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L171",
+      "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45228,7 +45771,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L84",
+      "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45239,7 +45782,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L118",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45250,7 +45793,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L107",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45261,7 +45804,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L58",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45272,7 +45815,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L93",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45283,7 +45826,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L137",
+      "source_location": "L147",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45294,7 +45837,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L148",
+      "source_location": "L158",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45305,7 +45848,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L160",
+      "source_location": "L171",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -45316,7 +45859,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L50",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -51034,5 +51577,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "01bd4eb6f464957e64e078971a6dcda776eac775"
+  "built_at_commit": "7adee8e61e800433c9d5be8e5d35e6b9e1a7708d"
 }

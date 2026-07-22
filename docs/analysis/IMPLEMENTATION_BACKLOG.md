@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Production-like integration verification completion
+
+- [x] Audited current local tester, Docker Compose, Vite preview proxy, production Nginx config, CORS config, environment guards, migration/seed path, and existing smoke coverage.
+- [x] Added `scripts/production-like-smoke.ps1` as a disposable HTTPS same-origin integration harness for a clean database, production-mode backend startup, and local HTTPS reverse proxy.
+- [x] The smoke applies clean migrations through `000008`, runs seed twice, runs `db:verify`, starts the backend with `NODE_ENV=production`, serves the frontend build over HTTPS, proxies same-origin `/api`, verifies `/qr-login` direct navigation and refresh, and checks CORS allow/deny behavior.
+- [x] The live smoke verifies reusable Team QR login, one-active-session replacement, revoked/rotated Team QR behavior, SQ1 Station Check-in/Check-out, wrong-purpose and revoked Station token failures, independent Station QR rotation, `SCORE`/`TIME`/`BOTH`, Final Event Config opening, cooldown, rank bonuses, leaderboard totals, and tracked/log secret scans.
+- [x] Backend full Jest suite, backend lint/build, frontend lint/build, Prisma Client generation, Docker Compose config render, production-like smoke, production environment guard spec, static tracked-file secret search, production-like log secret scan, and `git diff --check` passed.
+- [x] Docker daemon remained unavailable on this host, so the smoke used its local PostgreSQL disposable-database fallback and dropped the temporary database during cleanup.
+- [ ] Actual Production deployment/runtime verification remains open and was not performed.
+
 ## 2026-07-22 Final Challenge completion
 
 - [x] Final opening is verified against Admin Event Config `eventEndTime`; changing Event Config changes availability without Source Code changes.
@@ -154,8 +164,9 @@ Acceptance:
 - [ ] Verify active Production CORS configuration.
 - [ ] Verify `/qr-login` direct navigation and refresh in Production.
 - [ ] Verify Production seed does not generate or print raw QR secrets.
-- [ ] Verify migrated reusable Team QR behavior in Production or a production-like environment.
-- [ ] Verify secure Station QR pair generation in a production-like environment.
+- [x] Verify migrated reusable Team QR behavior in Production or a production-like environment.
+- [x] Verify secure Station QR pair generation in a production-like environment.
+- [x] Run disposable production-like smoke with clean database, HTTPS same-origin `/api`, CORS allow/deny, `/qr-login` direct/refresh, Station scoring, Final, leaderboard, and secret/log scans.
 
 ## P2 — Legacy Removal
 

@@ -80,8 +80,8 @@
     "semantic_hash": ""
   },
   "be/src/main.ts": {
-    "mtime": 1784560861.0658593,
-    "ast_hash": "c0da020fea75d253bfa4cb50aa06483c",
+    "mtime": 1784731975.028149,
+    "ast_hash": "d65a06c376d12ffeb177a86bfcbff84d",
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.controller.ts": {
@@ -355,13 +355,13 @@
     "semantic_hash": ""
   },
   "be/src/config/validate-environment.spec.ts": {
-    "mtime": 1784646079.671319,
-    "ast_hash": "ade205b9040130c965d4b256997d97c4",
+    "mtime": 1784731987.6099415,
+    "ast_hash": "d0de10de0e89ea45dc6cfd86e729e6a3",
     "semantic_hash": ""
   },
   "be/src/config/validate-environment.ts": {
-    "mtime": 1784646079.671319,
-    "ast_hash": "0102c900096501c3dd960801720fbed3",
+    "mtime": 1784731970.361277,
+    "ast_hash": "bdd55763c16d5f31ee2523fba9ef2453",
     "semantic_hash": ""
   },
   ".codex/skills/graphify/SKILL.md": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784729686.987478,
-    "ast_hash": "2c6cb168aa2ac0d041a5cdf075baa98d",
+    "mtime": 1784732599.5194483,
+    "ast_hash": "9dabafc9f0717627d2d8957a6c275425",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784729665.383743,
-    "ast_hash": "30a863bdf3488a81ae82425e4ea43409",
+    "mtime": 1784732805.8930638,
+    "ast_hash": "dbfa81220e73f0127c10ca259e86dc0e",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -782,6 +782,11 @@
   "be/prisma/migrations/000008_final_event_defaults/migration.sql": {
     "mtime": 1784729359.9744253,
     "ast_hash": "160757bf47cc5690711435ce325fff0d",
+    "semantic_hash": ""
+  },
+  "scripts/production-like-smoke.ps1": {
+    "mtime": 1784732718.7423105,
+    "ast_hash": "6c48498bf370af2fdec0284977639e69",
     "semantic_hash": ""
   }
 }
