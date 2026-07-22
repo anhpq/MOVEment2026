@@ -1,5 +1,17 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Secure Station QR completion
+
+- [x] Station QR now uses official SQ1 opaque token format for new creation, Admin rotation, and local/test seed repair.
+- [x] Station creation provisions one `CHECK_IN` and one `CHECK_OUT` token atomically with Station/Game/progress creation.
+- [x] Player Check-in/Check-out resolves Station and purpose from the database token record after fingerprint/hash/lifecycle validation.
+- [x] Admin can inspect, rotate, and revoke Station `CHECK_IN` and `CHECK_OUT` independently.
+- [x] Local/test seed repairs missing or Legacy Station QR tokens by purpose and preserves existing active SQ1 tokens across repeated runs.
+- [x] Reprint strategy is rotate-to-reprint; raw Station QR tokens are display-once and not stored in tracked files.
+- [x] Legacy predictable Station QR generation is removed from new creation, seed repair, and smoke script paths; active Legacy DB rows remain compatibility-only.
+- [ ] Production migration, production QR reissue, and physical QR scan verification remain open.
+- [ ] Legacy Station QR compatibility window and removal date remain open.
+
 ## 2026-07-22 Automatic URL Team QR completion
 
 - [x] Reusable controlled Team QR login, usage auditing, and one-active-session replacement are implemented and locally verified.
@@ -27,12 +39,12 @@
 - [x] Ensure Admin can generate, rotate, revoke, and inspect Team QR token status.
 - [x] Select and document raw-token reprint strategy: display once and rotate to reprint.
 - [x] Remove predictable Team QR generation for new data while retaining existing Legacy credentials for compatibility.
-- [ ] Migrate Station QR to `MV26-SQ1-I/O-<randomToken>`.
-- [ ] Automatically provision one Check-in and one Check-out token when creating a Station.
-- [ ] Roll back Station creation when the complete QR pair cannot be created.
-- [ ] Support independent Station Check-in and Check-out rotation/revocation.
-- [ ] Update database constraints and indexes for token uniqueness and active-token invariants.
-- [ ] Update seed, fixtures, and smoke scripts that hard-code Legacy QR payloads.
+- [x] Migrate Station QR to `MV26-SQ1-I/O-<randomToken>`.
+- [x] Automatically provision one Check-in and one Check-out token when creating a Station.
+- [x] Roll back Station creation when the complete QR pair cannot be created.
+- [x] Support independent Station Check-in and Check-out rotation/revocation.
+- [x] Update database constraints and indexes for token uniqueness and active-token invariants.
+- [x] Update seed, fixtures, and smoke scripts that hard-code Legacy QR payloads.
 - [ ] Define and verify Legacy compatibility removal conditions.
 
 Acceptance:
@@ -61,8 +73,8 @@ Acceptance:
 - [x] `TIME` auto-completes with score 0 in historical verification.
 - [x] `SCORE` and `BOTH` require score entry in historical verification.
 - [x] Backend score limits and confirmation-code flow have historical verification.
-- [ ] Re-run Station flow verification after Station QR migration.
-- [ ] Verify new Station creation automatically provisions both secure QR tokens.
+- [x] Re-run Station flow verification after Station QR migration.
+- [x] Verify new Station creation automatically provisions both secure QR tokens.
 - [ ] Verify duplicate Check-out and duplicate score submissions after migration.
 
 ## P0 — Final Challenge
@@ -131,10 +143,9 @@ Acceptance:
 ## Next Execution Order
 
 1. Run `docs/prompts/10_CODEX_QR_AUTO_LOGIN_AND_SEED_TOKENS_PROMPT.md`.
-2. Implement secure Station QR provisioning and migration using `FEATURE_INDEX.md` routing.
-3. Re-run Station scoring verification with Prompt 12.
-4. Re-run Final verification with Prompt 11.
-5. Run Production-like smoke tests.
-6. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
-7. Review diff, run `git diff --check`, and create scoped local commits.
-8. Do not push or deploy without explicit user request.
+2. Re-run Station scoring verification with Prompt 12.
+3. Re-run Final verification with Prompt 11.
+4. Run Production-like smoke tests.
+5. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
+6. Review diff, run `git diff --check`, and create scoped local commits.
+7. Do not push or deploy without explicit user request.

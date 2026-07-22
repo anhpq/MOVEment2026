@@ -10,7 +10,10 @@ import {
   deleteAdminTeam,
   generateAdminTeamQrLoginToken,
   getAdminTeamQrLoginTokens,
+  getAdminStationQrTokens,
   revokeAdminQrLoginToken,
+  revokeAdminStationQrToken,
+  rotateAdminStationQrToken,
   rotateAdminTeamQrLoginToken,
   updateAdminStation,
 } from "../api";
@@ -28,6 +31,7 @@ export function SystemConfigPage() {
   );
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [qrBusyTeamId, setQrBusyTeamId] = useState<string | null>(null);
+  const [qrBusyStationId, setQrBusyStationId] = useState<string | null>(null);
 
   const handleTrackingModeChange = async (
     station: (typeof stationDefinitions)[number],
@@ -123,6 +127,86 @@ export function SystemConfigPage() {
     }
   };
 
+  const handleShowStationQrStatus = async (
+    station: (typeof stationDefinitions)[number],
+  ) => {
+    setQrBusyStationId(station.id);
+    try {
+      const tokens = await getAdminStationQrTokens(station.id);
+      modal.info({
+        centered: true,
+        width: 720,
+        title: `Station QR status for ${station.name}`,
+        content: (
+          <List
+            dataSource={tokens}
+            locale={{emptyText: "No Station QR tokens generated"}}
+            renderItem={(token) => (
+              <List.Item>
+                <Flex vertical gap={4} className="full-width">
+                  <Flex justify="space-between" align="center">
+                    <Typography.Text>{token.purpose}</Typography.Text>
+                    <Tag>{token.status}</Tag>
+                  </Flex>
+                  <Typography.Text className="muted-copy compact-copy">
+                    {token.schemaVersion} · #{token.id}
+                  </Typography.Text>
+                </Flex>
+              </List.Item>
+            )}
+          />
+        ),
+      });
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to load Station QR status");
+    } finally {
+      setQrBusyStationId(null);
+    }
+  };
+
+  const handleRotateStationQr = async (
+    station: (typeof stationDefinitions)[number],
+    purpose: "CHECK_IN" | "CHECK_OUT",
+  ) => {
+    setQrBusyStationId(station.id);
+    try {
+      const token = await rotateAdminStationQrToken(station.id, purpose);
+      modal.info({
+        centered: true,
+        width: 680,
+        title: `${purpose} QR for ${station.name}`,
+        content: (
+          <Flex vertical gap={12}>
+            <Typography.Text>
+              This Station QR token is shown only now. Rotate this purpose to reprint later.
+            </Typography.Text>
+            <Input.TextArea value={token.rawToken} readOnly autoSize />
+          </Flex>
+        ),
+      });
+      loadDatabase(await fetchAdminDatabase());
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to rotate Station QR");
+    } finally {
+      setQrBusyStationId(null);
+    }
+  };
+
+  const handleRevokeStationQr = async (
+    station: (typeof stationDefinitions)[number],
+    purpose: "CHECK_IN" | "CHECK_OUT",
+  ) => {
+    setQrBusyStationId(station.id);
+    try {
+      await revokeAdminStationQrToken(station.id, purpose);
+      message.success(`${purpose} QR revoked`);
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to revoke Station QR");
+    } finally {
+      setQrBusyStationId(null);
+    }
+  };
+
   return (
     <Tabs
       defaultActiveKey="stations"
@@ -167,7 +251,42 @@ export function SystemConfigPage() {
                             }
                           />
                         </Flex>
-                        <Flex gap={8} className="full-width">
+                        <Flex gap={8} className="full-width" wrap>
+                          <Button
+                            icon={<QrcodeOutlined />}
+                            loading={qrBusyStationId === station.id}
+                            onClick={() => void handleShowStationQrStatus(station)}
+                          >
+                            QR status
+                          </Button>
+                          <Button
+                            icon={<SyncOutlined />}
+                            loading={qrBusyStationId === station.id}
+                            onClick={() => void handleRotateStationQr(station, "CHECK_IN")}
+                          >
+                            Rotate IN
+                          </Button>
+                          <Button
+                            icon={<SyncOutlined />}
+                            loading={qrBusyStationId === station.id}
+                            onClick={() => void handleRotateStationQr(station, "CHECK_OUT")}
+                          >
+                            Rotate OUT
+                          </Button>
+                          <Button
+                            icon={<StopOutlined />}
+                            loading={qrBusyStationId === station.id}
+                            onClick={() => void handleRevokeStationQr(station, "CHECK_IN")}
+                          >
+                            Revoke IN
+                          </Button>
+                          <Button
+                            icon={<StopOutlined />}
+                            loading={qrBusyStationId === station.id}
+                            onClick={() => void handleRevokeStationQr(station, "CHECK_OUT")}
+                          >
+                            Revoke OUT
+                          </Button>
                           <Button
                             icon={<EditOutlined />}
                             onClick={() =>

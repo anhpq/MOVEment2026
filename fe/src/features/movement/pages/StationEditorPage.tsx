@@ -1,4 +1,4 @@
-import {App as AntdApp, Button, Drawer, Form, Input, InputNumber, Select} from "antd";
+import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Select} from "antd";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
@@ -84,7 +84,7 @@ export function StationEditorPage() {
                   mediaUrl: values.youtubeUrl ?? null,
                 });
               } else {
-                await createAdminStation({
+                const createdStation = await createAdminStation({
                   id: values.id,
                   name: values.name,
                   description: values.description ?? null,
@@ -95,6 +95,25 @@ export function StationEditorPage() {
                   maxPoints: values.maxPoints ?? 100,
                   mediaUrl: values.youtubeUrl ?? null,
                 });
+                if (createdStation.qrTokens?.length) {
+                  modal.info({
+                    centered: true,
+                    width: 680,
+                    title: `Station QR tokens for ${createdStation.name}`,
+                    content: (
+                      <Flex vertical gap={12}>
+                        {createdStation.qrTokens.map((token) => (
+                          <Input.TextArea
+                            key={token.purpose}
+                            value={`${token.purpose}: ${token.rawToken ?? ""}`}
+                            readOnly
+                            autoSize
+                          />
+                        ))}
+                      </Flex>
+                    ),
+                  });
+                }
               }
               loadDatabase(await fetchAdminDatabase());
               message.success(

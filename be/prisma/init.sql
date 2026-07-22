@@ -108,10 +108,15 @@ CREATE TABLE "qr_tokens" (
   "id" SERIAL PRIMARY KEY,
   "station_id" TEXT NOT NULL REFERENCES "stations"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
   "token_hash" TEXT NOT NULL,
+  "token_fingerprint" TEXT UNIQUE,
   "purpose" "QrPurpose" NOT NULL,
+  "schema_version" TEXT NOT NULL DEFAULT 'LEGACY',
   "expires_at" TIMESTAMP(3),
   "is_active" BOOLEAN NOT NULL DEFAULT true,
-  "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+  "revoked_at" TIMESTAMP(3),
+  "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT "qr_tokens_active_not_revoked_check" CHECK ("is_active" = false OR "revoked_at" IS NULL)
 );
 
 CREATE TABLE "event_config" (
@@ -169,6 +174,7 @@ CREATE INDEX "team_station_progress_status_idx" ON "team_station_progress"("stat
 CREATE INDEX "team_station_progress_checked_out_at_completed_at_idx" ON "team_station_progress"("checked_out_at", "completed_at");
 CREATE INDEX "score_events_team_id_created_at_idx" ON "score_events"("team_id", "created_at");
 CREATE INDEX "qr_tokens_station_id_purpose_idx" ON "qr_tokens"("station_id", "purpose");
+CREATE UNIQUE INDEX "qr_tokens_one_active_per_station_purpose" ON "qr_tokens"("station_id", "purpose") WHERE "is_active" = true;
 CREATE INDEX "final_submissions_final_challenge_id_is_correct_submitted_at_idx" ON "final_submissions"("final_challenge_id", "is_correct", "submitted_at");
 CREATE UNIQUE INDEX "final_submissions_final_challenge_id_winner_rank_key" ON "final_submissions"("final_challenge_id", "winner_rank");
 CREATE INDEX "activity_logs_action_created_at_idx" ON "activity_logs"("action", "created_at");

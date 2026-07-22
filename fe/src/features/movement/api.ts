@@ -331,14 +331,54 @@ export const submitAdminProgressScore = (
 export const reopenAdminProgress = (progressId: number, reason: string) =>
   apiPost(`/api/admin/progress/${progressId}/reopen`, {reason})
 
+export type AdminCreatedStationResponse = {
+  id: string
+  name: string
+  qrTokens?: AdminStationQrTokenResponse[]
+}
+
 export const createAdminStation = (values: {
   id: string; name: string; description?: string | null
   trackingMode: StationTrackingMode; mapX: number; mapY: number
   gameType: string; maxPoints: number; mediaUrl?: string | null
-}) => apiPost('/api/admin/stations', values)
+}) => apiPost<AdminCreatedStationResponse>('/api/admin/stations', values)
 
 export const deleteAdminStation = (stationId: string) =>
   apiDelete(`/api/admin/stations/${stationId}`)
+
+export type AdminStationQrTokenResponse = {
+  id: number
+  stationId: string
+  purpose: 'CHECK_IN' | 'CHECK_OUT'
+  rawToken?: string
+  schemaVersion: string
+  isActive?: boolean
+  expiresAt?: string | null
+  revokedAt?: string | null
+  createdAt: string
+  updatedAt?: string
+  status: 'ACTIVE' | 'EXPIRED' | 'REVOKED' | 'INACTIVE'
+}
+
+export const getAdminStationQrTokens = (stationId: string) =>
+  apiGet<AdminStationQrTokenResponse[]>(`/api/admin/stations/${stationId}/qr-tokens`)
+
+export const rotateAdminStationQrToken = (
+  stationId: string,
+  purpose: AdminStationQrTokenResponse['purpose'],
+) =>
+  apiPost<AdminStationQrTokenResponse>(
+    `/api/admin/stations/${stationId}/qr-tokens/${purpose}/rotate`,
+    {},
+  )
+
+export const revokeAdminStationQrToken = (
+  stationId: string,
+  purpose: AdminStationQrTokenResponse['purpose'],
+) =>
+  apiDelete<{success: boolean; stationId: string; purpose: string; revokedAt: string | null}>(
+    `/api/admin/stations/${stationId}/qr-tokens/${purpose}`,
+  )
 
 export const cancelPlayerStation = (stationId: string) =>
   apiPost(`/api/player/stations/${stationId}/cancel`, {})

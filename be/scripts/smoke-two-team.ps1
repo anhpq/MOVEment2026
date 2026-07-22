@@ -76,21 +76,34 @@ function Open-RehearsalWindow {
 function Complete-Station {
   param(
     [string]$Token,
+    [string]$AdminToken,
     [string]$StationId,
     [int]$Score
   )
+
+  $checkInQr = Invoke-JsonRequest `
+    -Method "Post" `
+    -Path "/api/admin/stations/$StationId/qr-tokens/CHECK_IN/rotate" `
+    -Token $AdminToken `
+    -Body @{}
+
+  $checkOutQr = Invoke-JsonRequest `
+    -Method "Post" `
+    -Path "/api/admin/stations/$StationId/qr-tokens/CHECK_OUT/rotate" `
+    -Token $AdminToken `
+    -Body @{}
 
   Invoke-JsonRequest `
     -Method "Post" `
     -Path "/api/player/stations/$StationId/check-in" `
     -Token $Token `
-    -Body @{ qrToken = "MV26-STATION-$StationId-CHECK_IN" } | Out-Null
+    -Body @{ qrToken = $checkInQr.rawToken } | Out-Null
 
   Invoke-JsonRequest `
     -Method "Post" `
     -Path "/api/player/stations/$StationId/check-out" `
     -Token $Token `
-    -Body @{ qrToken = "MV26-STATION-$StationId-CHECK_OUT" } | Out-Null
+    -Body @{ qrToken = $checkOutQr.rawToken } | Out-Null
 
   Invoke-JsonRequest `
     -Method "Post" `
@@ -112,10 +125,10 @@ $team01 = Login-Team -Username "team01" -Password "team01" -DeviceLabel "smoke-t
 $team02 = Login-Team -Username "team02" -Password "team02" -DeviceLabel "smoke-team02"
 
 Write-Host "Smoke: completing ST002 for team01"
-Complete-Station -Token $team01.accessToken -StationId "ST002" -Score 25
+Complete-Station -Token $team01.accessToken -AdminToken $admin.accessToken -StationId "ST002" -Score 25
 
 Write-Host "Smoke: completing ST047 for team02"
-Complete-Station -Token $team02.accessToken -StationId "ST047" -Score 30
+Complete-Station -Token $team02.accessToken -AdminToken $admin.accessToken -StationId "ST047" -Score 30
 
 $team01Me = Invoke-JsonRequest -Method "Get" -Path "/api/player/me" -Token $team01.accessToken
 $team02Me = Invoke-JsonRequest -Method "Get" -Path "/api/player/me" -Token $team02.accessToken

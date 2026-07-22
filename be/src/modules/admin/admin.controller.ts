@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UserRole } from '@prisma/client';
+import { QrPurpose, UserRole } from '@prisma/client';
 import { CurrentAuth, Roles } from '../../common/auth/auth.decorators';
 import { AuthContext, isAdmin } from '../../common/auth/auth-context';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard';
@@ -167,6 +167,37 @@ export class AdminController {
     return this.adminService.createStation(this.requireAdminId(auth), dto);
   }
 
+  @Get('stations/:stationId/qr-tokens')
+  stationQrTokens(@Param('stationId') stationId: string) {
+    return this.adminService.listStationQrTokens(stationId);
+  }
+
+  @Post('stations/:stationId/qr-tokens/:purpose/rotate')
+  rotateStationQrToken(
+    @CurrentAuth() auth: AuthContext,
+    @Param('stationId') stationId: string,
+    @Param('purpose') purpose: string,
+  ) {
+    return this.adminService.rotateStationQrToken(
+      this.requireAdminId(auth),
+      stationId,
+      this.parseQrPurpose(purpose),
+    );
+  }
+
+  @Delete('stations/:stationId/qr-tokens/:purpose')
+  revokeStationQrToken(
+    @CurrentAuth() auth: AuthContext,
+    @Param('stationId') stationId: string,
+    @Param('purpose') purpose: string,
+  ) {
+    return this.adminService.revokeActiveStationQrToken(
+      this.requireAdminId(auth),
+      stationId,
+      this.parseQrPurpose(purpose),
+    );
+  }
+
   @Delete('stations/:stationId')
   deleteStation(
     @CurrentAuth() auth: AuthContext,
@@ -264,5 +295,12 @@ export class AdminController {
       throw new ForbiddenException('Admin token required');
     }
     return auth.id;
+  }
+
+  private parseQrPurpose(purpose: string) {
+    if (purpose === QrPurpose.CHECK_IN || purpose === QrPurpose.CHECK_OUT) {
+      return purpose;
+    }
+    throw new ForbiddenException('Invalid Station QR purpose');
   }
 }

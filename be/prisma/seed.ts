@@ -9,7 +9,7 @@ import {
 import * as bcrypt from 'bcryptjs';
 import {
   buildQrLoginUrl,
-  buildStationQrToken,
+  createSecureStationQrToken,
   createSecureQrLoginToken,
   createQrTokenFingerprint,
 } from '../src/common/qr/qr-token';
@@ -36,6 +36,12 @@ const devQrArtifactPath = resolve(
   '..',
   '.tester-logs',
   'dev-qr-login-urls.txt',
+);
+const devStationQrArtifactPath = resolve(
+  process.cwd(),
+  '..',
+  '.tester-logs',
+  'dev-station-qr-tokens.txt',
 );
 
 const stations = [
@@ -77,6 +83,8 @@ const teams = Array.from({ length: 25 }, (_, index) => {
 
 async function main() {
   const generatedDevQrUrls: string[] = [];
+  const generatedDevStationQrTokens: string[] = [];
+  let generatedStationQrRepairCount = 0;
   const adminPassword = await bcrypt.hash('admin123', 10);
   const scoringCodeHash = await bcrypt.hash(process.env.SCORING_CODE ?? '2468', 10);
   await prisma.user.upsert({
@@ -121,26 +129,12 @@ async function main() {
       });
     }
     for (const purpose of [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT]) {
-      const existing = await prisma.qrToken.findFirst({
-        where: { stationId: id, purpose },
-      });
-      if (!existing) {
-        await prisma.qrToken.create({
-          data: {
-            stationId: id,
-            purpose,
-            tokenHash: await bcrypt.hash(buildStationQrToken(id, purpose), 10),
-            tokenFingerprint: createQrTokenFingerprint(buildStationQrToken(id, purpose)),
-          },
-        });
-      } else if (!existing.tokenFingerprint) {
-        await prisma.qrToken.update({
-          where: { id: existing.id },
-          data: {
-            tokenHash: await bcrypt.hash(buildStationQrToken(id, purpose), 10),
-            tokenFingerprint: createQrTokenFingerprint(buildStationQrToken(id, purpose)),
-          },
-        });
+      const generated = await ensureStationQrToken(id, name, purpose);
+      if (generated) {
+        generatedStationQrRepairCount += 1;
+        if (generated.artifactEntry) {
+          generatedDevStationQrTokens.push(generated.artifactEntry);
+        }
       }
     }
   }
@@ -265,6 +259,97 @@ async function main() {
       'Development QR login tokens already exist; seed preserved them and did not rotate printed QR codes.',
     );
   }
+
+  if (!isProduction && generatedDevStationQrTokens.length) {
+    mkdirSync(dirname(devStationQrArtifactPath), { recursive: true });
+    writeFileSync(
+      devStationQrArtifactPath,
+      [
+        'MOVEment 2026 development-only Station QR tokens',
+        'Do not commit this file. Rotate the affected purpose to reprint later.',
+        `GeneratedAt: ${new Date().toISOString()}`,
+        '',
+        generatedDevStationQrTokens.join('\n\n---\n\n'),
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    console.log(
+      `Development Station QR tokens written to ${devStationQrArtifactPath}. Do not commit this file.`,
+    );
+  } else {
+    console.log(
+      generatedStationQrRepairCount
+        ? `Repaired ${generatedStationQrRepairCount} Station QR token(s); raw tokens were not printed in production mode.`
+        : 'Station QR tokens already contain active SQ1 pairs; seed preserved them and did not rotate printed QR codes.',
+    );
+  }
+}
+
+async function ensureStationQrToken(
+  stationId: string,
+  stationName: string,
+  purpose: QrPurpose,
+) {
+  const activeSq1Token = await prisma.qrToken.findFirst({
+    where: {
+      stationId,
+      purpose,
+      isActive: true,
+      revokedAt: null,
+      schemaVersion: 'SQ1',
+      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+    },
+  });
+
+  if (activeSq1Token) {
+    return null;
+  }
+
+  const rawToken = await createUniqueStationQrToken(purpose);
+  await prisma.$transaction(async (tx) => {
+    await tx.qrToken.updateMany({
+      where: { stationId, purpose, isActive: true },
+      data: { isActive: false, revokedAt: new Date() },
+    });
+    await tx.qrToken.create({
+      data: {
+        stationId,
+        purpose,
+        schemaVersion: 'SQ1',
+        tokenHash: await bcrypt.hash(rawToken, 10),
+        tokenFingerprint: createQrTokenFingerprint(rawToken),
+      },
+    });
+  });
+
+  if (isProduction) {
+    return { artifactEntry: null };
+  }
+
+  return {
+    artifactEntry: [
+      `Station: ${stationName}`,
+      `StationId: ${stationId}`,
+      `Purpose: ${purpose}`,
+      `Status: ACTIVE`,
+      `QrToken: ${rawToken}`,
+    ].join('\n'),
+  };
+}
+
+async function createUniqueStationQrToken(purpose: QrPurpose) {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const rawToken = createSecureStationQrToken(purpose);
+    const existing = await prisma.qrToken.findUnique({
+      where: { tokenFingerprint: createQrTokenFingerprint(rawToken) },
+    });
+    if (!existing) {
+      return rawToken;
+    }
+  }
+
+  throw new Error('STATION_QR_TOKEN_GENERATION_FAILED');
 }
 
 main()

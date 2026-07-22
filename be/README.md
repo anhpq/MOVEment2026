@@ -69,6 +69,9 @@ docker exec movement-postgres-dev psql -U postgres -d movement -f /tmp/init.sql
 - `GET /api/admin/progress-matrix`
 - `POST /api/admin/stations`
 - `PATCH /api/admin/stations/:stationId`
+- `GET /api/admin/stations/:stationId/qr-tokens`
+- `POST /api/admin/stations/:stationId/qr-tokens/:purpose/rotate`
+- `DELETE /api/admin/stations/:stationId/qr-tokens/:purpose`
 - `DELETE /api/admin/stations/:stationId`
 - `POST /api/admin/progress/:progressId/score`
 - `PATCH /api/admin/progress/:progressId/score`
@@ -111,10 +114,12 @@ seeding any shared or production database.
 
 QR seed token format:
 
-- Check-in: `MV26-STATION-ST002-CHECK_IN`
-- Check-out: `MV26-STATION-ST002-CHECK_OUT`
+- Check-in: `MV26-SQ1-I-<randomToken>`
+- Check-out: `MV26-SQ1-O-<randomToken>`
 
-Replace `ST002` with any seeded station id.
+The database maps each opaque token to its Station and purpose. Raw Station QR
+tokens are shown once when created or rotated. Rotate the affected purpose when
+you need to reprint a QR later.
 
 Both check-in and check-out reject requests without a QR token.
 
@@ -127,9 +132,9 @@ station flow smoke test from the repo root:
 powershell -ExecutionPolicy Bypass -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468
 ```
 
-The script logs in `team01` and `team02`, completes `ST002` and `ST047` with
-seed QR tokens, submits staff scores with the scoring code, and verifies each
-team dashboard reflects the points. It opens the rehearsal event window by
+The script logs in `team01` and `team02`, rotates fresh secure Station QR tokens
+for `ST002` and `ST047`, submits staff scores with the scoring code, and verifies
+each team dashboard reflects the points. It opens the rehearsal event window by
 setting `eventEndTime` to `23:59` through the admin API before station actions.
 Run it against a freshly seeded or disposable rehearsal database because it
 intentionally mutates event config, station progress, and scores.

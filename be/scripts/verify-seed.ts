@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import {PrismaClient} from '@prisma/client';
+import {PrismaClient, QrPurpose} from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -15,12 +15,18 @@ function assertAtLeast({name, actual, expected}: Check) {
   }
 }
 
+function assertExact({name, actual, expected}: Check) {
+  if (actual !== expected) {
+    throw new Error(`${name} expected exactly ${expected}, found ${actual}`);
+  }
+}
+
 async function main() {
   const [
     adminUsers,
     activeStations,
     teams,
-    stationQrFingerprints,
+    activeSq1StationQrTokens,
     activeQrLoginTokens,
     progressRows,
     eventConfig,
@@ -29,7 +35,15 @@ async function main() {
     prisma.user.count({where: {username: 'admin', role: 'ADMIN'}}),
     prisma.station.count({where: {isActive: true}}),
     prisma.team.count(),
-    prisma.qrToken.count({where: {tokenFingerprint: {not: null}}}),
+    prisma.qrToken.count({
+      where: {
+        isActive: true,
+        revokedAt: null,
+        schemaVersion: 'SQ1',
+        tokenFingerprint: {not: null},
+        OR: [{expiresAt: null}, {expiresAt: {gt: new Date()}}],
+      },
+    }),
     prisma.qrLoginToken.count({
       where: {
         isActive: true,
@@ -45,10 +59,44 @@ async function main() {
   assertAtLeast({name: 'admin users', actual: adminUsers, expected: 1});
   assertAtLeast({name: 'teams', actual: teams, expected: 25});
   assertAtLeast({name: 'active stations', actual: activeStations, expected: 10});
-  assertAtLeast({
-    name: 'station QR fingerprints',
-    actual: stationQrFingerprints,
+  assertExact({
+    name: 'active SQ1 station QR tokens',
+    actual: activeSq1StationQrTokens,
     expected: activeStations * 2,
+  });
+  const activeStationsWithQrPair = await prisma.station.count({
+    where: {
+      isActive: true,
+      AND: [
+        {
+          qrTokens: {
+            some: {
+              purpose: QrPurpose.CHECK_IN,
+              isActive: true,
+              revokedAt: null,
+              schemaVersion: 'SQ1',
+              OR: [{expiresAt: null}, {expiresAt: {gt: new Date()}}],
+            },
+          },
+        },
+        {
+          qrTokens: {
+            some: {
+              purpose: QrPurpose.CHECK_OUT,
+              isActive: true,
+              revokedAt: null,
+              schemaVersion: 'SQ1',
+              OR: [{expiresAt: null}, {expiresAt: {gt: new Date()}}],
+            },
+          },
+        },
+      ],
+    },
+  });
+  assertAtLeast({
+    name: 'active stations with SQ1 QR pair',
+    actual: activeStationsWithQrPair,
+    expected: activeStations,
   });
   if (process.env.NODE_ENV !== 'production' && process.env.SEED_QR_LOGIN_TOKENS !== 'false') {
     assertAtLeast({
@@ -75,7 +123,7 @@ async function main() {
       `${teams} teams`,
       `${activeStations} active stations`,
       `${progressRows} progress rows`,
-      `${stationQrFingerprints} station QR fingerprints`,
+      `${activeSq1StationQrTokens} active SQ1 station QR tokens`,
       `${activeQrLoginTokens} active QR login tokens`,
     ].join(' '),
   );

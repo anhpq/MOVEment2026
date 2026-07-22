@@ -2,7 +2,10 @@ import {
   buildQrLoginUrl,
   createQrTokenFingerprint,
   createSecureQrLoginToken,
+  createSecureStationQrToken,
+  isOfficialStationQrToken,
 } from './qr-token';
+import { QrPurpose } from '@prisma/client';
 
 describe('QR login token helpers', () => {
   it('builds a QR login URL without duplicating slashes', () => {
@@ -34,5 +37,18 @@ describe('QR login token helpers', () => {
     expect(createQrTokenFingerprint(` ${tokenA} `)).toBe(
       createQrTokenFingerprint(tokenA),
     );
+  });
+
+  it('generates independent opaque SQ1 station QR tokens', () => {
+    const checkInToken = createSecureStationQrToken(QrPurpose.CHECK_IN);
+    const checkOutToken = createSecureStationQrToken(QrPurpose.CHECK_OUT);
+
+    expect(checkInToken).toMatch(/^MV26-SQ1-I-[A-Z2-7]{26}$/);
+    expect(checkOutToken).toMatch(/^MV26-SQ1-O-[A-Z2-7]{26}$/);
+    expect(checkInToken).not.toBe(checkOutToken);
+    expect(checkInToken).not.toContain('ST002');
+    expect(checkOutToken).not.toContain('ST002');
+    expect(isOfficialStationQrToken(checkInToken)).toBe(true);
+    expect(isOfficialStationQrToken(checkOutToken)).toBe(true);
   });
 });

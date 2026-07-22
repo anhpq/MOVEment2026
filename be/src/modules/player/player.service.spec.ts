@@ -20,7 +20,7 @@ const progress = {
 }
 
 const mockPrisma = {
-  qrToken: { findMany: jest.fn() },
+  qrToken: { findUnique: jest.fn() },
   teamStationProgress: {
     findFirst: jest.fn(),
     findUnique: jest.fn(),
@@ -52,14 +52,17 @@ describe('PlayerService station flow', () => {
     )
     jest.clearAllMocks()
     mockEventConfig.isPastEventEnd.mockResolvedValue(false)
-    mockPrisma.qrToken.findMany.mockResolvedValue([
-      {
-        id: 1,
-        tokenHash: 'hashed-qr-token',
-        tokenFingerprint: 'fingerprint',
-        purpose: QrPurpose.CHECK_IN,
-      },
-    ])
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 1,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_IN,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
     jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
   })
 
@@ -75,24 +78,12 @@ describe('PlayerService station flow', () => {
     mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
 
     await expect(
-      service.checkIn(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_IN' }),
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(updated)
 
-    expect(mockPrisma.qrToken.findMany).toHaveBeenCalledWith({
-      where: {
-        stationId: 'ST002',
-        purpose: QrPurpose.CHECK_IN,
-        isActive: true,
-        AND: [
-          {
-            OR: [
-              { tokenFingerprint: expect.any(String) },
-              { tokenFingerprint: null },
-            ],
-          },
-          { OR: [{ expiresAt: null }, { expiresAt: { gt: expect.any(Date) } }] },
-        ],
-      },
+    expect(mockPrisma.qrToken.findUnique).toHaveBeenCalledWith({
+      where: { tokenFingerprint: expect.any(String) },
+      include: { station: true },
     })
     expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
       where: { id: progress.id },
@@ -120,6 +111,72 @@ describe('PlayerService station flow', () => {
     expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
   })
 
+  it('rejects a wrong-purpose token based on the database record', async () => {
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).rejects.toThrow(ForbiddenException)
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+  })
+
+  it('rejects a revoked token even when the hash matches', async () => {
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 1,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_IN,
+      isActive: false,
+      revokedAt: new Date(),
+      expiresAt: null,
+      station: { isActive: true },
+    })
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).rejects.toThrow(ForbiddenException)
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+  })
+
+  it('retains Legacy Station QR compatibility when an active DB record exists', async () => {
+    const updated = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date(),
+      attemptNo: 1,
+    }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 3,
+      stationId: 'ST002',
+      tokenHash: 'legacy-hashed-qr-token',
+      tokenFingerprint: 'legacy-fingerprint',
+      purpose: QrPurpose.CHECK_IN,
+      schemaVersion: 'LEGACY',
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
+    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_IN' }),
+    ).resolves.toEqual(updated)
+  })
+
   it('checks out an active station and leaves score submission pending', async () => {
     const activeProgress = {
       ...progress,
@@ -130,18 +187,28 @@ describe('PlayerService station flow', () => {
       ...activeProgress,
       checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
     }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
     mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
 
     await expect(
-      service.checkOut(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_OUT' }),
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(checkedOut)
 
-    expect(mockPrisma.qrToken.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({ purpose: QrPurpose.CHECK_OUT }),
-      }),
-    )
+    expect(mockPrisma.qrToken.findUnique).toHaveBeenCalledWith({
+      where: { tokenFingerprint: expect.any(String) },
+      include: { station: true },
+    })
     expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
       where: { id: progress.id },
       data: { checkedOutAt: expect.any(Date) },
@@ -163,11 +230,22 @@ describe('PlayerService station flow', () => {
       ...activeProgress,
       checkedOutAt: checkedInAt,
     }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
     mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
 
     await expect(
-      service.checkOut(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_OUT' }),
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(checkedOut)
 
     expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
@@ -197,13 +275,24 @@ describe('PlayerService station flow', () => {
       },
       team: { update: jest.fn() },
     }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
     mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
       callback(tx),
     )
 
     await expect(
-      service.checkOut(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_OUT' }),
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(completed)
 
     expect(tx.teamStationProgress.update).toHaveBeenCalledWith({

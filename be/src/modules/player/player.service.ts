@@ -8,7 +8,10 @@ import { ActorType, Game, ProgressStatus, QrPurpose } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { TeamSubmitScoreDto } from '../../common/dto/score.dto';
-import { createQrTokenFingerprint } from '../../common/qr/qr-token';
+import {
+  createQrTokenFingerprint,
+  normalizeQrToken,
+} from '../../common/qr/qr-token';
 import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { QrActionDto, SubmitCipherDto } from './dto/player-actions.dto';
@@ -157,8 +160,11 @@ export class PlayerService {
       throw new ForbiddenException('Event has ended; new check-in is locked');
     }
 
-    await this.validateQr(stationId, QrPurpose.CHECK_IN, dto.qrToken);
-    const progress = await this.getProgressForAction(teamId, stationId);
+    const qrToken = await this.validateStationQr(dto.qrToken, QrPurpose.CHECK_IN);
+    if (qrToken.stationId !== stationId) {
+      throw new ForbiddenException('QR token does not match station');
+    }
+    const progress = await this.getProgressForAction(teamId, qrToken.stationId);
     if (progress.status !== ProgressStatus.AVAILABLE) {
       throw new BadRequestException('Station is not available for check-in');
     }
@@ -172,7 +178,7 @@ export class PlayerService {
     const activeProgress = await this.prisma.teamStationProgress.findFirst({
       where: {
         teamId,
-        stationId: { not: stationId },
+        stationId: { not: qrToken.stationId },
         status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
       },
     });
@@ -198,14 +204,17 @@ export class PlayerService {
       action: 'CHECK_IN',
       entityType: 'TEAM_STATION_PROGRESS',
       entityId: updated.id,
-      metadata: { stationId },
+      metadata: { stationId: qrToken.stationId },
     });
     return updated;
   }
 
   async checkOut(teamId: number, stationId: string, dto: QrActionDto) {
-    await this.validateQr(stationId, QrPurpose.CHECK_OUT, dto.qrToken);
-    const progress = await this.getProgressForAction(teamId, stationId);
+    const qrToken = await this.validateStationQr(dto.qrToken, QrPurpose.CHECK_OUT);
+    if (qrToken.stationId !== stationId) {
+      throw new ForbiddenException('QR token does not match station');
+    }
+    const progress = await this.getProgressForAction(teamId, qrToken.stationId);
     if (
       progress.status !== ProgressStatus.PLAYING &&
       progress.status !== ProgressStatus.CHECKED_IN
@@ -248,7 +257,10 @@ export class PlayerService {
         action: 'CHECK_OUT',
         entityType: 'TEAM_STATION_PROGRESS',
         entityId: updated.id,
-        metadata: { stationId, trackingMode: progress.station.trackingMode },
+        metadata: {
+          stationId: qrToken.stationId,
+          trackingMode: progress.station.trackingMode,
+        },
       });
       return updated;
     }
@@ -263,7 +275,7 @@ export class PlayerService {
       action: 'CHECK_OUT',
       entityType: 'TEAM_STATION_PROGRESS',
       entityId: updated.id,
-      metadata: { stationId },
+      metadata: { stationId: qrToken.stationId },
     });
     return updated;
   }
@@ -416,29 +428,31 @@ export class PlayerService {
     return progress;
   }
 
-  private async validateQr(
-    stationId: string,
-    purpose: QrPurpose,
-    rawToken: string,
-  ) {
-    const tokenFingerprint = createQrTokenFingerprint(rawToken);
-    const tokens = await this.prisma.qrToken.findMany({
-      where: {
-        stationId,
-        purpose,
-        isActive: true,
-        AND: [
-          { OR: [{ tokenFingerprint }, { tokenFingerprint: null }] },
-          { OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] },
-        ],
-      },
+  private async validateStationQr(rawToken: string, expectedPurpose: QrPurpose) {
+    const normalizedToken = normalizeQrToken(rawToken);
+    const tokenFingerprint = createQrTokenFingerprint(normalizedToken);
+    const token = await this.prisma.qrToken.findUnique({
+      where: { tokenFingerprint },
+      include: { station: true },
     });
-    for (const token of tokens) {
-      if (await bcrypt.compare(rawToken, token.tokenHash)) {
-        return;
-      }
+
+    if (!token || !(await bcrypt.compare(normalizedToken, token.tokenHash))) {
+      throw new ForbiddenException('Invalid QR token');
     }
-    throw new ForbiddenException('Invalid QR token');
+    if (!token.isActive || token.revokedAt) {
+      throw new ForbiddenException('QR token has been revoked');
+    }
+    if (token.expiresAt && token.expiresAt <= new Date()) {
+      throw new ForbiddenException('QR token has expired');
+    }
+    if (token.purpose !== expectedPurpose) {
+      throw new ForbiddenException('QR token purpose mismatch');
+    }
+    if (!token.station.isActive) {
+      throw new ForbiddenException('Station is inactive');
+    }
+
+    return token;
   }
 
   private normalizeAnswer(answer: string) {
