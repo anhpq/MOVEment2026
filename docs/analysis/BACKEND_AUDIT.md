@@ -1,5 +1,17 @@
 # Backend Audit Status
 
+## 2026-07-22 Reusable Automatic URL Team QR Login
+
+- Migrated Automatic URL Team QR Login from one-time consumption to a reusable controlled token. Successful login now updates `last_used_at` and `usage_count` without setting `consumed_at`; password and QR login continue to share the one-active-session-per-Team replacement path.
+- Added `qr_login_tokens.is_active`, a partial unique index enforcing at most one active token per Team, nonnegative usage validation, and an active/not-revoked consistency check. The migration activates only the newest valid unconsumed token per Team; consumed, revoked, and expired history is not reactivated.
+- Team creation now provisions the secure Automatic URL token in the Team transaction and returns its raw URL once. New Team creation and local/test seed no longer generate predictable Legacy Team QR credentials; existing `Team.loginQr*` values and `POST /api/auth/team-qr-login` remain available for already-issued Legacy QR compatibility.
+- Local/test seed repairs a missing token, deactivates stale active records before replacement, preserves a valid active token on repeated runs, and continues to write newly generated URLs only to the ignored local artifact. Production-mode seed does not generate or print Automatic URL tokens.
+- Admin generate, rotate, revoke, and status operations are distinct. Generate refuses to replace a valid active token, rotate revokes the old token before returning a replacement URL, and revoke marks the token inactive without deleting the Team. Raw-token strategy remains display-once with rotation required for reprint.
+- Admin UI now shows the automatically provisioned URL once after Team creation, exposes separate Generate and Rotate actions, reports unbounded usage count, and describes the credential as reusable while active. Legacy consumed-token errors remain mapped for compatibility.
+- Local migration `000005_reusable_qr_login_tokens` applied successfully. The first seed repaired 25 expired Team tokens; a second seed preserved the same 25-token inventory digest. A simulated missing-token repair produced one replacement and retained exactly one active token for each of 25 Teams with no duplicate active rows.
+- Verification passed: Prisma Client generation, migration deploy, focused Auth/Admin tests (17), full backend Jest suite (56), backend build, backend lint, seed twice, missing-token repair, production-mode local seed guard, `db:verify`, frontend lint, and frontend production build. The frontend build retains the known non-blocking large-chunk warning.
+- Not performed: Production migration, Production QR issuance, deployed `/qr-login` verification, manual browser/phone login, push, or deploy. Station QR implementation was not changed.
+
 ## 2026-07-21 iOS QR camera fallback
 
 - Root cause confirmed in the current frontend: `LoginPage` returned before opening the camera when `BarcodeDetector` was unavailable, and `QrTokenInput` disabled the camera button from the same native-detector check. iPhone Safari and Chrome iOS do not expose `BarcodeDetector`, so camera QR scan could not start even when `getUserMedia` was available over HTTPS.

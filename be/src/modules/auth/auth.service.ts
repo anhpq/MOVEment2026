@@ -127,13 +127,11 @@ export class AuthService {
       const updated = await tx.qrLoginToken.updateMany({
         where: {
           id: existing!.id,
-          consumedAt: null,
+          isActive: true,
           revokedAt: null,
           expiresAt: { gt: now },
-          usageCount: { lt: existing!.maxUsageCount },
         },
         data: {
-          consumedAt: now,
           lastUsedAt: now,
           usageCount: { increment: 1 },
         },
@@ -285,8 +283,12 @@ export class AuthService {
     if (token.expiresAt.getTime() <= now.getTime()) {
       return 'QR_LOGIN_EXPIRED';
     }
-    if (token.consumedAt || token.usageCount >= token.maxUsageCount) {
+    // Retain the old error for already-consumed Legacy records only.
+    if (token.consumedAt) {
       return 'QR_LOGIN_CONSUMED';
+    }
+    if (!token.isActive) {
+      return 'QR_LOGIN_INVALID';
     }
     if (token.team.status !== 'ACTIVE') {
       return 'QR_LOGIN_INACTIVE_TEAM';

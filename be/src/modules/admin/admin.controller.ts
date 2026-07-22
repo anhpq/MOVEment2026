@@ -113,6 +113,7 @@ export class AdminController {
       this.requireAdminId(auth),
       teamId,
       dto,
+      true,
     );
   }
 

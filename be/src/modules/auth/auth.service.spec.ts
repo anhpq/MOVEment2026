@@ -326,7 +326,7 @@ describe('AuthService', () => {
       ).rejects.toThrow(UnauthorizedException)
     })
 
-    it('should consume a valid one-time QR login token and create a normal team session', async () => {
+    it('should reuse an active QR login token and replace the previous team session', async () => {
       const team = {
         id: 2,
         username: 'team01',
@@ -345,6 +345,7 @@ describe('AuthService', () => {
         teamId: 2,
         team,
         expiresAt: new Date(Date.now() + 60_000),
+        isActive: true,
         consumedAt: null,
         revokedAt: null,
         usageCount: 0,
@@ -352,7 +353,9 @@ describe('AuthService', () => {
       }
       mockPrisma.qrLoginToken.findUnique.mockResolvedValue(qrLoginToken)
       mockPrisma.qrLoginToken.updateMany.mockResolvedValue({ count: 1 })
-      mockPrisma.teamSession.findFirst.mockResolvedValue(null)
+      mockPrisma.teamSession.findFirst
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({id: 'session-qr-url-1', deviceLabel: 'first-device'})
       mockPrisma.teamSession.create.mockResolvedValue({ id: 'session-qr-url-1' })
       mockJwtService.signAsync.mockResolvedValue('team-token-from-qr-url')
       mockPrisma.teamSession.update.mockResolvedValue({})
@@ -366,23 +369,31 @@ describe('AuthService', () => {
         token: 'opaque-random-qr-login-token',
         deviceLabel: 'web-qr-url',
       })
+      const secondResult = await service.loginWithQr({
+        token: 'opaque-random-qr-login-token',
+        deviceLabel: 'second-device',
+      })
 
       expect(result.accessToken).toBe('team-token-from-qr-url')
+      expect(secondResult.accessToken).toBe('team-token-from-qr-url')
       expect(mockPrisma.qrLoginToken.updateMany).toHaveBeenCalledWith({
         where: {
           id: 10,
-          consumedAt: null,
+          isActive: true,
           revokedAt: null,
           expiresAt: { gt: expect.any(Date) },
-          usageCount: { lt: 1 },
         },
         data: {
-          consumedAt: expect.any(Date),
           lastUsedAt: expect.any(Date),
           usageCount: { increment: 1 },
         },
       })
-      expect(mockPrisma.teamSession.create).toHaveBeenCalled()
+      expect(mockPrisma.qrLoginToken.updateMany).toHaveBeenCalledTimes(2)
+      expect(mockPrisma.teamSession.create).toHaveBeenCalledTimes(2)
+      expect(mockPrisma.teamSession.updateMany).toHaveBeenCalledWith({
+        where: {teamId: 2, revokedAt: null},
+        data: {revokedAt: expect.any(Date), revokeReason: 'REPLACED'},
+      })
       expect(mockPrisma.activityLog.create).toHaveBeenCalledWith({
         data: {
           actorType: 'TEAM',
@@ -401,6 +412,7 @@ describe('AuthService', () => {
         teamId: 2,
         team: { id: 2, status: 'ACTIVE' },
         expiresAt: new Date(Date.now() - 60_000),
+        isActive: true,
         consumedAt: null,
         revokedAt: null,
         usageCount: 0,
@@ -428,38 +440,19 @@ describe('AuthService', () => {
       })
     })
 
-    it('should reject a replay when a concurrent request already consumed the token', async () => {
-      const team = {
-        id: 2,
-        username: 'team01',
-        passwordHash: '$2a$10$bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-        name: 'Team 01',
-        captainName: 'Leader',
-        totalPoints: 0,
-        maxPossiblePoints: 0,
-        totalPlaySeconds: 0,
-        startedAt: null,
-        status: 'ACTIVE',
-        color: '#000000',
-      }
+    it('should reject a revoked reusable QR login token', async () => {
       const token = {
         id: 10,
         teamId: 2,
-        team,
+        team: {id: 2, status: 'ACTIVE'},
         expiresAt: new Date(Date.now() + 60_000),
+        isActive: false,
         consumedAt: null,
-        revokedAt: null,
+        revokedAt: new Date(),
         usageCount: 0,
         maxUsageCount: 1,
       }
-      mockPrisma.qrLoginToken.findUnique
-        .mockResolvedValueOnce(token)
-        .mockResolvedValueOnce({
-          ...token,
-          consumedAt: new Date(),
-          usageCount: 1,
-        })
-      mockPrisma.qrLoginToken.updateMany.mockResolvedValue({ count: 0 })
+      mockPrisma.qrLoginToken.findUnique.mockResolvedValue(token)
       mockPrisma.activityLog.create.mockResolvedValue({})
 
       await expect(
@@ -469,7 +462,6 @@ describe('AuthService', () => {
         }),
       ).rejects.toThrow(UnauthorizedException)
 
-      expect(mockPrisma.teamSession.create).not.toHaveBeenCalled()
       expect(mockPrisma.activityLog.create).toHaveBeenCalledWith({
         data: {
           actorType: 'TEAM',
@@ -477,9 +469,33 @@ describe('AuthService', () => {
           action: 'QR_LOGIN_REJECTED',
           entityType: 'QR_LOGIN_TOKEN',
           entityId: '10',
-          metadata: { reason: 'QR_LOGIN_CONSUMED' },
+          metadata: { reason: 'QR_LOGIN_REVOKED' },
         },
       })
+    })
+
+    it('should reject a reusable QR login token for an inactive team', async () => {
+      mockPrisma.qrLoginToken.findUnique.mockResolvedValue({
+        id: 10,
+        teamId: 2,
+        team: {id: 2, status: 'INACTIVE'},
+        expiresAt: new Date(Date.now() + 60_000),
+        isActive: true,
+        consumedAt: null,
+        revokedAt: null,
+        usageCount: 0,
+        maxUsageCount: 1,
+      })
+      mockPrisma.activityLog.create.mockResolvedValue({})
+
+      await expect(
+        service.loginWithQr({
+          token: 'opaque-random-qr-login-token',
+          deviceLabel: 'web-qr-url',
+        }),
+      ).rejects.toThrow('QR_LOGIN_INACTIVE_TEAM')
+
+      expect(mockPrisma.qrLoginToken.updateMany).not.toHaveBeenCalled()
     })
 
     it('should rate limit repeated QR login guesses without logging the raw token', async () => {

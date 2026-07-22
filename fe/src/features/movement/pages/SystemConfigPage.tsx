@@ -1,4 +1,4 @@
-import {DeleteOutlined, EditOutlined, QrcodeOutlined, StopOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, QrcodeOutlined, StopOutlined, SyncOutlined} from "@ant-design/icons";
 import {App as AntdApp, Button, Card, Flex, Input, List, Select, Tabs, Tag, Typography} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -11,6 +11,7 @@ import {
   generateAdminTeamQrLoginToken,
   getAdminTeamQrLoginTokens,
   revokeAdminQrLoginToken,
+  rotateAdminTeamQrLoginToken,
   updateAdminStation,
 } from "../api";
 import {fetchAdminDatabase} from "../adminData";
@@ -37,10 +38,15 @@ export function SystemConfigPage() {
     message.success("Station tracking mode updated");
   };
 
-  const handleGenerateQrLogin = async (team: (typeof teams)[number]) => {
+  const handleIssueQrLogin = async (
+    team: (typeof teams)[number],
+    rotate: boolean,
+  ) => {
     setQrBusyTeamId(team.id);
     try {
-      const token = await generateAdminTeamQrLoginToken(team.id);
+      const token = rotate
+        ? await rotateAdminTeamQrLoginToken(team.id)
+        : await generateAdminTeamQrLoginToken(team.id);
       modal.info({
         centered: true,
         width: 680,
@@ -48,7 +54,7 @@ export function SystemConfigPage() {
         content: (
           <Flex vertical gap={12}>
             <Typography.Text>
-              This one-time URL is shown only now. Generate a new QR to rotate it.
+              This reusable URL is shown only now. Rotate the token when a new QR is required.
             </Typography.Text>
             <Input.TextArea value={token.qrLoginUrl ?? token.loginUrl} readOnly autoSize />
             <Typography.Text className="muted-copy compact-copy">
@@ -58,7 +64,7 @@ export function SystemConfigPage() {
         ),
       });
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to generate QR login");
+      message.error(error instanceof Error ? error.message : "Unable to issue QR login");
     } finally {
       setQrBusyTeamId(null);
     }
@@ -84,7 +90,7 @@ export function SystemConfigPage() {
                     <Tag>{token.status}</Tag>
                   </Flex>
                   <Typography.Text className="muted-copy compact-copy">
-                    Expires {new Date(token.expiresAt).toLocaleString("vi-VN")} · Uses {token.usageCount}/{token.maxUsageCount}
+                    Expires {new Date(token.expiresAt).toLocaleString("vi-VN")} · Uses {token.usageCount}
                   </Typography.Text>
                 </Flex>
               </List.Item>
@@ -232,9 +238,16 @@ export function SystemConfigPage() {
                           <Button
                             icon={<QrcodeOutlined />}
                             loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleGenerateQrLogin(team)}
+                            onClick={() => void handleIssueQrLogin(team, false)}
                           >
                             Generate QR
+                          </Button>
+                          <Button
+                            icon={<SyncOutlined />}
+                            loading={qrBusyTeamId === team.id}
+                            onClick={() => void handleIssueQrLogin(team, true)}
+                          >
+                            Rotate QR
                           </Button>
                           <Button
                             icon={<QrcodeOutlined />}

@@ -20,7 +20,6 @@ async function main() {
     adminUsers,
     activeStations,
     teams,
-    teamLoginQrFingerprints,
     stationQrFingerprints,
     activeQrLoginTokens,
     progressRows,
@@ -30,11 +29,10 @@ async function main() {
     prisma.user.count({where: {username: 'admin', role: 'ADMIN'}}),
     prisma.station.count({where: {isActive: true}}),
     prisma.team.count(),
-    prisma.team.count({where: {loginQrFingerprint: {not: null}}}),
     prisma.qrToken.count({where: {tokenFingerprint: {not: null}}}),
     prisma.qrLoginToken.count({
       where: {
-        consumedAt: null,
+        isActive: true,
         revokedAt: null,
         expiresAt: {gt: new Date()},
       },
@@ -47,11 +45,6 @@ async function main() {
   assertAtLeast({name: 'admin users', actual: adminUsers, expected: 1});
   assertAtLeast({name: 'teams', actual: teams, expected: 25});
   assertAtLeast({name: 'active stations', actual: activeStations, expected: 10});
-  assertAtLeast({
-    name: 'team login QR fingerprints',
-    actual: teamLoginQrFingerprints,
-    expected: 25,
-  });
   assertAtLeast({
     name: 'station QR fingerprints',
     actual: stationQrFingerprints,

@@ -224,6 +224,9 @@ export type AdminTeamResponse = {
   captainName: string
   totalPoints: number
   totalPlaySeconds: number
+  qrLoginUrl?: string
+  loginUrl?: string
+  qrLoginExpiresAt?: string
 }
 
 export type AdminProgressMatrixResponse = {
@@ -271,13 +274,13 @@ export type AdminQrLoginTokenResponse = {
   loginUrl?: string
   qrLoginUrl?: string
   expiresAt: string
+  isActive: boolean
   consumedAt?: string | null
   revokedAt?: string | null
   usageCount: number
-  maxUsageCount: number
   createdAt: string
   lastUsedAt?: string | null
-  status: 'ACTIVE' | 'EXPIRED' | 'CONSUMED' | 'REVOKED'
+  status: 'ACTIVE' | 'EXPIRED' | 'CONSUMED' | 'REVOKED' | 'INACTIVE'
 }
 
 export const getAdminTeamQrLoginTokens = (teamId: string) =>
@@ -285,10 +288,19 @@ export const getAdminTeamQrLoginTokens = (teamId: string) =>
 
 export const generateAdminTeamQrLoginToken = (
   teamId: string,
-  values: {expiresInMinutes?: number; maxUsageCount?: number} = {},
+  values: {expiresInMinutes?: number} = {},
 ) =>
   apiPost<AdminQrLoginTokenResponse>(
     `/api/admin/teams/${teamId}/qr-login-tokens`,
+    values,
+  )
+
+export const rotateAdminTeamQrLoginToken = (
+  teamId: string,
+  values: {expiresInMinutes?: number} = {},
+) =>
+  apiPost<AdminQrLoginTokenResponse>(
+    `/api/admin/teams/${teamId}/qr-login/rotate`,
     values,
   )
 

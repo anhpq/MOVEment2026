@@ -10,7 +10,6 @@ import * as bcrypt from 'bcryptjs';
 import {
   buildQrLoginUrl,
   buildStationQrToken,
-  buildTeamLoginQrToken,
   createSecureQrLoginToken,
   createQrTokenFingerprint,
 } from '../src/common/qr/qr-token';
@@ -148,8 +147,6 @@ async function main() {
 
   const totalMaxPoints = stations.reduce((sum, item) => sum + item[3], 0);
   for (const { name, username, captainName, password, color } of teams) {
-    const teamNumber = username.replace('team', '').padStart(2, '0');
-    const loginQrToken = buildTeamLoginQrToken(teamNumber);
     const team = await prisma.team.upsert({
       where: { username },
       create: {
@@ -157,8 +154,6 @@ async function main() {
         username,
         captainName,
         passwordHash: await bcrypt.hash(password, 10),
-        loginQrHash: await bcrypt.hash(loginQrToken, 10),
-        loginQrFingerprint: createQrTokenFingerprint(loginQrToken),
         startedAt: new Date(),
         color,
         maxPossiblePoints: totalMaxPoints,
@@ -167,8 +162,6 @@ async function main() {
         name,
         captainName,
         passwordHash: await bcrypt.hash(password, 10),
-        loginQrHash: await bcrypt.hash(loginQrToken, 10),
-        loginQrFingerprint: createQrTokenFingerprint(loginQrToken),
         color,
         maxPossiblePoints: totalMaxPoints,
       },
@@ -192,10 +185,9 @@ async function main() {
       const activeQrLoginToken = await prisma.qrLoginToken.findFirst({
         where: {
           teamId: team.id,
-          consumedAt: null,
+          isActive: true,
           revokedAt: null,
           expiresAt: { gt: new Date() },
-          usageCount: { lt: 1 },
         },
       });
 
@@ -204,13 +196,18 @@ async function main() {
         const expiresAt = new Date(
           Date.now() + safeQrLoginTokenTtlMinutes * 60_000,
         );
-        await prisma.qrLoginToken.create({
-          data: {
-            teamId: team.id,
-            tokenHash: createQrTokenFingerprint(rawToken),
-            expiresAt,
-            maxUsageCount: 1,
-          },
+        await prisma.$transaction(async (tx) => {
+          await tx.qrLoginToken.updateMany({
+            where: { teamId: team.id, isActive: true },
+            data: { isActive: false },
+          });
+          await tx.qrLoginToken.create({
+            data: {
+              teamId: team.id,
+              tokenHash: createQrTokenFingerprint(rawToken),
+              expiresAt,
+            },
+          });
         });
         generatedDevQrUrls.push(
           [

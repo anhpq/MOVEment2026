@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Automatic URL Team QR completion
+
+- [x] Reusable controlled Team QR login, usage auditing, and one-active-session replacement are implemented and locally verified.
+- [x] Team creation provisioning, idempotent local/test seed repair, and distinct Admin generate/rotate/revoke actions are implemented.
+- [x] New Team and seed data no longer generate predictable Legacy Team QR credentials; existing Legacy credentials and endpoint remain for compatibility.
+- [x] Rotate-to-reprint is the selected raw-token strategy; raw URLs are returned only when created and are not stored in tracked files.
+- [ ] Production migration and deployed QR flow verification remain open.
+- [ ] Station QR migration remains out of scope and open.
+
 ## P0 - Backend correctness
 
 - [x] Admin/team username-password authentication.

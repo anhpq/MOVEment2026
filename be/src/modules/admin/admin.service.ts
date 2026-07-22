@@ -15,7 +15,6 @@ import { UpdateStationDto } from './dto/update-station.dto';
 import { CreateStationDto } from './dto/create-station.dto';
 import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
 import {
-  buildTeamLoginQrToken,
   buildStationQrToken,
   buildQrLoginUrl,
   createSecureQrLoginToken,
@@ -89,8 +88,12 @@ export class AdminService {
       distinct: ['stationId'],
     });
     const passwordHash = await bcrypt.hash(dto.password, 10);
+    const rawQrLoginToken = createSecureQrLoginToken();
+    const qrLoginExpiresAt = new Date(
+      Date.now() + this.getQrLoginTtlMinutes() * 60_000,
+    );
 
-    const team = await this.prisma.$transaction(async (tx) => {
+    const { team, qrLoginToken } = await this.prisma.$transaction(async (tx) => {
       const created = await tx.team.create({
         data: {
           name: dto.name.trim(),
@@ -100,12 +103,12 @@ export class AdminService {
           maxPossiblePoints: games.reduce((sum, game) => sum + game.maxPoints, 0),
         },
       });
-      const loginToken = buildTeamLoginQrToken(String(created.id));
-      await tx.team.update({
-        where: { id: created.id },
+      const createdQrLoginToken = await tx.qrLoginToken.create({
         data: {
-          loginQrHash: await bcrypt.hash(loginToken, 10),
-          loginQrFingerprint: createQrTokenFingerprint(loginToken),
+          teamId: created.id,
+          tokenHash: createQrTokenFingerprint(rawQrLoginToken),
+          expiresAt: qrLoginExpiresAt,
+          createdByUserId: userId,
         },
       });
       if (games.length) {
@@ -118,7 +121,7 @@ export class AdminService {
           })),
         });
       }
-      return tx.team.findUniqueOrThrow({ where: { id: created.id } });
+      return { team: created, qrLoginToken: createdQrLoginToken };
     });
 
     await this.activityLog.log({
@@ -130,7 +133,13 @@ export class AdminService {
       entityId: team.id,
       metadata: { name: team.name, username: team.username },
     });
-    return this.toPublicTeam(team);
+    const qrLoginUrl = this.buildQrLoginUrl(rawQrLoginToken);
+    return {
+      ...this.toPublicTeam(team),
+      qrLoginUrl,
+      loginUrl: qrLoginUrl,
+      qrLoginExpiresAt: qrLoginToken.expiresAt,
+    };
   }
 
   async updateTeam(userId: number, teamId: number, dto: UpdateTeamDto) {
@@ -188,10 +197,10 @@ export class AdminService {
       id: token.id,
       teamId: token.teamId,
       expiresAt: token.expiresAt,
+      isActive: token.isActive,
       consumedAt: token.consumedAt,
       revokedAt: token.revokedAt,
       usageCount: token.usageCount,
-      maxUsageCount: token.maxUsageCount,
       createdAt: token.createdAt,
       lastUsedAt: token.lastUsedAt,
       status: this.getQrLoginTokenStatus(token, now),
@@ -202,12 +211,12 @@ export class AdminService {
     userId: number,
     teamId: number,
     dto: GenerateQrLoginTokenDto,
+    rotateExisting = false,
   ) {
     const rawToken = createSecureQrLoginToken();
     const tokenHash = createQrTokenFingerprint(rawToken);
     const ttlMinutes = dto.expiresInMinutes ?? this.getQrLoginTtlMinutes();
     const expiresAt = new Date(Date.now() + ttlMinutes * 60_000);
-    const maxUsageCount = dto.maxUsageCount ?? 1;
 
     const token = await this.prisma.$transaction(async (tx) => {
       const team = await tx.team.findUniqueOrThrow({ where: { id: teamId } });
@@ -215,23 +224,37 @@ export class AdminService {
         throw new ForbiddenException('QR_LOGIN_INACTIVE_TEAM');
       }
 
-      await tx.qrLoginToken.updateMany({
+      const existingActive = await tx.qrLoginToken.findFirst({
         where: {
           teamId,
-          consumedAt: null,
-          revokedAt: null,
-        },
-        data: {
-          revokedAt: new Date(),
+          isActive: true,
         },
       });
+
+      if (
+        existingActive &&
+        existingActive.revokedAt === null &&
+        existingActive.expiresAt.getTime() > Date.now() &&
+        !rotateExisting
+      ) {
+        throw new BadRequestException('QR_LOGIN_TOKEN_ALREADY_ACTIVE');
+      }
+
+      if (existingActive) {
+        await tx.qrLoginToken.update({
+          where: { id: existingActive.id },
+          data: {
+            isActive: false,
+            revokedAt: rotateExisting ? new Date() : existingActive.revokedAt,
+          },
+        });
+      }
 
       return tx.qrLoginToken.create({
         data: {
           teamId,
           tokenHash,
           expiresAt,
-          maxUsageCount,
           createdByUserId: userId,
         },
       });
@@ -241,13 +264,12 @@ export class AdminService {
       actorType: ActorType.USER,
       actorId: userId,
       userId,
-      action: 'QR_LOGIN_GENERATED',
+      action: rotateExisting ? 'QR_LOGIN_ROTATED' : 'QR_LOGIN_GENERATED',
       entityType: 'QR_LOGIN_TOKEN',
       entityId: token.id,
       metadata: {
         teamId,
         expiresAt: token.expiresAt,
-        maxUsageCount: token.maxUsageCount,
       },
     });
 
@@ -259,7 +281,6 @@ export class AdminService {
       loginUrl: qrLoginUrl,
       expiresAt: token.expiresAt,
       usageCount: token.usageCount,
-      maxUsageCount: token.maxUsageCount,
       createdAt: token.createdAt,
       status: 'ACTIVE',
     };
@@ -268,7 +289,7 @@ export class AdminService {
   async revokeQrLoginToken(userId: number, tokenId: number) {
     const token = await this.prisma.qrLoginToken.update({
       where: { id: tokenId },
-      data: { revokedAt: new Date() },
+      data: { isActive: false, revokedAt: new Date() },
     });
 
     await this.activityLog.log({
@@ -294,7 +315,7 @@ export class AdminService {
     const activeToken = await this.prisma.qrLoginToken.findFirst({
       where: {
         teamId,
-        consumedAt: null,
+        isActive: true,
         revokedAt: null,
         expiresAt: { gt: new Date() },
       },
@@ -1065,16 +1086,16 @@ export class AdminService {
   private getQrLoginTokenStatus(
     token: {
       expiresAt: Date;
+      isActive: boolean;
       consumedAt: Date | null;
       revokedAt: Date | null;
-      usageCount: number;
-      maxUsageCount: number;
     },
     now: Date,
   ) {
     if (token.revokedAt) return 'REVOKED';
-    if (token.consumedAt || token.usageCount >= token.maxUsageCount) return 'CONSUMED';
     if (token.expiresAt.getTime() <= now.getTime()) return 'EXPIRED';
+    if (token.consumedAt) return 'CONSUMED';
+    if (!token.isActive) return 'INACTIVE';
     return 'ACTIVE';
   }
 

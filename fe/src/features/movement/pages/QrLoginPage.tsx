@@ -28,8 +28,8 @@ function getQrLoginError(error: unknown): QrLoginState {
   if (message.includes("QR_LOGIN_CONSUMED")) {
     return {
       type: "error",
-      title: "Mã QR đã được sử dụng.",
-      description: "Mỗi mã QR đăng nhập chỉ có thể sử dụng theo giới hạn đã cấu hình.",
+      title: "Mã QR cũ không còn hiệu lực.",
+      description: "Vui lòng liên hệ ban tổ chức để nhận mã QR hiện tại.",
       canRetry: false,
     };
   }

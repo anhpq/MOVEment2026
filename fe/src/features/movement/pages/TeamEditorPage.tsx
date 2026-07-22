@@ -1,4 +1,4 @@
-import {App as AntdApp, Button, Drawer, Form, Input, InputNumber} from "antd";
+import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Typography} from "antd";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
@@ -66,12 +66,33 @@ export function TeamEditorPage() {
                     password: values.password || undefined,
                   });
                 } else {
-                  await createAdminTeam({
+                  const created = await createAdminTeam({
                     name: values.name,
                     username: values.username,
                     captainName: values.captainName,
                     password: values.password,
                   });
+                  const qrLoginUrl = created.qrLoginUrl ?? created.loginUrl;
+                  if (qrLoginUrl) {
+                    modal.info({
+                      centered: true,
+                      width: 680,
+                      title: `QR login for ${created.name}`,
+                      content: (
+                        <Flex vertical gap={12}>
+                          <Typography.Text>
+                            This reusable URL is shown only now. Store or print the QR securely.
+                          </Typography.Text>
+                          <Input.TextArea value={qrLoginUrl} readOnly autoSize />
+                          {created.qrLoginExpiresAt && (
+                            <Typography.Text className="muted-copy compact-copy">
+                              Expires at {new Date(created.qrLoginExpiresAt).toLocaleString("vi-VN")}
+                            </Typography.Text>
+                          )}
+                        </Flex>
+                      ),
+                    });
+                  }
                 }
                 loadDatabase(await fetchAdminDatabase());
                 message.success(isEditing ? "Team updated successfully" : "New team created successfully");

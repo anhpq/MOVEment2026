@@ -8,11 +8,4 @@ export class GenerateQrLoginTokenDto {
   @Min(1)
   @Max(60 * 24 * 30)
   expiresInMinutes?: number;
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  @Max(10)
-  maxUsageCount?: number;
 }
