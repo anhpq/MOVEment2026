@@ -121,8 +121,8 @@ CREATE TABLE "qr_tokens" (
 
 CREATE TABLE "event_config" (
   "id" INTEGER PRIMARY KEY DEFAULT 1,
-  "event_end_time" TEXT NOT NULL DEFAULT '11:30',
-  "final_starts_at" TEXT NOT NULL DEFAULT '11:45',
+  "event_end_time" TEXT NOT NULL DEFAULT '23:59',
+  "final_starts_at" TEXT NOT NULL DEFAULT '23:59',
   "notify_before_minutes" INTEGER NOT NULL DEFAULT 15,
   "cancel_cooldown_minutes" INTEGER NOT NULL DEFAULT 5,
   "scoring_code_hash" TEXT NOT NULL DEFAULT '$2b$10$Tn8oLEDmV3DOJjeKcFBz3.9UH/GFsatnF1wlmNfhWJP7dfTaSKwAO',

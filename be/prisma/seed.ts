@@ -43,6 +43,7 @@ const devStationQrArtifactPath = resolve(
   '.tester-logs',
   'dev-station-qr-tokens.txt',
 );
+const finalKeyword = 'DISANVANHOA2026';
 
 const stations = [
   ['ST002', 'Tram #2', 'CIPHER', 100, 18, 35],
@@ -228,8 +229,17 @@ async function main() {
       data: {
         title: 'Final Cipher',
         clueText: 'Giai mat thu cuoi cung',
-        answerHash: await bcrypt.hash('movement2026', 10),
+        answerHash: await bcrypt.hash(finalKeyword, 10),
         startsAt: new Date(),
+        maxWinners: 10,
+        pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+      },
+    });
+  } else if (!(await bcrypt.compare(finalKeyword, final.answerHash))) {
+    await prisma.finalChallenge.update({
+      where: { id: final.id },
+      data: {
+        answerHash: await bcrypt.hash(finalKeyword, 10),
         maxWinners: 10,
         pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
       },

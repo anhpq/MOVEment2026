@@ -75,13 +75,6 @@ export class FinalService {
       return this.toPublicSubmission(priorCorrect);
     }
 
-    const cooldown = await this.getCooldownState(challenge.id, teamId, now);
-    if (cooldown.isCoolingDown) {
-      throw new BadRequestException(
-        `Final answer cooldown is active until ${cooldown.nextAttemptAt}`,
-      );
-    }
-
     const normalized = this.normalizeAnswer(dto.answer);
     const isCorrect = await bcrypt.compare(normalized, challenge.answerHash);
     const result = await this.createFinalSubmissionWithRetry(
@@ -121,6 +114,17 @@ export class FinalService {
             });
             if (previousCorrect) {
               return previousCorrect;
+            }
+            const cooldown = await this.getCooldownState(
+              challenge.id,
+              teamId,
+              new Date(),
+              tx,
+            );
+            if (cooldown.isCoolingDown) {
+              throw new BadRequestException(
+                `Final answer cooldown is active until ${cooldown.nextAttemptAt}`,
+              );
             }
 
             let winnerRank: number | null = null;
@@ -245,7 +249,7 @@ export class FinalService {
   }
 
   private normalizeAnswer(answer: string) {
-    return answer.trim().toLowerCase().replace(/\s+/g, ' ');
+    return answer.trim().toUpperCase().replace(/\s+/g, ' ');
   }
 
   private async getActiveStationProgress(teamId: number) {
@@ -262,12 +266,13 @@ export class FinalService {
     finalChallengeId: number,
     teamId: number,
     now: Date,
+    client: Pick<PrismaService, 'finalSubmission'> | Prisma.TransactionClient = this.prisma,
   ) {
     const [wrongAttemptCount, latestWrong] = await Promise.all([
-      this.prisma.finalSubmission.count({
+      client.finalSubmission.count({
         where: { finalChallengeId, teamId, isCorrect: false },
       }),
-      this.prisma.finalSubmission.findFirst({
+      client.finalSubmission.findFirst({
         where: { finalChallengeId, teamId, isCorrect: false },
         orderBy: { submittedAt: 'desc' },
       }),

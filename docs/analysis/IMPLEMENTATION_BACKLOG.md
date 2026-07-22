@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Final Challenge completion
+
+- [x] Final opening is verified against Admin Event Config `eventEndTime`; changing Event Config changes availability without Source Code changes.
+- [x] Active Source Code no longer uses fixed `11:30` or `11:45`; remaining matches are historical documentation warnings or the original baseline migration.
+- [x] Local/test seed creates or repairs the active Final keyword hash for `DISANVANHOA2026` and remains idempotent when run repeatedly.
+- [x] Backend and frontend trim and uppercase answer input; backend remains the authoritative validator and frontend source does not contain the official answer.
+- [x] Wrong-answer cooldown is backend-enforced inside the serializable submission transaction and increases from 1 second to maximum 10 seconds.
+- [x] Final eligibility is verified for configured Event end, active Station blocking, no all-Station completion requirement, and existing Station lifecycle regression.
+- [x] Final ranking and bonus are verified for rank 1, rank 2, rank 10, rank 11, duplicate correct submission, retry, and unique-rank concurrency protection.
+- [x] Leaderboard integration remains through `team.totalPoints`, so Final bonus is included once when awarded.
+- [ ] Production migration and production-like Final smoke remain open.
+- [ ] Manual browser double-click/multiple-tab UX verification remains open.
+
 ## 2026-07-22 Station tracking and scoring completion
 
 - [x] Re-verified `SCORE`, `TIME`, and `BOTH` behavior after SQ1 Station QR migration.
@@ -93,13 +106,14 @@ Acceptance:
 
 ## P0 — Final Challenge
 
-- [x] Final keyword `DISANVANHOA2026` exists in historical implementation.
-- [x] Uppercase normalization has historical implementation evidence.
-- [x] Final opens from Event Config end time in historical implementation.
-- [x] Top-10 bonus and concurrency/idempotency have historical test evidence.
-- [ ] Re-run Final smoke after documentation and QR migration work.
-- [ ] Confirm no active code path still uses fixed `11:30` or `11:45`.
-- [ ] Confirm cooldown progression is backend-enforced from 1 to maximum 10 seconds.
+- [x] Final keyword `DISANVANHOA2026` is created or repaired by local/test seed.
+- [x] Uppercase normalization is implemented in backend validation and frontend input UX.
+- [x] Final opens from Admin Event Config end time.
+- [x] Top-10 bonus and concurrency/idempotency are covered by focused tests.
+- [x] Re-run Final verification after documentation, QR, and Station scoring migration work.
+- [x] Confirm no active code path still uses fixed `11:30` or `11:45`.
+- [x] Confirm cooldown progression is backend-enforced from 1 to maximum 10 seconds.
+- [ ] Production-like Final smoke remains open.
 
 ## P0 — Documentation and Prompt Consistency
 
@@ -156,9 +170,7 @@ Acceptance:
 
 ## Next Execution Order
 
-1. Run `docs/prompts/10_CODEX_QR_AUTO_LOGIN_AND_SEED_TOKENS_PROMPT.md`.
-2. Re-run Final verification with Prompt 11.
-3. Run Production-like smoke tests.
-4. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
-5. Review diff, run `git diff --check`, and create scoped local commits.
-6. Do not push or deploy without explicit user request.
+1. Run Production-like smoke tests.
+2. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
+3. Review diff, run `git diff --check`, and create scoped local commits.
+4. Do not push or deploy without explicit user request.

@@ -233,8 +233,8 @@ model QrLoginToken {
 
 model EventConfig {
   id                    Int      @id @default(1)
-  eventEndTime          String   @default("11:30") @map("event_end_time")
-  finalStartsAt         String   @default("11:45") @map("final_starts_at")
+  eventEndTime          String   @default("23:59") @map("event_end_time")
+  finalStartsAt         String   @default("23:59") @map("final_starts_at")
   notifyBeforeMinutes   Int      @default(15) @map("notify_before_minutes")
   cancelCooldownMinutes Int      @default(5) @map("cancel_cooldown_minutes")
   scoringCodeHash       String   @default("$2b$10$Tn8oLEDmV3DOJjeKcFBz3.9UH/GFsatnF1wlmNfhWJP7dfTaSKwAO") @map("scoring_code_hash")

@@ -116,9 +116,12 @@ export function FinalPage() {
                   form={form}
                   layout="vertical"
                   onFinish={async ({answer}) => {
+                    if (isSubmitting) {
+                      return;
+                    }
                     setIsSubmitting(true);
                     try {
-                      const result = await submitFinalAnswer(answer);
+                      const result = await submitFinalAnswer(answer.trim().toUpperCase());
                       form.resetFields();
                       await refresh();
                       if (result.isCorrect) {
@@ -133,8 +136,13 @@ export function FinalPage() {
                       setIsSubmitting(false);
                     }
                   }}>
-                  <Form.Item name="answer" rules={[{required: true}]}>
-                    <Input placeholder="Final answer" disabled={!canSubmit} />
+                  <Form.Item
+                    name="answer"
+                    normalize={(value: string | undefined) =>
+                      value ? value.toUpperCase() : value
+                    }
+                    rules={[{required: true}]}>
+                    <Input placeholder="Final answer" disabled={!canSubmit || isSubmitting} />
                   </Form.Item>
                   <Button
                     htmlType="submit"

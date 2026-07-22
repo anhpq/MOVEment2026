@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "be/prisma/init.sql": {
-    "mtime": 1784728264.6527932,
-    "ast_hash": "b6442d1c31b364cb9b4e3b2fd302538b",
+    "mtime": 1784729358.9729743,
+    "ast_hash": "f8cca1059f6bf72bd60e47b56557b40b",
     "semantic_hash": ""
   },
   "be/prisma/migrations/000001_init/migration.sql": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "be/prisma/seed.ts": {
-    "mtime": 1784727572.1434004,
-    "ast_hash": "dd4cf267d0baa16bb14b32c9c228198a",
+    "mtime": 1784729357.149169,
+    "ast_hash": "e23f3e67f76d06eef6305f1a2abb4548",
     "semantic_hash": ""
   },
   "be/src/app.module.ts": {
@@ -170,8 +170,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/final/final.service.ts": {
-    "mtime": 1784646079.681318,
-    "ast_hash": "99ae3c77b5600d5185015091b0b7f698",
+    "mtime": 1784729356.5331545,
+    "ast_hash": "d4b1fb91d3d7923b74a14be39c4bf00e",
     "semantic_hash": ""
   },
   "be/src/modules/player/dto/player-actions.dto.ts": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784728937.2435567,
-    "ast_hash": "d67796f38ac527f7049b19a1a43af732",
+    "mtime": 1784729686.987478,
+    "ast_hash": "2c6cb168aa2ac0d041a5cdf075baa98d",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -520,13 +520,13 @@
     "semantic_hash": ""
   },
   "be/src/modules/final/final.service.spec.ts": {
-    "mtime": 1784646079.681318,
-    "ast_hash": "0c8d96c4241a077860f73c4cb5b53a71",
+    "mtime": 1784729559.443703,
+    "ast_hash": "db23de980966f957d3c32b0d7a00d21e",
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784728936.622999,
-    "ast_hash": "7c259ddb47643d66597f271f5c23b5a5",
+    "mtime": 1784729665.383743,
+    "ast_hash": "30a863bdf3488a81ae82425e4ea43409",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -620,8 +620,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/FinalPage.tsx": {
-    "mtime": 1784646079.687319,
-    "ast_hash": "43606f0daf3550f81c3cef9534b5be15",
+    "mtime": 1784729357.767885,
+    "ast_hash": "5ea7ac4eda4568c3bcf88b5ca266fc06",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/LeaderboardPage.tsx": {
@@ -777,6 +777,11 @@
   "be/prisma/migrations/000007_station_score_defaults/migration.sql": {
     "mtime": 1784728263.9129474,
     "ast_hash": "8f435b02ee7487b00dd499edf53ebcfe",
+    "semantic_hash": ""
+  },
+  "be/prisma/migrations/000008_final_event_defaults/migration.sql": {
+    "mtime": 1784729359.9744253,
+    "ast_hash": "160757bf47cc5690711435ce325fff0d",
     "semantic_hash": ""
   }
 }
