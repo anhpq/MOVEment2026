@@ -20,6 +20,9 @@ as two independent manual GitHub Actions phases.
    - `CORS_ORIGIN=https://heroes.nalth.top`
    - `FRONTEND_PUBLIC_URL=https://heroes.nalth.top`
 5. Take a fresh PostgreSQL backup before Phase 1.
+6. Confirm the deployed backend marker exists at
+   `/opt/movement/deploy-markers/movement-api.commit`, or prepare the exact
+   `base_commit` for the first conditional backend deploy.
 
 Backup command on the Production host:
 
@@ -43,6 +46,9 @@ Run GitHub Actions workflow **Deploy Backend (ECS)** manually:
 target_branch: master
 backup_confirmed: BACKUP_CONFIRMED
 deploy_backend: deploy-backend
+base_commit: optional, required when the server marker is missing
+target_commit: optional, defaults to origin/master on the ECS host
+force_database_steps: false
 ```
 
 If the `production-backend` GitHub Environment has required reviewers, wait for
@@ -50,16 +56,42 @@ approval before the job proceeds.
 
 The workflow:
 
-1. refreshes `/opt/movement/app` to the selected branch;
+1. refreshes `/opt/movement/app` without deleting protected host files;
 2. requires protected host `be/.env`;
-3. runs `npm run prisma:generate`;
-4. runs `npm run prisma:deploy`;
-5. runs `npm run prisma:seed`;
-6. runs `npm run db:verify`;
-7. runs `npm run build`;
-8. restarts `movement-api` through PM2 or systemd;
-9. runs `npm run db:verify` again;
-10. checks `http://127.0.0.1:8080/api/docs`.
+3. resolves `TARGET_COMMIT` from `target_commit` or `origin/master`;
+4. resolves `BASE_COMMIT` from the workflow input or the protected deployment
+   marker;
+5. stops if neither `base_commit` nor the deployment marker is available;
+6. compares the complete `BASE_COMMIT..TARGET_COMMIT` range for database paths;
+7. prints a non-secret database plan summary;
+8. runs `npm run prisma:generate`;
+9. conditionally runs `npm run prisma:deploy`;
+10. conditionally runs `npm run prisma:seed`;
+11. conditionally runs `npm run db:verify`;
+12. runs `npm run build`;
+13. restarts `movement-api` through PM2 or systemd;
+14. conditionally runs post-restart `npm run db:verify`;
+15. checks `http://127.0.0.1:8080/api/docs`;
+16. updates `/opt/movement/deploy-markers/movement-api.commit` only after all
+    required database steps, build, restart, verification, and health checks pass.
+
+Database-related paths include Prisma schema, migrations, seed files,
+`be/prisma/init.sql`, `be/prisma.config.ts`, database verification scripts, and
+deployment/package scripts that can change migration or seed behavior.
+
+Conditional database behavior:
+
+- No database-related changes: skip `prisma migrate deploy`, Production seed,
+  and `db:verify`; still install, generate Prisma Client, build, restart, and
+  check backend health.
+- Schema or migration changes: run Prisma Client generation, `prisma migrate
+  deploy`, and `db:verify`.
+- Seed-only changes: run Production-safe seed and `db:verify` without running
+  `prisma migrate deploy`.
+- Combined schema/migration and seed changes: run migration first, then seed,
+  then `db:verify`.
+- `force_database_steps: true`: run migration, seed, and `db:verify`
+  regardless of detected changes.
 
 Stop immediately if Phase 1 fails. Do not start Phase 2 until backend health and
 database verification are green.
@@ -116,6 +148,7 @@ Then verify application behavior without rotating or revoking QR tokens:
 Stop and do not continue to the next phase when any of these occur:
 
 - no fresh Production database backup;
+- missing deployment marker and no explicit `base_commit`;
 - missing or unsafe Production environment variable;
 - migration, seed, or `db:verify` failure;
 - backend build or health check failure;

@@ -13,6 +13,19 @@ on:
       deploy_backend:
         description: 'Type deploy-backend to run Phase 1'
         required: true
+      base_commit:
+        description: 'Optional deployed base commit; required when the server marker does not exist'
+        required: false
+        default: ''
+      target_commit:
+        description: 'Optional exact target commit; defaults to origin/master on the ECS host'
+        required: false
+        default: ''
+      force_database_steps:
+        description: 'Run Prisma migrate deploy, Production seed, and db:verify regardless of detected changes'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: production-backend-deploy
@@ -21,6 +34,8 @@ concurrency:
 env:
   DEPLOY_PATH: /opt/movement/app
   APP_NAME: movement-api
+  DEPLOY_MARKER_PATH: /opt/movement/deploy-markers/movement-api.commit
+  HEALTHCHECK_URL: http://127.0.0.1:8080/api/docs
 
 jobs:
   deploy:
@@ -56,12 +71,17 @@ jobs:
           DEPLOY_BRANCH: ${{ github.event.inputs.target_branch }}
           GIT_REPO_URL: git@github.com:${{ github.repository }}.git
           APP_NAME: ${{ env.APP_NAME }}
+          BASE_COMMIT: ${{ github.event.inputs.base_commit }}
+          TARGET_COMMIT: ${{ github.event.inputs.target_commit }}
+          FORCE_DATABASE_STEPS: ${{ github.event.inputs.force_database_steps }}
+          DEPLOY_MARKER_PATH: ${{ env.DEPLOY_MARKER_PATH }}
+          HEALTHCHECK_URL: ${{ env.HEALTHCHECK_URL }}
         with:
           host: ${{ secrets.ECS_HOST }}
           username: ${{ secrets.ECS_USER }}
           key: ${{ secrets.ECS_SSH_KEY }}
           port: 22
-          envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,APP_NAME
+          envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,APP_NAME,BASE_COMMIT,TARGET_COMMIT,FORCE_DATABASE_STEPS,DEPLOY_MARKER_PATH,HEALTHCHECK_URL
           script: |
             set -euo pipefail
 
@@ -94,7 +114,5 @@ jobs:
               exit 1
             fi
 
-            export DEPLOY_PATH DEPLOY_BRANCH GIT_REPO_URL APP_NAME
+            export DEPLOY_PATH DEPLOY_BRANCH GIT_REPO_URL APP_NAME BASE_COMMIT TARGET_COMMIT FORCE_DATABASE_STEPS DEPLOY_MARKER_PATH HEALTHCHECK_URL
             bash "${DEPLOY_PATH}/be/deploy/deploy.sh"
-
-            curl -fsS "http://127.0.0.1:8080/api/docs" >/dev/null

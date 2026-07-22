@@ -153,7 +153,11 @@
   "151": "16. API Validation Flow",
   "152": "6. Automatic Provisioning",
   "153": "9. Generated Data và Seed Workflow",
+  "154": "jwt-auth.guard.ts",
   "155": "admin.service.spec.ts",
+  "156": ".getPublicConfig",
+  "157": "LeaderboardController",
+  "158": ".generateTeamQrLoginToken",
   "163": "MOVEment 2026 - Automatic URL QR Login",
   "164": "CODEX QR AUTO LOGIN AND SEED TOKENS"
 }

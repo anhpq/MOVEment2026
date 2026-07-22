@@ -1,3 +1,12 @@
+## 2026-07-22 Conditional Backend Database Deployment
+
+- Added commit-range database change detection to the manual `Deploy Backend (ECS)` workflow. The workflow now accepts optional `base_commit`, optional `target_commit`, and boolean `force_database_steps` inputs while preserving the `master` branch guard and backup/deploy confirmation gates.
+- Backend deployment now resolves the target commit from the input or `origin/master`, resolves the base commit from input or protected server marker `/opt/movement/deploy-markers/movement-api.commit`, and stops safely when neither base source is available. It does not compare only `HEAD~1`.
+- `be/deploy/deploy.sh` classifies the complete deployed range with `be/deploy/plan-database-steps.js`. Schema/migration paths trigger Prisma migrate and `db:verify`; seed and database-verification paths trigger Production-safe seed and `db:verify`; `force_database_steps=true` runs migration, seed, and `db:verify` regardless of detected changes.
+- Application-only backend changes now skip `prisma migrate deploy`, Production seed, and database-specific verification while still installing dependencies, running Prisma Client generation for build safety, building, restarting `movement-api`, checking backend health, and updating the deployed marker only after success.
+- Failure behavior remains fail-fast: failed migration, seed, database verification, build, restart, or health check stops the deployment before marker update. Migration, seed, and pre-restart database verification failures occur before backend restart.
+- No frontend deployment behavior, application Business Rules, QR behavior, Station scoring, Final Challenge behavior, Production secrets, Production state, push, or deploy action was changed or performed.
+
 ## 2026-07-22 Staged Production Deployment Workflow
 
 - Converted Production deployment from push-triggered workflows to two independent manual phases. `Deploy Backend (ECS)` is now Phase 1 and can only run by `workflow_dispatch` with explicit `BACKUP_CONFIRMED` and `deploy-backend` inputs.

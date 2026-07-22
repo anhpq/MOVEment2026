@@ -5,8 +5,8 @@
     "semantic_hash": "f3ac3b2a9ea0318f3996ee96fd1f8cac"
   },
   "be/deploy/deploy.sh": {
-    "mtime": 1784646097.9985137,
-    "ast_hash": "32ea75fc14a1e2e9b622db4b5b75a61f",
+    "mtime": 1784735247.976158,
+    "ast_hash": "028764436ab4e827ae113439417957c4",
     "semantic_hash": ""
   },
   "be/jest.config.ts": {
@@ -410,8 +410,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1784734343.0225644,
-    "ast_hash": "b05076584b1aa0d19d638dac8ebf1a89",
+    "mtime": 1784735153.2725947,
+    "ast_hash": "8bf5a01ef1374468bbe70be5f095d9e2",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784734173.3945255,
-    "ast_hash": "ffc1a1b90eba7cff9464b3fdc5b75185",
+    "mtime": 1784735208.7574468,
+    "ast_hash": "d898cb1be66b70dc21b6f19f71cbc719",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784734357.6462677,
-    "ast_hash": "4c3302f1584f64acc82493700876aa66",
+    "mtime": 1784735208.0327952,
+    "ast_hash": "03d15c0cab457e8dbf0c90334b288ab2",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -790,8 +790,18 @@
     "semantic_hash": ""
   },
   "deploy/PRODUCTION_STAGED_DEPLOY.md": {
-    "mtime": 1784734247.4533865,
-    "ast_hash": "b7976e99217ac6ea20047e26b7c15eea",
+    "mtime": 1784735207.3714342,
+    "ast_hash": "27c87b390c48b18a9e21613af61087db",
+    "semantic_hash": ""
+  },
+  "be/deploy/plan-database-steps.js": {
+    "mtime": 1784735151.1547487,
+    "ast_hash": "421b9241139a3a571c8ada0703331a0b",
+    "semantic_hash": ""
+  },
+  "be/deploy/plan-database-steps.test.js": {
+    "mtime": 1784735151.8022182,
+    "ast_hash": "7c4fa912ee965ed89e57306d19460ef5",
     "semantic_hash": ""
   }
 }

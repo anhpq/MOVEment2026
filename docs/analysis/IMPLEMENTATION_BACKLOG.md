@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Conditional backend database deployment completion
+
+- [x] Backend Production workflow supports independent manual deployment inputs for `base_commit`, `target_commit`, and `force_database_steps`.
+- [x] Backend deploy resolves the complete deployed commit range from explicit input or protected server marker instead of assuming `HEAD~1`.
+- [x] Application-only backend changes skip `prisma migrate deploy`, Production seed, and database-specific verification while preserving install, build, restart, and health checks.
+- [x] Schema or migration changes run Prisma Client generation, `prisma migrate deploy`, and `db:verify`.
+- [x] Seed-only changes run Production-safe seed and `db:verify` without running `prisma migrate deploy`.
+- [x] Combined migration/schema and seed changes run migration before seed and then `db:verify`.
+- [x] `force_database_steps=true` runs migration, seed, and `db:verify` regardless of detected changes.
+- [x] Deployment marker updates only after required database steps, build, restart, post-restart verification when required, and backend health pass.
+- [ ] Actual Production deployment remains open and requires explicit approval.
+- [ ] First conditional Production deploy must provide `base_commit` if `/opt/movement/deploy-markers/movement-api.commit` is not already present.
+
 ## 2026-07-22 Staged Production deployment workflow completion
 
 - [x] Production backend deployment is manual-only through `workflow_dispatch`, with explicit backup confirmation and backend deploy confirmation inputs.
