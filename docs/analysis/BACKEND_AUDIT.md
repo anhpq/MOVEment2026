@@ -1,5 +1,3 @@
-# Backend Audit Status
-
 ## 2026-07-22 Reusable Automatic URL Team QR Login
 
 - Migrated Automatic URL Team QR Login from one-time consumption to a reusable controlled token. Successful login now updates `last_used_at` and `usage_count` without setting `consumed_at`; password and QR login continue to share the one-active-session-per-Team replacement path.
@@ -11,6 +9,21 @@
 - Local migration `000005_reusable_qr_login_tokens` applied successfully. The first seed repaired 25 expired Team tokens; a second seed preserved the same 25-token inventory digest. A simulated missing-token repair produced one replacement and retained exactly one active token for each of 25 Teams with no duplicate active rows.
 - Verification passed: Prisma Client generation, migration deploy, focused Auth/Admin tests (17), full backend Jest suite (56), backend build, backend lint, seed twice, missing-token repair, production-mode local seed guard, `db:verify`, frontend lint, and frontend production build. The frontend build retains the known non-blocking large-chunk warning.
 - Not performed: Production migration, Production QR issuance, deployed `/qr-login` verification, manual browser/phone login, push, or deploy. Station QR implementation was not changed.
+
+<!-- DOC_RECONCILIATION_2026-07-22 -->
+## 2026-07-22 Source of Truth and QR documentation reconciliation
+
+- Documentation-only reconciliation completed. No Source Code, migration, database, seed runtime, deployment, or production environment was changed by this documentation step.
+- Established `OPEN_QUESTIONS_AND_DECISIONS.md` as the Business Rule Source of Truth, `FEATURE_INDEX.md` as Feature routing, `AGENTS.md` as Agent Operational Instructions, and `00_WORKFLOW.md` as Prompt selection workflow.
+- Updated QR documentation to require Automatic URL Team QR Login with a reusable controlled opaque token and Station QR format `MV26-SQ1-I/O-<randomToken>`.
+- Updated documentation to require automatic Team token provisioning and automatic Station Check-in/Check-out token provisioning.
+- Updated Event and Final documentation to use Admin Event Config end time instead of fixed `11:30`/`11:45`.
+- Updated Station scoring documentation for `SCORE`, `TIME`, and `BOTH`, with default max score `30`, backend authority, hashed scoring-code handling, and duplicate protection.
+- Historical audit entries containing predictable QR values remain preserved as evidence of previously verified Legacy behavior; they are not the current desired Business Rule.
+- Known implementation gaps remain open: one-time Automatic URL token consumption, predictable Team/Station QR generation, Legacy seed/smoke fixtures, Production CORS/login verification, and real iPhone HTTPS camera verification.
+- Verification for this documentation step: generated replacement Markdown files and an idempotent PowerShell apply script. Source Code tests were not run because Source Code was not modified.
+
+# Backend Audit Status
 
 ## 2026-07-21 iOS QR camera fallback
 

@@ -9,117 +9,132 @@
 - [ ] Production migration and deployed QR flow verification remain open.
 - [ ] Station QR migration remains out of scope and open.
 
-## P0 - Backend correctness
+## Rules
 
-- [x] Admin/team username-password authentication.
-- [x] Một active session cho mỗi team.
-- [x] QR check-in/check-out bắt buộc và phân biệt purpose.
-- [x] Mỗi station có QR check-in và QR check-out riêng, token/fingerprint unique.
-- [x] Mỗi station có tracking mode lưu DB: `SCORE`, `TIME`, hoặc `BOTH`; mode `SCORE` không cộng thời lượng vì check-out time bằng check-in time, mode `TIME` auto-complete ở QR end với score 0.
-- [x] Một active station cho mỗi team.
-- [x] Mọi station active được seed `AVAILABLE`; không khóa/mở tuần tự theo vị trí station.
-- [x] Cancel về `AVAILABLE` với cooldown.
-- [x] Staff nhập điểm trên team session với mã xác nhận.
-- [x] Admin score/edit/reopen/status override.
-- [x] Leaderboard và activity log.
-- [x] Final auto-scoring và export Excel.
-- [x] Final Challenge opens from Admin Event Config event end time, blocks active-station teams until they finish, applies wrong-answer cooldown, and awards fixed rank bonus points.
-- [x] Unit/e2e tests cho auth, QR, scoring và Final concurrency/retry.
-- [x] ESLint flat config cho backend.
-- [x] Production config phải fail-fast nếu secret còn mặc định.
+- `[x]` means implementation and required verification are complete.
+- `[ ]` means incomplete, not verified, or blocked.
+- Documentation-only reconciliation does not complete Source Code work.
+- Historical audit evidence remains in `BACKEND_AUDIT.md`.
+- Use the smallest relevant Feature Prompt.
 
-## P0 - Frontend integration
+## P0 — QR Security and Provisioning
 
-- [x] Thay dữ liệu dummy bằng API client thật cho màn player map/detail.
-- [x] Login, lưu JWT và duy trì session 1 ngày.
-- [x] QR login bằng token riêng cho từng team; login bằng QR vẫn revoke session cũ để đảm bảo một team chỉ có một thiết bị active.
-- [x] QR scanner thật cho login/check-in/check-out qua camera: ưu tiên native `BarcodeDetector`, fallback `jsQR` trên iOS/Safari, có fallback nhập/paste token thủ công.
-- [x] Form nhập điểm yêu cầu mã xác nhận sau check-out.
-- [x] Sửa production build trên Windows.
-
-## P1 - Event readiness
-
-- [x] Migration + seed trên database trống.
-- [x] Smoke test toàn bộ flow bằng hai team session.
-- [x] Thêm `prisma generate`, `prisma migrate deploy`, seed idempotent, và seed verification vào backend deployment.
-- [ ] Cấu hình CORS và secret production trên môi trường deploy.
-- [x] Rehearsal export report và recovery database.
-
-## Next execution checklist
-
-Chạy lần lượt từ trên xuống. Sau mỗi cụm chạy xong, cập nhật file này, `docs/analysis/BACKEND_AUDIT.md`, chạy verify phù hợp, chạy Graphify update khi hữu ích/khả dụng theo `AGENTS.md`, rồi commit riêng.
-
-### 1. Chuẩn bị rehearsal database và API
-
-- [x] Xác nhận PostgreSQL rehearsal/disposable đang chạy và không trỏ nhầm production.
-- [x] Trong `be/`, chạy `npm run prisma:deploy`.
-- [x] Trong `be/`, chạy `npm run seed`.
-- [x] Start backend API với env rehearsal: `NODE_ENV=development`, `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE=2468`, `CORS_ORIGIN=http://localhost:5173`.
-- [x] Kiểm tra `GET http://localhost:3000/api/docs` hoặc login health bằng `POST /api/auth/login`.
+- [x] Migrate Automatic URL Team QR Login from one-time consumption to reusable controlled token behavior.
+- [x] Ensure successful QR login does not consume the active Team token.
+- [x] Preserve one-active-session-per-Team behavior for password and QR login.
+- [x] Automatically provision a secure Team QR token in every Team creation path.
+- [x] Add idempotent missing-Team-token repair.
+- [x] Ensure Admin can generate, rotate, revoke, and inspect Team QR token status.
+- [x] Select and document raw-token reprint strategy: display once and rotate to reprint.
+- [x] Remove predictable Team QR generation for new data while retaining existing Legacy credentials for compatibility.
+- [ ] Migrate Station QR to `MV26-SQ1-I/O-<randomToken>`.
+- [ ] Automatically provision one Check-in and one Check-out token when creating a Station.
+- [ ] Roll back Station creation when the complete QR pair cannot be created.
+- [ ] Support independent Station Check-in and Check-out rotation/revocation.
+- [ ] Update database constraints and indexes for token uniqueness and active-token invariants.
+- [ ] Update seed, fixtures, and smoke scripts that hard-code Legacy QR payloads.
+- [ ] Define and verify Legacy compatibility removal conditions.
 
 Acceptance:
 
-- API phản hồi trên `http://localhost:3000`.
-- Seed có `Team 01`/`team01`, `Team 02`/`team02`, admin `admin/admin123`, team QR `MV26-TEAM-01-LOGIN`, station QR `MV26-STATION-ST002-CHECK_IN`, `MV26-STATION-ST002-CHECK_OUT`, `MV26-STATION-ST047-CHECK_IN`, `MV26-STATION-ST047-CHECK_OUT`.
+- Team token is random, opaque, reusable while valid, revocable, and rotatable.
+- Station token does not expose Station ID/code.
+- Database token record determines Station and purpose.
+- Repeated seed does not rotate valid tokens or create duplicates.
+- Production logs and tracked files contain no raw token.
 
-### 2. Chạy two-team station smoke
+## P0 — Authentication and Session
 
-- [x] Từ repo root chạy:
-  `powershell -ExecutionPolicy Bypass -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468`
-- [x] Xác nhận script báo team01/team02 có điểm và completed station.
-- [ ] Nếu smoke fail, lưu lỗi vào `docs/analysis/BACKEND_AUDIT.md` trước khi sửa code.
-- [x] Nếu smoke pass, mark P1 smoke test là `[x]`.
+- [x] Admin username/password authentication exists.
+- [x] Team username/password authentication exists.
+- [x] New Team login replaces previous active Team session.
+- [x] Verify session replacement after reusable Automatic URL QR migration.
+- [x] Verify inactive Team and revoked/expired QR behavior after migration.
+- [x] Verify QR rate limiting on the active implementation.
 
-Acceptance:
+## P0 — Station Flow and Scoring
 
-- Team 01 hoàn thành `ST002` với điểm smoke.
-- Team 02 hoàn thành `ST047` với điểm smoke.
-- `GET /api/player/me` của cả hai team phản ánh `totalPoints` và `completedStations`.
+- [x] One active Station per Team is implemented.
+- [x] Active Stations initialize as `AVAILABLE`.
+- [x] Cancel returns to `AVAILABLE` with cooldown.
+- [x] Tracking modes `SCORE`, `TIME`, and `BOTH` exist in historical verified implementation.
+- [x] `TIME` auto-completes with score 0 in historical verification.
+- [x] `SCORE` and `BOTH` require score entry in historical verification.
+- [x] Backend score limits and confirmation-code flow have historical verification.
+- [ ] Re-run Station flow verification after Station QR migration.
+- [ ] Verify new Station creation automatically provisions both secure QR tokens.
+- [ ] Verify duplicate Check-out and duplicate score submissions after migration.
 
-### 3. Validate production env trên môi trường deploy
+## P0 — Final Challenge
 
-- [x] Bật workflow Deploy Backend (ECS) trên `master` + `workflow_dispatch`; workflow truyền `DEPLOY_BRANCH=master` vào `be/deploy/deploy.sh`.
-- [x] GitHub secrets `ECS_HOST` / `ECS_USER` / `ECS_SSH_KEY` aligned to the production ECS host / `root` / PEM (2026-07-20).
-- [x] One-time ECS host bootstrap: `/opt/movement/app` on `master`, Node 20 + pm2 startup, `be/.env` complete (`PORT=8080`, CORS → OBS website), Postgres `movement` login fixed, Nest `movement-api` online; `GET :8080/api/docs` = 200.
-- [ ] Merge latest `be-deploy.yml` + `deploy.sh` (`npm ci --include=dev`, `prisma generate`, `prisma migrate deploy`, `prisma db seed`, `db:verify`) to `master` and confirm Actions `workflow_dispatch` succeeds.
-- [ ] Từ frontend HTTPS origin, gọi login/team-login qua same-origin `/api` để xác nhận reverse proxy và CORS.
-- [ ] Mark P1 CORS/secrets là `[x]` chỉ sau khi CORS login test trên deploy target pass.
+- [x] Final keyword `DISANVANHOA2026` exists in historical implementation.
+- [x] Uppercase normalization has historical implementation evidence.
+- [x] Final opens from Event Config end time in historical implementation.
+- [x] Top-10 bonus and concurrency/idempotency have historical test evidence.
+- [ ] Re-run Final smoke after documentation and QR migration work.
+- [ ] Confirm no active code path still uses fixed `11:30` or `11:45`.
+- [ ] Confirm cooldown progression is backend-enforced from 1 to maximum 10 seconds.
 
-Acceptance:
+## P0 — Documentation and Prompt Consistency
 
-- Production API start thành công với secrets thật.
-- API từ origin frontend thật không bị CORS block.
-- Production startup fail nếu đổi tạm `JWT_SECRET=change-me`, `SCORING_CODE=2468`, hoặc `CORS_ORIGIN=*`.
+- [x] Business Rule Source of Truth created.
+- [x] Feature Index created.
+- [x] Workflow converted to Feature-based routing.
+- [x] `AGENTS.md` operational authority clarified.
+- [x] Master Prompt converted to Multi-Feature Orchestrator.
+- [x] iOS QR Camera analysis synchronized.
+- [x] QR Login analysis synchronized.
+- [x] QR payload analysis synchronized.
+- [x] Team login data removed hard-coded raw QR tokens.
+- [x] QR Login Prompt synchronized.
+- [x] Final Prompt synchronized.
+- [x] Station Scoring Prompt synchronized.
+- [x] Implementation Sync Prompt synchronized.
+- [x] Project Analysis Spec synchronized.
+- [ ] Run repository-wide Markdown link/path review after applying the bundle.
+- [ ] Inspect prompts `01`–`07` before using them; treat Legacy assumptions as historical input unless reconciled.
 
-### 4. Rehearse report export và database recovery
+## P1 — iOS QR Camera
 
-- [x] Trước smoke/rehearsal, backup DB:
-  `pg_dump "$DATABASE_URL" --format=custom --file movement-backup.dump`
-- [x] Restore backup vào DB disposable:
-  `createdb movement_restore`
-  `pg_restore --dbname movement_restore --clean --if-exists movement-backup.dump`
-- [x] Start temporary API instance trỏ vào restored DB.
-- [x] Chạy export:
-  `powershell -ExecutionPolicy Bypass -File be/scripts/export-summary-report.ps1 -ApiBaseUrl http://localhost:3000 -Username admin -Password admin123`
-- [x] Mở hoặc kiểm tra file `.xlsx` không rỗng.
-- [x] Mark P1 export/recovery là `[x]` sau khi restore + export đều pass.
+- [x] Camera capability uses `getUserMedia`.
+- [x] Native `BarcodeDetector` preferred.
+- [x] `jsQR` fallback added in historical implementation.
+- [x] Scanner lifecycle and cleanup improved in historical implementation.
+- [ ] Manual Production HTTPS test on iPhone Safari.
+- [ ] Manual Production HTTPS test on Chrome iOS.
+- [ ] Confirm repeated open/close does not leak camera tracks.
+- [ ] Confirm one QR frame produces one API request.
 
-Acceptance:
+## P1 — Production Readiness
 
-- Restore tạo DB đọc được bởi API.
-- `GET /api/admin/dashboard` thành công trên restored DB.
-- Export summary `.xlsx` tạo file non-empty.
+- [x] Production config fail-fast behavior has historical verification.
+- [x] Database backup/restore and report export have historical verification.
+- [ ] Merge and run the latest backend deployment workflow on the intended branch.
+- [ ] Verify login through frontend HTTPS same-origin `/api`.
+- [ ] Verify active Production CORS configuration.
+- [ ] Verify `/qr-login` direct navigation and refresh in Production.
+- [ ] Verify Production seed does not generate or print raw QR secrets.
+- [ ] Verify migrated reusable Team QR behavior in Production or a production-like environment.
+- [ ] Verify secure Station QR pair generation in a production-like environment.
 
-### 5. Maintenance sau event-readiness
+## P2 — Legacy Removal
 
-- [x] Chạy `npm audit` trong `be/`, ghi rõ findings vào `docs/analysis/BACKEND_AUDIT.md`.
-- [x] Đánh giá upgrade/fix dependency có phá build/test không; chỉ apply khi test xanh.
-- [x] Chuyển Prisma seed config từ deprecated `package.json#prisma` sang `be/prisma.config.ts` để sẵn sàng Prisma 7.
+- [ ] Inventory Legacy Team QR endpoint and parser usage.
+- [ ] Inventory Legacy Station QR parser and seed usage.
+- [ ] Reissue printed Team QR codes.
+- [ ] Reissue printed Station Check-in and Check-out QR codes.
+- [ ] Update tester documentation and rehearsal instructions.
+- [x] Disable Legacy Team token generation for new Team and seed data; Station Legacy generation remains open.
+- [ ] Disable Legacy parser/endpoints after compatibility window.
+- [ ] Remove obsolete migration fields only after safe deployment and rollback review.
 
-## Remaining external handoff
+## Next Execution Order
 
-- [x] Bật BE production CI/CD trên `master` (`.github/workflows/be-deploy.yml` gọi `be/deploy/deploy.sh` với `DEPLOY_BRANCH=master`); FE/BE path-filtered riêng. Cần file `.env` trên ECS trước lần deploy thật.
-- [ ] Cấu hình và validate production CORS/secrets trên deploy target thật. Local code đã fail-fast cho secret mặc định và wildcard CORS, nhưng chỉ mark `[x]` sau khi có domain frontend production, secret production, và API deployed để test login/CORS credentials.
-- [x] Integrate Admin bootstrap, team CRUD, and station quick status/score updates with backend APIs (verified 2026-07-20).
-- [x] Remove legacy frontend dummy data/database fallback and hard-coded station metrics (verified 2026-07-20).
-- [x] Integrate Station CRUD/map/media, Player leaderboard/cancel/cipher/Final, and Admin operations screens (verified 2026-07-20).
+1. Run `docs/prompts/10_CODEX_QR_AUTO_LOGIN_AND_SEED_TOKENS_PROMPT.md`.
+2. Implement secure Station QR provisioning and migration using `FEATURE_INDEX.md` routing.
+3. Re-run Station scoring verification with Prompt 12.
+4. Re-run Final verification with Prompt 11.
+5. Run Production-like smoke tests.
+6. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
+7. Review diff, run `git diff --check`, and create scoped local commits.
+8. Do not push or deploy without explicit user request.
