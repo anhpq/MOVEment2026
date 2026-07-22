@@ -37,6 +37,28 @@ docs/prompts/00_WORKFLOW.md
 
 ---
 
+## Response Language
+
+- Luôn trả lời user bằng tiếng Việt.
+- Giữ nguyên các technical terms phổ biến bằng tiếng Anh khi cần rõ nghĩa, ví dụ:
+  - Source of Truth
+  - Business Rule
+  - Feature
+  - Prompt
+  - Workflow
+  - Migration
+  - Seed
+  - Commit
+  - Deploy
+  - Production
+  - Backend
+  - Frontend
+- Không tự chuyển sang tiếng Anh toàn bộ câu trả lời, trừ khi user yêu cầu rõ.
+- Khi viết code, command, file path, commit message hoặc tên biến, giữ nguyên ngôn ngữ kỹ thuật phù hợp.
+- Final report, audit report và implementation summary phải viết bằng tiếng Việt.
+
+---
+
 # 1. Instruction Priority
 
 Apply repository guidance in this order:
