@@ -410,13 +410,13 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1784563987.8447044,
-    "ast_hash": "f7dca6f477e5a51ae75f7873c5e7a035",
+    "mtime": 1784734343.0225644,
+    "ast_hash": "b05076584b1aa0d19d638dac8ebf1a89",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
-    "mtime": 1784567083.9306214,
-    "ast_hash": "6cf7cdc30d943575c33425cb736effe2",
+    "mtime": 1784734349.901924,
+    "ast_hash": "0c818d98d295891285d970c061514544",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784732599.5194483,
-    "ast_hash": "9dabafc9f0717627d2d8957a6c275425",
+    "mtime": 1784734173.3945255,
+    "ast_hash": "ffc1a1b90eba7cff9464b3fdc5b75185",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784732805.8930638,
-    "ast_hash": "dbfa81220e73f0127c10ca259e86dc0e",
+    "mtime": 1784734357.6462677,
+    "ast_hash": "4c3302f1584f64acc82493700876aa66",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -650,8 +650,8 @@
     "semantic_hash": ""
   },
   "deploy/nginx/README.md": {
-    "mtime": 1784567083.9336205,
-    "ast_hash": "2cb80221c692e07ee2861a3ae53f0f1b",
+    "mtime": 1784734254.3097203,
+    "ast_hash": "3cf9fe89c30d167d289d233cc3331e59",
     "semantic_hash": ""
   },
   "be/scripts/verify-seed.ts": {
@@ -787,6 +787,11 @@
   "scripts/production-like-smoke.ps1": {
     "mtime": 1784732718.7423105,
     "ast_hash": "6c48498bf370af2fdec0284977639e69",
+    "semantic_hash": ""
+  },
+  "deploy/PRODUCTION_STAGED_DEPLOY.md": {
+    "mtime": 1784734247.4533865,
+    "ast_hash": "b7976e99217ac6ea20047e26b7c15eea",
     "semantic_hash": ""
   }
 }

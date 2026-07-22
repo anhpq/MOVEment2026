@@ -1,0 +1,145 @@
+# Production Staged Deployment
+
+Use this runbook only after the completed commits are ready to deploy and an
+operator has explicit approval to touch Production.
+
+Do not use push-triggered deployment for Production. Backend and frontend deploy
+as two independent manual GitHub Actions phases.
+
+## Phase 0 - Preflight
+
+1. Confirm the intended deploy branch, normally `master`.
+2. Confirm `master` contains the approved commits.
+3. Confirm the Production ECS host has `/opt/movement/app/be/.env`.
+4. Confirm `be/.env` contains production values:
+   - `NODE_ENV=production`
+   - `PORT=8080`
+   - `DATABASE_URL`
+   - `JWT_SECRET`
+   - `SCORING_CODE`
+   - `CORS_ORIGIN=https://heroes.nalth.top`
+   - `FRONTEND_PUBLIC_URL=https://heroes.nalth.top`
+5. Take a fresh PostgreSQL backup before Phase 1.
+
+Backup command on the Production host:
+
+```bash
+cd /opt/movement/app/be
+set -a
+source .env
+set +a
+mkdir -p /opt/movement/backups
+pg_dump "$DATABASE_URL" --format=custom --file "/opt/movement/backups/movement-$(date -u +%Y%m%dT%H%M%SZ).dump"
+```
+
+Do not print or copy the raw `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, QR
+tokens, or SSH keys into logs, issues, workflow files, or chat.
+
+## Phase 1 - Backend
+
+Run GitHub Actions workflow **Deploy Backend (ECS)** manually:
+
+```text
+target_branch: master
+backup_confirmed: BACKUP_CONFIRMED
+deploy_backend: deploy-backend
+```
+
+If the `production-backend` GitHub Environment has required reviewers, wait for
+approval before the job proceeds.
+
+The workflow:
+
+1. refreshes `/opt/movement/app` to the selected branch;
+2. requires protected host `be/.env`;
+3. runs `npm run prisma:generate`;
+4. runs `npm run prisma:deploy`;
+5. runs `npm run prisma:seed`;
+6. runs `npm run db:verify`;
+7. runs `npm run build`;
+8. restarts `movement-api` through PM2 or systemd;
+9. runs `npm run db:verify` again;
+10. checks `http://127.0.0.1:8080/api/docs`.
+
+Stop immediately if Phase 1 fails. Do not start Phase 2 until backend health and
+database verification are green.
+
+## Phase 2 - Frontend
+
+Run GitHub Actions workflow **Deploy Frontend (Nginx)** manually only after
+Phase 1 succeeds:
+
+```text
+target_branch: master
+deploy_frontend: deploy-frontend
+```
+
+If the `production-frontend` GitHub Environment has required reviewers, wait for
+approval before the job proceeds.
+
+The workflow:
+
+1. refreshes `/opt/movement/app` to the selected branch;
+2. unsets `VITE_API_BASE_URL`;
+3. runs `npm ci`;
+4. runs `npm run build`;
+5. syncs `fe/dist` to `/var/www/movement/current`;
+6. installs the checked-in Nginx config;
+7. runs `sudo nginx -t`;
+8. reloads Nginx;
+9. checks HTTPS root, `/api/docs`, `/qr-login`, refresh-style `/qr-login`, and
+   missing asset `404`.
+
+## Post-Deploy Checks
+
+Run non-destructive checks first:
+
+```bash
+curl -i https://heroes.nalth.top/ | head
+curl -i https://heroes.nalth.top/api/docs | head
+curl -i https://heroes.nalth.top/qr-login | head
+curl -i "https://heroes.nalth.top/qr-login?token=placeholder" | head
+curl -i https://heroes.nalth.top/assets/missing.js | head
+```
+
+Then verify application behavior without rotating or revoking QR tokens:
+
+- Admin login.
+- Team username/password login.
+- Existing reusable Team QR login.
+- SQ1 Station Check-in and Check-out with current printed/test QR where allowed.
+- Leaderboard loading.
+- Final availability according to Event Config.
+
+## Stop Conditions
+
+Stop and do not continue to the next phase when any of these occur:
+
+- no fresh Production database backup;
+- missing or unsafe Production environment variable;
+- migration, seed, or `db:verify` failure;
+- backend build or health check failure;
+- Nginx config validation failure;
+- frontend HTTPS, `/api`, SPA fallback, or `/qr-login` check failure;
+- raw QR token, scoring code, JWT secret, database URL, or SSH key appears in logs;
+- unexpected QR token rotation/revocation would be required.
+
+## Rollback
+
+Backend rollback requires both code and data consideration:
+
+1. Preserve the failing logs.
+2. Redeploy the previous known-good commit or branch if no migration/data
+   rollback is needed.
+3. Restore the pre-deploy PostgreSQL backup into a disposable database first.
+4. Restore Production from backup only with explicit approval.
+
+Frontend rollback:
+
+1. Redeploy the previous known-good frontend commit through **Deploy Frontend
+   (Nginx)**.
+2. If the Nginx config reload failed, keep the existing Nginx config active and
+   do not overwrite it manually without approval.
+
+Legacy QR compatibility must remain enabled until physical QR replacement is
+confirmed.

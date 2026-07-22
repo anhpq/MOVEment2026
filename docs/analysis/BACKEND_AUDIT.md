@@ -1,3 +1,11 @@
+## 2026-07-22 Staged Production Deployment Workflow
+
+- Converted Production deployment from push-triggered workflows to two independent manual phases. `Deploy Backend (ECS)` is now Phase 1 and can only run by `workflow_dispatch` with explicit `BACKUP_CONFIRMED` and `deploy-backend` inputs.
+- Preserved the existing backend ECS deployment script and branch strategy. The backend workflow still defaults to `master`, rejects any non-`master` Production deploy branch, requires host `be/.env`, runs Prisma generate, `prisma migrate deploy`, Production-safe seed, `db:verify`, build, backend restart through PM2/systemd, post-restart `db:verify`, and then checks local backend `/api/docs`.
+- Replaced the frontend OBS production workflow with a separate manual `Deploy Frontend (Nginx)` Phase 2 workflow. It defaults to `master`, requires exact `deploy-frontend` input, uses the `production-frontend` environment gate, builds with `VITE_API_BASE_URL` unset so browser requests stay same-origin `/api`, syncs `fe/dist` to `/var/www/movement/current`, validates and reloads Nginx, and checks HTTPS root, `/api/docs`, `/qr-login`, refresh-style `/qr-login?token=...`, and missing asset `404`.
+- Removed automatic `push` triggers from both Production deployment workflows so fast-forwarding `develop` into `master` cannot accidentally start backend and frontend deployments in parallel. GitHub Environments `production-backend` and `production-frontend` are referenced for approval gates; required reviewers must be configured in repository settings.
+- No application Business Rules, QR behavior, Station scoring, Final Challenge behavior, database migrations, seed source, production secrets, DNS, server files, or Production state were changed. No deploy, push, Production migration, Production access, or QR token lifecycle action was performed.
+
 ## 2026-07-22 Production-like Integration Verification
 
 - Audited current runner options before changing files. Existing `npm.cmd run tester` and `docker-compose.tester.yml` verify local HTTP same-origin behavior through Vite preview, but neither provided a disposable HTTPS-origin reverse-proxy smoke. The checked-in production Nginx config targets the real `heroes.nalth.top` host and was not used or modified.

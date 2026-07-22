@@ -1,16 +1,21 @@
 name: Deploy Backend (ECS)
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'be/**'
-      - '.github/workflows/be-deploy.yml'
   workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to deploy from the ECS checkout'
+        required: true
+        default: 'master'
+      backup_confirmed:
+        description: 'Type BACKUP_CONFIRMED after taking a Production database backup'
+        required: true
+      deploy_backend:
+        description: 'Type deploy-backend to run Phase 1'
+        required: true
 
 concurrency:
-  group: be-deploy-${{ github.ref }}
+  group: production-backend-deploy
   cancel-in-progress: true
 
 env:
@@ -19,15 +24,36 @@ env:
 
 jobs:
   deploy:
-    name: Pull code and restart on ECS
+    name: Phase 1 - Backend, migrations, seed, verify
     runs-on: ubuntu-latest
+    environment: production-backend
 
     steps:
+      - name: Validate manual approval inputs
+        env:
+          TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
+          BACKUP_CONFIRMED: ${{ github.event.inputs.backup_confirmed }}
+          DEPLOY_BACKEND: ${{ github.event.inputs.deploy_backend }}
+        run: |
+          set -euo pipefail
+          if [ "${BACKUP_CONFIRMED}" != "BACKUP_CONFIRMED" ]; then
+            echo "Refusing backend deploy: confirm a fresh Production database backup first."
+            exit 1
+          fi
+          if [ "${DEPLOY_BACKEND}" != "deploy-backend" ]; then
+            echo "Refusing backend deploy: deploy_backend input must be exactly deploy-backend."
+            exit 1
+          fi
+          if [ "${TARGET_BRANCH}" != "master" ]; then
+            echo "Refusing backend deploy: Production deploy branch must be master."
+            exit 1
+          fi
+
       - name: Deploy backend via SSH
         uses: appleboy/ssh-action@v1.2.0
         env:
           DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
-          DEPLOY_BRANCH: master
+          DEPLOY_BRANCH: ${{ github.event.inputs.target_branch }}
           GIT_REPO_URL: git@github.com:${{ github.repository }}.git
           APP_NAME: ${{ env.APP_NAME }}
         with:
@@ -70,3 +96,5 @@ jobs:
 
             export DEPLOY_PATH DEPLOY_BRANCH GIT_REPO_URL APP_NAME
             bash "${DEPLOY_PATH}/be/deploy/deploy.sh"
+
+            curl -fsS "http://127.0.0.1:8080/api/docs" >/dev/null

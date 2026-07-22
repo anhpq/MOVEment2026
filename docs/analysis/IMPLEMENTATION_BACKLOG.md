@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Staged Production deployment workflow completion
+
+- [x] Production backend deployment is manual-only through `workflow_dispatch`, with explicit backup confirmation and backend deploy confirmation inputs.
+- [x] Production frontend deployment is manual-only through a separate Nginx workflow, with explicit frontend deploy confirmation input.
+- [x] Automatic `push` triggers were removed from both Production deployment workflows, so merging or fast-forwarding `develop` into `master` cannot start backend and frontend deploy phases in parallel.
+- [x] Backend Phase 1 preserves the existing fail-fast deploy script: migrations, Production-safe seed, `db:verify`, and build must pass before the backend restart; post-restart `db:verify` and backend health check remain required.
+- [x] Frontend Phase 2 builds with `VITE_API_BASE_URL` unset for same-origin `/api`, syncs assets to the Nginx document root, validates Nginx config, reloads Nginx, and checks HTTPS, `/api`, SPA fallback, `/qr-login`, and missing asset behavior.
+- [ ] Actual Production backend deployment remains open and requires explicit approval.
+- [ ] Actual Production frontend deployment remains open and requires explicit approval after backend verification.
+
 ## 2026-07-22 Production-like integration verification completion
 
 - [x] Audited current local tester, Docker Compose, Vite preview proxy, production Nginx config, CORS config, environment guards, migration/seed path, and existing smoke coverage.
@@ -159,6 +169,7 @@ Acceptance:
 
 - [x] Production config fail-fast behavior has historical verification.
 - [x] Database backup/restore and report export have historical verification.
+- [x] Split Production deploy into independent manual backend and frontend phases.
 - [ ] Merge and run the latest backend deployment workflow on the intended branch.
 - [ ] Verify login through frontend HTTPS same-origin `/api`.
 - [ ] Verify active Production CORS configuration.
