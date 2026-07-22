@@ -61,7 +61,7 @@ CREATE TABLE "games" (
   "title" TEXT NOT NULL,
   "type" TEXT NOT NULL,
   "difficulty" INTEGER NOT NULL DEFAULT 1,
-  "max_points" INTEGER NOT NULL,
+  "max_points" INTEGER NOT NULL DEFAULT 30,
   "clue_text" TEXT,
   "media_url" TEXT,
   "answer_hash" TEXT,

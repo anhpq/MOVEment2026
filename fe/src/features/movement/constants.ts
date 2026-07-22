@@ -15,3 +15,5 @@ export const STATUS_ORDER: Record<StationStatus, number> = {
   New: 1,
   Finished: 2,
 };
+
+export const DEFAULT_STATION_MAX_POINTS = 30;

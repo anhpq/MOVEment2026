@@ -44,9 +44,10 @@ export class CreateStationDto {
   @MaxLength(80)
   gameType!: string;
 
+  @IsOptional()
   @IsInt()
   @Min(0)
-  maxPoints!: number;
+  maxPoints?: number;
 
   @IsOptional()
   @IsUrl()

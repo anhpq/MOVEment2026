@@ -1,0 +1,1 @@
+ALTER TABLE "games" ALTER COLUMN "max_points" SET DEFAULT 30;

@@ -1,3 +1,14 @@
+## 2026-07-22 Station Tracking Mode and Station Scoring
+
+- Verified current tracking behavior after the SQ1 Station QR migration: `SCORE` Check-out sets `checked_out_at` to `checked_in_at` and waits for Team-device score entry; `TIME` Check-out records real duration, completes immediately with score `0`, and does not require score submission; `BOTH` Check-out records real duration and waits for score entry.
+- Added the official Station score default to the database layer: `games.max_points` now has Prisma and SQL default `30` through migration `000007_station_score_defaults`, and Admin Station creation applies the same default when `maxPoints` is omitted.
+- Hardened backend score validation in both Team score submission and Admin audited correction. The service layer now rejects non-integer, negative, and above-max scores even if controller/frontend DTO validation is bypassed.
+- Preserved scoring-code security: Team score submission still verifies only against the bcrypt hash in `event_config.scoring_code_hash`; the raw code is not returned by API responses or exposed in the frontend bundle. Admin score correction remains a separate Admin-guarded audited flow and does not use the Team scoring-code path.
+- Preserved duplicate/concurrency protection for Team score submission through the conditional transaction claim on `completed_at IS NULL` and `checked_out_at IS NOT NULL`; focused tests now cover stale/concurrent duplicate submission awarding score only once.
+- Updated frontend score UX to use the Station's configured max score, falling back to `30`, instead of a hard-coded `1000`. The existing Team Check-out modal logic still skips score entry for `TIME` and opens score entry only for `SCORE`/`BOTH`.
+- Verification passed: focused Player/Admin service tests (32), full backend Jest suite (77), backend lint, backend build, Prisma Client generation, local migration deploy, seed twice, `db:verify`, frontend lint, frontend production build, and disposable local API smoke using SQ1 Check-in/Check-out plus Team score submission for two Teams. The smoke reset/reopened local/test progress targets through audited Admin APIs and rotated only local/test Station QR tokens needed to obtain raw SQ1 payloads.
+- Not performed: Production migration, production smoke, physical QR scan, push, or deploy. Team QR Login, Station QR token format, Final Challenge, deployment, and production configuration were not changed.
+
 ## 2026-07-22 Secure Station QR provisioning and migration
 
 - Migrated Station QR issuance from predictable `MV26-STATION-<stationId>-<purpose>` generation to official SQ1 opaque tokens: `MV26-SQ1-I-<randomToken>` and `MV26-SQ1-O-<randomToken>`. The random portion is generated from 16 cryptographically secure random bytes and encoded as 26-character uppercase Base32, giving 128 bits of entropy.

@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-22 Station tracking and scoring completion
+
+- [x] Re-verified `SCORE`, `TIME`, and `BOTH` behavior after SQ1 Station QR migration.
+- [x] `TIME` records real duration, auto-completes with score `0`, and does not require Team score submission.
+- [x] `SCORE` contributes no play duration and requires Team-device score submission after Check-out.
+- [x] `BOTH` records real duration and requires Team-device score submission after Check-out.
+- [x] Station max score now defaults to `30` at database and Admin creation service layers.
+- [x] Backend service validation rejects non-integer, negative, and above-max scores for Team and Admin score paths.
+- [x] Duplicate/stale/concurrent Team score submission is covered by tests and the transaction claim.
+- [x] Frontend score input uses Station max score as UX validation only; backend remains authoritative.
+- [x] Admin score correction remains a separate audited flow.
+- [ ] Production migration and production-like Station scoring smoke remain open.
+
 ## 2026-07-22 Secure Station QR completion
 
 - [x] Station QR now uses official SQ1 opaque token format for new creation, Admin rotation, and local/test seed repair.
@@ -75,7 +88,8 @@ Acceptance:
 - [x] Backend score limits and confirmation-code flow have historical verification.
 - [x] Re-run Station flow verification after Station QR migration.
 - [x] Verify new Station creation automatically provisions both secure QR tokens.
-- [ ] Verify duplicate Check-out and duplicate score submissions after migration.
+- [x] Verify duplicate score submissions after migration.
+- [ ] Verify duplicate Check-out after migration in a production-like smoke environment.
 
 ## P0 — Final Challenge
 
@@ -143,9 +157,8 @@ Acceptance:
 ## Next Execution Order
 
 1. Run `docs/prompts/10_CODEX_QR_AUTO_LOGIN_AND_SEED_TOKENS_PROMPT.md`.
-2. Re-run Station scoring verification with Prompt 12.
-3. Re-run Final verification with Prompt 11.
-4. Run Production-like smoke tests.
-5. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
-6. Review diff, run `git diff --check`, and create scoped local commits.
-7. Do not push or deploy without explicit user request.
+2. Re-run Final verification with Prompt 11.
+3. Run Production-like smoke tests.
+4. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
+5. Review diff, run `git diff --check`, and create scoped local commits.
+6. Do not push or deploy without explicit user request.

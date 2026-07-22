@@ -71,6 +71,7 @@ function buildPlayerSeed(
           null,
         teamId,
         stationId: station.id,
+        maxPoints: station.game?.maxPoints,
         gameType: station.game?.type,
       })),
     },

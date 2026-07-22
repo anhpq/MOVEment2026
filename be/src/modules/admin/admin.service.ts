@@ -30,6 +30,8 @@ import {
 import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
 
+const DEFAULT_STATION_MAX_POINTS = 30;
+
 @Injectable()
 export class AdminService {
   constructor(
@@ -447,6 +449,7 @@ export class AdminService {
 
   async createStation(userId: number, dto: CreateStationDto) {
     const stationId = dto.id.trim().toUpperCase();
+    const maxPoints = dto.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
     const [teamIds, sortOrder] = await Promise.all([
       this.prisma.team.findMany({ select: { id: true } }),
       this.prisma.station.count(),
@@ -468,7 +471,7 @@ export class AdminService {
           stationId,
           title: `${created.name} Game`,
           type: dto.gameType.trim().toUpperCase(),
-          maxPoints: dto.maxPoints,
+          maxPoints,
           mediaUrl: dto.mediaUrl ?? null,
         },
       });
@@ -486,7 +489,7 @@ export class AdminService {
           })),
         });
         await tx.team.updateMany({
-          data: { maxPossiblePoints: { increment: dto.maxPoints } },
+          data: { maxPossiblePoints: { increment: maxPoints } },
         });
       }
       return { station: created, qrTokens: createdQrTokens };
@@ -498,7 +501,7 @@ export class AdminService {
       action: 'CREATE_STATION',
       entityType: 'STATION',
       entityId: stationId,
-      metadata: { maxPoints: dto.maxPoints, gameType: dto.gameType },
+      metadata: { maxPoints, gameType: dto.gameType },
     });
     return {
       ...station,
@@ -1007,9 +1010,7 @@ export class AdminService {
     if (progress.station.trackingMode === 'TIME') {
       throw new BadRequestException('Time-only station does not accept score');
     }
-    if (score > progress.game.maxPoints) {
-      throw new BadRequestException('Score exceeds game max points');
-    }
+    this.validateScoreValue(score, progress.game.maxPoints);
 
     const scoreBefore = progress.team.totalPoints;
     const oldProgressScore = isEdit ? progress.scoreAchieved : 0;
@@ -1149,6 +1150,18 @@ export class AdminService {
       return '';
     }
     return JSON.stringify(metadata);
+  }
+
+  private validateScoreValue(score: number, maxPoints: number) {
+    if (!Number.isInteger(score)) {
+      throw new BadRequestException('Score must be an integer');
+    }
+    if (score < 0) {
+      throw new BadRequestException('Score must be at least 0');
+    }
+    if (score > maxPoints) {
+      throw new BadRequestException('Score exceeds game max points');
+    }
   }
 
   private getQrLoginTtlMinutes() {

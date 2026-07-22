@@ -37,6 +37,7 @@ import {
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
+import {DEFAULT_STATION_MAX_POINTS} from "../constants";
 
 type ScoreFormValues = {
   score: number;
@@ -114,6 +115,8 @@ export function StationDetailPage() {
       </Card>
     );
   }
+
+  const stationMaxPoints = station.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
 
   const openLinkInNewTab = (url: string | undefined) => {
     if (!url) {
@@ -247,7 +250,7 @@ export function StationDetailPage() {
               label="Input Score"
               name="score"
               rules={[{required: true}]}>
-              <InputNumber min={0} max={1000} className="full-width" />
+              <InputNumber min={0} max={stationMaxPoints} className="full-width" />
             </Form.Item>
             <Form.Item label="Reason" name="reason" rules={[{required: station.backendStatus === "COMPLETED"}]}>
               <Input.TextArea rows={2} placeholder="Required when editing an existing score" />
@@ -421,7 +424,7 @@ export function StationDetailPage() {
             name="score"
             initialValue={0}
             rules={[{required: true}]}>
-            <InputNumber min={0} max={1000} className="full-width" />
+            <InputNumber min={0} max={stationMaxPoints} className="full-width" />
           </Form.Item>
           <Form.Item
             label="Confirmation Code"

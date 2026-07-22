@@ -128,7 +128,7 @@ model Game {
   title      String
   type       String
   difficulty Int      @default(1)
-  maxPoints  Int      @map("max_points")
+  maxPoints  Int      @default(30) @map("max_points")
   clueText   String?  @map("clue_text")
   mediaUrl   String?  @map("media_url")
   answerHash String?  @map("answer_hash")

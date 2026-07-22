@@ -409,4 +409,141 @@ describe('PlayerService station flow', () => {
     ).rejects.toThrow(BadRequestException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
+
+  it('accepts score 0 and the exact station maximum', async () => {
+    const checkedOutAt = new Date('2026-07-19T01:10:00.000Z')
+    const checkedInAt = new Date('2026-07-19T01:00:00.000Z')
+    const scoreProgress = {
+      ...progress,
+      checkedInAt,
+      checkedOutAt,
+      team: { totalPoints: 12 },
+      game: { maxPoints: 30 },
+    }
+    const tx = {
+      teamStationProgress: {
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+        findUniqueOrThrow: jest.fn().mockResolvedValue({
+          ...scoreProgress,
+          status: ProgressStatus.COMPLETED,
+          completedAt: new Date(),
+        }),
+      },
+      team: { update: jest.fn() },
+      scoreEvent: { create: jest.fn() },
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
+    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
+    mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
+      callback(tx),
+    )
+
+    await expect(
+      service.submitScore(2, 'ST002', { score: 0, confirmationCode: '2468' }),
+    ).resolves.toBeDefined()
+    await expect(
+      service.submitScore(2, 'ST002', { score: 30, confirmationCode: '2468' }),
+    ).resolves.toBeDefined()
+
+    expect(tx.teamStationProgress.updateMany).toHaveBeenCalledTimes(2)
+  })
+
+  it.each([
+    ['negative', -1],
+    ['decimal', 10.5],
+  ])('rejects %s score values in the backend service', async (_label, score) => {
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
+      ...progress,
+      checkedOutAt: new Date(),
+      team: { totalPoints: 0 },
+      game: { maxPoints: 50 },
+    })
+    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
+
+    await expect(
+      service.submitScore(2, 'ST002', {
+        score,
+        confirmationCode: '2468',
+      }),
+    ).rejects.toThrow(BadRequestException)
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects score submission before check-out', async () => {
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
+      ...progress,
+      checkedOutAt: null,
+      team: { totalPoints: 0 },
+      game: { maxPoints: 50 },
+    })
+    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
+
+    await expect(
+      service.submitScore(2, 'ST002', {
+        score: 10,
+        confirmationCode: '2468',
+      }),
+    ).rejects.toThrow(BadRequestException)
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects score submission for time-only stations', async () => {
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
+      ...progress,
+      checkedOutAt: new Date(),
+      station: { trackingMode: StationTrackingMode.TIME },
+      team: { totalPoints: 0 },
+      game: { maxPoints: 50 },
+    })
+    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
+
+    await expect(
+      service.submitScore(2, 'ST002', {
+        score: 10,
+        confirmationCode: '2468',
+      }),
+    ).rejects.toThrow(BadRequestException)
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled()
+  })
+
+  it('allows only one concurrent score claim to complete', async () => {
+    const scoreProgress = {
+      ...progress,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+      team: { totalPoints: 0 },
+      game: { maxPoints: 50 },
+    }
+    const tx = {
+      teamStationProgress: {
+        updateMany: jest
+          .fn()
+          .mockResolvedValueOnce({ count: 1 })
+          .mockResolvedValueOnce({ count: 0 }),
+        findUniqueOrThrow: jest.fn().mockResolvedValue({
+          ...scoreProgress,
+          status: ProgressStatus.COMPLETED,
+          completedAt: new Date(),
+          scoreAchieved: 10,
+        }),
+      },
+      team: { update: jest.fn() },
+      scoreEvent: { create: jest.fn() },
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
+    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
+    mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
+      callback(tx),
+    )
+
+    const results = await Promise.allSettled([
+      service.submitScore(2, 'ST002', { score: 10, confirmationCode: '2468' }),
+      service.submitScore(2, 'ST002', { score: 10, confirmationCode: '2468' }),
+    ])
+
+    expect(results.filter((item) => item.status === 'fulfilled')).toHaveLength(1)
+    expect(results.filter((item) => item.status === 'rejected')).toHaveLength(1)
+    expect(tx.team.update).toHaveBeenCalledTimes(1)
+    expect(tx.scoreEvent.create).toHaveBeenCalledTimes(1)
+  })
 })

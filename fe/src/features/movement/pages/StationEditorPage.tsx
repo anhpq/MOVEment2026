@@ -5,6 +5,7 @@ import {useMovementStore} from "../store";
 import type {StationFormValues} from "../types";
 import {createAdminStation, updateAdminStation} from "../api";
 import {fetchAdminDatabase} from "../adminData";
+import {DEFAULT_STATION_MAX_POINTS} from "../constants";
 
 export function StationEditorPage() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export function StationEditorPage() {
       return;
     }
 
-    form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "QUIZ", maxPoints: 100});
+    form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "QUIZ", maxPoints: DEFAULT_STATION_MAX_POINTS});
   }, [form, station]);
 
   const handleClose = () => {
@@ -92,7 +93,7 @@ export function StationEditorPage() {
                   mapX: values.markerX ?? 50,
                   mapY: values.markerY ?? 50,
                   gameType: values.gameType ?? "QUIZ",
-                  maxPoints: values.maxPoints ?? 100,
+                  maxPoints: values.maxPoints,
                   mediaUrl: values.youtubeUrl ?? null,
                 });
                 if (createdStation.qrTokens?.length) {

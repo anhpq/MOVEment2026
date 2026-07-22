@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "be/prisma/init.sql": {
-    "mtime": 1784727240.5828304,
-    "ast_hash": "fa28d181bb4ccdbde9f22c7a01f63611",
+    "mtime": 1784728264.6527932,
+    "ast_hash": "b6442d1c31b364cb9b4e3b2fd302538b",
     "semantic_hash": ""
   },
   "be/prisma/migrations/000001_init/migration.sql": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "be/prisma/seed.ts": {
-    "mtime": 1784726897.0122843,
-    "ast_hash": "44fc64efc77d2a8394bbafee9dc55c64",
+    "mtime": 1784727572.1434004,
+    "ast_hash": "dd4cf267d0baa16bb14b32c9c228198a",
     "semantic_hash": ""
   },
   "be/src/app.module.ts": {
@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.ts": {
-    "mtime": 1784727207.6923983,
-    "ast_hash": "b2b03c0d4a53bc728f01a2d308a6b60e",
+    "mtime": 1784728284.1593869,
+    "ast_hash": "582c1c4c0881134fdf4df1e706b25e91",
     "semantic_hash": ""
   },
   "be/src/modules/admin/xlsx-report.ts": {
@@ -195,8 +195,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/player/player.service.ts": {
-    "mtime": 1784726863.9396448,
-    "ast_hash": "9b18731de3d8765bd1a9920d13d0a636",
+    "mtime": 1784728284.9565854,
+    "ast_hash": "3d1ccedb51c4e9bf7d3389e57bc56966",
     "semantic_hash": ""
   },
   "be/src/modules/prisma/prisma.module.ts": {
@@ -240,8 +240,8 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784727132.3417492,
-    "ast_hash": "9071046a5cf50de4e82433131aa32451",
+    "mtime": 1784728308.13499,
+    "ast_hash": "09594e0b16d8aa91373c75797ff26d6f",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/constants.ts": {
-    "mtime": 1784560861.0783744,
-    "ast_hash": "66e4f9f3c108fce566cf6f1051f345ee",
+    "mtime": 1784728307.462694,
+    "ast_hash": "372ffdfb7dfcd81d1a6dc86068e417b7",
     "semantic_hash": ""
   },
   "fe/src/features/movement/hooks/useMovementBootstrap.ts": {
@@ -275,13 +275,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
-    "mtime": 1784646079.6883197,
-    "ast_hash": "acfe0d1f41f07f68b919d447c3053bd9",
+    "mtime": 1784728480.0459962,
+    "ast_hash": "4335b97ee08c0aeffe7ee64caa787f63",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationEditorPage.tsx": {
-    "mtime": 1784727157.0424876,
-    "ast_hash": "318c9494ca080ff16b58a872a0c3fa56",
+    "mtime": 1784728309.544994,
+    "ast_hash": "a9f483395b003bba77ede749eaa5b698",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationListPage.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784727489.1595652,
-    "ast_hash": "e55e78618bbbce6998aa401699b748ad",
+    "mtime": 1784728937.2435567,
+    "ast_hash": "d67796f38ac527f7049b19a1a43af732",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784727515.2551124,
-    "ast_hash": "78221957b14c3be0cb90ef4d7c4b9e0e",
+    "mtime": 1784728936.622999,
+    "ast_hash": "7c259ddb47643d66597f271f5c23b5a5",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -545,8 +545,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/player/player.service.spec.ts": {
-    "mtime": 1784727083.4759452,
-    "ast_hash": "73189ccd38eb1641aef0d60c6480f265",
+    "mtime": 1784728346.769196,
+    "ast_hash": "f14f1a76757da3e260294bbe187828d4",
     "semantic_hash": ""
   },
   "be/scripts/smoke-two-team.ps1": {
@@ -605,13 +605,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/playerData.ts": {
-    "mtime": 1784560861.0833733,
-    "ast_hash": "66096e78204eed54a6a9252da0ea274d",
+    "mtime": 1784728308.8461263,
+    "ast_hash": "0211161a23f505aa42bb0da3837c73fc",
     "semantic_hash": ""
   },
   "be/src/modules/admin/dto/create-station.dto.ts": {
-    "mtime": 1784560861.0678637,
-    "ast_hash": "895d37c57750f299b0f15369d8b3e4ee",
+    "mtime": 1784728283.4869304,
+    "ast_hash": "bc5b97e4cdfe5f8705163e2372cf83fe",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/AdminOperationsPage.tsx": {
@@ -705,8 +705,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.spec.ts": {
-    "mtime": 1784727439.9308636,
-    "ast_hash": "c56c6e1887a6eb9eeb3d9d5726ce8cf3",
+    "mtime": 1784728396.4077635,
+    "ast_hash": "21ac01155a1f8f8f52cdc999e781cc39",
     "semantic_hash": ""
   },
   "docs/analysis/FEATURE_INDEX.md": {
@@ -772,6 +772,11 @@
   "be/prisma/migrations/000006_secure_station_qr_tokens/migration.sql": {
     "mtime": 1784726769.24643,
     "ast_hash": "5e9a1cd823520398b8ca22e2a7d592e3",
+    "semantic_hash": ""
+  },
+  "be/prisma/migrations/000007_station_score_defaults/migration.sql": {
+    "mtime": 1784728263.9129474,
+    "ast_hash": "8f435b02ee7487b00dd499edf53ebcfe",
     "semantic_hash": ""
   }
 }

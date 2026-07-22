@@ -1,5 +1,5 @@
 import {BadRequestException} from '@nestjs/common';
-import {QrPurpose, StationTrackingMode} from '@prisma/client';
+import {ProgressStatus, QrPurpose, StationTrackingMode} from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import {AdminService} from './admin.service';
 
@@ -33,6 +33,7 @@ const mockPrisma = {
     create: jest.fn(),
     findMany: jest.fn(),
     findUniqueOrThrow: jest.fn(),
+    update: jest.fn(),
     updateMany: jest.fn(),
   },
   qrLoginToken: {
@@ -47,7 +48,12 @@ const mockPrisma = {
     update: jest.fn(),
     updateMany: jest.fn(),
   },
-  teamStationProgress: {createMany: jest.fn()},
+  teamStationProgress: {
+    createMany: jest.fn(),
+    findUniqueOrThrow: jest.fn(),
+    update: jest.fn(),
+  },
+  scoreEvent: {create: jest.fn()},
   $transaction: jest.fn(),
 };
 
@@ -232,6 +238,71 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1);
   });
 
+  it('uses the default max score when creating a Station without maxPoints', async () => {
+    mockPrisma.qrToken.create.mockImplementation(({data}) =>
+      Promise.resolve({
+        id: data.purpose === QrPurpose.CHECK_IN ? 101 : 102,
+        createdAt: new Date(),
+        expiresAt: null,
+        ...data,
+      }),
+    );
+
+    await service.createStation(1, {
+      id: 'st999',
+      name: 'Station Secure',
+      description: null,
+      trackingMode: StationTrackingMode.BOTH,
+      mapX: 10,
+      mapY: 20,
+      gameType: 'quiz',
+      mediaUrl: null,
+    });
+
+    expect(mockPrisma.game.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({maxPoints: 30}),
+    });
+    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
+      data: {maxPossiblePoints: {increment: 30}},
+    });
+    expect(mockActivityLog.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: 'CREATE_STATION',
+        metadata: {maxPoints: 30, gameType: 'quiz'},
+      }),
+    );
+  });
+
+  it('preserves a custom max score when creating a Station', async () => {
+    mockPrisma.qrToken.create.mockImplementation(({data}) =>
+      Promise.resolve({
+        id: data.purpose === QrPurpose.CHECK_IN ? 101 : 102,
+        createdAt: new Date(),
+        expiresAt: null,
+        ...data,
+      }),
+    );
+
+    await service.createStation(1, {
+      id: 'st999',
+      name: 'Station Secure',
+      description: null,
+      trackingMode: StationTrackingMode.BOTH,
+      mapX: 10,
+      mapY: 20,
+      gameType: 'quiz',
+      maxPoints: 45,
+      mediaUrl: null,
+    });
+
+    expect(mockPrisma.game.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({maxPoints: 45}),
+    });
+    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
+      data: {maxPossiblePoints: {increment: 45}},
+    });
+  });
+
   it('rolls back Station creation when QR pair provisioning fails', async () => {
     mockPrisma.qrToken.create
       .mockResolvedValueOnce({
@@ -344,5 +415,73 @@ describe('AdminService Team QR login lifecycle', () => {
       where: {id: 301},
       data: {isActive: false, revokedAt: expect.any(Date)},
     });
+  });
+
+  it.each([
+    ['negative', -1],
+    ['decimal', 10.5],
+    ['above max', 31],
+  ])('rejects %s Admin score corrections before writing', async (_label, score) => {
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue({
+      id: 99,
+      teamId: 7,
+      stationId: 'ST999',
+      status: ProgressStatus.COMPLETED,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+      completedAt: new Date('2026-07-19T01:12:00.000Z'),
+      scoreAchieved: 5,
+      team: {...team, totalPoints: 20},
+      game: {maxPoints: 30},
+      station: {trackingMode: StationTrackingMode.BOTH},
+    });
+
+    await expect(
+      service.editScore(1, 99, {score, reason: 'audit reason'}),
+    ).rejects.toThrow(BadRequestException);
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled();
+    expect(mockPrisma.scoreEvent.create).not.toHaveBeenCalled();
+  });
+
+  it('keeps Admin score edit audited and separate from Team scoring code', async () => {
+    const existingProgress = {
+      id: 99,
+      teamId: 7,
+      stationId: 'ST999',
+      status: ProgressStatus.COMPLETED,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+      completedAt: new Date('2026-07-19T01:12:00.000Z'),
+      scoreAchieved: 5,
+      team: {...team, totalPoints: 20},
+      game: {maxPoints: 30},
+      station: {trackingMode: StationTrackingMode.BOTH},
+    };
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(existingProgress);
+    mockPrisma.teamStationProgress.update.mockResolvedValue({
+      ...existingProgress,
+      scoreAchieved: 10,
+    });
+
+    await service.editScore(1, 99, {score: 10, reason: 'audit reason'});
+
+    expect(mockPrisma.scoreEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        teamId: 7,
+        progressId: 99,
+        stationId: 'ST999',
+        scoreBefore: 20,
+        scoreAfter: 25,
+        delta: 5,
+        reason: 'audit reason',
+        createdByUserId: 1,
+      }),
+    });
+    expect(mockActivityLog.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: 'EDIT_SCORE',
+        metadata: {score: 10, reason: 'audit reason', delta: 5},
+      }),
+    );
   });
 });

@@ -340,7 +340,7 @@ export type AdminCreatedStationResponse = {
 export const createAdminStation = (values: {
   id: string; name: string; description?: string | null
   trackingMode: StationTrackingMode; mapX: number; mapY: number
-  gameType: string; maxPoints: number; mediaUrl?: string | null
+  gameType: string; maxPoints?: number; mediaUrl?: string | null
 }) => apiPost<AdminCreatedStationResponse>('/api/admin/stations', values)
 
 export const deleteAdminStation = (stationId: string) =>

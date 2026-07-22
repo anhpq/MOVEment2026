@@ -335,9 +335,7 @@ export class PlayerService {
     if (progress.station.trackingMode === 'TIME') {
       throw new BadRequestException('Time-only station does not accept score');
     }
-    if (dto.score > progress.game.maxPoints) {
-      throw new BadRequestException('Score exceeds game max points');
-    }
+    this.validateScoreValue(dto.score, progress.game.maxPoints);
 
     const scoreBefore = progress.team.totalPoints;
     const scoreAfter = scoreBefore + dto.score;
@@ -467,6 +465,18 @@ export class PlayerService {
       0,
       Math.floor((checkedOutAt.getTime() - checkedInAt.getTime()) / 1000),
     );
+  }
+
+  private validateScoreValue(score: number, maxPoints: number) {
+    if (!Number.isInteger(score)) {
+      throw new BadRequestException('Score must be an integer');
+    }
+    if (score < 0) {
+      throw new BadRequestException('Score must be at least 0');
+    }
+    if (score > maxPoints) {
+      throw new BadRequestException('Score exceeds game max points');
+    }
   }
 
   private toEffectiveProgressStatus(
