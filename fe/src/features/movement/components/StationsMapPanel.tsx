@@ -1,8 +1,15 @@
 import {
+  ReloadOutlined,
+  YoutubeOutlined,
+  ZoomInOutlined,
+  ZoomOutOutlined,
+} from "@ant-design/icons";
+import {
   Alert,
   App as AntdApp,
   Button,
   Card,
+  Descriptions,
   Drawer,
   Empty,
   Flex,
@@ -10,7 +17,6 @@ import {
   Select,
   Tag,
   Typography,
-  Descriptions,
 } from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
@@ -23,6 +29,9 @@ import {
   Text,
 } from "react-konva";
 import {useNavigate} from "react-router-dom";
+import {fetchAdminDatabase} from "../adminData";
+import {checkInStation, updateAdminStation} from "../api";
+import {fetchPlayerDatabase, PLAYER_MAP_IMAGE_SRC} from "../playerData";
 import {useMovementStore} from "../store";
 import type {StationDefinition, TeamStation} from "../types";
 import {
@@ -30,15 +39,8 @@ import {
   getDisabledReason,
   getStationStatusColor,
 } from "../utils";
-import "./StationsMapPanel.css";
-import {ReloadOutlined, YoutubeOutlined} from "@ant-design/icons";
-import {checkInStation, updateAdminStation} from "../api";
-import {
-  fetchPlayerDatabase,
-  PLAYER_MAP_IMAGE_SRC,
-} from "../playerData";
 import {QrTokenInput} from "./QrTokenInput";
-import {fetchAdminDatabase} from "../adminData";
+import "./StationsMapPanel.css";
 
 type StationsMapPanelProps = Readonly<{
   editable?: boolean;
@@ -310,6 +312,16 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     setMapPosition({x: -viewportSize.width / 2, y: -viewportSize.height});
   };
 
+  const handleZoomIn = () => {
+    const scale = clampMapScale(mapScale * 1.2);
+    setMapScale(scale);
+  };
+
+  const handleZoomOut = () => {
+    const scale = clampMapScale(mapScale / 1.2);
+    setMapScale(scale);
+  };
+
   const handleWheel = (event: KonvaEventObject<WheelEvent>) => {
     event.evt.preventDefault();
     const stage = event.target.getStage();
@@ -362,7 +374,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       okText: "Update",
       cancelText: "Cancel",
       onOk: async () => {
-        await updateAdminStation(selectedStation.id, {mapX: markerX, mapY: markerY});
+        await updateAdminStation(selectedStation.id, {
+          mapX: markerX,
+          mapY: markerY,
+        });
         loadDatabase(await fetchAdminDatabase());
         message.success(`Updated position for station ${selectedStation.name}`);
       },
@@ -421,10 +436,15 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               <Tag color="gold">Click on the map to place a marker</Tag>
             </div>
           )}
-
-          <Button icon={<ReloadOutlined />} onClick={handleResetTransform}>
-            Reset
-          </Button>
+        </div>
+        <div className="movement-map-zoom-controls">
+          <Flex gap={8} vertical justify="center" align="center">
+            <Button
+              icon={<ReloadOutlined />}
+              onClick={handleResetTransform}></Button>
+            <Button icon={<ZoomInOutlined />} onClick={handleZoomIn}></Button>
+            <Button icon={<ZoomOutOutlined />} onClick={handleZoomOut}></Button>
+          </Flex>
         </div>
 
         <div ref={mapViewportRef} className="movement-map-viewport">
@@ -516,16 +536,18 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   {focusedTeamStation.description}
                 </Typography.Paragraph>
 
-                <Descriptions column={2} size="small">
+                <Descriptions size="small">
                   <Descriptions.Item label="Playing Teams" span={2}>
-                    {Object.values(teamStations).filter((stations) =>
-                      stations.some(
-                        (item) =>
-                          item.stationId === focusedTeamStation.stationId &&
-                          (item.backendStatus === "CHECKED_IN" ||
-                            item.backendStatus === "PLAYING"),
-                      ),
-                    ).length}
+                    {
+                      Object.values(teamStations).filter((stations) =>
+                        stations.some(
+                          (item) =>
+                            item.stationId === focusedTeamStation.stationId &&
+                            (item.backendStatus === "CHECKED_IN" ||
+                              item.backendStatus === "PLAYING"),
+                        ),
+                      ).length
+                    }
                   </Descriptions.Item>
                   <Descriptions.Item label="Score">
                     {focusedTeamStation.score}
@@ -546,6 +568,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   <Button
                     className="full-width"
                     icon={<YoutubeOutlined />}
+                    disabled={!focusedTeamStation.youtubeUrl}
                     onClick={() =>
                       openLinkInNewTab(focusedTeamStation.youtubeUrl as string)
                     }>
@@ -617,7 +640,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
             setQrToken("");
             navigate(`/stations/${stationId}`);
           } catch (error: unknown) {
-            message.error(error instanceof Error ? error.message : "Check-in failed");
+            message.error(
+              error instanceof Error ? error.message : "Check-in failed",
+            );
           } finally {
             setIsSubmittingQr(false);
           }

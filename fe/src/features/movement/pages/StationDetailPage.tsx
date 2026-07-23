@@ -68,8 +68,9 @@ export function StationDetailPage() {
     (item) => item.stationId === params.stationId,
   );
   const stationStartTime = station?.startTime ?? null;
-  const playingTeamCount = station
-    ? Object.values(teamStations).filter((stations) =>
+  const playingTeamCount =
+    station ?
+      Object.values(teamStations).filter((stations) =>
         stations.some(
           (item) =>
             item.stationId === station.stationId &&
@@ -137,7 +138,9 @@ export function StationDetailPage() {
   const navigateAfterTeamStationFinished = async () => {
     try {
       const final = await getPlayerFinal();
-      navigate(final.isOpen && !final.blockedByActiveStation ? "/final" : "/stations");
+      navigate(
+        final.isOpen && !final.blockedByActiveStation ? "/final" : "/stations",
+      );
     } catch {
       navigate("/stations");
     }
@@ -149,11 +152,9 @@ export function StationDetailPage() {
         <Typography.Title level={3} className="section-title">
           {station.name}
         </Typography.Title>
-        <Typography.Paragraph>
-          {station.description}
-        </Typography.Paragraph>
+        <Typography.Paragraph>{station.description}</Typography.Paragraph>
         <Descriptions column={2} size="small">
-          <Descriptions.Item label="Playing Teams" span={2}>
+          <Descriptions.Item label="Playing Teams">
             {playingTeamCount}
           </Descriptions.Item>
           <Descriptions.Item label="Score">{station.score}</Descriptions.Item>
@@ -170,6 +171,7 @@ export function StationDetailPage() {
             type="primary"
             className="full-width mt-4"
             icon={<YoutubeOutlined />}
+            disabled={!station.youtubeUrl}
             onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
             Watch Video
           </Button>
@@ -196,23 +198,40 @@ export function StationDetailPage() {
               Finished
             </Button>
             {station.gameType === "CIPHER" && (
-              <Button onClick={() => {
-                const answer = window.prompt("Enter cipher answer");
-                if (answer) void submitCipherAnswer(station.stationId, answer)
-                  .then(() => message.success("Cipher answer accepted"))
-                  .catch((error: unknown) => message.error(error instanceof Error ? error.message : "Wrong answer"));
-              }}>Submit Cipher</Button>
+              <Button
+                onClick={() => {
+                  const answer = window.prompt("Enter cipher answer");
+                  if (answer)
+                    void submitCipherAnswer(station.stationId, answer)
+                      .then(() => message.success("Cipher answer accepted"))
+                      .catch((error: unknown) =>
+                        message.error(
+                          error instanceof Error ?
+                            error.message
+                          : "Wrong answer",
+                        ),
+                      );
+                }}>
+                Submit Cipher
+              </Button>
             )}
-            <Button danger icon={<ReloadOutlined />} onClick={async () => {
-              try {
-                await cancelPlayerStation(station.stationId);
-                await refreshPlayerData();
-                message.success("Station cancelled; cooldown applied");
-                navigate("/stations/map");
-              } catch (error) {
-                message.error(error instanceof Error ? error.message : "Cancel failed");
-              }
-            }}>Cancel Station</Button>
+            <Button
+              danger
+              icon={<ReloadOutlined />}
+              onClick={async () => {
+                try {
+                  await cancelPlayerStation(station.stationId);
+                  await refreshPlayerData();
+                  message.success("Station cancelled; cooldown applied");
+                  navigate("/stations/map");
+                } catch (error) {
+                  message.error(
+                    error instanceof Error ? error.message : "Cancel failed",
+                  );
+                }
+              }}>
+              Cancel Station
+            </Button>
           </Flex>
         </Card>
       : <Card className="surface-card">
@@ -228,19 +247,35 @@ export function StationDetailPage() {
                 okText: "Save",
                 cancelText: "Cancel",
                 onOk: async () => {
-                  if (!station.progressId) throw new Error("Progress record is unavailable");
+                  if (!station.progressId)
+                    throw new Error("Progress record is unavailable");
                   try {
                     if (station.backendStatus === "COMPLETED") {
-                      if (!values.reason?.trim()) throw new Error("Reason is required when editing score");
-                      await editAdminProgressScore(station.progressId, values.score, values.reason.trim());
+                      if (!values.reason?.trim())
+                        throw new Error(
+                          "Reason is required when editing score",
+                        );
+                      await editAdminProgressScore(
+                        station.progressId,
+                        values.score,
+                        values.reason.trim(),
+                      );
                     } else {
-                      await submitAdminProgressScore(station.progressId, values.score, values.reason?.trim());
+                      await submitAdminProgressScore(
+                        station.progressId,
+                        values.score,
+                        values.reason?.trim(),
+                      );
                     }
                     await refreshAdminData();
                     message.success("Score saved successfully");
                     navigate("/stations");
                   } catch (error) {
-                    message.error(error instanceof Error ? error.message : "Unable to save score");
+                    message.error(
+                      error instanceof Error ?
+                        error.message
+                      : "Unable to save score",
+                    );
                     throw error;
                   }
                 },
@@ -252,8 +287,14 @@ export function StationDetailPage() {
               rules={[{required: true}]}>
               <InputNumber min={0} max={stationMaxPoints} className="full-width" />
             </Form.Item>
-            <Form.Item label="Reason" name="reason" rules={[{required: station.backendStatus === "COMPLETED"}]}>
-              <Input.TextArea rows={2} placeholder="Required when editing an existing score" />
+            <Form.Item
+              label="Reason"
+              name="reason"
+              rules={[{required: station.backendStatus === "COMPLETED"}]}>
+              <Input.TextArea
+                rows={2}
+                placeholder="Required when editing an existing score"
+              />
             </Form.Item>
             <Space className="full-width" size={12}>
               <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
@@ -271,19 +312,28 @@ export function StationDetailPage() {
                     okText: "Reset",
                     cancelText: "Cancel",
                     onOk: async () => {
-                      if (!station.progressId) throw new Error("Progress record is unavailable");
+                      if (!station.progressId)
+                        throw new Error("Progress record is unavailable");
                       try {
                         const reason = "Reset by admin from station detail";
                         if (station.backendStatus === "COMPLETED") {
                           await reopenAdminProgress(station.progressId, reason);
                         } else {
-                          await forceAdminProgressStatus(station.progressId, "AVAILABLE", reason);
+                          await forceAdminProgressStatus(
+                            station.progressId,
+                            "AVAILABLE",
+                            reason,
+                          );
                         }
                         await refreshAdminData();
                         message.success("Status reset successfully");
                         navigate("/stations");
                       } catch (error) {
-                        message.error(error instanceof Error ? error.message : "Unable to reset status");
+                        message.error(
+                          error instanceof Error ?
+                            error.message
+                          : "Unable to reset status",
+                        );
                         throw error;
                       }
                     },
@@ -337,7 +387,9 @@ export function StationDetailPage() {
             });
             setIsScoreModalOpen(true);
           } catch (error: unknown) {
-            message.error(error instanceof Error ? error.message : "Check-out failed");
+            message.error(
+              error instanceof Error ? error.message : "Check-out failed",
+            );
           } finally {
             setIsSubmittingCheckOut(false);
           }
@@ -378,13 +430,25 @@ export function StationDetailPage() {
               cancelText: "Cancel",
               onOk: async () => {
                 if (session.role !== "user") {
-                  if (!station.progressId) throw new Error("Progress record is unavailable");
+                  if (!station.progressId)
+                    throw new Error("Progress record is unavailable");
                   try {
                     if (station.backendStatus === "COMPLETED") {
-                      if (!values.reason?.trim()) throw new Error("Reason is required when editing score");
-                      await editAdminProgressScore(station.progressId, values.score, values.reason.trim());
+                      if (!values.reason?.trim())
+                        throw new Error(
+                          "Reason is required when editing score",
+                        );
+                      await editAdminProgressScore(
+                        station.progressId,
+                        values.score,
+                        values.reason.trim(),
+                      );
                     } else {
-                      await submitAdminProgressScore(station.progressId, values.score, values.reason?.trim());
+                      await submitAdminProgressScore(
+                        station.progressId,
+                        values.score,
+                        values.reason?.trim(),
+                      );
                     }
                     await refreshAdminData();
                     message.success("Station completed successfully");
@@ -392,7 +456,11 @@ export function StationDetailPage() {
                     navigate("/stations");
                     return;
                   } catch (error) {
-                    message.error(error instanceof Error ? error.message : "Unable to submit score");
+                    message.error(
+                      error instanceof Error ?
+                        error.message
+                      : "Unable to submit score",
+                    );
                     throw error;
                   }
                 }
@@ -411,7 +479,9 @@ export function StationDetailPage() {
                   await navigateAfterTeamStationFinished();
                 } catch (error: unknown) {
                   message.error(
-                    error instanceof Error ? error.message : "Score submission failed",
+                    error instanceof Error ?
+                      error.message
+                    : "Score submission failed",
                   );
                 } finally {
                   setIsSubmittingScore(false);
@@ -435,7 +505,11 @@ export function StationDetailPage() {
           <Form.Item label="Reason" name="reason">
             <Input.TextArea rows={2} placeholder="Optional note" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" block loading={isSubmittingScore}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            loading={isSubmittingScore}>
             Save Score
           </Button>
         </Form>

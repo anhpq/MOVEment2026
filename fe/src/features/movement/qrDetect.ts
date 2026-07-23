@@ -8,6 +8,11 @@ type BarcodeDetectorConstructor = new (options: {
   formats: string[];
 }) => BarcodeDetectorLike;
 
+export type QrFrameDetector = {
+  detect: (video: HTMLVideoElement) => Promise<string | null>;
+  dispose: () => void;
+};
+
 function getBarcodeDetector(): BarcodeDetectorConstructor | null {
   const candidate = (
     globalThis as typeof globalThis & {
@@ -58,19 +63,27 @@ export function normalizeDecodedQrValue(rawValue: string): string {
   return value;
 }
 
-export function createQrFrameDetector() {
+export function createQrFrameDetector(): QrFrameDetector {
   const Detector = getBarcodeDetector();
   const barcodeDetector = Detector
     ? new Detector({formats: ["qr_code"]})
     : null;
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d", {willReadFrequently: true});
+  let disposed = false;
 
   return {
     async detect(video: HTMLVideoElement): Promise<string | null> {
+      if (disposed) {
+        return null;
+      }
+
       if (barcodeDetector) {
         try {
           const codes = await barcodeDetector.detect(video);
+          if (disposed) {
+            return null;
+          }
           const value = codes[0]?.rawValue?.trim();
           if (value) {
             return value;
@@ -94,6 +107,11 @@ export function createQrFrameDetector() {
       });
 
       return result?.data?.trim() || null;
+    },
+    dispose() {
+      disposed = true;
+      canvas.width = 0;
+      canvas.height = 0;
     },
   };
 }

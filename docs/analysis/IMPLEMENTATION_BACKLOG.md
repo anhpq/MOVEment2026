@@ -1,5 +1,27 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-23 iOS QR camera lifecycle cleanup
+
+- [x] Login QR scanner cleanup invalidates the run, clears RAF/timer resources, stops active media tracks, clears and reloads the video element, and disposes detector resources.
+- [x] Shared Station QR scanner cleanup invalidates the run, clears RAF resources, stops active media tracks, clears and reloads the video element, and disposes detector resources.
+- [x] Pending `loadedmetadata` listeners are cancelled on stop/unmount so scanner event listeners do not survive UI close.
+- [x] Pending start paths guard against late streams, duplicate decode callbacks, and false errors after user stop.
+- [x] Manual QR input, Team QR parsing, Station QR validation flow, native `BarcodeDetector`, and `jsQR` fallback are preserved.
+- [x] Frontend lint, frontend build, and frontend build:prod passed.
+- [ ] Manual HTTPS test on real iPhone Safari remains pending.
+- [ ] Manual HTTPS test on real Chrome iOS remains pending.
+- [ ] Confirm physical iOS camera indicator turns off after repeated open/stop cycles on device.
+
+## 2026-07-23 Seed diagnostics and tester runner completion
+
+- [x] Added seed phase logs for database connection, stations, challenges, teams, Final event, completion, and Prisma disconnect.
+- [x] Verified standalone seed twice against local PostgreSQL without duplicate seed data or process hang.
+- [x] Confirmed Final Challenge canonical keyword remains plaintext `DISANVANHOA2026` in the compatibility `answerHash` field.
+- [x] Fixed tester dependency detection so incomplete frontend installs missing `jsqr` trigger `npm ci`.
+- [x] Updated tester readiness checks to use IPv4 loopback URLs and report the last readiness error.
+- [x] Made `npm run tester` complete as a smoke runner with exit code `0`; use `npm run tester:serve` for keep-open manual testing.
+- [ ] The frontend large-chunk warning remains non-blocking and can be addressed in a separate performance/code-splitting task.
+
 ## 2026-07-23 Final Challenge plain answer and Production seed override
 
 - [x] Final Challenge no longer hashes the canonical keyword before storing it in `answerHash`.

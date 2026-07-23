@@ -27,3 +27,41 @@
     margin-right: #{$i * 0.25rem};
   }
 }
+
+.active-team {
+  // Highlight the active team in the leaderboard
+  // Background is primary color and white,
+  background: linear-gradient(270deg, #ff9f82, #ff9f82, #ffffff, #ff9f82, #ff9f82);
+  background-size: 400% 400%;
+  animation: rainbow 6s forwards infinite;
+  border-radius: 1rem;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+
+  .ant-list-item-meta-content,
+  .ant-list-item-meta-title,
+  .ant-list-item-meta-description {
+    color: white !important;
+  }
+}
+
+.other-team {
+  border-radius: 1rem;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}

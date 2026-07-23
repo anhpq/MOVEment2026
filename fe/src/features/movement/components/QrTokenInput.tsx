@@ -7,6 +7,7 @@ import {
   openQrCameraStream,
   supportsCameraQrScan,
 } from "../qrDetect";
+import type {QrFrameDetector} from "../qrDetect";
 
 type QrTokenInputProps = Readonly<{
   value: string;
@@ -72,44 +73,66 @@ function getCameraFailureCategory(
   }
 }
 
-function logCameraDiagnostic(
-  reason: string,
-  details: Record<string, unknown>,
-) {
+function logCameraDiagnostic(reason: string, details: Record<string, unknown>) {
   if (import.meta.env.DEV) {
     console.info("[qr-camera]", reason, details);
   }
 }
 
-function waitForVideoMetadata(video: HTMLVideoElement): Promise<void> {
+function waitForVideoMetadata(
+  video: HTMLVideoElement,
+  setCancelListener: (cancelListener: (() => void) | null) => void,
+): Promise<void> {
   if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    setCancelListener(null);
     return Promise.resolve();
   }
 
   return new Promise((resolve, reject) => {
-    const cleanup = () => {
+    let settled = false;
+    const cleanup = (error?: Error) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
       video.removeEventListener("loadedmetadata", handleLoadedMetadata);
       video.removeEventListener("error", handleError);
+      setCancelListener(null);
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
     };
     const handleLoadedMetadata = () => {
       cleanup();
-      resolve();
     };
     const handleError = () => {
-      cleanup();
-      reject(new Error("Video metadata failed to load"));
+      cleanup(new Error("Video metadata failed to load"));
     };
 
-    video.addEventListener("loadedmetadata", handleLoadedMetadata, {once: true});
+    video.addEventListener("loadedmetadata", handleLoadedMetadata, {
+      once: true,
+    });
     video.addEventListener("error", handleError, {once: true});
+    setCancelListener(() =>
+      cleanup(new Error("Video metadata wait was cancelled")),
+    );
   });
 }
 
-export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) {
+export function QrTokenInput({
+  value,
+  onChange,
+  placeholder,
+}: QrTokenInputProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const metadataCancelRef = useRef<(() => void) | null>(null);
+  const detectorRef = useRef<QrFrameDetector | null>(null);
   const startPromiseRef = useRef<Promise<void> | null>(null);
+  const scannerActiveRef = useRef(false);
   const scannerRunRef = useRef(0);
   const onChangeRef = useRef(onChange);
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
@@ -124,23 +147,44 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
     onChangeRef.current = onChange;
   }, [onChange]);
 
-  const stopCamera = useCallback((reason: string) => {
+  const stopScanner = useCallback((reason: string) => {
     scannerRunRef.current += 1;
+    scannerActiveRef.current = false;
 
     if (animationFrameRef.current !== null) {
       window.cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
     }
 
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.srcObject = null;
+    if (metadataCancelRef.current) {
+      metadataCancelRef.current();
+      metadataCancelRef.current = null;
     }
 
-    streamRef.current?.getTracks().forEach((track) => track.stop());
-    const wasActive = Boolean(streamRef.current);
+    detectorRef.current?.dispose();
+    detectorRef.current = null;
+
+    const video = videoRef.current;
+    const stream =
+      streamRef.current ??
+      (video?.srcObject instanceof MediaStream ? video.srcObject : null);
+
+    if (stream) {
+      for (const track of stream.getTracks()) {
+        track.stop();
+      }
+    }
+
+    const wasActive = Boolean(stream);
     streamRef.current = null;
     startPromiseRef.current = null;
+
+    if (video) {
+      video.pause();
+      video.srcObject = null;
+      video.removeAttribute("src");
+      video.load();
+    }
 
     logCameraDiagnostic("stop", {
       reason,
@@ -160,7 +204,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
       }
 
       const category = getCameraFailureCategory(error, fallbackCategory);
-      stopCamera(category);
+      stopScanner(category);
       setCameraError(cameraErrorMessages[category]);
       setScannerState("error");
 
@@ -170,7 +214,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
         errorMessage: error instanceof Error ? error.message : String(error),
       });
     },
-    [stopCamera],
+    [stopScanner],
   );
 
   function scheduleDecode(
@@ -201,7 +245,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
           if (result) {
             const normalized = normalizeDecodedQrValue(result);
             setScannerState("success");
-            stopCamera("decode-success");
+            stopScanner("decode-success");
             onChangeRef.current(normalized);
             return;
           }
@@ -210,11 +254,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
           scheduleDecode(video, detector, scannerRun);
         })
         .catch((error: unknown) => {
-          failCamera(
-            error,
-            "QR scanner initialization failed",
-            scannerRun,
-          );
+          failCamera(error, "QR scanner initialization failed", scannerRun);
         });
     });
   }
@@ -226,9 +266,9 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
 
     if (!canUseCamera) {
       setCameraError(
-        window.isSecureContext
-          ? cameraErrorMessages["Browser cannot start the requested camera"]
-          : "Camera chỉ hoạt động trên HTTPS hoặc localhost. Vui lòng nhập mã QR thủ công.",
+        window.isSecureContext ?
+          cameraErrorMessages["Browser cannot start the requested camera"]
+        : "Camera chỉ hoạt động trên HTTPS hoặc localhost. Vui lòng nhập mã QR thủ công.",
       );
       setScannerState("error");
       return;
@@ -236,6 +276,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
 
     const scannerRun = scannerRunRef.current + 1;
     scannerRunRef.current = scannerRun;
+    scannerActiveRef.current = true;
     setCameraError(null);
     setScannerState("requestingPermission");
 
@@ -257,7 +298,10 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
         return;
       }
 
-      if (scannerRunRef.current !== scannerRun) {
+      if (
+        scannerRunRef.current !== scannerRun ||
+        !scannerActiveRef.current
+      ) {
         stream.getTracks().forEach((track) => track.stop());
         return;
       }
@@ -283,7 +327,9 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
       });
 
       try {
-        await waitForVideoMetadata(video);
+        await waitForVideoMetadata(video, (cancelListener) => {
+          metadataCancelRef.current = cancelListener;
+        });
         await video.play();
       } catch (error) {
         failCamera(
@@ -310,6 +356,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
       let detector: ReturnType<typeof createQrFrameDetector>;
       try {
         detector = createQrFrameDetector();
+        detectorRef.current = detector;
       } catch (error) {
         failCamera(error, "QR scanner initialization failed", scannerRun);
         return;
@@ -332,41 +379,12 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
 
   useEffect(() => {
     return () => {
-      stopCamera("component-unmount");
+      stopScanner("component-unmount");
     };
-  }, [stopCamera]);
+  }, [stopScanner]);
 
   return (
     <Flex vertical gap={12}>
-      <Input
-        autoFocus
-        value={value}
-        placeholder={placeholder}
-        onChange={(event) => onChange(event.target.value)}
-      />
-      <Button
-        icon={<CameraOutlined />}
-        disabled={!canUseCamera && scannerState !== "error"}
-        loading={scannerState === "requestingPermission"}
-        onClick={() => {
-          if (isCameraRunning) {
-            stopCamera("user-stop");
-            setScannerState("idle");
-            return;
-          }
-
-          startCamera();
-        }}>
-        {isCameraRunning ? "Stop Camera" : "Scan with Camera"}
-      </Button>
-      {!canUseCamera && (
-        <Alert
-          type="warning"
-          showIcon
-          description="Camera chỉ hoạt động khi trình duyệt cho phép getUserMedia, thường là HTTPS hoặc localhost. Bạn vẫn có thể nhập mã QR thủ công."
-        />
-      )}
-      {cameraError && <Alert type="error" showIcon description={cameraError} />}
       {isCameraRunning && (
         <Flex vertical gap={8}>
           <video
@@ -388,6 +406,35 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
           </Typography.Text>
         </Flex>
       )}
+      <Input
+        autoFocus
+        value={value}
+        placeholder={placeholder}
+        onChange={(event) => onChange(event.target.value)}
+      />
+      <Button
+        icon={<CameraOutlined />}
+        disabled={!canUseCamera && scannerState !== "error"}
+        loading={scannerState === "requestingPermission"}
+        onClick={() => {
+          if (isCameraRunning) {
+            stopScanner("user-stop");
+            setScannerState("idle");
+            return;
+          }
+
+          startCamera();
+        }}>
+        {isCameraRunning ? "Stop Camera" : "Scan with Camera"}
+      </Button>
+      {!canUseCamera && (
+        <Alert
+          type="warning"
+          showIcon
+          description="Camera chỉ hoạt động khi trình duyệt cho phép getUserMedia, thường là HTTPS hoặc localhost. Bạn vẫn có thể nhập mã QR thủ công."
+        />
+      )}
+      {cameraError && <Alert type="error" showIcon description={cameraError} />}
     </Flex>
   );
 }
