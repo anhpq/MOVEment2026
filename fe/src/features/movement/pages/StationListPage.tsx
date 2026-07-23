@@ -1,8 +1,12 @@
 import {
+  CheckCircleFilled,
   EditFilled,
-  EditOutlined,
+  FlagOutlined,
+  PlayCircleFilled,
   PlayCircleOutlined,
-  SaveOutlined,
+  StarFilled,
+  TeamOutlined,
+  UsergroupAddOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
 import {
@@ -10,59 +14,39 @@ import {
   App as AntdApp,
   Button,
   Card,
-  Drawer,
   Empty,
   Flex,
-  Form,
-  Input,
-  InputNumber,
   List,
   Modal,
-  Select,
   Tag,
   Typography,
-  Descriptions,
 } from "antd";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
-import {
-  checkInStation,
-  editAdminProgressScore,
-  forceAdminProgressStatus,
-  getPlayerFinal,
-} from "../api";
+import {checkInStation, getPlayerFinal} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
-import {fetchAdminDatabase} from "../adminData";
 import {
   formatDateTime,
   getDisabledReason,
   getStationStatusColor,
 } from "../utils";
 
-type QuickEditFormValues = Pick<TeamStation, "status" | "score"> & {
-  reason: string;
-};
-
 export function StationListPage() {
   const navigate = useNavigate();
-  const {modal, message} = AntdApp.useApp();
+  const {message} = AntdApp.useApp();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
-  const [editingStation, setEditingStation] = useState<TeamStation | null>(
-    null,
-  );
   const [scanTarget, setScanTarget] = useState<TeamStation | null>(null);
   const [checkInQrToken, setCheckInQrToken] = useState("");
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
   const [isFinalReady, setIsFinalReady] = useState(false);
-  const [quickEditForm] = Form.useForm<QuickEditFormValues>();
 
   const team = teams.find((item) => item.id === activeTeamId);
   const sortedStations = [...(teamStations[activeTeamId] ?? [])].sort(
@@ -142,25 +126,36 @@ export function StationListPage() {
 
   return (
     <Flex vertical gap={16} className="full-width">
-      <Alert
-        className="active-team"
-        type="warning"
-        description={
-          <>
-            <Typography.Title level={4} className="section-title">
-              {team.name}
-            </Typography.Title>
-            <Descriptions column={2} size="small">
-              <Descriptions.Item label="Total Score">
-                {team.score}
-              </Descriptions.Item>
-              <Descriptions.Item label="Finished">
-                {team.finish}/{sortedStations.length}
-              </Descriptions.Item>
-            </Descriptions>
-          </>
-        }
-      />
+      <section className="station-team-hero">
+        <div className="station-team-avatar" aria-hidden="true">
+          <UsergroupAddOutlined />
+        </div>
+        <div className="station-team-summary">
+          <Typography.Title level={2}>{team.name}</Typography.Title>
+          <div className="station-team-metrics">
+            <div className="station-team-metric">
+              <span className="station-metric-icon">
+                <StarFilled />
+              </span>
+              <span>
+                <small>Total Score</small>
+                <strong>{team.score}</strong>
+              </span>
+            </div>
+            <div className="station-team-metric">
+              <span className="station-metric-icon">
+                <CheckCircleFilled />
+              </span>
+              <span>
+                <small>Finished</small>
+                <strong>
+                  {team.finish} / {sortedStations.length}
+                </strong>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {session.role === "user" && isFinalReady && (
         <Alert
@@ -181,14 +176,13 @@ export function StationListPage() {
         renderItem={(station) => {
           return (
             <List.Item>
-              <Card className="surface-card station-card">
-                <div className="station-row">
-                  <div className="full-width">
-                    <Flex
-                      gap={8}
-                      justify="space-between"
-                      align="center"
-                      className="full-width">
+              <Card className="surface-card station-card station-showcase-card">
+                <div className="station-showcase-header">
+                  <div className="station-showcase-avatar" aria-hidden="true">
+                    <PlayCircleFilled />
+                  </div>
+                  <div className="station-showcase-heading">
+                    <Flex gap={8} align="center" className="full-width">
                       <Typography.Title level={4} className="card-title">
                         {station.name}
                       </Typography.Title>
@@ -199,28 +193,44 @@ export function StationListPage() {
                     <Typography.Paragraph className="muted-copy compact-copy">
                       {station.description}
                     </Typography.Paragraph>
+                  </div>
+                </div>
 
-                    <Descriptions column={4} size="small">
-                      <Descriptions.Item label="Playing Teams" span={3}>
-                        {playingTeamCount(station.stationId)}
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Score">
-                        {station.score}
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Start Time" span={2}>
-                        {formatDateTime(station.startTime)}
-                      </Descriptions.Item>
-                      <Descriptions.Item label="End Time" span={2}>
-                        {formatDateTime(station.endTime)}
-                      </Descriptions.Item>
-                    </Descriptions>
+                <div className="station-stats">
+                  <div className="station-stat">
+                    <TeamOutlined />
+                    <span>
+                      <small>Playing Teams</small>
+                      <strong>{playingTeamCount(station.stationId)}</strong>
+                    </span>
+                  </div>
+                  <div className="station-stat">
+                    <StarFilled />
+                    <span>
+                      <small>Score</small>
+                      <strong>{station.score}</strong>
+                    </span>
+                  </div>
+                  <div className="station-stat">
+                    <PlayCircleOutlined />
+                    <span>
+                      <small>Start Time</small>
+                      <strong>{formatDateTime(station.startTime)}</strong>
+                    </span>
+                  </div>
+                  <div className="station-stat">
+                    <FlagOutlined />
+                    <span>
+                      <small>End Time</small>
+                      <strong>{formatDateTime(station.endTime)}</strong>
+                    </span>
+                  </div>
+                </div>
 
-                    <Flex
-                      justify="space-between"
-                      gap={8}
-                      className="full-width mt-4">
+                <div className="station-showcase-actions">
                       {station.youtubeUrl && (
                         <Button
+                          block
                           type="primary"
                           icon={<YoutubeOutlined />}
                           disabled={!station.youtubeUrl}
@@ -231,7 +241,8 @@ export function StationListPage() {
                         </Button>
                       )}
                       <Button
-                        type="primary"
+                        block
+                        type={station.youtubeUrl ? "default" : "primary"}
                         icon={
                           session.role === "user" ?
                             <PlayCircleOutlined />
@@ -240,115 +251,12 @@ export function StationListPage() {
                         onClick={() => handleStationClick(station)}>
                         {session.role === "user" ? "Play" : "View & Edit"}
                       </Button>
-                    </Flex>
-                  </div>
-
-                  {session.role === "admin" && (
-                    <Button
-                      icon={<EditOutlined />}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        quickEditForm.setFieldsValue({
-                          status: station.status,
-                          score: station.score,
-                        });
-                        setEditingStation(station);
-                      }}>
-                      Quick Update
-                    </Button>
-                  )}
                 </div>
               </Card>
             </List.Item>
           );
         }}
       />
-
-      <Drawer
-        title="Quick Update Station"
-        placement="bottom"
-        open={Boolean(editingStation)}
-        onClose={() => setEditingStation(null)}
-        destroyOnHidden>
-        <Form
-          form={quickEditForm}
-          layout="vertical"
-          onFinish={(values) => {
-            if (!editingStation) {
-              return;
-            }
-
-            modal.confirm({
-              centered: true,
-              title: "Confirm Station Update",
-              content:
-                "This change will be saved to the backend and recorded in the audit log.",
-              okText: "Save",
-              cancelText: "Cancel",
-              onOk: async () => {
-                if (!editingStation.progressId)
-                  throw new Error("Progress record is unavailable");
-                try {
-                  if (values.status === "Finished") {
-                    if (editingStation.backendStatus !== "COMPLETED") {
-                      throw new Error(
-                        "Complete check-out before assigning a finished score",
-                      );
-                    }
-                    await editAdminProgressScore(
-                      editingStation.progressId,
-                      values.score,
-                      values.reason,
-                    );
-                  } else {
-                    await forceAdminProgressStatus(
-                      editingStation.progressId,
-                      values.status === "New" ? "AVAILABLE" : "PLAYING",
-                      values.reason,
-                    );
-                  }
-                  loadDatabase(await fetchAdminDatabase());
-                  message.success("Station updated successfully");
-                  setEditingStation(null);
-                } catch (error) {
-                  message.error(
-                    error instanceof Error ?
-                      error.message
-                    : "Unable to update station",
-                  );
-                  throw error;
-                }
-              },
-            });
-          }}>
-          <Form.Item label="Status" name="status" rules={[{required: true}]}>
-            <Select
-              options={[
-                {label: "New", value: "New"},
-                {label: "In Progress", value: "In Progress"},
-                {label: "Finished", value: "Finished"},
-              ]}
-            />
-          </Form.Item>
-          <Form.Item label="Score" name="score" rules={[{required: true}]}>
-            <InputNumber min={0} max={1000} className="full-width" />
-          </Form.Item>
-          <Form.Item
-            label="Reason"
-            name="reason"
-            rules={[{required: true, message: "Reason is required for audit"}]}>
-            <Input placeholder="Reason for this admin change" maxLength={500} />
-          </Form.Item>
-
-          <Button
-            type="primary"
-            htmlType="submit"
-            icon={<SaveOutlined />}
-            block>
-            Save changes
-          </Button>
-        </Form>
-      </Drawer>
 
       <Modal
         centered
