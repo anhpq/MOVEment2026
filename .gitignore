@@ -42,6 +42,9 @@ scripts/start-cline-telegram.ps1
 scripts/stop-cline-telegram.ps1
 scripts/test-cline-telegram.ps1
 
+# Kilo Code local workspace files
+.kilo/
+
 # Editor and OS files
 .clinerules/
 .vscode/extensions.json
