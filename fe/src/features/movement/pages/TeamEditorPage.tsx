@@ -3,6 +3,12 @@ import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Typograp
 import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
+import {
+  buildTeamQrLoginUrl,
+  cacheTeamQrPayload,
+  getCachedTeamQrToken,
+  setCachedTeamQrToken,
+} from "../teamQrTokenCache";
 import type {TeamFormValues} from "../types";
 import {createAdminTeam, getAdminTeamQrLoginTokens, updateAdminTeam} from "../api";
 import {fetchAdminDatabase} from "../adminData";
@@ -56,7 +62,7 @@ export function TeamEditorPage() {
           return;
         }
         const activeToken = tokens.find((token) => token.status === "ACTIVE");
-        const qrToken = activeToken?.rawToken ?? "";
+        const qrToken = activeToken?.rawToken ?? getCachedTeamQrToken(team.id);
         initialQrTokenRef.current = qrToken;
         form.setFieldsValue({qrToken});
       }).catch(() => undefined);
@@ -114,11 +120,18 @@ export function TeamEditorPage() {
                   });
                   const qrLogin = updated.qrLogin;
                   if (qrLogin) {
+                    const payload =
+                      qrLogin.qrLoginUrl ??
+                      qrLogin.loginUrl ??
+                      buildTeamQrLoginUrl(qrLogin.rawToken);
+                    cacheTeamQrPayload(team.id, payload);
                     await showGeneratedQr(
-                      qrLogin.qrLoginUrl ?? qrLogin.loginUrl ?? qrLogin.rawToken,
+                      payload,
                       `team-${team.id}-qr.png`,
                       `${team.name} · Team QR login`,
                     );
+                  } else if (qrToken) {
+                    setCachedTeamQrToken(team.id, qrToken);
                   }
                 } else {
                   const created = await createAdminTeam({
@@ -129,6 +142,7 @@ export function TeamEditorPage() {
                   });
                   const qrLoginUrl = created.qrLoginUrl ?? created.loginUrl;
                   if (qrLoginUrl) {
+                    cacheTeamQrPayload(String(created.id), qrLoginUrl);
                     modal.info({
                       centered: true,
                       width: 680,

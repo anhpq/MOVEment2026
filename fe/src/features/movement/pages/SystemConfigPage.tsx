@@ -21,13 +21,21 @@ import {fetchAdminDatabase} from "../adminData";
 import {
   deleteAdminStation,
   deleteAdminTeam,
-  generateAdminStationQrTokens,
   getAdminStationQrTokens,
   getAdminTeamQrLoginTokens,
   updateAdminStation,
 } from "../api";
 import {StationsMapPanel} from "../components/StationsMapPanel";
+import {
+  cacheStationQrTokens,
+  getCachedStationQrToken,
+} from "../stationQrTokenCache";
 import {useMovementStore} from "../store";
+import {
+  buildTeamQrLoginUrl,
+  cacheTeamQrPayload,
+  getCachedTeamQrToken,
+} from "../teamQrTokenCache";
 import type {StationTrackingMode} from "../types";
 
 export function SystemConfigPage() {
@@ -121,16 +129,22 @@ export function SystemConfigPage() {
     try {
       const tokens = await getAdminTeamQrLoginTokens(team.id);
       const token = tokens.find((item) => item.status === "ACTIVE") ?? tokens[0];
-      const payload = token?.qrLoginUrl ?? token?.loginUrl;
+      const cachedToken = getCachedTeamQrToken(team.id);
+      const payload =
+        token?.qrLoginUrl ||
+        token?.loginUrl ||
+        (token?.rawToken ? buildTeamQrLoginUrl(token.rawToken) : "") ||
+        (cachedToken ? buildTeamQrLoginUrl(cachedToken) : "");
       if (!payload) {
-        message.warning("Existing Team QR raw token is not available for display. Rotate or enter a replacement token only when a new QR is required.");
+        message.warning("Không thể hiển thị QR cũ vì backend chỉ lưu hash token. Hãy nhập lại QR token trong Edit Team nếu cần lưu/show QR hiện tại trên máy này.");
         return;
       }
+      cacheTeamQrPayload(team.id, payload);
       await showOneTimeQrPreview({
         title: `QR login for ${team.name}`,
         payload,
         filename: `team-${team.id}-qr.png`,
-        context: `${team.name} · Team QR login · ${token.status}`,
+        context: `${team.name} · Team QR login · ${token?.status ?? "ACTIVE"}`,
       });
     } catch (error) {
       message.error(error instanceof Error ? error.message : "Unable to open Team QR");
@@ -139,57 +153,53 @@ export function SystemConfigPage() {
     }
   };
 
-  const handleGenerateStationQr = async (station: (typeof stationDefinitions)[number]) => {
-    modal.confirm({
-      centered: true,
-      title: "Generate new Station QR?",
-      content: "The current Station QR tokens will be replaced and cannot be viewed again.",
-      okText: "Generate QR",
-      cancelText: "Cancel",
-      onOk: async () => {
-        setQrBusyStationId(station.id);
-        try {
-          const result = await generateAdminStationQrTokens(station.id);
-          const previews = await Promise.all(result.qrTokens.map(async (token) => {
-            if (!token.rawToken) {
-              throw new Error("Generated Station QR token is unavailable");
-            }
-            return {
-              token,
-              dataUrl: await QRCode.toDataURL(token.rawToken, {width: 260, margin: 2}),
-            };
-          }));
-          modal.info({
-            centered: true,
-            width: 720,
-            title: `Station QR for ${station.name}`,
-            content: (
-              <Flex vertical gap={12}>
-                <Typography.Text type="warning">
-                  Save or download this QR now. For security, the token cannot be viewed again.
-                </Typography.Text>
-                <Flex gap={16} wrap justify="center">
-                  {previews.map(({token, dataUrl}) => (
-                    <Flex key={token.purpose} vertical gap={8} align="center">
-                      <img src={dataUrl} alt={`${station.name} ${token.purpose} QR`} width={220} height={220} />
-                      <Typography.Text>{token.purpose} · {token.status}</Typography.Text>
-                      <Button onClick={() => downloadDataUrl(dataUrl, `station-${station.id}-${token.purpose.toLowerCase()}-qr.png`)}>
-                        Download PNG
-                      </Button>
-                    </Flex>
-                  ))}
+  const handleOpenStationQr = async (station: (typeof stationDefinitions)[number]) => {
+    setQrBusyStationId(station.id);
+    try {
+      const tokens = await getAdminStationQrTokens(station.id);
+      const activeTokens = tokens.filter((token) => token.status === "ACTIVE");
+      const tokensWithRawValue = activeTokens.map((token) => ({
+        ...token,
+        rawToken: token.rawToken ?? getCachedStationQrToken(station.id, token.purpose),
+      })).filter((token) => token.rawToken);
+      if (!tokensWithRawValue.length) {
+        message.warning("Không thể hiển thị QR cũ vì backend chỉ lưu hash token. Hãy nhập lại Check-in/Check-out QR token trong Edit Station nếu cần lưu/show QR hiện tại trên máy này.");
+        return;
+      }
+
+      cacheStationQrTokens(station.id, tokensWithRawValue);
+      const previews = await Promise.all(tokensWithRawValue.map(async (token) => ({
+        token,
+        dataUrl: await QRCode.toDataURL(token.rawToken ?? "", {width: 260, margin: 2}),
+      })));
+      modal.info({
+        centered: true,
+        width: 720,
+        title: `Station QR for ${station.name}`,
+        content: (
+          <Flex vertical gap={12}>
+            <Typography.Text>
+              Existing active Check-in and Check-out QR tokens for this Station.
+            </Typography.Text>
+            <Flex gap={16} wrap justify="center">
+              {previews.map(({token, dataUrl}) => (
+                <Flex key={token.purpose} vertical gap={8} align="center">
+                  <img src={dataUrl} alt={`${station.name} ${token.purpose} QR`} width={220} height={220} />
+                  <Typography.Text>{token.purpose} · {token.status}</Typography.Text>
+                  <Button onClick={() => downloadDataUrl(dataUrl, `station-${station.id}-${token.purpose.toLowerCase()}-qr.png`)}>
+                    Download PNG
+                  </Button>
                 </Flex>
-              </Flex>
-            ),
-          });
-          loadDatabase(await fetchAdminDatabase());
-        } catch (error) {
-          message.error(error instanceof Error ? error.message : "Unable to generate Station QR");
-        } finally {
-          setQrBusyStationId(null);
-        }
-      },
-    });
+              ))}
+            </Flex>
+          </Flex>
+        ),
+      });
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to open Station QR");
+    } finally {
+      setQrBusyStationId(null);
+    }
   };
 
   return (
@@ -281,8 +291,8 @@ export function SystemConfigPage() {
                             type="primary"
                             icon={<QrcodeOutlined />}
                             loading={qrBusyStationId === station.id}
-                            onClick={() => void handleGenerateStationQr(station)}>
-                            Generate QR
+                            onClick={() => void handleOpenStationQr(station)}>
+                            Show QR
                           </Button>
                         </Flex>
                       </div>

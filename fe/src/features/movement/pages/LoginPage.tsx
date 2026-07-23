@@ -1,7 +1,6 @@
 import {
   CameraOutlined,
   LockOutlined,
-  ManOutlined,
   QrcodeOutlined,
   StopOutlined,
   UserOutlined,
@@ -32,6 +31,7 @@ import {
   openQrCameraStream,
   supportsCameraQrScan,
 } from "../qrDetect";
+import {RunningPersonIcon} from "../components/RunningPersonIcon";
 import type {QrFrameDetector} from "../qrDetect";
 
 type LoginFormValues = {
@@ -404,7 +404,7 @@ export function LoginPage() {
         <Flex vertical gap={18} className="full-width">
           <div className="login-header">
             <div className="login-runner-mark" aria-hidden="true">
-              <ManOutlined />
+              <RunningPersonIcon />
             </div>
             <Typography.Title level={2} className="login-title">
               MOVEment 2026

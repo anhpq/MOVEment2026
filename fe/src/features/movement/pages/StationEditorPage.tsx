@@ -1,12 +1,17 @@
 import QRCode from "qrcode";
 import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Select, Typography} from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {StationFormValues} from "../types";
-import {createAdminStation, updateAdminStation} from "../api";
+import {createAdminStation, getAdminStationQrTokens, updateAdminStation} from "../api";
 import {fetchAdminDatabase} from "../adminData";
 import {DEFAULT_STATION_MAX_POINTS} from "../constants";
+import {
+  cacheStationQrTokens,
+  getCachedStationQrToken,
+  setCachedStationQrToken,
+} from "../stationQrTokenCache";
 
 export function StationEditorPage() {
   const navigate = useNavigate();
@@ -19,6 +24,10 @@ export function StationEditorPage() {
   const session = useMovementStore((state) => state.session);
   const [form] = Form.useForm<StationFormValues>();
   const [isOpen, setIsOpen] = useState(true);
+  const initialQrTokensRef = useRef({
+    checkInQrToken: "",
+    checkOutQrToken: "",
+  });
 
   const station = stationDefinitions.find(
     (item) => item.id === params.stationId,
@@ -56,7 +65,9 @@ export function StationEditorPage() {
   };
 
   useEffect(() => {
+    let cancelled = false;
     if (station) {
+      initialQrTokensRef.current = {checkInQrToken: "", checkOutQrToken: ""};
       form.setFieldsValue({
         ...station,
         markerX: station.markerX ?? 50,
@@ -65,10 +76,26 @@ export function StationEditorPage() {
         checkInQrToken: "",
         checkOutQrToken: "",
       });
-      return;
+      void getAdminStationQrTokens(station.id).then((tokens) => {
+        if (cancelled) {
+          return;
+        }
+        const activeCheckIn = tokens.find((token) => token.purpose === "CHECK_IN" && token.status === "ACTIVE");
+        const activeCheckOut = tokens.find((token) => token.purpose === "CHECK_OUT" && token.status === "ACTIVE");
+        const checkInQrToken = activeCheckIn?.rawToken ?? getCachedStationQrToken(station.id, "CHECK_IN");
+        const checkOutQrToken = activeCheckOut?.rawToken ?? getCachedStationQrToken(station.id, "CHECK_OUT");
+        initialQrTokensRef.current = {checkInQrToken, checkOutQrToken};
+        form.setFieldsValue({checkInQrToken, checkOutQrToken});
+      }).catch(() => undefined);
+      return () => {
+        cancelled = true;
+      };
     }
 
     form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "QUIZ", maxPoints: DEFAULT_STATION_MAX_POINTS, checkInQrToken: "", checkOutQrToken: ""});
+    return () => {
+      cancelled = true;
+    };
   }, [form, station]);
 
   const handleClose = () => {
@@ -105,6 +132,8 @@ export function StationEditorPage() {
             cancelText: "Cancel",
             onOk: async () => {
               if (station && session?.role === "admin") {
+                const checkInQrToken = values.checkInQrToken?.trim() ?? "";
+                const checkOutQrToken = values.checkOutQrToken?.trim() ?? "";
                 const updated = await updateAdminStation(station.id, {
                   name: values.name,
                   description: values.description ?? null,
@@ -112,9 +141,15 @@ export function StationEditorPage() {
                   mapX: values.markerX,
                   mapY: values.markerY,
                   mediaUrl: values.youtubeUrl ?? null,
-                  ...(values.checkInQrToken?.trim() ? {checkInQrToken: values.checkInQrToken} : {}),
-                  ...(values.checkOutQrToken?.trim() ? {checkOutQrToken: values.checkOutQrToken} : {}),
+                  ...(checkInQrToken && checkInQrToken !== initialQrTokensRef.current.checkInQrToken ? {checkInQrToken} : {}),
+                  ...(checkOutQrToken && checkOutQrToken !== initialQrTokensRef.current.checkOutQrToken ? {checkOutQrToken} : {}),
                 });
+                if (updated.qrTokens?.length) {
+                  cacheStationQrTokens(station.id, updated.qrTokens);
+                } else {
+                  setCachedStationQrToken(station.id, "CHECK_IN", checkInQrToken);
+                  setCachedStationQrToken(station.id, "CHECK_OUT", checkOutQrToken);
+                }
                 const previewToken = updated.qrTokens?.[0];
                 if (previewToken?.rawToken) {
                   await showGeneratedQr(previewToken.rawToken, `station-${station.id}-qr.png`, `${station.name} · ${previewToken.purpose}`);
@@ -132,6 +167,7 @@ export function StationEditorPage() {
                   mediaUrl: values.youtubeUrl ?? null,
                 });
                 if (createdStation.qrTokens?.length) {
+                  cacheStationQrTokens(createdStation.id, createdStation.qrTokens);
                   modal.info({
                     centered: true,
                     width: 680,
