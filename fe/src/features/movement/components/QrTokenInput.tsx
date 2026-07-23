@@ -72,10 +72,7 @@ function getCameraFailureCategory(
   }
 }
 
-function logCameraDiagnostic(
-  reason: string,
-  details: Record<string, unknown>,
-) {
+function logCameraDiagnostic(reason: string, details: Record<string, unknown>) {
   if (import.meta.env.DEV) {
     console.info("[qr-camera]", reason, details);
   }
@@ -100,12 +97,18 @@ function waitForVideoMetadata(video: HTMLVideoElement): Promise<void> {
       reject(new Error("Video metadata failed to load"));
     };
 
-    video.addEventListener("loadedmetadata", handleLoadedMetadata, {once: true});
+    video.addEventListener("loadedmetadata", handleLoadedMetadata, {
+      once: true,
+    });
     video.addEventListener("error", handleError, {once: true});
   });
 }
 
-export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) {
+export function QrTokenInput({
+  value,
+  onChange,
+  placeholder,
+}: QrTokenInputProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -210,11 +213,7 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
           scheduleDecode(video, detector, scannerRun);
         })
         .catch((error: unknown) => {
-          failCamera(
-            error,
-            "QR scanner initialization failed",
-            scannerRun,
-          );
+          failCamera(error, "QR scanner initialization failed", scannerRun);
         });
     });
   }
@@ -226,9 +225,9 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
 
     if (!canUseCamera) {
       setCameraError(
-        window.isSecureContext
-          ? cameraErrorMessages["Browser cannot start the requested camera"]
-          : "Camera chỉ hoạt động trên HTTPS hoặc localhost. Vui lòng nhập mã QR thủ công.",
+        window.isSecureContext ?
+          cameraErrorMessages["Browser cannot start the requested camera"]
+        : "Camera chỉ hoạt động trên HTTPS hoặc localhost. Vui lòng nhập mã QR thủ công.",
       );
       setScannerState("error");
       return;
@@ -338,6 +337,27 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
 
   return (
     <Flex vertical gap={12}>
+      {isCameraRunning && (
+        <Flex vertical gap={8}>
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            style={{
+              width: "100%",
+              minHeight: 220,
+              aspectRatio: "4 / 3",
+              borderRadius: 8,
+              background: "#000",
+              objectFit: "cover",
+            }}
+          />
+          <Typography.Text type="secondary">
+            Đưa camera vào mã QR của trạm.
+          </Typography.Text>
+        </Flex>
+      )}
       <Input
         autoFocus
         value={value}
@@ -367,27 +387,6 @@ export function QrTokenInput({value, onChange, placeholder}: QrTokenInputProps) 
         />
       )}
       {cameraError && <Alert type="error" showIcon description={cameraError} />}
-      {isCameraRunning && (
-        <Flex vertical gap={8}>
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            playsInline
-            style={{
-              width: "100%",
-              minHeight: 220,
-              aspectRatio: "4 / 3",
-              borderRadius: 8,
-              background: "#000",
-              objectFit: "cover",
-            }}
-          />
-          <Typography.Text type="secondary">
-            Đưa camera vào mã QR của trạm.
-          </Typography.Text>
-        </Flex>
-      )}
     </Flex>
   );
 }

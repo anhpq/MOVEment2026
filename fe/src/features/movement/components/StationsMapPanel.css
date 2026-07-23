@@ -21,7 +21,7 @@
 
 .movement-map-viewport {
   width: 100%;
-  height: clamp(320px, 100vh, 75vh);
+  height: clamp(320px, 100vh, 70vh);
   background: linear-gradient(180deg, #e9eff6 0%, #dbe5ee 100%);
 }
 
@@ -34,6 +34,13 @@
   padding: 8px;
   width: 100%;
   justify-content: space-between;
+}
+
+.movement-map-zoom-controls {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 6;
 }
 
 .movement-map-legend {

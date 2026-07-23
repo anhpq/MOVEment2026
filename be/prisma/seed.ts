@@ -18,6 +18,7 @@ import { dirname, resolve } from 'path';
 import { FINAL_CHALLENGE_SEED_KEY, planFinalChallengeSeed } from './final-challenge-seed';
 
 const prisma = new PrismaClient();
+const seedStartedAt = Date.now();
 const isProduction = process.env.NODE_ENV === 'production';
 const seedQrLoginTokens = !isProduction && process.env.SEED_QR_LOGIN_TOKENS !== 'false';
 const frontendPublicUrl =
@@ -82,161 +83,214 @@ const teams = Array.from({ length: 25 }, (_, index) => {
   };
 });
 
+function formatDuration(startedAt: number) {
+  return `${Date.now() - startedAt}ms`;
+}
+
+function logSeed(message: string) {
+  console.log(`[seed +${formatDuration(seedStartedAt)}] ${message}`);
+}
+
+async function runSeedPhase<T>(name: string, action: () => Promise<T>) {
+  const startedAt = Date.now();
+  logSeed(`Starting ${name}...`);
+  try {
+    const result = await action();
+    logSeed(`Finished ${name} in ${formatDuration(startedAt)}.`);
+    return result;
+  } catch (error) {
+    logSeed(`Failed ${name} after ${formatDuration(startedAt)}.`);
+    throw error;
+  }
+}
+
 async function main() {
+  logSeed('Seed script started.');
   const generatedDevQrUrls: string[] = [];
   const generatedDevStationQrTokens: string[] = [];
   let generatedStationQrRepairCount = 0;
-  const adminPassword = await bcrypt.hash('admin123', 10);
-  const scoringCodeHash = await bcrypt.hash(process.env.SCORING_CODE ?? '2468', 10);
-  await prisma.user.upsert({
-    where: { username: 'admin' },
-    create: {
-      username: 'admin',
-      passwordHash: adminPassword,
-      role: UserRole.ADMIN,
-    },
-    update: {},
+
+  await runSeedPhase('database connection', async () => {
+    await prisma.$connect();
   });
 
-  for (let index = 0; index < stations.length; index += 1) {
-    const [id, name, type, maxPoints, mapX, mapY] = stations[index];
-    await prisma.station.upsert({
-      where: { id },
+  const adminPassword = await bcrypt.hash('admin123', 10);
+  const scoringCodeHash = await bcrypt.hash(process.env.SCORING_CODE ?? '2468', 10);
+
+  await runSeedPhase('admin account', async () => {
+    await prisma.user.upsert({
+      where: { username: 'admin' },
       create: {
-        id,
-        name,
-        description: `${name} station`,
-        mapX,
-        mapY,
-        trackingMode: StationTrackingMode.BOTH,
-        sortOrder: index + 1,
+        username: 'admin',
+        passwordHash: adminPassword,
+        role: UserRole.ADMIN,
       },
-      update: { name, mapX, mapY, sortOrder: index + 1 },
+      update: {},
     });
-    const game = await prisma.game.findFirst({ where: { stationId: id } });
-    if (!game) {
-      await prisma.game.create({
-        data: {
-          stationId: id,
-          title: `${name} Game`,
-          type,
-          difficulty: Math.min(5, (index % 5) + 1),
-          maxPoints,
-          clueText: `Guide for ${name}`,
-          mediaUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-          answerHash:
-            type === 'CIPHER' ? await bcrypt.hash(`answer-${id.toLowerCase()}`, 10) : null,
+  });
+
+  await runSeedPhase('seed stations', async () => {
+    for (let index = 0; index < stations.length; index += 1) {
+      const [id, name, , , mapX, mapY] = stations[index];
+      await prisma.station.upsert({
+        where: { id },
+        create: {
+          id,
+          name,
+          description: `${name} station`,
+          mapX,
+          mapY,
+          trackingMode: StationTrackingMode.BOTH,
+          sortOrder: index + 1,
         },
+        update: { name, mapX, mapY, sortOrder: index + 1 },
       });
     }
-    for (const purpose of [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT]) {
-      const generated = await ensureStationQrToken(id, name, purpose);
-      if (generated) {
-        generatedStationQrRepairCount += 1;
-        if (generated.artifactEntry) {
-          generatedDevStationQrTokens.push(generated.artifactEntry);
+  });
+
+  await runSeedPhase('seed challenges', async () => {
+    for (let index = 0; index < stations.length; index += 1) {
+      const [id, name, type, maxPoints] = stations[index];
+      const game = await prisma.game.findFirst({ where: { stationId: id } });
+      if (!game) {
+        await prisma.game.create({
+          data: {
+            stationId: id,
+            title: `${name} Game`,
+            type,
+            difficulty: Math.min(5, (index % 5) + 1),
+            maxPoints,
+            clueText: `Guide for ${name}`,
+            mediaUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            answerHash:
+              type === 'CIPHER' ? await bcrypt.hash(`answer-${id.toLowerCase()}`, 10) : null,
+          },
+        });
+      }
+    }
+  });
+
+  await runSeedPhase('station QR token repair', async () => {
+    for (const [id, name] of stations) {
+      for (const purpose of [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT]) {
+        const generated = await ensureStationQrToken(id, name, purpose);
+        if (generated) {
+          generatedStationQrRepairCount += 1;
+          if (generated.artifactEntry) {
+            generatedDevStationQrTokens.push(generated.artifactEntry);
+          }
         }
       }
     }
-  }
+  });
 
   const totalMaxPoints = stations.reduce((sum, item) => sum + item[3], 0);
-  for (const { name, username, captainName, password, color } of teams) {
-    const team = await prisma.team.upsert({
-      where: { username },
-      create: {
-        name,
-        username,
-        captainName,
-        passwordHash: await bcrypt.hash(password, 10),
-        startedAt: new Date(),
-        color,
-        maxPossiblePoints: totalMaxPoints,
-      },
-      update: {
-        name,
-        captainName,
-        passwordHash: await bcrypt.hash(password, 10),
-        color,
-        maxPossiblePoints: totalMaxPoints,
-      },
-    });
-
-    for (const [stationId] of stations) {
-      const game = await prisma.game.findFirstOrThrow({ where: { stationId } });
-      await prisma.teamStationProgress.upsert({
-        where: { teamId_stationId: { teamId: team.id, stationId } },
+  await runSeedPhase('seed teams', async () => {
+    for (const { name, username, captainName, password, color } of teams) {
+      const passwordHash = await bcrypt.hash(password, 10);
+      const team = await prisma.team.upsert({
+        where: { username },
         create: {
-          teamId: team.id,
-          stationId,
-          gameId: game.id,
-          status: ProgressStatus.AVAILABLE,
+          name,
+          username,
+          captainName,
+          passwordHash,
+          startedAt: new Date(),
+          color,
+          maxPossiblePoints: totalMaxPoints,
         },
-        update: {},
-      });
-    }
-
-    if (seedQrLoginTokens) {
-      const activeQrLoginToken = await prisma.qrLoginToken.findFirst({
-        where: {
-          teamId: team.id,
-          isActive: true,
-          revokedAt: null,
-          expiresAt: { gt: new Date() },
+        update: {
+          name,
+          captainName,
+          passwordHash,
+          color,
+          maxPossiblePoints: totalMaxPoints,
         },
       });
 
-      if (!activeQrLoginToken) {
-        const rawToken = createSecureQrLoginToken();
-        const expiresAt = new Date(
-          Date.now() + safeQrLoginTokenTtlMinutes * 60_000,
-        );
-        await prisma.$transaction(async (tx) => {
-          await tx.qrLoginToken.updateMany({
-            where: { teamId: team.id, isActive: true },
-            data: { isActive: false },
-          });
-          await tx.qrLoginToken.create({
-            data: {
-              teamId: team.id,
-              tokenHash: createQrTokenFingerprint(rawToken),
-              expiresAt,
-            },
-          });
+      for (const [stationId] of stations) {
+        const game = await prisma.game.findFirstOrThrow({ where: { stationId } });
+        await prisma.teamStationProgress.upsert({
+          where: { teamId_stationId: { teamId: team.id, stationId } },
+          create: {
+            teamId: team.id,
+            stationId,
+            gameId: game.id,
+            status: ProgressStatus.AVAILABLE,
+          },
+          update: {},
         });
-        generatedDevQrUrls.push(
-          [
-            `Team: ${team.name}`,
-            `Username: ${team.username}`,
-            `Status: ACTIVE`,
-            `ExpiresAt: ${expiresAt.toISOString()}`,
-            `QrLoginUrl: ${buildQrLoginUrl(frontendPublicUrl, rawToken)}`,
-          ].join('\n'),
-        );
+      }
+
+      if (seedQrLoginTokens) {
+        const activeQrLoginToken = await prisma.qrLoginToken.findFirst({
+          where: {
+            teamId: team.id,
+            isActive: true,
+            revokedAt: null,
+            expiresAt: { gt: new Date() },
+          },
+        });
+
+        if (!activeQrLoginToken) {
+          const rawToken = createSecureQrLoginToken();
+          const expiresAt = new Date(
+            Date.now() + safeQrLoginTokenTtlMinutes * 60_000,
+          );
+          await prisma.$transaction(async (tx) => {
+            await tx.qrLoginToken.updateMany({
+              where: { teamId: team.id, isActive: true },
+              data: { isActive: false },
+            });
+            await tx.qrLoginToken.create({
+              data: {
+                teamId: team.id,
+                tokenHash: createQrTokenFingerprint(rawToken),
+                expiresAt,
+              },
+            });
+          });
+          generatedDevQrUrls.push(
+            [
+              `Team: ${team.name}`,
+              `Username: ${team.username}`,
+              `Status: ACTIVE`,
+              `ExpiresAt: ${expiresAt.toISOString()}`,
+              `QrLoginUrl: ${buildQrLoginUrl(frontendPublicUrl, rawToken)}`,
+            ].join('\n'),
+          );
+        }
       }
     }
-  }
-
-  await prisma.eventConfig.upsert({
-    where: { id: 1 },
-    create: { id: 1, scoringCodeHash },
-    update: { scoringCodeHash },
   });
 
-  const final = await prisma.finalChallenge.findFirst({ where: { title: FINAL_CHALLENGE_SEED_KEY } });
-  const finalSeedAction = planFinalChallengeSeed({
-    existing: final,
-    environment: isProduction ? 'production' : 'non-production',
-    now: new Date(),
-  });
-  if (finalSeedAction.operation === 'create') {
-    await prisma.finalChallenge.create({ data: finalSeedAction.data });
-  } else if (finalSeedAction.operation === 'update') {
-    await prisma.finalChallenge.update({
-      where: { id: finalSeedAction.id },
-      data: finalSeedAction.data,
+  await runSeedPhase('event config', async () => {
+    await prisma.eventConfig.upsert({
+      where: { id: 1 },
+      create: { id: 1, scoringCodeHash },
+      update: { scoringCodeHash },
     });
-  }
+  });
+
+  await runSeedPhase('seed final event', async () => {
+    const final = await prisma.finalChallenge.findFirst({
+      where: { title: FINAL_CHALLENGE_SEED_KEY },
+    });
+    const finalSeedAction = planFinalChallengeSeed({
+      existing: final,
+      environment: isProduction ? 'production' : 'non-production',
+      now: new Date(),
+    });
+    if (finalSeedAction.operation === 'create') {
+      await prisma.finalChallenge.create({ data: finalSeedAction.data });
+    } else if (finalSeedAction.operation === 'update') {
+      await prisma.finalChallenge.update({
+        where: { id: finalSeedAction.id },
+        data: finalSeedAction.data,
+      });
+    }
+    logSeed(`Final Challenge seed action: ${finalSeedAction.operation}.`);
+  });
 
   if (generatedDevQrUrls.length) {
     mkdirSync(dirname(devQrArtifactPath), { recursive: true });
@@ -286,6 +340,8 @@ async function main() {
         : 'Station QR tokens already contain active SQ1 pairs; seed preserved them and did not rotate printed QR codes.',
     );
   }
+
+  logSeed('Seed completed.');
 }
 
 async function ensureStationQrToken(
@@ -355,10 +411,16 @@ async function createUniqueStationQrToken(purpose: QrPurpose) {
 }
 
 main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
+  .then(async () => {
+    logSeed('Disconnecting Prisma...');
     await prisma.$disconnect();
+    logSeed('Prisma disconnected.');
+    console.log('Seed completed successfully.');
+  })
+  .catch(async (error) => {
+    console.error('Seed failed:', error);
+    logSeed('Disconnecting Prisma after failure...');
+    await prisma.$disconnect();
+    logSeed('Prisma disconnected after failure.');
+    process.exitCode = 1;
   });

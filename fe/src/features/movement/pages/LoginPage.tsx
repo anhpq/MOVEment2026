@@ -1,4 +1,10 @@
-import {CameraOutlined, LockOutlined, QrcodeOutlined, UserOutlined} from "@ant-design/icons";
+import {
+  CameraOutlined,
+  LockOutlined,
+  QrcodeOutlined,
+  StopOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import {
   App as AntdApp,
   Button,
@@ -9,11 +15,18 @@ import {
   Space,
   Typography,
   Image,
+  Divider,
 } from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
-import {isAuthFailure, loginTeam, loginTeamWithQr, loginUser, loginWithQrToken} from "../api";
+import {
+  isAuthFailure,
+  loginTeam,
+  loginTeamWithQr,
+  loginUser,
+  loginWithQrToken,
+} from "../api";
 import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
 import {
   createQrFrameDetector,
@@ -50,12 +63,16 @@ function waitForVideoMetadata(video: HTMLVideoElement): Promise<void> {
       reject(new Error("Video metadata failed to load"));
     };
 
-    video.addEventListener("loadedmetadata", handleLoadedMetadata, {once: true});
+    video.addEventListener("loadedmetadata", handleLoadedMetadata, {
+      once: true,
+    });
     video.addEventListener("error", handleError, {once: true});
   });
 }
 
-function parseQrLoginPayload(rawValue: string): {type: "url"; token: string} | {type: "legacy"; token: string} | null {
+function parseQrLoginPayload(
+  rawValue: string,
+): {type: "url"; token: string} | {type: "legacy"; token: string} | null {
   const value = rawValue.trim();
   if (!value) {
     return null;
@@ -133,11 +150,7 @@ export function LoginPage() {
     setIsSubmitting(true);
     try {
       try {
-        const teamResponse = await loginTeam(
-          username,
-          password,
-          "web",
-        );
+        const teamResponse = await loginTeam(username, password, "web");
         login({
           username: teamResponse.team.username,
           role: "user",
@@ -148,7 +161,9 @@ export function LoginPage() {
         try {
           loadDatabase(await fetchPlayerDatabase());
         } catch {
-          message.warning("Login succeeded. Player data will retry on the next screen.");
+          message.warning(
+            "Login succeeded. Player data will retry on the next screen.",
+          );
         }
         message.success("Login successful");
         navigate("/stations/map");
@@ -171,9 +186,7 @@ export function LoginPage() {
       navigate("/stations");
     } catch (error) {
       const messageText =
-        error instanceof Error
-          ? error.message
-          : "Invalid username or password";
+        error instanceof Error ? error.message : "Invalid username or password";
       message.error(messageText || "Invalid username or password");
     } finally {
       setIsSubmitting(false);
@@ -196,9 +209,9 @@ export function LoginPage() {
     setIsSubmitting(true);
     try {
       const teamResponse =
-        qrPayload.type === "url"
-          ? await loginWithQrToken(qrPayload.token, "web-qr")
-          : await loginTeamWithQr(qrPayload.token, "web-qr");
+        qrPayload.type === "url" ?
+          await loginWithQrToken(qrPayload.token, "web-qr")
+        : await loginTeamWithQr(qrPayload.token, "web-qr");
       login({
         username: teamResponse.team.username,
         role: "user",
@@ -209,7 +222,9 @@ export function LoginPage() {
       try {
         loadDatabase(await fetchPlayerDatabase());
       } catch {
-        message.warning("Login succeeded. Player data will retry on the next screen.");
+        message.warning(
+          "Login succeeded. Player data will retry on the next screen.",
+        );
       }
       message.success("QR login successful");
       navigate("/stations/map");
@@ -289,7 +304,9 @@ export function LoginPage() {
             if (scanRunRef.current === scanRun) {
               stopQrScanner();
               const messageText =
-                error instanceof Error ? error.message : "Unable to scan QR code";
+                error instanceof Error ?
+                  error.message
+                : "Unable to scan QR code";
               message.error(messageText);
             }
           })
@@ -319,28 +336,72 @@ export function LoginPage() {
     <div className="login-screen">
       <Card className="surface-card login-card">
         <Flex vertical gap={18} className="full-width">
-          <div>
-            <Image
-              src={logo}
-              alt="MOVEment 2026"
-              preview={false}
-              className="login-logo"
-            />
-            <Typography.Title level={2} className="login-title">
-              MOVEment 2026
-            </Typography.Title>
-          </div>
+          <Typography.Title level={2} className="login-title">
+            MOVEment 2026
+          </Typography.Title>
+
+          {!isScanningQr && (
+            <Form form={form} layout="vertical" onFinish={submitLogin}>
+              <Form.Item
+                label="Username"
+                name="username"
+                rules={[
+                  {required: true, message: "Please enter your username"},
+                  {min: 3, message: "Username must be at least 3 characters"},
+                ]}>
+                <Input prefix={<UserOutlined />} placeholder="team.lead" />
+              </Form.Item>
+
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                  {required: true, message: "Please enter your password"},
+                  {min: 5, message: "Password must be at least 5 characters"},
+                ]}>
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  placeholder="••••••"
+                />
+              </Form.Item>
+
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                size="large"
+                loading={isSubmitting}>
+                Login
+              </Button>
+
+              <Divider>OR</Divider>
+            </Form>
+          )}
 
           <Flex vertical gap={10}>
-            <Space.Compact block>
+            {isScanningQr && (
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className="qr-scanner-video"
+              />
+            )}
+            <Flex
+              gap={8}
+              justify="center"
+              align="center"
+              className="full-width">
               <Button
+                className="full-width"
                 icon={<CameraOutlined />}
                 onClick={startQrScanner}
-                disabled={isScanningQr || isSubmitting}
-              >
+                disabled={isScanningQr || isSubmitting}>
                 Scan QR login
               </Button>
               <Button
+                className="full-width"
                 icon={<QrcodeOutlined />}
                 onClick={() => {
                   const payload = window.prompt(
@@ -350,59 +411,22 @@ export function LoginPage() {
                     void submitQrPayload(payload);
                   }
                 }}
-                disabled={isSubmitting}
-              >
+                disabled={isSubmitting}>
                 Paste QR
               </Button>
-            </Space.Compact>
-            {isScanningQr ? (
+            </Flex>
+            {isScanningQr ?
               <div className="qr-scanner-panel">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  muted
-                  playsInline
-                  className="qr-scanner-video"
-                />
-                <Button onClick={stopQrScanner}>Stop scanner</Button>
+                <Button
+                  icon={<StopOutlined />}
+                  danger
+                  variant="filled"
+                  onClick={stopQrScanner}>
+                  Stop scanner
+                </Button>
               </div>
-            ) : null}
+            : null}
           </Flex>
-
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={submitLogin}>
-            <Form.Item
-              label="Username"
-              name="username"
-              rules={[
-                {required: true, message: "Please enter your username"},
-                {min: 3, message: "Username must be at least 3 characters"},
-              ]}>
-              <Input prefix={<UserOutlined />} placeholder="team.lead" />
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {required: true, message: "Please enter your password"},
-                {min: 5, message: "Password must be at least 5 characters"},
-              ]}>
-              <Input.Password prefix={<LockOutlined />} placeholder="••••••" />
-            </Form.Item>
-
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              size="large"
-              loading={isSubmitting}
-            >
-              Login
-            </Button>
-          </Form>
         </Flex>
       </Card>
     </div>

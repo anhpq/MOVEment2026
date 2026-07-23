@@ -1,3 +1,13 @@
+## 2026-07-23 Seed diagnostics and tester runner completion
+
+- Investigated the reported `npm run tester` stop at `Running seed command \`ts-node prisma/seed.ts\` ...` against local PostgreSQL `127.0.0.1:55432/movement`. Migrations were not the cause; `prisma migrate deploy` reported all 8 migrations applied.
+- Added explicit seed phase logging and durations for database connection, admin account, stations, challenges, Station QR repair, teams, Event Config, Final event, completion, and Prisma disconnect. The seed entrypoint now uses a `main().then(...).catch(...)` structure that always awaits `prisma.$disconnect()` and sets `process.exitCode = 1` on failure without `process.exit(0)`.
+- Root cause found during full tester verification: seed itself completed successfully and exited; `npm run tester` later failed because frontend `node_modules` was incomplete and missing installed package `jsqr` even though `fe/package.json` and lockfile already declared it. The tester dependency check only verified local binaries, so it skipped `npm ci`.
+- Hardened `scripts/tester-run.ps1` to check required package directories such as `jsqr`, log elapsed time for each checked command, use IPv4 loopback health URLs for backend/frontend readiness, and include the last readiness error when a service does not respond.
+- Changed root `npm run tester` into a smoke runner that starts backend/frontend, verifies readiness, stops jobs, and exits `0`. Added `npm run tester:serve` for the previous keep-open manual testing behavior.
+- Verification passed: standalone `npm run seed` twice, `npm run db:verify`, direct DB query confirmed Final Challenge `answerHash` is plaintext `DISANVANHOA2026`, and full root `npm run tester` exited `0`. The known non-blocking frontend large-chunk warning remains.
+- Graphify update was attempted after the source changes but could not run because the `graphify` CLI is not installed or available in PATH on this host.
+
 ## 2026-07-23 Final Challenge Plain Answer and Production Seed Override
 
 - Changed Final Challenge validation so backend no longer bcrypt-hashes the configured keyword or submitted answer. The existing `final_challenges.answer_hash` compatibility column now stores the normalized plain-text keyword, and validation compares normalized submitted text directly against the normalized stored value.
