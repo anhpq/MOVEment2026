@@ -5,7 +5,8 @@
   "scripts": {
     "tester": "powershell -ExecutionPolicy Bypass -File scripts/tester-run.ps1",
     "tester:no-seed": "powershell -ExecutionPolicy Bypass -File scripts/tester-run.ps1 -SkipSeed",
-    "tester:serve": "powershell -ExecutionPolicy Bypass -File scripts/tester-run.ps1 -KeepOpen",
+    "tester:smoke": "powershell -ExecutionPolicy Bypass -File scripts/tester-run.ps1 -Smoke",
+    "tester:serve": "powershell -ExecutionPolicy Bypass -File scripts/tester-run.ps1",
     "tester:docker": "docker compose -f docker-compose.tester.yml up --build",
     "db:reset": "npm --prefix be run db:reset",
     "db:verify": "npm --prefix be run db:verify"
