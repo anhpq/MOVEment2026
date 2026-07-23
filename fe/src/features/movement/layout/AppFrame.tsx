@@ -1,19 +1,20 @@
 import {
+  DashboardOutlined,
   EnvironmentOutlined,
   LogoutOutlined,
   QrcodeOutlined,
+  RubyOutlined,
   SettingOutlined,
   TeamOutlined,
   TrophyOutlined,
-  DashboardOutlined,
 } from "@ant-design/icons";
-import {Button, Layout, Typography, Image, Flex} from "antd";
+import {Button, Flex, Image, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import logo from "../../../assets/ST-logo.png";
+import {logout as logoutApi} from "../api";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
-import {logout as logoutApi} from "../api";
-import logo from "../../../assets/ST-logo.png";
 import "./AppFrame.scss";
 
 type AppFrameProps = Readonly<PropsWithChildren>;
@@ -30,14 +31,14 @@ export function AppFrame({children}: AppFrameProps) {
 
   const handleLogout = async () => {
     try {
-      await logoutApi()
+      await logoutApi();
     } catch {
       // ignore backend logout errors and still clear local session
     }
 
-    logout()
-    navigate('/login')
-  }
+    logout();
+    navigate("/login");
+  };
   const totalStation = useMovementStore(
     (state) => state.stationDefinitions.length,
   );
@@ -115,15 +116,29 @@ export function AppFrame({children}: AppFrameProps) {
               `Stations (${totalStation})`
             : totalStation}
           </Button>
-          <Button size="large" shape="round"
-            type={location.pathname.startsWith("/leaderboard") ? "primary" : "default"}
-            icon={<TrophyOutlined />} onClick={() => navigate("/leaderboard")}>
-            Rank
+          <Button
+            size="large"
+            shape="round"
+            type={
+              location.pathname.startsWith("/leaderboard") ?
+                "primary"
+              : "default"
+            }
+            icon={<TrophyOutlined />}
+            onClick={() => navigate("/leaderboard")}>
+            {location.pathname.startsWith("/leaderboard") ? "Rank" : ""}
           </Button>
           {session.role === "user" && (
-            <Button size="large" shape="round"
-              type={location.pathname.startsWith("/final") ? "primary" : "default"}
-              onClick={() => navigate("/final")}>Final</Button>
+            <Button
+              size="large"
+              shape="round"
+              type={
+                location.pathname.startsWith("/final") ? "primary" : "default"
+              }
+              icon={<RubyOutlined />}
+              onClick={() => navigate("/final")}>
+              {location.pathname.startsWith("/final") ? "Final Cipher" : ""}
+            </Button>
           )}
           {session.role === "user" && (
             <Button
@@ -136,14 +151,21 @@ export function AppFrame({children}: AppFrameProps) {
               }
               icon={<EnvironmentOutlined />}
               onClick={() => navigate("/stations/map")}>
-              Map
+              {location.pathname.startsWith("/stations/map") ? "Map" : ""}
             </Button>
           )}
           {session.role !== "user" && (
-            <Button size="large" shape="round"
-              type={location.pathname.startsWith("/admin/operations") ? "primary" : "default"}
-              icon={<DashboardOutlined />} onClick={() => navigate("/admin/operations")}>
-              Ops
+            <Button
+              size="large"
+              shape="round"
+              type={
+                location.pathname.startsWith("/admin/operations") ?
+                  "primary"
+                : "default"
+              }
+              icon={<DashboardOutlined />}
+              onClick={() => navigate("/admin/operations")}>
+              {location.pathname.startsWith("/admin/operations") ? "Ops" : ""}
             </Button>
           )}
           {session.role !== "user" && (
@@ -157,9 +179,7 @@ export function AppFrame({children}: AppFrameProps) {
               }
               icon={<SettingOutlined />}
               onClick={() => navigate("/system-config")}>
-              {location.pathname.startsWith("/system-config") ?
-                "System Config"
-              : ""}
+              {location.pathname.startsWith("/system-config") ? "Setting" : ""}
             </Button>
           )}
         </Flex>
