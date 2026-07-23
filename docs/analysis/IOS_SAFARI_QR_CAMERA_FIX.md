@@ -651,7 +651,8 @@ Theo implementation audit gần nhất:
 - Video dùng `muted` và `playsInline`.
 - Login QR video đã được bổ sung `autoPlay`.
 - Scanner tránh overlapping frame work.
-- Stream, timer và animation frame được cleanup.
+- Stream, timer, animation frame, pending metadata listeners, video `srcObject`, video `src`, video playback state và scanner detector resources được cleanup.
+- Stop scanner invalidates the active scanner run before closing UI state, stops tracks from either the stored stream ref or the current video `srcObject`, clears the video element with `pause()`, `srcObject = null`, `removeAttribute("src")`, and `load()`, and prevents pending start/metadata waits from showing false errors after user stop.
 - Manual paste/token entry được giữ lại.
 - Station scanner đã được chuyển sang explicit lifecycle state.
 - Decode chỉ bắt đầu sau metadata, `video.play()` và non-zero dimensions.
@@ -670,6 +671,29 @@ build:prod
 ```
 
 `jsqr` đã được thêm vào frontend dependencies.
+
+## 2026-07-23 lifecycle cleanup verification
+
+Các verification sau đã pass sau iOS camera lifecycle cleanup:
+
+```text
+npm.cmd --prefix fe run lint
+npm.cmd --prefix fe run build
+npm.cmd --prefix fe run build:prod
+```
+
+Static audit confirmed cleanup covers:
+
+- `requestAnimationFrame` cancellation;
+- scan interval cancellation in Login scanner;
+- pending `loadedmetadata`/`error` listener cancellation;
+- all active `MediaStreamTrack.stop()` calls;
+- `video.pause()`;
+- `video.srcObject = null`;
+- `video.removeAttribute("src")`;
+- `video.load()`;
+- scanner detector `dispose()`;
+- scanner run invalidation to prevent late duplicate decode or false error callback.
 
 ## Chưa xác nhận trên thiết bị thật
 

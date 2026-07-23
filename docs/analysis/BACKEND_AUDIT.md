@@ -1,3 +1,12 @@
+## 2026-07-23 iOS QR camera lifecycle cleanup
+
+- Fixed the frontend QR camera lifecycle for the Login QR scanner and shared Station QR scanner without changing backend APIs, QR token formats, authentication, scoring, or Station validation behavior.
+- Added an idempotent cleanup path that invalidates the scanner run, marks scanner refs inactive, cancels `requestAnimationFrame`, clears the Login scan interval, cancels pending video metadata listeners, disposes QR frame detector resources, stops all `MediaStreamTrack`s from either the stored stream ref or `video.srcObject`, clears `streamRef`, pauses the video, clears `srcObject`, removes `src`, and calls `video.load()` for iOS camera release.
+- Hardened pending-start behavior so stopping while `getUserMedia`, render RAF, metadata, or `video.play()` is still pending does not create late streams, duplicate decode callbacks, or false camera errors after a user-initiated stop.
+- Preserved manual token input, camera permission/error messaging, native `BarcodeDetector` preference, `jsQR` fallback, Team QR parsing, Station QR backend validation, and duplicate frontend submit guards.
+- Verification passed: frontend lint, frontend TypeScript/Vite build, and frontend `build:prod`. Manual iPhone Safari/Chrome HTTPS camera-indicator verification remains pending and was not performed in this Windows workspace.
+- Graphify update was attempted after the source changes but could not run because the `graphify` CLI is not installed or available in PATH on this host.
+
 ## 2026-07-23 Seed diagnostics and tester runner completion
 
 - Investigated the reported `npm run tester` stop at `Running seed command \`ts-node prisma/seed.ts\` ...` against local PostgreSQL `127.0.0.1:55432/movement`. Migrations were not the cause; `prisma migrate deploy` reported all 8 migrations applied.
