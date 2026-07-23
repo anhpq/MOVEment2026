@@ -1,0 +1,357 @@
+.final-cipher-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(237, 118, 87, 0.22);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(255, 175, 139, 0.15),
+      transparent 34%
+    ),
+    rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 56px rgba(82, 48, 37, 0.1);
+}
+
+.final-cipher-card::before {
+  position: absolute;
+  right: -50px;
+  bottom: -90px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(237, 118, 87, 0.08);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 22px rgba(237, 118, 87, 0.025),
+    0 0 0 46px rgba(237, 118, 87, 0.018);
+  content: "";
+  pointer-events: none;
+}
+
+.final-cipher-card .ant-card-body {
+  padding: 26px;
+}
+
+.final-cipher-heading {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(237, 118, 87, 0.22);
+}
+
+.final-cipher-heading::after {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 54px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff9d78, #ed6041);
+  content: "";
+}
+
+.final-heading-icon,
+.final-state-icon,
+.final-clue-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(237, 118, 87, 0.18);
+  border-radius: 50%;
+  background: #fff1eb;
+  color: #ee6848;
+}
+
+.final-heading-icon {
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+}
+
+.final-cipher-heading h2 {
+  margin: 0;
+  color: #101d3b;
+  font-size: 2.15rem;
+  line-height: 1.1;
+}
+
+.final-cipher-content {
+  position: relative;
+  z-index: 1;
+}
+
+.final-state-panel {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 170px;
+  padding: 30px;
+  border: 1px solid rgba(237, 118, 87, 0.5);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at 92% 70%,
+      rgba(255, 159, 125, 0.13),
+      transparent 28%
+    ),
+    linear-gradient(125deg, #fffaf7, #fff);
+  box-shadow: 0 14px 30px rgba(112, 62, 45, 0.08);
+}
+
+.final-state-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(145deg, #ff9c65, #ef582f);
+  color: #fff;
+  box-shadow:
+    0 0 0 10px rgba(255, 119, 75, 0.08),
+    0 10px 20px rgba(185, 75, 42, 0.18);
+  font-size: 1.75rem;
+}
+
+.final-state-panel h3 {
+  margin: 0 0 8px;
+  color: #142342;
+  font-size: 1.35rem;
+}
+
+.final-state-panel p {
+  margin: 0;
+  color: #647082;
+}
+
+.final-state-panel p strong {
+  color: #e65f40;
+}
+
+.final-state-warning {
+  border-color: rgba(239, 154, 64, 0.52);
+}
+
+.final-state-copy .ant-btn {
+  margin-top: 14px;
+  border-radius: 10px;
+}
+
+.final-state-loading {
+  justify-content: center;
+  text-align: left;
+}
+
+.final-success-panel {
+  display: grid;
+  justify-items: center;
+  padding: 34px 24px;
+  border: 1px solid rgba(73, 170, 119, 0.32);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 50% 0, rgba(89, 196, 139, 0.16), transparent 40%),
+    linear-gradient(145deg, #f8fff9, #fff);
+  text-align: center;
+}
+
+.final-success-icon {
+  color: #36a96d;
+  filter: drop-shadow(0 8px 12px rgba(54, 169, 109, 0.2));
+  font-size: 3.4rem;
+}
+
+.final-success-label {
+  margin-top: 10px;
+  color: #2c8a59;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.final-success-panel h2 {
+  margin: 4px 0 20px;
+  color: #10213c;
+}
+
+.final-success-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+.final-success-results > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid rgba(54, 169, 109, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  text-align: left;
+}
+
+.final-success-results .anticon,
+.final-points-mark {
+  grid-row: 1 / 3;
+  color: #e86c48;
+  font-size: 1.3rem;
+}
+
+.final-success-results span:not(.final-points-mark) {
+  color: #7c8793;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.final-success-results strong {
+  color: #13223d;
+  font-size: 1.05rem;
+}
+
+.final-play-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.final-clue {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(237, 118, 87, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(125deg, #fff5ef, #fff);
+}
+
+.final-clue-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+}
+
+.final-clue .ant-typography {
+  color: #a15a48;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.final-clue p.ant-typography {
+  margin: 3px 0 0;
+  color: #25334e;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.final-attempt-status {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 14px;
+  background: #f5f9ff;
+  color: #456b9f;
+}
+
+.final-attempt-status.is-cooling-down {
+  border-color: rgba(238, 150, 66, 0.3);
+  background: #fff8ef;
+  color: #b66a24;
+}
+
+.final-attempt-status > .anticon {
+  font-size: 1.25rem;
+}
+
+.final-attempt-status div {
+  display: grid;
+}
+
+.final-attempt-status strong {
+  color: #27344b;
+  font-size: 0.82rem;
+}
+
+.final-attempt-status div span {
+  font-size: 0.7rem;
+}
+
+.final-cooldown-count {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ef7a49;
+  color: #fff;
+  font-weight: 700;
+}
+
+.final-answer-form {
+  padding: 20px;
+  border: 1px solid rgba(15, 29, 58, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.final-answer-form .ant-form-item-label label {
+  color: #26334b;
+  font-weight: 600;
+}
+
+.final-answer-form .ant-input {
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.final-answer-form .ant-btn {
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(105deg, #ee835f, #ed5e3d);
+  box-shadow: 0 10px 20px rgba(237, 94, 61, 0.2);
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .final-cipher-card .ant-card-body {
+    padding: 18px 14px;
+  }
+
+  .final-cipher-heading h2 {
+    font-size: 1.8rem;
+  }
+
+  .final-state-panel {
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    min-height: 0;
+    padding: 26px 18px;
+    text-align: center;
+  }
+
+  .final-state-panel h3 {
+    font-size: 1.15rem;
+  }
+
+  .final-success-results {
+    width: 100%;
+  }
+
+  .final-clue {
+    padding: 14px;
+  }
+
+  .final-answer-form {
+    padding: 16px 14px;
+  }
+}

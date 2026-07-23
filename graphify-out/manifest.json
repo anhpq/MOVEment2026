@@ -615,13 +615,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/FinalPage.tsx": {
-    "mtime": 1784821605.4550617,
-    "ast_hash": "142dc7773ed3caff02aecdf1aa8727b6",
+    "mtime": 1784830026.5798087,
+    "ast_hash": "33391d8e3d290f2175ba80e98ae36d6a",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/LeaderboardPage.tsx": {
-    "mtime": 1784821605.4560764,
-    "ast_hash": "0e65ae7f85701daa8f1db9cd5d4e43ff",
+    "mtime": 1784829467.1208816,
+    "ast_hash": "50bde3f83017494d8df0a237e3e71ae6",
     "semantic_hash": ""
   },
   "package.json": {
@@ -830,8 +830,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/RunningPersonIcon.tsx": {
-    "mtime": 1784828145.744724,
-    "ast_hash": "4e8c75fd576778485333cef277954a76",
+    "mtime": 1784828876.2015278,
+    "ast_hash": "6c9bbdf40ad31bec8f534f68e7efe273",
     "semantic_hash": ""
   },
   "fe/src/features/movement/stationQrTokenCache.ts": {

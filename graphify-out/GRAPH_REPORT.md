@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-07-24)
 
 ## Corpus Check
-- 158 files · ~202,855 words
+- 158 files · ~205,809 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1909 nodes · 3106 edges · 173 communities (146 shown, 27 thin omitted)
+- 1909 nodes · 3106 edges · 172 communities (145 shown, 27 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `44931ed9`
+- Built from commit: `525639f6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -26,7 +26,6 @@
 - store.ts
 - compilerOptions
 - PlayerPage.tsx
-- StationsMapPanel.tsx
 - PrismaService
 - FinalService
 - compilerOptions
@@ -210,7 +209,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (173 total, 27 thin omitted)
+## Communities (172 total, 27 thin omitted)
 
 ### Community 0 - "AuthContext"
 Cohesion: 0.06
@@ -256,10 +255,6 @@ Nodes (23): compilerOptions, allowArbitraryExtensions, allowImportingTsExtension
 Cohesion: 0.17
 Nodes (11): name, private, scripts, db:reset, db:verify, tester, tester:docker, tester:no-seed (+3 more)
 
-### Community 11 - "StationsMapPanel.tsx"
-Cohesion: 0.31
-Nodes (12): downloadAdminSummary(), getAdminActivityLogs(), getAdminDashboard(), getAdminEventConfig(), getAdminFinalConfig(), getAdminFinalSubmissions(), getAdminScoreQueue(), updateAdminEventConfig() (+4 more)
-
 ### Community 12 - "PrismaService"
 Cohesion: 0.14
 Nodes (13): 10. Cleanup Contract, 12. Development Diagnostics, 14. Manual Fallback, 17. Automated Verification Checklist, 18. Acceptance Criteria, 19. Known Remaining Risk, 1. Mục tiêu, 20. Documentation Update Rules (+5 more)
@@ -285,8 +280,8 @@ Cohesion: 0.05
 Nodes (38): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 Docker frontend API proxy fix, 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration (+30 more)
 
 ### Community 18 - "api.ts"
-Cohesion: 0.11
-Nodes (34): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, cancelPlayerStation() (+26 more)
+Cohesion: 0.09
+Nodes (46): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, cancelPlayerStation() (+38 more)
 
 ### Community 19 - "EventConfigService"
 Cohesion: 0.08

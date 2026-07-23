@@ -1,7 +1,17 @@
-import {Alert, App, Button, Card, Form, Input, Space, Statistic, Typography} from "antd";
+import {
+  BulbFilled,
+  CheckCircleFilled,
+  ClockCircleOutlined,
+  InfoCircleFilled,
+  LockFilled,
+  SendOutlined,
+  TrophyFilled,
+} from "@ant-design/icons";
+import {App, Button, Card, Form, Input, Spin, Typography} from "antd";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getPlayerFinal, submitFinalAnswer, type FinalResponse} from "../api";
+import "./FinalPage.css";
 
 type FinalFormValues = {
   answer: string;
@@ -53,111 +63,181 @@ export function FinalPage() {
   const canSubmit = Boolean(final?.canSubmit && !isCoolingDown);
 
   return (
-    <Card title={final?.title ?? "Final Challenge"}>
-      <Space direction="vertical" size={16} className="full-width">
+    <Card className="final-cipher-card">
+      <header className="final-cipher-heading">
+        <span className="final-heading-icon" aria-hidden="true">
+          <BulbFilled />
+        </span>
+        <div>
+          <Typography.Title level={2}>Final Cipher</Typography.Title>
+        </div>
+      </header>
+
+      <div className="final-cipher-content">
         {!final ? (
-          <Alert type="info" message="Loading Final Challenge..." showIcon />
+          <section className="final-state-panel final-state-loading">
+            <Spin size="large" />
+            <div>
+              <Typography.Title level={3}>Loading Final Challenge</Typography.Title>
+              <Typography.Text>Checking the event status...</Typography.Text>
+            </div>
+          </section>
         ) : !final.isOpen ? (
-          <Alert
-            type="info"
-            showIcon
-            message="Final Challenge is not open yet"
-            description={`It opens automatically when the event ends at ${final.eventEndTime}.`}
-          />
+          <section className="final-state-panel final-state-closed">
+            <span className="final-state-icon" aria-hidden="true">
+              <InfoCircleFilled />
+            </span>
+            <div>
+              <Typography.Title level={3}>
+                Final Challenge is not open yet
+              </Typography.Title>
+              <Typography.Paragraph>
+                It opens automatically when the event ends at{" "}
+                <strong>{final.eventEndTime}</strong>.
+              </Typography.Paragraph>
+            </div>
+          </section>
         ) : final.blockedByActiveStation ? (
-          <Alert
-            type="warning"
-            showIcon
-            message="Finish your active station first"
-            description="Final Challenge is open, but your team must finish the current station before entering."
-            action={
-              final.activeStationId ? (
-                <Button onClick={() => navigate(`/stations/${final.activeStationId}`)}>
+          <section className="final-state-panel final-state-warning">
+            <span className="final-state-icon" aria-hidden="true">
+              <LockFilled />
+            </span>
+            <div className="final-state-copy">
+              <Typography.Title level={3}>
+                Finish your active station first
+              </Typography.Title>
+              <Typography.Paragraph>
+                Final Cipher is open, but your team must finish the current
+                station before entering.
+              </Typography.Paragraph>
+              {final.activeStationId && (
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    navigate(`/stations/${final.activeStationId}`)
+                  }>
                   Continue Station
                 </Button>
-              ) : undefined
-            }
-          />
+              )}
+            </div>
+          </section>
+        ) : final.teamSubmission ? (
+          <section className="final-success-panel">
+            <span className="final-success-icon" aria-hidden="true">
+              <CheckCircleFilled />
+            </span>
+            <Typography.Text className="final-success-label">
+              Cipher solved
+            </Typography.Text>
+            <Typography.Title level={2}>Final answer accepted</Typography.Title>
+            <div className="final-success-results">
+              <div>
+                <TrophyFilled />
+                <span>Rank</span>
+                <strong>{final.teamSubmission.winnerRank ?? "-"}</strong>
+              </div>
+              <div>
+                <span className="final-points-mark">+</span>
+                <span>Bonus</span>
+                <strong>{final.teamSubmission.pointsAwarded} pts</strong>
+              </div>
+            </div>
+          </section>
         ) : (
-          <>
-            <Typography.Paragraph>{final.clueText}</Typography.Paragraph>
+          <div className="final-play-panel">
+            <section className="final-clue">
+              <span className="final-clue-icon" aria-hidden="true">
+                <BulbFilled />
+              </span>
+              <div>
+                <Typography.Text>Final clue</Typography.Text>
+                <Typography.Paragraph>
+                  {final.clueText || "Enter the final keyword to solve the cipher."}
+                </Typography.Paragraph>
+              </div>
+            </section>
 
-            {final.teamSubmission ? (
-              <Alert
-                type="success"
-                showIcon
-                message="Final answer accepted"
-                description={`Rank ${final.teamSubmission.winnerRank ?? "-"} - ${final.teamSubmission.pointsAwarded} bonus points`}
-              />
-            ) : (
-              <>
-                {final.wrongAttemptCount > 0 && (
-                  <Alert
-                    type={isCoolingDown ? "warning" : "info"}
-                    showIcon
-                    message={`${final.wrongAttemptCount} wrong attempt${final.wrongAttemptCount === 1 ? "" : "s"}`}
-                    description={
-                      isCoolingDown ?
-                        `Try again in ${remainingCooldownSeconds} second${remainingCooldownSeconds === 1 ? "" : "s"}.`
-                      : "You can submit another answer now."
-                    }
-                  />
-                )}
-
+            {final.wrongAttemptCount > 0 && (
+              <section
+                className={`final-attempt-status ${
+                  isCoolingDown ? "is-cooling-down" : ""
+                }`}>
+                <ClockCircleOutlined />
+                <div>
+                  <strong>
+                    {final.wrongAttemptCount} wrong attempt
+                    {final.wrongAttemptCount === 1 ? "" : "s"}
+                  </strong>
+                  <span>
+                    {isCoolingDown ?
+                      `Try again in ${remainingCooldownSeconds}s`
+                    : "You can submit another answer now"}
+                  </span>
+                </div>
                 {isCoolingDown && (
-                  <Statistic
-                    title="Cooldown"
-                    value={remainingCooldownSeconds}
-                    suffix="s"
-                  />
+                  <span className="final-cooldown-count">
+                    {remainingCooldownSeconds}
+                  </span>
                 )}
-
-                <Form
-                  form={form}
-                  layout="vertical"
-                  onFinish={async ({answer}) => {
-                    if (isSubmitting) {
-                      return;
-                    }
-                    setIsSubmitting(true);
-                    try {
-                      const result = await submitFinalAnswer(answer.trim().toUpperCase());
-                      form.resetFields();
-                      await refresh();
-                      if (result.isCorrect) {
-                        message.success("Final answer accepted");
-                      } else {
-                        message.warning("Wrong answer. Cooldown applied.");
-                      }
-                    } catch (error) {
-                      await refresh();
-                      message.error(error instanceof Error ? error.message : "Submit failed");
-                    } finally {
-                      setIsSubmitting(false);
-                    }
-                  }}>
-                  <Form.Item
-                    name="answer"
-                    normalize={(value: string | undefined) =>
-                      value ? value.toUpperCase() : value
-                    }
-                    rules={[{required: true}]}>
-                    <Input placeholder="Final answer" disabled={!canSubmit || isSubmitting} />
-                  </Form.Item>
-                  <Button
-                    htmlType="submit"
-                    type="primary"
-                    block
-                    loading={isSubmitting}
-                    disabled={!canSubmit}>
-                    Submit Final
-                  </Button>
-                </Form>
-              </>
+              </section>
             )}
-          </>
+
+            <Form
+              form={form}
+              layout="vertical"
+              className="final-answer-form"
+              onFinish={async ({answer}) => {
+                if (isSubmitting) return;
+
+                setIsSubmitting(true);
+                try {
+                  const result = await submitFinalAnswer(
+                    answer.trim().toUpperCase(),
+                  );
+                  form.resetFields();
+                  await refresh();
+                  if (result.isCorrect) {
+                    message.success("Final answer accepted");
+                  } else {
+                    message.warning("Wrong answer. Cooldown applied.");
+                  }
+                } catch (error) {
+                  await refresh();
+                  message.error(
+                    error instanceof Error ? error.message : "Submit failed",
+                  );
+                } finally {
+                  setIsSubmitting(false);
+                }
+              }}>
+              <Form.Item
+                label="Your answer"
+                name="answer"
+                normalize={(value: string | undefined) =>
+                  value ? value.toUpperCase() : value
+                }
+                rules={[{required: true, message: "Enter the final answer"}]}>
+                <Input
+                  size="large"
+                  autoComplete="off"
+                  placeholder="TYPE THE FINAL CIPHER"
+                  disabled={!canSubmit || isSubmitting}
+                />
+              </Form.Item>
+              <Button
+                htmlType="submit"
+                type="primary"
+                size="large"
+                block
+                icon={<SendOutlined />}
+                loading={isSubmitting}
+                disabled={!canSubmit}>
+                Submit Final Answer
+              </Button>
+            </Form>
+          </div>
         )}
-      </Space>
+      </div>
     </Card>
   );
 }
