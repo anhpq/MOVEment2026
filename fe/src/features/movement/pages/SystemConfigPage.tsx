@@ -1,23 +1,40 @@
-import {DeleteOutlined, EditOutlined, QrcodeOutlined, StopOutlined, SyncOutlined} from "@ant-design/icons";
-import {App as AntdApp, Button, Card, Flex, Input, List, Select, Tabs, Tag, Typography} from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QrcodeOutlined,
+  StopOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
+import {
+  App as AntdApp,
+  Button,
+  Card,
+  Flex,
+  Input,
+  List,
+  Select,
+  Tabs,
+  Tag,
+  Typography,
+} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {StationsMapPanel} from "../components/StationsMapPanel";
-import {useMovementStore} from "../store";
-import type {StationTrackingMode} from "../types";
+import {fetchAdminDatabase} from "../adminData";
 import {
   deleteAdminStation,
   deleteAdminTeam,
   generateAdminTeamQrLoginToken,
-  getAdminTeamQrLoginTokens,
   getAdminStationQrTokens,
+  getAdminTeamQrLoginTokens,
   revokeAdminQrLoginToken,
   revokeAdminStationQrToken,
   rotateAdminStationQrToken,
   rotateAdminTeamQrLoginToken,
   updateAdminStation,
 } from "../api";
-import {fetchAdminDatabase} from "../adminData";
+import {StationsMapPanel} from "../components/StationsMapPanel";
+import {useMovementStore} from "../store";
+import type {StationTrackingMode} from "../types";
 
 export function SystemConfigPage() {
   const navigate = useNavigate();
@@ -48,8 +65,9 @@ export function SystemConfigPage() {
   ) => {
     setQrBusyTeamId(team.id);
     try {
-      const token = rotate
-        ? await rotateAdminTeamQrLoginToken(team.id)
+      const token =
+        rotate ?
+          await rotateAdminTeamQrLoginToken(team.id)
         : await generateAdminTeamQrLoginToken(team.id);
       modal.info({
         centered: true,
@@ -58,9 +76,14 @@ export function SystemConfigPage() {
         content: (
           <Flex vertical gap={12}>
             <Typography.Text>
-              This reusable URL is shown only now. Rotate the token when a new QR is required.
+              This reusable URL is shown only now. Rotate the token when a new
+              QR is required.
             </Typography.Text>
-            <Input.TextArea value={token.qrLoginUrl ?? token.loginUrl} readOnly autoSize />
+            <Input.TextArea
+              value={token.qrLoginUrl ?? token.loginUrl}
+              readOnly
+              autoSize
+            />
             <Typography.Text className="muted-copy compact-copy">
               Expires at {new Date(token.expiresAt).toLocaleString("vi-VN")}
             </Typography.Text>
@@ -68,7 +91,9 @@ export function SystemConfigPage() {
         ),
       });
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to issue QR login");
+      message.error(
+        error instanceof Error ? error.message : "Unable to issue QR login",
+      );
     } finally {
       setQrBusyTeamId(null);
     }
@@ -94,7 +119,8 @@ export function SystemConfigPage() {
                     <Tag>{token.status}</Tag>
                   </Flex>
                   <Typography.Text className="muted-copy compact-copy">
-                    Expires {new Date(token.expiresAt).toLocaleString("vi-VN")} · Uses {token.usageCount}
+                    Expires {new Date(token.expiresAt).toLocaleString("vi-VN")}{" "}
+                    · Uses {token.usageCount}
                   </Typography.Text>
                 </Flex>
               </List.Item>
@@ -103,7 +129,11 @@ export function SystemConfigPage() {
         ),
       });
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to load QR login status");
+      message.error(
+        error instanceof Error ?
+          error.message
+        : "Unable to load QR login status",
+      );
     } finally {
       setQrBusyTeamId(null);
     }
@@ -121,7 +151,9 @@ export function SystemConfigPage() {
       await revokeAdminQrLoginToken(activeToken.id);
       message.success("QR login token revoked");
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to revoke QR login");
+      message.error(
+        error instanceof Error ? error.message : "Unable to revoke QR login",
+      );
     } finally {
       setQrBusyTeamId(null);
     }
@@ -158,7 +190,11 @@ export function SystemConfigPage() {
         ),
       });
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to load Station QR status");
+      message.error(
+        error instanceof Error ?
+          error.message
+        : "Unable to load Station QR status",
+      );
     } finally {
       setQrBusyStationId(null);
     }
@@ -178,7 +214,8 @@ export function SystemConfigPage() {
         content: (
           <Flex vertical gap={12}>
             <Typography.Text>
-              This Station QR token is shown only now. Rotate this purpose to reprint later.
+              This Station QR token is shown only now. Rotate this purpose to
+              reprint later.
             </Typography.Text>
             <Input.TextArea value={token.rawToken} readOnly autoSize />
           </Flex>
@@ -186,7 +223,9 @@ export function SystemConfigPage() {
       });
       loadDatabase(await fetchAdminDatabase());
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to rotate Station QR");
+      message.error(
+        error instanceof Error ? error.message : "Unable to rotate Station QR",
+      );
     } finally {
       setQrBusyStationId(null);
     }
@@ -201,7 +240,9 @@ export function SystemConfigPage() {
       await revokeAdminStationQrToken(station.id, purpose);
       message.success(`${purpose} QR revoked`);
     } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to revoke Station QR");
+      message.error(
+        error instanceof Error ? error.message : "Unable to revoke Station QR",
+      );
     } finally {
       setQrBusyStationId(null);
     }
@@ -228,10 +269,49 @@ export function SystemConfigPage() {
                   <List.Item>
                     <Card className="surface-card station-card">
                       <div className="station-row">
-                        <Flex vertical gap={4}>
-                          <Typography.Title level={4} className="card-title">
-                            {station.name}
-                          </Typography.Title>
+                        <Flex
+                          vertical
+                          gap={4}
+                          className="station-content full-width">
+                          <Flex gap={8} className="full-width">
+                            <Typography.Title level={4} className="card-title full-width">
+                              {station.name}
+                            </Typography.Title>
+                            <Button
+                              shape="circle"
+                              variant="filled"
+                              className="delete-icon-button"
+                              icon={<EditOutlined />}
+                              onClick={() =>
+                                navigate(
+                                  `/system-config/stations/${station.id}`,
+                                )
+                              }></Button>
+
+                            <Button
+                              shape="circle"
+                              color="danger"
+                              variant="filled"
+                              className="delete-icon-button"
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                modal.confirm({
+                                  centered: true,
+                                  title: "Delete station?",
+                                  content:
+                                    "The station and its QR tokens will be deactivated. Historical progress is retained.",
+                                  okText: "Delete",
+                                  cancelText: "Cancel",
+                                  onOk: async () => {
+                                    await deleteAdminStation(station.id);
+                                    loadDatabase(await fetchAdminDatabase());
+                                    message.success(
+                                      "Station deactivated successfully",
+                                    );
+                                  },
+                                });
+                              }}></Button>
+                          </Flex>
                           <Typography.Text className="muted-copy compact-copy">
                             {station.id}
                           </Typography.Text>
@@ -239,8 +319,8 @@ export function SystemConfigPage() {
                             {station.description}
                           </Typography.Text>
                           <Select
+                            className="full-width"
                             value={station.trackingMode ?? "BOTH"}
-                            style={{width: 220}}
                             options={[
                               {value: "BOTH", label: "Both time and score"},
                               {value: "SCORE", label: "Score only"},
@@ -251,69 +331,46 @@ export function SystemConfigPage() {
                             }
                           />
                         </Flex>
-                        <Flex gap={8} className="full-width" wrap>
-                          <Button
-                            icon={<QrcodeOutlined />}
-                            loading={qrBusyStationId === station.id}
-                            onClick={() => void handleShowStationQrStatus(station)}
-                          >
-                            QR status
-                          </Button>
+                        <Flex gap={8} className="station-actions" wrap>
                           <Button
                             icon={<SyncOutlined />}
                             loading={qrBusyStationId === station.id}
-                            onClick={() => void handleRotateStationQr(station, "CHECK_IN")}
-                          >
+                            onClick={() =>
+                              void handleRotateStationQr(station, "CHECK_IN")
+                            }>
                             Rotate IN
                           </Button>
                           <Button
                             icon={<SyncOutlined />}
                             loading={qrBusyStationId === station.id}
-                            onClick={() => void handleRotateStationQr(station, "CHECK_OUT")}
-                          >
+                            onClick={() =>
+                              void handleRotateStationQr(station, "CHECK_OUT")
+                            }>
                             Rotate OUT
                           </Button>
                           <Button
                             icon={<StopOutlined />}
                             loading={qrBusyStationId === station.id}
-                            onClick={() => void handleRevokeStationQr(station, "CHECK_IN")}
-                          >
+                            onClick={() =>
+                              void handleRevokeStationQr(station, "CHECK_IN")
+                            }>
                             Revoke IN
                           </Button>
                           <Button
                             icon={<StopOutlined />}
                             loading={qrBusyStationId === station.id}
-                            onClick={() => void handleRevokeStationQr(station, "CHECK_OUT")}
-                          >
+                            onClick={() =>
+                              void handleRevokeStationQr(station, "CHECK_OUT")
+                            }>
                             Revoke OUT
                           </Button>
                           <Button
-                            icon={<EditOutlined />}
+                            icon={<QrcodeOutlined />}
+                            loading={qrBusyStationId === station.id}
                             onClick={() =>
-                              navigate(`/system-config/stations/${station.id}`)
+                              void handleShowStationQrStatus(station)
                             }>
-                            Edit
-                          </Button>
-                          <Button
-                            color="danger"
-                            variant="filled"
-                            icon={<DeleteOutlined />}
-                            onClick={() => {
-                              modal.confirm({
-                                centered: true,
-                                title: "Delete station?",
-                                content:
-                                  "The station and its QR tokens will be deactivated. Historical progress is retained.",
-                                okText: "Delete",
-                                cancelText: "Cancel",
-                                onOk: async () => {
-                                  await deleteAdminStation(station.id);
-                                  loadDatabase(await fetchAdminDatabase());
-                                  message.success("Station deactivated successfully");
-                                },
-                              });
-                            }}>
-                            Delete
+                            QR status
                           </Button>
                         </Flex>
                       </div>
@@ -341,10 +398,57 @@ export function SystemConfigPage() {
                   <List.Item>
                     <Card className="surface-card station-card">
                       <div className="station-row">
-                        <Flex vertical gap={4}>
-                          <Typography.Title level={4} className="card-title">
-                            {team.name}
-                          </Typography.Title>
+                        <Flex
+                          vertical
+                          gap={4}
+                          className="station-content full-width">
+                          <Flex align="center" gap={8} className="full-width">
+                            <Typography.Title
+                              level={4}
+                              className="card-title full-width">
+                              {team.name}
+                            </Typography.Title>
+                            <Button
+                              shape="circle"
+                              variant="filled"
+                              className="delete-icon-button"
+                              icon={<EditOutlined />}
+                              onClick={() =>
+                                navigate(`/system-config/teams/${team.id}`)
+                              }></Button>
+                            <Button
+                              shape="circle"
+                              color="danger"
+                              variant="filled"
+                              className="delete-icon-button"
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                modal.confirm({
+                                  centered: true,
+                                  title: "Delete team?",
+                                  content:
+                                    "Team will be removed from the system and all progress will be lost.",
+                                  okText: "Delete",
+                                  cancelText: "Cancel",
+                                  onOk: async () => {
+                                    try {
+                                      await deleteAdminTeam(team.id);
+                                      loadDatabase(await fetchAdminDatabase());
+                                      message.success(
+                                        "Team deleted successfully",
+                                      );
+                                    } catch (error) {
+                                      message.error(
+                                        error instanceof Error ?
+                                          error.message
+                                        : "Unable to delete team",
+                                      );
+                                      throw error;
+                                    }
+                                  },
+                                });
+                              }}></Button>
+                          </Flex>
                           <Typography.Text className="muted-copy compact-copy">
                             {team.id} · Score {team.score}
                           </Typography.Text>
@@ -353,67 +457,32 @@ export function SystemConfigPage() {
                             {team.totalTimeMinutes} min
                           </Typography.Text>
                         </Flex>
-                        <Flex gap={8} className="full-width" wrap>
-                          <Button
-                            icon={<QrcodeOutlined />}
-                            loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleIssueQrLogin(team, false)}
-                          >
-                            Generate QR
-                          </Button>
+                        <Flex gap={8} className="station-actions" wrap>
                           <Button
                             icon={<SyncOutlined />}
                             loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleIssueQrLogin(team, true)}
-                          >
+                            onClick={() => void handleIssueQrLogin(team, true)}>
                             Rotate QR
-                          </Button>
-                          <Button
-                            icon={<QrcodeOutlined />}
-                            loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleShowQrStatus(team)}
-                          >
-                            QR status
                           </Button>
                           <Button
                             icon={<StopOutlined />}
                             loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleRevokeActiveQr(team)}
-                          >
+                            onClick={() => void handleRevokeActiveQr(team)}>
                             Revoke QR
                           </Button>
                           <Button
-                            icon={<EditOutlined />}
+                            icon={<QrcodeOutlined />}
+                            loading={qrBusyTeamId === team.id}
                             onClick={() =>
-                              navigate(`/system-config/teams/${team.id}`)
+                              void handleIssueQrLogin(team, false)
                             }>
-                            Edit
+                            Generate QR
                           </Button>
                           <Button
-                            color="danger"
-                            variant="filled"
-                            icon={<DeleteOutlined />}
-                            onClick={() => {
-                              modal.confirm({
-                                centered: true,
-                                title: "Delete team?",
-                                content:
-                                  "Team will be removed from the system and all progress will be lost.",
-                                okText: "Delete",
-                                cancelText: "Cancel",
-                                onOk: async () => {
-                                  try {
-                                    await deleteAdminTeam(team.id);
-                                    loadDatabase(await fetchAdminDatabase());
-                                    message.success("Team deleted successfully");
-                                  } catch (error) {
-                                    message.error(error instanceof Error ? error.message : "Unable to delete team");
-                                    throw error;
-                                  }
-                                },
-                              });
-                            }}>
-                            Delete
+                            icon={<QrcodeOutlined />}
+                            loading={qrBusyTeamId === team.id}
+                            onClick={() => void handleShowQrStatus(team)}>
+                            QR status
                           </Button>
                         </Flex>
                       </div>

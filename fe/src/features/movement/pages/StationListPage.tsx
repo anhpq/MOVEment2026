@@ -1,4 +1,10 @@
-import {EditOutlined, SaveOutlined, YoutubeOutlined} from "@ant-design/icons";
+import {
+  EditFilled,
+  EditOutlined,
+  PlayCircleOutlined,
+  SaveOutlined,
+  YoutubeOutlined,
+} from "@ant-design/icons";
 import {
   Alert,
   App as AntdApp,
@@ -22,7 +28,12 @@ import {useNavigate} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
-import {checkInStation, editAdminProgressScore, forceAdminProgressStatus, getPlayerFinal} from "../api";
+import {
+  checkInStation,
+  editAdminProgressScore,
+  forceAdminProgressStatus,
+  getPlayerFinal,
+} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
@@ -32,7 +43,9 @@ import {
   getStationStatusColor,
 } from "../utils";
 
-type QuickEditFormValues = Pick<TeamStation, "status" | "score"> & {reason: string};
+type QuickEditFormValues = Pick<TeamStation, "status" | "score"> & {
+  reason: string;
+};
 
 export function StationListPage() {
   const navigate = useNavigate();
@@ -101,7 +114,6 @@ export function StationListPage() {
     return null;
   }
 
-
   const handleStationClick = (station: TeamStation) => {
     if (session.role !== "user") {
       navigate(`/stations/${station.stationId}`);
@@ -131,7 +143,8 @@ export function StationListPage() {
   return (
     <Flex vertical gap={16} className="full-width">
       <Alert
-        type="info"
+        className="active-team"
+        type="warning"
         description={
           <>
             <Typography.Title level={4} className="section-title">
@@ -155,7 +168,9 @@ export function StationListPage() {
           showIcon
           message="Final Challenge is open"
           description="Your team is free to enter the Final Challenge."
-          action={<Button onClick={() => navigate("/final")}>Enter Final</Button>}
+          action={
+            <Button onClick={() => navigate("/final")}>Enter Final</Button>
+          }
         />
       )}
 
@@ -185,17 +200,17 @@ export function StationListPage() {
                       {station.description}
                     </Typography.Paragraph>
 
-                    <Descriptions column={2} size="small">
-                      <Descriptions.Item label="Playing Teams" span={2}>
+                    <Descriptions column={4} size="small">
+                      <Descriptions.Item label="Playing Teams" span={3}>
                         {playingTeamCount(station.stationId)}
                       </Descriptions.Item>
                       <Descriptions.Item label="Score">
                         {station.score}
                       </Descriptions.Item>
-                      <Descriptions.Item label="Start Time">
+                      <Descriptions.Item label="Start Time" span={2}>
                         {formatDateTime(station.startTime)}
                       </Descriptions.Item>
-                      <Descriptions.Item label="End Time">
+                      <Descriptions.Item label="End Time" span={2}>
                         {formatDateTime(station.endTime)}
                       </Descriptions.Item>
                     </Descriptions>
@@ -208,6 +223,7 @@ export function StationListPage() {
                         <Button
                           type="primary"
                           icon={<YoutubeOutlined />}
+                          disabled={!station.youtubeUrl}
                           onClick={() =>
                             openLinkInNewTab(station.youtubeUrl as string)
                           }>
@@ -216,8 +232,13 @@ export function StationListPage() {
                       )}
                       <Button
                         type="primary"
+                        icon={
+                          session.role === "user" ?
+                            <PlayCircleOutlined />
+                          : <EditFilled />
+                        }
                         onClick={() => handleStationClick(station)}>
-                        {session.role === "user" ? "Play" : "Edit"}
+                        {session.role === "user" ? "Play" : "View & Edit"}
                       </Button>
                     </Flex>
                   </div>
@@ -265,13 +286,20 @@ export function StationListPage() {
               okText: "Save",
               cancelText: "Cancel",
               onOk: async () => {
-                if (!editingStation.progressId) throw new Error("Progress record is unavailable");
+                if (!editingStation.progressId)
+                  throw new Error("Progress record is unavailable");
                 try {
                   if (values.status === "Finished") {
                     if (editingStation.backendStatus !== "COMPLETED") {
-                      throw new Error("Complete check-out before assigning a finished score");
+                      throw new Error(
+                        "Complete check-out before assigning a finished score",
+                      );
                     }
-                    await editAdminProgressScore(editingStation.progressId, values.score, values.reason);
+                    await editAdminProgressScore(
+                      editingStation.progressId,
+                      values.score,
+                      values.reason,
+                    );
                   } else {
                     await forceAdminProgressStatus(
                       editingStation.progressId,
@@ -283,7 +311,11 @@ export function StationListPage() {
                   message.success("Station updated successfully");
                   setEditingStation(null);
                 } catch (error) {
-                  message.error(error instanceof Error ? error.message : "Unable to update station");
+                  message.error(
+                    error instanceof Error ?
+                      error.message
+                    : "Unable to update station",
+                  );
                   throw error;
                 }
               },
@@ -301,7 +333,10 @@ export function StationListPage() {
           <Form.Item label="Score" name="score" rules={[{required: true}]}>
             <InputNumber min={0} max={1000} className="full-width" />
           </Form.Item>
-          <Form.Item label="Reason" name="reason" rules={[{required: true, message: "Reason is required for audit"}]}>
+          <Form.Item
+            label="Reason"
+            name="reason"
+            rules={[{required: true, message: "Reason is required for audit"}]}>
             <Input placeholder="Reason for this admin change" maxLength={500} />
           </Form.Item>
 
@@ -335,10 +370,7 @@ export function StationListPage() {
 
           setIsSubmittingCheckIn(true);
           try {
-            await checkInStation(
-              scanTarget.stationId,
-              checkInQrToken.trim(),
-            );
+            await checkInStation(scanTarget.stationId, checkInQrToken.trim());
             loadDatabase(await fetchPlayerDatabase());
             message.success("QR code scanned successfully");
             const stationId = scanTarget.stationId;
