@@ -12,9 +12,7 @@ import {
   Flex,
   Form,
   Input,
-  Space,
   Typography,
-  Image,
   Divider,
 } from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
@@ -33,7 +31,7 @@ import {
   openQrCameraStream,
   supportsCameraQrScan,
 } from "../qrDetect";
-import logo from "../../../assets/ST-logo.png";
+import type {QrFrameDetector} from "../qrDetect";
 
 type LoginFormValues = {
   username: string;
@@ -44,29 +42,45 @@ function mapBackendRole(role: string) {
   return role === "ADMIN" ? "admin" : "user";
 }
 
-function waitForVideoMetadata(video: HTMLVideoElement): Promise<void> {
+function waitForVideoMetadata(
+  video: HTMLVideoElement,
+  setCancelListener: (cancelListener: (() => void) | null) => void,
+): Promise<void> {
   if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    setCancelListener(null);
     return Promise.resolve();
   }
 
   return new Promise((resolve, reject) => {
-    const cleanup = () => {
+    let settled = false;
+    const cleanup = (error?: Error) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
       video.removeEventListener("loadedmetadata", handleLoadedMetadata);
       video.removeEventListener("error", handleError);
+      setCancelListener(null);
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
     };
     const handleLoadedMetadata = () => {
       cleanup();
-      resolve();
     };
     const handleError = () => {
-      cleanup();
-      reject(new Error("Video metadata failed to load"));
+      cleanup(new Error("Video metadata failed to load"));
     };
 
     video.addEventListener("loadedmetadata", handleLoadedMetadata, {
       once: true,
     });
     video.addEventListener("error", handleError, {once: true});
+    setCancelListener(() =>
+      cleanup(new Error("Video metadata wait was cancelled")),
+    );
   });
 }
 
@@ -121,11 +135,17 @@ export function LoginPage() {
   const streamRef = useRef<MediaStream | null>(null);
   const scanTimerRef = useRef<number | null>(null);
   const scanFrameRef = useRef<number | null>(null);
+  const scanFrameResolveRef = useRef<(() => void) | null>(null);
+  const metadataCancelRef = useRef<(() => void) | null>(null);
+  const detectorRef = useRef<QrFrameDetector | null>(null);
+  const scannerActiveRef = useRef(false);
   const scanRunRef = useRef(0);
   const qrSubmittingRef = useRef(false);
+  const isMountedRef = useRef(false);
 
-  const stopQrScanner = useCallback(() => {
+  const stopQrScanner = useCallback((updateState = true) => {
     scanRunRef.current += 1;
+    scannerActiveRef.current = false;
     if (scanTimerRef.current !== null) {
       window.clearInterval(scanTimerRef.current);
       scanTimerRef.current = null;
@@ -134,13 +154,38 @@ export function LoginPage() {
       window.cancelAnimationFrame(scanFrameRef.current);
       scanFrameRef.current = null;
     }
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.srcObject = null;
+    if (scanFrameResolveRef.current) {
+      scanFrameResolveRef.current();
+      scanFrameResolveRef.current = null;
     }
-    streamRef.current?.getTracks().forEach((track) => track.stop());
+    if (metadataCancelRef.current) {
+      metadataCancelRef.current();
+      metadataCancelRef.current = null;
+    }
+    detectorRef.current?.dispose();
+    detectorRef.current = null;
+
+    const video = videoRef.current;
+    const stream =
+      streamRef.current ??
+      (video?.srcObject instanceof MediaStream ? video.srcObject : null);
+    if (stream) {
+      for (const track of stream.getTracks()) {
+        track.stop();
+      }
+    }
+
     streamRef.current = null;
-    setIsScanningQr(false);
+    if (video) {
+      video.pause();
+      video.srcObject = null;
+      video.removeAttribute("src");
+      video.load();
+    }
+
+    if (updateState && isMountedRef.current) {
+      setIsScanningQr(false);
+    }
   }, []);
 
   const submitLogin = async (values: LoginFormValues) => {
@@ -248,42 +293,52 @@ export function LoginPage() {
 
     const scanRun = scanRunRef.current + 1;
     scanRunRef.current = scanRun;
+    scannerActiveRef.current = true;
     setIsScanningQr(true);
     await new Promise<void>((resolve) => {
+      scanFrameResolveRef.current = resolve;
       scanFrameRef.current = window.requestAnimationFrame(() => {
         scanFrameRef.current = null;
+        scanFrameResolveRef.current = null;
         resolve();
       });
     });
 
-    if (scanRunRef.current !== scanRun) {
+    if (scanRunRef.current !== scanRun || !scannerActiveRef.current) {
       return;
     }
 
     const video = videoRef.current;
     if (!video) {
-      setIsScanningQr(false);
+      stopQrScanner();
       return;
     }
 
     try {
       const stream = await openQrCameraStream();
-      if (scanRunRef.current !== scanRun) {
+      if (scanRunRef.current !== scanRun || !scannerActiveRef.current) {
         stream.getTracks().forEach((track) => track.stop());
         return;
       }
       streamRef.current = stream;
       video.srcObject = stream;
-      await waitForVideoMetadata(video);
+      await waitForVideoMetadata(video, (cancelListener) => {
+        metadataCancelRef.current = cancelListener;
+      });
       await video.play();
+      if (scanRunRef.current !== scanRun || !scannerActiveRef.current) {
+        return;
+      }
 
       const detector = createQrFrameDetector();
+      detectorRef.current = detector;
       let isDetecting = false;
       scanTimerRef.current = window.setInterval(() => {
         if (
           isDetecting ||
           qrSubmittingRef.current ||
-          scanRunRef.current !== scanRun
+          scanRunRef.current !== scanRun ||
+          !scannerActiveRef.current
         ) {
           return;
         }
@@ -295,7 +350,8 @@ export function LoginPage() {
             if (
               firstCode &&
               !qrSubmittingRef.current &&
-              scanRunRef.current === scanRun
+              scanRunRef.current === scanRun &&
+              scannerActiveRef.current
             ) {
               void submitQrPayload(firstCode);
             }
@@ -315,6 +371,9 @@ export function LoginPage() {
           });
       }, 500);
     } catch (error) {
+      if (scanRunRef.current !== scanRun || !scannerActiveRef.current) {
+        return;
+      }
       stopQrScanner();
       const messageText =
         error instanceof Error ? error.message : "Unable to start camera";
@@ -330,7 +389,13 @@ export function LoginPage() {
     }
   }, [isSubmitting, navigate, session]);
 
-  useEffect(() => stopQrScanner, [stopQrScanner]);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      stopQrScanner(false);
+    };
+  }, [stopQrScanner]);
 
   return (
     <div className="login-screen">
@@ -421,7 +486,7 @@ export function LoginPage() {
                   icon={<StopOutlined />}
                   danger
                   variant="filled"
-                  onClick={stopQrScanner}>
+                  onClick={() => stopQrScanner()}>
                   Stop scanner
                 </Button>
               </div>
