@@ -2,8 +2,8 @@ import {
   DashboardOutlined,
   EnvironmentOutlined,
   LogoutOutlined,
+  ManOutlined,
   QrcodeOutlined,
-  RocketOutlined,
   RubyOutlined,
   SettingOutlined,
   TeamOutlined,
@@ -67,32 +67,26 @@ export function AppFrame({children}: AppFrameProps) {
   return (
     <Layout className="mobile-shell">
       <Layout.Header className="shell-header">
-        <div className="full-width">
-          <Flex
-            gap={12}
-            justify="space-between"
-            align="center"
-            className="header-content">
-            <div className="app-brand" aria-label="Movement 2026">
-              <RocketOutlined aria-hidden="true" />
-              <span>Movement 2026</span>
-            </div>
+        <div className="header-content">
+          <div className="header-spacer" />
+          <div className="app-brand" aria-label="Application branding">
+            <span className="app-runner-mark" aria-hidden="true">
+              <ManOutlined />
+            </span>
+            <span>MOVEment 2026</span>
+          </div>
 
-            <Flex vertical align="flex-end" gap={2} className="logout-cluster">
-              <Button
-                color="danger"
-                variant="filled"
-                icon={<LogoutOutlined />}
-                onClick={handleLogout}>
-                {ROLE_LABELS[session.role]}
-              </Button>
-              <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
-                {buildTimestampLabel}
-              </Typography.Text>
-            </Flex>
-          </Flex>
-          <Flex gap={12} justify="space-between" align="center">
-            <div className="brand-mark">Movement 2026</div>
+          <Flex vertical align="flex-end" gap={2} className="account-cluster">
+            <Button
+              color="danger"
+              variant="filled"
+              icon={<LogoutOutlined />}
+              onClick={handleLogout}>
+              {ROLE_LABELS[session.role]}
+            </Button>
+            <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
+              {buildTimestampLabel}
+            </Typography.Text>
             <Typography.Text className="brand-subtitle">
               Current team: <b>{activeTeam?.name ?? "No team"}</b>
             </Typography.Text>
