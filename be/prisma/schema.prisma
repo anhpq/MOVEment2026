@@ -249,6 +249,7 @@ model FinalChallenge {
   id           Int      @id @default(autoincrement())
   title        String
   clueText     String   @map("clue_text")
+  /// Compatibility name for the existing answer_hash column; stores the normalized plain-text Final keyword, not a hash.
   answerHash   String   @map("answer_hash")
   startsAt     DateTime @map("starts_at")
   maxWinners   Int      @default(10) @map("max_winners")

@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ActorType, FinalChallenge, Prisma, ProgressStatus, Team } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -76,7 +75,7 @@ export class FinalService {
     }
 
     const normalized = this.normalizeAnswer(dto.answer);
-    const isCorrect = await bcrypt.compare(normalized, challenge.answerHash);
+    const isCorrect = normalized === this.getStoredFinalKeyword(challenge);
     const result = await this.createFinalSubmissionWithRetry(
       challenge,
       teamId,
@@ -191,7 +190,7 @@ export class FinalService {
 
   async getFinalConfig() {
     const challenge = await this.getActiveChallenge();
-    return this.toPublicChallenge(challenge, true);
+    return this.toAdminConfig(challenge);
   }
 
   async getSubmissions() {
@@ -217,9 +216,7 @@ export class FinalService {
       title: dto.title,
       clueText: dto.clueText,
       isActive: dto.isActive,
-      answerHash: dto.answer
-        ? await bcrypt.hash(this.normalizeAnswer(dto.answer), 10)
-        : undefined,
+      answerHash: dto.answer ? this.normalizeAnswer(dto.answer) : undefined,
     };
     const updated = await this.prisma.finalChallenge.update({
       where: { id: challenge.id },
@@ -234,7 +231,7 @@ export class FinalService {
       entityId: challenge.id,
       metadata: { ...dto, answer: dto.answer ? '[redacted]' : undefined },
     });
-    return this.toPublicChallenge(updated, true);
+    return this.toAdminConfig(updated);
   }
 
   private async getActiveChallenge() {
@@ -250,6 +247,10 @@ export class FinalService {
 
   private normalizeAnswer(answer: string) {
     return answer.trim().toUpperCase().replace(/\s+/g, ' ');
+  }
+
+  private getStoredFinalKeyword(challenge: FinalChallenge) {
+    return this.normalizeAnswer(challenge.answerHash);
   }
 
   private async getActiveStationProgress(teamId: number) {
@@ -306,6 +307,13 @@ export class FinalService {
       isActive: challenge.isActive,
       createdAt: challenge.createdAt,
       updatedAt: challenge.updatedAt,
+    };
+  }
+
+  private toAdminConfig(challenge: FinalChallenge) {
+    return {
+      ...this.toPublicChallenge(challenge, true),
+      currentKeyword: this.getStoredFinalKeyword(challenge),
     };
   }
 

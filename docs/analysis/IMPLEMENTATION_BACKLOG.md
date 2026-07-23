@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-23 Final Challenge plain answer and Production seed override
+
+- [x] Final Challenge no longer hashes the canonical keyword before storing it in `answerHash`.
+- [x] Final Challenge validation no longer hashes submitted answers and instead compares normalized submitted text to normalized stored text.
+- [x] Public APIs and activity logs continue to avoid exposing the configured Final answer.
+- [x] Production seed overwrites only seed-managed Final Challenge fields through `2026-08-21 23:59:59 Asia/Ho_Chi_Minh`.
+- [x] Production seed preserves existing Final Challenge records starting `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`, while still creating the record if missing.
+- [x] Seed policy tests cover production before cutoff, on August 21, after cutoff, non-production, repeated planning, missing record creation, and update field scope.
+- [ ] Production deployment/runtime verification remains open and requires explicit approval.
+- [ ] Plain-text Final answer storage increases database-read exposure risk and should be reviewed after the event/cutoff window.
+
 ## 2026-07-22 Conditional backend database deployment completion
 
 - [x] Backend Production workflow supports independent manual deployment inputs for `base_commit`, `target_commit`, and `force_database_steps`.

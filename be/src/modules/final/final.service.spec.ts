@@ -1,5 +1,4 @@
 import { FinalService } from './final.service'
-import * as bcrypt from 'bcryptjs'
 import { Prisma } from '@prisma/client'
 
 const challenge = {
@@ -10,7 +9,7 @@ const challenge = {
   maxWinners: 2,
   pointsByRank: [20, 10],
   isActive: true,
-  answerHash: 'hash',
+  answerHash: 'DISANVANHOA2026',
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -31,7 +30,7 @@ const mockTx = {
 }
 
 const mockPrisma = {
-  finalChallenge: { findFirst: jest.fn() },
+  finalChallenge: { findFirst: jest.fn(), update: jest.fn() },
   finalSubmission: { findFirst: jest.fn(), findMany: jest.fn(), count: jest.fn() },
   teamStationProgress: { findFirst: jest.fn() },
   $transaction: jest.fn(),
@@ -85,8 +84,79 @@ describe('FinalService', () => {
     )
   })
 
+  it('returns the current keyword only from the admin final config response', async () => {
+    const result = await service.getFinalConfig()
+
+    expect(result).toMatchObject({
+      title: 'Final',
+      clueText: 'Solve it',
+      currentKeyword: 'DISANVANHOA2026',
+    })
+    expect(result).not.toHaveProperty('answerHash')
+  })
+
+  it('does not return the keyword from the player final response', async () => {
+    const result = await service.getPlayerFinal(4)
+
+    expect(result).not.toHaveProperty('currentKeyword')
+    expect(result).not.toHaveProperty('answerHash')
+    expect(result).toMatchObject({
+      title: 'Final',
+      clueText: 'Solve it',
+    })
+  })
+
+  it('preserves the current keyword when updating final config without a new answer', async () => {
+    mockPrisma.finalChallenge.update = jest.fn().mockResolvedValue({
+      ...challenge,
+      title: 'Updated Final',
+      clueText: 'Updated clue',
+    })
+    mockEventConfig.isPastEventEnd.mockResolvedValue(false)
+
+    const result = await service.updateFinalConfig(1, {
+      title: 'Updated Final',
+      clueText: 'Updated clue',
+    })
+
+    expect(mockPrisma.finalChallenge.update).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: {
+        title: 'Updated Final',
+        clueText: 'Updated clue',
+        isActive: undefined,
+        answerHash: undefined,
+      },
+    })
+    expect(result).toMatchObject({
+      title: 'Updated Final',
+      clueText: 'Updated clue',
+      currentKeyword: 'DISANVANHOA2026',
+    })
+  })
+
+  it('normalizes and returns a new admin keyword after final config update', async () => {
+    mockPrisma.finalChallenge.update = jest.fn().mockResolvedValue({
+      ...challenge,
+      answerHash: 'NEW KEYWORD',
+    })
+    mockEventConfig.isPastEventEnd.mockResolvedValue(false)
+
+    const result = await service.updateFinalConfig(1, { answer: '  new   keyword  ' })
+
+    expect(mockPrisma.finalChallenge.update).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: {
+        title: undefined,
+        clueText: undefined,
+        isActive: undefined,
+        answerHash: 'NEW KEYWORD',
+      },
+    })
+    expect(result).toMatchObject({ currentKeyword: 'NEW KEYWORD' })
+  })
+
   it('awards the next available rank with the fixed final bonus formula', async () => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     mockTx.finalSubmission.findFirst.mockResolvedValue(null)
     mockTx.finalSubmission.count.mockResolvedValue(0)
     mockTx.team.findUniqueOrThrow.mockResolvedValue({ totalPoints: 50 })
@@ -102,7 +172,7 @@ describe('FinalService', () => {
       scoreEventId: 9,
     })
 
-    const result = await service.submitFinal(4, { answer: '  ANSWER  ' })
+    const result = await service.submitFinal(4, { answer: '  DISANVANHOA2026  ' })
 
     expect(mockTx.scoreEvent.create).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -123,7 +193,6 @@ describe('FinalService', () => {
   })
 
   it('returns the prior correct submission without awarding points again', async () => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     const previousSubmission = {
       id: 6,
       finalChallengeId: 1,
@@ -136,7 +205,7 @@ describe('FinalService', () => {
     }
     mockTx.finalSubmission.findFirst.mockResolvedValue(previousSubmission)
 
-    const result = await service.submitFinal(4, { answer: 'answer' })
+    const result = await service.submitFinal(4, { answer: 'wrong' })
 
     expect(mockTx.finalSubmission.count).not.toHaveBeenCalled()
     expect(mockTx.scoreEvent.create).not.toHaveBeenCalled()
@@ -145,7 +214,6 @@ describe('FinalService', () => {
   })
 
   it('retries a serializable transaction conflict before awarding final points', async () => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     const conflict = new Prisma.PrismaClientKnownRequestError(
       'Transaction conflict',
       { code: 'P2034', clientVersion: 'test' },
@@ -170,7 +238,7 @@ describe('FinalService', () => {
       scoreEventId: 10,
     })
 
-    const result = await service.submitFinal(5, { answer: 'answer' })
+    const result = await service.submitFinal(5, { answer: 'DISANVANHOA2026' })
 
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(2)
     expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 9 })
@@ -231,16 +299,15 @@ describe('FinalService', () => {
       stationId: 'ST15A',
     })
 
-    await expect(service.submitFinal(4, { answer: 'answer' })).rejects.toThrow(
+    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
       'Finish the active station before entering Final Challenge',
     )
   })
 
   it('allows final when stations are unfinished but none is active', async () => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
 
-    await expect(service.submitFinal(4, { answer: 'answer' })).resolves.toMatchObject({
+    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).resolves.toMatchObject({
       isCorrect: true,
     })
 
@@ -258,15 +325,12 @@ describe('FinalService', () => {
     ['mixed-case', 'DiSanVanHoa2026'],
     ['surrounding whitespace', '  DISANVANHOA2026  '],
   ])('normalizes %s answers before backend validation', async (_label, answer) => {
-    const compare = jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
-
-    await service.submitFinal(4, { answer })
-
-    expect(compare).toHaveBeenCalledWith('DISANVANHOA2026', challenge.answerHash)
+    await expect(service.submitFinal(4, { answer })).resolves.toMatchObject({
+      isCorrect: true,
+    })
   })
 
   it('records a wrong answer without awarding rank or points', async () => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false)
 
     const result = await service.submitFinal(4, { answer: 'wrong' })
 
@@ -287,7 +351,7 @@ describe('FinalService', () => {
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ submittedAt })
 
-    await expect(service.submitFinal(4, { answer: 'answer' })).rejects.toThrow(
+    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
       'Final answer cooldown is active',
     )
   })
@@ -309,11 +373,10 @@ describe('FinalService', () => {
     [10, 1],
     [11, 0],
   ])('awards %i rank with %i final bonus points', async (rank, points) => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     mockTx.finalSubmission.count.mockResolvedValue(rank - 1)
     mockTx.team.findUniqueOrThrow.mockResolvedValue({ totalPoints: 50 })
 
-    const result = await service.submitFinal(rank + 10, { answer: 'answer' })
+    const result = await service.submitFinal(rank + 10, { answer: 'DISANVANHOA2026' })
 
     expect(result).toMatchObject({ winnerRank: rank, pointsAwarded: points })
     if (points > 0) {
@@ -344,7 +407,7 @@ describe('FinalService', () => {
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ submittedAt: new Date() })
 
-    await expect(service.submitFinal(4, { answer: 'answer' })).rejects.toThrow(
+    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
       'Final answer cooldown is active',
     )
 
@@ -353,11 +416,10 @@ describe('FinalService', () => {
   })
 
   it('does not retry non-retryable transaction failures', async () => {
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true)
     const failure = new Error('database is unavailable')
     mockPrisma.$transaction.mockRejectedValueOnce(failure)
 
-    await expect(service.submitFinal(5, { answer: 'answer' })).rejects.toThrow(
+    await expect(service.submitFinal(5, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
       'database is unavailable',
     )
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1)

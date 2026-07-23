@@ -383,7 +383,8 @@ Rotate Check-out không được tự rotate Check-in.
 | Điều kiện vào Final | Team không bắt buộc phải hoàn thành tất cả Station. |
 | Active Station | Team đang chơi Station phải hoàn thành Station đó trước khi vào Final. |
 | Final keyword | Keyword là `DISANVANHOA2026`. |
-| Keyword normalization | Frontend và backend đều normalize keyword thành uppercase. |
+| Final answer storage | Final Challenge lưu keyword đã normalize dạng plain text trong cột tương thích `answerHash`; không hash keyword Final. |
+| Keyword normalization | Frontend và backend đều trim và normalize keyword thành uppercase. |
 | Final scoring | Backend tự chấm và xác định rank theo lần nhập đúng đầu tiên được database ghi nhận. |
 | Final points | Hạng 1 nhận 10 điểm, hạng 2 nhận 9 điểm, tiếp tục đến hạng 10 nhận 1 điểm. |
 | Sau hạng 10 | Từ hạng 11 trở đi nhận 0 điểm Final. |
@@ -512,7 +513,7 @@ Không cần hard-code toàn bộ raw token trong seed source code.
 
 Local/test credentials và raw tokens không được tự động seed vào Production.
 
-Production phải sử dụng quy trình tạo dữ liệu riêng.
+Production phải sử dụng quy trình tạo dữ liệu riêng, ngoại trừ Final Challenge seed-managed record được phép create/update canonical values đến hết `2026-08-21 23:59:59 Asia/Ho_Chi_Minh` và ngừng overwrite từ `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`.
 
 Seed command phải có Environment Guard rõ ràng.
 

@@ -1,3 +1,10 @@
+## 2026-07-23 Final Challenge Plain Answer and Production Seed Override
+
+- Changed Final Challenge validation so backend no longer bcrypt-hashes the configured keyword or submitted answer. The existing `final_challenges.answer_hash` compatibility column now stores the normalized plain-text keyword, and validation compares normalized submitted text directly against the normalized stored value.
+- Preserved Final answer secrecy at API/log boundaries: public challenge/submission DTOs still omit the configured answer, and Admin update logs continue redacting submitted answer values.
+- Added a dedicated Final Challenge seed policy with canonical answer `DISANVANHOA2026`, stable business key title `Final Cipher`, and a temporary Production override through `2026-08-21 23:59:59 Asia/Ho_Chi_Minh`. During the window, seed updates only seed-managed Final Challenge fields; starting `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`, Production seed preserves an existing record and creates only if missing.
+- Verification passed: focused Final service tests, focused Final seed policy tests, backend typecheck, full backend Jest suite, backend lint, backend build, root smoke test, `git diff --check`, and frontend lint/build for cross-package safety. No database reset, Production migration, deploy, `.env` edit, or real Production mutation was performed.
+
 ## 2026-07-22 Conditional Backend Database Deployment
 
 - Added commit-range database change detection to the manual `Deploy Backend (ECS)` workflow. The workflow now accepts optional `base_commit`, optional `target_commit`, and boolean `force_database_steps` inputs while preserving the `master` branch guard and backup/deploy confirmation gates.

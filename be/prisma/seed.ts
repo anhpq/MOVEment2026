@@ -15,6 +15,7 @@ import {
 } from '../src/common/qr/qr-token';
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname, resolve } from 'path';
+import { FINAL_CHALLENGE_SEED_KEY, planFinalChallengeSeed } from './final-challenge-seed';
 
 const prisma = new PrismaClient();
 const isProduction = process.env.NODE_ENV === 'production';
@@ -43,7 +44,6 @@ const devStationQrArtifactPath = resolve(
   '.tester-logs',
   'dev-station-qr-tokens.txt',
 );
-const finalKeyword = 'DISANVANHOA2026';
 
 const stations = [
   ['ST002', 'Tram #2', 'CIPHER', 100, 18, 35],
@@ -223,26 +223,18 @@ async function main() {
     update: { scoringCodeHash },
   });
 
-  const final = await prisma.finalChallenge.findFirst({ where: { isActive: true } });
-  if (!final) {
-    await prisma.finalChallenge.create({
-      data: {
-        title: 'Final Cipher',
-        clueText: 'Giai mat thu cuoi cung',
-        answerHash: await bcrypt.hash(finalKeyword, 10),
-        startsAt: new Date(),
-        maxWinners: 10,
-        pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-      },
-    });
-  } else if (!(await bcrypt.compare(finalKeyword, final.answerHash))) {
+  const final = await prisma.finalChallenge.findFirst({ where: { title: FINAL_CHALLENGE_SEED_KEY } });
+  const finalSeedAction = planFinalChallengeSeed({
+    existing: final,
+    environment: isProduction ? 'production' : 'non-production',
+    now: new Date(),
+  });
+  if (finalSeedAction.operation === 'create') {
+    await prisma.finalChallenge.create({ data: finalSeedAction.data });
+  } else if (finalSeedAction.operation === 'update') {
     await prisma.finalChallenge.update({
-      where: { id: final.id },
-      data: {
-        answerHash: await bcrypt.hash(finalKeyword, 10),
-        maxWinners: 10,
-        pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-      },
+      where: { id: finalSeedAction.id },
+      data: finalSeedAction.data,
     });
   }
 

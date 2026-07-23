@@ -228,6 +228,8 @@ DISANVANHOA2026
 
 Frontend and backend trim and uppercase input.
 
+Backend stores the normalized Final keyword directly in the compatibility column `answerHash` and compares normalized submitted text directly against that stored value. Public APIs and logs must not expose the configured answer.
+
 Team may retry until correct or Final closes.
 
 Wrong-answer cooldown increases from 1 second up to 10 seconds and is enforced by backend.
@@ -295,6 +297,8 @@ It must provision:
 - Final keyword/config.
 
 Production seed must not print raw secrets or create local test credentials automatically.
+
+Temporary Production Final Challenge seed override remains enabled through `2026-08-21 23:59:59 Asia/Ho_Chi_Minh`: each seed run overwrites only seed-managed Final Challenge fields with canonical values. Starting `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`, Production seed preserves an existing Final Challenge record and only creates it if missing.
 
 ## Audit and Logging
 
