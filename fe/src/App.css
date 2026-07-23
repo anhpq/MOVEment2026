@@ -166,6 +166,193 @@
   padding: 18px;
 }
 
+.station-team-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 28px;
+  overflow: hidden;
+  padding: 28px 34px;
+  border: 1px solid rgba(255, 122, 89, 0.3);
+  border-radius: 18px;
+  background: linear-gradient(115deg, #fff2ea 0%, #ffd6c8 100%);
+  box-shadow: 0 16px 38px rgba(111, 54, 37, 0.08);
+}
+
+.station-team-hero::after {
+  position: absolute;
+  right: -40px;
+  bottom: -70px;
+  width: 46%;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  content: "";
+  transform: rotate(-18deg);
+}
+
+.station-team-avatar,
+.station-showcase-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 122, 89, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  color: #ed7657;
+  box-shadow: 0 6px 16px rgba(88, 44, 30, 0.12);
+}
+
+.station-team-avatar {
+  width: 76px;
+  height: 76px;
+  font-size: 2.2rem;
+}
+
+.station-team-summary {
+  position: relative;
+  z-index: 1;
+}
+
+.station-team-summary h2 {
+  margin: 0 0 12px !important;
+  color: #11244a;
+  font-size: 1.7rem;
+}
+
+.station-team-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 430px;
+}
+
+.station-team-metric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding-right: 24px;
+}
+
+.station-team-metric + .station-team-metric {
+  padding-left: 28px;
+  border-left: 1px solid rgba(112, 75, 63, 0.18);
+}
+
+.station-metric-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.68);
+  color: #ed7657;
+}
+
+.station-team-metric span:last-child,
+.station-stat span {
+  display: grid;
+}
+
+.station-team-metric small,
+.station-stat small {
+  color: #667085;
+  font-size: 0.75rem;
+}
+
+.station-team-metric strong,
+.station-stat strong {
+  color: #11244a;
+  font-size: 1.1rem;
+}
+
+.station-showcase-card .ant-card-body {
+  padding: 20px;
+}
+
+.station-showcase-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.station-showcase-avatar {
+  width: 54px;
+  height: 54px;
+  background: #fff3ee;
+  box-shadow: none;
+  font-size: 1.65rem;
+}
+
+.station-showcase-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.station-showcase-heading .ant-flex {
+  justify-content: space-between;
+}
+
+.station-showcase-heading .card-title {
+  font-size: 1.35rem !important;
+}
+
+.station-showcase-heading .compact-copy {
+  margin: 3px 0 0;
+}
+
+.station-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 14px;
+  padding: 14px 10px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  background: #fffdfc;
+}
+
+.station-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0 14px;
+}
+
+.station-stat + .station-stat {
+  border-left: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.station-stat > .anticon {
+  color: #ed7657;
+  font-size: 1.35rem;
+}
+
+.station-showcase-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.station-showcase-actions .ant-btn {
+  height: 44px;
+  border-color: #ed7657;
+  border-radius: 10px;
+  color: #e96547;
+  font-weight: 600;
+}
+
+.station-showcase-actions .ant-btn-primary {
+  color: #fff;
+}
+
+.station-content {
+  flex: 1;
+  min-width: 0;
+}
+
 .station-actions {
   width: 100%;
   display: grid;
@@ -287,5 +474,55 @@
   .station-row .delete-icon-button.ant-btn {
     width: 32px;
     min-width: 32px;
+  }
+
+  .station-team-hero {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 14px;
+    padding: 22px 18px;
+    text-align: center;
+  }
+
+  .station-team-summary h2 {
+    font-size: 1.45rem;
+  }
+
+  .station-team-metrics {
+    width: 100%;
+    text-align: left;
+  }
+
+  .station-team-metric {
+    padding-right: 12px;
+  }
+
+  .station-team-metric + .station-team-metric {
+    padding-left: 12px;
+  }
+
+  .station-showcase-header {
+    align-items: flex-start;
+  }
+
+  .station-showcase-heading .ant-flex {
+    align-items: flex-start;
+  }
+
+  .station-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 14px;
+  }
+
+  .station-stat {
+    padding: 0 10px;
+  }
+
+  .station-stat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .station-showcase-actions {
+    grid-template-columns: 1fr;
   }
 }
