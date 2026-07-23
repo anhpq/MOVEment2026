@@ -2,6 +2,7 @@ param(
   [switch]$SkipInstall,
   [switch]$SkipSeed,
   [switch]$AllowRemoteDatabase,
+  [switch]$KeepOpen,
   [int]$ApiPort = 3000,
   [int]$FrontendPort = 4173
 )
@@ -14,8 +15,10 @@ $FrontendDir = Join-Path $Root "fe"
 $LogDir = Join-Path $Root ".tester-logs"
 $BackendEnv = Join-Path $BackendDir ".env"
 $BackendEnvExample = Join-Path $BackendDir ".env.example"
-$ApiOrigin = "http://localhost:$ApiPort"
-$FrontendOrigin = "http://localhost:$FrontendPort"
+$ApiOrigin = "http://127.0.0.1:$ApiPort"
+$FrontendOrigin = "http://127.0.0.1:$FrontendPort"
+$DisplayApiOrigin = "http://localhost:$ApiPort"
+$DisplayFrontendOrigin = "http://localhost:$FrontendPort"
 
 function Step($Message) {
   Write-Host ""
@@ -32,6 +35,7 @@ function Invoke-Checked {
   )
 
   Step $Name
+  $startedAt = Get-Date
   Push-Location $WorkingDirectory
   try {
     $previousValues = @{}
@@ -45,6 +49,8 @@ function Invoke-Checked {
     if ($exitCode -ne 0) {
       throw "$Name failed with exit code $exitCode. Command: $FilePath $($Arguments -join ' ')"
     }
+    $duration = [int]((Get-Date) - $startedAt).TotalSeconds
+    Write-Host "$Name completed in ${duration}s." -ForegroundColor Green
   } finally {
     foreach ($key in $Environment.Keys) {
       [Environment]::SetEnvironmentVariable($key, $previousValues[$key], "Process")
@@ -89,7 +95,7 @@ function Test-LocalBin($Directory, $Name) {
   return Test-Path -LiteralPath (Join-Path $Directory "node_modules/.bin/$Name$extension")
 }
 
-function Ensure-Dependencies($Name, $Directory, $RequiredBins) {
+function Ensure-Dependencies($Name, $Directory, $RequiredBins, $RequiredPackages = @()) {
   $nodeModules = Join-Path $Directory "node_modules"
   $needsInstall = !(Test-Path -LiteralPath $nodeModules)
 
@@ -97,6 +103,16 @@ function Ensure-Dependencies($Name, $Directory, $RequiredBins) {
     foreach ($bin in $RequiredBins) {
       if (!(Test-LocalBin $Directory $bin)) {
         Write-Host "$Name dependency install is incomplete: missing local binary '$bin'." -ForegroundColor Yellow
+        $needsInstall = $true
+        break
+      }
+    }
+  }
+
+  if (!$needsInstall) {
+    foreach ($package in $RequiredPackages) {
+      if (!(Test-Path -LiteralPath (Join-Path $nodeModules $package))) {
+        Write-Host "$Name dependency install is incomplete: missing package '$package'." -ForegroundColor Yellow
         $needsInstall = $true
         break
       }
@@ -111,17 +127,19 @@ function Ensure-Dependencies($Name, $Directory, $RequiredBins) {
 }
 
 function Wait-Http($Url, $Name) {
+  $lastError = $null
   for ($i = 1; $i -le 40; $i++) {
     try {
       Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 2 | Out-Null
       Write-Host "$Name is ready: $Url" -ForegroundColor Green
       return
     } catch {
+      $lastError = $_.Exception.Message
       Start-Sleep -Seconds 2
     }
   }
 
-  throw "$Name did not respond at $Url. Check logs in $LogDir."
+  throw "$Name did not respond at $Url. Last error: $lastError. Check logs in $LogDir."
 }
 
 function Assert-PortAvailable($Port, $Name) {
@@ -163,7 +181,7 @@ Ensure-LocalDatabase $DatabaseUrl
 if (!$SkipInstall) {
   Step "Installing dependencies when needed"
   Ensure-Dependencies "Backend" $BackendDir @("prisma", "ts-node", "nest", "tsc")
-  Ensure-Dependencies "Frontend" $FrontendDir @("vite", "tsc")
+  Ensure-Dependencies "Frontend" $FrontendDir @("vite", "tsc") @("jsqr")
 }
 
 Invoke-Checked "Backend Prisma generate" $BackendDir "npm.cmd" @("run", "prisma:generate")
@@ -211,8 +229,9 @@ Wait-Http $FrontendOrigin "Frontend"
 
 Write-Host ""
 Write-Host "Tester can open:" -ForegroundColor Green
-Write-Host "  Frontend: $FrontendOrigin"
-Write-Host "  API docs: $ApiOrigin/api/docs"
+Write-Host "  Frontend: $DisplayFrontendOrigin"
+Write-Host "  API docs: $DisplayApiOrigin/api/docs"
+Write-Host "  Loopback health URLs used by runner: $FrontendOrigin and $ApiOrigin/api/docs"
 Write-Host ""
 Write-Host "Seed accounts:"
 Write-Host "  Admin: admin / admin123"
@@ -222,6 +241,12 @@ Write-Host "Logs:"
 Write-Host "  $ApiLog"
 Write-Host "  $FrontendLog"
 Write-Host ""
+if (!$KeepOpen) {
+  Write-Host "Tester smoke completed; stopping test servers." -ForegroundColor Green
+  Stop-RunnerJobs
+  exit 0
+}
+
 Write-Host "Keep this window open while testing. Press Ctrl+C to stop both servers."
 
 try {
