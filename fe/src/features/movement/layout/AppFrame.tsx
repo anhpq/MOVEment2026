@@ -70,9 +70,7 @@ export function AppFrame({children}: AppFrameProps) {
         <div className="header-content">
           <div className="header-spacer" />
           <div className="app-brand" aria-label="Application branding">
-            <span className="app-runner-mark" aria-hidden="true">
-              <RunningPersonIcon />
-            </span>
+            <RunningPersonIcon className="app-runner-mark" />
             <span>MOVEment 2026</span>
           </div>
 
