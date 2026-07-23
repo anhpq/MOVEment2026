@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { FinalService } from './final.service'
 import { Prisma } from '@prisma/client'
 
@@ -82,6 +84,12 @@ describe('FinalService', () => {
     mockPrisma.$transaction.mockImplementation((callback: (tx: typeof mockTx) => unknown) =>
       callback(mockTx),
     )
+  })
+
+  it('does not use bcrypt or crypto hashing in the Final Challenge service flow', () => {
+    const serviceSource = readFileSync(join(__dirname, 'final.service.ts'), 'utf8')
+
+    expect(serviceSource).not.toMatch(/bcrypt|crypto|createHash|digest|hashAnswer|compareHash/i)
   })
 
   it('returns the current keyword only from the admin final config response', async () => {
@@ -340,6 +348,9 @@ describe('FinalService', () => {
       pointsAwarded: 0,
       scoreEventId: null,
     })
+    expect(result).not.toHaveProperty('currentKeyword')
+    expect(result).not.toHaveProperty('answerHash')
+    expect(JSON.stringify(result)).not.toContain('DISANVANHOA2026')
     expect(mockTx.scoreEvent.create).not.toHaveBeenCalled()
     expect(mockTx.team.update).not.toHaveBeenCalled()
   })

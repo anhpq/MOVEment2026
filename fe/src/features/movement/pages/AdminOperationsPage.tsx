@@ -30,7 +30,7 @@ export function AdminOperationsPage() {
       getAdminActivityLogs(), getAdminFinalConfig(), getAdminFinalSubmissions(),
     ]);
     setDashboard(d); setQueue(q); setLogs(l); setSubmissions(s);
-    eventForm.setFieldsValue(e); finalForm.setFieldsValue(f);
+    eventForm.setFieldsValue(e); finalForm.setFieldsValue({...f, answer: ""});
   }, [eventForm, finalForm]);
   useEffect(() => {
     const timer = window.setTimeout(() => void refresh(), 0);
@@ -56,12 +56,20 @@ export function AdminOperationsPage() {
     {key: "final", label: "Final Config", children:
       <Space direction="vertical" className="full-width">
         <Card><Form form={finalForm} layout="vertical" onFinish={async (v) => {
-          await updateAdminFinalConfig(v);
+          const values = {...v};
+          const answer = values.answer;
+          delete values.currentKeyword;
+          delete values.answer;
+          await updateAdminFinalConfig({
+            ...values,
+            ...(typeof answer === "string" && answer.trim() ? {answer} : {}),
+          });
           message.success("Final config updated"); await refresh();
         }}>
           <Form.Item name="title" label="Title"><Input /></Form.Item>
           <Form.Item name="clueText" label="Clue"><Input.TextArea /></Form.Item>
-          <Form.Item name="answer" label="New answer"><Input.Password /></Form.Item>
+          <Form.Item name="currentKeyword" label="Current keyword"><Input readOnly /></Form.Item>
+          <Form.Item name="answer" label="New keyword"><Input.Password autoComplete="new-password" /></Form.Item>
           <Typography.Paragraph>
             Final opens automatically at the event end time. Bonus points use rank formula: Rank 1 = 10, Rank 10 = 1, Rank 11+ = 0.
           </Typography.Paragraph>
