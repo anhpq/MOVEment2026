@@ -3,21 +3,37 @@ import {
   EnvironmentOutlined,
   LogoutOutlined,
   QrcodeOutlined,
+  RocketOutlined,
   RubyOutlined,
   SettingOutlined,
   TeamOutlined,
   TrophyOutlined,
 } from "@ant-design/icons";
-import {Button, Flex, Image, Layout, Typography} from "antd";
+import {Button, Flex, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import logo from "../../../assets/ST-logo.png";
 import {logout as logoutApi} from "../api";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
 import "./AppFrame.scss";
 
 type AppFrameProps = Readonly<PropsWithChildren>;
+
+function formatBuildTimestamp(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "Deploy: unknown";
+  }
+  return `Deploy: ${date.toLocaleString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  })}`;
+}
+
+const buildTimestampLabel = formatBuildTimestamp(__APP_BUILD_TIMESTAMP__);
 
 export function AppFrame({children}: AppFrameProps) {
   const navigate = useNavigate();
@@ -57,24 +73,26 @@ export function AppFrame({children}: AppFrameProps) {
             justify="space-between"
             align="center"
             className="header-content">
-            <Image
-              src={logo}
-              alt="MOVEment 2026"
-              preview={false}
-              style={{height: 24}}
-              className="margin-auto"
-            />
+            <div className="app-brand" aria-label="Movement 2026">
+              <RocketOutlined aria-hidden="true" />
+              <span>Movement 2026</span>
+            </div>
 
-            <Button
-              color="danger"
-              variant="filled"
-              icon={<LogoutOutlined />}
-              onClick={handleLogout}>
-              {ROLE_LABELS[session.role]}
-            </Button>
+            <Flex vertical align="flex-end" gap={2} className="logout-cluster">
+              <Button
+                color="danger"
+                variant="filled"
+                icon={<LogoutOutlined />}
+                onClick={handleLogout}>
+                {ROLE_LABELS[session.role]}
+              </Button>
+              <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
+                {buildTimestampLabel}
+              </Typography.Text>
+            </Flex>
           </Flex>
           <Flex gap={12} justify="space-between" align="center">
-            <div className="brand-mark">MOVEment 2026</div>
+            <div className="brand-mark">Movement 2026</div>
             <Typography.Text className="brand-subtitle">
               Current team: <b>{activeTeam?.name ?? "No team"}</b>
             </Typography.Text>

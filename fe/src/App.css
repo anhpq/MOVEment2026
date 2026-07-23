@@ -30,16 +30,46 @@
   gap: 12px;
 }
 
+.app-brand,
 .brand-mark {
   font-family:
     Bahnschrift,
     Aptos Display,
     sans-serif;
-  font-size: 1.2rem;
   font-weight: 700;
+  color: #17223b;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+.app-brand .anticon {
+  color: #ff7a59;
+  font-size: 1.25rem;
+}
+
+.brand-mark {
+  font-size: 1.2rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #17223b;
+}
+
+.logout-cluster {
+  flex: 0 0 auto;
+}
+
+.deploy-stamp {
+  color: #7b8794;
+  font-size: 0.72rem;
+  line-height: 1;
 }
 
 .brand-subtitle,
