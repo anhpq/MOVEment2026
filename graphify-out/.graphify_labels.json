@@ -159,6 +159,17 @@
   "157": "LeaderboardController",
   "158": ".generateTeamQrLoginToken",
   "159": "vite-env.d.ts",
+  "160": "jwt-auth.guard.ts",
+  "161": "migration.sql",
+  "162": "migration.sql",
   "163": "MOVEment 2026 - Automatic URL QR Login",
-  "164": "CODEX QR AUTO LOGIN AND SEED TOKENS"
+  "164": "CODEX QR AUTO LOGIN AND SEED TOKENS",
+  "165": "migration.sql",
+  "166": "migration.sql",
+  "167": "migration.sql",
+  "168": "migration.sql",
+  "169": "migration.sql",
+  "170": "migration.sql",
+  "171": "migration.sql",
+  "172": "konva"
 }
