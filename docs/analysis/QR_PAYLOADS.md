@@ -194,6 +194,10 @@ Không hard-code example này.
 
 Team QR Login token là Reusable Controlled Token trong thời gian còn active.
 
+Backend lưu `raw_token` trong protected database cho token mới, seed repair hoặc rotate để Admin có thể xem và in lại QR Login dạng string/URL.
+
+Token cũ đã được tạo trước khi có `raw_token` không thể tự phục hồi từ hash; cần seed repair, rotate hoặc Admin nhập replacement token một lần.
+
 Successful login không tự consume token vĩnh viễn.
 
 Token chỉ bị từ chối khi:
@@ -393,6 +397,7 @@ id
 team_id
 token_fingerprint
 token_hash
+raw_token
 is_active
 created_at
 updated_at

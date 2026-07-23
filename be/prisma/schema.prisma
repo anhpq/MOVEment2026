@@ -216,6 +216,7 @@ model QrLoginToken {
   teamId          Int       @map("team_id")
   team            Team      @relation(fields: [teamId], references: [id])
   tokenHash       String    @unique @map("token_hash")
+  rawToken        String?   @map("raw_token")
   expiresAt       DateTime  @map("expires_at")
   isActive        Boolean   @default(true) @map("is_active")
   consumedAt      DateTime? @map("consumed_at")

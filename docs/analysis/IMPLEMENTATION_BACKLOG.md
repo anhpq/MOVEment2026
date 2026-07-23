@@ -109,7 +109,7 @@
 - [x] Reusable controlled Team QR login, usage auditing, and one-active-session replacement are implemented and locally verified.
 - [x] Team creation provisioning, idempotent local/test seed repair, and distinct Admin generate/rotate/revoke actions are implemented.
 - [x] New Team and seed data no longer generate predictable Legacy Team QR credentials; existing Legacy credentials and endpoint remain for compatibility.
-- [x] Rotate-to-reprint is the selected raw-token strategy; raw URLs are returned only when created and are not stored in tracked files.
+- [x] Reprint strategy stores raw Team QR Login tokens in the protected backend database for new, repaired, replaced, or rotated tokens so Admin can view and print QR Login string/URL values; tracked files still must not contain raw tokens.
 - [ ] Production migration and deployed QR flow verification remain open.
 - [ ] Station QR migration remains out of scope and open.
 

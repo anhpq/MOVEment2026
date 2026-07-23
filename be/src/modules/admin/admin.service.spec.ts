@@ -40,6 +40,7 @@ const mockPrisma = {
   qrLoginToken: {
     create: jest.fn(),
     findFirst: jest.fn(),
+    findMany: jest.fn(),
     findUnique: jest.fn(),
     update: jest.fn(),
     updateMany: jest.fn(),
@@ -136,6 +137,7 @@ describe('AdminService Team QR login lifecycle', () => {
       data: {
         teamId: 7,
         tokenHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        rawToken: expect.any(String),
         expiresAt: expect.any(Date),
         createdByUserId: 1,
       },
@@ -163,10 +165,34 @@ describe('AdminService Team QR login lifecycle', () => {
       data: expect.objectContaining({
         teamId: 7,
         tokenHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        rawToken: expect.any(String),
       }),
     });
     expect(result.rawToken).toEqual(expect.any(String));
     expect(result.qrLoginUrl).toMatch(/^https:\/\/movement\.example\/qr-login\?token=/);
+  });
+
+  it('lists Team QR raw token and URL for Admin display when stored', async () => {
+    mockPrisma.qrLoginToken.findMany.mockResolvedValue([
+      {
+        id: 12,
+        teamId: 7,
+        rawToken: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-',
+        expiresAt: new Date(Date.now() + 60_000),
+        isActive: true,
+        consumedAt: null,
+        revokedAt: null,
+        usageCount: 0,
+        createdAt: new Date(),
+        lastUsedAt: null,
+      },
+    ]);
+
+    const result = await service.listTeamQrLoginTokens(7);
+
+    expect(result[0].rawToken).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-');
+    expect(result[0].qrLoginUrl).toMatch(/^https:\/\/movement\.example\/qr-login\?token=/);
+    expect(result[0]).not.toHaveProperty('tokenHash');
   });
 
   it('rotates by revoking the active token before creating a replacement', async () => {

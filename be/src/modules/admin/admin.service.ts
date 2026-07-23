@@ -119,6 +119,7 @@ export class AdminService {
         data: {
           teamId: created.id,
           tokenHash: createQrTokenFingerprint(rawQrLoginToken),
+          rawToken: rawQrLoginToken,
           expiresAt: qrLoginExpiresAt,
           createdByUserId: userId,
         },
@@ -219,6 +220,9 @@ export class AdminService {
     return tokens.map((token) => ({
       id: token.id,
       teamId: token.teamId,
+      rawToken: token.rawToken,
+      qrLoginUrl: token.rawToken ? this.buildQrLoginUrl(token.rawToken) : undefined,
+      loginUrl: token.rawToken ? this.buildQrLoginUrl(token.rawToken) : undefined,
       expiresAt: token.expiresAt,
       isActive: token.isActive,
       consumedAt: token.consumedAt,
@@ -1216,6 +1220,7 @@ export class AdminService {
       data: {
         teamId,
         tokenHash,
+        rawToken: normalizedToken,
         expiresAt,
         createdByUserId: userId,
       },

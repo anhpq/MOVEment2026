@@ -342,7 +342,7 @@ Dùng cho audit và abuse detection.
 
 Không dùng `usage_count = 1` như one-time consume policy trừ khi Business Rule được thay đổi chính thức.
 
-Không lưu raw token plaintext chỉ để tiện đọc lại.
+Không dùng raw token plaintext làm lookup chính.
 
 ---
 
@@ -350,7 +350,11 @@ Không lưu raw token plaintext chỉ để tiện đọc lại.
 
 Nếu chỉ lưu hash, hệ thống không thể đọc lại raw token.
 
-Để Admin có thể in lại cùng QR, chọn một trong các phương án sau.
+Team QR Login hiện dùng strategy lưu `raw_token` trong protected backend database cho token mới, seed repair hoặc rotate để Admin có thể xem và in lại cùng QR Login dạng string/URL.
+
+Token cũ đã được tạo trước khi có `raw_token` không thể tự phục hồi từ hash; cần seed repair, rotate hoặc Admin nhập replacement token một lần.
+
+Các phương án dưới đây là các strategy hợp lệ khi triển khai môi trường bảo vệ khác.
 
 ## Option A — Encrypted Raw Token
 
