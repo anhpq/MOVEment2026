@@ -2,34 +2,29 @@ import {
   DeleteOutlined,
   EditOutlined,
   QrcodeOutlined,
-  StopOutlined,
-  SyncOutlined,
 } from "@ant-design/icons";
 import {
   App as AntdApp,
   Button,
   Card,
   Flex,
-  Input,
   List,
   Select,
   Tabs,
   Tag,
   Typography,
 } from "antd";
-import {useState} from "react";
+import QRCode from "qrcode";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {fetchAdminDatabase} from "../adminData";
 import {
   deleteAdminStation,
   deleteAdminTeam,
+  generateAdminStationQrTokens,
   generateAdminTeamQrLoginToken,
   getAdminStationQrTokens,
   getAdminTeamQrLoginTokens,
-  revokeAdminQrLoginToken,
-  revokeAdminStationQrToken,
-  rotateAdminStationQrToken,
-  rotateAdminTeamQrLoginToken,
   updateAdminStation,
 } from "../api";
 import {StationsMapPanel} from "../components/StationsMapPanel";
@@ -49,6 +44,33 @@ export function SystemConfigPage() {
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [qrBusyTeamId, setQrBusyTeamId] = useState<string | null>(null);
   const [qrBusyStationId, setQrBusyStationId] = useState<string | null>(null);
+  const [teamQrStatus, setTeamQrStatus] = useState<Record<string, string>>({});
+  const [stationQrStatus, setStationQrStatus] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadQrStatus = async () => {
+      const [teamEntries, stationEntries] = await Promise.all([
+        Promise.all(teams.map(async (team) => {
+          const tokens = await getAdminTeamQrLoginTokens(team.id);
+          return [team.id, tokens.find((token) => token.status === "ACTIVE")?.status ?? tokens[0]?.status ?? "NONE"] as const;
+        })),
+        Promise.all(stationDefinitions.map(async (station) => {
+          const tokens = await getAdminStationQrTokens(station.id);
+          const activeCount = tokens.filter((token) => token.status === "ACTIVE").length;
+          return [station.id, activeCount ? `ACTIVE x${activeCount}` : tokens[0]?.status ?? "NONE"] as const;
+        })),
+      ]);
+      if (!cancelled) {
+        setTeamQrStatus(Object.fromEntries(teamEntries));
+        setStationQrStatus(Object.fromEntries(stationEntries));
+      }
+    };
+    void loadQrStatus().catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [stationDefinitions, teams]);
 
   const handleTrackingModeChange = async (
     station: (typeof stationDefinitions)[number],
@@ -59,193 +81,120 @@ export function SystemConfigPage() {
     message.success("Station tracking mode updated");
   };
 
-  const handleIssueQrLogin = async (
-    team: (typeof teams)[number],
-    rotate: boolean,
-  ) => {
-    setQrBusyTeamId(team.id);
-    try {
-      const token =
-        rotate ?
-          await rotateAdminTeamQrLoginToken(team.id)
-        : await generateAdminTeamQrLoginToken(team.id);
-      modal.info({
-        centered: true,
-        width: 680,
-        title: `QR login for ${team.name}`,
-        content: (
-          <Flex vertical gap={12}>
-            <Typography.Text>
-              This reusable URL is shown only now. Rotate the token when a new
-              QR is required.
-            </Typography.Text>
-            <Input.TextArea
-              value={token.qrLoginUrl ?? token.loginUrl}
-              readOnly
-              autoSize
-            />
-            <Typography.Text className="muted-copy compact-copy">
-              Expires at {new Date(token.expiresAt).toLocaleString("vi-VN")}
-            </Typography.Text>
-          </Flex>
-        ),
-      });
-    } catch (error) {
-      message.error(
-        error instanceof Error ? error.message : "Unable to issue QR login",
-      );
-    } finally {
-      setQrBusyTeamId(null);
-    }
+  const downloadDataUrl = (dataUrl: string, filename: string) => {
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = filename;
+    link.click();
   };
 
-  const handleShowQrStatus = async (team: (typeof teams)[number]) => {
-    setQrBusyTeamId(team.id);
-    try {
-      const tokens = await getAdminTeamQrLoginTokens(team.id);
-      modal.info({
-        centered: true,
-        width: 720,
-        title: `QR login status for ${team.name}`,
-        content: (
-          <List
-            dataSource={tokens.slice(0, 5)}
-            locale={{emptyText: "No QR login tokens generated"}}
-            renderItem={(token) => (
-              <List.Item>
-                <Flex vertical gap={4} className="full-width">
-                  <Flex justify="space-between" align="center">
-                    <Typography.Text>#{token.id}</Typography.Text>
-                    <Tag>{token.status}</Tag>
-                  </Flex>
-                  <Typography.Text className="muted-copy compact-copy">
-                    Expires {new Date(token.expiresAt).toLocaleString("vi-VN")}{" "}
-                    · Uses {token.usageCount}
-                  </Typography.Text>
+  const showOneTimeQrPreview = async (params: {
+    title: string;
+    payload: string;
+    filename: string;
+    context: string;
+  }) => {
+    const dataUrl = await QRCode.toDataURL(params.payload, {width: 320, margin: 2});
+    modal.info({
+      centered: true,
+      width: 520,
+      title: params.title,
+      content: (
+        <Flex vertical gap={12} align="center">
+          <img src={dataUrl} alt={`${params.context} QR`} width={260} height={260} />
+          <Typography.Text>{params.context}</Typography.Text>
+          <Typography.Text type="warning">
+            Save or download this QR now. For security, the token cannot be viewed again.
+          </Typography.Text>
+          <Button type="primary" onClick={() => downloadDataUrl(dataUrl, params.filename)}>
+            Download PNG
+          </Button>
+        </Flex>
+      ),
+      afterClose: () => {
+        URL.revokeObjectURL(dataUrl);
+      },
+    });
+  };
+
+  const handleGenerateTeamQr = async (team: (typeof teams)[number]) => {
+    modal.confirm({
+      centered: true,
+      title: "Generate new Team QR?",
+      content: "The current Team QR login token will be replaced and cannot be viewed again.",
+      okText: "Generate QR",
+      cancelText: "Cancel",
+      onOk: async () => {
+        setQrBusyTeamId(team.id);
+        try {
+          const token = await generateAdminTeamQrLoginToken(team.id);
+          await showOneTimeQrPreview({
+            title: `QR login for ${team.name}`,
+            payload: token.qrLoginUrl ?? token.loginUrl ?? token.rawToken,
+            filename: `team-${team.id}-qr.png`,
+            context: `${team.name} · Team QR login · ${token.status}`,
+          });
+          loadDatabase(await fetchAdminDatabase());
+        } catch (error) {
+          message.error(error instanceof Error ? error.message : "Unable to generate Team QR");
+        } finally {
+          setQrBusyTeamId(null);
+        }
+      },
+    });
+  };
+
+  const handleGenerateStationQr = async (station: (typeof stationDefinitions)[number]) => {
+    modal.confirm({
+      centered: true,
+      title: "Generate new Station QR?",
+      content: "The current Station QR tokens will be replaced and cannot be viewed again.",
+      okText: "Generate QR",
+      cancelText: "Cancel",
+      onOk: async () => {
+        setQrBusyStationId(station.id);
+        try {
+          const result = await generateAdminStationQrTokens(station.id);
+          const previews = await Promise.all(result.qrTokens.map(async (token) => {
+            if (!token.rawToken) {
+              throw new Error("Generated Station QR token is unavailable");
+            }
+            return {
+              token,
+              dataUrl: await QRCode.toDataURL(token.rawToken, {width: 260, margin: 2}),
+            };
+          }));
+          modal.info({
+            centered: true,
+            width: 720,
+            title: `Station QR for ${station.name}`,
+            content: (
+              <Flex vertical gap={12}>
+                <Typography.Text type="warning">
+                  Save or download this QR now. For security, the token cannot be viewed again.
+                </Typography.Text>
+                <Flex gap={16} wrap justify="center">
+                  {previews.map(({token, dataUrl}) => (
+                    <Flex key={token.purpose} vertical gap={8} align="center">
+                      <img src={dataUrl} alt={`${station.name} ${token.purpose} QR`} width={220} height={220} />
+                      <Typography.Text>{token.purpose} · {token.status}</Typography.Text>
+                      <Button onClick={() => downloadDataUrl(dataUrl, `station-${station.id}-${token.purpose.toLowerCase()}-qr.png`)}>
+                        Download PNG
+                      </Button>
+                    </Flex>
+                  ))}
                 </Flex>
-              </List.Item>
-            )}
-          />
-        ),
-      });
-    } catch (error) {
-      message.error(
-        error instanceof Error ?
-          error.message
-        : "Unable to load QR login status",
-      );
-    } finally {
-      setQrBusyTeamId(null);
-    }
-  };
-
-  const handleRevokeActiveQr = async (team: (typeof teams)[number]) => {
-    setQrBusyTeamId(team.id);
-    try {
-      const tokens = await getAdminTeamQrLoginTokens(team.id);
-      const activeToken = tokens.find((token) => token.status === "ACTIVE");
-      if (!activeToken) {
-        message.info("No active QR login token to revoke");
-        return;
-      }
-      await revokeAdminQrLoginToken(activeToken.id);
-      message.success("QR login token revoked");
-    } catch (error) {
-      message.error(
-        error instanceof Error ? error.message : "Unable to revoke QR login",
-      );
-    } finally {
-      setQrBusyTeamId(null);
-    }
-  };
-
-  const handleShowStationQrStatus = async (
-    station: (typeof stationDefinitions)[number],
-  ) => {
-    setQrBusyStationId(station.id);
-    try {
-      const tokens = await getAdminStationQrTokens(station.id);
-      modal.info({
-        centered: true,
-        width: 720,
-        title: `Station QR status for ${station.name}`,
-        content: (
-          <List
-            dataSource={tokens}
-            locale={{emptyText: "No Station QR tokens generated"}}
-            renderItem={(token) => (
-              <List.Item>
-                <Flex vertical gap={4} className="full-width">
-                  <Flex justify="space-between" align="center">
-                    <Typography.Text>{token.purpose}</Typography.Text>
-                    <Tag>{token.status}</Tag>
-                  </Flex>
-                  <Typography.Text className="muted-copy compact-copy">
-                    {token.schemaVersion} · #{token.id}
-                  </Typography.Text>
-                </Flex>
-              </List.Item>
-            )}
-          />
-        ),
-      });
-    } catch (error) {
-      message.error(
-        error instanceof Error ?
-          error.message
-        : "Unable to load Station QR status",
-      );
-    } finally {
-      setQrBusyStationId(null);
-    }
-  };
-
-  const handleRotateStationQr = async (
-    station: (typeof stationDefinitions)[number],
-    purpose: "CHECK_IN" | "CHECK_OUT",
-  ) => {
-    setQrBusyStationId(station.id);
-    try {
-      const token = await rotateAdminStationQrToken(station.id, purpose);
-      modal.info({
-        centered: true,
-        width: 680,
-        title: `${purpose} QR for ${station.name}`,
-        content: (
-          <Flex vertical gap={12}>
-            <Typography.Text>
-              This Station QR token is shown only now. Rotate this purpose to
-              reprint later.
-            </Typography.Text>
-            <Input.TextArea value={token.rawToken} readOnly autoSize />
-          </Flex>
-        ),
-      });
-      loadDatabase(await fetchAdminDatabase());
-    } catch (error) {
-      message.error(
-        error instanceof Error ? error.message : "Unable to rotate Station QR",
-      );
-    } finally {
-      setQrBusyStationId(null);
-    }
-  };
-
-  const handleRevokeStationQr = async (
-    station: (typeof stationDefinitions)[number],
-    purpose: "CHECK_IN" | "CHECK_OUT",
-  ) => {
-    setQrBusyStationId(station.id);
-    try {
-      await revokeAdminStationQrToken(station.id, purpose);
-      message.success(`${purpose} QR revoked`);
-    } catch (error) {
-      message.error(
-        error instanceof Error ? error.message : "Unable to revoke Station QR",
-      );
-    } finally {
-      setQrBusyStationId(null);
-    }
+              </Flex>
+            ),
+          });
+          loadDatabase(await fetchAdminDatabase());
+        } catch (error) {
+          message.error(error instanceof Error ? error.message : "Unable to generate Station QR");
+        } finally {
+          setQrBusyStationId(null);
+        }
+      },
+    });
   };
 
   return (
@@ -331,46 +280,14 @@ export function SystemConfigPage() {
                             }
                           />
                         </Flex>
-                        <Flex gap={8} className="station-actions" wrap>
+                        <Flex gap={8} className="station-actions" wrap align="center">
+                          <Tag>QR {stationQrStatus[station.id] ?? "loading"}</Tag>
                           <Button
-                            icon={<SyncOutlined />}
-                            loading={qrBusyStationId === station.id}
-                            onClick={() =>
-                              void handleRotateStationQr(station, "CHECK_IN")
-                            }>
-                            Rotate IN
-                          </Button>
-                          <Button
-                            icon={<SyncOutlined />}
-                            loading={qrBusyStationId === station.id}
-                            onClick={() =>
-                              void handleRotateStationQr(station, "CHECK_OUT")
-                            }>
-                            Rotate OUT
-                          </Button>
-                          <Button
-                            icon={<StopOutlined />}
-                            loading={qrBusyStationId === station.id}
-                            onClick={() =>
-                              void handleRevokeStationQr(station, "CHECK_IN")
-                            }>
-                            Revoke IN
-                          </Button>
-                          <Button
-                            icon={<StopOutlined />}
-                            loading={qrBusyStationId === station.id}
-                            onClick={() =>
-                              void handleRevokeStationQr(station, "CHECK_OUT")
-                            }>
-                            Revoke OUT
-                          </Button>
-                          <Button
+                            type="primary"
                             icon={<QrcodeOutlined />}
                             loading={qrBusyStationId === station.id}
-                            onClick={() =>
-                              void handleShowStationQrStatus(station)
-                            }>
-                            QR status
+                            onClick={() => void handleGenerateStationQr(station)}>
+                            Generate QR
                           </Button>
                         </Flex>
                       </div>
@@ -457,32 +374,14 @@ export function SystemConfigPage() {
                             {team.totalTimeMinutes} min
                           </Typography.Text>
                         </Flex>
-                        <Flex gap={8} className="station-actions" wrap>
+                        <Flex gap={8} className="station-actions" wrap align="center">
+                          <Tag>QR {teamQrStatus[team.id] ?? "loading"}</Tag>
                           <Button
-                            icon={<SyncOutlined />}
-                            loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleIssueQrLogin(team, true)}>
-                            Rotate QR
-                          </Button>
-                          <Button
-                            icon={<StopOutlined />}
-                            loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleRevokeActiveQr(team)}>
-                            Revoke QR
-                          </Button>
-                          <Button
+                            type="primary"
                             icon={<QrcodeOutlined />}
                             loading={qrBusyTeamId === team.id}
-                            onClick={() =>
-                              void handleIssueQrLogin(team, false)
-                            }>
+                            onClick={() => void handleGenerateTeamQr(team)}>
                             Generate QR
-                          </Button>
-                          <Button
-                            icon={<QrcodeOutlined />}
-                            loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleShowQrStatus(team)}>
-                            QR status
                           </Button>
                         </Flex>
                       </div>

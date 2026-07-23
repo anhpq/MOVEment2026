@@ -27,6 +27,7 @@ const mockPrisma = {
   station: {
     count: jest.fn(),
     create: jest.fn(),
+    update: jest.fn(),
     findUniqueOrThrow: jest.fn(),
   },
   team: {
@@ -39,12 +40,15 @@ const mockPrisma = {
   qrLoginToken: {
     create: jest.fn(),
     findFirst: jest.fn(),
+    findUnique: jest.fn(),
     update: jest.fn(),
+    updateMany: jest.fn(),
   },
   qrToken: {
     create: jest.fn(),
     findMany: jest.fn(),
     findFirst: jest.fn(),
+    findUnique: jest.fn(),
     update: jest.fn(),
     updateMany: jest.fn(),
   },
@@ -95,6 +99,8 @@ describe('AdminService Team QR login lifecycle', () => {
     mockPrisma.team.findMany.mockResolvedValue([{id: 7}, {id: 8}]);
     mockPrisma.team.create.mockResolvedValue(team);
     mockPrisma.team.findUniqueOrThrow.mockResolvedValue(team);
+    mockPrisma.qrLoginToken.findUnique.mockResolvedValue(null);
+    mockPrisma.qrLoginToken.updateMany.mockResolvedValue({count: 1});
     mockPrisma.qrLoginToken.create.mockImplementation(({data}) =>
       Promise.resolve({
         id: 12,
@@ -103,6 +109,7 @@ describe('AdminService Team QR login lifecycle', () => {
         ...data,
       }),
     );
+    mockPrisma.qrToken.findUnique.mockResolvedValue(null);
     mockActivityLog.log.mockResolvedValue(undefined);
     jest.spyOn(bcrypt, 'hash').mockResolvedValue('password-hash' as never);
 
@@ -145,31 +152,28 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1);
   });
 
-  it('does not rotate a valid token through the generate action', async () => {
-    mockPrisma.qrLoginToken.findFirst.mockResolvedValue({
-      id: 11,
-      revokedAt: null,
-      expiresAt: new Date(Date.now() + 60_000),
-    });
+  it('replaces an active token through the generate action and returns one-time raw token', async () => {
+    const result = await service.generateTeamQrLoginToken(1, 7, {});
 
-    await expect(
-      service.generateTeamQrLoginToken(1, 7, {}),
-    ).rejects.toThrow(BadRequestException);
-    expect(mockPrisma.qrLoginToken.create).not.toHaveBeenCalled();
+    expect(mockPrisma.qrLoginToken.updateMany).toHaveBeenCalledWith({
+      where: { teamId: 7, isActive: true },
+      data: { isActive: false, revokedAt: expect.any(Date) },
+    });
+    expect(mockPrisma.qrLoginToken.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        teamId: 7,
+        tokenHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+      }),
+    });
+    expect(result.rawToken).toEqual(expect.any(String));
+    expect(result.qrLoginUrl).toMatch(/^https:\/\/movement\.example\/qr-login\?token=/);
   });
 
   it('rotates by revoking the active token before creating a replacement', async () => {
-    mockPrisma.qrLoginToken.findFirst.mockResolvedValue({
-      id: 11,
-      revokedAt: null,
-      expiresAt: new Date(Date.now() + 60_000),
-    });
-    mockPrisma.qrLoginToken.update.mockResolvedValue({});
-
     await service.generateTeamQrLoginToken(1, 7, {}, true);
 
-    expect(mockPrisma.qrLoginToken.update).toHaveBeenCalledWith({
-      where: {id: 11},
+    expect(mockPrisma.qrLoginToken.updateMany).toHaveBeenCalledWith({
+      where: {teamId: 7, isActive: true},
       data: {isActive: false, revokedAt: expect.any(Date)},
     });
     expect(mockActivityLog.log).toHaveBeenCalledWith(
@@ -415,6 +419,69 @@ describe('AdminService Team QR login lifecycle', () => {
       where: {id: 301},
       data: {isActive: false, revokedAt: expect.any(Date)},
     });
+  });
+
+  it('updates a Team QR token only when a new raw token is provided', async () => {
+    mockPrisma.team.update.mockResolvedValue(team);
+
+    const unchanged = await service.updateTeam(1, 7, {name: 'Team Seven', qrToken: '   '});
+    expect(unchanged).not.toHaveProperty('qrLogin');
+    expect(mockPrisma.qrLoginToken.create).not.toHaveBeenCalled();
+
+    const changed = await service.updateTeam(1, 7, {
+      qrToken: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-',
+    });
+    expect(changed.qrLogin?.rawToken).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-');
+    expect(mockPrisma.qrLoginToken.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({tokenHash: expect.stringMatching(/^[a-f0-9]{64}$/)}),
+    });
+  });
+
+  it('rejects invalid and duplicate Team QR tokens', async () => {
+    mockPrisma.team.update.mockResolvedValue(team);
+    await expect(service.updateTeam(1, 7, {qrToken: 'bad token'})).rejects.toThrow(BadRequestException);
+
+    mockPrisma.qrLoginToken.findUnique.mockResolvedValue({id: 44, teamId: 8});
+    await expect(
+      service.updateTeam(1, 7, {qrToken: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'}),
+    ).rejects.toThrow(BadRequestException);
+  });
+
+  it('updates Station QR tokens only when new raw tokens are provided', async () => {
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
+
+    const unchanged = await service.updateStation(1, 'ST999', {checkInQrToken: ' '});
+    expect(unchanged).not.toHaveProperty('qrTokens');
+
+    const changed = await service.updateStation(1, 'ST999', {
+      checkInQrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    });
+    expect(changed.qrTokens?.[0].rawToken).toBe('MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    expect(mockPrisma.qrToken.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        tokenHash: expect.any(String),
+        tokenFingerprint: expect.stringMatching(/^[a-f0-9]{64}$/),
+      }),
+    });
+  });
+
+  it('rejects invalid and duplicate Station QR tokens', async () => {
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
+    await expect(service.updateStation(1, 'ST999', {checkInQrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXYZ'})).rejects.toThrow(BadRequestException);
+
+    mockPrisma.qrToken.findUnique.mockResolvedValue({id: 55, stationId: 'ST001', purpose: QrPurpose.CHECK_IN});
+    await expect(service.updateStation(1, 'ST999', {checkInQrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXYZ'})).rejects.toThrow(BadRequestException);
+  });
+
+  it('generates one-time Station QR tokens without returning hashes', async () => {
+    mockPrisma.qrToken.create.mockImplementation(({data}) => Promise.resolve({id: data.purpose === QrPurpose.CHECK_IN ? 1 : 2, createdAt: new Date(), expiresAt: null, ...data}));
+
+    const result = await service.generateStationQrTokens(1, 'ST999');
+
+    expect(result.qrTokens).toHaveLength(2);
+    expect(result.qrTokens[0]).toHaveProperty('rawToken');
+    expect(result.qrTokens[0]).not.toHaveProperty('tokenHash');
+    expect(result.qrTokens[0]).not.toHaveProperty('tokenFingerprint');
   });
 
   it.each([

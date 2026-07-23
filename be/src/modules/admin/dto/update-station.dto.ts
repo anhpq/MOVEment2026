@@ -32,4 +32,14 @@ export class UpdateStationDto {
   @IsUrl()
   @MaxLength(500)
   mediaUrl?: string | null;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  checkInQrToken?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  checkOutQrToken?: string;
 }

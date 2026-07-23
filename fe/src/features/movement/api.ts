@@ -208,13 +208,15 @@ export type AdminStationUpdateInput = {
   mapX?: number
   mapY?: number
   mediaUrl?: string | null
+  checkInQrToken?: string
+  checkOutQrToken?: string
 }
 
 export async function updateAdminStation(
   stationId: string,
   values: AdminStationUpdateInput,
-): Promise<PlayerStationResponse> {
-  return apiPatch<PlayerStationResponse>(`/api/admin/stations/${stationId}`, values)
+): Promise<PlayerStationResponse & {qrTokens?: AdminStationQrTokenResponse[]}> {
+  return apiPatch<PlayerStationResponse & {qrTokens?: AdminStationQrTokenResponse[]}>(`/api/admin/stations/${stationId}`, values)
 }
 
 export type AdminTeamResponse = {
@@ -261,9 +263,14 @@ export const createAdminTeam = (values: {
   name: string; username: string; password: string; captainName?: string
 }) => apiPost<AdminTeamResponse>('/api/admin/teams', values)
 
+export type AdminOneTimeTeamQrResponse = AdminQrLoginTokenResponse & {
+  rawToken: string
+  generatedAt: string
+}
+
 export const updateAdminTeam = (teamId: string, values: {
-  name?: string; username?: string; password?: string; captainName?: string
-}) => apiPatch<AdminTeamResponse>(`/api/admin/teams/${teamId}`, values)
+  name?: string; username?: string; password?: string; captainName?: string; qrToken?: string
+}) => apiPatch<AdminTeamResponse & {qrLogin?: AdminOneTimeTeamQrResponse}>(`/api/admin/teams/${teamId}`, values)
 
 export const deleteAdminTeam = (teamId: string) =>
   apiDelete<{success: boolean}>(`/api/admin/teams/${teamId}`)
@@ -290,8 +297,8 @@ export const generateAdminTeamQrLoginToken = (
   teamId: string,
   values: {expiresInMinutes?: number} = {},
 ) =>
-  apiPost<AdminQrLoginTokenResponse>(
-    `/api/admin/teams/${teamId}/qr-login-tokens`,
+  apiPost<AdminOneTimeTeamQrResponse>(
+    `/api/admin/teams/${teamId}/generate-qr`,
     values,
   )
 
@@ -351,6 +358,7 @@ export type AdminStationQrTokenResponse = {
   stationId: string
   purpose: 'CHECK_IN' | 'CHECK_OUT'
   rawToken?: string
+  generatedAt?: string
   schemaVersion: string
   isActive?: boolean
   expiresAt?: string | null
@@ -362,6 +370,12 @@ export type AdminStationQrTokenResponse = {
 
 export const getAdminStationQrTokens = (stationId: string) =>
   apiGet<AdminStationQrTokenResponse[]>(`/api/admin/stations/${stationId}/qr-tokens`)
+
+export const generateAdminStationQrTokens = (stationId: string) =>
+  apiPost<{stationId: string; qrTokens: AdminStationQrTokenResponse[]}>(
+    `/api/admin/stations/${stationId}/generate-qr`,
+    {},
+  )
 
 export const rotateAdminStationQrToken = (
   stationId: string,

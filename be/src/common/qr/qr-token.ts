@@ -62,3 +62,12 @@ export function createSecureStationQrToken(purpose: QrPurpose) {
 export function isOfficialStationQrToken(rawToken: string) {
   return /^MV26-SQ1-[IO]-[A-Z2-7]{26}$/.test(normalizeQrToken(rawToken));
 }
+
+export function isOfficialStationQrTokenForPurpose(rawToken: string, purpose: QrPurpose) {
+  const purposeCode = purpose === QrPurpose.CHECK_IN ? 'I' : 'O';
+  return new RegExp(`^MV26-SQ1-${purposeCode}-[A-Z2-7]{26}$`).test(normalizeQrToken(rawToken));
+}
+
+export function isOfficialQrLoginToken(rawToken: string) {
+  return /^[A-Za-z0-9_-]{32,128}$/.test(normalizeQrToken(rawToken));
+}

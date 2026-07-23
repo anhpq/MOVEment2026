@@ -77,6 +77,19 @@ export class AdminController {
     return this.adminService.listTeamQrLoginTokens(teamId);
   }
 
+  @Post('teams/:teamId/generate-qr')
+  generateTeamQr(
+    @CurrentAuth() auth: AuthContext,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Body() dto: GenerateQrLoginTokenDto,
+  ) {
+    return this.adminService.generateTeamQrLoginToken(
+      this.requireAdminId(auth),
+      teamId,
+      dto,
+    );
+  }
+
   @Post('teams/:teamId/qr-login-tokens')
   generateTeamQrLoginToken(
     @CurrentAuth() auth: AuthContext,
@@ -170,6 +183,17 @@ export class AdminController {
   @Get('stations/:stationId/qr-tokens')
   stationQrTokens(@Param('stationId') stationId: string) {
     return this.adminService.listStationQrTokens(stationId);
+  }
+
+  @Post('stations/:stationId/generate-qr')
+  generateStationQr(
+    @CurrentAuth() auth: AuthContext,
+    @Param('stationId') stationId: string,
+  ) {
+    return this.adminService.generateStationQrTokens(
+      this.requireAdminId(auth),
+      stationId,
+    );
   }
 
   @Post('stations/:stationId/qr-tokens/:purpose/rotate')

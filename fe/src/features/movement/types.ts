@@ -71,6 +71,8 @@ export type StationFormValues = {
   gameType?: string;
   maxPoints?: number;
   youtubeUrl?: string | null;
+  checkInQrToken?: string;
+  checkOutQrToken?: string;
 };
 
 export type TeamFormValues = {
@@ -82,6 +84,7 @@ export type TeamFormValues = {
   finish: number;
   totalTimeMinutes: number;
   captainName?: string;
+  qrToken?: string;
 };
 
 export type SqlUser = {
