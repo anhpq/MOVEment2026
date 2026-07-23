@@ -22,7 +22,6 @@ import {
   deleteAdminStation,
   deleteAdminTeam,
   generateAdminStationQrTokens,
-  generateAdminTeamQrLoginToken,
   getAdminStationQrTokens,
   getAdminTeamQrLoginTokens,
   updateAdminStation,
@@ -117,31 +116,27 @@ export function SystemConfigPage() {
     });
   };
 
-  const handleGenerateTeamQr = async (team: (typeof teams)[number]) => {
-    modal.confirm({
-      centered: true,
-      title: "Generate new Team QR?",
-      content: "The current Team QR login token will be replaced and cannot be viewed again.",
-      okText: "Generate QR",
-      cancelText: "Cancel",
-      onOk: async () => {
-        setQrBusyTeamId(team.id);
-        try {
-          const token = await generateAdminTeamQrLoginToken(team.id);
-          await showOneTimeQrPreview({
-            title: `QR login for ${team.name}`,
-            payload: token.qrLoginUrl ?? token.loginUrl ?? token.rawToken,
-            filename: `team-${team.id}-qr.png`,
-            context: `${team.name} · Team QR login · ${token.status}`,
-          });
-          loadDatabase(await fetchAdminDatabase());
-        } catch (error) {
-          message.error(error instanceof Error ? error.message : "Unable to generate Team QR");
-        } finally {
-          setQrBusyTeamId(null);
-        }
-      },
-    });
+  const handleOpenTeamQr = async (team: (typeof teams)[number]) => {
+    setQrBusyTeamId(team.id);
+    try {
+      const tokens = await getAdminTeamQrLoginTokens(team.id);
+      const token = tokens.find((item) => item.status === "ACTIVE") ?? tokens[0];
+      const payload = token?.qrLoginUrl ?? token?.loginUrl;
+      if (!payload) {
+        message.warning("Existing Team QR raw token is not available for display. Rotate or enter a replacement token only when a new QR is required.");
+        return;
+      }
+      await showOneTimeQrPreview({
+        title: `QR login for ${team.name}`,
+        payload,
+        filename: `team-${team.id}-qr.png`,
+        context: `${team.name} · Team QR login · ${token.status}`,
+      });
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Unable to open Team QR");
+    } finally {
+      setQrBusyTeamId(null);
+    }
   };
 
   const handleGenerateStationQr = async (station: (typeof stationDefinitions)[number]) => {
@@ -380,8 +375,8 @@ export function SystemConfigPage() {
                             type="primary"
                             icon={<QrcodeOutlined />}
                             loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleGenerateTeamQr(team)}>
-                            Generate QR
+                            onClick={() => void handleOpenTeamQr(team)}>
+                            Show QR
                           </Button>
                         </Flex>
                       </div>

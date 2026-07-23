@@ -1,10 +1,10 @@
 import QRCode from "qrcode";
 import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Typography} from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {TeamFormValues} from "../types";
-import {createAdminTeam, updateAdminTeam} from "../api";
+import {createAdminTeam, getAdminTeamQrLoginTokens, updateAdminTeam} from "../api";
 import {fetchAdminDatabase} from "../adminData";
 
 export function TeamEditorPage() {
@@ -15,6 +15,7 @@ export function TeamEditorPage() {
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [form] = Form.useForm<TeamFormValues>();
   const [isOpen, setIsOpen] = useState(true);
+  const initialQrTokenRef = useRef("");
 
   const team = teams.find((item) => item.id === params.teamId);
   const isEditing = Boolean(team);
@@ -46,9 +47,22 @@ export function TeamEditorPage() {
   };
 
   useEffect(() => {
+    let cancelled = false;
     if (team) {
+      initialQrTokenRef.current = "";
       form.setFieldsValue({...team, qrToken: ""});
-      return;
+      void getAdminTeamQrLoginTokens(team.id).then((tokens) => {
+        if (cancelled) {
+          return;
+        }
+        const activeToken = tokens.find((token) => token.status === "ACTIVE");
+        const qrToken = activeToken?.rawToken ?? "";
+        initialQrTokenRef.current = qrToken;
+        form.setFieldsValue({qrToken});
+      }).catch(() => undefined);
+      return () => {
+        cancelled = true;
+      };
     }
 
     form.setFieldsValue({
@@ -61,6 +75,9 @@ export function TeamEditorPage() {
       totalTimeMinutes: 0,
       qrToken: "",
     });
+    return () => {
+      cancelled = true;
+    };
   }, [form, team]);
 
   const handleClose = () => {
@@ -87,12 +104,13 @@ export function TeamEditorPage() {
             onOk: async () => {
               try {
                 if (team) {
+                  const qrToken = values.qrToken?.trim() ?? "";
                   const updated = await updateAdminTeam(team.id, {
                     name: values.name,
                     username: values.username,
                     captainName: values.captainName,
                     password: values.password || undefined,
-                    ...(values.qrToken?.trim() ? {qrToken: values.qrToken} : {}),
+                    ...(qrToken && qrToken !== initialQrTokenRef.current ? {qrToken} : {}),
                   });
                   const qrLogin = updated.qrLogin;
                   if (qrLogin) {
