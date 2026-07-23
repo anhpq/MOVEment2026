@@ -8,40 +8,23 @@ export function RunningPersonIcon({className}: RunningPersonIconProps) {
       className={className}
       viewBox="0 0 32 32"
       role="img"
-      aria-label="Running person"
+      aria-label="Running shoe"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
-      <circle cx="19" cy="6" r="3" fill="currentColor" />
       <path
-        d="M17.7 10.3 13.2 15l4.1 3.1 3.4 7.2"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M6 19.5c4.3.5 7.6-.6 10-3.2l2.7-3 3.1 6.2 4.6 1.2c1.2.3 2.1 1.4 2.1 2.7 0 1.5-1.2 2.6-2.7 2.6H7.4C5.5 26 4 24.5 4 22.6v-1.1c0-1.2.9-2.1 2-2Z"
+        fill="currentColor"
       />
       <path
-        d="M18.2 11.2 23.5 14l3.1-1.8"
+        d="M12.5 17.9 9.4 12.5 13 10l5.7 3.4M19 19.4l-6.4 1.1M22.4 20.2l-5.8 1"
         stroke="currentColor"
-        strokeWidth="3"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        opacity="0.55"
       />
       <path
-        d="M13.2 15 8.8 14.2 6 17"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.7 18.4 11.3 22.2 6.8 25.7"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5 10h6M3.5 15h4.5"
+        d="M4.5 16.5h5M3.5 13h3.8"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
