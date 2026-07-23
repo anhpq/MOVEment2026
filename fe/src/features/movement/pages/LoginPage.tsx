@@ -1,6 +1,7 @@
 import {
   CameraOutlined,
   LockOutlined,
+  ManOutlined,
   QrcodeOutlined,
   StopOutlined,
   UserOutlined,
@@ -401,9 +402,14 @@ export function LoginPage() {
     <div className="login-screen">
       <Card className="surface-card login-card">
         <Flex vertical gap={18} className="full-width">
-          <Typography.Title level={2} className="login-title">
-            MOVEment 2026
-          </Typography.Title>
+          <div className="login-header">
+            <div className="login-runner-mark" aria-hidden="true">
+              <ManOutlined />
+            </div>
+            <Typography.Title level={2} className="login-title">
+              MOVEment 2026
+            </Typography.Title>
+          </div>
 
           {!isScanningQr && (
             <Form form={form} layout="vertical" onFinish={submitLogin}>
