@@ -473,12 +473,38 @@ describe('AdminService Team QR login lifecycle', () => {
     await expect(service.updateStation(1, 'ST999', {checkInQrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXYZ'})).rejects.toThrow(BadRequestException);
   });
 
+  it('lists Station QR raw tokens for Admin display when stored', async () => {
+    mockPrisma.qrToken.findMany.mockResolvedValue([
+      {
+        id: 10,
+        stationId: 'ST999',
+        purpose: QrPurpose.CHECK_IN,
+        schemaVersion: 'SQ1',
+        rawToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2',
+        isActive: true,
+        expiresAt: null,
+        revokedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    const result = await service.listStationQrTokens('ST999');
+
+    expect(result[0].rawToken).toBe('MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2');
+    expect(result[0]).not.toHaveProperty('tokenHash');
+    expect(result[0]).not.toHaveProperty('tokenFingerprint');
+  });
+
   it('generates one-time Station QR tokens without returning hashes', async () => {
     mockPrisma.qrToken.create.mockImplementation(({data}) => Promise.resolve({id: data.purpose === QrPurpose.CHECK_IN ? 1 : 2, createdAt: new Date(), expiresAt: null, ...data}));
 
     const result = await service.generateStationQrTokens(1, 'ST999');
 
     expect(result.qrTokens).toHaveLength(2);
+    expect(mockPrisma.qrToken.create).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.objectContaining({rawToken: expect.any(String)}),
+    }));
     expect(result.qrTokens[0]).toHaveProperty('rawToken');
     expect(result.qrTokens[0]).not.toHaveProperty('tokenHash');
     expect(result.qrTokens[0]).not.toHaveProperty('tokenFingerprint');

@@ -360,7 +360,7 @@ async function ensureStationQrToken(
     },
   });
 
-  if (activeSq1Token) {
+  if (activeSq1Token?.rawToken) {
     return null;
   }
 
@@ -377,6 +377,7 @@ async function ensureStationQrToken(
         schemaVersion: 'SQ1',
         tokenHash: await bcrypt.hash(rawToken, 10),
         tokenFingerprint: createQrTokenFingerprint(rawToken),
+        rawToken,
       },
     });
   });

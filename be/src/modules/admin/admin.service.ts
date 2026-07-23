@@ -500,6 +500,7 @@ export class AdminService {
       stationId: token.stationId,
       purpose: token.purpose,
       schemaVersion: token.schemaVersion,
+      rawToken: token.rawToken,
       isActive: token.isActive,
       expiresAt: token.expiresAt,
       revokedAt: token.revokedAt,
@@ -1260,6 +1261,7 @@ export class AdminService {
         schemaVersion: 'SQ1',
         tokenHash: await bcrypt.hash(normalizedToken, 10),
         tokenFingerprint,
+        rawToken: normalizedToken,
       },
     });
     return {

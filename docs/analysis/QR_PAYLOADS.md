@@ -414,6 +414,7 @@ station_id
 purpose
 token_fingerprint
 token_hash
+raw_token
 is_active
 created_at
 updated_at
@@ -443,19 +444,15 @@ Fingerprint không phải raw token.
 
 Secure hash dùng để secondary verification khi architecture yêu cầu.
 
-Không lưu raw token plaintext chỉ để lookup.
+Không dùng raw token plaintext làm lookup chính.
 
 ## 7.5 Raw Token Retrieval
 
 Hash không thể được dùng để phục hồi raw token.
 
-Nếu cần reprint cùng QR, implementation phải dùng một trong các strategy:
+Station QR hiện dùng strategy lưu `raw_token` trong protected backend database cho token mới, seed repair hoặc rotate để Admin có thể xem và in lại cùng Check-in/Check-out QR dạng string.
 
-- encrypted raw token;
-- protected QR artifact;
-- rotate token mới để reprint.
-
-Strategy cụ thể phải được ghi rõ trong Feature implementation.
+Token cũ đã được tạo trước khi có `raw_token` không thể tự phục hồi từ hash; cần seed repair, rotate hoặc Admin nhập replacement token một lần.
 
 ---
 

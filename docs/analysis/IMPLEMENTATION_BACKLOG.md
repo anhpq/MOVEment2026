@@ -99,7 +99,7 @@
 - [x] Player Check-in/Check-out resolves Station and purpose from the database token record after fingerprint/hash/lifecycle validation.
 - [x] Admin can inspect, rotate, and revoke Station `CHECK_IN` and `CHECK_OUT` independently.
 - [x] Local/test seed repairs missing or Legacy Station QR tokens by purpose and preserves existing active SQ1 tokens across repeated runs.
-- [x] Reprint strategy is rotate-to-reprint; raw Station QR tokens are display-once and not stored in tracked files.
+- [x] Reprint strategy stores raw Station QR tokens in the protected backend database for new, repaired, replaced, or rotated SQ1 tokens so Admin can view and print Check-in/Check-out QR string values; tracked files still must not contain raw tokens.
 - [x] Legacy predictable Station QR generation is removed from new creation, seed repair, and smoke script paths; active Legacy DB rows remain compatibility-only.
 - [ ] Production migration, production QR reissue, and physical QR scan verification remain open.
 - [ ] Legacy Station QR compatibility window and removal date remain open.
