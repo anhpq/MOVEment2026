@@ -1,3 +1,17 @@
+## 2026-07-24 Team QR raw token display
+
+- Changed Team QR Login storage so new, seed-repaired, replaced, and rotated QR Login records store `raw_token` in the backend database while preserving fingerprint/hash validation for Team QR login.
+- Admin Team QR listing now returns `rawToken`, `qrLoginUrl`, and `loginUrl` when available so the UI can display/download existing Team QR Login without generating or rotating tokens.
+- Added migration `000010_team_qr_raw_token`; local migration deploy and seed repair update active Team QR rows with raw token values. Existing pre-migration tokens without raw values cannot be recovered from hash and are repaired by seed/rotation/replacement.
+- Verification passed: Prisma Client generation, local migration deploy, seed, `db:verify`, active Team QR raw-token count check, backend admin service tests, backend lint/build, frontend lint/build, and `git diff --check`. Production migration, deploy, and physical QR scan were not performed.
+
+## 2026-07-23 Station QR raw token display
+
+- Changed Station QR storage so new, seed-repaired, replaced, and rotated SQ1 Station QR records store `raw_token` in the backend database while preserving hash/fingerprint validation for Player Check-in/Check-out.
+- Admin Station QR listing now returns `rawToken` when available so the UI can display and download existing Check-in/Check-out QR strings without generating or rotating tokens.
+- Added migration `000009_station_qr_raw_token`; local migration deploy and seed repaired active SQ1 Station QR rows with raw token values. Existing pre-migration tokens without raw values cannot be recovered from hash and are repaired by seed/rotation/replacement.
+- Verification passed: Prisma Client generation, local migration deploy, seed, `db:verify`, active SQ1 raw-token count check, backend admin service tests, backend lint/build, frontend lint/build, and `git diff --check`. Production migration, deploy, and physical QR scan were not performed.
+
 ## 2026-07-23 iOS QR camera lifecycle cleanup
 
 - Fixed the frontend QR camera lifecycle for the Login QR scanner and shared Station QR scanner without changing backend APIs, QR token formats, authentication, scoring, or Station validation behavior.

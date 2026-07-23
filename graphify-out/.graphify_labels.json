@@ -158,15 +158,7 @@
   "156": ".getPublicConfig",
   "157": "LeaderboardController",
   "158": ".generateTeamQrLoginToken",
-  "159": "migration.sql",
-  "160": "migration.sql",
-  "161": "migration.sql",
-  "162": "migration.sql",
+  "159": "vite-env.d.ts",
   "163": "MOVEment 2026 - Automatic URL QR Login",
-  "164": "CODEX QR AUTO LOGIN AND SEED TOKENS",
-  "165": "migration.sql",
-  "166": "migration.sql",
-  "167": "sass",
-  "168": "@types/react-dom",
-  "169": "vite-env.d.ts"
+  "164": "CODEX QR AUTO LOGIN AND SEED TOKENS"
 }

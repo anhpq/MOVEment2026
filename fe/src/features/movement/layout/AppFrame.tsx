@@ -2,7 +2,6 @@ import {
   DashboardOutlined,
   EnvironmentOutlined,
   LogoutOutlined,
-  ManOutlined,
   QrcodeOutlined,
   RubyOutlined,
   SettingOutlined,
@@ -13,6 +12,7 @@ import {Button, Flex, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {logout as logoutApi} from "../api";
+import {RunningPersonIcon} from "../components/RunningPersonIcon";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
 import "./AppFrame.scss";
@@ -71,7 +71,7 @@ export function AppFrame({children}: AppFrameProps) {
           <div className="header-spacer" />
           <div className="app-brand" aria-label="Application branding">
             <span className="app-runner-mark" aria-hidden="true">
-              <ManOutlined />
+              <RunningPersonIcon />
             </span>
             <span>MOVEment 2026</span>
           </div>

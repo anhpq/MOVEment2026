@@ -232,7 +232,7 @@ async function main() {
           },
         });
 
-        if (!activeQrLoginToken) {
+        if (!activeQrLoginToken?.rawToken) {
           const rawToken = createSecureQrLoginToken();
           const expiresAt = new Date(
             Date.now() + safeQrLoginTokenTtlMinutes * 60_000,
@@ -246,6 +246,7 @@ async function main() {
               data: {
                 teamId: team.id,
                 tokenHash: createQrTokenFingerprint(rawToken),
+                rawToken,
                 expiresAt,
               },
             });
@@ -360,7 +361,7 @@ async function ensureStationQrToken(
     },
   });
 
-  if (activeSq1Token) {
+  if (activeSq1Token?.rawToken) {
     return null;
   }
 
@@ -377,6 +378,7 @@ async function ensureStationQrToken(
         schemaVersion: 'SQ1',
         tokenHash: await bcrypt.hash(rawToken, 10),
         tokenFingerprint: createQrTokenFingerprint(rawToken),
+        rawToken,
       },
     });
   });
