@@ -60,8 +60,8 @@
   position: relative;
   display: inline-grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 11px;
   background: rgba(255, 122, 89, 0.12);
   color: #ff7a59;
@@ -69,30 +69,9 @@
   box-shadow: inset 0 0 0 1px rgba(255, 122, 89, 0.16);
 }
 
-.app-runner-mark::before,
-.app-runner-mark::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  width: 7px;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(255, 122, 89, 0.55);
-}
-
-.app-runner-mark::before {
-  top: 10px;
-}
-
-.app-runner-mark::after {
-  top: 17px;
-  width: 10px;
-}
-
 .app-runner-mark svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  transform: translateX(2px);
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .header-spacer {
@@ -254,8 +233,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   border-radius: 16px;
   background: rgba(255, 122, 89, 0.12);
   color: #ff7a59;
@@ -263,30 +242,9 @@
   box-shadow: inset 0 0 0 1px rgba(255, 122, 89, 0.16);
 }
 
-.login-runner-mark::before,
-.login-runner-mark::after {
-  content: "";
-  position: absolute;
-  left: 8px;
-  width: 10px;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(255, 122, 89, 0.55);
-}
-
-.login-runner-mark::before {
-  top: 16px;
-}
-
-.login-runner-mark::after {
-  top: 25px;
-  width: 14px;
-}
-
 .login-runner-mark svg {
-  width: 1.8rem;
-  height: 1.8rem;
-  transform: translateX(3px);
+  width: 2.15rem;
+  height: 2.15rem;
 }
 
 .login-title {
