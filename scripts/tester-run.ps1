@@ -3,6 +3,7 @@ param(
   [switch]$SkipSeed,
   [switch]$AllowRemoteDatabase,
   [switch]$KeepOpen,
+  [switch]$Smoke,
   [int]$ApiPort = 3000,
   [int]$FrontendPort = 4173
 )
@@ -163,8 +164,10 @@ function Stop-RunnerJobs {
 }
 
 trap {
+  $errorMessage = if ($_.Exception.Message) { $_.Exception.Message } else { $_ | Out-String }
   Stop-RunnerJobs
-  throw
+  Write-Error $errorMessage
+  exit 1
 }
 
 Step "Preparing local env"
@@ -177,6 +180,8 @@ if (!(Test-Path -LiteralPath $BackendEnv)) {
 
 $DatabaseUrl = Read-EnvValue $BackendEnv "DATABASE_URL"
 Ensure-LocalDatabase $DatabaseUrl
+Assert-PortAvailable $ApiPort "Backend API"
+Assert-PortAvailable $FrontendPort "Frontend"
 
 if (!$SkipInstall) {
   Step "Installing dependencies when needed"
@@ -192,9 +197,6 @@ if (!$SkipSeed) {
 
 Invoke-Checked "Backend build" $BackendDir "npm.cmd" @("run", "build")
 Invoke-Checked "Frontend build" $FrontendDir "npm.cmd" @("run", "build") @{VITE_API_BASE_URL = ""}
-
-Assert-PortAvailable $ApiPort "Backend API"
-Assert-PortAvailable $FrontendPort "Frontend"
 
 Step "Starting test servers"
 $ApiLog = Join-Path $LogDir "backend.log"
@@ -241,7 +243,7 @@ Write-Host "Logs:"
 Write-Host "  $ApiLog"
 Write-Host "  $FrontendLog"
 Write-Host ""
-if (!$KeepOpen) {
+if ($Smoke) {
   Write-Host "Tester smoke completed; stopping test servers." -ForegroundColor Green
   Stop-RunnerJobs
   exit 0

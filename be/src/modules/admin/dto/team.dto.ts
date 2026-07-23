@@ -20,9 +20,11 @@ export class CreateTeamDto {
   @IsString()
   @MaxLength(120)
   captainName?: string;
+
 }
 
 export class UpdateTeamDto {
+
   @IsOptional()
   @IsString()
   @MinLength(1)
@@ -45,4 +47,9 @@ export class UpdateTeamDto {
   @IsString()
   @MaxLength(120)
   captainName?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  qrToken?: string;
 }

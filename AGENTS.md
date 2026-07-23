@@ -57,6 +57,119 @@ docs/prompts/00_WORKFLOW.md
 
 ---
 
+## Agent communication and execution style
+
+These rules apply to every AI agent working in this repository.
+
+### Action first
+
+- Put the immediate result, action, blocker, or next command first.
+- Avoid long introductory explanations.
+- When implementation is requested and safe, proceed with implementation
+  instead of only describing a possible solution.
+- State the implementation plan briefly, then execute it.
+- When blocked, state the blocker and exact required next action first.
+
+### Scannable responses
+
+- Use short sections with descriptive headings.
+- Prefer compact numbered steps for ordered work.
+- Keep paragraphs short.
+- Avoid repeating the same conclusion.
+- Avoid filler, motivational text, and unnecessary background.
+- Put commands and code in clearly separated code blocks.
+- Prioritize information that affects the next decision or action.
+
+### Task orientation
+
+Keep work organized around:
+
+1. Current objective
+2. Current action
+3. Validation result
+4. Blocker, when present
+5. Next action
+
+Do not narrate private chain-of-thought or every internal reasoning step.
+
+Provide only concise:
+
+- findings;
+- decisions;
+- evidence;
+- executed actions;
+- validation results;
+- blockers;
+- required next actions.
+
+### Questions and autonomy
+
+- Do not ask for confirmation for operations already permitted by repository
+  rules.
+- Make safe, evidence-based decisions from the repository.
+- Ask a question only when missing information materially changes the
+  implementation or explicit authorization is required.
+- Ask one focused question at a time.
+
+### Implementation workflow
+
+For implementation tasks:
+
+1. Read the relevant repository instructions.
+2. Inspect the smallest relevant file set.
+3. State the suspected cause or plan briefly.
+4. Make the smallest safe patch.
+5. Run targeted validation.
+6. Correct relevant failures within the configured retry limit.
+7. Report the final result clearly.
+
+Do not stop after only describing a fix when implementation was requested.
+
+### Progress updates
+
+Only provide progress updates when:
+
+- entering a materially different phase;
+- discovering a blocker;
+- changing the plan;
+- completing a logical part;
+- finishing validation.
+
+Keep progress updates concise:
+
+- completed;
+- current;
+- next.
+
+### Final response order
+
+At the end of every task, report in this order:
+
+1. Overall status: PASS, PARTIAL, BLOCKED, or FAIL
+2. What changed
+3. User-visible result
+4. Validation results
+5. Remaining issues or risks
+6. Next required action, only when one exists
+
+Put the most important outcome in the first three lines.
+
+### Accuracy requirements
+
+A concise response must still report:
+
+- failed or skipped tests;
+- non-zero command exit codes;
+- assumptions;
+- security risks;
+- migration or deployment considerations;
+- unresolved issues;
+- uncommitted changes when relevant.
+
+Do not claim success when required validation failed or was not run.
+
+---
+
 # 1. Instruction Priority
 
 Apply repository guidance in this order:

@@ -17,19 +17,23 @@ See backend details in [be/README.md](be/README.md).
 
 ## Tester One-Command Run
 
-From the repo root, testers can build everything and start the local test app:
+From the repo root, testers can build everything and start the local test app for interactive local testing:
 
 ```powershell
 npm.cmd run tester
 ```
 
 The command installs missing dependencies, prepares Prisma, applies migrations,
-seeds the local database, builds backend and frontend, then starts:
+seeds the local database, builds backend and frontend, verifies health, then keeps these services running until `Ctrl+C`:
 
 - Frontend: `http://localhost:4173`
 - API docs: `http://localhost:3000/api/docs`
 
-Keep the terminal open while testing. Press `Ctrl+C` to stop both servers.
+Use one-shot smoke verification when the app should stop after health checks:
+
+```powershell
+npm.cmd run tester:smoke
+```
 
 Seed accounts:
 

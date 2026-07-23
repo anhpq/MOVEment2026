@@ -20,32 +20,108 @@
   z-index: 10;
   height: auto;
   line-height: normal;
-  padding: 18px 18px 14px;
+  padding: 10px 16px;
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  display: flex;
+}
+
+.header-content {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
+  min-height: 48px;
   gap: 12px;
 }
 
-.brand-mark {
+.app-brand {
+  position: absolute;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 0;
+  color: #17223b;
   font-family:
     Bahnschrift,
     Aptos Display,
     sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.22rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #17223b;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.app-runner-mark {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 11px;
+  background: rgba(255, 122, 89, 0.12);
+  color: #ff7a59;
+  font-size: 1.25rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 122, 89, 0.16);
+}
+
+.app-runner-mark::before,
+.app-runner-mark::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  width: 7px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 122, 89, 0.55);
+}
+
+.app-runner-mark::before {
+  top: 10px;
+}
+
+.app-runner-mark::after {
+  top: 17px;
+  width: 10px;
+}
+
+.app-runner-mark svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transform: translateX(2px);
+}
+
+.header-spacer {
+  min-width: 0;
+}
+
+.account-cluster {
+  grid-column: 3;
+  justify-self: end;
+  max-width: min(42vw, 240px);
+  text-align: right;
+}
+
+.deploy-stamp {
+  color: #7b8794;
+  font-size: 0.7rem;
+  line-height: 1.1;
 }
 
 .brand-subtitle,
 .muted-copy,
 .compact-copy {
   color: #5f6c7b;
+}
+
+.account-cluster .brand-subtitle,
+.account-cluster .deploy-stamp {
+  max-width: 100%;
+  white-space: normal;
 }
 
 .logout-button {
@@ -124,11 +200,6 @@
   padding: 18px;
 }
 
-.station-content {
-  flex: 1;
-  min-width: 0;
-}
-
 .station-actions {
   width: 100%;
   display: grid;
@@ -171,6 +242,59 @@
   width: min(100%, 420px);
 }
 
+.login-header {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 2px 0 4px;
+  text-align: center;
+}
+
+.login-runner-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: rgba(255, 122, 89, 0.12);
+  color: #ff7a59;
+  font-size: 1.8rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 122, 89, 0.16);
+}
+
+.login-runner-mark::before,
+.login-runner-mark::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  width: 10px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 122, 89, 0.55);
+}
+
+.login-runner-mark::before {
+  top: 16px;
+}
+
+.login-runner-mark::after {
+  top: 25px;
+  width: 14px;
+}
+
+.login-runner-mark svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  transform: translateX(3px);
+}
+
+.login-title {
+  text-align: center;
+  font-size: 2.05rem !important;
+  line-height: 1.15 !important;
+}
+
 .qr-scanner-panel {
   display: grid;
   gap: 10px;
@@ -184,9 +308,30 @@
   object-fit: cover;
 }
 
+@media (max-width: 720px) {
+  .header-content {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    min-height: 0;
+  }
+
+  .app-brand {
+    position: static;
+    transform: none;
+  }
+
+  .account-cluster {
+    grid-column: 1;
+    justify-self: center;
+    align-items: center !important;
+    max-width: 100%;
+    text-align: center;
+  }
+}
+
 @media (max-width: 480px) {
   .shell-header {
-    padding: 16px 14px 12px;
+    padding: 10px 14px;
   }
 
   .nav-strip {

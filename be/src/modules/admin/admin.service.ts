@@ -26,6 +26,9 @@ import {
   createSecureStationQrToken,
   createSecureQrLoginToken,
   createQrTokenFingerprint,
+  isOfficialQrLoginToken,
+  isOfficialStationQrTokenForPurpose,
+  normalizeQrToken,
 } from '../../common/qr/qr-token';
 import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
@@ -116,6 +119,7 @@ export class AdminService {
         data: {
           teamId: created.id,
           tokenHash: createQrTokenFingerprint(rawQrLoginToken),
+          rawToken: rawQrLoginToken,
           expiresAt: qrLoginExpiresAt,
           createdByUserId: userId,
         },
@@ -152,14 +156,22 @@ export class AdminService {
   }
 
   async updateTeam(userId: number, teamId: number, dto: UpdateTeamDto) {
-    const team = await this.prisma.team.update({
-      where: { id: teamId },
-      data: {
-        name: dto.name?.trim(),
-        username: dto.username?.trim(),
-        captainName: dto.captainName?.trim(),
-        passwordHash: dto.password ? await bcrypt.hash(dto.password, 10) : undefined,
-      },
+    const normalizedQrToken = this.getOptionalQrToken(dto.qrToken);
+    const passwordHash = dto.password ? await bcrypt.hash(dto.password, 10) : undefined;
+    const result = await this.prisma.$transaction(async (tx) => {
+      const team = await tx.team.update({
+        where: { id: teamId },
+        data: {
+          name: dto.name?.trim(),
+          username: dto.username?.trim(),
+          captainName: dto.captainName?.trim(),
+          passwordHash,
+        },
+      });
+      const qrLogin = normalizedQrToken
+        ? await this.replaceTeamQrLoginToken(tx, userId, teamId, normalizedQrToken)
+        : null;
+      return { team, qrLogin };
     });
     await this.activityLog.log({
       actorType: ActorType.USER,
@@ -170,7 +182,10 @@ export class AdminService {
       entityId: teamId,
       metadata: { name: dto.name ?? null, username: dto.username ?? null },
     });
-    return this.toPublicTeam(team);
+    return {
+      ...this.toPublicTeam(result.team),
+      ...(result.qrLogin ? { qrLogin: result.qrLogin } : {}),
+    };
   }
 
   async deleteTeam(userId: number, teamId: number) {
@@ -205,6 +220,9 @@ export class AdminService {
     return tokens.map((token) => ({
       id: token.id,
       teamId: token.teamId,
+      rawToken: token.rawToken,
+      qrLoginUrl: token.rawToken ? this.buildQrLoginUrl(token.rawToken) : undefined,
+      loginUrl: token.rawToken ? this.buildQrLoginUrl(token.rawToken) : undefined,
       expiresAt: token.expiresAt,
       isActive: token.isActive,
       consumedAt: token.consumedAt,
@@ -220,53 +238,16 @@ export class AdminService {
     userId: number,
     teamId: number,
     dto: GenerateQrLoginTokenDto,
-    rotateExisting = false,
+    rotateExisting = true,
   ) {
-    const rawToken = createSecureQrLoginToken();
-    const tokenHash = createQrTokenFingerprint(rawToken);
     const ttlMinutes = dto.expiresInMinutes ?? this.getQrLoginTtlMinutes();
-    const expiresAt = new Date(Date.now() + ttlMinutes * 60_000);
-
+    const rawToken = createSecureQrLoginToken();
     const token = await this.prisma.$transaction(async (tx) => {
       const team = await tx.team.findUniqueOrThrow({ where: { id: teamId } });
       if (team.status !== 'ACTIVE') {
         throw new ForbiddenException('QR_LOGIN_INACTIVE_TEAM');
       }
-
-      const existingActive = await tx.qrLoginToken.findFirst({
-        where: {
-          teamId,
-          isActive: true,
-        },
-      });
-
-      if (
-        existingActive &&
-        existingActive.revokedAt === null &&
-        existingActive.expiresAt.getTime() > Date.now() &&
-        !rotateExisting
-      ) {
-        throw new BadRequestException('QR_LOGIN_TOKEN_ALREADY_ACTIVE');
-      }
-
-      if (existingActive) {
-        await tx.qrLoginToken.update({
-          where: { id: existingActive.id },
-          data: {
-            isActive: false,
-            revokedAt: rotateExisting ? new Date() : existingActive.revokedAt,
-          },
-        });
-      }
-
-      return tx.qrLoginToken.create({
-        data: {
-          teamId,
-          tokenHash,
-          expiresAt,
-          createdByUserId: userId,
-        },
-      });
+      return this.replaceTeamQrLoginToken(tx, userId, teamId, rawToken, ttlMinutes);
     });
 
     await this.activityLog.log({
@@ -282,17 +263,7 @@ export class AdminService {
       },
     });
 
-    const qrLoginUrl = this.buildQrLoginUrl(rawToken);
-    return {
-      id: token.id,
-      teamId: token.teamId,
-      qrLoginUrl,
-      loginUrl: qrLoginUrl,
-      expiresAt: token.expiresAt,
-      usageCount: token.usageCount,
-      createdAt: token.createdAt,
-      status: 'ACTIVE',
-    };
+    return token;
   }
 
   async revokeQrLoginToken(userId: number, tokenId: number) {
@@ -407,7 +378,9 @@ export class AdminService {
   }
 
   async updateStation(userId: number, stationId: string, dto: UpdateStationDto) {
-    const station = await this.prisma.$transaction(async (tx) => {
+    const checkInQrToken = this.getOptionalQrToken(dto.checkInQrToken);
+    const checkOutQrToken = this.getOptionalQrToken(dto.checkOutQrToken);
+    const result = await this.prisma.$transaction(async (tx) => {
       const updated = await tx.station.update({
         where: { id: stationId },
         data: {
@@ -424,7 +397,14 @@ export class AdminService {
           data: { mediaUrl: dto.mediaUrl },
         });
       }
-      return updated;
+      const qrTokens = [];
+      if (checkInQrToken) {
+        qrTokens.push(await this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_IN, checkInQrToken));
+      }
+      if (checkOutQrToken) {
+        qrTokens.push(await this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_OUT, checkOutQrToken));
+      }
+      return { station: updated, qrTokens };
     });
 
     await this.activityLog.log({
@@ -444,7 +424,10 @@ export class AdminService {
       },
     });
 
-    return station;
+    return {
+      ...result.station,
+      ...(result.qrTokens.length ? { qrTokens: result.qrTokens } : {}),
+    };
   }
 
   async createStation(userId: number, dto: CreateStationDto) {
@@ -521,6 +504,7 @@ export class AdminService {
       stationId: token.stationId,
       purpose: token.purpose,
       schemaVersion: token.schemaVersion,
+      rawToken: token.rawToken,
       isActive: token.isActive,
       expiresAt: token.expiresAt,
       revokedAt: token.revokedAt,
@@ -554,6 +538,31 @@ export class AdminService {
     });
 
     return qrToken;
+  }
+
+  async generateStationQrTokens(userId: number, stationId: string) {
+    const qrTokens = await this.prisma.$transaction(async (tx) => {
+      const station = await tx.station.findUniqueOrThrow({ where: { id: stationId } });
+      if (!station.isActive) {
+        throw new ForbiddenException('STATION_INACTIVE');
+      }
+      return Promise.all([
+        this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_IN),
+        this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_OUT),
+      ]);
+    });
+
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'STATION_QR_GENERATED',
+      entityType: 'STATION',
+      entityId: stationId,
+      metadata: { stationId, purposes: [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT] },
+    });
+
+    return { stationId, qrTokens };
   }
 
   async revokeActiveStationQrToken(userId: number, stationId: string, purpose: QrPurpose) {
@@ -1181,33 +1190,106 @@ export class AdminService {
     return buildQrLoginUrl(configured, rawToken);
   }
 
+  private getOptionalQrToken(rawToken: string | undefined) {
+    const normalized = normalizeQrToken(rawToken ?? '');
+    return normalized || null;
+  }
+
+  private async replaceTeamQrLoginToken(
+    tx: Prisma.TransactionClient,
+    userId: number,
+    teamId: number,
+    rawToken: string,
+    ttlMinutes = this.getQrLoginTtlMinutes(),
+  ) {
+    const normalizedToken = normalizeQrToken(rawToken);
+    if (!isOfficialQrLoginToken(normalizedToken)) {
+      throw new BadRequestException('Invalid Team QR token format');
+    }
+    const tokenHash = createQrTokenFingerprint(normalizedToken);
+    const duplicate = await tx.qrLoginToken.findUnique({ where: { tokenHash } });
+    if (duplicate) {
+      throw new BadRequestException('QR token already exists');
+    }
+    await tx.qrLoginToken.updateMany({
+      where: { teamId, isActive: true },
+      data: { isActive: false, revokedAt: new Date() },
+    });
+    const expiresAt = new Date(Date.now() + ttlMinutes * 60_000);
+    const token = await tx.qrLoginToken.create({
+      data: {
+        teamId,
+        tokenHash,
+        rawToken: normalizedToken,
+        expiresAt,
+        createdByUserId: userId,
+      },
+    });
+    const qrLoginUrl = this.buildQrLoginUrl(normalizedToken);
+    return {
+      id: token.id,
+      teamId: token.teamId,
+      rawToken: normalizedToken,
+      qrLoginUrl,
+      loginUrl: qrLoginUrl,
+      expiresAt: token.expiresAt,
+      usageCount: token.usageCount,
+      createdAt: token.createdAt,
+      generatedAt: new Date(),
+      status: 'ACTIVE',
+    };
+  }
+
+  private async replaceStationQrToken(
+    tx: Prisma.TransactionClient,
+    stationId: string,
+    purpose: QrPurpose,
+    rawToken = createSecureStationQrToken(purpose),
+  ) {
+    const normalizedToken = normalizeQrToken(rawToken);
+    if (!isOfficialStationQrTokenForPurpose(normalizedToken, purpose)) {
+      throw new BadRequestException('Invalid Station QR token format');
+    }
+    const tokenFingerprint = createQrTokenFingerprint(normalizedToken);
+    const duplicate = await tx.qrToken.findUnique({ where: { tokenFingerprint } });
+    if (duplicate) {
+      throw new BadRequestException('QR token already exists');
+    }
+    await tx.qrToken.updateMany({
+      where: { stationId, purpose, isActive: true },
+      data: { isActive: false, revokedAt: new Date() },
+    });
+    const token = await tx.qrToken.create({
+      data: {
+        stationId,
+        purpose,
+        schemaVersion: 'SQ1',
+        tokenHash: await bcrypt.hash(normalizedToken, 10),
+        tokenFingerprint,
+        rawToken: normalizedToken,
+      },
+    });
+    return {
+      id: token.id,
+      stationId: token.stationId,
+      purpose: token.purpose,
+      rawToken: normalizedToken,
+      schemaVersion: token.schemaVersion,
+      expiresAt: token.expiresAt,
+      createdAt: token.createdAt,
+      generatedAt: new Date(),
+      status: 'ACTIVE',
+    };
+  }
+
   private async createStationQrToken(
     tx: Prisma.TransactionClient,
     stationId: string,
     purpose: QrPurpose,
   ) {
     for (let attempt = 0; attempt < 5; attempt += 1) {
-      const rawToken = createSecureStationQrToken(purpose);
       try {
-        const token = await tx.qrToken.create({
-          data: {
-            stationId,
-            purpose,
-            schemaVersion: 'SQ1',
-            tokenHash: await bcrypt.hash(rawToken, 10),
-            tokenFingerprint: createQrTokenFingerprint(rawToken),
-          },
-        });
-        return {
-          id: token.id,
-          stationId: token.stationId,
-          purpose: token.purpose,
-          rawToken,
-          schemaVersion: token.schemaVersion,
-          expiresAt: token.expiresAt,
-          createdAt: token.createdAt,
-          status: 'ACTIVE',
-        };
+        return await this.replaceStationQrToken(tx, stationId, purpose);
       } catch (error) {
         if (
           error instanceof Prisma.PrismaClientKnownRequestError &&

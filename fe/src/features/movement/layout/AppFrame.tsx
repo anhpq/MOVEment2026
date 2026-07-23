@@ -8,16 +8,32 @@ import {
   TeamOutlined,
   TrophyOutlined,
 } from "@ant-design/icons";
-import {Button, Flex, Image, Layout, Typography} from "antd";
+import {Button, Flex, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import logo from "../../../assets/ST-logo.png";
 import {logout as logoutApi} from "../api";
+import {RunningPersonIcon} from "../components/RunningPersonIcon";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
 import "./AppFrame.scss";
 
 type AppFrameProps = Readonly<PropsWithChildren>;
+
+function formatBuildTimestamp(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "Deploy: unknown";
+  }
+  return `Deploy: ${date.toLocaleString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  })}`;
+}
+
+const buildTimestampLabel = formatBuildTimestamp(__APP_BUILD_TIMESTAMP__);
 
 export function AppFrame({children}: AppFrameProps) {
   const navigate = useNavigate();
@@ -51,20 +67,16 @@ export function AppFrame({children}: AppFrameProps) {
   return (
     <Layout className="mobile-shell">
       <Layout.Header className="shell-header">
-        <div className="full-width">
-          <Flex
-            gap={12}
-            justify="space-between"
-            align="center"
-            className="header-content">
-            <Image
-              src={logo}
-              alt="MOVEment 2026"
-              preview={false}
-              style={{height: 24}}
-              className="margin-auto"
-            />
+        <div className="header-content">
+          <div className="header-spacer" />
+          <div className="app-brand" aria-label="Application branding">
+            <span className="app-runner-mark" aria-hidden="true">
+              <RunningPersonIcon />
+            </span>
+            <span>MOVEment 2026</span>
+          </div>
 
+          <Flex vertical align="flex-end" gap={2} className="account-cluster">
             <Button
               color="danger"
               variant="filled"
@@ -72,9 +84,9 @@ export function AppFrame({children}: AppFrameProps) {
               onClick={handleLogout}>
               {ROLE_LABELS[session.role]}
             </Button>
-          </Flex>
-          <Flex gap={12} justify="space-between" align="center">
-            <div className="brand-mark">MOVEment 2026</div>
+            <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
+              {buildTimestampLabel}
+            </Typography.Text>
             <Typography.Text className="brand-subtitle">
               Current team: <b>{activeTeam?.name ?? "No team"}</b>
             </Typography.Text>

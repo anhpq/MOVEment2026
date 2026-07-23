@@ -1,9 +1,16 @@
+import QRCode from "qrcode";
 import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Typography} from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
+import {
+  buildTeamQrLoginUrl,
+  cacheTeamQrPayload,
+  getCachedTeamQrToken,
+  setCachedTeamQrToken,
+} from "../teamQrTokenCache";
 import type {TeamFormValues} from "../types";
-import {createAdminTeam, updateAdminTeam} from "../api";
+import {createAdminTeam, getAdminTeamQrLoginTokens, updateAdminTeam} from "../api";
 import {fetchAdminDatabase} from "../adminData";
 
 export function TeamEditorPage() {
@@ -14,14 +21,54 @@ export function TeamEditorPage() {
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [form] = Form.useForm<TeamFormValues>();
   const [isOpen, setIsOpen] = useState(true);
+  const initialQrTokenRef = useRef("");
 
   const team = teams.find((item) => item.id === params.teamId);
   const isEditing = Boolean(team);
 
+  const showGeneratedQr = async (payload: string, filename: string, context: string) => {
+    const dataUrl = await QRCode.toDataURL(payload, {width: 320, margin: 2});
+    modal.info({
+      centered: true,
+      width: 520,
+      title: "One-time Team QR",
+      content: (
+        <Flex vertical gap={12} align="center">
+          <img src={dataUrl} alt={`${context} QR`} width={260} height={260} />
+          <Typography.Text>{context}</Typography.Text>
+          <Typography.Text type="warning">
+            Save or download this QR now. For security, the token cannot be viewed again.
+          </Typography.Text>
+          <Button type="primary" onClick={() => {
+            const link = document.createElement("a");
+            link.href = dataUrl;
+            link.download = filename;
+            link.click();
+          }}>
+            Download PNG
+          </Button>
+        </Flex>
+      ),
+    });
+  };
+
   useEffect(() => {
+    let cancelled = false;
     if (team) {
-      form.setFieldsValue(team);
-      return;
+      initialQrTokenRef.current = "";
+      form.setFieldsValue({...team, qrToken: ""});
+      void getAdminTeamQrLoginTokens(team.id).then((tokens) => {
+        if (cancelled) {
+          return;
+        }
+        const activeToken = tokens.find((token) => token.status === "ACTIVE");
+        const qrToken = activeToken?.rawToken ?? getCachedTeamQrToken(team.id);
+        initialQrTokenRef.current = qrToken;
+        form.setFieldsValue({qrToken});
+      }).catch(() => undefined);
+      return () => {
+        cancelled = true;
+      };
     }
 
     form.setFieldsValue({
@@ -32,7 +79,11 @@ export function TeamEditorPage() {
       score: 0,
       finish: 0,
       totalTimeMinutes: 0,
+      qrToken: "",
     });
+    return () => {
+      cancelled = true;
+    };
   }, [form, team]);
 
   const handleClose = () => {
@@ -59,12 +110,29 @@ export function TeamEditorPage() {
             onOk: async () => {
               try {
                 if (team) {
-                  await updateAdminTeam(team.id, {
+                  const qrToken = values.qrToken?.trim() ?? "";
+                  const updated = await updateAdminTeam(team.id, {
                     name: values.name,
                     username: values.username,
                     captainName: values.captainName,
                     password: values.password || undefined,
+                    ...(qrToken && qrToken !== initialQrTokenRef.current ? {qrToken} : {}),
                   });
+                  const qrLogin = updated.qrLogin;
+                  if (qrLogin) {
+                    const payload =
+                      qrLogin.qrLoginUrl ??
+                      qrLogin.loginUrl ??
+                      buildTeamQrLoginUrl(qrLogin.rawToken);
+                    cacheTeamQrPayload(team.id, payload);
+                    await showGeneratedQr(
+                      payload,
+                      `team-${team.id}-qr.png`,
+                      `${team.name} · Team QR login`,
+                    );
+                  } else if (qrToken) {
+                    setCachedTeamQrToken(team.id, qrToken);
+                  }
                 } else {
                   const created = await createAdminTeam({
                     name: values.name,
@@ -74,6 +142,7 @@ export function TeamEditorPage() {
                   });
                   const qrLoginUrl = created.qrLoginUrl ?? created.loginUrl;
                   if (qrLoginUrl) {
+                    cacheTeamQrPayload(String(created.id), qrLoginUrl);
                     modal.info({
                       centered: true,
                       width: 680,
@@ -137,6 +206,14 @@ export function TeamEditorPage() {
         <Form.Item label="Finished" name="finish" rules={[{required: true}]}>
           <InputNumber disabled min={0} max={99} className="full-width" />
         </Form.Item>
+        {isEditing && (
+          <Form.Item
+            label="QR token"
+            name="qrToken"
+            help="Leave empty to keep the current token. Enter a new token to replace it.">
+            <Input placeholder="New one-time Team QR token" autoComplete="off" />
+          </Form.Item>
+        )}
         <Form.Item
           label="Total Time (min)"
           name="totalTimeMinutes"

@@ -99,7 +99,7 @@
 - [x] Player Check-in/Check-out resolves Station and purpose from the database token record after fingerprint/hash/lifecycle validation.
 - [x] Admin can inspect, rotate, and revoke Station `CHECK_IN` and `CHECK_OUT` independently.
 - [x] Local/test seed repairs missing or Legacy Station QR tokens by purpose and preserves existing active SQ1 tokens across repeated runs.
-- [x] Reprint strategy is rotate-to-reprint; raw Station QR tokens are display-once and not stored in tracked files.
+- [x] Reprint strategy stores raw Station QR tokens in the protected backend database for new, repaired, replaced, or rotated SQ1 tokens so Admin can view and print Check-in/Check-out QR string values; tracked files still must not contain raw tokens.
 - [x] Legacy predictable Station QR generation is removed from new creation, seed repair, and smoke script paths; active Legacy DB rows remain compatibility-only.
 - [ ] Production migration, production QR reissue, and physical QR scan verification remain open.
 - [ ] Legacy Station QR compatibility window and removal date remain open.
@@ -109,7 +109,7 @@
 - [x] Reusable controlled Team QR login, usage auditing, and one-active-session replacement are implemented and locally verified.
 - [x] Team creation provisioning, idempotent local/test seed repair, and distinct Admin generate/rotate/revoke actions are implemented.
 - [x] New Team and seed data no longer generate predictable Legacy Team QR credentials; existing Legacy credentials and endpoint remain for compatibility.
-- [x] Rotate-to-reprint is the selected raw-token strategy; raw URLs are returned only when created and are not stored in tracked files.
+- [x] Reprint strategy stores raw Team QR Login tokens in the protected backend database for new, repaired, replaced, or rotated tokens so Admin can view and print QR Login string/URL values; tracked files still must not contain raw tokens.
 - [ ] Production migration and deployed QR flow verification remain open.
 - [ ] Station QR migration remains out of scope and open.
 

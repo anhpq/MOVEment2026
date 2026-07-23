@@ -107,6 +107,7 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | Missing token repair | Seed hoặc maintenance command phải có khả năng bổ sung token cho Team đang thiếu token. |
 | Team QR rotation | Admin có thể rotate Team QR Login token. Token cũ phải bị revoke. |
 | Team QR revocation | Admin có thể revoke Team QR Login token mà không cần xóa Team. |
+| Admin raw token display | Backend lưu raw Team QR Login token cho token mới hoặc token được seed repair/rotate để Admin có thể xem và in lại QR Login dạng string/URL. |
 | QR Login error | Nếu auto-login thất bại, frontend phải hiển thị lỗi rõ ràng và cho phép thử lại hoặc dùng login thủ công. |
 
 Exact raw token của từng Team được hệ thống tự động tạo.
@@ -152,6 +153,7 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | Token entropy | Random portion phải có tối thiểu 128 bits entropy. |
 | Token uniqueness | Token phải unique trên toàn hệ thống. |
 | Token lifecycle | Mỗi token hỗ trợ revoke và rotate độc lập. |
+| Admin raw token display | Backend lưu raw Station QR token cho token mới hoặc token được seed repair/rotate để Admin có thể xem và in lại Check-in/Check-out QR dạng string. |
 | Database mapping | Database là Source of Truth cho quan hệ giữa token, Station và purpose. |
 | Backend validation | Backend lấy `stationId` và `purpose` từ token record trong database. |
 | Purpose code | Purpose code trong payload chỉ hỗ trợ vận hành và debug; backend không được tin trực tiếp giá trị này. |
