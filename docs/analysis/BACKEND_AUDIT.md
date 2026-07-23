@@ -1,3 +1,9 @@
+## 2026-07-24 Tester runner Prisma Studio
+
+- Added Prisma Studio to `scripts/tester-run.ps1` so `npm run tester`, `tester:serve`, and `tester:smoke` start Backend API, Frontend preview, and Prisma Studio together.
+- Added configurable `-PrismaStudioPort` with default `5555`, port availability checks, a tracked Prisma Studio background job, readiness probing, URL output, and `.tester-logs/prisma-studio.log` cleanup/log reporting.
+- Verification passed: `npm run tester:smoke -- -SkipInstall -SkipSeed -ApiPort 3100 -FrontendPort 4273 -PrismaStudioPort 5655`, backend lint/build, frontend lint/build, and `git diff --check`. Frontend build retains the known non-blocking large-chunk warning. Production deploy, push, and destructive Git operations were not performed.
+
 ## 2026-07-24 Final start and Event end separation
 
 - Changed the active Final opening path to use Admin Event Config `finalStartsAt` through `EventConfigService.isPastFinalStart()` instead of `eventEndTime`. `eventEndTime` now remains scoped to closing new Station check-ins.

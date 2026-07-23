@@ -352,11 +352,6 @@
   color: #fff;
 }
 
-.station-content {
-  flex: 1;
-  min-width: 0;
-}
-
 .station-actions {
   width: 100%;
   display: grid;

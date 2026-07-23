@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Tester runner Prisma Studio
+
+- [x] `npm run tester` starts Prisma Studio together with Backend API and Frontend preview.
+- [x] Added configurable `-PrismaStudioPort` with default `5555`.
+- [x] Runner checks Prisma Studio port availability, probes readiness, prints the Studio URL, logs to `.tester-logs/prisma-studio.log`, and stops the Studio job during cleanup.
+- [x] Verified with `npm run tester:smoke -- -SkipInstall -SkipSeed -ApiPort 3100 -FrontendPort 4273 -PrismaStudioPort 5655`.
+- [x] Backend lint/build, frontend lint/build, and `git diff --check` passed.
+- [ ] Manual long-running `npm run tester` keep-open usage remains pending.
+
 ## 2026-07-24 Final start and Event end separation
 
 - [x] Final Challenge opening is verified against Admin Event Config `finalStartsAt`, not `eventEndTime`.
