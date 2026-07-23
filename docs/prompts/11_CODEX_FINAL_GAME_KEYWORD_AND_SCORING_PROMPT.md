@@ -42,11 +42,12 @@ DISANVANHOA2026
 
 2. Frontend and backend trim and uppercase input.
 3. Backend validates the answer.
-4. Final opens according to current Admin Event Config end time.
-5. Do not hard-code `11:30`, `11:45`, or another fixed Final time.
-6. A Team cannot start a new Station after Event end time.
-7. A Team that checked in before Event end may finish that Station.
-8. A Team with an active Station must finish it before entering Final.
+4. Final opens according to current Admin Event Config `finalStartsAt`.
+5. Admin Event Config `eventEndTime` closes new Station check-ins and does not open Final.
+6. Do not hard-code `11:30`, `11:45`, or another fixed Final time.
+7. A Team cannot start a new Station after Event end time.
+8. A Team that checked in before Event end may finish that Station.
+9. A Team with an active Station must finish it before entering Final.
 9. Team does not need to complete every Station before Final.
 10. Team may submit multiple attempts until correct or Event closes.
 11. Wrong-answer cooldown increases from 1 second to a maximum of 10 seconds.
@@ -216,8 +217,8 @@ Do not calculate rank only by `count + 1` without concurrency protection.
 
 Backend:
 
-- Final closed before Event end;
-- Final opens at Event end;
+- Final closed before `finalStartsAt`;
+- Final opens at `finalStartsAt`;
 - active-Station Team blocked;
 - finished Station Team allowed;
 - lowercase accepted;

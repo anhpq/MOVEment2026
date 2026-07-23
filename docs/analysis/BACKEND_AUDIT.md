@@ -1,3 +1,11 @@
+## 2026-07-24 Final start and Event end separation
+
+- Changed the active Final opening path to use Admin Event Config `finalStartsAt` through `EventConfigService.isPastFinalStart()` instead of `eventEndTime`. `eventEndTime` now remains scoped to closing new Station check-ins.
+- Added `finalStartsAt` update validation and public Event Config exposure. Admin Event Config UI now shows and submits `finalStartsAt` beside `eventEndTime`, and Player Final UI states Station close time separately from Final opening time.
+- Preserved Station lifecycle behavior: new check-in after `eventEndTime` is blocked with a closed Station message, while Check-out and score submission for a Station already in progress remain allowed. Player Station list/map now keep backend `LOCKED` status and show a closed Station message instead of opening the QR check-in modal.
+- Updated Business Rule, Feature routing, project analysis, and Final prompt documentation to separate `finalStartsAt` from `eventEndTime`.
+- Verification passed: targeted Final/Player service tests, backend lint, backend build, frontend lint, frontend production build, `git diff --check`, and `graphify update .`. No migration or seed change was required because `event_config.final_starts_at` already exists. Graphify update warned that `hooks.json` produced zero nodes and SQL extraction lacked `tree_sitter_sql`; Production deploy, Production runtime verification, push, and physical/manual browser click-through were not performed.
+
 ## 2026-07-24 Team QR raw token display
 
 - Changed Team QR Login storage so new, seed-repaired, replaced, and rotated QR Login records store `raw_token` in the backend database while preserving fingerprint/hash validation for Team QR login.
@@ -66,7 +74,7 @@
 
 ## 2026-07-22 Final Challenge Event Config, Keyword, Cooldown, and Ranking
 
-- Verified the active Final opening path uses Admin Event Config `eventEndTime` through `EventConfigService.isPastEventEnd()`; active Source Code no longer depends on fixed `11:30` or `11:45` values. Those literals remain only in historical documentation warnings and the original baseline migration history.
+- Historical note: this 2026-07-22 verification used Admin Event Config `eventEndTime` through `EventConfigService.isPastEventEnd()` for Final opening; that behavior was superseded on 2026-07-24 by the `finalStartsAt` rule. Active Source Code no longer depends on fixed `11:30` or `11:45` values.
 - Changed current Event Config database defaults from fixed event rehearsal times to neutral `23:59` defaults through Prisma schema, init SQL, and migration `000008_final_event_defaults`. Runtime Final availability remains controlled by the persisted Admin Event Config row, not by a hard-coded Final start value.
 - Repaired local/test seed behavior for the official Final keyword `DISANVANHOA2026`: seed now creates new active Final challenges with that keyword and repairs an existing active challenge when its hash does not match, while repeated seed preserves an already-valid hash.
 - Backend and frontend now trim and uppercase Final answers before submission/validation. Backend bcrypt comparison remains authoritative; the frontend does not contain the authoritative keyword and performs only input UX normalization.
@@ -167,7 +175,7 @@
 - Preserved station lifecycle requirements: new station check-in remains blocked after event end, while existing station check-out and score submission still work. Final entry is blocked while the team has an active `CHECKED_IN`/`PLAYING` station.
 - Added wrong-answer cooldown without a database migration by deriving state from existing incorrect `final_submissions`: cooldown seconds are `min(wrongAttemptCount, 10)`. Bonus points now use the fixed rank formula `max(11 - rank, 0)`.
 - Frontend Final page now polls `/api/player/final`, shows active-station blocking, wrong-attempt cooldown, and correct rank/bonus result. Station list polls for Final availability and shows an automatic CTA when the team is free.
-- Admin UI no longer exposes Final start time or rank-point configuration; Final opens from Event Config event end time and rank points are fixed by rule.
+- Historical note: Admin UI did not expose Final start time in this 2026-07-21 implementation, and Final opened from Event Config event end time. This was superseded on 2026-07-24 by exposing `finalStartsAt` in Admin Event Config.
 - Verification: backend build/lint passed, full backend Jest suite passed (41 tests), frontend lint/build passed. Vite still reports the known large chunk warning.
 
 ## 2026-07-21 Deployment database initialization audit

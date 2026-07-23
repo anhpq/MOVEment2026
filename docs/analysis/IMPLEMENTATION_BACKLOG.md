@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Final start and Event end separation
+
+- [x] Final Challenge opening is verified against Admin Event Config `finalStartsAt`, not `eventEndTime`.
+- [x] Admin Event Config UI exposes `finalStartsAt` beside `eventEndTime`.
+- [x] `eventEndTime` remains the Station close time for new check-ins.
+- [x] Station Check-out and scoring remain allowed for Stations already started before `eventEndTime`.
+- [x] Player Station list/map click on a locked Station now reports that the Station is closed instead of opening check-in.
+- [x] Targeted backend Final/Player service tests, backend lint/build, frontend lint/build, and `git diff --check` passed.
+- [ ] Production deployment/runtime verification remains open and requires explicit approval.
+- [ ] Manual browser click-through after the deployed Event Config times remains pending.
+
 ## 2026-07-23 iOS QR camera lifecycle cleanup
 
 - [x] Login QR scanner cleanup invalidates the run, clears RAF/timer resources, stops active media tracks, clears and reloads the video element, and disposes detector resources.
@@ -68,7 +79,7 @@
 
 ## 2026-07-22 Final Challenge completion
 
-- [x] Final opening is verified against Admin Event Config `eventEndTime`; changing Event Config changes availability without Source Code changes.
+- [x] Historical 2026-07-22 verification used Admin Event Config `eventEndTime` for Final opening; this was superseded on 2026-07-24 by `finalStartsAt` as the Final opening rule.
 - [x] Active Source Code no longer uses fixed `11:30` or `11:45`; remaining matches are historical documentation warnings or the original baseline migration.
 - [x] Local/test seed creates or repairs the active Final keyword hash for `DISANVANHOA2026` and remains idempotent when run repeatedly.
 - [x] Backend and frontend trim and uppercase answer input; backend remains the authoritative validator and frontend source does not contain the official answer.

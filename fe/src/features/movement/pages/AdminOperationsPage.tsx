@@ -48,6 +48,10 @@ export function AdminOperationsPage() {
         await updateAdminEventConfig(v); message.success("Event config updated"); await refresh();
       }}>
         <Form.Item name="eventEndTime" label="Event end"><Input /></Form.Item>
+        <Form.Item name="finalStartsAt" label="Final starts at"><Input /></Form.Item>
+        <Typography.Paragraph>
+          Event end closes new Station check-ins. Final starts at opens the Final Challenge.
+        </Typography.Paragraph>
         <Form.Item name="notifyBeforeMinutes" label="Notify before"><InputNumber min={1} /></Form.Item>
         <Form.Item name="cancelCooldownMinutes" label="Cancel cooldown"><InputNumber min={0} /></Form.Item>
         <Form.Item name="timezone" label="Timezone"><Input /></Form.Item>
@@ -71,7 +75,7 @@ export function AdminOperationsPage() {
           <Form.Item name="currentKeyword" label="Current keyword"><Input readOnly /></Form.Item>
           <Form.Item name="answer" label="New keyword"><Input.Password autoComplete="new-password" /></Form.Item>
           <Typography.Paragraph>
-            Final opens automatically at the event end time. Bonus points use rank formula: Rank 1 = 10, Rank 10 = 1, Rank 11+ = 0.
+            Final opens automatically at the Final starts at time in Event Config. Bonus points use rank formula: Rank 1 = 10, Rank 10 = 1, Rank 11+ = 0.
           </Typography.Paragraph>
           <Button type="primary" htmlType="submit">Save Final config</Button>
         </Form></Card>

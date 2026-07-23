@@ -406,7 +406,7 @@ export const getLeaderboard = () =>
 
 export type FinalResponse = {
   id: number; title: string; clueText: string | null; startsAt: string
-  eventEndTime: string; maxWinners: number; pointsByRank: number[]; isOpen: boolean
+  eventEndTime: string; finalStartsAt: string; maxWinners: number; pointsByRank: number[]; isOpen: boolean
   canSubmit: boolean; blockedByActiveStation: boolean; activeStationId: string | null
   teamSubmission: FinalSubmissionResponse | null; wrongAttemptCount: number
   cooldownSeconds: number; nextAttemptAt: string | null; serverNow: string

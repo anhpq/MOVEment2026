@@ -10,6 +10,7 @@
   "8": "store.ts",
   "9": "compilerOptions",
   "10": "PlayerPage.tsx",
+  "11": "FinalService",
   "12": "PrismaService",
   "13": "FinalService",
   "14": "compilerOptions",
@@ -163,12 +164,5 @@
   "162": "migration.sql",
   "163": "MOVEment 2026 - Automatic URL QR Login",
   "164": "CODEX QR AUTO LOGIN AND SEED TOKENS",
-  "165": "migration.sql",
-  "166": "migration.sql",
-  "167": "migration.sql",
-  "168": "migration.sql",
-  "169": "migration.sql",
-  "170": "migration.sql",
-  "171": "migration.sql",
   "172": "konva"
 }
