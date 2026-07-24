@@ -477,6 +477,16 @@
   color: #fff;
 }
 
+.station-showcase-actions .ant-btn:disabled,
+.station-showcase-actions .ant-btn.ant-btn-disabled {
+  border-color: #d9dce3;
+  background: #f2f3f5;
+  box-shadow: none;
+  color: #9aa1ad;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 .station-actions {
   width: 100%;
   display: grid;

@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784885735.0615003,
-    "ast_hash": "eee5d6b085dc996aee662fc01d7096d4",
+    "mtime": 1784885974.8122337,
+    "ast_hash": "e769ae89185d144bbc726a03fa0ed0cf",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784885733.9293518,
-    "ast_hash": "774edf2480f680d6d750193f6a04d6bd",
+    "mtime": 1784885973.6133797,
+    "ast_hash": "21e0663e75824f01d91a342ae3a777ca",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {

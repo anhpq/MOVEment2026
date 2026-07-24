@@ -463,3 +463,4 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Responsive follow-up removes the mobile header spacer, constrains the brand with fluid sizing/ellipsis, and gives both Team metrics identical icon/content grids with left-aligned copy.
 - Player `Play` remains the white right-side action on `/stations`; Admin `View & Edit` styling is unchanged.
 - Station cards consistently render `Watch Video | Play` on desktop and mobile, with `Watch Video` disabled for non-`ST` Stations or missing URLs.
+- Disabled Station video actions use an explicit neutral visual state so the shared primary-button styling cannot make unavailable video look interactive.

@@ -364,6 +364,7 @@ Acceptance:
 - [x] Keep the shell brand responsive and align both Team metrics to identical content axes.
 - [x] Keep Player `Play` as the white secondary Station action.
 - [x] Keep `Watch Video | Play` in a stable two-column row and disable unavailable video actions.
+- [x] Make disabled Station video actions visually distinct from enabled primary actions.
 - [x] Apply scoped Team-color accents without changing Station behavior.
 - [ ] Perform final visual review on representative mobile devices.
 
