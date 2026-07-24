@@ -460,3 +460,4 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Added scoped Team-color accents to the Team summary and Station cards.
 - Frontend lint and production build passed; localhost route smoke returned `200`. The known non-blocking Vite large-chunk warning remains.
 - Follow-up refinement aligns the Team icon and name in one centered identity row and places Score/Finished in an equal-width glass metric bar below for better visual balance.
+- Responsive follow-up removes the mobile header spacer, constrains the brand with fluid sizing/ellipsis, and gives both Team metrics identical icon/content grids with left-aligned copy.

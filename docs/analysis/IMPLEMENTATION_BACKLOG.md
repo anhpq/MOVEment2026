@@ -361,6 +361,7 @@ Acceptance:
 
 - [x] Compact the mobile shell header, Team summary, and Station cards.
 - [x] Balance the Team identity and equal-width score/progress metrics.
+- [x] Keep the shell brand responsive and align both Team metrics to identical content axes.
 - [x] Apply scoped Team-color accents without changing Station behavior.
 - [ ] Perform final visual review on representative mobile devices.
 

@@ -55,7 +55,7 @@
     Bahnschrift,
     Aptos Display,
     sans-serif !important;
-  font-size: 1.82rem !important;
+  font-size: clamp(1.25rem, 4vw, 1.82rem) !important;
   font-weight: 700 !important;
   letter-spacing: 0.04em;
   line-height: 1.15 !important;
@@ -344,16 +344,17 @@
 }
 
 .station-team-metric {
-  display: flex;
+  display: grid;
+  grid-template-columns: 32px minmax(88px, 104px);
   align-items: center;
+  justify-content: center;
   gap: 9px;
   min-width: 0;
-  justify-content: center;
-  padding-right: 18px;
+  padding: 0 12px;
 }
 
 .station-team-metric + .station-team-metric {
-  padding-left: 18px;
+  padding: 0 12px;
   border-left: 1px solid rgba(112, 75, 63, 0.18);
 }
 
@@ -370,6 +371,11 @@
 .station-team-metric span:last-child,
 .station-stat span {
   display: grid;
+}
+
+.station-team-metric span:last-child {
+  width: 100%;
+  text-align: left;
 }
 
 .station-team-metric small,
@@ -554,10 +560,20 @@
     min-height: 0;
   }
 
+  .header-spacer {
+    display: none;
+  }
+
   .app-brand {
     position: static;
     justify-self: start;
+    max-width: calc(100vw - 120px);
     transform: none;
+  }
+
+  .app-brand .brand-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .account-cluster {
@@ -590,6 +606,7 @@
   }
 
   .shell-header .account-cluster .ant-btn {
+    flex: 0 0 auto;
     height: 32px;
     padding-inline: 10px;
   }
@@ -652,12 +669,13 @@
   }
 
   .station-team-metric {
+    grid-template-columns: 26px minmax(76px, 92px);
     gap: 6px;
-    padding-right: 10px;
+    padding: 0 8px;
   }
 
   .station-team-metric + .station-team-metric {
-    padding-left: 10px;
+    padding: 0 8px;
   }
 
   .station-metric-icon {
