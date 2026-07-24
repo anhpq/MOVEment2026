@@ -26,7 +26,7 @@ export function TeamListPage() {
 
   const openTeam = (teamId: string) => {
     setActiveTeam(teamId);
-    navigate("/stations");
+    navigate(`/teams/${teamId}/stations`);
   };
 
   return (

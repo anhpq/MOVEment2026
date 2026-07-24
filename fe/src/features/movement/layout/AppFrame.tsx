@@ -109,23 +109,25 @@ export function AppFrame({children}: AppFrameProps) {
               : totalTeams}
             </Button>
           )}
-          <Button
-            size="large"
-            shape="round"
-            type={
-              (
-                location.pathname.startsWith("/stations") &&
-                !location.pathname.startsWith("/stations/map")
-              ) ?
-                "primary"
-              : "default"
-            }
-            icon={<QrcodeOutlined />}
-            onClick={() => navigate("/stations")}>
-            {location.pathname.startsWith("/stations") ?
-              `Stations (${totalStation})`
-            : totalStation}
-          </Button>
+          {session.role === "user" && (
+            <Button
+              size="large"
+              shape="round"
+              type={
+                (
+                  location.pathname.startsWith("/stations") &&
+                  !location.pathname.startsWith("/stations/map")
+                ) ?
+                  "primary"
+                : "default"
+              }
+              icon={<QrcodeOutlined />}
+              onClick={() => navigate("/stations")}>
+              {location.pathname.startsWith("/stations") ?
+                `Stations (${totalStation})`
+              : totalStation}
+            </Button>
+          )}
           <Button
             size="large"
             shape="round"

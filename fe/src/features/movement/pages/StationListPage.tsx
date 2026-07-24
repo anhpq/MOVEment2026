@@ -22,7 +22,7 @@ import {
   Typography,
 } from "antd";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
@@ -37,9 +37,11 @@ import {
 
 export function StationListPage() {
   const navigate = useNavigate();
+  const params = useParams<{teamId: string}>();
   const {message} = AntdApp.useApp();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
+  const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
@@ -48,8 +50,10 @@ export function StationListPage() {
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
   const [isFinalReady, setIsFinalReady] = useState(false);
 
-  const team = teams.find((item) => item.id === activeTeamId);
-  const sortedStations = [...(teamStations[activeTeamId] ?? [])].sort(
+  const selectedTeamId =
+    session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
+  const team = teams.find((item) => item.id === selectedTeamId);
+  const sortedStations = [...(teamStations[selectedTeamId] ?? [])].sort(
     (left, right) =>
       STATUS_ORDER[left.status] - STATUS_ORDER[right.status] ||
       left.name.localeCompare(right.name),
@@ -66,6 +70,23 @@ export function StationListPage() {
             item.backendStatus === "PLAYING"),
       ),
     ).length;
+
+  useEffect(() => {
+    if (
+      session?.role === "admin" &&
+      params.teamId &&
+      teams.some((item) => item.id === params.teamId) &&
+      activeTeamId !== params.teamId
+    ) {
+      setActiveTeam(params.teamId);
+    }
+  }, [
+    activeTeamId,
+    params.teamId,
+    session?.role,
+    setActiveTeam,
+    teams,
+  ]);
 
   useEffect(() => {
     if (session?.role !== "user") {
@@ -100,7 +121,7 @@ export function StationListPage() {
 
   const handleStationClick = (station: TeamStation) => {
     if (session.role !== "user") {
-      navigate(`/stations/${station.stationId}`);
+      navigate(`/teams/${selectedTeamId}/stations/${station.stationId}`);
       return;
     }
 

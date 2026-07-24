@@ -54,13 +54,16 @@ export function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
   }
 
   if (allow && !allow.includes(session.role)) {
+    const homePath = session.role === 'admin' ? '/teams' : '/stations'
+    const homeLabel =
+      session.role === 'admin' ? 'Quay về danh sách đội' : 'Quay về danh sách trạm'
     return (
       <AppFrame>
         <Result
           status="403"
           title="Không có quyền truy cập"
           subTitle="Màn hình này chỉ hiển thị cho đúng nhóm quyền được mô tả trong yêu cầu."
-          extra={<Button onClick={() => navigate('/stations')}>Quay về danh sách trạm</Button>}
+          extra={<Button onClick={() => navigate(homePath)}>{homeLabel}</Button>}
         />
       </AppFrame>
     )

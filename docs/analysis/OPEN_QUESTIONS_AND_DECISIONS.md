@@ -590,6 +590,16 @@ Business Rules:
 
 ---
 
+## 11.2 Admin Team Station Navigation
+
+- Admin navigation không hiển thị menu `Stations` độc lập.
+- Sau khi đăng nhập, Admin đi tới danh sách Teams.
+- Admin chỉ mở danh sách Station/progress trong ngữ cảnh một Team bằng cách chọn Team đó.
+- Route danh sách và chi tiết Station của Admin phải giữ Team ID để back/navigation không làm mất Team đang xem.
+- Player vẫn sử dụng menu và route Station riêng theo Player flow.
+
+---
+
 ## 12. Git Policy
 
 | Chủ đề | Quyết định |

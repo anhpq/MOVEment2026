@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Admin Team-first Station navigation
+
+- [x] Admin footer no longer exposes a standalone Stations menu.
+- [x] Admin login opens Teams, and selecting a Team opens that Team's Station/progress list.
+- [x] Team context remains in Admin Station list/detail routes and after Admin score/status actions.
+- [x] Player Station menu and routes remain available only to Players.
+- [x] Frontend lint and production build passed.
+- [ ] Manual Admin browser click-through remains pending.
+
 ## 2026-07-24 Designated ST Station set
 
 - [x] `ST003`, `ST004`, `ST010`, and `ST047` are the designated `ST` Stations.

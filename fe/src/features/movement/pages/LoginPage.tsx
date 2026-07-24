@@ -229,7 +229,11 @@ export function LoginPage() {
         accessToken: userResponse.accessToken,
       });
       message.success("Login successful");
-      navigate("/stations");
+      navigate(
+        mapBackendRole(userResponse.user.role) === "admin" ?
+          "/teams"
+        : "/stations",
+      );
     } catch (error) {
       const messageText =
         error instanceof Error ? error.message : "Invalid username or password";
@@ -384,7 +388,7 @@ export function LoginPage() {
 
   useEffect(() => {
     if (session && !isSubmitting) {
-      navigate(session.role === "user" ? "/stations/map" : "/stations", {
+      navigate(session.role === "user" ? "/stations/map" : "/teams", {
         replace: true,
       });
     }

@@ -1,3 +1,11 @@
+## 2026-07-24 Admin Team-first Station navigation
+
+- Removed the standalone Stations footer action for Admin while preserving it for Players.
+- Admin login now opens `/teams`; selecting a Team opens `/teams/:teamId/stations`.
+- Admin Station detail uses `/teams/:teamId/stations/:stationId`, preserving Team context for score/status actions and back navigation.
+- Player `/stations`, `/stations/:stationId`, and map flows remain Player-only.
+- Frontend lint and production build passed.
+
 ## 2026-07-24 Designated ST Station set
 
 - Business designated exactly four `ST` Stations: `ST003`, `ST004`, `ST010`, and `ST047`.

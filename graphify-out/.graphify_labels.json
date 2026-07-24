@@ -175,8 +175,6 @@
   "173": "eslint",
   "174": "migration.sql",
   "175": "player.service.spec.ts",
-  "176": "@types/react",
-  "177": "@nestjs/testing",
   "178": "ts-jest",
   "179": "@types/node",
   "180": "migration.sql"

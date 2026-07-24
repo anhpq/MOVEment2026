@@ -47,10 +47,11 @@ type ScoreFormValues = {
 
 export function StationDetailPage() {
   const navigate = useNavigate();
-  const params = useParams<{stationId: string}>();
+  const params = useParams<{teamId?: string; stationId: string}>();
   const {modal, message} = AntdApp.useApp();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
+  const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
@@ -63,11 +64,31 @@ export function StationDetailPage() {
   const [isSubmittingCheckOut, setIsSubmittingCheckOut] = useState(false);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
 
-  const team = teams.find((item) => item.id === activeTeamId);
-  const station = (teamStations[activeTeamId] ?? []).find(
+  const selectedTeamId =
+    session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
+  const adminStationListPath = `/teams/${selectedTeamId}/stations`;
+  const team = teams.find((item) => item.id === selectedTeamId);
+  const station = (teamStations[selectedTeamId] ?? []).find(
     (item) => item.stationId === params.stationId,
   );
   const stationStartTime = station?.startTime ?? null;
+
+  useEffect(() => {
+    if (
+      session?.role === "admin" &&
+      params.teamId &&
+      teams.some((item) => item.id === params.teamId) &&
+      activeTeamId !== params.teamId
+    ) {
+      setActiveTeam(params.teamId);
+    }
+  }, [
+    activeTeamId,
+    params.teamId,
+    session?.role,
+    setActiveTeam,
+    teams,
+  ]);
   const playingTeamCount =
     station ?
       Object.values(teamStations).filter((stations) =>
@@ -275,7 +296,7 @@ export function StationDetailPage() {
                       );
                       await refreshAdminData();
                       message.success("Score saved successfully");
-                      navigate("/stations");
+                      navigate(adminStationListPath);
                     } catch (error) {
                       message.error(
                         error instanceof Error ?
@@ -377,7 +398,7 @@ export function StationDetailPage() {
                       }
                       await refreshAdminData();
                       message.success("Status reset successfully");
-                      navigate("/stations");
+                      navigate(adminStationListPath);
                     } catch (error) {
                       message.error(
                         error instanceof Error ?
@@ -490,7 +511,7 @@ export function StationDetailPage() {
                     await refreshAdminData();
                     message.success("Station completed successfully");
                     setIsScoreModalOpen(false);
-                    navigate("/stations");
+                    navigate(adminStationListPath);
                     return;
                   } catch (error) {
                     message.error(

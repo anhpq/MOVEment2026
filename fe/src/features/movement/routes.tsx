@@ -21,7 +21,7 @@ export function MovementRoutes() {
       <Route
         path="/stations"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allow={["user"]}>
             <StationListPage />
           </ProtectedRoute>
         }
@@ -37,7 +37,7 @@ export function MovementRoutes() {
       <Route
         path="/stations/:stationId"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allow={["user"]}>
             <StationDetailPage />
           </ProtectedRoute>
         }
@@ -59,6 +59,22 @@ export function MovementRoutes() {
         element={
           <ProtectedRoute allow={["admin"]}>
             <TeamListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/teams/:teamId/stations"
+        element={
+          <ProtectedRoute allow={["admin"]}>
+            <StationListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/teams/:teamId/stations/:stationId"
+        element={
+          <ProtectedRoute allow={["admin"]}>
+            <StationDetailPage />
           </ProtectedRoute>
         }
       />
