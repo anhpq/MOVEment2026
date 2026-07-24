@@ -942,8 +942,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_testing",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 191,
+      "community_name": "ts-jest",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -953,8 +953,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "nestjs_testing",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 191,
+      "community_name": "ts-jest",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -1074,8 +1074,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_package_devdependencies_globals",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 190,
+      "community_name": "jest",
       "norm_label": "globals"
     },
     {
@@ -1085,8 +1085,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_package_json_globals",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 190,
+      "community_name": "jest",
       "norm_label": "globals"
     },
     {
@@ -1096,8 +1096,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "be_package_devdependencies_jest",
-      "community": 190,
-      "community_name": "jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "jest"
     },
     {
@@ -1107,8 +1107,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "jest",
-      "community": 190,
-      "community_name": "jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "jest"
     },
     {
@@ -1162,8 +1162,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "be_package_devdependencies_ts_jest",
-      "community": 191,
-      "community_name": "ts-jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "ts-jest"
     },
     {
@@ -1173,8 +1173,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "ts_jest",
-      "community": 191,
-      "community_name": "ts-jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "ts-jest"
     },
     {
@@ -1184,8 +1184,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "be_package_devdependencies_ts_node",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 192,
+      "community_name": "typescript",
       "norm_label": "ts-node"
     },
     {
@@ -1195,8 +1195,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "ts_node",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 192,
+      "community_name": "typescript",
       "norm_label": "ts-node"
     },
     {
@@ -1206,8 +1206,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_package_devdependencies_typescript",
-      "community": 192,
-      "community_name": "typescript",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "typescript"
     },
     {
@@ -1217,8 +1217,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_package_json_typescript",
-      "community": 192,
-      "community_name": "typescript",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "typescript"
     },
     {
@@ -16281,7 +16281,7 @@
       "label": "Next Execution Order",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L369",
+      "source_location": "L370",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_next_execution_order",
       "community": 36,
@@ -42897,7 +42897,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/pages/StationListPage.tsx",
-      "source_location": "L308",
+      "source_location": "L314",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationlistpage_stationlistpage",
@@ -47307,7 +47307,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/pages/StationListPage.tsx",
-      "source_location": "L309",
+      "source_location": "L315",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationlistpage_stationlistpage",
@@ -54445,7 +54445,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L369",
+      "source_location": "L370",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -60625,5 +60625,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5de3669657fdc907d38683e0a224c6d6929d5a03"
+  "built_at_commit": "1c15ea3f53307b2ed31a0df1428ea002a30ff641"
 }

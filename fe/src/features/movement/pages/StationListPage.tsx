@@ -249,7 +249,13 @@ export function StationListPage() {
                   </div>
                 </div>
 
-                <div className="station-showcase-actions">
+                <div
+                  className={`station-showcase-actions ${
+                    session.role === "user" &&
+                    !(station.gameType === "ST" && station.youtubeUrl) ?
+                      "has-play-only"
+                    : ""
+                  }`}>
                       {station.gameType === "ST" && station.youtubeUrl && (
                         <Button
                           block

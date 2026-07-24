@@ -477,6 +477,10 @@
   color: #fff;
 }
 
+.station-showcase-actions.has-play-only .ant-btn {
+  grid-column: 2;
+}
+
 .station-actions {
   width: 100%;
   display: grid;
@@ -738,5 +742,9 @@
 
   .station-showcase-actions {
     grid-template-columns: 1fr;
+  }
+
+  .station-showcase-actions.has-play-only {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

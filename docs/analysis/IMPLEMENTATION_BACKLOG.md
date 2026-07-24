@@ -363,6 +363,7 @@ Acceptance:
 - [x] Balance the Team identity and equal-width score/progress metrics.
 - [x] Keep the shell brand responsive and align both Team metrics to identical content axes.
 - [x] Keep Player `Play` as the white secondary Station action with or without video.
+- [x] Keep Player `Play` in the second/right action column when no video action exists.
 - [x] Apply scoped Team-color accents without changing Station behavior.
 - [ ] Perform final visual review on representative mobile devices.
 

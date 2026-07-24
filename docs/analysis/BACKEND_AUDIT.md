@@ -462,3 +462,4 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Follow-up refinement aligns the Team icon and name in one centered identity row and places Score/Finished in an equal-width glass metric bar below for better visual balance.
 - Responsive follow-up removes the mobile header spacer, constrains the brand with fluid sizing/ellipsis, and gives both Team metrics identical icon/content grids with left-aligned copy.
 - Player `Play` remains a white secondary action on `/stations` even when the Station has no `Watch Video`; Admin `View & Edit` styling is unchanged.
+- When `Watch Video` is absent, the Player `Play` action keeps the second/right action column on desktop and mobile instead of shifting left.

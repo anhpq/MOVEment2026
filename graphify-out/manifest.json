@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationListPage.tsx": {
-    "mtime": 1784883900.7610757,
-    "ast_hash": "1296598e8387cb035e1f5ee8c93c4195",
+    "mtime": 1784884262.069496,
+    "ast_hash": "6da1a5877ff2ddd16ffde98f0d0acef6",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationsMapPage.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784883929.5450828,
-    "ast_hash": "54e6bc12e21308cc6f81c86bad1808e9",
+    "mtime": 1784884295.4379456,
+    "ast_hash": "e238bf3d9fd80386d3cf0ad7202fae3c",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784883928.0980396,
-    "ast_hash": "79a0ecace3e503a8f94a6f6653b6d670",
+    "mtime": 1784884293.444912,
+    "ast_hash": "a9cfb61f2da9435ccfb225959854b260",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
