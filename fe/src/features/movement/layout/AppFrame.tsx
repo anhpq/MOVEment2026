@@ -150,7 +150,8 @@ export function AppFrame({children}: AppFrameProps) {
               }
               icon={<QrcodeOutlined />}
               onClick={() => navigate("/stations")}>
-              {location.pathname.startsWith("/stations") ?
+              {location.pathname.startsWith("/stations") &&
+              !location.pathname.startsWith("/stations/map") ?
                 `Stations (${totalStation})`
               : totalStation}
             </Button>
