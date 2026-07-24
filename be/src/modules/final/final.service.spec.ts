@@ -42,6 +42,7 @@ const mockActivityLog = { log: jest.fn() }
 const mockEventConfig = {
   getPublicConfig: jest.fn(),
   isPastEventEnd: jest.fn(),
+  isPastFinalStart: jest.fn(),
 }
 
 describe('FinalService', () => {
@@ -79,8 +80,10 @@ describe('FinalService', () => {
       timezone: 'Asia/Ho_Chi_Minh',
       serverNow: new Date().toISOString(),
       isPastEventEnd: true,
+      isPastFinalStart: true,
     })
     mockEventConfig.isPastEventEnd.mockResolvedValue(true)
+    mockEventConfig.isPastFinalStart.mockResolvedValue(true)
     mockPrisma.$transaction.mockImplementation((callback: (tx: typeof mockTx) => unknown) =>
       callback(mockTx),
     )
@@ -120,7 +123,7 @@ describe('FinalService', () => {
       title: 'Updated Final',
       clueText: 'Updated clue',
     })
-    mockEventConfig.isPastEventEnd.mockResolvedValue(false)
+    mockEventConfig.isPastFinalStart.mockResolvedValue(false)
 
     const result = await service.updateFinalConfig(1, {
       title: 'Updated Final',
@@ -148,7 +151,7 @@ describe('FinalService', () => {
       ...challenge,
       answerHash: 'NEW KEYWORD',
     })
-    mockEventConfig.isPastEventEnd.mockResolvedValue(false)
+    mockEventConfig.isPastFinalStart.mockResolvedValue(false)
 
     const result = await service.updateFinalConfig(1, { answer: '  new   keyword  ' })
 
@@ -252,15 +255,16 @@ describe('FinalService', () => {
     expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 9 })
   })
 
-  it('does not open final before event end', async () => {
+  it('does not open final before finalStartsAt even after eventEndTime', async () => {
     mockEventConfig.getPublicConfig.mockResolvedValue({
-      eventEndTime: '23:58',
+      eventEndTime: '09:15',
       finalStartsAt: '23:58',
       notifyBeforeMinutes: 15,
       cancelCooldownMinutes: 5,
       timezone: 'Asia/Ho_Chi_Minh',
       serverNow: new Date().toISOString(),
-      isPastEventEnd: false,
+      isPastEventEnd: true,
+      isPastFinalStart: false,
     })
     mockPrisma.finalSubmission.count = jest.fn().mockResolvedValue(0)
 
@@ -270,10 +274,11 @@ describe('FinalService', () => {
       isOpen: false,
       canSubmit: false,
       clueText: null,
+      finalStartsAt: '23:58',
     })
   })
 
-  it('opens final at the configured event end when the team has no active station', async () => {
+  it('opens final at finalStartsAt when the team has no active station', async () => {
     mockEventConfig.getPublicConfig.mockResolvedValue({
       eventEndTime: '09:15',
       finalStartsAt: '23:59',
@@ -281,7 +286,8 @@ describe('FinalService', () => {
       cancelCooldownMinutes: 5,
       timezone: 'Asia/Ho_Chi_Minh',
       serverNow: new Date().toISOString(),
-      isPastEventEnd: true,
+      isPastEventEnd: false,
+      isPastFinalStart: true,
     })
 
     const result = await service.getPlayerFinal(4)
@@ -290,6 +296,7 @@ describe('FinalService', () => {
       isOpen: true,
       canSubmit: true,
       eventEndTime: '09:15',
+      finalStartsAt: '23:59',
       blockedByActiveStation: false,
     })
     expect(mockPrisma.teamStationProgress.findFirst).toHaveBeenCalledWith({

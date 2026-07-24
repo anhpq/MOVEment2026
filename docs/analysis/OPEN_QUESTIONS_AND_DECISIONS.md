@@ -380,7 +380,8 @@ Rotate Check-out không được tự rotate Check-in.
 | --- | --- |
 | Event Config | Event start time và end time được quản lý trong Admin Event Config. |
 | Hard-coded time | Không hard-code `11:30`, `11:45` hoặc giờ cố định trong Business Rule. |
-| Final opening | Final Challenge mở theo Event end time hiện tại. |
+| Final opening | Final Challenge mở theo `finalStartsAt` hiện tại trong Admin Event Config. |
+| Event end time | `eventEndTime` là thời gian đóng Station mới, không phải thời gian mở Final. |
 | Station mới sau end time | Team không được bắt đầu Station mới sau Event end time. |
 | Station đang chơi | Team đã Check-in trước Event end time được phép hoàn thành Station hiện tại. |
 | Điều kiện vào Final | Team không bắt buộc phải hoàn thành tất cả Station. |

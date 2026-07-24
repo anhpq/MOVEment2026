@@ -34,6 +34,11 @@ export class EventConfigService {
         serverNow,
         config.timezone,
       ),
+      isPastFinalStart: this.isPastLocalTime(
+        config.finalStartsAt,
+        serverNow,
+        config.timezone,
+      ),
     };
   }
 
@@ -69,6 +74,11 @@ export class EventConfigService {
   async isPastEventEnd(now = new Date()) {
     const config = await this.getConfig();
     return this.isPastLocalTime(config.eventEndTime, now, config.timezone);
+  }
+
+  async isPastFinalStart(now = new Date()) {
+    const config = await this.getConfig();
+    return this.isPastLocalTime(config.finalStartsAt, now, config.timezone);
   }
 
   isPastLocalTime(hhmm: string, now = new Date(), timezone = 'Asia/Ho_Chi_Minh') {

@@ -102,6 +102,16 @@ describe('PlayerService station flow', () => {
     )
   })
 
+  it('rejects check-in after eventEndTime with a closed station message', async () => {
+    mockEventConfig.isPastEventEnd.mockResolvedValue(true)
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).rejects.toThrow('Stations are closed')
+    expect(mockPrisma.qrToken.findUnique).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+  })
+
   it('rejects check-in when the QR token is invalid', async () => {
     jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false)
 
@@ -175,6 +185,41 @@ describe('PlayerService station flow', () => {
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_IN' }),
     ).resolves.toEqual(updated)
+  })
+
+  it('allows check-out after eventEndTime for a station already in progress', async () => {
+    mockEventConfig.isPastEventEnd.mockResolvedValue(true)
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+    }
+    const checkedOut = {
+      ...activeProgress,
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+    }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+
+    await expect(
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).resolves.toEqual(checkedOut)
+
+    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
+      where: { id: progress.id },
+      data: { checkedOutAt: expect.any(Date) },
+    })
   })
 
   it('checks out an active station and leaves score submission pending', async () => {

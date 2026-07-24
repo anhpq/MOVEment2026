@@ -17,6 +17,25 @@
 - [x] Verified Prisma schema/client, all 107 Backend tests, Backend/Frontend lint and build, active-source reference scan, diff check, and Graphify update.
 - [x] Recreated the local tester containers, applied all migrations, ran seed, confirmed the API is healthy, and confirmed the live OpenAPI document has no legacy scoring-code DTO or field.
 - [ ] Apply and verify the migration in Production during an explicitly approved deployment.
+## 2026-07-24 Tester runner Prisma Studio
+
+- [x] `npm run tester` starts Prisma Studio together with Backend API and Frontend preview.
+- [x] Added configurable `-PrismaStudioPort` with default `5555`.
+- [x] Runner checks Prisma Studio port availability, probes readiness, prints the Studio URL, logs to `.tester-logs/prisma-studio.log`, and stops the Studio job during cleanup.
+- [x] Verified with `npm run tester:smoke -- -SkipInstall -SkipSeed -ApiPort 3100 -FrontendPort 4273 -PrismaStudioPort 5655`.
+- [x] Backend lint/build, frontend lint/build, and `git diff --check` passed.
+- [ ] Manual long-running `npm run tester` keep-open usage remains pending.
+
+## 2026-07-24 Final start and Event end separation
+
+- [x] Final Challenge opening is verified against Admin Event Config `finalStartsAt`, not `eventEndTime`.
+- [x] Admin Event Config UI exposes `finalStartsAt` beside `eventEndTime`.
+- [x] `eventEndTime` remains the Station close time for new check-ins.
+- [x] Station Check-out and scoring remain allowed for Stations already started before `eventEndTime`.
+- [x] Player Station list/map click on a locked Station now reports that the Station is closed instead of opening check-in.
+- [x] Targeted backend Final/Player service tests, backend lint/build, frontend lint/build, and `git diff --check` passed.
+- [ ] Production deployment/runtime verification remains open and requires explicit approval.
+- [ ] Manual browser click-through after the deployed Event Config times remains pending.
 
 ## 2026-07-23 iOS QR camera lifecycle cleanup
 
@@ -86,7 +105,7 @@
 
 ## 2026-07-22 Final Challenge completion
 
-- [x] Final opening is verified against Admin Event Config `eventEndTime`; changing Event Config changes availability without Source Code changes.
+- [x] Historical 2026-07-22 verification used Admin Event Config `eventEndTime` for Final opening; this was superseded on 2026-07-24 by `finalStartsAt` as the Final opening rule.
 - [x] Active Source Code no longer uses fixed `11:30` or `11:45`; remaining matches are historical documentation warnings or the original baseline migration.
 - [x] Local/test seed creates or repairs the active Final keyword hash for `DISANVANHOA2026` and remains idempotent when run repeatedly.
 - [x] Backend and frontend trim and uppercase answer input; backend remains the authoritative validator and frontend source does not contain the official answer.
@@ -182,7 +201,7 @@ Acceptance:
 - [x] Tracking modes `SCORE`, `TIME`, and `BOTH` exist in historical verified implementation.
 - [x] `TIME` auto-completes with score 0 in historical verification.
 - [x] `SCORE` and `BOTH` require score entry in historical verification.
-- [x] Backend score limits and the former confirmation-code flow have historical verification; the confirmation-code mechanism was retired on 2026-07-24.
+- [x] Backend score limits and confirmation-code flow have historical verification.
 - [x] Re-run Station flow verification after Station QR migration.
 - [x] Verify new Station creation automatically provisions both secure QR tokens.
 - [x] Verify duplicate score submissions after migration.

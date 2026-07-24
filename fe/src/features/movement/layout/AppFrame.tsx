@@ -71,7 +71,7 @@ export function AppFrame({children}: AppFrameProps) {
           <div className="header-spacer" />
           <div className="app-brand" aria-label="Application branding">
             <RunningPersonIcon className="app-runner-mark" />
-            <span>MOVEment 2026</span>
+            <span className="brand-title">MOVEment 2026</span>
           </div>
 
           <Flex vertical align="flex-end" gap={2} className="account-cluster">

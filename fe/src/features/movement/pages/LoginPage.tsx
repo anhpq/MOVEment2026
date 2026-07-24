@@ -406,7 +406,7 @@ export function LoginPage() {
             <div className="login-runner-mark" aria-hidden="true">
               <RunningPersonIcon />
             </div>
-            <Typography.Title level={2} className="login-title">
+            <Typography.Title level={2} className="brand-title login-title">
               MOVEment 2026
             </Typography.Title>
           </div>

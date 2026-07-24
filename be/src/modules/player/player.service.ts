@@ -157,7 +157,7 @@ export class PlayerService {
 
   async checkIn(teamId: number, stationId: string, dto: QrActionDto) {
     if (await this.eventConfig.isPastEventEnd()) {
-      throw new ForbiddenException('Event has ended; new check-in is locked');
+      throw new ForbiddenException('Stations are closed');
     }
 
     const qrToken = await this.validateStationQr(dto.qrToken, QrPurpose.CHECK_IN);

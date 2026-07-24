@@ -211,16 +211,18 @@ Score rules:
 
 ## Event Config
 
-Event start and end time are managed by Admin Event Config.
+Event start time, Event end time, and Final start time are managed by Admin Event Config.
 
 Do not hard-code fixed values such as `11:30` or `11:45`.
 
 After Event end:
 
 - Team cannot start a new Station;
-- Team that checked in before Event end may finish its current Station;
-- Final becomes available according to Event Config;
-- Team with an active Station must finish it before Final.
+- Team that checked in before Event end may finish its current Station.
+
+Final becomes available according to `finalStartsAt` in Admin Event Config.
+
+Team with an active Station must finish it before Final.
 
 ## Final Challenge
 

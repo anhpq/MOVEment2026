@@ -461,6 +461,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 
 - Event start time.
 - Event end time.
+- Final start time.
 - Admin Event Config.
 - Station start restrictions.
 - Final opening time.
@@ -478,7 +479,8 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ### Confirmed Rules
 
 - Do not hard-code `11:30`, `11:45`, or another fixed time.
-- Final opens according to the configured Event end time.
+- Final opens according to the configured `finalStartsAt` time.
+- `eventEndTime` closes new Station check-ins and does not open Final.
 - A Team cannot begin a new Station after Event end time.
 - A Team that started before Event end time may finish the current Station.
 - A Team with an active Station must finish it before entering Final.

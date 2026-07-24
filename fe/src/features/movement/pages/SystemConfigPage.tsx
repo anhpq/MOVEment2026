@@ -226,7 +226,7 @@ export function SystemConfigPage() {
                         <Flex
                           vertical
                           gap={4}
-                          className="station-content full-width">
+                          className="full-width">
                           <Flex gap={8} className="full-width">
                             <Typography.Title level={4} className="card-title full-width">
                               {station.name}
@@ -323,7 +323,7 @@ export function SystemConfigPage() {
                         <Flex
                           vertical
                           gap={4}
-                          className="station-content full-width">
+                          className="full-width">
                           <Flex align="center" gap={8} className="full-width">
                             <Typography.Title
                               level={4}

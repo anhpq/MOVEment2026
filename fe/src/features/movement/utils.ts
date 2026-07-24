@@ -277,6 +277,10 @@ export function getDisabledReason(
   station: TeamStation,
   activeStation: TeamStation | undefined,
 ) {
+  if (station.backendStatus === "LOCKED") {
+    return "Station đã đóng";
+  }
+
   if (station.status === "Finished") {
     return "Station has already been completed";
   }

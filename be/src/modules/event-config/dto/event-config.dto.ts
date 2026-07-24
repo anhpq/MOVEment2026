@@ -9,6 +9,11 @@ export class UpdateEventConfigDto {
   eventEndTime?: string;
 
   @IsOptional()
+  @IsString()
+  @Matches(HH_MM_PATTERN)
+  finalStartsAt?: string;
+
+  @IsOptional()
   @IsInt()
   @Min(1)
   notifyBeforeMinutes?: number;

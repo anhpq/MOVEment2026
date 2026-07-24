@@ -92,8 +92,8 @@ export function FinalPage() {
                 Final Challenge is not open yet
               </Typography.Title>
               <Typography.Paragraph>
-                It opens automatically when the event ends at{" "}
-                <strong>{final.eventEndTime}</strong>.
+                Stations close at <strong>{final.eventEndTime}</strong>. Final opens at{" "}
+                <strong>{final.finalStartsAt}</strong>.
               </Typography.Paragraph>
             </div>
           </section>

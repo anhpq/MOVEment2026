@@ -72,6 +72,7 @@ function buildPlayerSeed(
         teamId,
         stationId: station.id,
         maxPoints: station.game?.maxPoints,
+        backendStatus: station.progress?.status ?? "AVAILABLE",
         gameType: station.game?.type,
       })),
     },

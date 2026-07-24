@@ -77,7 +77,6 @@
   "75": "eslint-plugin-react-hooks",
   "76": "@types/react",
   "77": "package.json",
-  "78": "@vitejs/plugin-react",
   "79": "eslint",
   "80": "helmet",
   "81": "store.ts",
@@ -169,6 +168,5 @@
   "170": "migration.sql",
   "171": "migration.sql",
   "172": "konva",
-  "173": "player.service.spec.ts",
   "174": "migration.sql"
 }

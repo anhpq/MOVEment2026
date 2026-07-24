@@ -5,7 +5,8 @@ param(
   [switch]$KeepOpen,
   [switch]$Smoke,
   [int]$ApiPort = 3000,
-  [int]$FrontendPort = 4173
+  [int]$FrontendPort = 4173,
+  [int]$PrismaStudioPort = 5555
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,8 +19,10 @@ $BackendEnv = Join-Path $BackendDir ".env"
 $BackendEnvExample = Join-Path $BackendDir ".env.example"
 $ApiOrigin = "http://127.0.0.1:$ApiPort"
 $FrontendOrigin = "http://127.0.0.1:$FrontendPort"
+$PrismaStudioOrigin = "http://127.0.0.1:$PrismaStudioPort"
 $DisplayApiOrigin = "http://localhost:$ApiPort"
 $DisplayFrontendOrigin = "http://localhost:$FrontendPort"
+$DisplayPrismaStudioOrigin = "http://localhost:$PrismaStudioPort"
 
 function Step($Message) {
   Write-Host ""
@@ -161,6 +164,10 @@ function Stop-RunnerJobs {
     Stop-Job -Job $script:FrontendJob -ErrorAction SilentlyContinue | Out-Null
     Remove-Job -Job $script:FrontendJob -Force -ErrorAction SilentlyContinue | Out-Null
   }
+  if ($script:PrismaStudioJob) {
+    Stop-Job -Job $script:PrismaStudioJob -ErrorAction SilentlyContinue | Out-Null
+    Remove-Job -Job $script:PrismaStudioJob -Force -ErrorAction SilentlyContinue | Out-Null
+  }
 }
 
 trap {
@@ -182,6 +189,7 @@ $DatabaseUrl = Read-EnvValue $BackendEnv "DATABASE_URL"
 Ensure-LocalDatabase $DatabaseUrl
 Assert-PortAvailable $ApiPort "Backend API"
 Assert-PortAvailable $FrontendPort "Frontend"
+Assert-PortAvailable $PrismaStudioPort "Prisma Studio"
 
 if (!$SkipInstall) {
   Step "Installing dependencies when needed"
@@ -201,7 +209,8 @@ Invoke-Checked "Frontend build" $FrontendDir "npm.cmd" @("run", "build") @{VITE_
 Step "Starting test servers"
 $ApiLog = Join-Path $LogDir "backend.log"
 $FrontendLog = Join-Path $LogDir "frontend.log"
-Remove-Item -LiteralPath $ApiLog, $FrontendLog -Force -ErrorAction SilentlyContinue
+$PrismaStudioLog = Join-Path $LogDir "prisma-studio.log"
+Remove-Item -LiteralPath $ApiLog, $FrontendLog, $PrismaStudioLog -Force -ErrorAction SilentlyContinue
 
 $script:ApiJob = Start-Job -Name "movement-api" -ScriptBlock {
   param($Dir, $Port, $CorsOrigin, $LogPath)
@@ -226,14 +235,25 @@ $script:FrontendJob = Start-Job -Name "movement-frontend" -ScriptBlock {
   }
 } -ArgumentList $FrontendDir, $FrontendPort, $ApiOrigin, $FrontendLog
 
+$script:PrismaStudioJob = Start-Job -Name "movement-prisma-studio" -ScriptBlock {
+  param($Dir, $Port, $LogPath)
+  Set-Location $Dir
+  npm.cmd exec prisma studio -- --hostname 0.0.0.0 --port $Port *> $LogPath
+  if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+  }
+} -ArgumentList $BackendDir, $PrismaStudioPort, $PrismaStudioLog
+
 Wait-Http "$ApiOrigin/api/docs" "Backend API"
 Wait-Http $FrontendOrigin "Frontend"
+Wait-Http $PrismaStudioOrigin "Prisma Studio"
 
 Write-Host ""
 Write-Host "Tester can open:" -ForegroundColor Green
 Write-Host "  Frontend: $DisplayFrontendOrigin"
 Write-Host "  API docs: $DisplayApiOrigin/api/docs"
-Write-Host "  Loopback health URLs used by runner: $FrontendOrigin and $ApiOrigin/api/docs"
+Write-Host "  Prisma Studio: $DisplayPrismaStudioOrigin"
+Write-Host "  Loopback health URLs used by runner: $FrontendOrigin, $ApiOrigin/api/docs, and $PrismaStudioOrigin"
 Write-Host ""
 Write-Host "Seed accounts:"
 Write-Host "  Admin: admin / admin123"
@@ -242,6 +262,7 @@ Write-Host ""
 Write-Host "Logs:"
 Write-Host "  $ApiLog"
 Write-Host "  $FrontendLog"
+Write-Host "  $PrismaStudioLog"
 Write-Host ""
 if ($Smoke) {
   Write-Host "Tester smoke completed; stopping test servers." -ForegroundColor Green
@@ -249,11 +270,11 @@ if ($Smoke) {
   exit 0
 }
 
-Write-Host "Keep this window open while testing. Press Ctrl+C to stop both servers."
+Write-Host "Keep this window open while testing. Press Ctrl+C to stop Backend, Frontend, and Prisma Studio."
 
 try {
   while ($true) {
-    $failed = @($script:ApiJob, $script:FrontendJob) | Where-Object { $_.State -in @("Failed", "Stopped", "Completed") }
+    $failed = @($script:ApiJob, $script:FrontendJob, $script:PrismaStudioJob) | Where-Object { $_.State -in @("Failed", "Stopped", "Completed") }
     if ($failed.Count -gt 0) {
       Write-Host "A server stopped. Check logs in $LogDir." -ForegroundColor Yellow
       break

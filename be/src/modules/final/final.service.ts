@@ -30,8 +30,8 @@ export class FinalService {
       this.getActiveStationProgress(teamId),
       this.getCooldownState(challenge.id, teamId, now),
     ]);
-    const isPastEventEnd = eventConfig.isPastEventEnd;
-    const isOpen = isPastEventEnd && !activeProgress;
+    const isPastFinalStart = eventConfig.isPastFinalStart;
+    const isOpen = isPastFinalStart && !activeProgress;
 
     return {
       id: challenge.id,
@@ -39,6 +39,7 @@ export class FinalService {
       clueText: isOpen ? challenge.clueText : null,
       startsAt: challenge.startsAt,
       eventEndTime: eventConfig.eventEndTime,
+      finalStartsAt: eventConfig.finalStartsAt,
       maxWinners: this.maxFinalBonusRank,
       pointsByRank: Array.from(
         { length: this.maxFinalBonusRank },
@@ -59,7 +60,7 @@ export class FinalService {
   async submitFinal(teamId: number, dto: SubmitFinalDto) {
     const challenge = await this.getActiveChallenge();
     const now = new Date();
-    if (!(await this.eventConfig.isPastEventEnd(now))) {
+    if (!(await this.eventConfig.isPastFinalStart(now))) {
       throw new BadRequestException('Final challenge is not open yet');
     }
     const activeProgress = await this.getActiveStationProgress(teamId);
@@ -209,7 +210,7 @@ export class FinalService {
 
   async updateFinalConfig(userId: number, dto: UpdateFinalConfigDto) {
     const challenge = await this.getActiveChallenge();
-    if (await this.eventConfig.isPastEventEnd()) {
+    if (await this.eventConfig.isPastFinalStart()) {
       throw new BadRequestException('Cannot update final config after it opens');
     }
     const data = {
