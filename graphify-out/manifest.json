@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.ts": {
-    "mtime": 1784855955.8516083,
-    "ast_hash": "961a24f1623b6ce3e305f9c4bfe60e87",
+    "mtime": 1784861366.455529,
+    "ast_hash": "5508548ef460d806f76c7d49060b08d6",
     "semantic_hash": ""
   },
   "be/src/modules/admin/xlsx-report.ts": {
@@ -240,8 +240,8 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784856569.3982534,
-    "ast_hash": "6bcf247e7d8be0758db651f6ba5ff93b",
+    "mtime": 1784861362.5970087,
+    "ast_hash": "7b33ff8cc81d349d3281420f85ff8f7c",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -280,13 +280,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationEditorPage.tsx": {
-    "mtime": 1784828145.7506678,
-    "ast_hash": "f385671d42c3c51d3f8e57eee8cd871a",
+    "mtime": 1784861355.156631,
+    "ast_hash": "38df326f4a3ea9638f736078603233af",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationListPage.tsx": {
-    "mtime": 1784827497.362278,
-    "ast_hash": "65b43f5ef36872b3a91341fd0afa979d",
+    "mtime": 1784860906.4437153,
+    "ast_hash": "5e8d979600dca8a402e60de53c0eff1c",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationsMapPage.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784857287.5992258,
-    "ast_hash": "e5c6d2b830b12d6b2ed01fd24695a7ad",
+    "mtime": 1784861469.4825985,
+    "ast_hash": "83e4b434a056fa86de86c10e1c4a6d74",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784857286.4707615,
-    "ast_hash": "f64e840bacb074f3f00cdc7ae4c9bd94",
+    "mtime": 1784861467.5815015,
+    "ast_hash": "09109349b534ed752068862397374a58",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -585,8 +585,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/dto/update-station.dto.ts": {
-    "mtime": 1784821605.4033837,
-    "ast_hash": "b0ee3f4e6dbed969a8f296026023c5d9",
+    "mtime": 1784861364.4807322,
+    "ast_hash": "b1e7c24d07efe24041acf9849cbfc3db",
     "semantic_hash": ""
   },
   "be/src/modules/admin/dto/team.dto.ts": {
@@ -700,8 +700,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.spec.ts": {
-    "mtime": 1784855961.788733,
-    "ast_hash": "e44d46a4a2953886f6f9673ab342e760",
+    "mtime": 1784861381.9369736,
+    "ast_hash": "11a4248a71a74706f24db5d65d7ff0a7",
     "semantic_hash": ""
   },
   "docs/analysis/FEATURE_INDEX.md": {

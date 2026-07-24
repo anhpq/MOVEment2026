@@ -381,6 +381,12 @@ export class AdminService {
     const checkInQrToken = this.getOptionalQrToken(dto.checkInQrToken);
     const checkOutQrToken = this.getOptionalQrToken(dto.checkOutQrToken);
     const result = await this.prisma.$transaction(async (tx) => {
+      const activeGame = dto.maxPoints !== undefined
+        ? await tx.game.findFirstOrThrow({
+            where: { stationId, isActive: true },
+            select: { maxPoints: true },
+          })
+        : null;
       const updated = await tx.station.update({
         where: { id: stationId },
         data: {
@@ -391,11 +397,29 @@ export class AdminService {
           mapY: dto.mapY,
         },
       });
-      if (dto.mediaUrl !== undefined) {
+      if (
+        dto.mediaUrl !== undefined ||
+        dto.gameType !== undefined ||
+        dto.maxPoints !== undefined
+      ) {
         await tx.game.updateMany({
           where: { stationId, isActive: true },
-          data: { mediaUrl: dto.mediaUrl },
+          data: {
+            ...(dto.mediaUrl !== undefined ? { mediaUrl: dto.mediaUrl } : {}),
+            ...(dto.gameType !== undefined
+              ? { type: dto.gameType.trim().toUpperCase() }
+              : {}),
+            ...(dto.maxPoints !== undefined ? { maxPoints: dto.maxPoints } : {}),
+          },
         });
+      }
+      if (activeGame && dto.maxPoints !== undefined) {
+        const maxPointsDelta = dto.maxPoints - activeGame.maxPoints;
+        if (maxPointsDelta !== 0) {
+          await tx.team.updateMany({
+            data: { maxPossiblePoints: { increment: maxPointsDelta } },
+          });
+        }
       }
       const qrTokens = [];
       if (checkInQrToken) {
@@ -420,6 +444,8 @@ export class AdminService {
         trackingMode: dto.trackingMode ?? null,
         mapX: dto.mapX ?? null,
         mapY: dto.mapY ?? null,
+        gameType: dto.gameType ?? null,
+        maxPoints: dto.maxPoints ?? null,
         mediaUrl: dto.mediaUrl ?? null,
       },
     });

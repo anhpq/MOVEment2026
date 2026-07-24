@@ -1,5 +1,11 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Admin Station game configuration edit
+
+- [x] Existing Stations allow Admin to edit `gameType` and integer `maxPoints`.
+- [x] Backend updates the active Game and synchronizes Team maximum totals transactionally.
+- [x] Targeted Admin service tests (`25/25`) and Backend/Frontend production builds passed.
+
 ## 2026-07-24 Admin Operations UI merge recovery
 
 - [x] Restored the local responsive Admin Operations UI after the merge selected the minimal remote component.

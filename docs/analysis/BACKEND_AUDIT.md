@@ -1,3 +1,10 @@
+## 2026-07-24 Admin Station game configuration edit
+
+- Admin Station edit now accepts and persists `gameType` and integer `maxPoints`.
+- The Station Game update and corresponding `team.maxPossiblePoints` delta run in the existing Station update transaction.
+- The Station editor enables both fields for existing Stations and submits them through the audited Admin update API.
+- Verification passed: targeted Admin service tests (`25/25`) and Backend/Frontend production builds.
+
 ## 2026-07-24 Admin Operations UI merge recovery
 
 - Restored the responsive, styled local Admin Operations page that was replaced by the minimal remote version during merge conflict resolution.

@@ -205,6 +205,8 @@ export type AdminStationUpdateInput = {
   trackingMode?: StationTrackingMode
   mapX?: number
   mapY?: number
+  gameType?: string
+  maxPoints?: number
   mediaUrl?: string | null
   checkInQrToken?: string
   checkOutQrToken?: string

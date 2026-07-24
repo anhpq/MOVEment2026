@@ -140,6 +140,8 @@ export function StationEditorPage() {
                   trackingMode: values.trackingMode,
                   mapX: values.markerX,
                   mapY: values.markerY,
+                  gameType: values.gameType,
+                  maxPoints: values.maxPoints,
                   mediaUrl: values.youtubeUrl ?? null,
                   ...(checkInQrToken && checkInQrToken !== initialQrTokensRef.current.checkInQrToken ? {checkInQrToken} : {}),
                   ...(checkOutQrToken && checkOutQrToken !== initialQrTokensRef.current.checkOutQrToken ? {checkOutQrToken} : {}),
@@ -243,11 +245,11 @@ export function StationEditorPage() {
         <Form.Item label="Map Y (%)" name="markerY" rules={[{required: true}]}>
           <InputNumber min={0} max={100} className="full-width" />
         </Form.Item>
-        <Form.Item label="Game Type" name="gameType" rules={[{required: !isEditing}]}>
-          <Input disabled={isEditing} />
+        <Form.Item label="Game Type" name="gameType" rules={[{required: true}]}>
+          <Input />
         </Form.Item>
-        <Form.Item label="Max Points" name="maxPoints" rules={[{required: !isEditing}]}>
-          <InputNumber disabled={isEditing} min={0} className="full-width" />
+        <Form.Item label="Max Points" name="maxPoints" rules={[{required: true}]}>
+          <InputNumber min={0} precision={0} className="full-width" />
         </Form.Item>
         {isEditing && (
           <>

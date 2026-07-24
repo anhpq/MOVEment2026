@@ -1,5 +1,5 @@
 import { StationTrackingMode } from '@prisma/client';
-import { IsEnum, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, Min } from 'class-validator';
 
 export class UpdateStationDto {
   @IsOptional()
@@ -27,6 +27,16 @@ export class UpdateStationDto {
   @Min(0)
   @Max(100)
   mapY?: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  gameType?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  maxPoints?: number;
 
   @IsOptional()
   @IsUrl()

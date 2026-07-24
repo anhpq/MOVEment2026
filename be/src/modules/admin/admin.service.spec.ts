@@ -23,7 +23,12 @@ const team = {
 };
 
 const mockPrisma = {
-  game: {findMany: jest.fn(), create: jest.fn()},
+  game: {
+    findMany: jest.fn(),
+    findFirstOrThrow: jest.fn(),
+    create: jest.fn(),
+    updateMany: jest.fn(),
+  },
   station: {
     count: jest.fn(),
     create: jest.fn(),
@@ -79,6 +84,7 @@ describe('AdminService Team QR login lifecycle', () => {
       (callback: (tx: typeof mockPrisma) => unknown) => callback(mockPrisma),
     );
     mockPrisma.game.findMany.mockResolvedValue([]);
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({maxPoints: 30});
     mockPrisma.game.create.mockResolvedValue({id: 31});
     mockPrisma.station.count.mockResolvedValue(3);
     mockPrisma.station.create.mockResolvedValue({
@@ -489,6 +495,33 @@ describe('AdminService Team QR login lifecycle', () => {
         tokenFingerprint: expect.stringMatching(/^[a-f0-9]{64}$/),
       }),
     });
+  });
+
+  it('updates Station game type and max points and keeps Team maximums in sync', async () => {
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({maxPoints: 30});
+
+    await service.updateStation(1, 'ST999', {
+      gameType: 'puzzle',
+      maxPoints: 45,
+    });
+
+    expect(mockPrisma.game.updateMany).toHaveBeenCalledWith({
+      where: {stationId: 'ST999', isActive: true},
+      data: {type: 'PUZZLE', maxPoints: 45},
+    });
+    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
+      data: {maxPossiblePoints: {increment: 15}},
+    });
+    expect(mockActivityLog.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: 'UPDATE_STATION',
+        metadata: expect.objectContaining({
+          gameType: 'puzzle',
+          maxPoints: 45,
+        }),
+      }),
+    );
   });
 
   it('rejects invalid and duplicate Station QR tokens', async () => {
