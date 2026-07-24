@@ -169,10 +169,14 @@
   "167": "Get",
   "168": ".logout",
   "169": "UpdateFinalConfigDto",
+  "170": "PlayerController",
   "171": "migration.sql",
   "172": "konva",
   "173": "eslint",
+  "174": "team-results.service.ts",
   "175": "player.service.spec.ts",
+  "176": "isTeam",
+  "177": "UpdateEventConfigDto",
   "178": "ts-jest",
   "179": "migration.sql",
   "180": "migration.sql",
@@ -184,7 +188,9 @@
   "186": "migration.sql",
   "187": "migration.sql",
   "188": "migration.sql",
+  "189": "GenerateQrLoginTokenDto",
   "190": "jest",
   "191": "ts-jest",
-  "192": "typescript"
+  "192": "typescript",
+  "193": "player.service.spec.ts"
 }

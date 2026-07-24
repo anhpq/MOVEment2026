@@ -452,3 +452,10 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Added and applied migration `20260724190000_remove_station_cipher_game_type`; Legacy `CIPHER` Games become `STANDARD`, and the database constraint rejects values outside `ST`/`STANDARD`.
 - Tester database verification passed with `4 ST`, `6 STANDARD`, no `games.answer_hash` column, two consecutive seed runs, and `db:verify`.
 - Backend build and all 120 tests passed. Frontend lint and production build passed; the known non-blocking Vite large-chunk warning remains.
+
+## 2026-07-24 Compact Team Station list
+
+- Redesigned the mobile `/teams/:teamId/stations` presentation without changing Station behavior.
+- Converted the shell header and Team summary to compact horizontal layouts, hid secondary deploy/current-team copy on narrow screens, and reduced Station card padding, icons, metrics, and actions.
+- Added scoped Team-color accents to the Team summary and Station cards.
+- Frontend lint and production build passed; localhost route smoke returned `200`. The known non-blocking Vite large-chunk warning remains.

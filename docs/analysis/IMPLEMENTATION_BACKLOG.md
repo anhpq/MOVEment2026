@@ -357,6 +357,12 @@ Acceptance:
 - [x] Reduce shared shell and primary page-header sizing consistently.
 - [ ] Perform final visual review on representative desktop and mobile devices.
 
+## P2 — Team Station list presentation
+
+- [x] Compact the mobile shell header, Team summary, and Station cards.
+- [x] Apply scoped Team-color accents without changing Station behavior.
+- [ ] Perform final visual review on representative mobile devices.
+
 ## Next Execution Order
 
 1. Run Production-like smoke tests.

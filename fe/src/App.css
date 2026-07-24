@@ -273,12 +273,14 @@
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 28px;
+  gap: 20px;
   overflow: hidden;
-  padding: 28px 34px;
-  border: 1px solid rgba(255, 122, 89, 0.3);
+  padding: 20px 24px;
+  border: 1px solid var(--team-focus-ring, rgba(255, 122, 89, 0.3));
   border-radius: 18px;
-  background: linear-gradient(115deg, #fff2ea 0%, #ffd6c8 100%);
+  background:
+    radial-gradient(circle at 100% 100%, var(--team-primary-soft, #ffd6c8), transparent 42%),
+    linear-gradient(115deg, #fff 0%, var(--team-primary-soft, #fff2ea) 100%);
   box-shadow: 0 16px 38px rgba(111, 54, 37, 0.08);
 }
 
@@ -307,9 +309,10 @@
 }
 
 .station-team-avatar {
-  width: 76px;
-  height: 76px;
-  font-size: 2.2rem;
+  width: 60px;
+  height: 60px;
+  color: var(--team-primary, #ed7657);
+  font-size: 1.7rem;
 }
 
 .station-team-summary {
@@ -318,9 +321,9 @@
 }
 
 .station-team-summary h2 {
-  margin: 0 0 12px !important;
+  margin: 0 0 8px !important;
   color: #11244a;
-  font-size: 1.7rem;
+  font-size: 1.45rem;
 }
 
 .station-team-metrics {
@@ -332,7 +335,7 @@
 .station-team-metric {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 9px;
   min-width: 0;
   padding-right: 24px;
 }
@@ -345,11 +348,11 @@
 .station-metric-icon {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.68);
-  color: #ed7657;
+  color: var(--team-primary, #ed7657);
 }
 
 .station-team-metric span:last-child,
@@ -370,22 +373,28 @@
 }
 
 .station-showcase-card .ant-card-body {
-  padding: 20px;
+  padding: 16px;
+}
+
+.station-showcase-card {
+  overflow: hidden;
+  border-left: 4px solid var(--team-primary, #ed7657);
 }
 
 .station-showcase-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .station-showcase-avatar {
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   background: #fff3ee;
   box-shadow: none;
-  font-size: 1.65rem;
+  color: var(--team-primary, #ed7657);
+  font-size: 1.35rem;
 }
 
 .station-showcase-heading {
@@ -398,7 +407,7 @@
 }
 
 .station-showcase-heading .card-title {
-  font-size: 1.35rem !important;
+  font-size: 1.15rem !important;
 }
 
 .station-showcase-heading .compact-copy {
@@ -408,8 +417,8 @@
 .station-stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-bottom: 14px;
-  padding: 14px 10px;
+  margin-bottom: 12px;
+  padding: 11px 8px;
   border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 12px;
   background: #fffdfc;
@@ -418,9 +427,9 @@
 .station-stat {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
-  padding: 0 14px;
+  padding: 0 10px;
 }
 
 .station-stat + .station-stat {
@@ -428,8 +437,8 @@
 }
 
 .station-stat > .anticon {
-  color: #ed7657;
-  font-size: 1.35rem;
+  color: var(--team-primary, #ed7657);
+  font-size: 1.15rem;
 }
 
 .station-showcase-actions {
@@ -528,28 +537,49 @@
 
 @media (max-width: 720px) {
   .header-content {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: stretch;
     min-height: 0;
   }
 
   .app-brand {
     position: static;
+    justify-self: start;
     transform: none;
   }
 
   .account-cluster {
-    grid-column: 1;
-    justify-self: center;
-    align-items: center !important;
+    grid-column: 2;
+    justify-self: end;
+    align-items: flex-end !important;
     max-width: 100%;
-    text-align: center;
+    text-align: right;
+  }
+
+  .account-cluster .deploy-stamp,
+  .account-cluster .brand-subtitle {
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
   .shell-header {
-    padding: 7px 14px;
+    padding: 6px 12px;
+  }
+
+  .shell-header .brand-title {
+    font-size: 1.25rem !important;
+    letter-spacing: 0.025em;
+  }
+
+  .shell-header .app-runner-mark {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+
+  .shell-header .account-cluster .ant-btn {
+    height: 32px;
+    padding-inline: 10px;
   }
 
   .nav-strip {
@@ -584,15 +614,22 @@
   }
 
   .station-team-hero {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 14px;
-    padding: 22px 18px;
-    text-align: center;
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: stretch;
+    gap: 12px;
+    padding: 13px 14px;
+    text-align: left;
+  }
+
+  .station-team-avatar {
+    width: 46px;
+    height: 46px;
+    font-size: 1.3rem;
   }
 
   .station-team-summary h2 {
-    font-size: 1.45rem;
+    margin-bottom: 6px !important;
+    font-size: 1.2rem;
   }
 
   .station-team-metrics {
@@ -601,15 +638,42 @@
   }
 
   .station-team-metric {
-    padding-right: 12px;
+    gap: 6px;
+    padding-right: 8px;
   }
 
   .station-team-metric + .station-team-metric {
-    padding-left: 12px;
+    padding-left: 8px;
+  }
+
+  .station-metric-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+
+  .station-team-metric small {
+    font-size: 0.65rem;
+  }
+
+  .station-team-metric strong {
+    font-size: 0.95rem;
+  }
+
+  .station-showcase-card .ant-card-body {
+    padding: 13px;
   }
 
   .station-showcase-header {
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .station-showcase-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
   }
 
   .station-showcase-heading .ant-flex {
@@ -618,11 +682,22 @@
 
   .station-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 14px;
+    row-gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 6px;
   }
 
   .station-stat {
-    padding: 0 10px;
+    gap: 7px;
+    padding: 0 8px;
+  }
+
+  .station-stat small {
+    font-size: 0.65rem;
+  }
+
+  .station-stat strong {
+    font-size: 0.9rem;
   }
 
   .station-stat:nth-child(3) {
