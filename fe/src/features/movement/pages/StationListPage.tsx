@@ -265,7 +265,8 @@ export function StationListPage() {
                       <Button
                         block
                         type={
-                          station.gameType === "ST" && station.youtubeUrl ?
+                          session.role === "user" ||
+                          (station.gameType === "ST" && station.youtubeUrl) ?
                             "default"
                           : "primary"
                         }
