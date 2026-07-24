@@ -190,9 +190,6 @@ export function StationListPage() {
                         {station.status}
                       </Tag>
                     </Flex>
-                    <Typography.Paragraph className="muted-copy compact-copy">
-                      {station.description}
-                    </Typography.Paragraph>
                   </div>
                 </div>
 
