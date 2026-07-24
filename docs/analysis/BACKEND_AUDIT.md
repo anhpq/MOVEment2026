@@ -1,3 +1,11 @@
+## 2026-07-24 Designated ST Station set
+
+- Business designated exactly four `ST` Stations: `ST003`, `ST004`, `ST010`, and `ST047`.
+- Added migration `20260724153000_designate_st_stations`, preserving `CIPHER`, assigning the designated set to `ST`, and assigning every other non-Cipher Game to `STANDARD`.
+- Updated seed definitions so fresh databases use the same designated set.
+- Applied the migration to the tester database. Result: `3 CIPHER`, `4 ST`, and `3 STANDARD`; the earlier `3 CIPHER` plus `7 ST` migration result is superseded.
+- Verification passed: all `113` Backend tests, Backend/Frontend builds, migration status, two consecutive seed runs, and `db:verify`.
+
 ## 2026-07-24 Station Game Type constraint and video visibility
 
 - Replaced free-text Station Game Type with the fixed values `CIPHER`, `ST`, and `STANDARD`.

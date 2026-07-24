@@ -50,12 +50,12 @@ const stations = [
   ['ST002', 'Tram #2', 'CIPHER', 100, 18, 35],
   ['ST047', 'Tram #47', 'ST', 120, 25, 85],
   ['ST017', 'Tram #17', 'CIPHER', 110, 65, 22],
-  ['ST15A', 'Tram #15A', 'ST', 130, 82, 12],
-  ['ST029', 'Tram #29', 'ST', 150, 88, 42],
+  ['ST15A', 'Tram #15A', 'STANDARD', 130, 82, 12],
+  ['ST029', 'Tram #29', 'STANDARD', 150, 88, 42],
   ['ST003', 'Tram Sang Tao', 'ST', 140, 42, 48],
   ['ST004', 'Tram Am Nhac', 'ST', 120, 55, 65],
   ['ST005', 'Tram Khoi Phuc', 'CIPHER', 100, 75, 72],
-  ['ST006', 'Tram Khach', 'ST', 110, 48, 38],
+  ['ST006', 'Tram Khach', 'STANDARD', 110, 48, 38],
   ['ST010', 'Tram Tuyet Ky', 'ST', 200, 92, 60],
 ] as const;
 

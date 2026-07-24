@@ -1,11 +1,20 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Designated ST Station set
+
+- [x] `ST003`, `ST004`, `ST010`, and `ST047` are the designated `ST` Stations.
+- [x] `ST006`, `ST029`, and `ST15A` are `STANDARD`; existing `CIPHER` Stations remain unchanged.
+- [x] Follow-up migration and seed definitions use the same explicit mapping.
+- [x] Tester migration, two consecutive seed runs, and `db:verify` passed with `3 CIPHER`, `4 ST`, and `3 STANDARD`.
+- [x] All `113` Backend tests and Backend/Frontend builds passed.
+- [ ] Production migration remains pending and requires explicit deployment approval.
+
 ## 2026-07-24 Station Game Type constraint and video visibility
 
 - [x] Station Game Type is restricted to `CIPHER`, `ST`, and `STANDARD` in Admin UI, Backend validation, and database constraint.
-- [x] Legacy Game data migration preserves `CIPHER`, maps supported YouTube Games to `ST`, and maps the remainder to `STANDARD`.
+- [x] The initial Legacy migration preserved `CIPHER` and classified other Games from YouTube URL availability; the designated four-Station migration above supersedes that initial mapping.
 - [x] Only `ST` exposes `Watch Video`; Backend requires a valid HTTPS YouTube URL for `ST`.
-- [x] Tester migration, repeated seed, and seed verification passed with `3 CIPHER` and `7 ST`.
+- [x] Initial tester migration produced `3 CIPHER` and `7 ST`; this result was superseded by the explicit four-Station `ST` mapping above.
 - [x] All `113` Backend tests, Backend/Frontend lint and build, and local route health checks passed.
 - [ ] Production migration and deployed browser verification remain pending and require explicit deployment approval.
 

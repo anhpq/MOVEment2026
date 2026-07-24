@@ -222,9 +222,10 @@ STANDARD
 
 - `CIPHER` enables the cipher-answer action.
 - `ST` requires a valid HTTPS YouTube URL and is the only type that exposes `Watch Video`.
-- `STANDARD` is the default type for an ordinary Station without a usable YouTube video.
+- `STANDARD` is the default type for an ordinary Station and never exposes video, even when a media URL remains stored.
+- The current designated `ST` Stations are `ST003`, `ST004`, `ST010`, and `ST047`; other non-`CIPHER` Stations are `STANDARD` even if they retain a stored media URL.
 - Admin selects the type from a fixed combobox; Backend and database reject unsupported values.
-- Legacy non-`CIPHER` Games migrate to `ST` only when their stored URL matches a supported YouTube URL, otherwise to `STANDARD`.
+- Legacy migration preserves `CIPHER`, assigns only the designated list to `ST`, and assigns remaining Games to `STANDARD`.
 
 ## Event Config
 

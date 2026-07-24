@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "be/prisma/seed.ts": {
-    "mtime": 1784863062.4929216,
-    "ast_hash": "2ac5d3ba17565466c9ba0d6a4f7c96bd",
+    "mtime": 1784864080.295058,
+    "ast_hash": "4d4e888fb02714e0c54cb38f86e2a06f",
     "semantic_hash": ""
   },
   "be/src/app.module.ts": {
@@ -440,18 +440,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784863934.659111,
-    "ast_hash": "6cea00a28fb725840b0f6dd9d8d09789",
+    "mtime": 1784864291.4433303,
+    "ast_hash": "f12d7af71f0da217f05429f0c1fdf5ab",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784862968.8252387,
-    "ast_hash": "18b869e1c09c04d5c22d9ab50754ac6a",
+    "mtime": 1784864287.031815,
+    "ast_hash": "c99d817f28c2861877aaf4ef3d042857",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1784863874.3959436,
-    "ast_hash": "a523091475fc721de8c109e7ab40f901",
+    "mtime": 1784864289.5055614,
+    "ast_hash": "c2bf3c8b2ca08fe7a6044a51d65d9021",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784863932.405546,
-    "ast_hash": "6971fbfac37c3abb8f6b35d175315289",
+    "mtime": 1784864239.6491282,
+    "ast_hash": "06b2fbaee1541a4ba3a1b644d7518241",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -857,6 +857,11 @@
   "be/src/common/game/game-type.ts": {
     "mtime": 1784863012.3743756,
     "ast_hash": "ec9e458cdde6ca1231bc0ca7fb1b8693",
+    "semantic_hash": ""
+  },
+  "be/prisma/migrations/20260724153000_designate_st_stations/migration.sql": {
+    "mtime": 1784864083.7916553,
+    "ast_hash": "6c8fe09e0a6372815844c990afd03198",
     "semantic_hash": ""
   }
 }
