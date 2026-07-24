@@ -367,6 +367,7 @@ Acceptance:
 - [x] Make disabled Station video actions visually distinct from enabled primary actions.
 - [x] Hide Station video actions from Admin Team Station lists and expand `View & Edit` to the full action row.
 - [x] Keep every Admin `View & Edit` action primary regardless of Station video metadata.
+- [x] Redesign Station detail identity and metrics for clearer hierarchy and balanced mobile spacing.
 - [x] Apply scoped Team-color accents without changing Station behavior.
 - [ ] Perform final visual review on representative mobile devices.
 

@@ -175,8 +175,6 @@
   "173": "eslint",
   "174": "team-results.service.ts",
   "175": "player.service.spec.ts",
-  "176": "isTeam",
-  "177": "UpdateEventConfigDto",
   "178": "ts-jest",
   "179": "migration.sql",
   "180": "migration.sql",
@@ -189,7 +187,6 @@
   "187": "migration.sql",
   "188": "migration.sql",
   "189": "GenerateQrLoginTokenDto",
-  "190": "jest",
   "191": "ts-jest",
   "192": "typescript",
   "193": "player.service.spec.ts"

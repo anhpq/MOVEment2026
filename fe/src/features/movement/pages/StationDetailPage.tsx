@@ -1,8 +1,12 @@
 import {
   CheckCircleOutlined,
   EditOutlined,
+  FlagOutlined,
+  PlayCircleFilled,
   ReloadOutlined,
   SaveOutlined,
+  StarFilled,
+  TeamOutlined,
   WarningOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
@@ -11,19 +15,23 @@ import {
   App as AntdApp,
   Button,
   Card,
-  Descriptions,
   Empty,
   Flex,
   Form,
   Input,
   InputNumber,
   Modal,
+  Tag,
   Typography,
 } from "antd";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
-import {formatDateTime, formatDurationFromMs} from "../utils";
+import {
+  formatDateTime,
+  formatDurationFromMs,
+  getStationStatusColor,
+} from "../utils";
 import {
   checkOutStation,
   cancelPlayerStation,
@@ -172,23 +180,62 @@ export function StationDetailPage() {
 
   return (
     <Flex vertical gap={16} className="full-width">
-      <Card className="surface-card compact-card">
-        <Typography.Title level={3} className="section-title">
-          {station.name}
-        </Typography.Title>
-        <Typography.Paragraph>{station.description}</Typography.Paragraph>
-        <Descriptions column={2} size="small">
-          <Descriptions.Item label="Playing Teams">
-            {playingTeamCount}
-          </Descriptions.Item>
-          <Descriptions.Item label="Score">{station.score}</Descriptions.Item>
-          <Descriptions.Item label="Start Time">
-            {formatDateTime(station.startTime)}
-          </Descriptions.Item>
-          <Descriptions.Item label="End Time">
-            {formatDateTime(station.endTime)}
-          </Descriptions.Item>
-        </Descriptions>
+      <Card className="surface-card station-detail-hero">
+        <header className="station-detail-heading">
+          <span className="station-detail-avatar" aria-hidden="true">
+            <PlayCircleFilled />
+          </span>
+          <div className="station-detail-copy">
+            <div className="station-detail-title-row">
+              <Typography.Title level={2}>{station.name}</Typography.Title>
+              <Tag color={getStationStatusColor(station.status)}>
+                {station.status}
+              </Tag>
+            </div>
+            <Typography.Paragraph>
+              {station.description}
+            </Typography.Paragraph>
+          </div>
+        </header>
+
+        <div className="station-detail-stats">
+          <div className="station-detail-stat">
+            <span className="station-detail-stat-icon">
+              <TeamOutlined />
+            </span>
+            <span>
+              <small>Playing Teams</small>
+              <strong>{playingTeamCount}</strong>
+            </span>
+          </div>
+          <div className="station-detail-stat">
+            <span className="station-detail-stat-icon">
+              <StarFilled />
+            </span>
+            <span>
+              <small>Score</small>
+              <strong>{station.score}</strong>
+            </span>
+          </div>
+          <div className="station-detail-stat">
+            <span className="station-detail-stat-icon">
+              <PlayCircleFilled />
+            </span>
+            <span>
+              <small>Start Time</small>
+              <strong>{formatDateTime(station.startTime)}</strong>
+            </span>
+          </div>
+          <div className="station-detail-stat">
+            <span className="station-detail-stat-icon">
+              <FlagOutlined />
+            </span>
+            <span>
+              <small>End Time</small>
+              <strong>{formatDateTime(station.endTime)}</strong>
+            </span>
+          </div>
+        </div>
 
         {station.gameType === "ST" && station.youtubeUrl && (
           <Button
