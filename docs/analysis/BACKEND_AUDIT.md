@@ -1,3 +1,9 @@
+## 2026-07-25 Admin Station map position update
+
+- Hardened Admin `/system-config` map marker updates in `StationsMapPanel` by snapshotting the selected Station and finite `mapX`/`mapY` payload before the confirmation modal calls `PATCH /api/admin/stations/:stationId`.
+- Preserved the backend Station identifier contract: `stationId` remains the `Station.id` string primary key such as `ST001`; no numeric ID/code fallback, route change, guard weakening, QR, scoring, or Team behavior change was introduced.
+- Verification passed: frontend lint/build, backend build, and `git diff --check`. Manual browser persistence verification was not performed in this workspace session.
+
 ## 2026-07-24 Canonical 17-Station seed and sync
 
 - Replaced the old local/test Station seed inventory with the canonical 17 Stations `ST001`...`ST017`, preserving `ST` for `ST001`-`ST004` and normalizing `null`/`standard`/`STANDARD` input to DB/API `STANDARD`.

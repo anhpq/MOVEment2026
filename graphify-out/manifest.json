@@ -20,8 +20,8 @@
     "semantic_hash": ""
   },
   "be/package.json": {
-    "mtime": 1784904793.1691625,
-    "ast_hash": "cad45fe6e1cc75522c28308e03041688",
+    "mtime": 1784906057.837443,
+    "ast_hash": "69cac60fda2100c0eb290e40e1f25be8",
     "semantic_hash": ""
   },
   "be/prisma/init.sql": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "be/prisma/seed.ts": {
-    "mtime": 1784905011.5392542,
-    "ast_hash": "9e5a628d661bd4110f2f25d07b0997ef",
+    "mtime": 1784906057.837443,
+    "ast_hash": "db5f3a29cfba376c0c1a2fe161e1566d",
     "semantic_hash": ""
   },
   "be/src/app.module.ts": {
@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
-    "mtime": 1784894494.4365366,
-    "ast_hash": "502c2875d175f0dd6c57363099f019b2",
+    "mtime": 1784913843.1540003,
+    "ast_hash": "3f09fb3828cd3124a71146d0019cf199",
     "semantic_hash": ""
   },
   "fe/src/features/movement/constants.ts": {
@@ -440,17 +440,17 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784905706.0664413,
+    "mtime": 1784906057.840443,
     "ast_hash": "59971008e85c42a442f30837e8fdf07f",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784905560.3185508,
+    "mtime": 1784906057.841444,
     "ast_hash": "08f74432c8bb85fd3519415181376a69",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1784905566.2772202,
+    "mtime": 1784906057.841444,
     "ast_hash": "98a61b982bdb91912de1be917262d696",
     "semantic_hash": ""
   },
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784905690.9707046,
-    "ast_hash": "09d3436469fd2e32906c848cbfd2570f",
+    "mtime": 1784913908.6711013,
+    "ast_hash": "65f334d021544f7e632dfe16648fb0ee",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -650,8 +650,8 @@
     "semantic_hash": ""
   },
   "be/scripts/verify-seed.ts": {
-    "mtime": 1784905532.7420597,
-    "ast_hash": "79a517cc7d9be8b586413c9859310410",
+    "mtime": 1784906057.8394437,
+    "ast_hash": "1ca503de3f058d3d09d0dad8b381cd5f",
     "semantic_hash": ""
   },
   "be/prisma/migrations/000004_qr_login_tokens/migration.sql": {
@@ -915,18 +915,18 @@
     "semantic_hash": ""
   },
   "be/prisma/station-replacement.ts": {
-    "mtime": 1784905526.736103,
-    "ast_hash": "b54808d2f5ea3830281c44d0244ec5b4",
+    "mtime": 1784906057.8384445,
+    "ast_hash": "0c84ddd217ece0de5ed2bb412b50349d",
     "semantic_hash": ""
   },
   "be/prisma/station-seed-data.ts": {
-    "mtime": 1784905519.9073682,
-    "ast_hash": "50395c7ea5bcb767f74f1c466af00f12",
+    "mtime": 1784906057.8384445,
+    "ast_hash": "791be35f8f94effc8ace00ced0216c0a",
     "semantic_hash": ""
   },
   "be/scripts/sync-stations.ts": {
-    "mtime": 1784905552.982497,
-    "ast_hash": "47472dd444b84c8ec15e8cc3c08bddd6",
+    "mtime": 1784906057.8384445,
+    "ast_hash": "cde02d8f4af303c9f997a2399aafedb2",
     "semantic_hash": ""
   }
 }
