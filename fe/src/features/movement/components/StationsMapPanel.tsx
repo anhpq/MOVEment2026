@@ -20,14 +20,7 @@ import {
 } from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
-import {
-  Circle,
-  Group,
-  Image as KonvaImage,
-  Layer,
-  Stage,
-  Text,
-} from "react-konva";
+import {Image as KonvaImage, Layer, Stage} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {fetchAdminDatabase} from "../adminData";
 import {checkInStation, updateAdminStation} from "../api";
@@ -60,6 +53,8 @@ type TeamStationWithMeta = TeamStation & {
   description?: string | null;
 };
 
+type MarkerUiState = "active" | "completed" | "available" | "locked";
+
 const MIN_MAP_SCALE = 0.55;
 const MAX_MAP_SCALE = 4;
 const USER_STATUS_LEGEND: Array<{label: TeamStation["status"]}> = [
@@ -76,8 +71,42 @@ function getMarkerFill(status?: TeamStation["status"]) {
   return getStationStatusColor(status ?? "New");
 }
 
+function getMarkerUiState(teamStation?: TeamStationWithMeta): MarkerUiState {
+  switch (teamStation?.backendStatus) {
+    case "CHECKED_IN":
+    case "PLAYING":
+      return "active";
+    case "COMPLETED":
+      return "completed";
+    case "LOCKED":
+      return "locked";
+    case "AVAILABLE":
+      return "available";
+    default:
+      break;
+  }
+
+  switch (teamStation?.status) {
+    case "In Progress":
+      return "active";
+    case "Finished":
+      return "completed";
+    case "New":
+    default:
+      return "available";
+  }
+}
+
+function getMarkerStatusLabel(uiState: MarkerUiState) {
+  return uiState;
+}
+
 function clampPercent(value: number) {
   return Math.max(2, Math.min(98, value));
+}
+
+function isValidMapCoordinate(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 100;
 }
 
 function buildMarkerPosition(
@@ -203,13 +232,41 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     [stationDefinitions],
   );
 
-  const markers = useMemo(
+  const markerViewModels = useMemo(
     () =>
-      stationDefinitions.map((station) => ({
-        station,
-        position: buildMarkerPosition(station, fallbackPositions[station.id]),
-      })),
-    [fallbackPositions, stationDefinitions],
+      stationDefinitions.map((station) => {
+        const position = buildMarkerPosition(
+          station,
+          fallbackPositions[station.id],
+        );
+        const teamStation = activeTeamStationById[station.id];
+        const markerX = (position.x / 100) * viewportSize.width;
+        const markerY = (position.y / 100) * viewportSize.height;
+        const uiState = getMarkerUiState(teamStation);
+        const statusLabel = getMarkerStatusLabel(uiState);
+
+        return {
+          station,
+          markerX,
+          markerY,
+          screenX: mapPosition.x + markerX * mapScale,
+          screenY: mapPosition.y + markerY * mapScale,
+          teamStation,
+          uiState,
+          statusLabel,
+          ariaLabel: `${station.name} (${station.id}), status ${statusLabel}`,
+        };
+      }),
+    [
+      activeTeamStationById,
+      fallbackPositions,
+      mapPosition.x,
+      mapPosition.y,
+      mapScale,
+      stationDefinitions,
+      viewportSize.height,
+      viewportSize.width,
+    ],
   );
 
   const focusedStation = useMemo(
@@ -366,20 +423,37 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     const markerY = clampPercent(
       ((pointer.y - mapPosition.y) / mapScale / viewportSize.height) * 100,
     );
+    const stationSnapshot = selectedStation;
+    const nextMarker = {mapX: markerX, mapY: markerY};
+
+    if (
+      !isValidMapCoordinate(nextMarker.mapX) ||
+      !isValidMapCoordinate(nextMarker.mapY)
+    ) {
+      message.error("Marker position must be a finite number from 0 to 100");
+      return;
+    }
 
     modal.confirm({
       centered: true,
       title: "Update marker position?",
-      content: `${selectedStation.name} will be updated with the new position.`,
+      content: `${stationSnapshot.name} will be updated with the new position.`,
       okText: "Update",
       cancelText: "Cancel",
       onOk: async () => {
-        await updateAdminStation(selectedStation.id, {
-          mapX: markerX,
-          mapY: markerY,
-        });
-        loadDatabase(await fetchAdminDatabase());
-        message.success(`Updated position for station ${selectedStation.name}`);
+        try {
+          await updateAdminStation(stationSnapshot.id, nextMarker);
+          loadDatabase(await fetchAdminDatabase());
+          message.success(`Updated position for station ${stationSnapshot.name}`);
+        } catch (error: unknown) {
+          loadDatabase(await fetchAdminDatabase());
+          message.error(
+            error instanceof Error ?
+              error.message
+            : "Could not update station position",
+          );
+          throw error;
+        }
       },
     });
   };
@@ -472,52 +546,25 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     height={viewportSize.height}
                   />
                 )}
-
-                {markers.map(({station, position}) => {
-                  const markerX = (position.x / 100) * viewportSize.width;
-                  const markerY = (position.y / 100) * viewportSize.height;
-                  const teamStation = activeTeamStationById[station.id];
-                  const markerFill =
-                    session?.role === "user" ?
-                      getMarkerFill(teamStation?.status)
-                    : "#0f4ea8";
-
-                  return (
-                    <Group
-                      key={station.id}
-                      x={markerX}
-                      y={markerY}
-                      onClick={(event) => {
-                        event.cancelBubble = true;
-                        setFocusedStationId(station.id);
-                      }}
-                      onTap={(event) => {
-                        event.cancelBubble = true;
-                        setFocusedStationId(station.id);
-                      }}>
-                      <Circle
-                        radius={14}
-                        fill={markerFill}
-                        stroke="#ffffff"
-                        strokeWidth={2}
-                        shadowColor="rgba(0,0,0,0.3)"
-                        shadowBlur={10}
-                      />
-                      <Text
-                        text={station.id}
-                        x={-26}
-                        y={-7}
-                        width={52}
-                        align="center"
-                        fill="#ffffff"
-                        fontStyle="700"
-                        fontSize={8}
-                      />
-                    </Group>
-                  );
-                })}
               </Layer>
             </Stage>
+          )}
+          {viewportSize.width > 0 && viewportSize.height > 0 && (
+            <div className="movement-map-marker-buttons" aria-hidden={false}>
+              {markerViewModels.map(
+                ({station, screenX, screenY, uiState, ariaLabel}) => (
+                  <button
+                    key={station.id}
+                    type="button"
+                    aria-label={ariaLabel}
+                    className={`movement-map-marker-button movement-map-marker-button--${uiState}`}
+                    style={{left: screenX, top: screenY}}
+                    onClick={() => setFocusedStationId(station.id)}>
+                    <span className="movement-map-marker-code">{station.id}</span>
+                  </button>
+                ),
+              )}
+            </div>
           )}
         </div>
       </div>
