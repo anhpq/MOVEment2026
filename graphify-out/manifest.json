@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784865598.9990463,
-    "ast_hash": "75ab9f0c5e7d6c0bae8b6cd2be102122",
+    "mtime": 1784865846.3714602,
+    "ast_hash": "1ff31b9c6110bd78f659dceaeadad060",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784865596.7939088,
-    "ast_hash": "47cfa987ae3be5c6493028579f723b96",
+    "mtime": 1784865843.6292999,
+    "ast_hash": "d2d35f737521aa1571c4deaa2f5a8a1e",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -620,8 +620,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/LeaderboardPage.tsx": {
-    "mtime": 1784829467.1208816,
-    "ast_hash": "50bde3f83017494d8df0a237e3e71ae6",
+    "mtime": 1784865800.814703,
+    "ast_hash": "f580eb4985399e16f6c31eb531004971",
     "semantic_hash": ""
   },
   "package.json": {

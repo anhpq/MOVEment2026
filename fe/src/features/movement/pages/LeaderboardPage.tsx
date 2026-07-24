@@ -30,7 +30,10 @@ export function LeaderboardPage() {
     };
   }, []);
 
-  const activeTeamName = useMovementStore((state) => {
+  const playerTeamName = useMovementStore((state) => {
+    if (state.session?.role !== "user") {
+      return undefined;
+    }
     const activeTeamId = state.activeTeamId;
     return state.teams.find((team) => team.id === activeTeamId)?.name;
   });
@@ -56,7 +59,7 @@ export function LeaderboardPage() {
         renderItem={(row) => (
           <List.Item
             className={`leaderboard-row rank-${Math.min(row.rank, 4)} ${
-              row.teamName === activeTeamName ? "is-current-team" : ""
+              row.teamName === playerTeamName ? "is-current-team" : ""
             }`}>
             <div className="leaderboard-rank" aria-label={`Rank ${row.rank}`}>
               {row.rank === 1 && <CrownFilled className="rank-crown" />}
@@ -66,7 +69,7 @@ export function LeaderboardPage() {
             <div className="leaderboard-team">
               <div className="leaderboard-team-name">
                 <Typography.Text strong>{row.teamName}</Typography.Text>
-                {row.teamName === activeTeamName && (
+                {row.teamName === playerTeamName && (
                   <span className="current-team-badge">Your team</span>
                 )}
               </div>

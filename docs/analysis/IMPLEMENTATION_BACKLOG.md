@@ -1,5 +1,11 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Role-aware Leaderboard current-Team marker
+
+- [x] Admin Leaderboard does not show `Your team` or current-Team highlighting.
+- [x] Player Leaderboard continues to identify the authenticated Team.
+- [x] Frontend lint and production build passed.
+
 ## 2026-07-24 Admin Team-first Station navigation
 
 - [x] Admin footer no longer exposes a standalone Stations menu.

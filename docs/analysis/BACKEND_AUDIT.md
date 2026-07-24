@@ -1,3 +1,10 @@
+## 2026-07-24 Role-aware Leaderboard current-Team marker
+
+- Leaderboard now derives the current Team marker only for Player sessions.
+- Admin no longer sees `Your team` or the current-Team row highlight based on the last selected Admin Team.
+- Player behavior remains unchanged.
+- Frontend lint and production build passed.
+
 ## 2026-07-24 Admin Team-first Station navigation
 
 - Removed the standalone Stations footer action for Admin while preserving it for Players.
