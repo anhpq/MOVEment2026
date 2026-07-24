@@ -10,7 +10,7 @@ import {
 import { CurrentAuth } from '../../common/auth/auth.decorators';
 import { AuthContext, isTeam } from '../../common/auth/auth-context';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard';
-import { TeamSubmitScoreDto } from '../../common/dto/score.dto';
+import { SubmitScoreDto } from '../../common/dto/score.dto';
 import { QrActionDto, SubmitCipherDto } from './dto/player-actions.dto';
 import { PlayerService } from './player.service';
 
@@ -61,7 +61,7 @@ export class PlayerController {
   submitScore(
     @CurrentAuth() auth: AuthContext,
     @Param('stationId') stationId: string,
-    @Body() dto: TeamSubmitScoreDto,
+    @Body() dto: SubmitScoreDto,
   ) {
     return this.playerService.submitScore(this.requireTeam(auth), stationId, dto);
   }

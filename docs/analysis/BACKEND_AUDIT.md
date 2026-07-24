@@ -1,3 +1,20 @@
+## 2026-07-24 Admin score-only correction
+
+- Fixed Station Detail Admin score adjustment to always use the audited Admin correction endpoint instead of selecting the waiting-score submission endpoint from Frontend status.
+- Admin score correction now always requires a non-empty reason in both the Admin DTO/service and the UI form.
+- Correction is available only for an already `COMPLETED` progress. The UI disables the form otherwise, and the Backend independently rejects direct requests for non-completed progress.
+- Admin correction updates only `scoreAchieved` and `scoreEnteredByUserId` on progress, adjusts Team total points by the score delta, and writes score/activity audit records. It preserves progress status plus Check-in, Check-out, and completion timestamps.
+- The confirmation dialog now states that status and timestamps remain unchanged.
+- Verification passed: all 109 Backend tests, including non-completed Admin correction rejection and Player score regression coverage, Backend/Frontend lint and build, diff check, Graphify update, and local tester container recreation. The tester API is healthy; the known non-blocking Frontend large-chunk warning remains.
+
+## 2026-07-24 Scoring confirmation code removal
+
+- Removed the scoring confirmation-code mechanism from the accepted Business Rules, Team score DTO/API, Player service, frontend Station score form, environment validation, seed/config, smoke scripts, and current operational documentation.
+- Team score submission now requires a valid authenticated Team session and completed Check-out, while retaining backend score bounds, duplicate-completion protection, and the separate Admin correction/audit path.
+- Added migration `20260724120000_remove_scoring_confirmation_code` to drop `event_config.scoring_code_hash`. Historical migration and audit records remain unchanged as history.
+- Verification passed: Prisma Client generation and schema validation, all 107 Backend tests, Backend lint/build, Frontend lint/build, active-source reference scan, `git diff --check`, and Graphify update. The tester Backend/Frontend containers were recreated, all migrations applied, seed completed, the API became healthy, and its live OpenAPI document contains no `confirmationCode` or `TeamSubmitScoreDto`. The Frontend build retains the known non-blocking large-chunk warning.
+- Production migration and deployment have not been performed.
+
 ## 2026-07-24 Team QR raw token display
 
 - Changed Team QR Login storage so new, seed-repaired, replaced, and rotated QR Login records store `raw_token` in the backend database while preserving fingerprint/hash validation for Team QR login.

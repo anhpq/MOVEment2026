@@ -1,5 +1,23 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Admin score-only correction
+
+- [x] Admin Station Detail always calls the score-correction endpoint and no longer falls into `Progress is not waiting for score` based on Frontend status.
+- [x] Non-empty Admin correction reason is required by Frontend and Backend.
+- [x] Admin correction is enabled only for `COMPLETED` progress and rejected otherwise by both UI and Backend.
+- [x] Admin correction preserves progress status and all timestamps while updating score, Team total delta, and audit records.
+- [x] All 109 Backend tests, including Player score regression coverage, Backend/Frontend lint and build, diff check, Graphify update, and local tester runtime verification passed.
+
+## 2026-07-24 Scoring confirmation code removal
+
+- [x] Updated the confirmed Business Rule so Team score submission after Check-out does not require a confirmation code.
+- [x] Removed the confirmation-code field and verification from Backend and Frontend score submission.
+- [x] Removed `SCORING_CODE` and its bcrypt hash from runtime configuration, environment validation, seed, and current smoke/deployment scripts.
+- [x] Added a forward-only migration to drop `event_config.scoring_code_hash`.
+- [x] Verified Prisma schema/client, all 107 Backend tests, Backend/Frontend lint and build, active-source reference scan, diff check, and Graphify update.
+- [x] Recreated the local tester containers, applied all migrations, ran seed, confirmed the API is healthy, and confirmed the live OpenAPI document has no legacy scoring-code DTO or field.
+- [ ] Apply and verify the migration in Production during an explicitly approved deployment.
+
 ## 2026-07-23 iOS QR camera lifecycle cleanup
 
 - [x] Login QR scanner cleanup invalidates the run, clears RAF/timer resources, stops active media tracks, clears and reloads the video element, and disposes detector resources.
@@ -164,7 +182,7 @@ Acceptance:
 - [x] Tracking modes `SCORE`, `TIME`, and `BOTH` exist in historical verified implementation.
 - [x] `TIME` auto-completes with score 0 in historical verification.
 - [x] `SCORE` and `BOTH` require score entry in historical verification.
-- [x] Backend score limits and confirmation-code flow have historical verification.
+- [x] Backend score limits and the former confirmation-code flow have historical verification; the confirmation-code mechanism was retired on 2026-07-24.
 - [x] Re-run Station flow verification after Station QR migration.
 - [x] Verify new Station creation automatically provisions both secure QR tokens.
 - [x] Verify duplicate score submissions after migration.

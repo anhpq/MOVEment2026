@@ -4,6 +4,20 @@
   font-weight: 400;
   color: #17223b;
   background: #f7fbff;
+  --movement-navy: #14213d;
+  --movement-navy-soft: #526075;
+  --movement-coral: #ed7657;
+  --movement-coral-dark: #dc5839;
+  --movement-coral-soft: #fff1eb;
+  --movement-surface: rgba(255, 255, 255, 0.96);
+  --movement-border: rgba(237, 118, 87, 0.18);
+  --movement-border-neutral: rgba(15, 29, 58, 0.09);
+  --movement-radius-sm: 10px;
+  --movement-radius-md: 16px;
+  --movement-radius-lg: 20px;
+  --movement-page-title-size: 1.75rem;
+  --movement-shadow-sm: 0 8px 20px rgba(58, 39, 34, 0.06);
+  --movement-shadow-md: 0 16px 38px rgba(58, 39, 34, 0.09);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -22,6 +36,13 @@ body,
 
 body {
   margin: 0;
+  color: var(--movement-navy);
+}
+
+@media (max-width: 480px) {
+  :root {
+    --movement-page-title-size: 1.4rem;
+  }
 }
 
 button,

@@ -125,7 +125,6 @@ CREATE TABLE "event_config" (
   "final_starts_at" TEXT NOT NULL DEFAULT '23:59',
   "notify_before_minutes" INTEGER NOT NULL DEFAULT 15,
   "cancel_cooldown_minutes" INTEGER NOT NULL DEFAULT 5,
-  "scoring_code_hash" TEXT NOT NULL DEFAULT '$2b$10$Tn8oLEDmV3DOJjeKcFBz3.9UH/GFsatnF1wlmNfhWJP7dfTaSKwAO',
   "timezone" TEXT NOT NULL DEFAULT 'Asia/Ho_Chi_Minh',
   "updated_by_user_id" INTEGER,
   "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP

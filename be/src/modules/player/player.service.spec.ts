@@ -311,7 +311,7 @@ describe('PlayerService station flow', () => {
     })
   })
 
-  it('submits score only after check-out and with the confirmation code', async () => {
+  it('submits score after check-out without a confirmation code', async () => {
     const checkedOutAt = new Date('2026-07-19T01:10:00.000Z')
     const checkedInAt = new Date('2026-07-19T01:00:00.000Z')
     const scoreProgress = {
@@ -336,7 +336,6 @@ describe('PlayerService station flow', () => {
       scoreEvent: { create: jest.fn() },
     }
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
     mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
       callback(tx),
     )
@@ -344,7 +343,6 @@ describe('PlayerService station flow', () => {
     await expect(
       service.submitScore(2, 'ST002', {
         score: 40,
-        confirmationCode: '2468',
         reason: 'staff scored',
       }),
     ).resolves.toEqual(completed)
@@ -373,25 +371,6 @@ describe('PlayerService station flow', () => {
     })
   })
 
-  it('rejects score submission with an invalid confirmation code', async () => {
-    mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
-      ...progress,
-      checkedOutAt: new Date(),
-      team: { totalPoints: 0 },
-      game: { maxPoints: 50 },
-    })
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
-    jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false)
-
-    await expect(
-      service.submitScore(2, 'ST002', {
-        score: 10,
-        confirmationCode: 'wrong',
-      }),
-    ).rejects.toThrow(ForbiddenException)
-    expect(mockPrisma.$transaction).not.toHaveBeenCalled()
-  })
-
   it('rejects score values above the station maximum', async () => {
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
       ...progress,
@@ -399,12 +378,10 @@ describe('PlayerService station flow', () => {
       team: { totalPoints: 0 },
       game: { maxPoints: 50 },
     })
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
 
     await expect(
       service.submitScore(2, 'ST002', {
         score: 51,
-        confirmationCode: '2468',
       }),
     ).rejects.toThrow(BadRequestException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
@@ -433,16 +410,15 @@ describe('PlayerService station flow', () => {
       scoreEvent: { create: jest.fn() },
     }
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
     mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
       callback(tx),
     )
 
     await expect(
-      service.submitScore(2, 'ST002', { score: 0, confirmationCode: '2468' }),
+      service.submitScore(2, 'ST002', { score: 0 }),
     ).resolves.toBeDefined()
     await expect(
-      service.submitScore(2, 'ST002', { score: 30, confirmationCode: '2468' }),
+      service.submitScore(2, 'ST002', { score: 30 }),
     ).resolves.toBeDefined()
 
     expect(tx.teamStationProgress.updateMany).toHaveBeenCalledTimes(2)
@@ -458,12 +434,10 @@ describe('PlayerService station flow', () => {
       team: { totalPoints: 0 },
       game: { maxPoints: 50 },
     })
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
 
     await expect(
       service.submitScore(2, 'ST002', {
         score,
-        confirmationCode: '2468',
       }),
     ).rejects.toThrow(BadRequestException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
@@ -476,12 +450,10 @@ describe('PlayerService station flow', () => {
       team: { totalPoints: 0 },
       game: { maxPoints: 50 },
     })
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
 
     await expect(
       service.submitScore(2, 'ST002', {
         score: 10,
-        confirmationCode: '2468',
       }),
     ).rejects.toThrow(BadRequestException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
@@ -495,12 +467,10 @@ describe('PlayerService station flow', () => {
       team: { totalPoints: 0 },
       game: { maxPoints: 50 },
     })
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
 
     await expect(
       service.submitScore(2, 'ST002', {
         score: 10,
-        confirmationCode: '2468',
       }),
     ).rejects.toThrow(BadRequestException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
@@ -531,14 +501,13 @@ describe('PlayerService station flow', () => {
       scoreEvent: { create: jest.fn() },
     }
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
-    mockEventConfig.getConfig.mockResolvedValue({ scoringCodeHash: 'hash' })
     mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
       callback(tx),
     )
 
     const results = await Promise.allSettled([
-      service.submitScore(2, 'ST002', { score: 10, confirmationCode: '2468' }),
-      service.submitScore(2, 'ST002', { score: 10, confirmationCode: '2468' }),
+      service.submitScore(2, 'ST002', { score: 10 }),
+      service.submitScore(2, 'ST002', { score: 10 }),
     ])
 
     expect(results.filter((item) => item.status === 'fulfilled')).toHaveLength(1)

@@ -1,5 +1,13 @@
 import { ProgressStatus } from '@prisma/client';
-import { IsEnum, IsInt, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class SubmitScoreDto {
   @IsInt()
@@ -12,11 +20,15 @@ export class SubmitScoreDto {
   reason?: string;
 }
 
-export class TeamSubmitScoreDto extends SubmitScoreDto {
+export class AdminScoreDto {
+  @IsInt()
+  @Min(0)
+  score!: number;
+
   @IsString()
-  @MinLength(4)
-  @MaxLength(100)
-  confirmationCode!: string;
+  @IsNotEmpty()
+  @MaxLength(500)
+  reason!: string;
 }
 
 export class ReopenProgressDto {

@@ -1,5 +1,6 @@
 .mobile-shell {
   min-height: 100vh;
+  color: var(--movement-navy);
   background:
     radial-gradient(
       circle at top left,
@@ -21,9 +22,9 @@
   height: auto;
   line-height: normal;
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 252, 250, 0.9);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid var(--movement-border);
 }
 
 .header-content {
@@ -106,15 +107,22 @@
 }
 
 .page-stack {
-  width: min(100%, 520px);
+  width: min(100%, 760px);
   margin: 0 auto;
   padding: 18px 18px 32px;
   box-sizing: border-box;
 }
 
 .surface-card {
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 18px 40px rgba(22, 33, 62, 0.08);
+  overflow: hidden;
+  border: 1px solid var(--movement-border);
+  border-radius: var(--movement-radius-md);
+  background: var(--movement-surface);
+  box-shadow: var(--movement-shadow-sm);
+}
+
+.surface-card:hover {
+  border-color: rgba(237, 118, 87, 0.28);
 }
 
 .compact-card .ant-card-body {
@@ -133,11 +141,12 @@
 .card-title,
 .login-title {
   margin: 0 !important;
-  color: #17223b !important;
+  color: var(--movement-navy) !important;
 }
 
 .section-title {
-  font-size: 1.35rem !important;
+  font-size: var(--movement-page-title-size) !important;
+  line-height: 1.2 !important;
 }
 
 .live-clock {
@@ -160,6 +169,95 @@
 
 .station-card {
   width: 100%;
+}
+
+.page-stack > .ant-flex,
+.page-stack > section {
+  min-width: 0;
+}
+
+.page-stack .ant-card:not(.leaderboard-card):not(.final-cipher-card):not(.ops-metric-card) {
+  border-radius: var(--movement-radius-md);
+}
+
+.page-stack .ant-form-item-label > label {
+  color: var(--movement-navy-soft);
+  font-weight: 600;
+}
+
+.page-stack .ant-input,
+.page-stack .ant-input-affix-wrapper,
+.page-stack .ant-input-number,
+.page-stack .ant-select-selector,
+.page-stack .ant-picker {
+  min-height: 40px;
+  border-color: var(--movement-border-neutral);
+  border-radius: var(--movement-radius-sm) !important;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.page-stack .ant-input:hover,
+.page-stack .ant-input-affix-wrapper:hover,
+.page-stack .ant-input-number:hover,
+.page-stack .ant-select-selector:hover,
+.page-stack .ant-picker:hover {
+  border-color: rgba(237, 118, 87, 0.56);
+}
+
+.page-stack .ant-input:focus,
+.page-stack .ant-input-affix-wrapper-focused,
+.page-stack .ant-input-number-focused,
+.page-stack .ant-select-focused .ant-select-selector,
+.page-stack .ant-picker-focused {
+  border-color: var(--movement-coral);
+  box-shadow: 0 0 0 3px rgba(237, 118, 87, 0.1);
+}
+
+.page-stack .ant-btn {
+  border-radius: var(--movement-radius-sm);
+  font-weight: 600;
+}
+
+.page-stack .ant-btn-primary {
+  border-color: transparent;
+  background: linear-gradient(110deg, #ef8162, var(--movement-coral-dark));
+  box-shadow: 0 7px 16px rgba(220, 88, 57, 0.18);
+}
+
+.page-stack .ant-btn-primary:not(:disabled):hover {
+  border-color: transparent;
+  background: linear-gradient(110deg, #f18b6d, #d94f30);
+  transform: translateY(-1px);
+}
+
+.page-stack .ant-tabs-nav::before {
+  border-color: var(--movement-border);
+}
+
+.page-stack .ant-tabs-tab {
+  color: #6d7788;
+  font-weight: 600;
+}
+
+.page-stack .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--movement-coral);
+}
+
+.page-stack .ant-tabs-ink-bar {
+  background: var(--movement-coral);
+}
+
+.page-stack .ant-alert {
+  border-radius: var(--movement-radius-sm);
+}
+
+.page-stack .ant-tag {
+  border-radius: 999px;
+}
+
+.page-stack .card-list .ant-empty,
+.page-stack .ant-list-empty-text {
+  padding-block: 28px;
 }
 
 .station-card .ant-card-body {
@@ -393,6 +491,8 @@
 
 .login-card {
   width: min(100%, 420px);
+  border-radius: var(--movement-radius-lg);
+  box-shadow: var(--movement-shadow-md);
 }
 
 .login-header {
@@ -459,6 +559,14 @@
 
   .page-stack {
     padding: 14px 14px 28px;
+  }
+
+  .page-stack .surface-card .ant-card-body {
+    padding: 16px;
+  }
+
+  .page-stack .ant-form-item {
+    margin-bottom: 16px;
   }
 
   .section-head,

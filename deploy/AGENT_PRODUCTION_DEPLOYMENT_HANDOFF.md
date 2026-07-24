@@ -410,7 +410,7 @@ seed ran or was safely skipped
 db:verify passed when required
 no duplicate seed data
 no raw QR token in logs
-no scoring code in logs
+no retired scoring-code value in logs
 reusable Team QR works
 one active Team session still works
 SQ1 Station QR works
@@ -474,7 +474,7 @@ Required behavior:
 - Refreshing `/qr-login` does not return 404.
 - No mixed content.
 - CORS does not block same-origin requests.
-- Frontend bundle contains no scoring code or raw QR secret.
+- Frontend bundle contains no retired scoring-code value or raw QR secret.
 
 ---
 

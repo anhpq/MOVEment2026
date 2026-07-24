@@ -7,7 +7,7 @@ import {
 import { ActorType, Game, ProgressStatus, QrPurpose } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
-import { TeamSubmitScoreDto } from '../../common/dto/score.dto';
+import { SubmitScoreDto } from '../../common/dto/score.dto';
 import {
   createQrTokenFingerprint,
   normalizeQrToken,
@@ -315,19 +315,13 @@ export class PlayerService {
     return updated;
   }
 
-  async submitScore(teamId: number, stationId: string, dto: TeamSubmitScoreDto) {
-    const [progress, config] = await Promise.all([
-      this.prisma.teamStationProgress.findUnique({
-        where: { teamId_stationId: { teamId, stationId } },
-        include: { team: true, game: true, station: true },
-      }),
-      this.eventConfig.getConfig(),
-    ]);
+  async submitScore(teamId: number, stationId: string, dto: SubmitScoreDto) {
+    const progress = await this.prisma.teamStationProgress.findUnique({
+      where: { teamId_stationId: { teamId, stationId } },
+      include: { team: true, game: true, station: true },
+    });
     if (!progress) {
       throw new NotFoundException('Progress not found for team/station');
-    }
-    if (!(await bcrypt.compare(dto.confirmationCode, config.scoringCodeHash))) {
-      throw new ForbiddenException('Invalid scoring confirmation code');
     }
     if (!progress.checkedOutAt || progress.completedAt) {
       throw new BadRequestException('Progress is not waiting for score');

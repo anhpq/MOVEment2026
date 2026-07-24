@@ -115,8 +115,6 @@ async function main() {
   });
 
   const adminPassword = await bcrypt.hash('admin123', 10);
-  const scoringCodeHash = await bcrypt.hash(process.env.SCORING_CODE ?? '2468', 10);
-
   await runSeedPhase('admin account', async () => {
     await prisma.user.upsert({
       where: { username: 'admin' },
@@ -268,8 +266,8 @@ async function main() {
   await runSeedPhase('event config', async () => {
     await prisma.eventConfig.upsert({
       where: { id: 1 },
-      create: { id: 1, scoringCodeHash },
-      update: { scoringCodeHash },
+      create: { id: 1 },
+      update: {},
     });
   });
 

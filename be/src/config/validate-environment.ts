@@ -47,7 +47,6 @@ export function validateEnvironment(env: Environment): Environment {
 
   const databaseUrl = requiredProductionValue(env, 'DATABASE_URL')
   const jwtSecret = requiredProductionValue(env, 'JWT_SECRET')
-  const scoringCode = requiredProductionValue(env, 'SCORING_CODE')
   const corsOrigin = requiredProductionValue(env, 'CORS_ORIGIN')
   const publicFrontendUrl =
     env.FRONTEND_PUBLIC_URL?.trim() ??
@@ -58,9 +57,6 @@ export function validateEnvironment(env: Environment): Environment {
   }
   if (jwtSecret === 'change-me') {
     throw new Error('JWT_SECRET must not use the development default in production')
-  }
-  if (scoringCode === '2468') {
-    throw new Error('SCORING_CODE must not use the development default in production')
   }
   const corsOrigins = parseCorsOrigin(corsOrigin)
   const includesWildcard =

@@ -105,12 +105,8 @@ Score flow:
 
 1. Team checks in and checks out at a station.
 2. Staff enters the score on the device already signed in with the team account.
-3. Staff confirms with `SCORING_CODE`; the backend stores only its bcrypt hash.
-4. Client submits `score` and `confirmationCode` to `POST /api/player/stations/:stationId/score`.
-5. Admin can still handle exceptions through the admin score queue and edit endpoint.
-
-The development seed scoring code is `2468`. Set a strong `SCORING_CODE` before
-seeding any shared or production database.
+3. Client submits `score` to `POST /api/player/stations/:stationId/score`.
+4. Admin can still handle exceptions through the admin score queue and edit endpoint.
 
 QR seed token format:
 
@@ -129,11 +125,11 @@ After applying migrations, running seed, and starting the API, run the two-team
 station flow smoke test from the repo root:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000 -ScoringCode 2468
+powershell -ExecutionPolicy Bypass -File be/scripts/smoke-two-team.ps1 -ApiBaseUrl http://localhost:3000
 ```
 
 The script logs in `team01` and `team02`, rotates fresh secure Station QR tokens
-for `ST002` and `ST047`, submits staff scores with the scoring code, and verifies
+for `ST002` and `ST047`, submits staff scores after check-out, and verifies
 each team dashboard reflects the points. It opens the rehearsal event window by
 setting `eventEndTime` to `23:59` through the admin API before station actions.
 Run it against a freshly seeded or disposable rehearsal database because it
@@ -188,7 +184,7 @@ npm run db:reset
 ```
 
 Production must set non-development values for `DATABASE_URL`, `JWT_SECRET`,
-`SCORING_CODE`, and `CORS_ORIGIN`. `CORS_ORIGIN` may be one frontend origin or a
+and `CORS_ORIGIN`. `CORS_ORIGIN` may be one frontend origin or a
 comma-separated list, for example:
 
 ```text

@@ -1,7 +1,9 @@
 import {
   CheckCircleOutlined,
+  EditOutlined,
   ReloadOutlined,
   SaveOutlined,
+  WarningOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
 import {
@@ -16,7 +18,6 @@ import {
   Input,
   InputNumber,
   Modal,
-  Space,
   Typography,
 } from "antd";
 import {useEffect, useState} from "react";
@@ -31,17 +32,16 @@ import {
   forceAdminProgressStatus,
   getPlayerFinal,
   reopenAdminProgress,
-  submitAdminProgressScore,
   submitStationScore,
 } from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
 import {DEFAULT_STATION_MAX_POINTS} from "../constants";
+import "./StationDetailPage.css";
 
 type ScoreFormValues = {
   score: number;
-  confirmationCode: string;
   reason?: string;
 };
 
@@ -118,6 +118,10 @@ export function StationDetailPage() {
   }
 
   const stationMaxPoints = station.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
+  const canAdminEditScore =
+    session.role === "admin" &&
+    station.backendStatus === "COMPLETED" &&
+    Boolean(station.progressId);
 
   const openLinkInNewTab = (url: string | undefined) => {
     if (!url) {
@@ -234,116 +238,161 @@ export function StationDetailPage() {
             </Button>
           </Flex>
         </Card>
-      : <Card className="surface-card">
-          <Form
-            form={adminForm}
-            layout="vertical"
-            onFinish={(values) => {
-              modal.confirm({
-                centered: true,
-                title: "Save Score?",
-                content:
-                  "The score and endTime will be updated to the current time.",
-                okText: "Save",
-                cancelText: "Cancel",
-                onOk: async () => {
-                  if (!station.progressId)
-                    throw new Error("Progress record is unavailable");
-                  try {
-                    if (station.backendStatus === "COMPLETED") {
+      : <div className="station-admin-tools">
+          <Card className="surface-card station-admin-score-card">
+            <header className="station-admin-tool-heading">
+              <span className="station-admin-tool-icon">
+                <EditOutlined />
+              </span>
+              <div>
+                <Typography.Title level={3}>Score adjustment</Typography.Title>
+                <Typography.Text>
+                  Update this team&apos;s score for the current Station.
+                </Typography.Text>
+              </div>
+            </header>
+            <Form
+              form={adminForm}
+              layout="vertical"
+              onFinish={(values) => {
+                modal.confirm({
+                  centered: true,
+                  title: "Save Score?",
+                  content:
+                    "Only the score will be updated. Status and timestamps will remain unchanged.",
+                  okText: "Save",
+                  cancelText: "Cancel",
+                  onOk: async () => {
+                    if (!station.progressId)
+                      throw new Error("Progress record is unavailable");
+                    try {
                       if (!values.reason?.trim())
-                        throw new Error(
-                          "Reason is required when editing score",
-                        );
+                        throw new Error("Reason is required");
                       await editAdminProgressScore(
                         station.progressId,
                         values.score,
                         values.reason.trim(),
                       );
-                    } else {
-                      await submitAdminProgressScore(
-                        station.progressId,
-                        values.score,
-                        values.reason?.trim(),
+                      await refreshAdminData();
+                      message.success("Score saved successfully");
+                      navigate("/stations");
+                    } catch (error) {
+                      message.error(
+                        error instanceof Error ?
+                          error.message
+                        : "Unable to save score",
                       );
+                      throw error;
                     }
-                    await refreshAdminData();
-                    message.success("Score saved successfully");
-                    navigate("/stations");
-                  } catch (error) {
-                    message.error(
-                      error instanceof Error ?
-                        error.message
-                      : "Unable to save score",
-                    );
-                    throw error;
-                  }
-                },
-              });
-            }}>
-            <Form.Item
-              label="Input Score"
-              name="score"
-              rules={[{required: true}]}>
-              <InputNumber min={0} max={stationMaxPoints} className="full-width" />
-            </Form.Item>
-            <Form.Item
-              label="Reason"
-              name="reason"
-              rules={[{required: station.backendStatus === "COMPLETED"}]}>
-              <Input.TextArea
-                rows={2}
-                placeholder="Required when editing an existing score"
-              />
-            </Form.Item>
-            <Space className="full-width" size={12}>
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
-                Save
-              </Button>
+                  },
+                });
+              }}>
+              {!canAdminEditScore && (
+                <Alert
+                  className="mb-4"
+                  type="info"
+                  showIcon
+                  description="Score correction is available only after this Station is completed."
+                />
+              )}
+              <Form.Item
+                label="Input Score"
+                name="score"
+                rules={[{required: true}]}>
+                <InputNumber
+                  min={0}
+                  max={stationMaxPoints}
+                  disabled={!canAdminEditScore}
+                  className="full-width"
+                />
+              </Form.Item>
+              <Form.Item
+                label="Reason"
+                name="reason"
+                rules={[
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: "Reason is required",
+                  },
+                ]}>
+                <Input.TextArea
+                  rows={2}
+                  disabled={!canAdminEditScore}
+                  placeholder="Required for every Admin score change"
+                />
+              </Form.Item>
               <Button
-                danger
-                icon={<ReloadOutlined />}
-                onClick={() => {
-                  modal.confirm({
-                    centered: true,
-                    title: "Reset status?",
-                    content:
-                      "The status will revert to New and start/end time will be cleared.",
-                    okText: "Reset",
-                    cancelText: "Cancel",
-                    onOk: async () => {
-                      if (!station.progressId)
-                        throw new Error("Progress record is unavailable");
-                      try {
-                        const reason = "Reset by admin from station detail";
-                        if (station.backendStatus === "COMPLETED") {
-                          await reopenAdminProgress(station.progressId, reason);
-                        } else {
-                          await forceAdminProgressStatus(
-                            station.progressId,
-                            "AVAILABLE",
-                            reason,
-                          );
-                        }
-                        await refreshAdminData();
-                        message.success("Status reset successfully");
-                        navigate("/stations");
-                      } catch (error) {
-                        message.error(
-                          error instanceof Error ?
-                            error.message
-                          : "Unable to reset status",
-                        );
-                        throw error;
-                      }
-                    },
-                  });
-                }}>
-                Reset Status
+                type="primary"
+                htmlType="submit"
+                disabled={!canAdminEditScore}
+                icon={<SaveOutlined />}>
+                Save score
               </Button>
-            </Space>
-          </Form>
-        </Card>
+            </Form>
+          </Card>
+
+          <Card className="surface-card station-admin-reset-card">
+            <header className="station-admin-tool-heading danger">
+              <span className="station-admin-tool-icon">
+                <WarningOutlined />
+              </span>
+              <div>
+                <Typography.Title level={3}>Status reset</Typography.Title>
+                <Typography.Text>
+                  Return this Station to New and clear its start/end time.
+                </Typography.Text>
+              </div>
+            </header>
+            <Alert
+              type="warning"
+              showIcon
+              description="This action changes progress state and cannot be undone from this screen."
+            />
+            <Button
+              danger
+              className="station-reset-button"
+              icon={<ReloadOutlined />}
+              onClick={() => {
+                modal.confirm({
+                  centered: true,
+                  title: "Reset status?",
+                  content:
+                    "The status will revert to New and start/end time will be cleared.",
+                  okText: "Reset",
+                  cancelText: "Cancel",
+                  onOk: async () => {
+                    if (!station.progressId)
+                      throw new Error("Progress record is unavailable");
+                    try {
+                      const reason = "Reset by admin from station detail";
+                      if (station.backendStatus === "COMPLETED") {
+                        await reopenAdminProgress(station.progressId, reason);
+                      } else {
+                        await forceAdminProgressStatus(
+                          station.progressId,
+                          "AVAILABLE",
+                          reason,
+                        );
+                      }
+                      await refreshAdminData();
+                      message.success("Status reset successfully");
+                      navigate("/stations");
+                    } catch (error) {
+                      message.error(
+                        error instanceof Error ?
+                          error.message
+                        : "Unable to reset status",
+                      );
+                      throw error;
+                    }
+                  },
+                });
+              }}>
+              Reset status
+            </Button>
+          </Card>
+        </div>
       }
 
       <Modal
@@ -382,7 +431,6 @@ export function StationDetailPage() {
 
             scoreForm.setFieldsValue({
               score: station.score,
-              confirmationCode: "",
               reason: "",
             });
             setIsScoreModalOpen(true);
@@ -406,7 +454,7 @@ export function StationDetailPage() {
           <Alert
             type="info"
             showIcon
-            description="After a valid check-out QR, staff can enter score and confirmation code on this team device."
+            description="After a valid check-out QR, score can be entered on this team device."
           />
         </Flex>
       </Modal>
@@ -424,8 +472,7 @@ export function StationDetailPage() {
             modal.confirm({
               centered: true,
               title: "Confirm Station Completion",
-              content:
-                "The score will be submitted with the staff confirmation code.",
+              content: "The score will be submitted for this Station.",
               okText: "Confirm",
               cancelText: "Cancel",
               onOk: async () => {
@@ -433,23 +480,13 @@ export function StationDetailPage() {
                   if (!station.progressId)
                     throw new Error("Progress record is unavailable");
                   try {
-                    if (station.backendStatus === "COMPLETED") {
-                      if (!values.reason?.trim())
-                        throw new Error(
-                          "Reason is required when editing score",
-                        );
-                      await editAdminProgressScore(
-                        station.progressId,
-                        values.score,
-                        values.reason.trim(),
-                      );
-                    } else {
-                      await submitAdminProgressScore(
-                        station.progressId,
-                        values.score,
-                        values.reason?.trim(),
-                      );
-                    }
+                    if (!values.reason?.trim())
+                      throw new Error("Reason is required");
+                    await editAdminProgressScore(
+                      station.progressId,
+                      values.score,
+                      values.reason.trim(),
+                    );
                     await refreshAdminData();
                     message.success("Station completed successfully");
                     setIsScoreModalOpen(false);
@@ -470,7 +507,6 @@ export function StationDetailPage() {
                   await submitStationScore(
                     station.stationId,
                     values.score,
-                    values.confirmationCode,
                     values.reason,
                   );
                   await refreshPlayerData();
@@ -495,12 +531,6 @@ export function StationDetailPage() {
             initialValue={0}
             rules={[{required: true}]}>
             <InputNumber min={0} max={stationMaxPoints} className="full-width" />
-          </Form.Item>
-          <Form.Item
-            label="Confirmation Code"
-            name="confirmationCode"
-            rules={[{required: session.role === "user"}]}>
-            <Input.Password placeholder="Staff confirmation code" />
           </Form.Item>
           <Form.Item label="Reason" name="reason">
             <Input.TextArea rows={2} placeholder="Optional note" />

@@ -411,7 +411,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ### Scope
 
 - Score entry after Check-out.
-- Scoring code verification.
+- Score submission after a valid Check-out without a confirmation code.
 - Station maximum score.
 - Default maximum score.
 - Backend validation.
@@ -440,7 +440,10 @@ docs/prompts/12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md
 - Score cannot exceed Station max score.
 - Backend is the final validation authority.
 - Duplicate submissions must not create duplicate completion or score records.
-- Scoring code raw value must not be stored.
+- The retired scoring-code field, hash, configuration, and UI must not be reintroduced.
+- Admin score correction always requires a non-empty reason and preserves
+  progress status plus all Check-in, Check-out, and completion timestamps.
+- Admin score correction is available only for an already `COMPLETED` progress.
 
 ### Must Update After Change
 
