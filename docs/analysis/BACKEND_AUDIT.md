@@ -463,3 +463,4 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Responsive follow-up removes the mobile header spacer, constrains the brand with fluid sizing/ellipsis, and gives both Team metrics identical icon/content grids with left-aligned copy.
 - Player `Play` remains a white secondary action on `/stations` even when the Station has no `Watch Video`; Admin `View & Edit` styling is unchanged.
 - When `Watch Video` is absent, the Player `Play` action keeps the second/right action column on desktop and mobile instead of shifting left.
+- Mobile Station actions now always retain the same two-column row, preventing video Stations from stacking actions vertically while non-video Stations use a half-width right action.
