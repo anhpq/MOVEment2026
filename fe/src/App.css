@@ -271,11 +271,10 @@
 .station-team-hero {
   position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 20px;
+  justify-items: center;
+  gap: 14px;
   overflow: hidden;
-  padding: 20px 24px;
+  padding: 18px 24px;
   border: 1px solid var(--team-focus-ring, rgba(255, 122, 89, 0.3));
   border-radius: 18px;
   background:
@@ -315,21 +314,33 @@
   font-size: 1.7rem;
 }
 
-.station-team-summary {
+.station-team-identity {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
-.station-team-summary h2 {
-  margin: 0 0 8px !important;
+.station-team-identity h2 {
+  margin: 0 !important;
   color: #11244a;
   font-size: 1.45rem;
+  line-height: 1.1;
 }
 
 .station-team-metrics {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 420px);
   max-width: 430px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.48);
 }
 
 .station-team-metric {
@@ -337,11 +348,12 @@
   align-items: center;
   gap: 9px;
   min-width: 0;
-  padding-right: 24px;
+  justify-content: center;
+  padding-right: 18px;
 }
 
 .station-team-metric + .station-team-metric {
-  padding-left: 28px;
+  padding-left: 18px;
   border-left: 1px solid rgba(112, 75, 63, 0.18);
 }
 
@@ -614,36 +626,38 @@
   }
 
   .station-team-hero {
-    grid-template-columns: auto minmax(0, 1fr);
-    justify-items: stretch;
-    gap: 12px;
-    padding: 13px 14px;
+    gap: 10px;
+    padding: 12px 14px;
     text-align: left;
   }
 
   .station-team-avatar {
-    width: 46px;
-    height: 46px;
-    font-size: 1.3rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
   }
 
-  .station-team-summary h2 {
-    margin-bottom: 6px !important;
+  .station-team-identity {
+    gap: 10px;
+  }
+
+  .station-team-identity h2 {
     font-size: 1.2rem;
   }
 
   .station-team-metrics {
     width: 100%;
+    padding: 8px;
     text-align: left;
   }
 
   .station-team-metric {
     gap: 6px;
-    padding-right: 8px;
+    padding-right: 10px;
   }
 
   .station-team-metric + .station-team-metric {
-    padding-left: 8px;
+    padding-left: 10px;
   }
 
   .station-metric-icon {

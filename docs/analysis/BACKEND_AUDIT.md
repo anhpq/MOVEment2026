@@ -459,3 +459,4 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Converted the shell header and Team summary to compact horizontal layouts, hid secondary deploy/current-team copy on narrow screens, and reduced Station card padding, icons, metrics, and actions.
 - Added scoped Team-color accents to the Team summary and Station cards.
 - Frontend lint and production build passed; localhost route smoke returned `200`. The known non-blocking Vite large-chunk warning remains.
+- Follow-up refinement aligns the Team icon and name in one centered identity row and places Score/Finished in an equal-width glass metric bar below for better visual balance.

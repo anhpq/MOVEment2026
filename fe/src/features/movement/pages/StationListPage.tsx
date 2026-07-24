@@ -148,32 +148,33 @@ export function StationListPage() {
   return (
     <Flex vertical gap={16} className="full-width">
       <section className="station-team-hero">
-        <div className="station-team-avatar" aria-hidden="true">
-          <UsergroupAddOutlined />
-        </div>
-        <div className="station-team-summary">
+        <div className="station-team-identity">
+          <div className="station-team-avatar" aria-hidden="true">
+            <UsergroupAddOutlined />
+          </div>
           <Typography.Title level={2}>{team.name}</Typography.Title>
-          <div className="station-team-metrics">
-            <div className="station-team-metric">
-              <span className="station-metric-icon">
-                <StarFilled />
-              </span>
-              <span>
-                <small>Total Score</small>
-                <strong>{team.score}</strong>
-              </span>
-            </div>
-            <div className="station-team-metric">
-              <span className="station-metric-icon">
-                <CheckCircleFilled />
-              </span>
-              <span>
-                <small>Finished</small>
-                <strong>
-                  {team.finish} / {sortedStations.length}
-                </strong>
-              </span>
-            </div>
+        </div>
+
+        <div className="station-team-metrics">
+          <div className="station-team-metric">
+            <span className="station-metric-icon">
+              <StarFilled />
+            </span>
+            <span>
+              <small>Total Score</small>
+              <strong>{team.score}</strong>
+            </span>
+          </div>
+          <div className="station-team-metric">
+            <span className="station-metric-icon">
+              <CheckCircleFilled />
+            </span>
+            <span>
+              <small>Finished</small>
+              <strong>
+                {team.finish} / {sortedStations.length}
+              </strong>
+            </span>
           </div>
         </div>
       </section>

@@ -360,6 +360,7 @@ Acceptance:
 ## P2 — Team Station list presentation
 
 - [x] Compact the mobile shell header, Team summary, and Station cards.
+- [x] Balance the Team identity and equal-width score/progress metrics.
 - [x] Apply scoped Team-color accents without changing Station behavior.
 - [ ] Perform final visual review on representative mobile devices.
 
