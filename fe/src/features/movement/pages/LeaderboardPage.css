@@ -37,9 +37,9 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(237, 118, 87, 0.25);
 }
 
@@ -51,7 +51,7 @@
 .leaderboard-heading-copy h2 {
   margin: 0;
   color: #101d3b;
-  font-size: clamp(1.15rem, 3.2vw, 1.45rem);
+  font-size: clamp(1.05rem, 3vw, 1.3rem);
   line-height: 1.15;
 }
 
@@ -68,13 +68,13 @@
 .leaderboard-heading-icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 1px solid rgba(237, 118, 87, 0.18);
   border-radius: 50%;
   background: #fff2ec;
   color: #ed6848;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
 }
 
 .leaderboard-list .ant-list-items {

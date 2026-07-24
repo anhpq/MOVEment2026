@@ -36,7 +36,7 @@ export function TeamListPage() {
           <TeamOutlined />
         </span>
         <div className="teams-hero-copy">
-          <Typography.Title level={2}>Teams</Typography.Title>
+          <Typography.Title level={2}>Team</Typography.Title>
         </div>
         <div className="teams-total">
           <strong>{teams.length}</strong>

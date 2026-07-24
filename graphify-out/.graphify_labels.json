@@ -187,5 +187,9 @@
   "185": "migration.sql",
   "186": "migration.sql",
   "187": "migration.sql",
-  "188": "migration.sql"
+  "188": "migration.sql",
+  "189": "PrismaModule",
+  "190": "jest",
+  "191": "ts-jest",
+  "192": "typescript"
 }

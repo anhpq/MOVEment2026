@@ -438,3 +438,9 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Refined the Leaderboard podium styling without changing ranking or scoring behavior.
 - Rank 1 now uses a distinct bright gold/amber palette, rank 2 a cool silver palette, and rank 3 a darker brown/copper palette across the row, rank badge, side accent, and points badge.
 - Frontend lint and production build passed. The existing non-blocking Vite large-chunk warning remains.
+
+## 2026-07-24 Compact shared headers
+
+- Added the visible `Team` label beside the icon on `/teams`, including mobile layouts.
+- Reduced the shared shell branding and the Teams, Leaderboard, Operation Center, and Final page headers by one visual step.
+- Frontend lint and production build passed. The existing non-blocking Vite large-chunk warning remains.

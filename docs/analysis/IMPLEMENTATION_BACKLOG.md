@@ -351,6 +351,12 @@ Acceptance:
 - [x] Differentiate gold, silver, and bronze podium colors across rank and points styling.
 - [ ] Perform final visual review on representative desktop and mobile devices.
 
+## P2 — Shared header presentation
+
+- [x] Keep the Team page label visible beside its icon on mobile.
+- [x] Reduce shared shell and primary page-header sizing consistently.
+- [ ] Perform final visual review on representative desktop and mobile devices.
+
 ## Next Execution Order
 
 1. Run Production-like smoke tests.
