@@ -270,10 +270,7 @@ export function StationListPage() {
                       <Button
                         block
                         type={
-                          session.role === "user" ||
-                          (station.gameType === "ST" && station.youtubeUrl) ?
-                            "default"
-                          : "primary"
+                          session.role === "user" ? "default" : "primary"
                         }
                         icon={
                           session.role === "user" ?

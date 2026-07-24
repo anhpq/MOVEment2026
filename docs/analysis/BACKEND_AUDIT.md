@@ -465,3 +465,4 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Team/User Station cards consistently render `Watch Video | Play` on desktop and mobile, with `Watch Video` disabled for non-`ST` Stations or missing URLs.
 - Disabled Station video actions use an explicit neutral visual state so the shared primary-button styling cannot make unavailable video look interactive.
 - Admin Team Station cards render only a full-width `View & Edit` action and do not expose `Watch Video`.
+- Admin `View & Edit` is consistently primary/coral and no longer changes style based on Station Game Type or YouTube URL.

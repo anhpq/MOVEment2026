@@ -1,7 +1,7 @@
 # Graph Report - MOVEment2026  (2026-07-24)
 
 ## Corpus Check
-- 169 files · ~215,658 words
+- 169 files · ~215,688 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2c123830`
+- Built from commit: `219166ca`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -258,7 +258,7 @@ Nodes (27): devDependencies, eslint, globals, @nestjs/cli, @nestjs/schematics, @
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.11
-Nodes (19): eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-refresh, globals, @types/node, @types/qrcode, @types/react (+11 more)
+Nodes (19): eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-refresh, globals, sass, @types/node, @types/qrcode (+11 more)
 
 ### Community 7 - "utils.ts"
 Cohesion: 0.17
@@ -305,8 +305,8 @@ Cohesion: 0.08
 Nodes (25): 2026-07-22 Conditional Backend Database Deployment, 2026-07-22 Final Challenge Event Config, Keyword, Cooldown, and Ranking, 2026-07-22 Production-like Integration Verification, 2026-07-22 Reusable Automatic URL Team QR Login, 2026-07-22 Secure Station QR provisioning and migration, 2026-07-22 Source of Truth and QR documentation reconciliation, 2026-07-22 Staged Production Deployment Workflow, 2026-07-22 Station Tracking Mode and Station Scoring (+17 more)
 
 ### Community 18 - "api.ts"
-Cohesion: 0.08
-Nodes (51): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, cancelPlayerStation() (+43 more)
+Cohesion: 0.10
+Nodes (37): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, cancelPlayerStation() (+29 more)
 
 ### Community 19 - "EventConfigService"
 Cohesion: 0.08
@@ -421,8 +421,8 @@ Cohesion: 0.27
 Nodes (4): Ensure-Dependencies(), Invoke-Checked(), Step(), Test-LocalBin()
 
 ### Community 59 - "validate-environment.ts"
-Cohesion: 0.19
-Nodes (18): checkInStation(), updateAdminStation(), buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent(), getMarkerFill(), MarkerPosition (+10 more)
+Cohesion: 0.28
+Nodes (15): downloadAdminTeamResults(), getAdminActivityLogs(), getAdminDashboard(), getAdminEventConfig(), getAdminFinalConfig(), getAdminFinalSubmissions(), getAdminScoreQueue(), updateAdminEventConfig() (+7 more)
 
 ### Community 60 - "xlsx-report.ts"
 Cohesion: 0.35
@@ -437,8 +437,8 @@ Cohesion: 0.08
 Nodes (26): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 Docker frontend API proxy fix, 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration (+18 more)
 
 ### Community 64 - "PrismaService"
-Cohesion: 0.16
-Nodes (23): qrcode, displayStatus(), fetchAdminDatabase(), AdminStationQrTokenResponse, createAdminStation(), deleteAdminStation(), deleteAdminTeam(), getAdminProgressMatrix() (+15 more)
+Cohesion: 0.15
+Nodes (25): qrcode, displayStatus(), fetchAdminDatabase(), AdminStationQrTokenResponse, createAdminStation(), deleteAdminStation(), deleteAdminTeam(), getAdminProgressMatrix() (+17 more)
 
 ### Community 65 - ".log"
 Cohesion: 0.18
@@ -501,8 +501,8 @@ Cohesion: 0.33
 Nodes (5): mockActivityLog, mockConfig, mockPrisma, mockTeamResults, team
 
 ### Community 81 - "store.ts"
-Cohesion: 0.10
-Nodes (30): GAME_TYPE_OPTIONS, GAME_TYPES, createStoreState(), AuthAccount, GameType, LocalDatabase, Role, SqlProgressStatus (+22 more)
+Cohesion: 0.08
+Nodes (45): checkInStation(), buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent(), getMarkerFill(), MarkerPosition, StationsMapPanel() (+37 more)
 
 ### Community 82 - "@nestjs/config"
 Cohesion: 0.22
