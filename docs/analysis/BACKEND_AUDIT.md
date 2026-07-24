@@ -1,3 +1,11 @@
+## 2026-07-24 Canonical 17-Station seed and sync
+
+- Replaced the old local/test Station seed inventory with the canonical 17 Stations `ST001`...`ST017`, preserving `ST` for `ST001`-`ST004` and normalizing `null`/`standard`/`STANDARD` input to DB/API `STANDARD`.
+- Added shared canonical Station data, Station replacement logic, and manual `stations:sync` with safe DB target metadata, schema/constraint audit, explicit `CONFIRM_REPLACE_ALL_PROD_STATIONS=YES` guard, one transaction, FK-safe delete order, fresh SQ1 Station QR pairs, Team scoring reset, and post-sync verification.
+- Updated seed idempotency so non-canonical local/test Station data is replaced once, repeated seed preserves canonical Station QR tokens, and seed-managed Teams get `maxPossiblePoints = 300` while per-Station `maxScore` values remain independent Station configuration data.
+- Local verification passed: Prisma generate, Backend lint/build, full Backend Jest suite (`127/127`), two consecutive seed runs, `db:verify`, `stations:sync -- --audit-only`, and `git diff --check`. Local audit target was `127.0.0.1/movement`, with 17 canonical Stations, 34 active SQ1 Station QR tokens, 425 available progress rows, 4 `ST`, 13 `STANDARD`, zero score/final submissions, and no orphan-related counts reported by post-seed audit.
+- Production sync was not run because the active `DATABASE_URL` target in this workspace is local (`127.0.0.1/movement`), not Production. No source push, deploy, schema drop, migration reset, or Production destructive data change was performed.
+
 ## 2026-07-24 Team Color palette and gradient buttons
 
 - Added a stable 25-color uppercase HEX palette for seed-managed `team01`...`team25`, with fail-fast validation and direct Team 01-25 mapping without color rotation.

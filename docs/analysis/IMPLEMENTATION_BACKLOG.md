@@ -55,14 +55,21 @@
 - [x] Frontend lint and production build passed.
 - [ ] Manual Admin browser click-through remains pending.
 
+## 2026-07-24 Canonical 17-Station seed and sync
+
+- [x] Canonical active Station inventory uses deterministic IDs `ST001`...`ST017`.
+- [x] `ST001`, `ST002`, `ST003`, and `ST004` are the designated `ST` Stations; the remaining 13 Stations are `STANDARD`.
+- [x] Input `gameType: null`, `undefined`, `standard`, or `STANDARD` normalizes to `STANDARD`; `ST` remains `ST`; unsupported values fail fast.
+- [x] Seed and `stations:sync` share the canonical Station data and replacement behavior.
+- [x] Full replacement resets Station progress, score events, Final submissions, Team score aggregates, `startedAt`, status, and Team `maxPossiblePoints = 300` while preserving Team identity, sessions/auth, Team QR login tokens, colors, and Final Challenge/config.
+- [x] Local validation passed: Prisma generate, Backend lint/build, full Backend Jest suite (`127/127`), two consecutive seed runs, `db:verify`, `stations:sync -- --audit-only`, and `git diff --check`.
+- [ ] Production Station sync remains blocked/not run in this workspace because the active DB target is local `127.0.0.1/movement`, not Production. Run only after safe Production target metadata is shown and `CONFIRM_REPLACE_ALL_PROD_STATIONS=YES` is set.
+
 ## 2026-07-24 Designated ST Station set
 
-- [x] `ST003`, `ST004`, `ST010`, and `ST047` are the designated `ST` Stations.
-- [x] `ST002`, `ST005`, `ST006`, `ST017`, `ST029`, and `ST15A` are `STANDARD`.
-- [x] Follow-up migration and seed definitions use the same explicit mapping.
-- [x] Latest tester migration, two consecutive seed runs, and `db:verify` passed with `4 ST` and `6 STANDARD`.
-- [x] All `113` Backend tests and Backend/Frontend builds passed.
-- [ ] Production migration remains pending and requires explicit deployment approval.
+- [x] Historical old set `ST003`, `ST004`, `ST010`, and `ST047` is superseded by the canonical 17-Station inventory above.
+- [x] Historical tester result `4 ST` and `6 STANDARD` is superseded by canonical `4 ST` and `13 STANDARD`.
+- [ ] Production migration/deployment remains pending and requires explicit deployment approval.
 
 ## 2026-07-24 Station Game Type constraint and video visibility
 

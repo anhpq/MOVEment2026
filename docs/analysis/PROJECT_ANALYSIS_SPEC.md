@@ -224,7 +224,8 @@ STANDARD
 - `ST` requires a valid HTTPS YouTube URL and is the only type that enables `Watch Video`.
 - `STANDARD` is the default type for an ordinary Station and never enables video, even when a media URL remains stored; the Team/User Station list retains a disabled `Watch Video` action to keep card layouts consistent.
 - Admin Team Station lists do not expose video actions; each Admin card provides only `View & Edit`.
-- The current designated `ST` Stations are `ST003`, `ST004`, `ST010`, and `ST047`; all other Stations are `STANDARD` even if they retain a stored media URL.
+- The canonical active Station inventory has exactly 17 Stations, 17 active Games, Team `maxPossiblePoints = 300`, 4 `ST` Games, and 13 `STANDARD` Games. The sum of current per-Station `games.max_points` is Station configuration data and is not a hard validation for Team `maxPossiblePoints`.
+- The current designated `ST` Stations are `ST001` Thủy Lộ Ký Ức, `ST002` Ngự Ảnh Tái Hiện, `ST003` Vạn Vật Ghi Tâm, and `ST004` Thiên Địa Chao Đảo; all other Stations are `STANDARD` even if they retain a stored media URL.
 - Admin selects the type from a fixed combobox; Backend and database reject unsupported values.
 - Legacy `CIPHER` Games migrate to `STANDARD`. Station cipher-answer UI, API, validation, and storage are removed.
 - Final Challenge remains independent from Station Game Type and is unchanged.

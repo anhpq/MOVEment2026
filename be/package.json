@@ -17,6 +17,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "prisma db seed",
     "seed": "prisma db seed",
+    "stations:sync": "ts-node scripts/sync-stations.ts",
     "db:reset": "prisma migrate reset --force && prisma generate && prisma db seed",
     "db:verify": "ts-node scripts/verify-seed.ts"
   },

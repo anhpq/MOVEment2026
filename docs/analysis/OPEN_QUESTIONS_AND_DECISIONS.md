@@ -571,6 +571,7 @@ Production phải sử dụng quy trình tạo dữ liệu riêng, ngoại trừ
 
 1. Final Challenge seed-managed record được phép create/update canonical values đến hết `2026-08-21 23:59:59 Asia/Ho_Chi_Minh` và ngừng overwrite từ `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`.
 2. Existing seed-managed Team 01-25 được nhận diện bằng username ổn định `team01`...`team25` được phép repair/overwrite chỉ trường `color` theo palette cố định.
+3. Canonical Station inventory được phép tạo trên Production trống. Nếu Production đã có Station data không khớp canonical inventory, seed chỉ được replace toàn bộ Station/game/scoring state khi `CONFIRM_REPLACE_ALL_PROD_STATIONS=YES`; nếu thiếu confirmation phải dừng và hướng dẫn dùng `stations:sync`.
 
 Production seed không được tạo Team fixture mới khi thiếu `team01`...`team25`; missing seed-managed Team trong Production được skip im lặng cho scope color repair.
 
@@ -579,6 +580,38 @@ Production seed không được reset password, username, Team QR credential, ra
 Seed command phải có Environment Guard rõ ràng.
 
 Nếu environment không xác định hoặc không an toàn, seed phải dừng và báo lỗi thay vì tự chạy.
+
+---
+
+### 10.6 Canonical Station Inventory
+
+Canonical active Station inventory hiện tại có đúng `17` Station, `17` active Game, Team `maxPossiblePoints = 300`, đúng `4` Game Type `ST`, đúng `13` Game Type `STANDARD`, và đúng `34` active Station QR token (`CHECK_IN` + `CHECK_OUT` cho mỗi Station). Tổng các `games.max_points` theo danh sách hiện tại là dữ liệu cấu hình Station, không được dùng làm validation cứng cho `maxPossiblePoints`.
+
+| ID | Name | Game Type | Max Score |
+| --- | --- | --- | --- |
+| `ST001` | Thủy Lộ Ký Ức | `ST` | 10 |
+| `ST002` | Ngự Ảnh Tái Hiện | `ST` | 10 |
+| `ST003` | Vạn Vật Ghi Tâm | `ST` | 12 |
+| `ST004` | Thiên Địa Chao Đảo | `ST` | 10 |
+| `ST005` | Phi Thuyền Xuyên Không | `STANDARD` | 10 |
+| `ST006` | Tâm Đầu Ý Lon | `STANDARD` | 20 |
+| `ST007` | Vòng Quay Công Lý | `STANDARD` | 50 |
+| `ST008` | Song Tâm Dẫn Ngọc | `STANDARD` | 50 |
+| `ST009` | Ba Tiêu Cuồng Phong | `STANDARD` | 25 |
+| `ST010` | Bách Thú Quy Hội | `STANDARD` | 10 |
+| `ST011` | Mê Trận Đồng Tâm | `STANDARD` | 10 |
+| `ST012` | Trụ Vững Càn Khôn | `STANDARD` | 15 |
+| `ST013` | Liên Hoàn Thần Chưởng | `STANDARD` | 15 |
+| `ST014` | Hỏa Nhãn Kim Tinh | `STANDARD` | 10 |
+| `ST015` | Tam Sao Thất Vậy | `STANDARD` | 10 |
+| `ST016` | Vạn Ly Trường Thành | `STANDARD` | 10 |
+| `ST017` | Nhất Nhịp Đồng Tâm | `STANDARD` | 10 |
+
+Canonical designated `ST` set là `ST001`, `ST002`, `ST003`, và `ST004`; mọi Station còn lại là `STANDARD`.
+
+Input `gameType: null`, `undefined`, `standard`, hoặc `STANDARD` normalize thành DB/API `STANDARD`; input `ST` giữ nguyên `ST`; mọi giá trị khác phải fail-fast.
+
+`mapX` và `mapY` hiện là deterministic implementation placeholders theo thứ tự canonical cho đến khi có tọa độ map thật; chúng không phải Business Rule về vị trí thực tế.
 
 ---
 
@@ -638,9 +671,9 @@ Business Rules:
 - `STANDARD` dùng cho Station thông thường và không cho phép xem video, kể cả khi còn lưu media URL.
 - Danh sách Station của Team/User luôn hiển thị hành động `Watch Video` để giữ bố cục card đồng nhất; hành động này phải disabled trừ khi Station có `gameType = ST` và YouTube URL hợp lệ.
 - Admin không xem video từ danh sách Station của Team; card Admin không hiển thị `Watch Video` và chỉ cung cấp hành động `View & Edit`.
-- Danh sách Station `ST` hiện tại là `ST003`, `ST004`, `ST010`, và `ST047`.
+- Danh sách Station `ST` hiện tại là `ST001` Thủy Lộ Ký Ức, `ST002` Ngự Ảnh Tái Hiện, `ST003` Vạn Vật Ghi Tâm, và `ST004` Thiên Địa Chao Đảo.
 - Các Station không thuộc danh sách trên phải dùng `STANDARD`, kể cả khi còn lưu YouTube URL.
-- Khi chuyển dữ liệu Legacy, mọi `CIPHER` phải chuyển thành `STANDARD`; chỉ bốn Station được chỉ định giữ hoặc chuyển thành `ST`; các Game còn lại chuyển thành `STANDARD`.
+- Khi chuyển dữ liệu Legacy, mọi `CIPHER` phải chuyển thành `STANDARD`; chỉ bốn Station canonical được chỉ định giữ hoặc chuyển thành `ST`; các Game còn lại chuyển thành `STANDARD`.
 - Station không còn luồng nhập hoặc kiểm tra cipher answer. Final Challenge là tính năng độc lập và không bị ảnh hưởng bởi thay đổi này.
 - Admin phải chọn Game Type từ danh sách cố định, không nhập free text.
 - Backend và database là authority cho tập giá trị Game Type hợp lệ.

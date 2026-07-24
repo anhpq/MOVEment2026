@@ -1,11 +1,5 @@
 import 'dotenv/config';
-import {
-  PrismaClient,
-  ProgressStatus,
-  QrPurpose,
-  StationTrackingMode,
-  UserRole,
-} from '@prisma/client';
+import { PrismaClient, ProgressStatus, QrPurpose, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import {
   buildQrLoginUrl,
@@ -23,10 +17,20 @@ import {
   validateTeamColorPalette,
   TEAM_COLOR_PALETTE,
 } from './team-color-seed';
+import {
+  CANONICAL_STATIONS,
+  CANONICAL_STATION_IDS,
+  CANONICAL_TOTAL_MAX_SCORE,
+  canonicalStationSignature,
+  canonicalStationSignatureInput,
+  validateCanonicalStations,
+} from './station-seed-data';
+import { replaceAllStations } from './station-replacement';
 
 const prisma = new PrismaClient();
 const seedStartedAt = Date.now();
 const isProduction = process.env.NODE_ENV === 'production';
+const allowProductionStationReplacement = process.env.CONFIRM_REPLACE_ALL_PROD_STATIONS === 'YES';
 const seedQrLoginTokens = !isProduction && process.env.SEED_QR_LOGIN_TOKENS !== 'false';
 const frontendPublicUrl =
   process.env.FRONTEND_PUBLIC_URL ??
@@ -52,19 +56,6 @@ const devStationQrArtifactPath = resolve(
   '.tester-logs',
   'dev-station-qr-tokens.txt',
 );
-
-const stations = [
-  ['ST002', 'Tram #2', 'STANDARD', 100, 18, 35],
-  ['ST047', 'Tram #47', 'ST', 120, 25, 85],
-  ['ST017', 'Tram #17', 'STANDARD', 110, 65, 22],
-  ['ST15A', 'Tram #15A', 'STANDARD', 130, 82, 12],
-  ['ST029', 'Tram #29', 'STANDARD', 150, 88, 42],
-  ['ST003', 'Tram Sang Tao', 'ST', 140, 42, 48],
-  ['ST004', 'Tram Am Nhac', 'ST', 120, 55, 65],
-  ['ST005', 'Tram Khoi Phuc', 'STANDARD', 100, 75, 72],
-  ['ST006', 'Tram Khach', 'STANDARD', 110, 48, 38],
-  ['ST010', 'Tram Tuyet Ky', 'ST', 200, 92, 60],
-] as const;
 
 const teams = buildSeedTeams();
 
@@ -92,6 +83,7 @@ async function runSeedPhase<T>(name: string, action: () => Promise<T>) {
 async function main() {
   logSeed('Seed script started.');
   validateTeamColorPalette(TEAM_COLOR_PALETTE);
+  validateCanonicalStations();
   const generatedDevQrUrls: string[] = [];
   const generatedDevStationQrTokens: string[] = [];
   let generatedStationQrRepairCount = 0;
@@ -113,49 +105,116 @@ async function main() {
     });
   });
 
-  await runSeedPhase('seed stations', async () => {
-    for (let index = 0; index < stations.length; index += 1) {
-      const [id, name, , , mapX, mapY] = stations[index];
-      await prisma.station.upsert({
-        where: { id },
-        create: {
-          id,
-          name,
-          description: `${name} station`,
-          mapX,
-          mapY,
-          trackingMode: StationTrackingMode.BOTH,
-          sortOrder: index + 1,
-        },
-        update: { name, mapX, mapY, sortOrder: index + 1 },
-      });
+  const stationInventoryMatches = await runSeedPhase('canonical Station inventory check', async () => {
+    const existingStations = await prisma.station.findMany({
+      include: { games: true },
+      orderBy: { id: 'asc' },
+    });
+    if (!existingStations.length) {
+      return false;
     }
+    return canonicalStationSignatureInput(existingStations) === canonicalStationSignature();
   });
 
-  await runSeedPhase('seed challenges', async () => {
-    for (let index = 0; index < stations.length; index += 1) {
-      const [id, name, type, maxPoints] = stations[index];
-      const game = await prisma.game.findFirst({ where: { stationId: id } });
-      if (!game) {
-        await prisma.game.create({
-          data: {
-            stationId: id,
-            title: `${name} Game`,
-            type,
-            difficulty: Math.min(5, (index % 5) + 1),
-            maxPoints,
-            clueText: `Guide for ${name}`,
-            mediaUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+  if (!stationInventoryMatches) {
+    await runSeedPhase('canonical Station replacement', async () => {
+      if (isProduction && !allowProductionStationReplacement) {
+        const currentStationCount = await prisma.station.count();
+        if (currentStationCount > 0) {
+          throw new Error('Production Station inventory is not canonical. Run `npm --prefix be run stations:sync -- --audit-only`, review target metadata, then rerun with CONFIRM_REPLACE_ALL_PROD_STATIONS=YES.');
+        }
+      }
+      await prisma.$transaction(async (tx) => {
+        const currentStationCount = await tx.station.count();
+        if (isProduction && currentStationCount === 0) {
+          for (const station of CANONICAL_STATIONS) {
+            await tx.station.create({
+              data: {
+                id: station.id,
+                name: station.name,
+                description: station.shortDescription,
+                mapX: station.mapX,
+                mapY: station.mapY,
+                trackingMode: 'BOTH',
+                isActive: true,
+                sortOrder: station.sortOrder,
+              },
+            });
+            await tx.game.create({
+              data: {
+                stationId: station.id,
+                title: `${station.name} Game`,
+                type: station.gameType,
+                maxPoints: station.maxScore,
+                mediaUrl: station.mediaUrl,
+                isActive: true,
+              },
+            });
+          }
+        } else {
+          await replaceAllStations(tx);
+        }
+      });
+    });
+  } else {
+    await runSeedPhase('seed canonical stations', async () => {
+      for (const station of CANONICAL_STATIONS) {
+        await prisma.station.upsert({
+          where: { id: station.id },
+          create: {
+            id: station.id,
+            name: station.name,
+            description: station.shortDescription,
+            mapX: station.mapX,
+            mapY: station.mapY,
+            trackingMode: 'BOTH',
+            isActive: true,
+            sortOrder: station.sortOrder,
+          },
+          update: {
+            name: station.name,
+            description: station.shortDescription,
+            mapX: station.mapX,
+            mapY: station.mapY,
+            isActive: true,
+            sortOrder: station.sortOrder,
           },
         });
       }
-    }
-  });
+    });
+
+    await runSeedPhase('seed canonical games', async () => {
+      for (const station of CANONICAL_STATIONS) {
+        const game = await prisma.game.findFirst({ where: { stationId: station.id, isActive: true } });
+        if (!game) {
+          await prisma.game.create({
+            data: {
+              stationId: station.id,
+              title: `${station.name} Game`,
+              type: station.gameType,
+              maxPoints: station.maxScore,
+              mediaUrl: station.mediaUrl,
+            },
+          });
+        } else {
+          await prisma.game.update({
+            where: { id: game.id },
+            data: {
+              title: `${station.name} Game`,
+              type: station.gameType,
+              maxPoints: station.maxScore,
+              mediaUrl: station.mediaUrl,
+            },
+          });
+        }
+      }
+    });
+  }
 
   await runSeedPhase('station QR token repair', async () => {
-    for (const [id, name] of stations) {
+    for (const station of CANONICAL_STATIONS) {
       for (const purpose of [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT]) {
-        const generated = await ensureStationQrToken(id, name, purpose);
+        const generated = await ensureStationQrToken(station.id, station.name, purpose);
         if (generated) {
           generatedStationQrRepairCount += 1;
           if (generated.artifactEntry) {
@@ -166,7 +225,6 @@ async function main() {
     }
   });
 
-  const totalMaxPoints = stations.reduce((sum, item) => sum + item[3], 0);
   await runSeedPhase('seed teams', async () => {
     for (const { name, username, captainName, password, color } of teams) {
       const existingTeam = isProduction
@@ -193,21 +251,21 @@ async function main() {
               captainName,
               password,
               color,
-              totalMaxPoints,
+              totalMaxPoints: CANONICAL_TOTAL_MAX_SCORE,
             });
 
       if (!isProduction) {
-        for (const [stationId] of stations) {
-          const game = await prisma.game.findFirstOrThrow({ where: { stationId } });
+        for (const station of CANONICAL_STATIONS) {
+          const game = await prisma.game.findFirstOrThrow({ where: { stationId: station.id, isActive: true } });
           await prisma.teamStationProgress.upsert({
-            where: { teamId_stationId: { teamId: team.id, stationId } },
+            where: { teamId_stationId: { teamId: team.id, stationId: station.id } },
             create: {
               teamId: team.id,
-              stationId,
+              stationId: station.id,
               gameId: game.id,
               status: ProgressStatus.AVAILABLE,
             },
-            update: {},
+            update: { gameId: game.id },
           });
         }
       }
@@ -252,6 +310,17 @@ async function main() {
           );
         }
       }
+    }
+  });
+
+  await runSeedPhase('remove non-canonical progress rows', async () => {
+    if (!isProduction) {
+      await prisma.teamStationProgress.deleteMany({
+        where: { stationId: { notIn: CANONICAL_STATION_IDS } },
+      });
+      await prisma.team.updateMany({
+        data: { maxPossiblePoints: CANONICAL_TOTAL_MAX_SCORE },
+      });
     }
   });
 
@@ -351,7 +420,7 @@ async function upsertNonProductionSeedTeam(params: {
       username: params.username,
       captainName: params.captainName,
       passwordHash,
-      startedAt: new Date(),
+      startedAt: null,
       color: params.color,
       maxPossiblePoints: params.totalMaxPoints,
     },
