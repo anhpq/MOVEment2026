@@ -1,3 +1,9 @@
+## 2026-07-24 Admin Operations UI merge recovery
+
+- Restored the responsive, styled local Admin Operations page that was replaced by the minimal remote version during merge conflict resolution.
+- Preserved the remote Event/Final behavior by adding `finalStartsAt`, keeping the read-only current keyword plus optional keyword rotation, and describing Final opening independently from Event end.
+- Retained loading/error handling, formatted dashboard metrics, structured operation lists, responsive tabs/forms, refresh control, and Excel export from the local UI version.
+
 ## 2026-07-24 Admin score-only correction
 
 - Fixed Station Detail Admin score adjustment to always use the audited Admin correction endpoint instead of selecting the waiting-score submission endpoint from Frontend status.

@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-07-24)
 
 ## Corpus Check
-- 159 files · ~207,370 words
+- 159 files · ~207,891 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1920 nodes · 3116 edges · 170 communities (141 shown, 29 thin omitted)
+- 1925 nodes · 3125 edges · 177 communities (145 shown, 32 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cb82f599`
+- Built from commit: `0e61c5ed`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -88,6 +88,7 @@
 - eslint-plugin-react-hooks
 - @types/react
 - package.json
+- apiGet
 - eslint
 - helmet
 - store.ts
@@ -120,6 +121,7 @@
 - 7. Database Mapping
 - 7. Database and Migration Requirements
 - Prompt 02 - Phân tích màn hình Player
+- scripts
 - AuthService
 - 11. Leaderboard
 - Feature Routing
@@ -162,10 +164,12 @@
 - 16. API Validation Flow
 - 6. Automatic Provisioning
 - 9. Generated Data và Seed Workflow
+- UpdateEventConfigDto
 - CreateStationDto
 - .getPublicConfig
 - LeaderboardController
 - .generateTeamQrLoginToken
+- package.json
 - migration.sql
 - migration.sql
 - MOVEment 2026 - Automatic URL QR Login
@@ -178,7 +182,10 @@
 - migration.sql
 - migration.sql
 - konva
+- eslint
 - migration.sql
+- source-map-support
+- ts-node
 
 ## God Nodes (most connected - your core abstractions)
 1. `AdminService` - 52 edges
@@ -188,7 +195,7 @@
 5. `PrismaService` - 37 edges
 6. `useMovementStore` - 29 edges
 7. `PlayerService` - 26 edges
-8. `MOVEment 2026 - Implementation Backlog` - 25 edges
+8. `MOVEment 2026 - Implementation Backlog` - 26 edges
 9. `FinalService` - 24 edges
 10. `Backend Audit Status` - 23 edges
 
@@ -199,15 +206,15 @@
   scripts/production-like-smoke.ps1 → fe/tsconfig.node.json
 - `main()` --calls--> `planFinalChallengeSeed()`  [EXTRACTED]
   be/prisma/seed.ts → be/prisma/final-challenge-seed.ts
-- `bootstrap()` --indirect_call--> `AppModule`  [INFERRED]
-  be/src/main.ts → be/src/app.module.ts
-- `App()` --calls--> `logout()`  [EXTRACTED]
-  fe/src/App.tsx → fe/src/features/movement/api.ts
+- `main()` --calls--> `buildQrLoginUrl()`  [EXTRACTED]
+  be/prisma/seed.ts → be/src/common/qr/qr-token.ts
+- `main()` --calls--> `createQrTokenFingerprint()`  [EXTRACTED]
+  be/prisma/seed.ts → be/src/common/qr/qr-token.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (170 total, 29 thin omitted)
+## Communities (177 total, 32 thin omitted)
 
 ### Community 0 - "AuthContext"
 Cohesion: 0.06
@@ -215,11 +222,11 @@ Nodes (31): 10. Conditional Database Deployment, 11. Expected Migration Review, 
 
 ### Community 1 - "AdminService"
 Cohesion: 0.08
-Nodes (33): AdminAuthContext, AuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, CurrentAuth, Roles() (+25 more)
+Nodes (30): AuthContext, isAdmin(), isTeam(), CurrentAuth, Roles(), AdminController, Body, Controller (+22 more)
 
 ### Community 2 - "dependencies"
-Cohesion: 0.04
-Nodes (47): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+39 more)
+Cohesion: 0.07
+Nodes (27): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, helmet, @nestjs/common, @nestjs/config (+19 more)
 
 ### Community 3 - "PlayerService"
 Cohesion: 0.19
@@ -230,16 +237,16 @@ Cohesion: 0.10
 Nodes (21): @ant-design/icons, antd, dependencies, @ant-design/icons, antd, jsqr, lodash, react (+13 more)
 
 ### Community 5 - "devDependencies"
-Cohesion: 0.06
-Nodes (33): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schematics, @nestjs/testing, prisma (+25 more)
+Cohesion: 0.07
+Nodes (27): devDependencies, globals, jest, @nestjs/cli, @nestjs/schematics, @nestjs/testing, prisma, ts-jest (+19 more)
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.11
 Nodes (19): eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-refresh, globals, @types/node, @types/qrcode, @types/react (+11 more)
 
 ### Community 8 - "store.ts"
-Cohesion: 0.09
-Nodes (25): AuthController, mockAuthService, Body, Controller, Post, AuthService, PrismaSessionClient, mockJwtService (+17 more)
+Cohesion: 0.06
+Nodes (33): AdminAuthContext, AuthType, TeamAuthContext, JwtAuthGuard, JwtPayload, Injectable, RolesGuard, Injectable (+25 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.08
@@ -266,8 +273,8 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowSyntheticDefaultImports, baseUrl, declaration, emitDecoratorMetadata, experimentalDecorators, incremental, module (+11 more)
 
 ### Community 15 - "useMovementStore"
-Cohesion: 0.14
-Nodes (25): loginTeam(), loginTeamWithQr(), loginUser(), isAuthFailure(), cameraErrorMessages, CameraFailureCategory, getCameraFailureCategory(), logCameraDiagnostic() (+17 more)
+Cohesion: 0.12
+Nodes (27): loginTeam(), loginTeamWithQr(), loginUser(), isAuthFailure(), cameraErrorMessages, CameraFailureCategory, getCameraFailureCategory(), logCameraDiagnostic() (+19 more)
 
 ### Community 16 - "compilerOptions"
 Cohesion: 0.06
@@ -275,11 +282,11 @@ Nodes (28): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib
 
 ### Community 17 - "app.module.ts"
 Cohesion: 0.05
-Nodes (42): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 Docker frontend API proxy fix, 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration (+34 more)
+Nodes (43): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 Docker frontend API proxy fix, 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration (+35 more)
 
 ### Community 18 - "api.ts"
-Cohesion: 0.09
-Nodes (46): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, cancelPlayerStation() (+38 more)
+Cohesion: 0.11
+Nodes (35): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, cancelPlayerStation() (+27 more)
 
 ### Community 19 - "EventConfigService"
 Cohesion: 0.08
@@ -290,8 +297,8 @@ Cohesion: 0.14
 Nodes (12): Auth Smoke Test, Main APIs, MOVEment 2026 Backend, Production Deploy Notes, Report Export and Database Recovery Rehearsal, Seed Accounts, Setup, Two-Team Smoke Test (+4 more)
 
 ### Community 22 - "AppFrame.tsx"
-Cohesion: 0.33
-Nodes (5): getLeaderboard(), LeaderboardEntryResponse, LeaderboardPage(), StationsMapPage(), TeamListPage()
+Cohesion: 0.15
+Nodes (16): App(), getLeaderboard(), getMe(), LeaderboardEntryResponse, logout(), useMovementBootstrap(), AppFrame(), AppFrameProps (+8 more)
 
 ### Community 23 - "exclude"
 Cohesion: 0.22
@@ -318,12 +325,12 @@ Cohesion: 0.33
 Nodes (5): For /graphify explain, For /graphify path, graphify reference: query, path, explain, Step 0 — Constrained query expansion (REQUIRED before traversal), Step 1 — Traversal
 
 ### Community 35 - "Prompt 02 - Phân tích màn hình Player"
-Cohesion: 0.14
-Nodes (25): @prisma/client, createUniqueStationQrToken(), devQrArtifactPath, devStationQrArtifactPath, ensureStationQrToken(), formatDuration(), logSeed(), main() (+17 more)
+Cohesion: 0.18
+Nodes (15): @prisma/client, devQrArtifactPath, devStationQrArtifactPath, ensureStationQrToken(), formatDuration(), logSeed(), main(), prisma (+7 more)
 
 ### Community 36 - "MOVEment 2026 - Implementation Backlog"
-Cohesion: 0.08
-Nodes (25): 2026-07-22 Automatic URL Team QR completion, 2026-07-22 Conditional backend database deployment completion, 2026-07-22 Final Challenge completion, 2026-07-22 Production-like integration verification completion, 2026-07-22 Secure Station QR completion, 2026-07-22 Staged Production deployment workflow completion, 2026-07-22 Station tracking and scoring completion, 2026-07-23 Final Challenge plain answer and Production seed override (+17 more)
+Cohesion: 0.07
+Nodes (26): 2026-07-22 Automatic URL Team QR completion, 2026-07-22 Conditional backend database deployment completion, 2026-07-22 Final Challenge completion, 2026-07-22 Production-like integration verification completion, 2026-07-22 Secure Station QR completion, 2026-07-22 Staged Production deployment workflow completion, 2026-07-22 Station tracking and scoring completion, 2026-07-23 Final Challenge plain answer and Production seed override (+18 more)
 
 ### Community 37 - "Workflow phân tích MOVEment 2026"
 Cohesion: 0.14
@@ -394,28 +401,28 @@ Cohesion: 0.27
 Nodes (4): Ensure-Dependencies(), Invoke-Checked(), Step(), Test-LocalBin()
 
 ### Community 59 - "validate-environment.ts"
-Cohesion: 0.14
-Nodes (7): IsInt, IsOptional, IsString, Matches, Min, UpdateEventConfigDto, Get
+Cohesion: 0.18
+Nodes (5): EventConfigController, Controller, Get, EventConfigService, Injectable
 
 ### Community 60 - "xlsx-report.ts"
-Cohesion: 0.08
-Nodes (20): QrActionDto, SubmitCipherDto, IsString, MinLength, LeaderboardController, Controller, Get, PlayerController (+12 more)
+Cohesion: 0.07
+Nodes (29): AdminScoreDto, ReopenProgressDto, SubmitScoreDto, IsInt, IsOptional, IsString, MaxLength, Min (+21 more)
 
 ### Community 61 - "init.sql"
 Cohesion: 0.29
 Nodes (6): Build Frontend, Install Nginx Config, Manual GitHub Workflow, Nginx Frontend Deploy, Publish Static Files, Verify
 
 ### Community 62 - "routes.tsx"
-Cohesion: 0.15
-Nodes (12): logout(), RunningPersonIcon(), RunningPersonIconProps, ROLE_LABELS, STATUS_ORDER, AppFrame(), AppFrameProps, buildTimestampLabel (+4 more)
+Cohesion: 0.27
+Nodes (10): createUniqueStationQrToken(), buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), createSecureStationQrToken(), isOfficialQrLoginToken(), isOfficialStationQrToken(), isOfficialStationQrTokenForPurpose() (+2 more)
 
 ### Community 64 - "PrismaService"
-Cohesion: 0.12
-Nodes (36): qrcode, App(), displayStatus(), fetchAdminDatabase(), AdminStationQrTokenResponse, createAdminStation(), createAdminTeam(), deleteAdminStation() (+28 more)
+Cohesion: 0.15
+Nodes (30): qrcode, displayStatus(), fetchAdminDatabase(), AdminStationQrTokenResponse, createAdminStation(), createAdminTeam(), deleteAdminStation(), deleteAdminTeam() (+22 more)
 
 ### Community 65 - ".log"
-Cohesion: 0.14
-Nodes (12): JwtAuthGuard, JwtPayload, Injectable, RolesGuard, Injectable, AuthModule, Module, SubmitFinalDto (+4 more)
+Cohesion: 0.43
+Nodes (5): SubmitFinalDto, IsOptional, IsString, UpdateFinalConfigDto, IsBoolean
 
 ### Community 66 - "admin.controller.ts"
 Cohesion: 0.20
@@ -430,8 +437,8 @@ Cohesion: 0.40
 Nodes (5): Automatic URL QR Login and Seed Tokens, Documentation and Workflow, Final Challenge, Prompt Routing, Station Score Entry and Limits
 
 ### Community 70 - "UpdateStationDto"
-Cohesion: 0.12
-Nodes (20): AppModule, Module, buildCorsOrigin(), Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment, validateEnvironment() (+12 more)
+Cohesion: 0.11
+Nodes (22): AppModule, Module, buildCorsOrigin(), Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment, validateEnvironment() (+14 more)
 
 ### Community 71 - "scripts"
 Cohesion: 0.18
@@ -461,6 +468,10 @@ Nodes (9): ExistingFinalChallenge, FINAL_CHALLENGE_SEED_POINTS_BY_RANK, FinalCha
 Cohesion: 0.25
 Nodes (7): Phase 0 - Preflight, Phase 1 - Backend, Phase 2 - Frontend, Post-Deploy Checks, Production Staged Deployment, Rollback, Stop Conditions
 
+### Community 78 - "apiGet"
+Cohesion: 0.28
+Nodes (15): downloadAdminSummary(), getAdminActivityLogs(), getAdminDashboard(), getAdminEventConfig(), getAdminFinalConfig(), getAdminFinalSubmissions(), getAdminScoreQueue(), updateAdminEventConfig() (+7 more)
+
 ### Community 79 - "eslint"
 Cohesion: 0.47
 Nodes (5): assertAtLeast(), assertExact(), Check, main(), prisma
@@ -470,8 +481,8 @@ Cohesion: 0.40
 Nodes (4): mockActivityLog, mockConfig, mockPrisma, team
 
 ### Community 81 - "store.ts"
-Cohesion: 0.07
-Nodes (43): buildFinishedTeamStations(), buildPatchedTeamStations(), buildResetTeamStations(), buildStartedTeamStations(), buildTeamStationsWithoutStation(), buildTeamStationsWithUpdatedStation(), createFinishedStation(), createNewTeamStation() (+35 more)
+Cohesion: 0.06
+Nodes (48): ROLE_LABELS, STATUS_ORDER, buildFinishedTeamStations(), buildPatchedTeamStations(), buildResetTeamStations(), buildStartedTeamStations(), buildTeamStationsWithoutStation(), buildTeamStationsWithUpdatedStation() (+40 more)
 
 ### Community 82 - "@nestjs/config"
 Cohesion: 0.22
@@ -506,8 +517,8 @@ Cohesion: 0.25
 Nodes (8): 3.1 QR Format, 3.2 Token Security, 3.3 Reusable Controlled Token, 3.4 One Active Session per Team, 3.5 Automatic Provisioning, 3.6 Seed Repair, 3.7 Production Safety, 3. Confirmed Business Rules
 
 ### Community 91 - "admin.controller.ts"
-Cohesion: 0.17
-Nodes (17): AdminScoreDto, ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, IsEnum, IsInt, IsOptional, IsString (+9 more)
+Cohesion: 0.25
+Nodes (8): ForceProgressStatusDto, IsEnum, CreateTeamDto, IsOptional, IsString, MaxLength, MinLength, UpdateTeamDto
 
 ### Community 93 - "16. Manual Device Test Matrix"
 Cohesion: 0.29
@@ -577,6 +588,10 @@ Nodes (6): 7.1 Target Token Model, 7.2 Remove One-Time Consumption as the Defaul
 Cohesion: 0.33
 Nodes (5): Context, Danh sách màn hình cần phân tích, Nhiệm vụ, Output mong muốn, Prompt 02 - Phân tích màn hình Player
 
+### Community 111 - "scripts"
+Cohesion: 0.13
+Nodes (15): scripts, build, db:reset, db:verify, lint, prisma:deploy, prisma:generate, prisma:migrate (+7 more)
+
 ### Community 112 - "AuthService"
 Cohesion: 0.22
 Nodes (5): changedFiles, detectedMigrationChanges, detectedSeedChanges, fs, input
@@ -602,8 +617,8 @@ Cohesion: 0.40
 Nodes (5): 9. Event Config and Event Time, Confirmed Rules, Must Update After Change, Required Reading, Scope
 
 ### Community 118 - "AuthController"
-Cohesion: 0.14
-Nodes (8): ActivityLogService, Injectable, EventConfigController, Controller, EventConfigService, Injectable, PrismaService, Injectable
+Cohesion: 0.24
+Nodes (4): ActivityLogService, Injectable, PrismaService, Injectable
 
 ### Community 119 - "23. Verification Matrix"
 Cohesion: 0.40
@@ -745,29 +760,37 @@ Nodes (3): 6.1 Khi tạo Team, 6.2 Khi tạo Station, 6. Automatic Provisioning
 Cohesion: 0.67
 Nodes (3): 9. Generated Data và Seed Workflow, Khi tạo Station mới, Khi tạo Team mới
 
+### Community 154 - "UpdateEventConfigDto"
+Cohesion: 0.29
+Nodes (6): IsInt, IsOptional, IsString, Matches, Min, UpdateEventConfigDto
+
 ### Community 155 - "CreateStationDto"
 Cohesion: 0.18
 Nodes (11): CreateStationDto, IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUrl, Matches (+3 more)
 
+### Community 160 - "package.json"
+Cohesion: 0.33
+Nodes (5): description, license, name, private, version
+
 ## Knowledge Gaps
-- **957 isolated node(s):** `deploy.sh script`, `fs`, `input`, `changedFiles`, `detectedMigrationChanges` (+952 more)
+- **960 isolated node(s):** `deploy.sh script`, `fs`, `input`, `changedFiles`, `detectedMigrationChanges` (+955 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `dependencies` connect `dependencies` to `Prompt 02 - Phân tích màn hình Player`?**
+- **Why does `dependencies` connect `dependencies` to `package.json`, `Prompt 02 - Phân tích màn hình Player`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `@prisma/client` connect `Prompt 02 - Phân tích màn hình Player` to `dependencies`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **Why does `createQrTokenFingerprint()` connect `Prompt 02 - Phân tích màn hình Player` to `store.ts`, `admin.controller.ts`, `xlsx-report.ts`, `.generateTeamQrLoginToken`?**
+- **Why does `createQrTokenFingerprint()` connect `routes.tsx` to `Prompt 02 - Phân tích màn hình Player`, `store.ts`, `admin.controller.ts`, `xlsx-report.ts`, `.generateTeamQrLoginToken`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `fs`, `input` to the rest of the system?**
-  _957 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _960 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext` be split into smaller, more focused modules?**
   _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
 - **Should `AdminService` be split into smaller, more focused modules?**
-  _Cohesion score 0.0786056049213944 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08367271380970011 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._

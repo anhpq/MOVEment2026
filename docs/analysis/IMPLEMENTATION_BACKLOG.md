@@ -1,5 +1,11 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Admin Operations UI merge recovery
+
+- [x] Restored the local responsive Admin Operations UI after the merge selected the minimal remote component.
+- [x] Integrated remote `finalStartsAt` Event Config behavior and current/new Final keyword handling.
+- [x] Preserved structured dashboard, score queue, submissions, logs, refresh, error feedback, and Excel export.
+
 ## 2026-07-24 Admin score-only correction
 
 - [x] Admin Station Detail always calls the score-correction endpoint and no longer falls into `Progress is not waiting for score` based on Frontend status.
