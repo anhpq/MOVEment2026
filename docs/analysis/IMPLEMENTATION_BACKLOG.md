@@ -1,5 +1,28 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Admin Operations UI merge recovery
+
+- [x] Restored the local responsive Admin Operations UI after the merge selected the minimal remote component.
+- [x] Integrated remote `finalStartsAt` Event Config behavior and current/new Final keyword handling.
+- [x] Preserved structured dashboard, score queue, submissions, logs, refresh, error feedback, and Excel export.
+
+## 2026-07-24 Admin score-only correction
+
+- [x] Admin Station Detail always calls the score-correction endpoint and no longer falls into `Progress is not waiting for score` based on Frontend status.
+- [x] Non-empty Admin correction reason is required by Frontend and Backend.
+- [x] Admin correction is enabled only for `COMPLETED` progress and rejected otherwise by both UI and Backend.
+- [x] Admin correction preserves progress status and all timestamps while updating score, Team total delta, and audit records.
+- [x] All 109 Backend tests, including Player score regression coverage, Backend/Frontend lint and build, diff check, Graphify update, and local tester runtime verification passed.
+
+## 2026-07-24 Scoring confirmation code removal
+
+- [x] Updated the confirmed Business Rule so Team score submission after Check-out does not require a confirmation code.
+- [x] Removed the confirmation-code field and verification from Backend and Frontend score submission.
+- [x] Removed `SCORING_CODE` and its bcrypt hash from runtime configuration, environment validation, seed, and current smoke/deployment scripts.
+- [x] Added a forward-only migration to drop `event_config.scoring_code_hash`.
+- [x] Verified Prisma schema/client, all 107 Backend tests, Backend/Frontend lint and build, active-source reference scan, diff check, and Graphify update.
+- [x] Recreated the local tester containers, applied all migrations, ran seed, confirmed the API is healthy, and confirmed the live OpenAPI document has no legacy scoring-code DTO or field.
+- [ ] Apply and verify the migration in Production during an explicitly approved deployment.
 ## 2026-07-24 Tester runner Prisma Studio
 
 - [x] `npm run tester` starts Prisma Studio together with Backend API and Frontend preview.

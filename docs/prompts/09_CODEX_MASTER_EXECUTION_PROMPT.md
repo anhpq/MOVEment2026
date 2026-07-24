@@ -144,7 +144,7 @@ Use for:
 - `SCORE`, `TIME`, and `BOTH`;
 - Station max score;
 - default max score;
-- scoring-code verification;
+- score submission without a confirmation code;
 - backend score validation;
 - duplicate completion or score prevention.
 
@@ -529,7 +529,7 @@ Cover relevant cases:
 - custom max score;
 - negative score;
 - score above max;
-- invalid scoring code;
+- retired confirmation-code field is absent;
 - duplicate submission;
 - backend transaction behavior.
 

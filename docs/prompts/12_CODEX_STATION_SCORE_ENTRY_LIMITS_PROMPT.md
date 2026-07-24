@@ -11,7 +11,7 @@ This Prompt covers:
 - score-entry modal;
 - per-Station max score;
 - default max score 30;
-- scoring-code verification;
+- score submission without a confirmation code;
 - duplicate protection;
 - transaction behavior;
 - leaderboard integration;
@@ -55,8 +55,8 @@ Additional rules:
 5. Frontend min/max is UX only.
 6. Score entry occurs on the device logged into the Team account.
 7. There is no Staff account or Staff role.
-8. The person entering score must provide the scoring confirmation code.
-9. Backend stores only a secure hash of the scoring code.
+8. Score submission does not require a scoring confirmation code.
+9. The retired scoring-code field, hash, configuration, and UI must not be reintroduced.
 10. Duplicate request must not create duplicate score or completion.
 11. Admin score correction remains a separate audited flow.
 
@@ -72,7 +72,7 @@ Backend:
 - progress state;
 - score endpoint;
 - DTO validation;
-- scoring-code verification;
+- post-Check-out state validation;
 - transaction boundary;
 - idempotency;
 - leaderboard;
@@ -85,7 +85,7 @@ Frontend:
 - score modal;
 - Team session;
 - max-score display;
-- confirmation-code input;
+- score input without a confirmation-code field;
 - loading and duplicate guard;
 - TIME-mode completion UX.
 
@@ -104,7 +104,7 @@ Tests:
 - each tracking mode;
 - score limits;
 - duplicate submit;
-- wrong scoring code;
+- score submission without the retired confirmation-code field;
 - leaderboard.
 
 ## Required Audit Report
@@ -115,7 +115,7 @@ Tests:
 3. Existing default
 4. Check-out response shape
 5. When modal opens
-6. How scoring code is stored and verified
+6. Confirmation that the retired scoring-code mechanism is absent
 7. Completion transaction
 8. Duplicate protection
 9. Admin correction behavior
@@ -170,7 +170,7 @@ After valid Check-out:
 2. preserve duration;
 3. leave progress awaiting score without inventing a new official status;
 4. open score modal;
-5. submit score and confirmation code;
+5. submit score;
 6. complete progress transactionally.
 
 ### `SCORE`
@@ -180,7 +180,7 @@ After valid Check-out:
 1. follow the confirmed no-duration behavior;
 2. leave progress awaiting score;
 3. open score modal;
-4. submit score and confirmation code;
+4. submit score;
 5. complete progress transactionally.
 
 Do not create official statuses named:
@@ -200,7 +200,7 @@ For `SCORE` and `BOTH` only:
 - show Station name;
 - show allowed range `0–{stationMaxScore}`;
 - use numeric integer input;
-- require confirmation code;
+- do not render or require a confirmation code;
 - prevent negative value;
 - prevent value above max;
 - disable submit while pending;
@@ -224,17 +224,16 @@ Backend must validate:
 7. integer score;
 8. score >= 0;
 9. score <= Station max score;
-10. confirmation code valid;
-11. Event/state rules;
-12. duplicate request safety.
+10. Event/state rules;
+11. duplicate request safety.
 
 Complete score, progress, score event, and activity log in one transaction where applicable.
 
-## Scoring Code
+## Retired Scoring Code
 
-Raw scoring code must come from protected configuration.
+Station score submission must not require or accept a scoring confirmation code.
 
-Database/config must store or compare using a secure hash according to current architecture.
+Remove legacy scoring-code fields from DTOs, database/config, environment validation, seed data, frontend UI, tests, and operational scripts.
 
 Do not:
 
@@ -265,10 +264,13 @@ Admin score edit is separate from normal Team completion.
 Admin correction must:
 
 - require Admin;
-- include reason when current policy requires it;
+- allow correction only when progress is already `COMPLETED`;
+- require a non-empty reason;
+- change only score fields and Team total delta;
+- preserve progress status and all progress timestamps;
 - create score event;
 - create activity log;
-- not reuse Team scoring-code flow blindly;
+- keep Admin correction separate from Team score submission;
 - recalculate leaderboard consistently.
 
 ## Required Tests
@@ -292,8 +294,8 @@ Limits:
 
 Security/state:
 
-- wrong confirmation code rejected;
-- raw code not exposed;
+- score submission succeeds without a confirmation code after valid Check-out;
+- retired confirmation-code fields are absent;
 - score before Check-out rejected;
 - `TIME` score submit rejected;
 - duplicate submit does not duplicate completion;
@@ -322,7 +324,7 @@ Update Source of Truth only when Business Rules change.
 5. Check-out response changes
 6. Modal changes
 7. Backend validation
-8. Scoring-code handling
+8. Retired scoring-code removal
 9. Duplicate strategy
 10. Admin correction behavior
 11. Tests and results

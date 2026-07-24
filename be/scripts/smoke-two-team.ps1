@@ -1,6 +1,5 @@
 param(
   [string]$ApiBaseUrl = "http://localhost:3000",
-  [string]$ScoringCode = "2468",
   [string]$AdminUsername = "admin",
   [string]$AdminPassword = "admin123",
   [string]$EventEndTime = "23:59"
@@ -111,7 +110,6 @@ function Complete-Station {
     -Token $Token `
     -Body @{
       score = $Score
-      confirmationCode = $ScoringCode
       reason = "two-team smoke test"
     } | Out-Null
 }

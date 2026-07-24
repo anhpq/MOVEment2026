@@ -191,12 +191,10 @@ export async function checkOutStation(
 export async function submitStationScore(
   stationId: string,
   score: number,
-  confirmationCode: string,
   reason?: string,
 ): Promise<PlayerProgressResponse> {
   return apiPost<PlayerProgressResponse>(`/api/player/stations/${stationId}/score`, {
     score,
-    confirmationCode,
     reason,
   })
 }

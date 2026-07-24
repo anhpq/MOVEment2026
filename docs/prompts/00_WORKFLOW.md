@@ -588,7 +588,7 @@ Dùng cho:
 - `SCORE`, `TIME`, `BOTH`;
 - max score;
 - default max score;
-- scoring code;
+- score submission without a confirmation code;
 - backend validation;
 - duplicate score/completion protection.
 

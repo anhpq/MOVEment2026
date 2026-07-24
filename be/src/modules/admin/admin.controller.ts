@@ -18,9 +18,9 @@ import { AuthContext, isAdmin } from '../../common/auth/auth-context';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard';
 import { RolesGuard } from '../../common/auth/roles.guard';
 import {
+  AdminScoreDto,
   ForceProgressStatusDto,
   ReopenProgressDto,
-  SubmitScoreDto,
 } from '../../common/dto/score.dto';
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { AdminService } from './admin.service';
@@ -234,7 +234,7 @@ export class AdminController {
   submitScore(
     @CurrentAuth() auth: AuthContext,
     @Param('progressId', ParseIntPipe) progressId: number,
-    @Body() dto: SubmitScoreDto,
+    @Body() dto: AdminScoreDto,
   ) {
     return this.adminService.submitScore(
       this.requireAdminId(auth),
@@ -247,7 +247,7 @@ export class AdminController {
   editScore(
     @CurrentAuth() auth: AuthContext,
     @Param('progressId', ParseIntPipe) progressId: number,
-    @Body() dto: SubmitScoreDto,
+    @Body() dto: AdminScoreDto,
   ) {
     return this.adminService.editScore(
       this.requireAdminId(auth),

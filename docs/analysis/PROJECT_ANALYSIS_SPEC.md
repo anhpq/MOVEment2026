@@ -49,7 +49,7 @@ Uses a separate Team model and Team session.
 
 There is no Staff account or Staff role.
 
-The person supervising a Station may enter score on the device currently logged into the Team account and must provide the scoring confirmation code.
+The person supervising a Station may enter score on the device currently logged into the Team account after a valid Check-out. No scoring confirmation code is required.
 
 ## Authentication and Session
 
@@ -139,6 +139,11 @@ REOPENED
 
 Waiting for score is derived from Check-out and completion fields.
 
+Admin score correction is an audited override. It changes only the progress
+score and the Team total by the corresponding delta, preserves progress status
+and all timestamps, and always requires a non-empty reason. It is allowed only
+after the progress is already `COMPLETED`.
+
 Every active Station begins as `AVAILABLE` for every Team.
 
 Stations are not unlocked in a fixed sequence.
@@ -200,8 +205,7 @@ Score rules:
 - minimum 0;
 - maximum Station max score;
 - backend authoritative;
-- confirmation code required;
-- raw confirmation code is not stored or exposed;
+- no scoring confirmation code is required or stored;
 - duplicate request does not duplicate completion or score;
 - Admin correction is a separate audited flow.
 
@@ -313,7 +317,7 @@ Meaningful actions should create appropriate activity/audit records:
 - Final submission and rank;
 - Admin operational override.
 
-Do not log raw QR tokens, passwords, JWTs, refresh tokens, or scoring codes.
+Do not log raw QR tokens, passwords, JWTs, or refresh tokens.
 
 ## Current Known Implementation Gaps
 

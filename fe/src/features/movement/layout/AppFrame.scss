@@ -1,8 +1,57 @@
 .shell-footer {
   position: sticky;
   bottom: 0;
-  padding: 1rem 0;
-  background: rgba(255, 255, 255, 0.82);
+  z-index: 10;
+  width: min(calc(100% - 24px), 620px);
+  margin: 0 auto 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--movement-border);
+  border-radius: 999px;
+  background: rgba(255, 252, 250, 0.92);
+  box-shadow: 0 12px 34px rgba(58, 39, 34, 0.13);
+  backdrop-filter: blur(16px);
+
+  .ant-flex {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .ant-flex::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ant-btn {
+    flex: 0 0 auto;
+    min-width: 46px;
+    height: 42px;
+    border-color: var(--movement-border-neutral);
+    color: var(--movement-navy);
+    box-shadow: var(--movement-shadow-sm);
+  }
+
+  .ant-btn-primary {
+    border-color: transparent;
+    background: linear-gradient(110deg, #ef8162, var(--movement-coral-dark));
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(220, 88, 57, 0.24);
+  }
+}
+
+@media (max-width: 480px) {
+  .shell-footer {
+    width: calc(100% - 20px);
+    margin-bottom: 8px;
+    padding: 8px;
+
+    .ant-flex {
+      justify-content: flex-start !important;
+    }
+
+    .ant-btn {
+      height: 40px;
+      padding-inline: 13px;
+    }
+  }
 }
 
 // Loop to generate classes for each margin size from 0 to 10

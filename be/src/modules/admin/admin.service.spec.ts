@@ -562,7 +562,7 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(mockPrisma.scoreEvent.create).not.toHaveBeenCalled();
   });
 
-  it('keeps Admin score edit audited and separate from Team scoring code', async () => {
+  it('edits only score fields for Admin without changing status or timestamps', async () => {
     const existingProgress = {
       id: 99,
       teamId: 7,
@@ -584,6 +584,13 @@ describe('AdminService Team QR login lifecycle', () => {
 
     await service.editScore(1, 99, {score: 10, reason: 'audit reason'});
 
+    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
+      where: {id: 99},
+      data: {
+        scoreAchieved: 10,
+        scoreEnteredByUserId: 1,
+      },
+    });
     expect(mockPrisma.scoreEvent.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
         teamId: 7,
@@ -602,5 +609,35 @@ describe('AdminService Team QR login lifecycle', () => {
         metadata: {score: 10, reason: 'audit reason', delta: 5},
       }),
     );
+  });
+
+  it('requires a non-empty reason for every Admin score edit', async () => {
+    await expect(
+      service.editScore(1, 99, {score: 10, reason: '   '}),
+    ).rejects.toThrow('Reason is required for Admin score changes');
+    expect(mockPrisma.teamStationProgress.findUniqueOrThrow).not.toHaveBeenCalled();
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled();
+  });
+
+  it('rejects Admin score correction before progress is completed', async () => {
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue({
+      id: 99,
+      teamId: 7,
+      stationId: 'ST999',
+      status: ProgressStatus.CHECKED_IN,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      checkedOutAt: null,
+      completedAt: null,
+      scoreAchieved: 0,
+      team: {...team, totalPoints: 20},
+      game: {maxPoints: 30},
+      station: {trackingMode: StationTrackingMode.BOTH},
+    });
+
+    await expect(
+      service.editScore(1, 99, {score: 10, reason: 'audit reason'}),
+    ).rejects.toThrow('Only completed progress can have its score corrected');
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled();
+    expect(mockPrisma.scoreEvent.create).not.toHaveBeenCalled();
   });
 });

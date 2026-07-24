@@ -11,7 +11,7 @@ MOVEment 2026 is a station-based event game system.
 
 - `ADMIN`: manages event operations, teams, stations, scores, reopen/status overrides, config, logs, and report export.
 - `TEAM`: logs in with username/password or a team QR token. Each team can have only one active device session.
-- There is no Staff or Station Manager account. After team check-out, staff enters the score on the team device and confirms with the scoring code.
+- There is no Staff or Station Manager account. After team check-out, staff enters the score on the team device.
 
 See backend details in [be/README.md](be/README.md).
 

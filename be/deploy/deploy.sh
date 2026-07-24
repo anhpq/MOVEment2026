@@ -74,7 +74,7 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
-# Host be/.env is the source of truth for NODE_ENV, SCORING_CODE, secrets, etc.
+# Host be/.env is the source of truth for NODE_ENV, secrets, and runtime config.
 # Do not force NODE_ENV=production here — that would override the host file via pm2 --update-env.
 set -a
 # shellcheck disable=SC1091

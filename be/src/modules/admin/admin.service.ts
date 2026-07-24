@@ -11,9 +11,9 @@ import {
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import {
+  AdminScoreDto,
   ForceProgressStatusDto,
   ReopenProgressDto,
-  SubmitScoreDto,
 } from '../../common/dto/score.dto';
 import { EventConfigService } from '../event-config/event-config.service';
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
@@ -641,7 +641,11 @@ export class AdminService {
     return { success: true, station };
   }
 
-  async submitScore(userId: number, progressId: number, dto: SubmitScoreDto) {
+  async submitScore(userId: number, progressId: number, dto: AdminScoreDto) {
+    const reason = dto.reason.trim();
+    if (!reason) {
+      throw new BadRequestException('Reason is required for Admin score changes');
+    }
     const progress = await this.prisma.teamStationProgress.findUniqueOrThrow({
       where: { id: progressId },
       include: { team: true, game: true, station: true },
@@ -649,14 +653,15 @@ export class AdminService {
     if (!progress.checkedOutAt || progress.completedAt) {
       throw new BadRequestException('Progress is not waiting for score');
     }
-    return this.applyScore(userId, progressId, dto.score, dto.reason, false);
+    return this.applyScore(userId, progressId, dto.score, reason, false);
   }
 
-  async editScore(userId: number, progressId: number, dto: SubmitScoreDto) {
-    if (!dto.reason) {
-      throw new BadRequestException('Reason is required when editing score');
+  async editScore(userId: number, progressId: number, dto: AdminScoreDto) {
+    const reason = dto.reason.trim();
+    if (!reason) {
+      throw new BadRequestException('Reason is required for Admin score changes');
     }
-    return this.applyScore(userId, progressId, dto.score, dto.reason, true);
+    return this.applyScore(userId, progressId, dto.score, reason, true);
   }
 
   async reopen(userId: number, progressId: number, dto: ReopenProgressDto) {
@@ -1011,7 +1016,9 @@ export class AdminService {
       include: { team: true, game: true, station: true },
     });
     if (isEdit && progress.status !== ProgressStatus.COMPLETED) {
-      throw new BadRequestException('Only completed progress can be edited');
+      throw new BadRequestException(
+        'Only completed progress can have its score corrected',
+      );
     }
     if (!isEdit && (!progress.checkedOutAt || progress.completedAt)) {
       throw new BadRequestException('Progress is not waiting for score');
@@ -1037,14 +1044,21 @@ export class AdminService {
         : 0;
 
     const updated = await this.prisma.$transaction(async (tx) => {
+      const progressUpdate =
+        isEdit
+          ? {
+              scoreAchieved: score,
+              scoreEnteredByUserId: userId,
+            }
+          : {
+              status: ProgressStatus.COMPLETED,
+              completedAt: progress.completedAt ?? new Date(),
+              scoreAchieved: score,
+              scoreEnteredByUserId: userId,
+            };
       const updatedProgress = await tx.teamStationProgress.update({
         where: { id: progressId },
-        data: {
-          status: ProgressStatus.COMPLETED,
-          completedAt: progress.completedAt ?? new Date(),
-          scoreAchieved: score,
-          scoreEnteredByUserId: userId,
-        },
+        data: progressUpdate,
       });
       await tx.team.update({
         where: { id: progress.teamId },

@@ -363,8 +363,9 @@ Rotate Check-out không được tự rotate Check-in.
 | --- | --- |
 | Người nhập điểm | Điểm được nhập trên thiết bị đang đăng nhập Team account. |
 | Staff role | Không có Staff role riêng. |
-| Score verification | Người chấm phải nhập mã chấm điểm. |
-| Score verification storage | Backend không lưu raw scoring code; chỉ lưu secure hash. |
+| Score submission authorization | Team account được phép gửi điểm sau Check-out mà không cần scoring confirmation code. |
+| Removed mechanism | Hệ thống không còn scoring confirmation code, `SCORING_CODE` configuration hoặc secure hash tương ứng. |
+| Admin score correction | Admin chỉ được correction khi progress đã `COMPLETED`, nhằm điều chỉnh sai sót sau hoàn thành. Correction chỉ thay đổi điểm của progress và tổng điểm Team theo phần chênh lệch; không thay đổi status, `checkedInAt`, `checkedOutAt` hoặc `completedAt`. `reason` không rỗng luôn bắt buộc. |
 | Default max score | Nếu Station không cấu hình riêng thì max score mặc định là `30`. |
 | Score validation | Điểm không được âm và không vượt quá max score của Station. |
 | Validation authority | Backend là nguồn xác thực cuối cùng. |

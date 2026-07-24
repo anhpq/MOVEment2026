@@ -16,7 +16,6 @@ as two independent manual GitHub Actions phases.
    - `PORT=8080`
    - `DATABASE_URL`
    - `JWT_SECRET`
-   - `SCORING_CODE`
    - `CORS_ORIGIN=https://heroes.nalth.top`
    - `FRONTEND_PUBLIC_URL=https://heroes.nalth.top`
 5. Take a fresh PostgreSQL backup before Phase 1.
@@ -35,7 +34,7 @@ mkdir -p /opt/movement/backups
 pg_dump "$DATABASE_URL" --format=custom --file "/opt/movement/backups/movement-$(date -u +%Y%m%dT%H%M%SZ).dump"
 ```
 
-Do not print or copy the raw `DATABASE_URL`, `JWT_SECRET`, `SCORING_CODE`, QR
+Do not print or copy the raw `DATABASE_URL`, `JWT_SECRET`, QR
 tokens, or SSH keys into logs, issues, workflow files, or chat.
 
 ## Phase 1 - Backend
@@ -154,7 +153,7 @@ Stop and do not continue to the next phase when any of these occur:
 - backend build or health check failure;
 - Nginx config validation failure;
 - frontend HTTPS, `/api`, SPA fallback, or `/qr-login` check failure;
-- raw QR token, scoring code, JWT secret, database URL, or SSH key appears in logs;
+- raw QR token, JWT secret, database URL, or SSH key appears in logs;
 - unexpected QR token rotation/revocation would be required.
 
 ## Rollback

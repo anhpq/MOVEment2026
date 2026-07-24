@@ -8,7 +8,6 @@ const productionEnvironment = {
   NODE_ENV: 'production',
   DATABASE_URL: 'postgresql://movement:strong-password@db.example/movement',
   JWT_SECRET: 'a-strong-production-jwt-secret',
-  SCORING_CODE: '9157',
   CORS_ORIGIN: 'https://movement.example',
   FRONTEND_PUBLIC_URL: 'https://movement.example',
 }
@@ -47,7 +46,6 @@ describe('validateEnvironment', () => {
 
   it.each([
     ['JWT_SECRET', 'change-me', 'development default'],
-    ['SCORING_CODE', '2468', 'development default'],
     ['CORS_ORIGIN', '*', 'must not be "*"'],
     ['CORS_ORIGIN', 'https://movement.example, *', 'must not be "*"'],
     ['FRONTEND_PUBLIC_URL', 'http://movement.example', 'must be HTTPS'],

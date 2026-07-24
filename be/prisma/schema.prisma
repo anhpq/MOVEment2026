@@ -239,7 +239,6 @@ model EventConfig {
   finalStartsAt         String   @default("23:59") @map("final_starts_at")
   notifyBeforeMinutes   Int      @default(15) @map("notify_before_minutes")
   cancelCooldownMinutes Int      @default(5) @map("cancel_cooldown_minutes")
-  scoringCodeHash       String   @default("$2b$10$Tn8oLEDmV3DOJjeKcFBz3.9UH/GFsatnF1wlmNfhWJP7dfTaSKwAO") @map("scoring_code_hash")
   timezone              String   @default("Asia/Ho_Chi_Minh")
   updatedByUserId       Int?     @map("updated_by_user_id")
   updatedAt             DateTime @updatedAt @map("updated_at")

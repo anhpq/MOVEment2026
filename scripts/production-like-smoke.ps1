@@ -16,7 +16,6 @@ $LocalPostgresAdminUrl = "postgresql://postgres:postgres@127.0.0.1:55432/postgre
 $ApiOrigin = "http://127.0.0.1:$ApiPort"
 $HttpsOrigin = "https://127.0.0.1:$HttpsPort"
 $JwtSecret = "smoke-jwt-" + [Guid]::NewGuid().ToString("N")
-$ScoringCode = "smoke-" + [Guid]::NewGuid().ToString("N").Substring(0, 12)
 
 [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
 
@@ -506,7 +505,6 @@ $baseEnv = @{
   CORS_ORIGIN = $HttpsOrigin
   FRONTEND_PUBLIC_URL = $HttpsOrigin
   QR_LOGIN_TOKEN_TTL_MINUTES = "1440"
-  SCORING_CODE = $ScoringCode
 }
 
 Invoke-Checked "Backend Prisma generate" $BackendDir "npm.cmd" @("run", "prisma:generate") $baseEnv
@@ -647,12 +645,11 @@ $stationQrTeam = Invoke-Json -Method "Post" -Path "/api/auth/team-login" -Body @
 Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/check-in" -Token $stationQrTeam.accessToken -Body @{ qrToken = $scoreOut } -ExpectedStatus @(400, 403) | Out-Null
 Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/check-in" -Token $stationQrTeam.accessToken -Body @{ qrToken = $scoreIn } | Out-Null
 Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/check-out" -Token $stationQrTeam.accessToken -Body @{ qrToken = $scoreOut } | Out-Null
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 31; confirmationCode = $ScoringCode } -ExpectedStatus @(400) | Out-Null
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = -1; confirmationCode = $ScoringCode } -ExpectedStatus @(400) | Out-Null
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10; confirmationCode = "000000" } -ExpectedStatus @(400, 401, 403) | Out-Null
-$scoreComplete = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10; confirmationCode = $ScoringCode }
+Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 31 } -ExpectedStatus @(400) | Out-Null
+Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = -1 } -ExpectedStatus @(400) | Out-Null
+$scoreComplete = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10 }
 Assert ($scoreComplete.completedAt -and $scoreComplete.scoreAchieved -eq 10) "SCORE station did not complete with expected score."
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10; confirmationCode = $ScoringCode } -ExpectedStatus @(400) | Out-Null
+Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10 } -ExpectedStatus @(400) | Out-Null
 
 $oldCheckIn = $scoreIn
 Invoke-Json -Method "Delete" -Path "/api/admin/stations/SMKSCORE/qr-tokens/CHECK_IN" -Token $adminToken | Out-Null
@@ -679,7 +676,7 @@ Start-Sleep -Seconds 1
 $timeDone = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/check-out" -Token $timeTeam.accessToken -Body @{ qrToken = $timeOut }
 Assert ($timeDone.completedAt -and $timeDone.scoreAchieved -eq 0) "TIME station did not auto-complete with score 0."
 Assert ([DateTime]$timeDone.checkedOutAt -gt [DateTime]$timeDone.checkedInAt) "TIME station did not record real duration."
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/score" -Token $timeTeam.accessToken -Body @{ score = 1; confirmationCode = $ScoringCode } -ExpectedStatus @(400) | Out-Null
+Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/score" -Token $timeTeam.accessToken -Body @{ score = 1 } -ExpectedStatus @(400) | Out-Null
 
 $bothStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $adminToken -Body @{
   id = "SMKBOTH"
@@ -698,7 +695,7 @@ Start-Sleep -Seconds 1
 $bothAwaitingScore = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKBOTH/check-out" -Token $bothTeam.accessToken -Body @{ qrToken = $bothOut }
 Assert (!$bothAwaitingScore.completedAt -and $bothAwaitingScore.checkedOutAt) "BOTH station should await score after checkout."
 Assert ([DateTime]$bothAwaitingScore.checkedOutAt -gt [DateTime]$bothAwaitingScore.checkedInAt) "BOTH station did not record real duration."
-$bothComplete = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKBOTH/score" -Token $bothTeam.accessToken -Body @{ score = 12; confirmationCode = $ScoringCode }
+$bothComplete = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKBOTH/score" -Token $bothTeam.accessToken -Body @{ score = 12 }
 Assert ($bothComplete.completedAt -and $bothComplete.scoreAchieved -eq 12) "BOTH station did not complete with custom max score."
 
 $activeFinalTeam = Invoke-Json -Method "Post" -Path "/api/auth/team-login" -Body @{ username = "team06"; password = "team06"; deviceLabel = "active-final-team" }
@@ -736,7 +733,7 @@ $bothEntry = $leaderboard | Where-Object { $_.teamId -eq $bothTeam.team.id } | S
 Assert ($bothEntry.totalPoints -eq 22) "Leaderboard did not include Station score plus Final bonus exactly once."
 
 Step "Scanning tracked files and production-like logs for raw secrets"
-$rawPatterns = @($teamQrToken, $rotatedToken, $scoreIn, $scoreOut, $timeIn, $timeOut, $bothIn, $bothOut, $ScoringCode)
+$rawPatterns = @($teamQrToken, $rotatedToken, $scoreIn, $scoreOut, $timeIn, $timeOut, $bothIn, $bothOut)
 foreach ($pattern in $rawPatterns) {
   if (!$pattern) {
     continue

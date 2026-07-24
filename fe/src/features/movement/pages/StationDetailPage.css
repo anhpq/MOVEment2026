@@ -1,0 +1,95 @@
+.station-admin-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.65fr);
+  gap: 14px;
+  min-width: 0;
+}
+
+.station-admin-tools .ant-card {
+  min-width: 0;
+}
+
+.station-admin-tools .ant-card-body {
+  padding: 18px;
+}
+
+.station-admin-tool-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--movement-border);
+}
+
+.station-admin-tool-heading > div {
+  min-width: 0;
+}
+
+.station-admin-tool-heading h3 {
+  margin: 0;
+  color: var(--movement-navy);
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.station-admin-tool-heading .ant-typography {
+  color: #838b98;
+  font-size: 0.7rem;
+}
+
+.station-admin-tool-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--movement-coral-soft);
+  color: var(--movement-coral-dark);
+  font-size: 1.05rem;
+}
+
+.station-admin-tool-heading.danger {
+  border-bottom-color: rgba(215, 63, 63, 0.16);
+}
+
+.station-admin-tool-heading.danger .station-admin-tool-icon {
+  background: #fff0f0;
+  color: #d53f3f;
+}
+
+.station-admin-score-card .ant-form > .ant-btn {
+  min-width: 150px;
+}
+
+.station-admin-reset-card {
+  border-color: rgba(215, 63, 63, 0.2) !important;
+  background: linear-gradient(145deg, #fff, #fffafa) !important;
+}
+
+.station-reset-button {
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+}
+
+@media (max-width: 680px) {
+  .station-admin-tools {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .station-admin-tools .ant-card-body {
+    padding: 15px;
+  }
+
+  .station-admin-tool-heading {
+    align-items: flex-start;
+  }
+
+  .station-admin-score-card .ant-form > .ant-btn {
+    width: 100%;
+  }
+}

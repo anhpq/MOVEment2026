@@ -27,7 +27,6 @@ services:
       JWT_SECRET: tester-local-secret
       JWT_EXPIRES_IN: 12h
       CORS_ORIGIN: http://localhost:4173
-      SCORING_CODE: 2468
       FRONTEND_PUBLIC_URL: http://localhost:4173
       QR_LOGIN_TOKEN_TTL_MINUTES: 1440
     ports:

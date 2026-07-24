@@ -1,0 +1,453 @@
+.admin-ops-page {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.admin-ops-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  overflow: hidden;
+  padding: 22px;
+  border: 1px solid rgba(237, 118, 87, 0.24);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(255, 179, 145, 0.24),
+      transparent 38%
+    ),
+    linear-gradient(120deg, #fff6f1, #fff);
+  box-shadow: 0 16px 36px rgba(81, 45, 34, 0.08);
+}
+
+.admin-ops-hero::after {
+  position: absolute;
+  right: 44px;
+  bottom: -75px;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(237, 118, 87, 0.08);
+  border-radius: 50%;
+  box-shadow: 0 0 0 22px rgba(237, 118, 87, 0.025);
+  content: "";
+}
+
+.admin-ops-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-ops-hero-icon,
+.ops-section-heading > .anticon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff9c72, #eb5d3d);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(207, 77, 44, 0.2);
+}
+
+.admin-ops-hero-icon {
+  width: 54px;
+  height: 54px;
+  font-size: 1.5rem;
+}
+
+.admin-ops-hero h2 {
+  margin: 0;
+  color: #111f3d;
+  font-size: var(--movement-page-title-size);
+  line-height: 1.15;
+}
+
+.admin-ops-hero .ant-btn {
+  border-color: rgba(237, 118, 87, 0.26);
+  color: #db5d40;
+}
+
+.admin-ops-tabs {
+  min-width: 0;
+  padding: 4px 16px 18px;
+  border: 1px solid rgba(15, 29, 58, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 42px rgba(52, 41, 38, 0.07);
+}
+
+.admin-ops-tabs > .ant-tabs-nav {
+  margin-bottom: 14px;
+}
+
+.admin-ops-tabs > .ant-tabs-content-holder,
+.admin-ops-tabs .ant-tabs-content,
+.admin-ops-tabs .ant-tabs-tabpane {
+  min-width: 0;
+}
+
+.admin-ops-tabs .ant-tabs-nav-list {
+  gap: 2px;
+}
+
+.admin-ops-tabs .ant-tabs-tab {
+  padding: 10px 7px;
+  color: #697386;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.admin-ops-tabs .ant-tabs-tab .anticon {
+  margin-inline-end: 5px;
+  font-size: 0.82rem;
+}
+
+.admin-ops-tabs .ant-tabs-ink-bar {
+  height: 2px;
+}
+
+.admin-ops-tabs .ant-tabs-tab-active {
+  color: #e26446;
+}
+
+.ops-tab-panel {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.ops-metric-card {
+  overflow: hidden;
+  min-height: 106px;
+  border: 1px solid rgba(15, 29, 58, 0.07);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fff, #fff8f4);
+  box-shadow: 0 8px 18px rgba(61, 43, 37, 0.05);
+}
+
+.ops-metric-card .ant-card-body {
+  padding: 16px;
+}
+
+.ops-metric-card .ant-typography:first-child {
+  color: #7c8492;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.ops-metric-card h3 {
+  margin: 8px 0 0;
+  color: #15223e;
+  font-size: 1.45rem;
+}
+
+.metric-tone-1 {
+  background: linear-gradient(145deg, #fff, #f3f8ff);
+}
+
+.metric-tone-2 {
+  background: linear-gradient(145deg, #fff, #f4fff9);
+}
+
+.metric-tone-3 {
+  background: linear-gradient(145deg, #fff, #fffbea);
+}
+
+.ops-export-button {
+  justify-self: start;
+  border-color: rgba(44, 156, 91, 0.3);
+  border-radius: 10px;
+  color: #25854d;
+}
+
+.ops-record-list .ant-list-items {
+  display: grid;
+  gap: 10px;
+}
+
+.ops-record-list .ops-record {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid rgba(237, 118, 87, 0.15);
+  border-radius: 14px;
+  background: linear-gradient(110deg, #fffaf7, #fff);
+}
+
+.ops-record-index {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #fff0e9;
+  color: #de6244;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.ops-record-content {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+}
+
+.ops-record-title {
+  overflow: hidden;
+  color: #17243e;
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ops-record-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ops-record-field {
+  display: grid;
+  max-width: 100%;
+  padding: 5px 8px;
+  border: 1px solid rgba(15, 29, 58, 0.07);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.ops-record-field span {
+  color: #9298a3;
+  font-size: 0.56rem;
+  text-transform: uppercase;
+}
+
+.ops-record-field strong {
+  overflow: hidden;
+  max-width: 210px;
+  color: #4d596c;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ops-form-card,
+.ops-submissions-card {
+  min-width: 0;
+  border: 1px solid rgba(237, 118, 87, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(61, 43, 37, 0.05);
+}
+
+.ops-form-card .ant-card-body {
+  padding: 20px;
+}
+
+.ops-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(237, 118, 87, 0.16);
+}
+
+.ops-section-heading > .anticon {
+  width: 42px;
+  height: 42px;
+  font-size: 1.15rem;
+}
+
+.ops-section-heading h3 {
+  margin: 0;
+  color: #16233f;
+  font-size: 1.15rem;
+}
+
+.ops-section-heading .ant-typography {
+  color: #858b96;
+  font-size: 0.68rem;
+}
+
+.ops-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ops-form .ant-input,
+.ops-form .ant-input-number {
+  border-radius: 10px;
+}
+
+.ops-form > .ant-btn {
+  min-width: 170px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(105deg, #ec8060, #e95c3c);
+  font-weight: 700;
+}
+
+.ops-info-note {
+  margin-bottom: 18px;
+  padding: 11px 13px;
+  border-left: 3px solid #ee7957;
+  border-radius: 8px;
+  background: #fff7f2;
+  color: #7f665f;
+  font-size: 0.7rem;
+}
+
+.ops-submissions-card .ant-card-head-title {
+  color: #17243e;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .admin-ops-hero {
+    padding: 19px;
+  }
+
+  .admin-ops-tabs {
+    padding: 3px 12px 14px;
+  }
+
+  .admin-ops-tabs .ant-tabs-tab {
+    margin: 0;
+    padding: 9px 6px;
+    font-size: 0.72rem;
+  }
+
+  .ops-record-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .ops-record-field strong {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-ops-page {
+    gap: 12px;
+  }
+
+  .admin-ops-hero {
+    grid-template-columns: auto 1fr auto;
+    gap: 11px;
+    padding: 17px 14px;
+    border-radius: 16px;
+  }
+
+  .admin-ops-hero-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .admin-ops-hero h2 {
+    font-size: var(--movement-page-title-size);
+  }
+
+  .admin-ops-tabs {
+    padding: 2px 8px 10px;
+    border-radius: 16px;
+  }
+
+  .admin-ops-tabs > .ant-tabs-nav {
+    margin-bottom: 10px;
+  }
+
+  .admin-ops-tabs .ant-tabs-tab {
+    padding: 8px 5px;
+    font-size: 0.68rem;
+  }
+
+  .admin-ops-tabs .ant-tabs-tab .anticon {
+    margin-inline-end: 4px;
+    font-size: 0.75rem;
+  }
+
+  .ops-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .ops-record-list .ops-record {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .ops-record-index {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ops-record-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .ops-record-field {
+    grid-template-columns: minmax(88px, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 8px;
+    padding: 7px 9px;
+  }
+
+  .ops-record-field strong {
+    max-width: 100%;
+    text-align: right;
+  }
+
+  .ops-form-card .ant-card-body,
+  .ops-submissions-card .ant-card-body {
+    padding: 14px;
+  }
+
+  .ops-section-heading {
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+  }
+
+  .ops-section-heading > .anticon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .ops-section-heading h3 {
+    font-size: 1rem;
+  }
+
+  .ops-export-button,
+  .ops-form > .ant-btn {
+    width: 100%;
+  }
+
+  .ops-info-note {
+    font-size: 0.66rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-ops-hero {
+    grid-template-columns: auto 1fr;
+  }
+
+  .admin-ops-hero > .ant-btn {
+    grid-column: 1 / -1;
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .admin-ops-hero .ant-btn .anticon {
+    margin: 0;
+  }
+}
