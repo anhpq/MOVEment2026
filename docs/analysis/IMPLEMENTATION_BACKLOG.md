@@ -346,6 +346,11 @@ Acceptance:
 - [ ] Disable Legacy parser/endpoints after compatibility window.
 - [ ] Remove obsolete migration fields only after safe deployment and rollback review.
 
+## P2 — Leaderboard presentation
+
+- [x] Differentiate gold, silver, and bronze podium colors across rank and points styling.
+- [ ] Perform final visual review on representative desktop and mobile devices.
+
 ## Next Execution Order
 
 1. Run Production-like smoke tests.

@@ -432,3 +432,9 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Updated the backlog execution checklist so Graphify update follows `AGENTS.md` and runs when useful/available rather than being treated as an unconditional first step.
 - Compared Markdown docs against backend controllers, frontend routes, frontend API client, and Prisma schema. Updated `be/README.md` API route list and `fe/README.md` frontend route list to match source.
 - Verification: reviewed Markdown diffs; no source code changed. `graphify update .` completed and regenerated `graphify-out/` artifacts, with warnings that `hooks.json` produced zero nodes and SQL extraction needs `tree_sitter_sql`.
+
+## 2026-07-24 Leaderboard podium palette
+
+- Refined the Leaderboard podium styling without changing ranking or scoring behavior.
+- Rank 1 now uses a distinct bright gold/amber palette, rank 2 a cool silver palette, and rank 3 a darker brown/copper palette across the row, rank badge, side accent, and points badge.
+- Frontend lint and production build passed. The existing non-blocking Vite large-chunk warning remains.
