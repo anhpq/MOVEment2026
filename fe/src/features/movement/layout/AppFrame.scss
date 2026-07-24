@@ -37,6 +37,37 @@
   }
 }
 
+.team-themed-shell {
+  .shell-header {
+    border-bottom-color: var(--team-focus-ring);
+    background:
+      radial-gradient(circle at 14% 0, var(--team-primary-soft), transparent 42%),
+      rgba(255, 252, 250, 0.96);
+  }
+
+  .app-runner-mark,
+  .brand-title,
+  .brand-subtitle b {
+    color: var(--team-primary);
+  }
+
+  .page-stack {
+    background:
+      radial-gradient(circle at top right, var(--team-primary-soft), transparent 34%),
+      transparent;
+  }
+
+  .shell-footer {
+    border-color: var(--team-focus-ring);
+  }
+
+  .shell-footer .ant-btn-primary {
+    background: linear-gradient(110deg, var(--team-primary-hover), var(--team-primary));
+    color: var(--team-on-primary);
+    box-shadow: 0 8px 18px var(--team-focus-ring);
+  }
+}
+
 @media (max-width: 480px) {
   .shell-footer {
     width: calc(100% - 20px);

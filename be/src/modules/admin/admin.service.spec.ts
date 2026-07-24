@@ -68,6 +68,11 @@ const mockPrisma = {
 };
 
 const mockActivityLog = {log: jest.fn()};
+const mockTeamResults = {
+  getRankedTeamResults: jest.fn(),
+  toLeaderboardRows: jest.fn(),
+};
+
 const mockConfig = {
   get: jest.fn((key: string) => {
     if (key === 'FRONTEND_PUBLIC_URL') return 'https://movement.example';
@@ -129,6 +134,7 @@ describe('AdminService Team QR login lifecycle', () => {
       {} as never,
       mockActivityLog as never,
       mockConfig as never,
+      mockTeamResults as never,
     );
   });
 
@@ -162,6 +168,47 @@ describe('AdminService Team QR login lifecycle', () => {
       /^https:\/\/movement\.example\/qr-login\?token=/,
     );
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1);
+  });
+
+  it('accepts and normalizes Team Color on create', async () => {
+    await service.createTeam(1, {
+      name: 'Team Seven',
+      username: 'team07',
+      password: 'secret7',
+      teamColor: '#aabbcc',
+    });
+
+    expect(mockPrisma.team.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({ color: '#AABBCC' }),
+    });
+  });
+
+  it('clears Team Color on update with explicit null', async () => {
+    mockPrisma.team.update.mockResolvedValue({ ...team, color: null });
+
+    await service.updateTeam(1, 7, { teamColor: null });
+
+    expect(mockPrisma.team.update).toHaveBeenCalledWith({
+      where: { id: 7 },
+      data: expect.objectContaining({ color: null }),
+    });
+  });
+
+  it('rejects conflicting Team Color aliases', async () => {
+    await expect(
+      service.updateTeam(1, 7, { teamColor: '#112233', color: '#445566' }),
+    ).rejects.toThrow(BadRequestException);
+  });
+
+  it('keeps missing Team Color unchanged on update', async () => {
+    mockPrisma.team.update.mockResolvedValue(team);
+
+    await service.updateTeam(1, 7, { name: 'Team Seven Updated' });
+
+    expect(mockPrisma.team.update).toHaveBeenCalledWith({
+      where: { id: 7 },
+      data: expect.not.objectContaining({ color: expect.anything() }),
+    });
   });
 
   it('replaces an active token through the generate action and returns one-time raw token', async () => {

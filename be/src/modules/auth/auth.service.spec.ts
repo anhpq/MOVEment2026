@@ -134,6 +134,7 @@ describe('AuthService', () => {
           totalPlaySeconds: 0,
           startedAt: null,
           status: 'ACTIVE',
+          teamColor: '#000000',
           color: '#000000',
         },
       })
@@ -236,6 +237,7 @@ describe('AuthService', () => {
           totalPlaySeconds: 0,
           startedAt: null,
           status: 'ACTIVE',
+          teamColor: '#000000',
           color: '#000000',
         },
       })

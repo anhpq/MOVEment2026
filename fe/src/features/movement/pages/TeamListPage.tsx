@@ -5,6 +5,7 @@ import {
 import {Card, Empty, List, Typography} from "antd";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
+import {getTeamThemeVars} from "../teamTheme";
 import "./TeamListPage.css";
 
 export function TeamListPage() {
@@ -52,6 +53,7 @@ export function TeamListPage() {
             <List.Item>
               <Card
                 className="team-select-card"
+                style={getTeamThemeVars(team.teamColor)}
                 hoverable
                 role="button"
                 tabIndex={0}

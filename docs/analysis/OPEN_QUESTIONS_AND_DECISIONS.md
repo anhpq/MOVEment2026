@@ -401,17 +401,62 @@ Rotate Check-out không được tự rotate Check-in.
 
 ## 8. Leaderboard
 
+Leaderboard xếp hạng tất cả Team chưa bị xóa cứng trong database, bao gồm `ACTIVE`, `LOCKED` và `FINISHED` nếu tồn tại.
+
 Leaderboard sắp xếp theo:
 
-1. Tổng điểm giảm dần.
-2. Nếu hòa điểm, tổng thời gian chơi tăng dần.
-3. Nếu tiếp tục hòa, số Station hoàn thành giảm dần.
+1. `Total Score` giảm dần, nguồn là `team.totalPoints`.
+2. Nếu hòa điểm, `Total Play Time` tăng dần, nguồn là `team.totalPlaySeconds`.
+3. Nếu tiếp tục hòa, `Total Stations Completed` giảm dần.
+4. Nếu tiếp tục hòa, `Final Submitted At` tăng dần, `null` xếp sau.
+5. Nếu tiếp tục hòa, `Team Code` tăng dần, trong hệ thống hiện tại là `Team.id` số tăng dần.
 
 Backend là nguồn xác thực cuối cùng cho Leaderboard.
 
 ---
 
-## 9. QR Camera Scanning
+## 9. Team Results Excel Export
+
+| Chủ đề | Quyết định |
+| --- | --- |
+| Export scope | Admin Team Results Excel export bao gồm tất cả Team chưa bị xóa cứng. |
+| Station scope | Chỉ Station đang active được tạo column group và được tính vào completed/computed score. |
+| Worksheet | File Team Results mới có một worksheet, mỗi Team đúng một row. |
+| Base columns | `Team Code`, `Team Name`, `Captain Name`, `Username`, `Total Stations Completed`, `Total Play Time`, `Total Score`, `Computed Score`, `Rank`, `Final Submitted At`, `Final Rank`, `Final Bonus Score`. |
+| Team Code | `Team Code = Team.id`; không thêm cột `Team ID` riêng vì trùng dữ liệu. |
+| Excluded columns | Không export `Team Color`, `Team Status`, `Total Stations`, hoặc `Final Challenge Status`. |
+| Station columns | Mỗi Station active chỉ có `Check-in`, `Check-out`, `Score`; không có per-Station `Status` hoặc `Duration`. |
+| Duplicate Station name | Dùng `Station.name`; tên trùng được suffix theo thứ tự deterministic, ví dụ `Station (#02)`. |
+| Total Play Time | Dùng `team.totalPlaySeconds` để hiển thị tie-break ranking; export không tự repair/recompute field này. |
+| Total Score | Ranking dùng `team.totalPoints`; export không tự repair/recompute field này. |
+| Computed Score | Cột reconciliation riêng: active completed Station scores + correct Final bonus; không dùng để rank. |
+| Incomplete Station attempt | `PLAYING`, `CHECKED_IN`, hoặc đã Check-out chờ score được export blank Check-in/Check-out, Score `0`, không tính completed/computed totals. |
+| `SCORE` duration | `SCORE` Station không đóng góp play duration; khi cần biểu diễn duration thì là `00:00:00`. |
+| Final export | Chỉ correct Final submission được xem là submitted Final result. Không có correct submission, kể cả wrong-only attempts, export blank submitted/rank và bonus `0`. |
+| Excel format | Dùng numeric Excel cells/formats: datetime `dd/mm/yyyy hh:mm:ss`, duration `[h]:mm:ss`, hiển thị theo `Asia/Ho_Chi_Minh`. |
+| Security | New Team Results workbook không được chứa raw QR token, token hash/fingerprint, password, session token, scoring code, Final answer text hoặc secrets. |
+
+---
+
+## 10. Team Color
+
+| Chủ đề | Quyết định |
+| --- | --- |
+| Storage | Reuse `Team.color`; không thêm DB field hoặc migration cho task này. |
+| Canonical API field | Public API dùng `teamColor` là canonical field và tạm giữ `color` làm backward-compatible alias. |
+| Excel | Team Color chỉ dùng cho UI theming, không export trong Team Results Excel. |
+| Admin input | Admin create/update chỉ chấp nhận `#RRGGBB` hoặc `null`. Invalid input trả `400`. |
+| Clear behavior | `null` clear stored color; missing `teamColor` khi update nghĩa là không đổi. |
+| Alias conflict | Nếu request có cả `teamColor` và `color` nhưng normalize ra khác nhau, backend trả `400`; nếu giống nhau thì accept. |
+| Fallback | UI dùng fallback `#FF765C` khi color null/missing/legacy invalid. |
+| Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
+| Admin Team list | `/teams` là multi-Team context: shell/header/nav giữ default; từng Team card dùng scoped color riêng. |
+| Admin Team context | Single-Team Admin routes như `/system-config/teams/:teamId`, `/teams/:teamId/stations`, `/teams/:teamId/stations/:stationId` có thể theme shell/header/nav theo Team Color của Team đang xem. |
+| Out of scope | Không thêm Admin map route, không đổi Team/user `/stations/map`, không đổi Admin action behavior của `StationsMapPanel`. |
+
+---
+
+## 11. QR Camera Scanning
 
 | Chủ đề | Quyết định |
 | --- | --- |
@@ -424,7 +469,7 @@ Backend là nguồn xác thực cuối cùng cho Leaderboard.
 
 ---
 
-## 10. Generated Data và Seed Data
+## 12. Generated Data và Seed Data
 
 ### 10.1 General Policy
 
@@ -525,7 +570,7 @@ Nếu environment không xác định hoặc không an toàn, seed phải dừng
 
 ---
 
-## 11. Tạo Entity mới sau này
+## 13. Tạo Entity mới sau này
 
 Khi Admin hoặc Codex tạo một Team mới:
 
@@ -566,7 +611,7 @@ User không cần tự cung cấp:
 
 ---
 
-## 11.1 Station Game Type
+## 13.1 Station Game Type
 
 Station Game Type chỉ có ba giá trị:
 
@@ -590,7 +635,7 @@ Business Rules:
 
 ---
 
-## 11.2 Admin Team Station Navigation
+## 13.2 Admin Team Station Navigation
 
 - Admin navigation không hiển thị menu `Stations` độc lập.
 - Admin không thuộc Team nào; giao diện Admin không được hiển thị `Current team`, `Your team`, hoặc đánh dấu một Team là Team của Admin.
@@ -602,7 +647,7 @@ Business Rules:
 
 ---
 
-## 12. Git Policy
+## 14. Git Policy
 
 | Chủ đề | Quyết định |
 | --- | --- |

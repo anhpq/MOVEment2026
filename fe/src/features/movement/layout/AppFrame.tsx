@@ -15,6 +15,7 @@ import {logout as logoutApi} from "../api";
 import {RunningPersonIcon} from "../components/RunningPersonIcon";
 import {ROLE_LABELS} from "../constants";
 import {useMovementStore} from "../store";
+import {getTeamThemeVars} from "../teamTheme";
 import "./AppFrame.scss";
 
 type AppFrameProps = Readonly<PropsWithChildren>;
@@ -35,6 +36,21 @@ function formatBuildTimestamp(value: string) {
 
 const buildTimestampLabel = formatBuildTimestamp(__APP_BUILD_TIMESTAMP__);
 
+function getRouteTeamContextId(pathname: string, role: string | undefined) {
+  if (role !== "admin") {
+    return null;
+  }
+  const stationMatch = /^\/teams\/([^/]+)\/stations(?:\/[^/]+)?$/.exec(pathname);
+  if (stationMatch?.[1]) {
+    return stationMatch[1];
+  }
+  const editorMatch = /^\/system-config\/teams\/([^/]+)$/.exec(pathname);
+  if (editorMatch?.[1] && editorMatch[1] !== "new") {
+    return editorMatch[1];
+  }
+  return null;
+}
+
 export function AppFrame({children}: AppFrameProps) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,6 +60,10 @@ export function AppFrame({children}: AppFrameProps) {
   const logout = useMovementStore((state) => state.logout);
 
   const activeTeam = teams.find((team) => team.id === activeTeamId);
+  const routeTeamId = getRouteTeamContextId(location.pathname, session?.role);
+  const themedTeam = session?.role === "user" ? activeTeam : teams.find((team) => team.id === routeTeamId);
+  const teamThemeVars = getTeamThemeVars(themedTeam?.teamColor);
+  const shellClassName = themedTeam ? "mobile-shell team-themed-shell" : "mobile-shell";
 
   const handleLogout = async () => {
     try {
@@ -65,7 +85,7 @@ export function AppFrame({children}: AppFrameProps) {
   }
 
   return (
-    <Layout className="mobile-shell">
+    <Layout className={shellClassName} style={teamThemeVars}>
       <Layout.Header className="shell-header">
         <div className="header-content">
           <div className="header-spacer" />

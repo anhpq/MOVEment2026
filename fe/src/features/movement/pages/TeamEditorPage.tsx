@@ -12,6 +12,7 @@ import {
 import type {TeamFormValues} from "../types";
 import {createAdminTeam, getAdminTeamQrLoginTokens, updateAdminTeam} from "../api";
 import {fetchAdminDatabase} from "../adminData";
+import {getTeamThemeVars, normalizeTeamColor} from "../teamTheme";
 
 export function TeamEditorPage() {
   const navigate = useNavigate();
@@ -21,10 +22,13 @@ export function TeamEditorPage() {
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const [form] = Form.useForm<TeamFormValues>();
   const [isOpen, setIsOpen] = useState(true);
+  const watchedTeamColor = Form.useWatch("teamColor", form);
   const initialQrTokenRef = useRef("");
 
   const team = teams.find((item) => item.id === params.teamId);
   const isEditing = Boolean(team);
+  const previewColor = normalizeTeamColor(watchedTeamColor) ?? team?.teamColor;
+  const drawerThemeVars = getTeamThemeVars(previewColor);
 
   const showGeneratedQr = async (payload: string, filename: string, context: string) => {
     const dataUrl = await QRCode.toDataURL(payload, {width: 320, margin: 2});
@@ -56,7 +60,7 @@ export function TeamEditorPage() {
     let cancelled = false;
     if (team) {
       initialQrTokenRef.current = "";
-      form.setFieldsValue({...team, qrToken: ""});
+      form.setFieldsValue({...team, teamColor: team.teamColor ?? null, qrToken: ""});
       void getAdminTeamQrLoginTokens(team.id).then((tokens) => {
         if (cancelled) {
           return;
@@ -79,6 +83,7 @@ export function TeamEditorPage() {
       score: 0,
       finish: 0,
       totalTimeMinutes: 0,
+      teamColor: null,
       qrToken: "",
     });
     return () => {
@@ -95,7 +100,9 @@ export function TeamEditorPage() {
     <Drawer
       title={isEditing ? "Edit Team" : "Create Team"}
       onClose={handleClose}
-      open={isOpen}>
+      open={isOpen}
+      styles={{body: drawerThemeVars}}>
+      <div className="team-color-preview" style={drawerThemeVars}>
       <Form
         form={form}
         layout="horizontal"
@@ -115,6 +122,7 @@ export function TeamEditorPage() {
                     name: values.name,
                     username: values.username,
                     captainName: values.captainName,
+                    teamColor: values.teamColor?.trim() || null,
                     password: values.password || undefined,
                     ...(qrToken && qrToken !== initialQrTokenRef.current ? {qrToken} : {}),
                   });
@@ -138,6 +146,7 @@ export function TeamEditorPage() {
                     name: values.name,
                     username: values.username,
                     captainName: values.captainName,
+                    teamColor: values.teamColor?.trim() || null,
                     password: values.password,
                   });
                   const qrLoginUrl = created.qrLoginUrl ?? created.loginUrl;
@@ -192,6 +201,13 @@ export function TeamEditorPage() {
           <Input placeholder="Captain name" />
         </Form.Item>
         <Form.Item
+          label="Team Color"
+          name="teamColor"
+          rules={[{pattern: /^#[0-9A-Fa-f]{6}$/, message: "Use #RRGGBB or leave empty to clear"}]}
+          help="Empty clears Team Color and uses the default theme.">
+          <Input placeholder="#FF765C" allowClear />
+        </Form.Item>
+        <Form.Item
           label="Password"
           name="password"
           rules={[
@@ -224,6 +240,7 @@ export function TeamEditorPage() {
           {isEditing ? "Update Team Info" : "Create Team"}
         </Button>
       </Form>
+      </div>
     </Drawer>
   );
 }

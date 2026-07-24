@@ -401,6 +401,7 @@ export class AuthService {
       totalPlaySeconds: team.totalPlaySeconds,
       startedAt: team.startedAt,
       status: team.status,
+      teamColor: team.color,
       color: team.color,
     };
   }

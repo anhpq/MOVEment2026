@@ -16,6 +16,7 @@ async function bootstrap() {
   app.enableCors({
     origin: buildCorsOrigin(config.get<string>('CORS_ORIGIN')),
     credentials: true,
+    exposedHeaders: ['Content-Disposition'],
   });
   app.useGlobalPipes(
     new ValidationPipe({

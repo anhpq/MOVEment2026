@@ -275,15 +275,37 @@ One Team receives at most one rank and one bonus.
 
 ## Leaderboard
 
-Sort order:
+Leaderboard ranks all non-deleted Teams and uses the same centralized comparator as Team Results Excel:
 
-1. total score descending;
-2. total play duration ascending;
-3. completed Station count descending.
+1. `Total Score` descending from `team.totalPoints`.
+2. `Total Play Time` ascending from `team.totalPlaySeconds`.
+3. `Total Stations Completed` descending.
+4. `Final Submitted At` ascending, nulls last.
+5. `Team Code` ascending, currently numeric `Team.id`.
 
 Backend is authoritative.
 
-Total score includes Station score and Final bonus.
+## Team Results Excel Export
+
+Admin can export a new one-worksheet Team Results `.xlsx` file with exactly one row per non-deleted Team.
+
+Base columns are `Team Code`, `Team Name`, `Captain Name`, `Username`, `Total Stations Completed`, `Total Play Time`, `Total Score`, `Computed Score`, `Rank`, `Final Submitted At`, `Final Rank`, and `Final Bonus Score`.
+
+`Team Code` is `Team.id`; the export omits duplicate `Team ID`, `Team Color`, `Team Status`, `Total Stations`, and `Final Challenge Status` columns.
+
+Station columns include active Stations only. Each active Station group has only `Check-in`, `Check-out`, and `Score`, using `Station.name` with deterministic suffixes for duplicate names.
+
+`Total Score` and Rank use `team.totalPoints`. `Computed Score` is reconciliation only: active completed Station scores plus correct Final bonus. `Total Play Time` uses `team.totalPlaySeconds` for tie-break visibility and is not recomputed by export.
+
+Incomplete Station attempts are ignored in totals and export blank Check-in/Check-out with score `0`. Wrong-only Final attempts export blank submitted/rank and bonus `0`.
+
+## Team Color UI
+
+Team Color reuses `Team.color`. API responses expose canonical `teamColor` and temporary compatibility alias `color`.
+
+Admin create/update accepts only `#RRGGBB` or `null`; `null` clears color, missing update field leaves it unchanged, and conflicting `teamColor`/`color` aliases return `400`.
+
+Team-facing UI and single-Team Admin contexts use scoped CSS variables from the active/viewed Team Color with fallback `#FF765C`. `/teams` remains a multi-Team Admin list with default shell/header/nav while each Team card uses its own scoped color. Admin map route/action behavior is unchanged.
 
 ## QR Camera
 

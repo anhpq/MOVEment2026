@@ -1,7 +1,7 @@
 import type { GameType, StationTrackingMode } from "./types"
 import {
   apiDelete,
-  apiDownloadBlob,
+  apiDownloadFile,
   apiGet,
   apiPatch,
   apiPost,
@@ -25,6 +25,8 @@ export type TeamLoginResponse = {
     id: number
     name: string
     username: string
+    teamColor?: string | null
+    color?: string | null
   }
 }
 
@@ -43,6 +45,8 @@ export type AuthMeResponse =
         id: number
         name: string
         username: string
+        teamColor?: string | null
+        color?: string | null
       }
     }
 
@@ -109,6 +113,7 @@ export type PlayerDashboardResponse = {
     totalPoints: number
     totalPlaySeconds: number
     rank: number | null
+    teamColor?: string | null
     color?: string | null
   }
   completedStations: number
@@ -226,6 +231,8 @@ export type AdminTeamResponse = {
   captainName: string
   totalPoints: number
   totalPlaySeconds: number
+  teamColor?: string | null
+  color?: string | null
   qrLoginUrl?: string
   loginUrl?: string
   qrLoginExpiresAt?: string
@@ -260,7 +267,7 @@ export const getAdminProgressMatrix = () =>
   apiGet<AdminProgressMatrixResponse>('/api/admin/progress-matrix')
 
 export const createAdminTeam = (values: {
-  name: string; username: string; password: string; captainName?: string
+  name: string; username: string; password: string; captainName?: string; teamColor?: string | null
 }) => apiPost<AdminTeamResponse>('/api/admin/teams', values)
 
 export type AdminOneTimeTeamQrResponse = AdminQrLoginTokenResponse & {
@@ -269,7 +276,7 @@ export type AdminOneTimeTeamQrResponse = AdminQrLoginTokenResponse & {
 }
 
 export const updateAdminTeam = (teamId: string, values: {
-  name?: string; username?: string; password?: string; captainName?: string; qrToken?: string
+  name?: string; username?: string; password?: string; captainName?: string; qrToken?: string; teamColor?: string | null
 }) => apiPatch<AdminTeamResponse & {qrLogin?: AdminOneTimeTeamQrResponse}>(`/api/admin/teams/${teamId}`, values)
 
 export const deleteAdminTeam = (teamId: string) =>
@@ -431,11 +438,19 @@ export const updateAdminFinalConfig = (values: Record<string, unknown>) =>
   apiPatch('/api/admin/final-config', values)
 
 export async function downloadAdminSummary() {
-  const blob = await apiDownloadBlob('/api/admin/reports/summary.xlsx')
+  await downloadFile('/api/admin/reports/summary.xlsx', 'movement-summary.xlsx')
+}
+
+export async function downloadAdminTeamResults() {
+  await downloadFile('/api/admin/reports/team-results.xlsx', 'movement-2026-team-results.xlsx')
+}
+
+async function downloadFile(path: string, fallbackFileName: string) {
+  const {blob, fileName} = await apiDownloadFile(path, fallbackFileName)
   const objectUrl = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = objectUrl
-  link.download = 'movement-summary.xlsx'
+  link.download = fileName
   link.click()
-  URL.revokeObjectURL(objectUrl)
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0)
 }

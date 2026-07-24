@@ -1,3 +1,14 @@
+## 2026-07-24 Team Results Excel export and Team Color UI
+
+- Added shared Team Results ranking/export logic with the confirmed comparator: `team.totalPoints` descending, `team.totalPlaySeconds` ascending, active completed Stations descending, correct Final submitted time ascending with nulls last, then numeric Team ID ascending.
+- Added new Admin Team Results Excel endpoint `GET /api/admin/reports/team-results.xlsx` using ExcelJS, one worksheet, one row per non-deleted Team, active Station `Check-in`/`Check-out`/`Score` groups, HCMC filename/datetime conversion, numeric Excel date/duration formats, and `Content-Disposition` filename support.
+- Kept legacy `/api/admin/reports/summary.xlsx` for compatibility; Admin Operations now downloads the new Team Results export.
+- Added canonical `teamColor` API field with temporary `color` alias, strict Admin `#RRGGBB`/`null` validation, uppercase normalization, explicit clear behavior, missing-field unchanged update behavior, and conflicting alias rejection.
+- Added scoped Team Color UI variables for Team-facing shell, Admin single-Team contexts, Admin Team list cards, and Team editor color input/preview without changing Admin map routes or `StationsMapPanel` behavior.
+- Synchronized Business Rules, project spec, Feature routing, and the Excel/Team Color requirements document.
+- Verification passed: targeted backend tests (`64/64`), full backend Jest suite (`120/120`), backend lint/build, frontend lint/build, `git diff --check`, and `graphify update .`. Frontend build retains the known non-blocking large-chunk warning. Graphify warned that `hooks.json` produced zero nodes and SQL extraction lacked `tree_sitter_sql`.
+- Not performed: commit, push, deploy, Production migration/runtime verification, manual Excel/Google Sheets open check, manual browser Team Color review.
+
 ## 2026-07-24 Compact Admin headers and Team identity cleanup
 
 - Reduced padding, icon size, title size, and spacing for Teams, Leaderboard, and Operations Center page headers.

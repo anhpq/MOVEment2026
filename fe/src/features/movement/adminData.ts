@@ -21,6 +21,7 @@ export async function fetchAdminDatabase(): Promise<LocalDatabaseSeed> {
       username: team.username,
       password: "",
       captainName: team.captainName,
+      teamColor: team.teamColor ?? team.color ?? null,
       score: team.totalPoints,
       finish: cells.filter((cell) => cell?.status === "COMPLETED").length,
       totalTimeMinutes: Math.round(team.totalPlaySeconds / 60),

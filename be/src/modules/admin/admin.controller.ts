@@ -303,6 +303,17 @@ export class AdminController {
     return this.adminService.activityLogs();
   }
 
+  @Get('reports/team-results.xlsx')
+  async teamResultsReport(@CurrentAuth() auth: AuthContext, @Res() res: Response) {
+    const report = await this.adminService.teamResultsReport(this.requireAdminId(auth));
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader('Content-Disposition', `attachment; filename="${report.fileName}"`);
+    res.send(report.buffer);
+  }
+
   @Get('reports/summary.xlsx')
   async summaryReport(@CurrentAuth() auth: AuthContext, @Res() res: Response) {
     const report = await this.adminService.summaryReport(this.requireAdminId(auth));

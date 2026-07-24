@@ -18,6 +18,11 @@ import {
 import { EventConfigService } from '../event-config/event-config.service';
 import { UpdateEventConfigDto } from '../event-config/dto/event-config.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { TeamResultsService } from '../team-results/team-results.service';
+import {
+  buildTeamResultsWorkbook,
+  formatHcmcTimestampForFileName,
+} from '../team-results/team-results-excel';
 import { UpdateStationDto } from './dto/update-station.dto';
 import { CreateStationDto } from './dto/create-station.dto';
 import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
@@ -43,6 +48,7 @@ export class AdminService {
     private readonly eventConfig: EventConfigService,
     private readonly activityLog: ActivityLogService,
     private readonly config: ConfigService,
+    private readonly teamResults: TeamResultsService,
   ) {}
 
   async dashboard() {
@@ -101,6 +107,7 @@ export class AdminService {
       distinct: ['stationId'],
     });
     const passwordHash = await bcrypt.hash(dto.password, 10);
+    const teamColor = this.normalizeTeamColorInput(dto);
     const rawQrLoginToken = createSecureQrLoginToken();
     const qrLoginExpiresAt = new Date(
       Date.now() + this.getQrLoginTtlMinutes() * 60_000,
@@ -113,6 +120,7 @@ export class AdminService {
           username: dto.username.trim(),
           captainName: dto.captainName?.trim() || dto.name.trim(),
           passwordHash,
+          ...(teamColor !== undefined ? { color: teamColor } : {}),
           maxPossiblePoints: games.reduce((sum, game) => sum + game.maxPoints, 0),
         },
       });
@@ -145,7 +153,7 @@ export class AdminService {
       action: 'CREATE_TEAM',
       entityType: 'TEAM',
       entityId: team.id,
-      metadata: { name: team.name, username: team.username },
+      metadata: { name: team.name, username: team.username, teamColor: team.color },
     });
     const qrLoginUrl = this.buildQrLoginUrl(rawQrLoginToken);
     return {
@@ -159,6 +167,7 @@ export class AdminService {
   async updateTeam(userId: number, teamId: number, dto: UpdateTeamDto) {
     const normalizedQrToken = this.getOptionalQrToken(dto.qrToken);
     const passwordHash = dto.password ? await bcrypt.hash(dto.password, 10) : undefined;
+    const teamColor = this.normalizeTeamColorInput(dto);
     const result = await this.prisma.$transaction(async (tx) => {
       const team = await tx.team.update({
         where: { id: teamId },
@@ -167,6 +176,7 @@ export class AdminService {
           username: dto.username?.trim(),
           captainName: dto.captainName?.trim(),
           passwordHash,
+          ...(teamColor !== undefined ? { color: teamColor } : {}),
         },
       });
       const qrLogin = normalizedQrToken
@@ -181,7 +191,12 @@ export class AdminService {
       action: 'UPDATE_TEAM',
       entityType: 'TEAM',
       entityId: teamId,
-      metadata: { name: dto.name ?? null, username: dto.username ?? null },
+      metadata: {
+        name: dto.name ?? null,
+        username: dto.username ?? null,
+        teamColor: teamColor ?? null,
+        teamColorChanged: teamColor !== undefined,
+      },
     });
     return {
       ...this.toPublicTeam(result.team),
@@ -861,6 +876,27 @@ export class AdminService {
     });
   }
 
+  async teamResultsReport(userId: number) {
+    const results = await this.teamResults.getRankedTeamResults();
+    const buffer = await buildTeamResultsWorkbook(results);
+    const fileName = `movement-2026-team-results-${formatHcmcTimestampForFileName()}.xlsx`;
+
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'EXPORT_TEAM_RESULTS_REPORT',
+      entityType: 'REPORT',
+      entityId: fileName,
+      metadata: {
+        teams: results.rows.length,
+        activeStations: results.stationColumns.length,
+      },
+    });
+
+    return { fileName, buffer };
+  }
+
   async summaryReport(userId: number) {
     const [
       leaderboard,
@@ -1166,6 +1202,7 @@ export class AdminService {
       totalPlaySeconds: team.totalPlaySeconds,
       startedAt: team.startedAt,
       status: team.status,
+      teamColor: team.color,
       color: team.color,
       createdAt: team.createdAt,
       updatedAt: team.updatedAt,
@@ -1173,36 +1210,9 @@ export class AdminService {
   }
 
   private async getLeaderboardRows() {
-    const teams = await this.prisma.team.findMany({
-      where: { status: 'ACTIVE' },
-      include: {
-        progress: {
-          where: { status: ProgressStatus.COMPLETED },
-          include: { station: true },
-          orderBy: { completedAt: 'desc' },
-        },
-      },
-    });
-
-    return teams
-      .map((team) => ({
-        teamId: team.id,
-        teamName: team.name,
-        captainName: team.captainName,
-        totalPoints: team.totalPoints,
-        maxPossiblePoints: team.maxPossiblePoints,
-        completedStations: team.progress.length,
-        lastStationName: team.progress[0]?.station.name ?? '',
-        totalPlaySeconds: team.totalPlaySeconds,
-      }))
-      .sort((a, b) => {
-        if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
-        if (a.totalPlaySeconds !== b.totalPlaySeconds) {
-          return a.totalPlaySeconds - b.totalPlaySeconds;
-        }
-        return b.completedStations - a.completedStations;
-      })
-      .map((entry, index) => ({ rank: index + 1, ...entry }));
+    return this.teamResults.toLeaderboardRows(
+      await this.teamResults.getRankedTeamResults(),
+    );
   }
 
   private stringifyMetadata(metadata: unknown) {
@@ -1255,6 +1265,34 @@ export class AdminService {
   private getOptionalQrToken(rawToken: string | undefined) {
     const normalized = normalizeQrToken(rawToken ?? '');
     return normalized || null;
+  }
+
+  private normalizeTeamColorInput(dto: { teamColor?: string | null; color?: string | null }) {
+    const hasTeamColor = Object.prototype.hasOwnProperty.call(dto, 'teamColor');
+    const hasColor = Object.prototype.hasOwnProperty.call(dto, 'color');
+    if (!hasTeamColor && !hasColor) {
+      return undefined;
+    }
+    const teamColor = hasTeamColor ? this.normalizeTeamColorValue(dto.teamColor) : undefined;
+    const color = hasColor ? this.normalizeTeamColorValue(dto.color) : undefined;
+    if (teamColor !== undefined && color !== undefined && teamColor !== color) {
+      throw new BadRequestException('Conflicting teamColor and color values');
+    }
+    return teamColor !== undefined ? teamColor : color;
+  }
+
+  private normalizeTeamColorValue(value: string | null | undefined) {
+    if (value === undefined) {
+      return undefined;
+    }
+    if (value === null) {
+      return null;
+    }
+    const normalized = value.trim().toUpperCase();
+    if (!/^#[0-9A-F]{6}$/.test(normalized)) {
+      throw new BadRequestException('Team color must be #RRGGBB or null');
+    }
+    return normalized;
   }
 
   private async replaceTeamQrLoginToken(

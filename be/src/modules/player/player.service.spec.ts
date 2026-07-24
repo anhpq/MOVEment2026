@@ -41,6 +41,11 @@ const mockActivityLog = {
   log: jest.fn(),
 }
 
+const mockTeamResults = {
+  getRankedTeamResults: jest.fn(),
+  toLeaderboardRows: jest.fn(),
+}
+
 describe('PlayerService station flow', () => {
   let service: PlayerService
 
@@ -49,6 +54,7 @@ describe('PlayerService station flow', () => {
       mockPrisma as never,
       mockEventConfig as never,
       mockActivityLog as never,
+      mockTeamResults as never,
     )
     jest.clearAllMocks()
     mockEventConfig.isPastEventEnd.mockResolvedValue(false)

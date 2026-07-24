@@ -24,7 +24,7 @@ import {
 } from "antd";
 import {useCallback, useEffect, useState} from "react";
 import {
-  downloadAdminSummary,
+  downloadAdminTeamResults,
   getAdminActivityLogs,
   getAdminDashboard,
   getAdminEventConfig,
@@ -169,8 +169,8 @@ export function AdminOperationsPage() {
           <Button
             className="ops-export-button"
             icon={<FileExcelOutlined />}
-            onClick={() => void downloadAdminSummary()}>
-            Export Excel report
+             onClick={() => void downloadAdminTeamResults()}>
+            Export Team Results
           </Button>
         </div>
       ),

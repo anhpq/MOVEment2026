@@ -567,9 +567,13 @@ docs/analysis/BACKEND_AUDIT.md
 
 ### Confirmed Ordering
 
-1. Total score descending.
-2. Total play duration ascending.
+1. Total score descending from `team.totalPoints`.
+2. Total play duration ascending from `team.totalPlaySeconds`.
 3. Completed Station count descending.
+4. Correct Final submitted time ascending, nulls last.
+5. Team Code ascending, currently numeric `Team.id`.
+
+Leaderboard ranks all non-deleted Teams and shares comparator logic with Team Results Excel export.
 
 ### Must Update After Change
 
@@ -581,7 +585,78 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 
 ---
 
-## 12. Git and Delivery Rules
+## 12. Team Results Excel Export
+
+### Scope
+
+- Admin Team Results `.xlsx` export.
+- One worksheet, one row per non-deleted Team.
+- Active Station column groups.
+- Excel/Leaderboard rank consistency.
+- HCMC datetime/duration Excel formats.
+- Export download filename handling.
+
+### Required Reading
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+### Must Update After Change
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+---
+
+## 13. Team Color UI
+
+### Scope
+
+- `Team.color` / `teamColor` API mapping.
+- Admin create/update color validation and clear behavior.
+- Team-facing scoped theme.
+- Admin Team list per-card scoped theme.
+- Admin single-Team context shell/header/nav scoped theme.
+
+### Required Reading
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+### Out of Scope
+
+- Admin map routes.
+- Team/user `/stations/map` flow.
+- `StationsMapPanel` Admin action behavior.
+
+### Must Update After Change
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+---
+
+## 14. Git and Delivery Rules
 
 ### Scope
 

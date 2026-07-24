@@ -1,5 +1,24 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Team Results Excel export and Team Color UI
+
+- [x] Added ExcelJS backend dependency and Team Results workbook generation.
+- [x] Added shared Team Results comparator reused by Leaderboard and Excel export.
+- [x] Leaderboard ranks all non-deleted Teams using the confirmed five-step comparator.
+- [x] New Team Results export includes one worksheet, one row per non-deleted Team, active Station column groups, `Captain Name`, `Username`, `Total Play Time`, `Total Score`, `Computed Score`, Rank, and correct Final fields.
+- [x] New export excludes `Team Color`, `Team Status`, `Total Stations`, `Final Challenge Status`, per-Station `Status`, per-Station `Duration`, QR/password/token fields, and Final answer text.
+- [x] Admin Operations export button downloads `/api/admin/reports/team-results.xlsx` and preserves backend filename from `Content-Disposition` with fallback.
+- [x] Backend CORS exposes `Content-Disposition`.
+- [x] `teamColor` is canonical API field with compatibility `color` alias.
+- [x] Admin create/update validates `#RRGGBB` or `null`, normalizes lowercase HEX, clears on `null`, leaves missing field unchanged, and rejects conflicting aliases.
+- [x] Team-facing UI, Admin Team list cards, Admin Team editor, and Admin single-Team Station contexts use scoped Team Color vars with fallback `#FF765C`.
+- [x] Admin map routes and `StationsMapPanel` Admin action behavior were left unchanged.
+- [x] Targeted backend tests, full backend tests, backend lint/build, and frontend lint/build passed.
+- [ ] Manual Excel/Google Sheets open verification remains pending.
+- [ ] Manual Team Color browser review across light/dark colors, mobile/desktop, and route transitions remains pending.
+- [ ] Production deployment/runtime verification remains pending and requires explicit approval.
+- [x] Graphify update ran successfully; warnings remain for `hooks.json` zero nodes and missing optional `tree_sitter_sql` SQL extraction.
+
 ## 2026-07-24 Compact Admin headers and Team identity cleanup
 
 - [x] Teams, Leaderboard, and Operations Center headers use compact spacing, icons, and titles.

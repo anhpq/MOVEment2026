@@ -1,4 +1,4 @@
-import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsOptional, IsString, Matches, MaxLength, MinLength, ValidateIf } from 'class-validator';
 
 export class CreateTeamDto {
   @IsString()
@@ -21,6 +21,15 @@ export class CreateTeamDto {
   @MaxLength(120)
   captainName?: string;
 
+  @ValidateIf((_, value) => value !== null && value !== undefined)
+  @IsString()
+  @Matches(/^#[0-9A-Fa-f]{6}$/)
+  teamColor?: string | null;
+
+  @ValidateIf((_, value) => value !== null && value !== undefined)
+  @IsString()
+  @Matches(/^#[0-9A-Fa-f]{6}$/)
+  color?: string | null;
 }
 
 export class UpdateTeamDto {
@@ -52,4 +61,14 @@ export class UpdateTeamDto {
   @IsString()
   @MaxLength(160)
   qrToken?: string;
+
+  @ValidateIf((_, value) => value !== null && value !== undefined)
+  @IsString()
+  @Matches(/^#[0-9A-Fa-f]{6}$/)
+  teamColor?: string | null;
+
+  @ValidateIf((_, value) => value !== null && value !== undefined)
+  @IsString()
+  @Matches(/^#[0-9A-Fa-f]{6}$/)
+  color?: string | null;
 }

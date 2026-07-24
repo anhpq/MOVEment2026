@@ -14,6 +14,7 @@ import {
 } from '../../common/qr/qr-token';
 import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { TeamResultsService } from '../team-results/team-results.service';
 import { QrActionDto, SubmitCipherDto } from './dto/player-actions.dto';
 
 @Injectable()
@@ -22,6 +23,7 @@ export class PlayerService {
     private readonly prisma: PrismaService,
     private readonly eventConfig: EventConfigService,
     private readonly activityLog: ActivityLogService,
+    private readonly teamResults: TeamResultsService,
   ) {}
 
   async getDashboard(teamId: number) {
@@ -43,6 +45,7 @@ export class PlayerService {
         totalPlaySeconds: team.totalPlaySeconds,
         startedAt: team.startedAt,
         status: team.status,
+        teamColor: team.color,
         color: team.color,
         rank,
       },
@@ -124,35 +127,8 @@ export class PlayerService {
   }
 
   async getLeaderboard() {
-    const teams = await this.prisma.team.findMany({
-      where: { status: 'ACTIVE' },
-      include: {
-        progress: {
-          where: { status: ProgressStatus.COMPLETED },
-          include: { station: true },
-          orderBy: { completedAt: 'desc' },
-        },
-      },
-    });
-
-    return teams
-      .map((team) => ({
-        teamId: team.id,
-        teamName: team.name,
-        captainName: team.captainName,
-        totalPoints: team.totalPoints,
-        completedStations: team.progress.length,
-        lastStationName: team.progress[0]?.station.name ?? null,
-        totalPlaySeconds: team.totalPlaySeconds,
-      }))
-      .sort((a, b) => {
-        if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
-        if (a.totalPlaySeconds !== b.totalPlaySeconds) {
-          return a.totalPlaySeconds - b.totalPlaySeconds;
-        }
-        return b.completedStations - a.completedStations;
-      })
-      .map((entry, index) => ({ rank: index + 1, ...entry }));
+    const results = await this.teamResults.getRankedTeamResults();
+    return this.teamResults.toLeaderboardRows(results);
   }
 
   async checkIn(teamId: number, stationId: string, dto: QrActionDto) {

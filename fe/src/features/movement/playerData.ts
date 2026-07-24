@@ -36,6 +36,7 @@ function buildPlayerSeed(
         name: dashboardTeam.name,
         username: dashboardTeam.username ?? `team${dashboardTeam.id}`,
         password: "",
+        teamColor: dashboardTeam.teamColor ?? dashboardTeam.color ?? null,
         score: dashboardTeam.totalPoints,
         finish: stations.filter(
           (station) => station.progress?.status === "COMPLETED",

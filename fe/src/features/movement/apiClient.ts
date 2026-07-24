@@ -225,6 +225,14 @@ export function apiDelete<T>(path: string): Promise<T> {
 }
 
 export async function apiDownloadBlob(path: string): Promise<Blob> {
+  const file = await apiDownloadFile(path)
+  return file.blob
+}
+
+export async function apiDownloadFile(
+  path: string,
+  fallbackFileName = 'download',
+): Promise<{blob: Blob; fileName: string}> {
   const method = 'GET'
   const url = buildApiUrl(path)
   const token = getAccessToken()
@@ -242,5 +250,30 @@ export async function apiDownloadBlob(path: string): Promise<Blob> {
     )
   }
 
-  return response.blob()
+  return {
+    blob: await response.blob(),
+    fileName: parseContentDispositionFileName(
+      response.headers.get('Content-Disposition'),
+    ) ?? fallbackFileName,
+  }
+}
+
+function parseContentDispositionFileName(value: string | null) {
+  if (!value) {
+    return null
+  }
+  const encodedMatch = /filename\*=UTF-8''([^;]+)/i.exec(value)
+  if (encodedMatch?.[1]) {
+    try {
+      return decodeURIComponent(encodedMatch[1])
+    } catch {
+      return encodedMatch[1]
+    }
+  }
+  const quotedMatch = /filename="([^"]+)"/i.exec(value)
+  if (quotedMatch?.[1]) {
+    return quotedMatch[1]
+  }
+  const plainMatch = /filename=([^;]+)/i.exec(value)
+  return plainMatch?.[1]?.trim() ?? null
 }

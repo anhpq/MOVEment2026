@@ -27,6 +27,7 @@ export type Team = {
   finish: number;
   totalTimeMinutes: number;
   captainName?: string;
+  teamColor?: string | null;
 };
 
 export type StationDefinition = {
@@ -87,6 +88,7 @@ export type TeamFormValues = {
   finish: number;
   totalTimeMinutes: number;
   captainName?: string;
+  teamColor?: string | null;
   qrToken?: string;
 };
 
