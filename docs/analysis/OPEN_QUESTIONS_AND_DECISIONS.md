@@ -623,8 +623,8 @@ STANDARD
 Business Rules:
 
 - `ST` dùng cho Station được Business chỉ định có YouTube video để Team xem trước hoặc trong khi chơi.
-- `STANDARD` dùng cho Station thông thường và không hiển thị video, kể cả khi còn lưu media URL.
-- Chỉ Station có `gameType = ST` mới được hiển thị hành động `Watch Video`.
+- `STANDARD` dùng cho Station thông thường và không cho phép xem video, kể cả khi còn lưu media URL.
+- Danh sách Station luôn hiển thị hành động `Watch Video` để giữ bố cục card đồng nhất; hành động này phải disabled trừ khi Station có `gameType = ST` và YouTube URL hợp lệ.
 - Danh sách Station `ST` hiện tại là `ST003`, `ST004`, `ST010`, và `ST047`.
 - Các Station không thuộc danh sách trên phải dùng `STANDARD`, kể cả khi còn lưu YouTube URL.
 - Khi chuyển dữ liệu Legacy, mọi `CIPHER` phải chuyển thành `STANDARD`; chỉ bốn Station được chỉ định giữ hoặc chuyển thành `ST`; các Game còn lại chuyển thành `STANDARD`.

@@ -221,8 +221,8 @@ ST
 STANDARD
 ```
 
-- `ST` requires a valid HTTPS YouTube URL and is the only type that exposes `Watch Video`.
-- `STANDARD` is the default type for an ordinary Station and never exposes video, even when a media URL remains stored.
+- `ST` requires a valid HTTPS YouTube URL and is the only type that enables `Watch Video`.
+- `STANDARD` is the default type for an ordinary Station and never enables video, even when a media URL remains stored; the Station list retains a disabled `Watch Video` action to keep card layouts consistent.
 - The current designated `ST` Stations are `ST003`, `ST004`, `ST010`, and `ST047`; all other Stations are `STANDARD` even if they retain a stored media URL.
 - Admin selects the type from a fixed combobox; Backend and database reject unsupported values.
 - Legacy `CIPHER` Games migrate to `STANDARD`. Station cipher-answer UI, API, validation, and storage are removed.

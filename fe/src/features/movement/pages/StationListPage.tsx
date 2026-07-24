@@ -249,25 +249,19 @@ export function StationListPage() {
                   </div>
                 </div>
 
-                <div
-                  className={`station-showcase-actions ${
-                    session.role === "user" &&
-                    !(station.gameType === "ST" && station.youtubeUrl) ?
-                      "has-play-only"
-                    : ""
-                  }`}>
-                      {station.gameType === "ST" && station.youtubeUrl && (
-                        <Button
-                          block
-                          type="primary"
-                          icon={<YoutubeOutlined />}
-                          disabled={!station.youtubeUrl}
-                          onClick={() =>
-                            openLinkInNewTab(station.youtubeUrl as string)
-                          }>
-                          Watch Video
-                        </Button>
-                      )}
+                <div className="station-showcase-actions">
+                      <Button
+                        block
+                        type="primary"
+                        icon={<YoutubeOutlined />}
+                        disabled={
+                          station.gameType !== "ST" || !station.youtubeUrl
+                        }
+                        onClick={() =>
+                          openLinkInNewTab(station.youtubeUrl as string)
+                        }>
+                        Watch Video
+                      </Button>
                       <Button
                         block
                         type={

@@ -1,7 +1,7 @@
 # Graph Report - MOVEment2026  (2026-07-24)
 
 ## Corpus Check
-- 169 files · ~215,508 words
+- 169 files · ~215,504 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `402b046d`
+- Built from commit: `392db16b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

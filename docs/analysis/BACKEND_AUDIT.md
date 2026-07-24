@@ -45,7 +45,7 @@
 - Replaced free-text Station Game Type with the fixed values `CIPHER`, `ST`, and `STANDARD`.
 - Added migration `20260724150000_constrain_station_game_types`: Legacy `CIPHER` values are preserved, other Games with a supported YouTube URL become `ST`, remaining Games become `STANDARD`, and a database `CHECK` constraint rejects other values.
 - Backend DTO/service validation rejects unsupported types and rejects `ST` without a valid HTTPS YouTube URL.
-- Admin Station create/edit uses a combobox. Player Station detail, list, and map show `Watch Video` only for `ST`.
+- Admin Station create/edit uses a combobox. Player Station detail and map expose `Watch Video` only for `ST`; the Station list always renders the action but disables it unless the Station is `ST` with a usable URL.
 - Updated local/test seed and production-like smoke inputs to use the canonical types.
 - Applied the migration to the tester database. Result: `3 CIPHER`, `7 ST`, `0 STANDARD`; all seven non-Cipher seed Games have a valid stored YouTube URL.
 - Verification passed: all `113` Backend tests, Backend/Frontend lint and build, migration status, two consecutive seed runs, `db:verify`, and local Backend/Frontend HTTP route checks.
@@ -461,6 +461,5 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Frontend lint and production build passed; localhost route smoke returned `200`. The known non-blocking Vite large-chunk warning remains.
 - Follow-up refinement aligns the Team icon and name in one centered identity row and places Score/Finished in an equal-width glass metric bar below for better visual balance.
 - Responsive follow-up removes the mobile header spacer, constrains the brand with fluid sizing/ellipsis, and gives both Team metrics identical icon/content grids with left-aligned copy.
-- Player `Play` remains a white secondary action on `/stations` even when the Station has no `Watch Video`; Admin `View & Edit` styling is unchanged.
-- When `Watch Video` is absent, the Player `Play` action keeps the second/right action column on desktop and mobile instead of shifting left.
-- Mobile video Stations retain a two-column `Watch Video | Play` row; when video is unavailable, the sole `Play` action spans the full card width for a balanced small-screen layout.
+- Player `Play` remains the white right-side action on `/stations`; Admin `View & Edit` styling is unchanged.
+- Station cards consistently render `Watch Video | Play` on desktop and mobile, with `Watch Video` disabled for non-`ST` Stations or missing URLs.
