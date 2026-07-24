@@ -1,102 +1,121 @@
-name: Deploy Frontend (Nginx)
+name: Deploy Frontend (OBS)
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'fe/**'
+      - '.github/workflows/fe-deploy.yml'
   workflow_dispatch:
-    inputs:
-      target_branch:
-        description: 'Branch to deploy from the ECS checkout'
-        required: true
-        default: 'master'
-      deploy_frontend:
-        description: 'Type deploy-frontend to run Phase 2'
-        required: true
 
 concurrency:
-  group: production-frontend-deploy
-  cancel-in-progress: false
+  group: fe-deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
-  DEPLOY_PATH: /opt/movement/app
-  FRONTEND_ROOT: /var/www/movement/current
-  NGINX_SITE_NAME: heroes.nalth.top
+  HUAWEI_REGION: ap-southeast-3
+  OBS_BUCKET: movement
+  NODE_VERSION: '20'
 
 jobs:
-  deploy:
-    name: Phase 2 - Frontend and Nginx
+  build:
+    name: Build frontend
     runs-on: ubuntu-latest
-    environment: production-frontend
+    defaults:
+      run:
+        working-directory: fe
 
     steps:
-      - name: Validate manual approval inputs
-        env:
-          TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
-          DEPLOY_FRONTEND: ${{ github.event.inputs.deploy_frontend }}
-        run: |
-          set -euo pipefail
-          if [ "${DEPLOY_FRONTEND}" != "deploy-frontend" ]; then
-            echo "Refusing frontend deploy: deploy_frontend input must be exactly deploy-frontend."
-            exit 1
-          fi
-          if [ "${TARGET_BRANCH}" != "master" ]; then
-            echo "Refusing frontend deploy: Production deploy branch must be master."
-            exit 1
-          fi
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Deploy frontend via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        env:
-          DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
-          DEPLOY_BRANCH: ${{ github.event.inputs.target_branch }}
-          GIT_REPO_URL: git@github.com:${{ github.repository }}.git
-          FRONTEND_ROOT: ${{ env.FRONTEND_ROOT }}
-          NGINX_SITE_NAME: ${{ env.NGINX_SITE_NAME }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.ECS_HOST }}
-          username: ${{ secrets.ECS_USER }}
-          key: ${{ secrets.ECS_SSH_KEY }}
-          port: 22
-          envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,FRONTEND_ROOT,NGINX_SITE_NAME
-          script: |
-            set -euo pipefail
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: fe/package-lock.json
 
-            if [ ! -d "${DEPLOY_PATH}/.git" ]; then
-              if [ -d "${DEPLOY_PATH}" ] && [ -n "$(ls -A "${DEPLOY_PATH}" 2>/dev/null || true)" ]; then
-                cd "${DEPLOY_PATH}"
-                git init
-                git remote add origin "${GIT_REPO_URL}" 2>/dev/null \
-                  || git remote set-url origin "${GIT_REPO_URL}"
-                git fetch --depth=1 origin "${DEPLOY_BRANCH}"
-                git checkout -B "${DEPLOY_BRANCH}" "origin/${DEPLOY_BRANCH}"
-              else
-                mkdir -p "$(dirname "${DEPLOY_PATH}")"
-                git clone --branch "${DEPLOY_BRANCH}" "${GIT_REPO_URL}" "${DEPLOY_PATH}"
-              fi
-            else
-              cd "${DEPLOY_PATH}"
-              git fetch origin
-              git checkout "${DEPLOY_BRANCH}"
-              git reset --hard "origin/${DEPLOY_BRANCH}"
-            fi
+      - name: Install dependencies
+        run: npm ci
 
-            cd "${DEPLOY_PATH}/fe"
-            unset VITE_API_BASE_URL
-            npm ci
-            npm run build
+      - name: Validate API base URL
+        run: |
+          if [ -z "${VITE_API_BASE_URL:-}" ]; then
+            echo "VITE_API_BASE_URL repository variable is missing or empty."
+            echo "This workflow deploys directly to OBS, which cannot reverse proxy same-origin /api requests."
+            echo "Set VITE_API_BASE_URL to an HTTPS API origin, or deploy the frontend behind deploy/nginx/movement.conf instead."
+            exit 1
+          fi
 
-            sudo mkdir -p "${FRONTEND_ROOT}"
-            sudo rsync -a --delete dist/ "${FRONTEND_ROOT}/"
-            sudo cp "${DEPLOY_PATH}/deploy/nginx/movement.conf" "/etc/nginx/sites-available/${NGINX_SITE_NAME}"
-            sudo ln -sfn "/etc/nginx/sites-available/${NGINX_SITE_NAME}" "/etc/nginx/sites-enabled/${NGINX_SITE_NAME}"
-            sudo nginx -t
-            sudo systemctl reload nginx
-
-            curl -fsS "https://${NGINX_SITE_NAME}/" >/dev/null
-            curl -fsS "https://${NGINX_SITE_NAME}/api/docs" >/dev/null
-            curl -fsS "https://${NGINX_SITE_NAME}/qr-login" >/dev/null
-            curl -fsS "https://${NGINX_SITE_NAME}/qr-login?token=placeholder" >/dev/null
-
-            missing_status="$(curl -sS -o /dev/null -w "%{http_code}" "https://${NGINX_SITE_NAME}/assets/missing.js")"
-            if [ "${missing_status}" != "404" ]; then
-              echo "Expected missing frontend asset to return 404, got ${missing_status}."
+          case "${VITE_API_BASE_URL}" in
+            *obs-website*|*obs.*myhuaweicloud.com*)
+              echo "VITE_API_BASE_URL points at OBS/static hosting, not the backend API."
+              echo "Current value: ${VITE_API_BASE_URL}"
               exit 1
-            fi
+              ;;
+          esac
+
+          case "${VITE_API_BASE_URL}" in
+            https://*)
+              ;;
+            *)
+              echo "VITE_API_BASE_URL must be HTTPS when set for deployed frontend builds."
+              echo "Use an HTTPS API origin for OBS static hosting, or serve /api through the production reverse proxy."
+              exit 1
+              ;;
+          esac
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+
+      - name: Build production bundle
+        run: npm run build:prod
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fe-dist
+          path: fe/dist
+          retention-days: 1
+
+  deploy:
+    name: Deploy to OBS
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fe-dist
+          path: dist
+
+      - name: Install obsutil
+        run: |
+          wget -q https://obs-community-intl.obs.ap-southeast-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz
+          tar -xzf obsutil_linux_amd64.tar.gz
+          OBSUTIL_BIN="$(find . -maxdepth 2 -name obsutil -type f | head -1)"
+          chmod 755 "${OBSUTIL_BIN}"
+          echo "OBSUTIL_BIN=${OBSUTIL_BIN}" >> "${GITHUB_ENV}"
+
+      - name: Sync dist to OBS bucket
+        run: |
+          "${OBSUTIL_BIN}" config -i="${{ secrets.HUAWEI_ACCESS_KEY }}" \
+            -k="${{ secrets.HUAWEI_SECRET_KEY }}" \
+            -e="https://obs.${{ env.HUAWEI_REGION }}.myhuaweicloud.com"
+
+          "${OBSUTIL_BIN}" sync dist/ "obs://${{ env.OBS_BUCKET }}/" \
+            -acl=public-read
+
+          # SPA entry point: always fetch fresh so new JS/CSS hashes are picked up
+          "${OBSUTIL_BIN}" cp dist/index.html "obs://${{ env.OBS_BUCKET }}/index.html" \
+            -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
+
+      - name: Deployment summary
+        run: |
+          echo "Frontend deployed to obs://${{ env.OBS_BUCKET }}/"
+          echo "Region: ${{ env.HUAWEI_REGION }}"
+          echo "Ensure OBS static website hosting has index.html as both index and error document."
