@@ -164,7 +164,7 @@ Rules:
 
 - Fallback Team Color: `#FF765C`.
 - UI uses fallback for null, missing, or legacy invalid values.
-- Derive readable foreground from color contrast.
+- Enabled primary buttons dùng Team gradient luôn sử dụng chữ và icon trắng `#FFFFFF`; palette và gradient phải tránh tone quá sáng làm giảm độ đọc.
 - Avoid strong full-page Team color backgrounds that reduce readability.
 - Focus, disabled, mobile, and desktop states must remain readable.
 

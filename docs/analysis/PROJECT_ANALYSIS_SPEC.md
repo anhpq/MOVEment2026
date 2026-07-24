@@ -305,7 +305,7 @@ Team Color reuses `Team.color`. API responses expose canonical `teamColor` and t
 
 Admin create/update accepts only `#RRGGBB` or `null`; `null` clears color, missing update field leaves it unchanged, and conflicting `teamColor`/`color` aliases return `400`.
 
-Team-facing UI and single-Team Admin contexts use scoped CSS variables from the active/viewed Team Color with fallback `#FF765C`. `/teams` remains a multi-Team Admin list with default shell/header/nav while each Team card uses its own scoped color. Admin map route/action behavior is unchanged.
+Team-facing UI and single-Team Admin contexts use scoped CSS variables from the active/viewed Team Color with fallback `#FF765C`. Enabled primary buttons in Team context use Team gradients with white `#FFFFFF` text/icons; disabled, danger, default, QR info modal, and non-button semantics remain unchanged. `/teams` remains a multi-Team Admin list with default shell/header/nav while each Team card uses its own scoped color. Admin map route/action behavior is unchanged.
 
 ## QR Camera
 

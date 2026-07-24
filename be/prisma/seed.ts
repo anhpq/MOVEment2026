@@ -16,6 +16,13 @@ import {
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { FINAL_CHALLENGE_SEED_KEY, planFinalChallengeSeed } from './final-challenge-seed';
+import {
+  buildSeedTeams,
+  buildTeamSeedUpdateData,
+  planTeamSeedOperation,
+  validateTeamColorPalette,
+  TEAM_COLOR_PALETTE,
+} from './team-color-seed';
 
 const prisma = new PrismaClient();
 const seedStartedAt = Date.now();
@@ -59,29 +66,7 @@ const stations = [
   ['ST010', 'Tram Tuyet Ky', 'ST', 200, 92, 60],
 ] as const;
 
-const teamColors = [
-  '#FF6B6B',
-  '#FFA500',
-  '#228B22',
-  '#1677FF',
-  '#722ED1',
-  '#13C2C2',
-  '#EB2F96',
-  '#52C41A',
-  '#FAAD14',
-  '#2F54EB',
-] as const;
-
-const teams = Array.from({ length: 25 }, (_, index) => {
-  const number = String(index + 1).padStart(2, '0');
-  return {
-    name: `Team ${number}`,
-    username: `team${number}`,
-    captainName: `Captain ${number}`,
-    password: `team${number}`,
-    color: teamColors[index % teamColors.length],
-  };
-});
+const teams = buildSeedTeams();
 
 function formatDuration(startedAt: number) {
   return `${Date.now() - startedAt}ms`;
@@ -106,6 +91,7 @@ async function runSeedPhase<T>(name: string, action: () => Promise<T>) {
 
 async function main() {
   logSeed('Seed script started.');
+  validateTeamColorPalette(TEAM_COLOR_PALETTE);
   const generatedDevQrUrls: string[] = [];
   const generatedDevStationQrTokens: string[] = [];
   let generatedStationQrRepairCount = 0;
@@ -183,39 +169,47 @@ async function main() {
   const totalMaxPoints = stations.reduce((sum, item) => sum + item[3], 0);
   await runSeedPhase('seed teams', async () => {
     for (const { name, username, captainName, password, color } of teams) {
-      const passwordHash = await bcrypt.hash(password, 10);
-      const team = await prisma.team.upsert({
-        where: { username },
-        create: {
-          name,
-          username,
-          captainName,
-          passwordHash,
-          startedAt: new Date(),
-          color,
-          maxPossiblePoints: totalMaxPoints,
-        },
-        update: {
-          name,
-          captainName,
-          passwordHash,
-          color,
-          maxPossiblePoints: totalMaxPoints,
-        },
+      const existingTeam = isProduction
+        ? await prisma.team.findUnique({ where: { username } })
+        : null;
+      const operation = planTeamSeedOperation({
+        isProduction,
+        username,
+        exists: Boolean(existingTeam),
       });
+      if (operation === 'skip') {
+        continue;
+      }
 
-      for (const [stationId] of stations) {
-        const game = await prisma.game.findFirstOrThrow({ where: { stationId } });
-        await prisma.teamStationProgress.upsert({
-          where: { teamId_stationId: { teamId: team.id, stationId } },
-          create: {
-            teamId: team.id,
-            stationId,
-            gameId: game.id,
-            status: ProgressStatus.AVAILABLE,
-          },
-          update: {},
-        });
+      const team =
+        operation === 'update-color'
+          ? await prisma.team.update({
+              where: { username },
+              data: { color },
+            })
+          : await upsertNonProductionSeedTeam({
+              name,
+              username,
+              captainName,
+              password,
+              color,
+              totalMaxPoints,
+            });
+
+      if (!isProduction) {
+        for (const [stationId] of stations) {
+          const game = await prisma.game.findFirstOrThrow({ where: { stationId } });
+          await prisma.teamStationProgress.upsert({
+            where: { teamId_stationId: { teamId: team.id, stationId } },
+            create: {
+              teamId: team.id,
+              stationId,
+              gameId: game.id,
+              status: ProgressStatus.AVAILABLE,
+            },
+            update: {},
+          });
+        }
       }
 
       if (seedQrLoginTokens) {
@@ -339,6 +333,37 @@ async function main() {
   }
 
   logSeed('Seed completed.');
+}
+
+async function upsertNonProductionSeedTeam(params: {
+  name: string;
+  username: string;
+  captainName: string;
+  password: string;
+  color: string;
+  totalMaxPoints: number;
+}) {
+  const passwordHash = await bcrypt.hash(params.password, 10);
+  return prisma.team.upsert({
+    where: { username: params.username },
+    create: {
+      name: params.name,
+      username: params.username,
+      captainName: params.captainName,
+      passwordHash,
+      startedAt: new Date(),
+      color: params.color,
+      maxPossiblePoints: params.totalMaxPoints,
+    },
+    update: buildTeamSeedUpdateData({
+      isProduction: false,
+      name: params.name,
+      captainName: params.captainName,
+      passwordHash,
+      color: params.color,
+      totalMaxPoints: params.totalMaxPoints,
+    }),
+  });
 }
 
 async function ensureStationQrToken(

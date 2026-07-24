@@ -126,13 +126,13 @@
 }
 
 .leaderboard-list .leaderboard-row.is-current-team {
-  border-color: #ed7657;
-  background: linear-gradient(105deg, #fff2eb 0%, #fffaf7 100%);
-  box-shadow: 0 8px 22px rgba(237, 118, 87, 0.14);
+  border-color: var(--team-focus-ring, #ed7657);
+  background: linear-gradient(105deg, var(--team-primary-soft, #fff2eb) 0%, #fffaf7 100%);
+  box-shadow: 0 8px 22px var(--team-focus-ring, rgba(237, 118, 87, 0.14));
 }
 
 .leaderboard-list .leaderboard-row.is-current-team::after {
-  background: linear-gradient(#ffae8f, #eb6041);
+  background: linear-gradient(var(--team-primary-hover, #ffae8f), var(--team-primary, #eb6041));
 }
 
 .leaderboard-rank {
@@ -251,8 +251,8 @@
   flex: 0 0 auto;
   padding: 2px 7px;
   border-radius: 999px;
-  background: #ed7657;
-  color: #fff;
+  background: var(--team-primary, #ed7657);
+  color: var(--team-on-primary, #fff);
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.02em;

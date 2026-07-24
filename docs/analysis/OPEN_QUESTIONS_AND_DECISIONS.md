@@ -449,10 +449,15 @@ Backend là nguồn xác thực cuối cùng cho Leaderboard.
 | Clear behavior | `null` clear stored color; missing `teamColor` khi update nghĩa là không đổi. |
 | Alias conflict | Nếu request có cả `teamColor` và `color` nhưng normalize ra khác nhau, backend trả `400`; nếu giống nhau thì accept. |
 | Fallback | UI dùng fallback `#FF765C` khi color null/missing/legacy invalid. |
+| Seed palette | Seed-managed Team 01-25 phải có 25 màu `#RRGGBB` unique theo palette cố định, nhận diện bằng username `team01`...`team25`. |
+| Seed repair | Mỗi lần seed được phép repair/overwrite `Team.color` của seed-managed Team 01-25 theo palette cố định; palette thắng custom color Admin đã chỉnh. |
 | Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
+| Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
+| Overlays | AntD `Modal`, `Drawer`, và `modal.confirm()` trong Team context được theme primary button bằng Team Color qua runtime scoped/body vars; QR info modal sau create/update Team có thể giữ default/current overlay style. |
 | Admin Team list | `/teams` là multi-Team context: shell/header/nav giữ default; từng Team card dùng scoped color riêng. |
 | Admin Team context | Single-Team Admin routes như `/system-config/teams/:teamId`, `/teams/:teamId/stations`, `/teams/:teamId/stations/:stationId` có thể theme shell/header/nav theo Team Color của Team đang xem. |
-| Out of scope | Không thêm Admin map route, không đổi Team/user `/stations/map`, không đổi Admin action behavior của `StationsMapPanel`. |
+| Admin create preview | `/system-config/teams/new` không có saved Team context; preview chỉ dùng Team Color khi input HEX hợp lệ, còn empty/invalid giữ default/Admin style. |
+| Out of scope | Không thêm Admin map route, không đổi Team/user `/stations/map`, không đổi Admin action behavior của `StationsMapPanel`, không đổi global Ant Design theme, không lưu gradient trong DB. |
 
 ---
 
@@ -562,7 +567,14 @@ Không cần hard-code toàn bộ raw token trong seed source code.
 
 Local/test credentials và raw tokens không được tự động seed vào Production.
 
-Production phải sử dụng quy trình tạo dữ liệu riêng, ngoại trừ Final Challenge seed-managed record được phép create/update canonical values đến hết `2026-08-21 23:59:59 Asia/Ho_Chi_Minh` và ngừng overwrite từ `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`.
+Production phải sử dụng quy trình tạo dữ liệu riêng, ngoại trừ các phạm vi hẹp đã chốt:
+
+1. Final Challenge seed-managed record được phép create/update canonical values đến hết `2026-08-21 23:59:59 Asia/Ho_Chi_Minh` và ngừng overwrite từ `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`.
+2. Existing seed-managed Team 01-25 được nhận diện bằng username ổn định `team01`...`team25` được phép repair/overwrite chỉ trường `color` theo palette cố định.
+
+Production seed không được tạo Team fixture mới khi thiếu `team01`...`team25`; missing seed-managed Team trong Production được skip im lặng cho scope color repair.
+
+Production seed không được reset password, username, Team QR credential, raw token, hoặc local/test fixture data cho seed-managed Teams.
 
 Seed command phải có Environment Guard rõ ràng.
 

@@ -14,6 +14,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {logout as logoutApi} from "../api";
 import {RunningPersonIcon} from "../components/RunningPersonIcon";
 import {ROLE_LABELS} from "../constants";
+import {useBodyTeamTheme} from "../hooks/useBodyTeamTheme";
 import {useMovementStore} from "../store";
 import {getTeamThemeVars} from "../teamTheme";
 import "./AppFrame.scss";
@@ -64,6 +65,10 @@ export function AppFrame({children}: AppFrameProps) {
   const themedTeam = session?.role === "user" ? activeTeam : teams.find((team) => team.id === routeTeamId);
   const teamThemeVars = getTeamThemeVars(themedTeam?.teamColor);
   const shellClassName = themedTeam ? "mobile-shell team-themed-shell" : "mobile-shell";
+  useBodyTeamTheme(
+    themedTeam ? `app-frame:${themedTeam.id}` : "app-frame:none",
+    themedTeam ? teamThemeVars : null,
+  );
 
   const handleLogout = async () => {
     try {

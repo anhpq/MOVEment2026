@@ -1,5 +1,17 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Team Color palette and gradient buttons
+
+- [x] Seed-managed Team 01-25 use 25 stable unique uppercase HEX colors without palette rotation.
+- [x] Production seed repairs only `color` for existing `team01`...`team25` and silently skips missing fixtures without password, QR credential, progress, or other fixture updates.
+- [x] Enabled primary buttons use Team gradients with white `#FFFFFF` text/icons in Team-context pages, footer, Modal, Drawer, and confirm overlays.
+- [x] Disabled, danger, default, QR info modal, status, marker, and non-button semantics remain outside the gradient override.
+- [x] Station list/detail primary actions from the latest pull remain covered by the shared selector; the disabled `Watch Video` action keeps its disabled style.
+- [x] Team Editor valid create/edit preview and body theme owner cleanup are implemented; saved null color retains `#FF765C` Team-context fallback.
+- [x] Targeted seed policy tests (`7/7`), Backend lint/build, Frontend lint/build, two consecutive local seed runs, `db:verify`, and Graphify update passed after the latest pull; diff hygiene is reviewed before commit.
+- [ ] Manual browser review across Team 01/25, overlays, disabled states, route cleanup, and representative contrast colors remains pending.
+- [ ] Production deployment/runtime verification remains pending and requires explicit approval.
+
 ## 2026-07-24 Team Results Excel export and Team Color UI
 
 - [x] Added ExcelJS backend dependency and Team Results workbook generation.

@@ -12,6 +12,7 @@ import {
 import type {TeamFormValues} from "../types";
 import {createAdminTeam, getAdminTeamQrLoginTokens, updateAdminTeam} from "../api";
 import {fetchAdminDatabase} from "../adminData";
+import {useBodyTeamTheme} from "../hooks/useBodyTeamTheme";
 import {getTeamThemeVars, normalizeTeamColor} from "../teamTheme";
 
 export function TeamEditorPage() {
@@ -27,14 +28,22 @@ export function TeamEditorPage() {
 
   const team = teams.find((item) => item.id === params.teamId);
   const isEditing = Boolean(team);
-  const previewColor = normalizeTeamColor(watchedTeamColor) ?? team?.teamColor;
-  const drawerThemeVars = getTeamThemeVars(previewColor);
+  const normalizedInputColor = normalizeTeamColor(watchedTeamColor);
+  const previewColor = normalizedInputColor ?? (isEditing ? team?.teamColor : null);
+  const hasTeamPreview = isEditing || Boolean(normalizedInputColor);
+  const drawerThemeVars = hasTeamPreview ? getTeamThemeVars(previewColor) : null;
+  useBodyTeamTheme(
+    "team-editor-preview",
+    isOpen ? drawerThemeVars : null,
+    100,
+  );
 
   const showGeneratedQr = async (payload: string, filename: string, context: string) => {
     const dataUrl = await QRCode.toDataURL(payload, {width: 320, margin: 2});
     modal.info({
       centered: true,
       width: 520,
+      className: "team-qr-info-modal",
       title: "One-time Team QR",
       content: (
         <Flex vertical gap={12} align="center">
@@ -101,8 +110,8 @@ export function TeamEditorPage() {
       title={isEditing ? "Edit Team" : "Create Team"}
       onClose={handleClose}
       open={isOpen}
-      styles={{body: drawerThemeVars}}>
-      <div className="team-color-preview" style={drawerThemeVars}>
+      styles={drawerThemeVars ? {body: drawerThemeVars} : undefined}>
+      <div className="team-color-preview" style={drawerThemeVars ?? undefined}>
       <Form
         form={form}
         layout="horizontal"
@@ -155,6 +164,7 @@ export function TeamEditorPage() {
                     modal.info({
                       centered: true,
                       width: 680,
+                      className: "team-qr-info-modal",
                       title: `QR login for ${created.name}`,
                       content: (
                         <Flex vertical gap={12}>

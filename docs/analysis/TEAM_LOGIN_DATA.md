@@ -57,7 +57,10 @@ Production không được:
 - print raw Team QR token trong CI/CD log;
 - commit raw token vào repository;
 - dùng predictable Team QR token;
-- dùng shared default password cho Team thật.
+- dùng shared default password cho Team thật;
+- tạo Team fixture mới khi thiếu `team01`...`team25`.
+
+Ngoại lệ hẹp: Production seed được phép repair/overwrite chỉ trường `color` của existing seed-managed Team 01-25 theo username `team01`...`team25`; username thiếu được skip im lặng.
 
 ---
 
@@ -230,7 +233,7 @@ Nếu implementation chọn protected QR artifact hoặc encrypted token storage
 
 ## 7.1 Team Seed
 
-Khi seed một Team:
+Khi seed một Team ngoài Production:
 
 1. kiểm tra Team theo stable unique key;
 2. tạo Team nếu chưa tồn tại;
@@ -239,7 +242,17 @@ Khi seed một Team:
 5. generate token nếu thiếu;
 6. preserve token đang active;
 7. không rotate token ngoài ý muốn;
-8. ghi local QR URL vào local-only output khi token mới được tạo.
+8. ghi local QR URL vào local-only output khi token mới được tạo;
+9. gán Team 01-25 vào 25 màu `#RRGGBB` unique theo seed palette cố định.
+
+Khi seed Team trong Production:
+
+1. nhận diện seed-managed Team 01-25 bằng username `team01`...`team25`;
+2. nếu Team tồn tại, chỉ update `color` theo seed palette cố định;
+3. nếu Team thiếu, skip im lặng và không tạo fixture mới;
+4. không reset password, username, QR credential, raw token, hoặc local/test fixture data.
+
+Seed palette hiện tại là fixture/current seed palette, không phải Business Rule ngoài yêu cầu unique/repair/stable. Palette thắng custom color: nếu Admin chỉnh màu Team 01-25, lần seed sau vẫn repair lại theo palette.
 
 ## 7.2 Idempotency
 
@@ -250,7 +263,7 @@ Chạy seed nhiều lần không được:
 - tạo duplicate active token;
 - rotate QR đã in;
 - đổi password ngoài explicit seed policy;
-- ghi đè Production data;
+- ghi đè Production data ngoài ngoại lệ color-only repair cho existing seed-managed Team 01-25;
 - tạo thêm token active không cần thiết.
 
 ## 7.3 Missing Token Repair

@@ -316,9 +316,12 @@
 .final-answer-form .ant-btn {
   height: 48px;
   border-radius: 12px;
-  background: linear-gradient(105deg, #ee835f, #ed5e3d);
   box-shadow: 0 10px 20px rgba(237, 94, 61, 0.2);
   font-weight: 700;
+}
+
+.final-answer-form .ant-btn-primary:not(:disabled):not(.ant-btn-disabled) {
+  background: linear-gradient(105deg, #ee835f, #ed5e3d);
 }
 
 @media (max-width: 480px) {

@@ -234,6 +234,23 @@
   transform: translateY(-1px);
 }
 
+.team-themed-shell .page-stack .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous),
+body.team-themed-overlay .ant-modal:not(.team-qr-info-modal) .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous),
+body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous) {
+  border-color: transparent;
+  background: var(--team-button-gradient);
+  color: var(--team-on-primary);
+  box-shadow: 0 7px 16px var(--team-focus-ring);
+}
+
+.team-themed-shell .page-stack .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous):hover,
+body.team-themed-overlay .ant-modal:not(.team-qr-info-modal) .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous):hover,
+body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous):hover {
+  border-color: transparent;
+  background: var(--team-button-gradient-hover);
+  color: var(--team-on-primary);
+}
+
 .page-stack .ant-tabs-nav::before {
   border-color: var(--movement-border);
 }

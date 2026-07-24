@@ -61,10 +61,17 @@
     border-color: var(--team-focus-ring);
   }
 
-  .shell-footer .ant-btn-primary {
-    background: linear-gradient(110deg, var(--team-primary-hover), var(--team-primary));
+  .shell-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous) {
+    border-color: transparent;
+    background: var(--team-button-gradient);
     color: var(--team-on-primary);
     box-shadow: 0 8px 18px var(--team-focus-ring);
+  }
+
+  .shell-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous):hover {
+    border-color: transparent;
+    background: var(--team-button-gradient-hover);
+    color: var(--team-on-primary);
   }
 }
 

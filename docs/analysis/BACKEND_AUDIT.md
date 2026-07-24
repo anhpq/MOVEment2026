@@ -1,3 +1,13 @@
+## 2026-07-24 Team Color palette and gradient buttons
+
+- Added a stable 25-color uppercase HEX palette for seed-managed `team01`...`team25`, with fail-fast validation and direct Team 01-25 mapping without color rotation.
+- Production Team fixture handling now silently skips missing seed-managed Teams and updates only `color` for existing matches; password hashing, fixture field updates, progress initialization, and QR credential work remain non-Production for this path.
+- Added Team-context gradients for enabled primary page/footer and AntD overlay buttons with white `#FFFFFF` text/icons while preserving disabled, danger, default, QR info modal, and non-button semantics.
+- Added body-level Team theme owner stacking for AppFrame and Team Editor preview cleanup, valid create preview behavior, saved-color edit fallback, and Team-colored current-Team Leaderboard highlighting.
+- Reconciled the Station list/detail presentation pulled through `b9e3a485`; its new and revised primary actions remain covered by the shared Team-context selector, while the new disabled `Watch Video` style remains excluded from Team gradients.
+- Verification passed after the pull: targeted Team color seed tests (`7/7`), Backend lint/build, Frontend lint/build, two consecutive local seed runs, `db:verify`, and `graphify update .`. Frontend build retains the known non-blocking large-chunk warning; Graphify retains warnings for `hooks.json` zero nodes and missing optional `tree_sitter_sql` extraction.
+- Not performed: manual browser review, Production runtime verification, push, or deploy.
+
 ## 2026-07-24 Team Results Excel export and Team Color UI
 
 - Added shared Team Results ranking/export logic with the confirmed comparator: `team.totalPoints` descending, `team.totalPlaySeconds` ascending, active completed Stations descending, correct Final submitted time ascending with nulls last, then numeric Team ID ascending.

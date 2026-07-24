@@ -2,7 +2,7 @@ import type {CSSProperties} from "react";
 
 export const DEFAULT_TEAM_COLOR = "#FF765C";
 
-type TeamThemeVars = CSSProperties & Record<`--team-${string}`, string>;
+export type TeamThemeVars = CSSProperties & Record<`--team-${string}`, string>;
 
 export function normalizeTeamColor(value: unknown): string | null {
   if (typeof value !== "string") {
@@ -14,25 +14,17 @@ export function normalizeTeamColor(value: unknown): string | null {
 
 export function getTeamThemeVars(value: unknown): TeamThemeVars {
   const primary = normalizeTeamColor(value) ?? DEFAULT_TEAM_COLOR;
-  const foreground = getReadableForeground(primary);
+  const gradientStart = mixWith(primary, "#FFFFFF", 0.12);
+  const gradientEnd = mixWith(primary, "#000000", 0.08);
   return {
     "--team-primary": primary,
-    "--team-primary-hover": mixWith(primary, foreground === "#FFFFFF" ? "#FFFFFF" : "#000000", 0.12),
+    "--team-primary-hover": gradientStart,
     "--team-primary-soft": mixWith(primary, "#FFFFFF", 0.86),
-    "--team-on-primary": foreground,
+    "--team-on-primary": "#FFFFFF",
     "--team-focus-ring": hexToRgba(primary, 0.35),
+    "--team-button-gradient": `linear-gradient(110deg, ${gradientStart}, ${gradientEnd})`,
+    "--team-button-gradient-hover": `linear-gradient(110deg, ${mixWith(gradientStart, "#FFFFFF", 0.08)}, ${mixWith(gradientEnd, "#FFFFFF", 0.08)})`,
   };
-}
-
-function getReadableForeground(hex: string) {
-  const {r, g, b} = hexToRgb(hex);
-  const luminance = (0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b));
-  return luminance > 0.55 ? "#1B2638" : "#FFFFFF";
-}
-
-function toLinear(value: number) {
-  const channel = value / 255;
-  return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
 }
 
 function hexToRgb(hex: string) {
