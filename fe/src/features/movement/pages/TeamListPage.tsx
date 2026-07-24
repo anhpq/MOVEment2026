@@ -2,14 +2,13 @@ import {
   RightOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import {Card, Empty, List, Tag, Typography} from "antd";
+import {Card, Empty, List, Typography} from "antd";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
 import "./TeamListPage.css";
 
 export function TeamListPage() {
   const navigate = useNavigate();
-  const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
   const sortedTeams = [...teams].sort((left, right) => {
@@ -37,9 +36,6 @@ export function TeamListPage() {
         </span>
         <div className="teams-hero-copy">
           <Typography.Title level={2}>Teams</Typography.Title>
-          <Typography.Text>
-            Select a team to open its Station dashboard.
-          </Typography.Text>
         </div>
         <div className="teams-total">
           <strong>{teams.length}</strong>
@@ -52,12 +48,10 @@ export function TeamListPage() {
         dataSource={sortedTeams}
         locale={{emptyText: <Empty description="No teams available" />}}
         renderItem={(team) => {
-          const isActive = team.id === activeTeamId;
-
           return (
             <List.Item>
               <Card
-                className={`team-select-card ${isActive ? "is-active" : ""}`}
+                className="team-select-card"
                 hoverable
                 role="button"
                 tabIndex={0}
@@ -75,7 +69,6 @@ export function TeamListPage() {
                       <Typography.Title level={3}>
                         {team.name}
                       </Typography.Title>
-                      {isActive && <Tag>Current team</Tag>}
                     </div>
                     <Typography.Text>{team.id}</Typography.Text>
                   </div>

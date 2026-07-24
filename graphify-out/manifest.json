@@ -260,8 +260,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/layout/AppFrame.tsx": {
-    "mtime": 1784865419.751518,
-    "ast_hash": "9e5ff7f6b6cb19a213250c5e7eef3091",
+    "mtime": 1784866169.7895749,
+    "ast_hash": "c2b6f990906cca3adad7f3bb5cabdd0d",
     "semantic_hash": ""
   },
   "fe/src/features/movement/layout/ProtectedRoute.tsx": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamListPage.tsx": {
-    "mtime": 1784865424.7159863,
-    "ast_hash": "84f41e562c4eff553d7e90b5207ca584",
+    "mtime": 1784866171.262785,
+    "ast_hash": "da6120b785c4a1bb27d14974b0610786",
     "semantic_hash": ""
   },
   "fe/src/features/movement/routes.tsx": {
@@ -440,18 +440,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784865846.3714602,
-    "ast_hash": "1ff31b9c6110bd78f659dceaeadad060",
+    "mtime": 1784866301.0519345,
+    "ast_hash": "383acd7d1d2cfe675dc04f075765521d",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784865382.4341612,
-    "ast_hash": "dce0e85590b7e31997a892a23ab38d23",
+    "mtime": 1784866094.9780655,
+    "ast_hash": "cc2d868f18a70b5124e172705b18f90f",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1784865384.4760234,
-    "ast_hash": "a8feda477d43fb132354d224a55618bd",
+    "mtime": 1784866097.8329952,
+    "ast_hash": "90fb45c2ec4e6f4a037a37c577e212a2",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784865843.6292999,
-    "ast_hash": "d2d35f737521aa1571c4deaa2f5a8a1e",
+    "mtime": 1784866298.720497,
+    "ast_hash": "fb1f8bb348e5515594597c3451e9691c",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -620,8 +620,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/LeaderboardPage.tsx": {
-    "mtime": 1784865800.814703,
-    "ast_hash": "f580eb4985399e16f6c31eb531004971",
+    "mtime": 1784866172.7050192,
+    "ast_hash": "d2cca6b74957152b2056910076274079",
     "semantic_hash": ""
   },
   "package.json": {

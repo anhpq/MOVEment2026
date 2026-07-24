@@ -28,6 +28,7 @@ Admin users:
 - manage Event Config;
 - manage Teams and Stations;
 - open a Team first to view that Team's Station/progress list; Admin has no standalone Stations navigation item;
+- never present a selected Team as the Admin's own/current Team;
 - configure tracking mode and max score;
 - choose Station Game Type from `CIPHER`, `ST`, or `STANDARD`;
 - manage QR lifecycle;

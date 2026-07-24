@@ -1,3 +1,11 @@
+## 2026-07-24 Compact Admin headers and Team identity cleanup
+
+- Reduced padding, icon size, title size, and spacing for Teams, Leaderboard, and Operations Center page headers.
+- Removed the redundant Leaderboard and Teams header descriptions.
+- Admin no longer sees `Current team` in the global header or a current-Team badge/style in the Team list.
+- Player current-Team identity remains unchanged.
+- Frontend lint and production build passed.
+
 ## 2026-07-24 Role-aware Leaderboard current-Team marker
 
 - Leaderboard now derives the current Team marker only for Player sessions.

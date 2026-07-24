@@ -29,7 +29,7 @@
 }
 
 .leaderboard-card .ant-card-body {
-  padding: 24px;
+  padding: 16px;
 }
 
 .leaderboard-heading {
@@ -37,9 +37,9 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-  padding-bottom: 18px;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(237, 118, 87, 0.25);
 }
 
@@ -51,13 +51,8 @@
 .leaderboard-heading-copy h2 {
   margin: 0;
   color: #101d3b;
-  font-size: var(--movement-page-title-size);
+  font-size: clamp(1.15rem, 3.2vw, 1.45rem);
   line-height: 1.15;
-}
-
-.leaderboard-heading-copy > .ant-typography:last-child {
-  color: #8c736b;
-  font-size: 0.76rem;
 }
 
 .leaderboard-team-count {
@@ -73,13 +68,13 @@
 .leaderboard-heading-icon {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border: 1px solid rgba(237, 118, 87, 0.18);
   border-radius: 50%;
   background: #fff2ec;
   color: #ed6848;
-  font-size: 1.45rem;
+  font-size: 1.2rem;
 }
 
 .leaderboard-list .ant-list-items {
@@ -284,7 +279,7 @@
   }
 
   .leaderboard-heading-copy h2 {
-    font-size: var(--movement-page-title-size);
+    font-size: clamp(1.15rem, 5vw, 1.35rem);
   }
 
   .leaderboard-team-count {

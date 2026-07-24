@@ -1,6 +1,6 @@
 .teams-page {
   display: grid;
-  gap: 16px;
+  gap: 12px;
   min-width: 0;
 }
 
@@ -11,7 +11,7 @@
   align-items: center;
   gap: 16px;
   overflow: hidden;
-  padding: 22px;
+  padding: 14px 16px;
   border: 1px solid var(--movement-border);
   border-radius: var(--movement-radius-lg);
   background:
@@ -44,12 +44,12 @@
 .teams-hero-icon {
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: linear-gradient(145deg, #ff9c72, var(--movement-coral-dark));
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   box-shadow: 0 8px 18px rgba(207, 77, 44, 0.2);
 }
 
@@ -60,13 +60,8 @@
 .teams-hero-copy h2 {
   margin: 0;
   color: var(--movement-navy);
-  font-size: var(--movement-page-title-size);
+  font-size: clamp(1.15rem, 3.2vw, 1.45rem);
   line-height: 1.15;
-}
-
-.teams-hero-copy > .ant-typography {
-  color: #7b8290;
-  font-size: 0.76rem;
 }
 
 .teams-total {
@@ -199,15 +194,15 @@
 
 @media (max-width: 560px) {
   .teams-hero {
-    gap: 12px;
-    padding: 17px 14px;
+    gap: 10px;
+    padding: 12px 14px;
     border-radius: 16px;
   }
 
   .teams-hero-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.2rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
   }
 
   .teams-hero-copy > .ant-typography {

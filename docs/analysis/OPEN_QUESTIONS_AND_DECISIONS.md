@@ -593,10 +593,12 @@ Business Rules:
 ## 11.2 Admin Team Station Navigation
 
 - Admin navigation không hiển thị menu `Stations` độc lập.
+- Admin không thuộc Team nào; giao diện Admin không được hiển thị `Current team`, `Your team`, hoặc đánh dấu một Team là Team của Admin.
 - Sau khi đăng nhập, Admin đi tới danh sách Teams.
 - Admin chỉ mở danh sách Station/progress trong ngữ cảnh một Team bằng cách chọn Team đó.
 - Route danh sách và chi tiết Station của Admin phải giữ Team ID để back/navigation không làm mất Team đang xem.
 - Player vẫn sử dụng menu và route Station riêng theo Player flow.
+- Các page header vận hành như Teams, Leaderboard và Operations dùng layout compact, ưu tiên title/action và không cần subtitle mô tả hiển nhiên.
 
 ---
 

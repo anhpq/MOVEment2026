@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Compact Admin headers and Team identity cleanup
+
+- [x] Teams, Leaderboard, and Operations Center headers use compact spacing, icons, and titles.
+- [x] Redundant Teams and Leaderboard header descriptions were removed.
+- [x] Admin global header and Team list no longer imply that Admin belongs to a Team.
+- [x] Player current-Team identity remains unchanged.
+- [x] Frontend lint and production build passed.
+- [ ] Manual responsive browser review remains pending.
+
 ## 2026-07-24 Role-aware Leaderboard current-Team marker
 
 - [x] Admin Leaderboard does not show `Your team` or current-Team highlighting.

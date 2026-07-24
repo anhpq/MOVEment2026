@@ -85,9 +85,11 @@ export function AppFrame({children}: AppFrameProps) {
             <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
               {buildTimestampLabel}
             </Typography.Text>
-            <Typography.Text className="brand-subtitle">
-              Current team: <b>{activeTeam?.name ?? "No team"}</b>
-            </Typography.Text>
+            {session.role === "user" && (
+              <Typography.Text className="brand-subtitle">
+                Current team: <b>{activeTeam?.name ?? "No team"}</b>
+              </Typography.Text>
+            )}
           </Flex>
         </div>
       </Layout.Header>

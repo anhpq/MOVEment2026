@@ -46,7 +46,6 @@ export function LeaderboardPage() {
         </span>
         <div className="leaderboard-heading-copy">
           <Typography.Title level={2}>Leaderboard</Typography.Title>
-          <Typography.Text>Live event standings</Typography.Text>
         </div>
         <span className="leaderboard-team-count">{rows.length} teams</span>
       </header>
