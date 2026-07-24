@@ -444,3 +444,11 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Added the visible `Team` label beside the icon on `/teams`, including mobile layouts.
 - Reduced the shared shell branding and the Teams, Leaderboard, Operation Center, and Final page headers by one visual step.
 - Frontend lint and production build passed. The existing non-blocking Vite large-chunk warning remains.
+
+## 2026-07-24 Remove Station Cipher game type
+
+- Station Game Type now supports only `ST` and `STANDARD`; the Admin combobox labels are `ST` and `Standard`.
+- Removed the Station cipher-answer button, frontend API call, backend route/DTO/service logic, and the `games.answer_hash` column. Final Challenge remains unchanged.
+- Added and applied migration `20260724190000_remove_station_cipher_game_type`; Legacy `CIPHER` Games become `STANDARD`, and the database constraint rejects values outside `ST`/`STANDARD`.
+- Tester database verification passed with `4 ST`, `6 STANDARD`, no `games.answer_hash` column, two consecutive seed runs, and `db:verify`.
+- Backend build and all 120 tests passed. Frontend lint and production build passed; the known non-blocking Vite large-chunk warning remains.

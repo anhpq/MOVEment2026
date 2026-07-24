@@ -18,10 +18,9 @@ export const STATUS_ORDER: Record<StationStatus, number> = {
 
 export const DEFAULT_STATION_MAX_POINTS = 30;
 
-export const GAME_TYPES = ["CIPHER", "ST", "STANDARD"] as const;
+export const GAME_TYPES = ["ST", "STANDARD"] as const;
 
 export const GAME_TYPE_OPTIONS = [
-  {value: "CIPHER", label: "Cipher"},
-  {value: "ST", label: "ST (YouTube video)"},
+  {value: "ST", label: "ST"},
   {value: "STANDARD", label: "Standard"},
 ] as const;

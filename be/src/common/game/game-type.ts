@@ -1,4 +1,4 @@
-export const GAME_TYPES = ['CIPHER', 'ST', 'STANDARD'] as const;
+export const GAME_TYPES = ['ST', 'STANDARD'] as const;
 
 export type GameType = (typeof GAME_TYPES)[number];
 

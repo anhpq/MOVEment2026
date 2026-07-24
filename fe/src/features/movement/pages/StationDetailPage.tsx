@@ -27,7 +27,6 @@ import {formatDateTime, formatDurationFromMs} from "../utils";
 import {
   checkOutStation,
   cancelPlayerStation,
-  submitCipherAnswer,
   editAdminProgressScore,
   forceAdminProgressStatus,
   getPlayerFinal,
@@ -222,24 +221,6 @@ export function StationDetailPage() {
               onClick={() => setIsFinishScannerOpen(true)}>
               Finished
             </Button>
-            {station.gameType === "CIPHER" && (
-              <Button
-                onClick={() => {
-                  const answer = window.prompt("Enter cipher answer");
-                  if (answer)
-                    void submitCipherAnswer(station.stationId, answer)
-                      .then(() => message.success("Cipher answer accepted"))
-                      .catch((error: unknown) =>
-                        message.error(
-                          error instanceof Error ?
-                            error.message
-                          : "Wrong answer",
-                        ),
-                      );
-                }}>
-                Submit Cipher
-              </Button>
-            )}
             <Button
               danger
               icon={<ReloadOutlined />}

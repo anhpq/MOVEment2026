@@ -30,7 +30,7 @@ Admin users:
 - open a Team first to view that Team's Station/progress list; Admin has no standalone Stations navigation item;
 - never present a selected Team as the Admin's own/current Team;
 - configure tracking mode and max score;
-- choose Station Game Type from `CIPHER`, `ST`, or `STANDARD`;
+- choose Station Game Type from `ST` or `STANDARD`;
 - manage QR lifecycle;
 - correct scores and operational state;
 - view audit/activity data;
@@ -217,17 +217,16 @@ Score rules:
 Station Game Type is restricted to:
 
 ```text
-CIPHER
 ST
 STANDARD
 ```
 
-- `CIPHER` enables the cipher-answer action.
 - `ST` requires a valid HTTPS YouTube URL and is the only type that exposes `Watch Video`.
 - `STANDARD` is the default type for an ordinary Station and never exposes video, even when a media URL remains stored.
-- The current designated `ST` Stations are `ST003`, `ST004`, `ST010`, and `ST047`; other non-`CIPHER` Stations are `STANDARD` even if they retain a stored media URL.
+- The current designated `ST` Stations are `ST003`, `ST004`, `ST010`, and `ST047`; all other Stations are `STANDARD` even if they retain a stored media URL.
 - Admin selects the type from a fixed combobox; Backend and database reject unsupported values.
-- Legacy migration preserves `CIPHER`, assigns only the designated list to `ST`, and assigns remaining Games to `STANDARD`.
+- Legacy `CIPHER` Games migrate to `STANDARD`. Station cipher-answer UI, API, validation, and storage are removed.
+- Final Challenge remains independent from Station Game Type and is unchanged.
 
 ## Event Config
 

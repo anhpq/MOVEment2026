@@ -613,23 +613,22 @@ User không cần tự cung cấp:
 
 ## 13.1 Station Game Type
 
-Station Game Type chỉ có ba giá trị:
+Station Game Type chỉ có hai giá trị:
 
 ```text
-CIPHER
 ST
 STANDARD
 ```
 
 Business Rules:
 
-- `CIPHER` dùng cho Station có luồng nhập và kiểm tra cipher answer.
 - `ST` dùng cho Station được Business chỉ định có YouTube video để Team xem trước hoặc trong khi chơi.
 - `STANDARD` dùng cho Station thông thường và không hiển thị video, kể cả khi còn lưu media URL.
 - Chỉ Station có `gameType = ST` mới được hiển thị hành động `Watch Video`.
 - Danh sách Station `ST` hiện tại là `ST003`, `ST004`, `ST010`, và `ST047`.
-- Các Station không thuộc danh sách trên và không phải `CIPHER` phải dùng `STANDARD`, kể cả khi còn lưu YouTube URL.
-- Khi chuyển dữ liệu Legacy, giữ nguyên `CIPHER`; chỉ bốn Station được chỉ định chuyển thành `ST`; các Game còn lại chuyển thành `STANDARD`.
+- Các Station không thuộc danh sách trên phải dùng `STANDARD`, kể cả khi còn lưu YouTube URL.
+- Khi chuyển dữ liệu Legacy, mọi `CIPHER` phải chuyển thành `STANDARD`; chỉ bốn Station được chỉ định giữ hoặc chuyển thành `ST`; các Game còn lại chuyển thành `STANDARD`.
+- Station không còn luồng nhập hoặc kiểm tra cipher answer. Final Challenge là tính năng độc lập và không bị ảnh hưởng bởi thay đổi này.
 - Admin phải chọn Game Type từ danh sách cố định, không nhập free text.
 - Backend và database là authority cho tập giá trị Game Type hợp lệ.
 

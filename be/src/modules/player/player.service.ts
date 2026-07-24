@@ -15,7 +15,7 @@ import {
 import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TeamResultsService } from '../team-results/team-results.service';
-import { QrActionDto, SubmitCipherDto } from './dto/player-actions.dto';
+import { QrActionDto } from './dto/player-actions.dto';
 
 @Injectable()
 export class PlayerService {
@@ -363,28 +363,6 @@ export class PlayerService {
     return updated;
   }
 
-  async submitCipher(teamId: number, stationId: string, dto: SubmitCipherDto) {
-    const progress = await this.getProgressForAction(teamId, stationId);
-    const game = await this.prisma.game.findUniqueOrThrow({
-      where: { id: progress.gameId },
-    });
-    if (!game.answerHash) {
-      throw new BadRequestException('This station does not use cipher validation');
-    }
-
-    const normalized = this.normalizeAnswer(dto.answer);
-    const isCorrect = await bcrypt.compare(normalized, game.answerHash);
-    await this.activityLog.log({
-      actorType: ActorType.TEAM,
-      actorId: teamId,
-      action: isCorrect ? 'CIPHER_CORRECT' : 'CIPHER_WRONG',
-      entityType: 'STATION',
-      entityId: stationId,
-      metadata: { progressId: progress.id },
-    });
-    return { isCorrect };
-  }
-
   private async getProgressForAction(teamId: number, stationId: string) {
     const progress = await this.prisma.teamStationProgress.findUnique({
       where: { teamId_stationId: { teamId, stationId } },
@@ -421,10 +399,6 @@ export class PlayerService {
     }
 
     return token;
-  }
-
-  private normalizeAnswer(answer: string) {
-    return answer.trim().toLowerCase().replace(/\s+/g, ' ');
   }
 
   private getPlaySeconds(checkedInAt: Date | null, checkedOutAt: Date | null) {

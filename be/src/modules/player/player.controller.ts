@@ -11,7 +11,7 @@ import { CurrentAuth } from '../../common/auth/auth.decorators';
 import { AuthContext, isTeam } from '../../common/auth/auth-context';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard';
 import { SubmitScoreDto } from '../../common/dto/score.dto';
-import { QrActionDto, SubmitCipherDto } from './dto/player-actions.dto';
+import { QrActionDto } from './dto/player-actions.dto';
 import { PlayerService } from './player.service';
 
 @UseGuards(JwtAuthGuard)
@@ -69,15 +69,6 @@ export class PlayerController {
   @Post('stations/:stationId/cancel')
   cancel(@CurrentAuth() auth: AuthContext, @Param('stationId') stationId: string) {
     return this.playerService.cancel(this.requireTeam(auth), stationId);
-  }
-
-  @Post('stations/:stationId/submit-cipher')
-  submitCipher(
-    @CurrentAuth() auth: AuthContext,
-    @Param('stationId') stationId: string,
-    @Body() dto: SubmitCipherDto,
-  ) {
-    return this.playerService.submitCipher(this.requireTeam(auth), stationId, dto);
   }
 
   private requireTeam(auth: AuthContext) {

@@ -59,12 +59,11 @@ CREATE TABLE "games" (
   "id" SERIAL PRIMARY KEY,
   "station_id" TEXT NOT NULL REFERENCES "stations"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
   "title" TEXT NOT NULL,
-  "type" TEXT NOT NULL CHECK ("type" IN ('CIPHER', 'ST', 'STANDARD')),
+  "type" TEXT NOT NULL CHECK ("type" IN ('ST', 'STANDARD')),
   "difficulty" INTEGER NOT NULL DEFAULT 1,
   "max_points" INTEGER NOT NULL DEFAULT 30,
   "clue_text" TEXT,
   "media_url" TEXT,
-  "answer_hash" TEXT,
   "is_active" BOOLEAN NOT NULL DEFAULT true,
   "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP

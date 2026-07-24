@@ -2,7 +2,7 @@ export type Role = "user" | "admin";
 
 export type StationStatus = "New" | "In Progress" | "Finished";
 export type StationTrackingMode = "SCORE" | "TIME" | "BOTH";
-export type GameType = "CIPHER" | "ST" | "STANDARD";
+export type GameType = "ST" | "STANDARD";
 
 export type Session = {
   username: string;

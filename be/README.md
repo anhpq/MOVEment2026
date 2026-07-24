@@ -55,7 +55,6 @@ docker exec movement-postgres-dev psql -U postgres -d movement -f /tmp/init.sql
 - `POST /api/player/stations/:stationId/check-out`
 - `POST /api/player/stations/:stationId/score`
 - `POST /api/player/stations/:stationId/cancel`
-- `POST /api/player/stations/:stationId/submit-cipher`
 - `GET /api/leaderboard`
 - `GET /api/player/final`
 - `POST /api/player/final/submit`

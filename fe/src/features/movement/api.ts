@@ -405,9 +405,6 @@ export const revokeAdminStationQrToken = (
 export const cancelPlayerStation = (stationId: string) =>
   apiPost(`/api/player/stations/${stationId}/cancel`, {})
 
-export const submitCipherAnswer = (stationId: string, answer: string) =>
-  apiPost(`/api/player/stations/${stationId}/submit-cipher`, {answer})
-
 export const getLeaderboard = () =>
   apiGet<LeaderboardEntryResponse[]>('/api/leaderboard')
 
