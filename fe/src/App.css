@@ -487,6 +487,10 @@
   opacity: 1;
 }
 
+.station-showcase-actions.admin-edit-only .ant-btn {
+  grid-column: 1 / -1;
+}
+
 .station-actions {
   width: 100%;
   display: grid;

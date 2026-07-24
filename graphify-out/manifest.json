@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationListPage.tsx": {
-    "mtime": 1784885731.6457338,
-    "ast_hash": "9203d9a725dff55df64ecca406f163cd",
+    "mtime": 1784886344.7550838,
+    "ast_hash": "9e7e4f8bce3be1e0afa6df1cf2070b1a",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationsMapPage.tsx": {
@@ -440,18 +440,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784885974.8122337,
-    "ast_hash": "e769ae89185d144bbc726a03fa0ed0cf",
+    "mtime": 1784886355.272383,
+    "ast_hash": "4905f7b512c775bd08fdc7f7e75bcfa4",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784885727.8328583,
-    "ast_hash": "7d6d48cfc990a3a9f1ba0ed249dfe0be",
+    "mtime": 1784886338.7324235,
+    "ast_hash": "13eed1ae702d53ffca5cc36c951ab63e",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1784885730.2190814,
-    "ast_hash": "2b8223b41a184cd93260fa923ed3bb69",
+    "mtime": 1784886341.2460563,
+    "ast_hash": "4d374eb5778a9b54c147d75575a4a87f",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784885973.6133797,
-    "ast_hash": "21e0663e75824f01d91a342ae3a777ca",
+    "mtime": 1784886352.7870448,
+    "ast_hash": "d275f9a85e01c9a274a545fc23cd05aa",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {

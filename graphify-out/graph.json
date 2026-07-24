@@ -942,8 +942,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_testing",
-      "community": 191,
-      "community_name": "ts-jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -953,8 +953,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "nestjs_testing",
-      "community": 191,
-      "community_name": "ts-jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -1074,8 +1074,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_package_devdependencies_globals",
-      "community": 190,
-      "community_name": "jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "globals"
     },
     {
@@ -1085,8 +1085,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "be_package_json_globals",
-      "community": 190,
-      "community_name": "jest",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "globals"
     },
     {
@@ -1096,8 +1096,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "be_package_devdependencies_jest",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 190,
+      "community_name": "jest",
       "norm_label": "jest"
     },
     {
@@ -1107,8 +1107,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "jest",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 190,
+      "community_name": "jest",
       "norm_label": "jest"
     },
     {
@@ -1162,8 +1162,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "be_package_devdependencies_ts_jest",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 191,
+      "community_name": "ts-jest",
       "norm_label": "ts-jest"
     },
     {
@@ -1173,8 +1173,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "ts_jest",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 191,
+      "community_name": "ts-jest",
       "norm_label": "ts-jest"
     },
     {
@@ -1184,8 +1184,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "be_package_devdependencies_ts_node",
-      "community": 192,
-      "community_name": "typescript",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "ts-node"
     },
     {
@@ -1195,8 +1195,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "ts_node",
-      "community": 192,
-      "community_name": "typescript",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "ts-node"
     },
     {
@@ -1206,8 +1206,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_package_devdependencies_typescript",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 192,
+      "community_name": "typescript",
       "norm_label": "typescript"
     },
     {
@@ -1217,8 +1217,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_package_json_typescript",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 192,
+      "community_name": "typescript",
       "norm_label": "typescript"
     },
     {
@@ -3219,8 +3219,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamqrlogintokens",
-      "community": 169,
-      "community_name": "UpdateFinalConfigDto",
+      "community": 158,
+      "community_name": ".generateTeamQrLoginToken",
       "norm_label": ".teamqrlogintokens()"
     },
     {
@@ -3670,8 +3670,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_teams",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".teams()"
     },
     {
@@ -3681,8 +3681,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_teamprogress",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".teamprogress()"
     },
     {
@@ -3725,8 +3725,8 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_listteamqrlogintokens",
-      "community": 169,
-      "community_name": "UpdateFinalConfigDto",
+      "community": 158,
+      "community_name": ".generateTeamQrLoginToken",
       "norm_label": ".listteamqrlogintokens()"
     },
     {
@@ -3769,8 +3769,8 @@
       "source_location": "L328",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_scorequeue",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".scorequeue()"
     },
     {
@@ -3780,8 +3780,8 @@
       "source_location": "L344",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_progressmatrix",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".progressmatrix()"
     },
     {
@@ -3978,8 +3978,8 @@
       "source_location": "L1170",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_topublicprogress",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".topublicprogress()"
     },
     {
@@ -3989,8 +3989,8 @@
       "source_location": "L1178",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_topublicgame",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".topublicgame()"
     },
     {
@@ -4000,8 +4000,8 @@
       "source_location": "L1194",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_topublicteam",
-      "community": 158,
-      "community_name": ".generateTeamQrLoginToken",
+      "community": 169,
+      "community_name": "UpdateFinalConfigDto",
       "norm_label": ".topublicteam()"
     },
     {
@@ -4154,8 +4154,8 @@
       "source_location": "L1423",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_getqrlogintokenstatus",
-      "community": 169,
-      "community_name": "UpdateFinalConfigDto",
+      "community": 158,
+      "community_name": ".generateTeamQrLoginToken",
       "norm_label": ".getqrlogintokenstatus()"
     },
     {
@@ -8650,8 +8650,8 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_checkinstation",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "checkinstation()"
     },
     {
@@ -8694,8 +8694,8 @@
       "source_location": "L220",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminstation",
-      "community": 64,
-      "community_name": "PrismaService",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "updateadminstation()"
     },
     {
@@ -9035,8 +9035,8 @@
       "source_location": "L426",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadmindashboard",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getadmindashboard()"
     },
     {
@@ -9046,8 +9046,8 @@
       "source_location": "L427",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminscorequeue",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getadminscorequeue()"
     },
     {
@@ -9057,8 +9057,8 @@
       "source_location": "L428",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadmineventconfig",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getadmineventconfig()"
     },
     {
@@ -9068,8 +9068,8 @@
       "source_location": "L429",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadmineventconfig",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "updateadmineventconfig()"
     },
     {
@@ -9079,8 +9079,8 @@
       "source_location": "L431",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminactivitylogs",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getadminactivitylogs()"
     },
     {
@@ -9090,8 +9090,8 @@
       "source_location": "L432",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminfinalconfig",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getadminfinalconfig()"
     },
     {
@@ -9101,8 +9101,8 @@
       "source_location": "L433",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminfinalsubmissions",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "getadminfinalsubmissions()"
     },
     {
@@ -9112,8 +9112,8 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminfinalconfig",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "updateadminfinalconfig()"
     },
     {
@@ -9134,8 +9134,8 @@
       "source_location": "L441",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_downloadadminteamresults",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "downloadadminteamresults()"
     },
     {
@@ -9343,8 +9343,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "fe_src_features_movement_apiclient_apiget",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "apiget()"
     },
     {
@@ -9552,8 +9552,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "stationsmappanel.tsx"
     },
     {
@@ -9563,8 +9563,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_stationsmappanelprops",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "stationsmappanelprops"
     },
     {
@@ -9574,8 +9574,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_markerposition",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "markerposition"
     },
     {
@@ -9585,8 +9585,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_viewportsize",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "viewportsize"
     },
     {
@@ -9596,8 +9596,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_teamstationwithmeta",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "teamstationwithmeta"
     },
     {
@@ -9607,8 +9607,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_user_status_legend",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "user_status_legend"
     },
     {
@@ -9618,8 +9618,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_clampmapscale",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "clampmapscale()"
     },
     {
@@ -9629,8 +9629,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_getmarkerfill",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "getmarkerfill()"
     },
     {
@@ -9640,8 +9640,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_clamppercent",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "clamppercent()"
     },
     {
@@ -9651,8 +9651,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_buildmarkerposition",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "buildmarkerposition()"
     },
     {
@@ -9662,8 +9662,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_buildfallbackpositions",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "buildfallbackpositions()"
     },
     {
@@ -9673,8 +9673,8 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_stationsmappanel",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "stationsmappanel()"
     },
     {
@@ -9706,8 +9706,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_status_order",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "status_order"
     },
     {
@@ -9728,8 +9728,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_game_type_options",
-      "community": 64,
-      "community_name": "PrismaService",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "game_type_options"
     },
     {
@@ -9860,8 +9860,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_adminoperationspage",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "adminoperationspage.tsx"
     },
     {
@@ -9871,8 +9871,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_adminoperationspage_operationrecord",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "operationrecord"
     },
     {
@@ -9882,8 +9882,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_adminoperationspage_formatlabel",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "formatlabel()"
     },
     {
@@ -9893,8 +9893,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_adminoperationspage_formatvalue",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "formatvalue()"
     },
     {
@@ -9904,8 +9904,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_adminoperationspage_operationlist",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "operationlist()"
     },
     {
@@ -9915,8 +9915,8 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_adminoperationspage_adminoperationspage",
-      "community": 59,
-      "community_name": "validate-environment.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "adminoperationspage()"
     },
     {
@@ -10168,8 +10168,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationlistpage",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "stationlistpage.tsx"
     },
     {
@@ -10179,8 +10179,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationlistpage_stationlistpage",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "stationlistpage()"
     },
     {
@@ -11026,8 +11026,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationtrackingmode",
-      "community": 64,
-      "community_name": "PrismaService",
+      "community": 81,
+      "community_name": "store.ts",
       "norm_label": "stationtrackingmode"
     },
     {
@@ -11092,8 +11092,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamstation",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 64,
+      "community_name": "PrismaService",
       "norm_label": "teamstation"
     },
     {
@@ -11367,8 +11367,8 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_formatdatetime",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "formatdatetime()"
     },
     {
@@ -11389,8 +11389,8 @@
       "source_location": "L276",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getdisabledreason",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "getdisabledreason()"
     },
     {
@@ -11400,8 +11400,8 @@
       "source_location": "L295",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getstationstatuscolor",
-      "community": 81,
-      "community_name": "store.ts",
+      "community": 59,
+      "community_name": "validate-environment.ts",
       "norm_label": "getstationstatuscolor()"
     },
     {
@@ -16281,7 +16281,7 @@
       "label": "Next Execution Order",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L371",
+      "source_location": "L372",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_next_execution_order",
       "community": 36,
@@ -17623,7 +17623,7 @@
       "label": "13.2 Admin Team Station Navigation",
       "file_type": "document",
       "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
-      "source_location": "L637",
+      "source_location": "L638",
       "_origin": "ast",
       "id": "docs_analysis_open_questions_and_decisions_13_2_admin_team_station_navigation",
       "community": 51,
@@ -17634,7 +17634,7 @@
       "label": "14. Git Policy",
       "file_type": "document",
       "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
-      "source_location": "L649",
+      "source_location": "L650",
       "_origin": "ast",
       "id": "docs_analysis_open_questions_and_decisions_14_git_policy",
       "community": 51,
@@ -17645,7 +17645,7 @@
       "label": "Historical Input",
       "file_type": "document",
       "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
-      "source_location": "L662",
+      "source_location": "L663",
       "_origin": "ast",
       "id": "docs_analysis_open_questions_and_decisions_historical_input",
       "community": 51,
@@ -17832,7 +17832,7 @@
       "label": "Event Config",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L231",
+      "source_location": "L232",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_event_config",
       "community": 33,
@@ -17843,7 +17843,7 @@
       "label": "Final Challenge",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L246",
+      "source_location": "L247",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_final_challenge",
       "community": 33,
@@ -17854,7 +17854,7 @@
       "label": "Leaderboard",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L275",
+      "source_location": "L276",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_leaderboard",
       "community": 33,
@@ -17865,7 +17865,7 @@
       "label": "Team Results Excel Export",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L287",
+      "source_location": "L288",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team_results_excel_export",
       "community": 33,
@@ -17876,7 +17876,7 @@
       "label": "Team Color UI",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L301",
+      "source_location": "L302",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team_color_ui",
       "community": 33,
@@ -17887,7 +17887,7 @@
       "label": "QR Camera",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L309",
+      "source_location": "L310",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_qr_camera",
       "community": 33,
@@ -17898,7 +17898,7 @@
       "label": "Seed",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L330",
+      "source_location": "L331",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_seed",
       "community": 33,
@@ -17909,7 +17909,7 @@
       "label": "Audit and Logging",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L350",
+      "source_location": "L351",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_audit_and_logging",
       "community": 33,
@@ -17920,7 +17920,7 @@
       "label": "Current Known Implementation Gaps",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L363",
+      "source_location": "L364",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_current_known_implementation_gaps",
       "community": 33,
@@ -42897,7 +42897,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/pages/StationListPage.tsx",
-      "source_location": "L308",
+      "source_location": "L313",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationlistpage_stationlistpage",
@@ -47307,7 +47307,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/pages/StationListPage.tsx",
-      "source_location": "L309",
+      "source_location": "L314",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_pages_stationlistpage_stationlistpage",
@@ -54445,7 +54445,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L371",
+      "source_location": "L372",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -55644,7 +55644,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
-      "source_location": "L637",
+      "source_location": "L638",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_open_questions_and_decisions_quy\u1ebft_\u0111\u1ecbnh_\u0111\u00e3_ch\u1ed1t",
@@ -55666,7 +55666,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
-      "source_location": "L649",
+      "source_location": "L650",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_open_questions_and_decisions_quy\u1ebft_\u0111\u1ecbnh_\u0111\u00e3_ch\u1ed1t",
@@ -55776,7 +55776,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
-      "source_location": "L662",
+      "source_location": "L663",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_open_questions_and_decisions_quy\u1ebft_\u0111\u1ecbnh_\u0111\u00e3_ch\u1ed1t",
@@ -55941,7 +55941,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L350",
+      "source_location": "L351",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -55996,7 +55996,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L363",
+      "source_location": "L364",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56007,7 +56007,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L231",
+      "source_location": "L232",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56018,7 +56018,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L246",
+      "source_location": "L247",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56029,7 +56029,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L275",
+      "source_location": "L276",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56051,7 +56051,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L309",
+      "source_location": "L310",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56073,7 +56073,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L330",
+      "source_location": "L331",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56117,7 +56117,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L301",
+      "source_location": "L302",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -56139,7 +56139,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L287",
+      "source_location": "L288",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -60625,5 +60625,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f8a9c79d00ccdb97c66ad27598b4d82e79f97104"
+  "built_at_commit": "2c123830d3885e10b149865a1ed00ceb25b83f96"
 }

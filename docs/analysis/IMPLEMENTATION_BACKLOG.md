@@ -56,7 +56,7 @@
 
 - [x] Station Game Type is restricted to `ST` and `STANDARD` in Admin UI, Backend validation, and database constraint.
 - [x] Legacy `CIPHER` Station data is migrated to `STANDARD`; Station cipher-answer UI, endpoint, DTO, service logic, and storage are removed.
-- [x] Only `ST` with a valid HTTPS YouTube URL enables `Watch Video`; the Station list shows the action disabled for all other Stations.
+- [x] Only `ST` with a valid HTTPS YouTube URL enables `Watch Video`; the Team/User Station list shows the action disabled for all other Stations, while Admin Station lists omit it.
 - [x] Historical tester results containing `CIPHER` are superseded by the two-type Station Game Type rule.
 - [x] All `113` Backend tests, Backend/Frontend lint and build, and local route health checks passed.
 - [ ] Production migration and deployed browser verification remain pending and require explicit deployment approval.
@@ -365,6 +365,7 @@ Acceptance:
 - [x] Keep Player `Play` as the white secondary Station action.
 - [x] Keep `Watch Video | Play` in a stable two-column row and disable unavailable video actions.
 - [x] Make disabled Station video actions visually distinct from enabled primary actions.
+- [x] Hide Station video actions from Admin Team Station lists and expand `View & Edit` to the full action row.
 - [x] Apply scoped Team-color accents without changing Station behavior.
 - [ ] Perform final visual review on representative mobile devices.
 

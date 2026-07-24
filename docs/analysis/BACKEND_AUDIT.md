@@ -45,7 +45,7 @@
 - Replaced free-text Station Game Type with the fixed values `CIPHER`, `ST`, and `STANDARD`.
 - Added migration `20260724150000_constrain_station_game_types`: Legacy `CIPHER` values are preserved, other Games with a supported YouTube URL become `ST`, remaining Games become `STANDARD`, and a database `CHECK` constraint rejects other values.
 - Backend DTO/service validation rejects unsupported types and rejects `ST` without a valid HTTPS YouTube URL.
-- Admin Station create/edit uses a combobox. Player Station detail and map expose `Watch Video` only for `ST`; the Station list always renders the action but disables it unless the Station is `ST` with a usable URL.
+- Admin Station create/edit uses a combobox. Player Station detail and map expose `Watch Video` only for `ST`; the Team/User Station list always renders the action but disables it unless the Station is `ST` with a usable URL. Admin Team Station lists omit video actions.
 - Updated local/test seed and production-like smoke inputs to use the canonical types.
 - Applied the migration to the tester database. Result: `3 CIPHER`, `7 ST`, `0 STANDARD`; all seven non-Cipher seed Games have a valid stored YouTube URL.
 - Verification passed: all `113` Backend tests, Backend/Frontend lint and build, migration status, two consecutive seed runs, `db:verify`, and local Backend/Frontend HTTP route checks.
@@ -462,5 +462,6 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Follow-up refinement aligns the Team icon and name in one centered identity row and places Score/Finished in an equal-width glass metric bar below for better visual balance.
 - Responsive follow-up removes the mobile header spacer, constrains the brand with fluid sizing/ellipsis, and gives both Team metrics identical icon/content grids with left-aligned copy.
 - Player `Play` remains the white right-side action on `/stations`; Admin `View & Edit` styling is unchanged.
-- Station cards consistently render `Watch Video | Play` on desktop and mobile, with `Watch Video` disabled for non-`ST` Stations or missing URLs.
+- Team/User Station cards consistently render `Watch Video | Play` on desktop and mobile, with `Watch Video` disabled for non-`ST` Stations or missing URLs.
 - Disabled Station video actions use an explicit neutral visual state so the shared primary-button styling cannot make unavailable video look interactive.
+- Admin Team Station cards render only a full-width `View & Edit` action and do not expose `Watch Video`.

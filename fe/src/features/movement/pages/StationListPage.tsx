@@ -249,7 +249,11 @@ export function StationListPage() {
                   </div>
                 </div>
 
-                <div className="station-showcase-actions">
+                <div
+                  className={`station-showcase-actions ${
+                    session.role === "admin" ? "admin-edit-only" : ""
+                  }`}>
+                    {session.role === "user" && (
                       <Button
                         block
                         type="primary"
@@ -262,6 +266,7 @@ export function StationListPage() {
                         }>
                         Watch Video
                       </Button>
+                    )}
                       <Button
                         block
                         type={
