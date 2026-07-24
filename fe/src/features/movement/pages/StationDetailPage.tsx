@@ -170,7 +170,7 @@ export function StationDetailPage() {
           </Descriptions.Item>
         </Descriptions>
 
-        {station.youtubeUrl && (
+        {station.gameType === "ST" && station.youtubeUrl && (
           <Button
             type="primary"
             className="full-width mt-4"

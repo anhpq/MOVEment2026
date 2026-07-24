@@ -633,7 +633,7 @@ $scoreStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $a
   trackingMode = "SCORE"
   mapX = 10
   mapY = 10
-  gameType = "PUZZLE"
+  gameType = "STANDARD"
 }
 Assert (@($scoreStation.qrTokens | Where-Object {$_.status -eq "ACTIVE"}).Count -eq 2) "New Station did not return exactly two active QR tokens."
 $scoreIn = ($scoreStation.qrTokens | Where-Object {$_.purpose -eq "CHECK_IN"}).rawToken
@@ -665,7 +665,7 @@ $timeStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $ad
   trackingMode = "TIME"
   mapX = 20
   mapY = 20
-  gameType = "PUZZLE"
+  gameType = "STANDARD"
   maxPoints = 45
 }
 $timeTeam = Invoke-Json -Method "Post" -Path "/api/auth/team-login" -Body @{ username = "team04"; password = "team04"; deviceLabel = "time-team" }
@@ -684,7 +684,7 @@ $bothStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $ad
   trackingMode = "BOTH"
   mapX = 30
   mapY = 30
-  gameType = "PUZZLE"
+  gameType = "STANDARD"
   maxPoints = 12
 }
 $bothTeam = Invoke-Json -Method "Post" -Path "/api/auth/team-login" -Body @{ username = "team05"; password = "team05"; deviceLabel = "both-team" }

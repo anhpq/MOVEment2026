@@ -6,7 +6,7 @@ import {useMovementStore} from "../store";
 import type {StationFormValues} from "../types";
 import {createAdminStation, getAdminStationQrTokens, updateAdminStation} from "../api";
 import {fetchAdminDatabase} from "../adminData";
-import {DEFAULT_STATION_MAX_POINTS} from "../constants";
+import {DEFAULT_STATION_MAX_POINTS, GAME_TYPE_OPTIONS} from "../constants";
 import {
   cacheStationQrTokens,
   getCachedStationQrToken,
@@ -23,6 +23,7 @@ export function StationEditorPage() {
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const session = useMovementStore((state) => state.session);
   const [form] = Form.useForm<StationFormValues>();
+  const selectedGameType = Form.useWatch("gameType", form);
   const [isOpen, setIsOpen] = useState(true);
   const initialQrTokensRef = useRef({
     checkInQrToken: "",
@@ -92,7 +93,7 @@ export function StationEditorPage() {
       };
     }
 
-    form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "QUIZ", maxPoints: DEFAULT_STATION_MAX_POINTS, checkInQrToken: "", checkOutQrToken: ""});
+    form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "STANDARD", maxPoints: DEFAULT_STATION_MAX_POINTS, checkInQrToken: "", checkOutQrToken: ""});
     return () => {
       cancelled = true;
     };
@@ -164,7 +165,7 @@ export function StationEditorPage() {
                   trackingMode: values.trackingMode,
                   mapX: values.markerX ?? 50,
                   mapY: values.markerY ?? 50,
-                  gameType: values.gameType ?? "QUIZ",
+                  gameType: values.gameType ?? "STANDARD",
                   maxPoints: values.maxPoints,
                   mediaUrl: values.youtubeUrl ?? null,
                 });
@@ -236,7 +237,16 @@ export function StationEditorPage() {
             ]}
           />
         </Form.Item>
-        <Form.Item label="YouTube Video URL" name="youtubeUrl">
+        <Form.Item
+          label="YouTube Video URL"
+          name="youtubeUrl"
+          rules={[
+            {
+              required: selectedGameType === "ST",
+              message: "ST stations require a YouTube URL",
+            },
+            {type: "url", message: "Please enter a valid URL"},
+          ]}>
           <Input placeholder="YouTube video URL" />
         </Form.Item>
         <Form.Item label="Map X (%)" name="markerX" rules={[{required: true}]}>
@@ -246,7 +256,7 @@ export function StationEditorPage() {
           <InputNumber min={0} max={100} className="full-width" />
         </Form.Item>
         <Form.Item label="Game Type" name="gameType" rules={[{required: true}]}>
-          <Input />
+          <Select options={[...GAME_TYPE_OPTIONS]} />
         </Form.Item>
         <Form.Item label="Max Points" name="maxPoints" rules={[{required: true}]}>
           <InputNumber min={0} precision={0} className="full-width" />

@@ -84,7 +84,11 @@ describe('AdminService Team QR login lifecycle', () => {
       (callback: (tx: typeof mockPrisma) => unknown) => callback(mockPrisma),
     );
     mockPrisma.game.findMany.mockResolvedValue([]);
-    mockPrisma.game.findFirstOrThrow.mockResolvedValue({maxPoints: 30});
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({
+      maxPoints: 30,
+      type: 'STANDARD',
+      mediaUrl: null,
+    });
     mockPrisma.game.create.mockResolvedValue({id: 31});
     mockPrisma.station.count.mockResolvedValue(3);
     mockPrisma.station.create.mockResolvedValue({
@@ -245,7 +249,7 @@ describe('AdminService Team QR login lifecycle', () => {
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
-      gameType: 'quiz',
+      gameType: 'STANDARD',
       maxPoints: 30,
       mediaUrl: null,
     });
@@ -291,7 +295,7 @@ describe('AdminService Team QR login lifecycle', () => {
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
-      gameType: 'quiz',
+      gameType: 'STANDARD',
       mediaUrl: null,
     });
 
@@ -304,7 +308,7 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({
         action: 'CREATE_STATION',
-        metadata: {maxPoints: 30, gameType: 'quiz'},
+        metadata: {maxPoints: 30, gameType: 'STANDARD'},
       }),
     );
   });
@@ -326,7 +330,7 @@ describe('AdminService Team QR login lifecycle', () => {
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
-      gameType: 'quiz',
+      gameType: 'STANDARD',
       maxPoints: 45,
       mediaUrl: null,
     });
@@ -359,7 +363,7 @@ describe('AdminService Team QR login lifecycle', () => {
         trackingMode: StationTrackingMode.BOTH,
         mapX: 10,
         mapY: 20,
-        gameType: 'quiz',
+        gameType: 'STANDARD',
         maxPoints: 30,
         mediaUrl: null,
       }),
@@ -499,16 +503,25 @@ describe('AdminService Team QR login lifecycle', () => {
 
   it('updates Station game type and max points and keeps Team maximums in sync', async () => {
     mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
-    mockPrisma.game.findFirstOrThrow.mockResolvedValue({maxPoints: 30});
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({
+      maxPoints: 30,
+      type: 'STANDARD',
+      mediaUrl: null,
+    });
 
     await service.updateStation(1, 'ST999', {
-      gameType: 'puzzle',
+      gameType: 'ST',
       maxPoints: 45,
+      mediaUrl: 'https://www.youtube.com/watch?v=abc123',
     });
 
     expect(mockPrisma.game.updateMany).toHaveBeenCalledWith({
       where: {stationId: 'ST999', isActive: true},
-      data: {type: 'PUZZLE', maxPoints: 45},
+      data: {
+        mediaUrl: 'https://www.youtube.com/watch?v=abc123',
+        type: 'ST',
+        maxPoints: 45,
+      },
     });
     expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
       data: {maxPossiblePoints: {increment: 15}},
@@ -517,11 +530,28 @@ describe('AdminService Team QR login lifecycle', () => {
       expect.objectContaining({
         action: 'UPDATE_STATION',
         metadata: expect.objectContaining({
-          gameType: 'puzzle',
+          gameType: 'ST',
           maxPoints: 45,
         }),
       }),
     );
+  });
+
+  it('rejects an ST Station without a valid YouTube URL', async () => {
+    await expect(
+      service.createStation(1, {
+        id: 'st999',
+        name: 'Station Video',
+        description: null,
+        trackingMode: StationTrackingMode.BOTH,
+        mapX: 10,
+        mapY: 20,
+        gameType: 'ST',
+        maxPoints: 30,
+        mediaUrl: null,
+      }),
+    ).rejects.toThrow('ST stations require a valid HTTPS YouTube URL');
+    expect(mockPrisma.station.create).not.toHaveBeenCalled();
   });
 
   it('rejects invalid and duplicate Station QR tokens', async () => {

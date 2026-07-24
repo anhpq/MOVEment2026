@@ -174,10 +174,7 @@
   "172": "konva",
   "173": "eslint",
   "174": "migration.sql",
-  "175": "source-map-support",
-  "176": "ts-node",
   "177": "@nestjs/testing",
   "178": "ts-jest",
-  "179": "@types/node",
-  "180": "@types/react"
+  "179": "@types/node"
 }

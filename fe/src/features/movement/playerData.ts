@@ -50,6 +50,8 @@ function buildPlayerSeed(
       durationMinutes: 0,
       trackingMode: station.trackingMode ?? "BOTH",
       youtubeUrl: station.game?.mediaUrl ?? null,
+      gameType: station.game?.type,
+      maxPoints: station.game?.maxPoints,
       markerX: station.mapX,
       markerY: station.mapY,
     })),

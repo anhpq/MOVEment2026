@@ -2,6 +2,7 @@ export type Role = "user" | "admin";
 
 export type StationStatus = "New" | "In Progress" | "Finished";
 export type StationTrackingMode = "SCORE" | "TIME" | "BOTH";
+export type GameType = "CIPHER" | "ST" | "STANDARD";
 
 export type Session = {
   username: string;
@@ -39,6 +40,8 @@ export type StationDefinition = {
   markerX?: number | null;
   markerY?: number | null;
   trackingMode?: StationTrackingMode;
+  gameType?: GameType;
+  maxPoints?: number;
 };
 
 export type TeamStation = {
@@ -57,7 +60,7 @@ export type TeamStation = {
   progressId?: number;
   maxPoints?: number;
   backendStatus?: "LOCKED" | "AVAILABLE" | "CHECKED_IN" | "PLAYING" | "COMPLETED";
-  gameType?: string;
+  gameType?: GameType;
 };
 
 export type StationFormValues = {
@@ -68,7 +71,7 @@ export type StationFormValues = {
   trackingMode: StationTrackingMode;
   markerX?: number;
   markerY?: number;
-  gameType?: string;
+  gameType?: GameType;
   maxPoints?: number;
   youtubeUrl?: string | null;
   checkInQrToken?: string;

@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "be/prisma/init.sql": {
-    "mtime": 1784832718.5339649,
-    "ast_hash": "a068dca22b40bdaf3eb367b48a512d9b",
+    "mtime": 1784863318.7811298,
+    "ast_hash": "d0275e210ea83d2fff3e03dce106fc69",
     "semantic_hash": ""
   },
   "be/prisma/migrations/000001_init/migration.sql": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "be/prisma/seed.ts": {
-    "mtime": 1784832713.992139,
-    "ast_hash": "dc6f809c1ed57e0754df2a3aa8b6b926",
+    "mtime": 1784863062.4929216,
+    "ast_hash": "2ac5d3ba17565466c9ba0d6a4f7c96bd",
     "semantic_hash": ""
   },
   "be/src/app.module.ts": {
@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.ts": {
-    "mtime": 1784861366.455529,
-    "ast_hash": "5508548ef460d806f76c7d49060b08d6",
+    "mtime": 1784863044.806537,
+    "ast_hash": "3754682d2be2d97d9bd71292625a4fc9",
     "semantic_hash": ""
   },
   "be/src/modules/admin/xlsx-report.ts": {
@@ -240,18 +240,18 @@
     "semantic_hash": "a4c44666542068e3a1cd5323831f7abf"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1784861362.5970087,
-    "ast_hash": "7b33ff8cc81d349d3281420f85ff8f7c",
+    "mtime": 1784863179.6491191,
+    "ast_hash": "521a171098e5079af15d832b4675dedc",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
-    "mtime": 1784821605.4487593,
-    "ast_hash": "5e2d0dfc1a9a1efb50f1cfcc0992835e",
+    "mtime": 1784863141.5285976,
+    "ast_hash": "68315f44d2ffd49db67b28cc31d6b3d3",
     "semantic_hash": ""
   },
   "fe/src/features/movement/constants.ts": {
-    "mtime": 1784821605.4502409,
-    "ast_hash": "b276d1b3c5122ab4756f0164d9a63d64",
+    "mtime": 1784863131.1086576,
+    "ast_hash": "fd83e359f8bb5b878503633f54acc206",
     "semantic_hash": ""
   },
   "fe/src/features/movement/hooks/useMovementBootstrap.ts": {
@@ -275,18 +275,18 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
-    "mtime": 1784855957.9553716,
-    "ast_hash": "e4c5be548717b895acc5b81747ed77ad",
+    "mtime": 1784863137.3513303,
+    "ast_hash": "91e955b09f3554d0ea1c85f3cd248235",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationEditorPage.tsx": {
-    "mtime": 1784861355.156631,
-    "ast_hash": "38df326f4a3ea9638f736078603233af",
+    "mtime": 1784863135.6241407,
+    "ast_hash": "3dd4e81c156204f4f313faf1fbdf1bf0",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationListPage.tsx": {
-    "mtime": 1784860906.4437153,
-    "ast_hash": "5e8d979600dca8a402e60de53c0eff1c",
+    "mtime": 1784863139.5687346,
+    "ast_hash": "61af00c76c375ec905c9017953435983",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationsMapPage.tsx": {
@@ -320,8 +320,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/types.ts": {
-    "mtime": 1784832144.7433946,
-    "ast_hash": "32115e5a19389c13a4652075ae41ffbf",
+    "mtime": 1784863177.530941,
+    "ast_hash": "7f61c3aef85b3f6802bc6f4721945b82",
     "semantic_hash": ""
   },
   "fe/src/features/movement/utils.ts": {
@@ -440,18 +440,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1784861469.4825985,
-    "ast_hash": "83e4b434a056fa86de86c10e1c4a6d74",
+    "mtime": 1784863934.659111,
+    "ast_hash": "6cea00a28fb725840b0f6dd9d8d09789",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1784856569.3921514,
-    "ast_hash": "c8fb52557efe137e0403c28bb3069a22",
+    "mtime": 1784862968.8252387,
+    "ast_hash": "18b869e1c09c04d5c22d9ab50754ac6a",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1784856569.393235,
-    "ast_hash": "137b6cf9a92f00f4d4113d47bb5d2801",
+    "mtime": 1784863874.3959436,
+    "ast_hash": "a523091475fc721de8c109e7ab40f901",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -520,8 +520,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1784861467.5815015,
-    "ast_hash": "09109349b534ed752068862397374a58",
+    "mtime": 1784863932.405546,
+    "ast_hash": "6971fbfac37c3abb8f6b35d175315289",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -585,8 +585,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/dto/update-station.dto.ts": {
-    "mtime": 1784861364.4807322,
-    "ast_hash": "b1e7c24d07efe24041acf9849cbfc3db",
+    "mtime": 1784863018.7639139,
+    "ast_hash": "e788db1a98ee47324f45ddf954218c6d",
     "semantic_hash": ""
   },
   "be/src/modules/admin/dto/team.dto.ts": {
@@ -595,18 +595,18 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/adminData.ts": {
-    "mtime": 1784832146.6280973,
-    "ast_hash": "312b2531fa31ef311aa7e803d01db036",
+    "mtime": 1784863182.0627272,
+    "ast_hash": "e27e2187aa461b909318045804a57a50",
     "semantic_hash": ""
   },
   "fe/src/features/movement/playerData.ts": {
-    "mtime": 1784856569.4067073,
-    "ast_hash": "d83cc7eca3e17add6193f2376d7d65dd",
+    "mtime": 1784863184.805742,
+    "ast_hash": "42c006780352c41ee3fc5bf433e51f95",
     "semantic_hash": ""
   },
   "be/src/modules/admin/dto/create-station.dto.ts": {
-    "mtime": 1784821605.3991024,
-    "ast_hash": "3a7a794df442b650de7d61249695b19b",
+    "mtime": 1784863015.9814758,
+    "ast_hash": "cf9dc69cf1bbccb67814f8d112761f22",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/AdminOperationsPage.tsx": {
@@ -700,8 +700,8 @@
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.spec.ts": {
-    "mtime": 1784861381.9369736,
-    "ast_hash": "11a4248a71a74706f24db5d65d7ff0a7",
+    "mtime": 1784863215.6486304,
+    "ast_hash": "31272ac7a480f158a2482127f722add1",
     "semantic_hash": ""
   },
   "docs/analysis/FEATURE_INDEX.md": {
@@ -780,8 +780,8 @@
     "semantic_hash": ""
   },
   "scripts/production-like-smoke.ps1": {
-    "mtime": 1784832895.7267153,
-    "ast_hash": "39c99de674eccaa4a4090544dc7d6f10",
+    "mtime": 1784863068.1778617,
+    "ast_hash": "7cc79e01551e798bcf267765285e6f6a",
     "semantic_hash": ""
   },
   "deploy/PRODUCTION_STAGED_DEPLOY.md": {
@@ -847,6 +847,16 @@
   "be/prisma/migrations/20260724120000_remove_scoring_confirmation_code/migration.sql": {
     "mtime": 1784832732.4644847,
     "ast_hash": "4244bcee727cf0f231b6ddfe8b5855b7",
+    "semantic_hash": ""
+  },
+  "be/prisma/migrations/20260724150000_constrain_station_game_types/migration.sql": {
+    "mtime": 1784863066.3531027,
+    "ast_hash": "220e63743c259090ce245e49321a4890",
+    "semantic_hash": ""
+  },
+  "be/src/common/game/game-type.ts": {
+    "mtime": 1784863012.3743756,
+    "ast_hash": "ec9e458cdde6ca1231bc0ca7fb1b8693",
     "semantic_hash": ""
   }
 }

@@ -1,4 +1,4 @@
-import type { StationTrackingMode } from "./types"
+import type { GameType, StationTrackingMode } from "./types"
 import {
   apiDelete,
   apiDownloadBlob,
@@ -125,7 +125,7 @@ export type PlayerStationResponse = {
   game: {
     id: string
     title: string
-    type: string
+    type: GameType
     difficulty: number
     maxPoints: number
     clueText: string | null
@@ -205,7 +205,7 @@ export type AdminStationUpdateInput = {
   trackingMode?: StationTrackingMode
   mapX?: number
   mapY?: number
-  gameType?: string
+  gameType?: GameType
   maxPoints?: number
   mediaUrl?: string | null
   checkInQrToken?: string
@@ -239,7 +239,7 @@ export type AdminProgressMatrixResponse = {
     mapX: number | null
     mapY: number | null
     trackingMode: StationTrackingMode
-    games?: Array<{type: string; maxPoints: number; mediaUrl: string | null}>
+    games?: Array<{type: GameType; maxPoints: number; mediaUrl: string | null}>
   }>
   rows: Array<{
     team: AdminTeamResponse
@@ -348,7 +348,7 @@ export type AdminCreatedStationResponse = {
 export const createAdminStation = (values: {
   id: string; name: string; description?: string | null
   trackingMode: StationTrackingMode; mapX: number; mapY: number
-  gameType: string; maxPoints?: number; mediaUrl?: string | null
+  gameType: GameType; maxPoints?: number; mediaUrl?: string | null
 }) => apiPost<AdminCreatedStationResponse>('/api/admin/stations', values)
 
 export const deleteAdminStation = (stationId: string) =>

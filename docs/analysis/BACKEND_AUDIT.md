@@ -1,3 +1,13 @@
+## 2026-07-24 Station Game Type constraint and video visibility
+
+- Replaced free-text Station Game Type with the fixed values `CIPHER`, `ST`, and `STANDARD`.
+- Added migration `20260724150000_constrain_station_game_types`: Legacy `CIPHER` values are preserved, other Games with a supported YouTube URL become `ST`, remaining Games become `STANDARD`, and a database `CHECK` constraint rejects other values.
+- Backend DTO/service validation rejects unsupported types and rejects `ST` without a valid HTTPS YouTube URL.
+- Admin Station create/edit uses a combobox. Player Station detail, list, and map show `Watch Video` only for `ST`.
+- Updated local/test seed and production-like smoke inputs to use the canonical types.
+- Applied the migration to the tester database. Result: `3 CIPHER`, `7 ST`, `0 STANDARD`; all seven non-Cipher seed Games have a valid stored YouTube URL.
+- Verification passed: all `113` Backend tests, Backend/Frontend lint and build, migration status, two consecutive seed runs, `db:verify`, and local Backend/Frontend HTTP route checks.
+
 ## 2026-07-24 Admin Station game configuration edit
 
 - Admin Station edit now accepts and persists `gameType` and integer `maxPoints`.

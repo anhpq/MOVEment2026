@@ -564,7 +564,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
             {focusedTeamStation && (
               <Flex justify="space-between" gap={8} className="full-width">
-                {focusedTeamStation.youtubeUrl && (
+                {focusedTeamStation.gameType === "ST" &&
+                  focusedTeamStation.youtubeUrl && (
                   <Button
                     className="full-width"
                     icon={<YoutubeOutlined />}

@@ -34,6 +34,8 @@ export async function fetchAdminDatabase(): Promise<LocalDatabaseSeed> {
       durationMinutes: 0,
       trackingMode: station.trackingMode,
       youtubeUrl: station.games?.[0]?.mediaUrl ?? null,
+      gameType: station.games?.[0]?.type,
+      maxPoints: station.games?.[0]?.maxPoints,
     })),
     teamStations: Object.fromEntries(matrix.rows.map(({team, cells}) => {
       const teamId = String(team.id);

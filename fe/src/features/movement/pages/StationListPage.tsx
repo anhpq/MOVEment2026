@@ -228,7 +228,7 @@ export function StationListPage() {
                 </div>
 
                 <div className="station-showcase-actions">
-                      {station.youtubeUrl && (
+                      {station.gameType === "ST" && station.youtubeUrl && (
                         <Button
                           block
                           type="primary"
@@ -242,7 +242,11 @@ export function StationListPage() {
                       )}
                       <Button
                         block
-                        type={station.youtubeUrl ? "default" : "primary"}
+                        type={
+                          station.gameType === "ST" && station.youtubeUrl ?
+                            "default"
+                          : "primary"
+                        }
                         icon={
                           session.role === "user" ?
                             <PlayCircleOutlined />

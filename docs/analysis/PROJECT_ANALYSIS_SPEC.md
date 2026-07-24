@@ -28,6 +28,7 @@ Admin users:
 - manage Event Config;
 - manage Teams and Stations;
 - configure tracking mode and max score;
+- choose Station Game Type from `CIPHER`, `ST`, or `STANDARD`;
 - manage QR lifecycle;
 - correct scores and operational state;
 - view audit/activity data;
@@ -208,6 +209,22 @@ Score rules:
 - no scoring confirmation code is required or stored;
 - duplicate request does not duplicate completion or score;
 - Admin correction is a separate audited flow.
+
+## Station Game Type
+
+Station Game Type is restricted to:
+
+```text
+CIPHER
+ST
+STANDARD
+```
+
+- `CIPHER` enables the cipher-answer action.
+- `ST` requires a valid HTTPS YouTube URL and is the only type that exposes `Watch Video`.
+- `STANDARD` is the default type for an ordinary Station without a usable YouTube video.
+- Admin selects the type from a fixed combobox; Backend and database reject unsupported values.
+- Legacy non-`CIPHER` Games migrate to `ST` only when their stored URL matches a supported YouTube URL, otherwise to `STANDARD`.
 
 ## Event Config
 

@@ -32,6 +32,7 @@ import {
 } from '../../common/qr/qr-token';
 import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
+import { isSupportedYoutubeUrl } from '../../common/game/game-type';
 
 const DEFAULT_STATION_MAX_POINTS = 30;
 
@@ -381,12 +382,21 @@ export class AdminService {
     const checkInQrToken = this.getOptionalQrToken(dto.checkInQrToken);
     const checkOutQrToken = this.getOptionalQrToken(dto.checkOutQrToken);
     const result = await this.prisma.$transaction(async (tx) => {
-      const activeGame = dto.maxPoints !== undefined
+      const activeGame =
+        dto.maxPoints !== undefined ||
+        dto.gameType !== undefined ||
+        dto.mediaUrl !== undefined
         ? await tx.game.findFirstOrThrow({
             where: { stationId, isActive: true },
-            select: { maxPoints: true },
+            select: { maxPoints: true, type: true, mediaUrl: true },
           })
         : null;
+      if (activeGame) {
+        this.validateGameVideoConfiguration(
+          dto.gameType ?? activeGame.type,
+          dto.mediaUrl !== undefined ? dto.mediaUrl : activeGame.mediaUrl,
+        );
+      }
       const updated = await tx.station.update({
         where: { id: stationId },
         data: {
@@ -459,6 +469,7 @@ export class AdminService {
   async createStation(userId: number, dto: CreateStationDto) {
     const stationId = dto.id.trim().toUpperCase();
     const maxPoints = dto.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
+    this.validateGameVideoConfiguration(dto.gameType, dto.mediaUrl);
     const [teamIds, sortOrder] = await Promise.all([
       this.prisma.team.findMany({ select: { id: true } }),
       this.prisma.station.count(),
@@ -1199,6 +1210,17 @@ export class AdminService {
       return '';
     }
     return JSON.stringify(metadata);
+  }
+
+  private validateGameVideoConfiguration(
+    gameType: string,
+    mediaUrl: string | null | undefined,
+  ) {
+    if (gameType === 'ST' && !isSupportedYoutubeUrl(mediaUrl)) {
+      throw new BadRequestException(
+        'ST stations require a valid HTTPS YouTube URL',
+      );
+    }
   }
 
   private validateScoreValue(score: number, maxPoints: number) {

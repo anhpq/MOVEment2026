@@ -2,6 +2,7 @@ import { StationTrackingMode } from '@prisma/client';
 import {
   IsEnum,
   IsInt,
+  IsIn,
   IsNumber,
   IsOptional,
   IsString,
@@ -11,6 +12,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
+import { GAME_TYPES, GameType } from '../../../common/game/game-type';
 
 export class CreateStationDto {
   @IsString()
@@ -40,9 +42,8 @@ export class CreateStationDto {
   @Max(100)
   mapY!: number;
 
-  @IsString()
-  @MaxLength(80)
-  gameType!: string;
+  @IsIn(GAME_TYPES)
+  gameType!: GameType;
 
   @IsOptional()
   @IsInt()

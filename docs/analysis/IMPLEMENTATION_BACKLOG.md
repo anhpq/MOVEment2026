@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-24 Station Game Type constraint and video visibility
+
+- [x] Station Game Type is restricted to `CIPHER`, `ST`, and `STANDARD` in Admin UI, Backend validation, and database constraint.
+- [x] Legacy Game data migration preserves `CIPHER`, maps supported YouTube Games to `ST`, and maps the remainder to `STANDARD`.
+- [x] Only `ST` exposes `Watch Video`; Backend requires a valid HTTPS YouTube URL for `ST`.
+- [x] Tester migration, repeated seed, and seed verification passed with `3 CIPHER` and `7 ST`.
+- [x] All `113` Backend tests, Backend/Frontend lint and build, and local route health checks passed.
+- [ ] Production migration and deployed browser verification remain pending and require explicit deployment approval.
+
 ## 2026-07-24 Admin Station game configuration edit
 
 - [x] Existing Stations allow Admin to edit `gameType` and integer `maxPoints`.
