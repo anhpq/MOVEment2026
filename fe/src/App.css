@@ -494,6 +494,19 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   color: #fff;
 }
 
+.station-youtube-button:not(:disabled):not(.ant-btn-disabled) {
+  border-color: #ff0033 !important;
+  background: #ff0033 !important;
+  color: #fff;
+  box-shadow: 0 7px 16px rgba(255, 0, 51, 0.24) !important;
+}
+
+.station-youtube-button:not(:disabled):not(.ant-btn-disabled):hover {
+  border-color: #cc0029 !important;
+  background: #cc0029 !important;
+  color: #fff;
+}
+
 .station-showcase-actions .ant-btn:disabled,
 .station-showcase-actions .ant-btn.ant-btn-disabled {
   border-color: #d9dce3;

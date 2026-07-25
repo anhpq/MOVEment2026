@@ -1,4 +1,5 @@
 import {
+  PlayCircleOutlined,
   ReloadOutlined,
   YoutubeOutlined,
   ZoomInOutlined,
@@ -824,7 +825,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   focusedTeamStation.youtubeUrl && (
                   <Button
                     block
-                    className="full-width movement-map-youtube-button"
+                    className="full-width station-youtube-button movement-map-youtube-button"
                     icon={<YoutubeOutlined />}
                     disabled={!focusedTeamStation.youtubeUrl}
                     onClick={() =>
@@ -834,8 +835,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   </Button>
                 )}
                 <Button
+                  block
                   type="primary"
                   className="full-width"
+                  icon={<PlayCircleOutlined />}
                   onClick={() => {
                     const disabledReason = getDisabledReason(
                       focusedTeamStation,

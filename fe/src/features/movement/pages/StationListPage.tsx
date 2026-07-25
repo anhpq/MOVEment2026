@@ -256,7 +256,7 @@ export function StationListPage() {
                     {session.role === "user" && (
                       <Button
                         block
-                        type="primary"
+                        className="station-youtube-button"
                         icon={<YoutubeOutlined />}
                         disabled={
                           station.gameType !== "ST" || !station.youtubeUrl
@@ -269,9 +269,7 @@ export function StationListPage() {
                     )}
                       <Button
                         block
-                        type={
-                          session.role === "user" ? "default" : "primary"
-                        }
+                        type="primary"
                         icon={
                           session.role === "user" ?
                             <PlayCircleOutlined />
