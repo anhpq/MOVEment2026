@@ -1,3 +1,9 @@
+## 2026-07-25 Backend deploy healthcheck race
+
+- Production `Deploy Backend (ECS)` failed after a successful PM2 restart with `curl: (7) Failed to connect to 127.0.0.1 port 8080` because `be/deploy/deploy.sh` healthchecked immediately while Nest was still booting.
+- Updated `deploy.sh` to retry `HEALTHCHECK_URL` up to 30 times every 2 seconds, print PM2 status/logs on final failure, and only then update `/opt/movement/deploy-markers/movement-api.commit`.
+- Manual ECS verification earlier the same day confirmed the API becomes healthy shortly after restart (`http://127.0.0.1:8080/api/docs` and `https://heroes.nalth.top/api/docs` both returned 200).
+
 ## 2026-07-25 Admin Station map position update
 
 - Hardened Admin `/system-config` map marker updates in `StationsMapPanel` by snapshotting the selected Station and finite `mapX`/`mapY` payload before the confirmation modal calls `PATCH /api/admin/stations/:stationId`.

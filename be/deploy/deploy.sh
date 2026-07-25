@@ -10,6 +10,8 @@ TARGET_COMMIT="${TARGET_COMMIT:-}"
 FORCE_DATABASE_STEPS="${FORCE_DATABASE_STEPS:-false}"
 DEPLOY_MARKER_PATH="${DEPLOY_MARKER_PATH:-/opt/movement/deploy-markers/movement-api.commit}"
 HEALTHCHECK_URL="${HEALTHCHECK_URL:-http://127.0.0.1:8080/api/docs}"
+HEALTHCHECK_RETRIES="${HEALTHCHECK_RETRIES:-30}"
+HEALTHCHECK_INTERVAL_SECONDS="${HEALTHCHECK_INTERVAL_SECONDS:-2}"
 
 if [ "${FORCE_DATABASE_STEPS}" != "true" ] && [ "${FORCE_DATABASE_STEPS}" != "false" ]; then
   echo "FORCE_DATABASE_STEPS must be true or false."
@@ -124,7 +126,27 @@ if [ "${RUN_DB_VERIFY}" = "true" ]; then
   npm run db:verify
 fi
 
-curl -fsS "${HEALTHCHECK_URL}" >/dev/null
+# PM2/systemd restart returns before Nest binds the port; retry until ready.
+echo "Waiting for healthcheck at ${HEALTHCHECK_URL}..."
+healthcheck_ok=false
+for ((attempt = 1; attempt <= HEALTHCHECK_RETRIES; attempt++)); do
+  if curl -fsS "${HEALTHCHECK_URL}" >/dev/null 2>&1; then
+    echo "Healthcheck passed on attempt ${attempt}/${HEALTHCHECK_RETRIES}."
+    healthcheck_ok=true
+    break
+  fi
+  echo "Healthcheck attempt ${attempt}/${HEALTHCHECK_RETRIES} failed; retrying in ${HEALTHCHECK_INTERVAL_SECONDS}s..."
+  sleep "${HEALTHCHECK_INTERVAL_SECONDS}"
+done
+
+if [ "${healthcheck_ok}" != "true" ]; then
+  echo "Healthcheck failed after ${HEALTHCHECK_RETRIES} attempts: ${HEALTHCHECK_URL}"
+  if command -v pm2 >/dev/null 2>&1; then
+    pm2 status "${APP_NAME}" || true
+    pm2 logs "${APP_NAME}" --lines 50 --nostream || true
+  fi
+  exit 1
+fi
 
 mkdir -p "$(dirname "${DEPLOY_MARKER_PATH}")"
 printf '%s\n' "${RESOLVED_TARGET_COMMIT}" > "${DEPLOY_MARKER_PATH}.tmp"
