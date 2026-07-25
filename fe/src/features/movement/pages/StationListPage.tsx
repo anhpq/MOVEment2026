@@ -21,7 +21,7 @@ import {
   Tag,
   Typography,
 } from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
@@ -32,6 +32,7 @@ import {fetchPlayerDatabase} from "../playerData";
 import {
   formatDateTime,
   getDisabledReason,
+  getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
 
@@ -48,6 +49,7 @@ export function StationListPage() {
   const [scanTarget, setScanTarget] = useState<TeamStation | null>(null);
   const [checkInQrToken, setCheckInQrToken] = useState("");
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
+  const isSubmittingCheckInRef = useRef(false);
   const [isFinalReady, setIsFinalReady] = useState(false);
 
   const selectedTeamId =
@@ -145,6 +147,35 @@ export function StationListPage() {
     if (newWindow) newWindow.opener = null;
   };
 
+  const submitCheckInQr = async (rawToken: string) => {
+    if (!scanTarget || isSubmittingCheckInRef.current) {
+      return;
+    }
+
+    const token = rawToken.trim();
+    if (!token) {
+      message.warning("Please scan or enter the check-in QR token");
+      return;
+    }
+
+    isSubmittingCheckInRef.current = true;
+    setIsSubmittingCheckIn(true);
+    try {
+      await checkInStation(scanTarget.stationId, token);
+      loadDatabase(await fetchPlayerDatabase());
+      message.success("QR code scanned successfully");
+      const stationId = scanTarget.stationId;
+      setCheckInQrToken("");
+      setScanTarget(null);
+      navigate(`/stations/${stationId}`);
+    } catch (error: unknown) {
+      message.error(error instanceof Error ? error.message : "Check-in failed");
+    } finally {
+      isSubmittingCheckInRef.current = false;
+      setIsSubmittingCheckIn(false);
+    }
+  };
+
   return (
     <Flex vertical gap={16} className="full-width">
       <section className="station-team-hero">
@@ -229,8 +260,10 @@ export function StationListPage() {
                   <div className="station-stat">
                     <StarFilled />
                     <span>
-                      <small>Score</small>
-                      <strong>{station.score}</strong>
+                      <small>Score / Max</small>
+                      <strong>
+                        {station.score} / {getStationEffectiveMaxPoints(station)}
+                      </strong>
                     </span>
                   </div>
                   <div className="station-stat">
@@ -293,33 +326,7 @@ export function StationListPage() {
           setCheckInQrToken("");
           setScanTarget(null);
         }}
-        onOk={async () => {
-          if (!scanTarget) {
-            return;
-          }
-
-          if (!checkInQrToken.trim()) {
-            message.warning("Please scan or enter the check-in QR token");
-            return;
-          }
-
-          setIsSubmittingCheckIn(true);
-          try {
-            await checkInStation(scanTarget.stationId, checkInQrToken.trim());
-            loadDatabase(await fetchPlayerDatabase());
-            message.success("QR code scanned successfully");
-            const stationId = scanTarget.stationId;
-            setCheckInQrToken("");
-            setScanTarget(null);
-            navigate(`/stations/${stationId}`);
-          } catch (error: unknown) {
-            message.error(
-              error instanceof Error ? error.message : "Check-in failed",
-            );
-          } finally {
-            setIsSubmittingCheckIn(false);
-          }
-        }}
+        onOk={() => void submitCheckInQr(checkInQrToken)}
         confirmLoading={isSubmittingCheckIn}
         okText="Submit Check-in QR"
         cancelText="Close">
@@ -332,6 +339,7 @@ export function StationListPage() {
             value={checkInQrToken}
             placeholder="Check-in QR token"
             onChange={setCheckInQrToken}
+            onScan={(value) => void submitCheckInQr(value)}
           />
           <Alert
             type="info"

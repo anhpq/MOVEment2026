@@ -355,9 +355,39 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({
         action: 'CREATE_STATION',
-        metadata: {maxPoints: 30, gameType: 'STANDARD'},
+        metadata: {maxPoints: 30, effectiveMaxPoints: 30, gameType: 'STANDARD'},
       }),
     );
+  });
+
+  it('uses effective max score 10 when creating a TIME Station', async () => {
+    mockPrisma.qrToken.create.mockImplementation(({data}) =>
+      Promise.resolve({
+        id: data.purpose === QrPurpose.CHECK_IN ? 101 : 102,
+        createdAt: new Date(),
+        expiresAt: null,
+        ...data,
+      }),
+    );
+
+    await service.createStation(1, {
+      id: 'st999',
+      name: 'Station Secure',
+      description: null,
+      trackingMode: StationTrackingMode.TIME,
+      mapX: 10,
+      mapY: 20,
+      gameType: 'STANDARD',
+      maxPoints: 100,
+      mediaUrl: null,
+    });
+
+    expect(mockPrisma.game.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({maxPoints: 100}),
+    });
+    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
+      data: {maxPossiblePoints: {increment: 10}},
+    });
   });
 
   it('preserves a custom max score when creating a Station', async () => {
@@ -582,6 +612,64 @@ describe('AdminService Team QR login lifecycle', () => {
         }),
       }),
     );
+  });
+
+  it('decrements Team maximums when changing a Station from BOTH to TIME', async () => {
+    mockPrisma.station.findUniqueOrThrow.mockResolvedValueOnce({
+      trackingMode: StationTrackingMode.BOTH,
+    });
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({
+      maxPoints: 100,
+      type: 'STANDARD',
+      mediaUrl: null,
+    });
+
+    await service.updateStation(1, 'ST999', {
+      trackingMode: StationTrackingMode.TIME,
+    });
+
+    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
+      data: {maxPossiblePoints: {increment: -90}},
+    });
+  });
+
+  it('increments Team maximums when changing a Station from TIME to BOTH', async () => {
+    mockPrisma.station.findUniqueOrThrow.mockResolvedValueOnce({
+      trackingMode: StationTrackingMode.TIME,
+    });
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({
+      maxPoints: 100,
+      type: 'STANDARD',
+      mediaUrl: null,
+    });
+
+    await service.updateStation(1, 'ST999', {
+      trackingMode: StationTrackingMode.BOTH,
+    });
+
+    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
+      data: {maxPossiblePoints: {increment: 90}},
+    });
+  });
+
+  it('does not change Team maximums when updating TIME stored max points', async () => {
+    mockPrisma.station.findUniqueOrThrow.mockResolvedValueOnce({
+      trackingMode: StationTrackingMode.TIME,
+    });
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999', name: 'Station Secure'});
+    mockPrisma.game.findFirstOrThrow.mockResolvedValue({
+      maxPoints: 50,
+      type: 'STANDARD',
+      mediaUrl: null,
+    });
+
+    await service.updateStation(1, 'ST999', {
+      maxPoints: 100,
+    });
+
+    expect(mockPrisma.team.updateMany).not.toHaveBeenCalled();
   });
 
   it('rejects an ST Station without a valid YouTube URL', async () => {

@@ -12,6 +12,7 @@ import type {QrFrameDetector} from "../qrDetect";
 type QrTokenInputProps = Readonly<{
   value: string;
   onChange: (value: string) => void;
+  onScan?: (value: string) => void;
   placeholder: string;
 }>;
 
@@ -124,6 +125,7 @@ function waitForVideoMetadata(
 export function QrTokenInput({
   value,
   onChange,
+  onScan,
   placeholder,
 }: QrTokenInputProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -135,6 +137,7 @@ export function QrTokenInput({
   const scannerActiveRef = useRef(false);
   const scannerRunRef = useRef(0);
   const onChangeRef = useRef(onChange);
+  const onScanRef = useRef(onScan);
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
   const [cameraError, setCameraError] = useState<string | null>(null);
   const canUseCamera = supportsCameraQrScan();
@@ -146,6 +149,10 @@ export function QrTokenInput({
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
+
+  useEffect(() => {
+    onScanRef.current = onScan;
+  }, [onScan]);
 
   const stopScanner = useCallback((reason: string) => {
     scannerRunRef.current += 1;
@@ -247,6 +254,7 @@ export function QrTokenInput({
             setScannerState("success");
             stopScanner("decode-success");
             onChangeRef.current(normalized);
+            onScanRef.current?.(normalized);
             return;
           }
 

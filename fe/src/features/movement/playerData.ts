@@ -65,8 +65,7 @@ function buildPlayerSeed(
         durationMinutes: 0,
         trackingMode: station.trackingMode ?? "BOTH",
         youtubeUrl: station.game?.mediaUrl ?? null,
-        score:
-          station.progress?.scoreAchieved ?? station.game?.maxPoints ?? 0,
+        score: station.progress?.scoreAchieved ?? 0,
         startTime: station.progress?.checkedInAt ?? null,
         endTime:
           station.progress?.completedAt ??

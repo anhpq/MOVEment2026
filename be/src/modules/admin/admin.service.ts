@@ -38,6 +38,10 @@ import {
 import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
 import { isSupportedYoutubeUrl } from '../../common/game/game-type';
+import {
+  getEffectiveStationMaxPoints,
+  getStationPlaySeconds,
+} from '../../common/station/station-scoring';
 
 const DEFAULT_STATION_MAX_POINTS = 30;
 
@@ -105,6 +109,7 @@ export class AdminService {
       where: { isActive: true, station: { isActive: true } },
       orderBy: [{ station: { sortOrder: 'asc' } }, { id: 'asc' }],
       distinct: ['stationId'],
+      include: { station: true },
     });
     const passwordHash = await bcrypt.hash(dto.password, 10);
     const teamColor = this.normalizeTeamColorInput(dto);
@@ -121,7 +126,11 @@ export class AdminService {
           captainName: dto.captainName?.trim() || dto.name.trim(),
           passwordHash,
           ...(teamColor !== undefined ? { color: teamColor } : {}),
-          maxPossiblePoints: games.reduce((sum, game) => sum + game.maxPoints, 0),
+          maxPossiblePoints: games.reduce(
+            (sum, game) =>
+              sum + getEffectiveStationMaxPoints(game.station.trackingMode, game.maxPoints),
+            0,
+          ),
         },
       });
       const createdQrLoginToken = await tx.qrLoginToken.create({
@@ -397,10 +406,18 @@ export class AdminService {
     const checkInQrToken = this.getOptionalQrToken(dto.checkInQrToken);
     const checkOutQrToken = this.getOptionalQrToken(dto.checkOutQrToken);
     const result = await this.prisma.$transaction(async (tx) => {
-      const activeGame =
+      const needsActiveGame =
+        dto.trackingMode !== undefined ||
         dto.maxPoints !== undefined ||
         dto.gameType !== undefined ||
-        dto.mediaUrl !== undefined
+        dto.mediaUrl !== undefined;
+      const currentStation = needsActiveGame
+        ? await tx.station.findUniqueOrThrow({
+            where: { id: stationId },
+            select: { trackingMode: true },
+          })
+        : null;
+      const activeGame = needsActiveGame
         ? await tx.game.findFirstOrThrow({
             where: { stationId, isActive: true },
             select: { maxPoints: true, type: true, mediaUrl: true },
@@ -438,14 +455,28 @@ export class AdminService {
           },
         });
       }
-      if (activeGame && dto.maxPoints !== undefined) {
-        const maxPointsDelta = dto.maxPoints - activeGame.maxPoints;
+      if (activeGame && currentStation) {
+        const oldEffectiveMax = getEffectiveStationMaxPoints(
+          currentStation.trackingMode,
+          activeGame.maxPoints,
+        );
+        const newEffectiveMax = getEffectiveStationMaxPoints(
+          dto.trackingMode ?? currentStation.trackingMode,
+          dto.maxPoints ?? activeGame.maxPoints,
+        );
+        const maxPointsDelta = newEffectiveMax - oldEffectiveMax;
         if (maxPointsDelta !== 0) {
           await tx.team.updateMany({
             data: { maxPossiblePoints: { increment: maxPointsDelta } },
           });
         }
       }
+      const effectiveMaxPoints = activeGame && currentStation
+        ? getEffectiveStationMaxPoints(
+            dto.trackingMode ?? currentStation.trackingMode,
+            dto.maxPoints ?? activeGame.maxPoints,
+          )
+        : undefined;
       const qrTokens = [];
       if (checkInQrToken) {
         qrTokens.push(await this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_IN, checkInQrToken));
@@ -453,7 +484,7 @@ export class AdminService {
       if (checkOutQrToken) {
         qrTokens.push(await this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_OUT, checkOutQrToken));
       }
-      return { station: updated, qrTokens };
+      return { station: updated, qrTokens, effectiveMaxPoints };
     });
 
     await this.activityLog.log({
@@ -470,8 +501,10 @@ export class AdminService {
         mapX: dto.mapX ?? null,
         mapY: dto.mapY ?? null,
         gameType: dto.gameType ?? null,
-        maxPoints: dto.maxPoints ?? null,
-        mediaUrl: dto.mediaUrl ?? null,
+          maxPoints: dto.maxPoints ?? null,
+          effectiveMaxPoints:
+            result.effectiveMaxPoints === undefined ? null : result.effectiveMaxPoints,
+          mediaUrl: dto.mediaUrl ?? null,
       },
     });
 
@@ -484,6 +517,7 @@ export class AdminService {
   async createStation(userId: number, dto: CreateStationDto) {
     const stationId = dto.id.trim().toUpperCase();
     const maxPoints = dto.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
+    const effectiveMaxPoints = getEffectiveStationMaxPoints(dto.trackingMode, maxPoints);
     this.validateGameVideoConfiguration(dto.gameType, dto.mediaUrl);
     const [teamIds, sortOrder] = await Promise.all([
       this.prisma.team.findMany({ select: { id: true } }),
@@ -524,7 +558,7 @@ export class AdminService {
           })),
         });
         await tx.team.updateMany({
-          data: { maxPossiblePoints: { increment: maxPoints } },
+          data: { maxPossiblePoints: { increment: effectiveMaxPoints } },
         });
       }
       return { station: created, qrTokens: createdQrTokens };
@@ -536,7 +570,7 @@ export class AdminService {
       action: 'CREATE_STATION',
       entityType: 'STATION',
       entityId: stationId,
-      metadata: { maxPoints, gameType: dto.gameType },
+      metadata: { maxPoints, effectiveMaxPoints, gameType: dto.gameType },
     });
     return {
       ...station,
@@ -723,13 +757,17 @@ export class AdminService {
 
     const progress = await this.prisma.teamStationProgress.findUniqueOrThrow({
       where: { id: progressId },
-      include: { team: true },
+      include: { team: true, station: true },
     });
     const scoreToReverse =
       progress.status === ProgressStatus.COMPLETED ? progress.scoreAchieved : 0;
     const playSecondsToReverse =
       progress.status === ProgressStatus.COMPLETED
-        ? this.getPlaySeconds(progress.checkedInAt, progress.checkedOutAt)
+        ? getStationPlaySeconds(
+            progress.station.trackingMode,
+            progress.checkedInAt,
+            progress.checkedOutAt,
+          )
         : 0;
 
     const updated = await this.prisma.$transaction(async (tx) => {
@@ -801,12 +839,16 @@ export class AdminService {
 
     const progress = await this.prisma.teamStationProgress.findUniqueOrThrow({
       where: { id: progressId },
-      include: { team: true },
+      include: { team: true, station: true },
     });
     const wasCompleted = progress.status === ProgressStatus.COMPLETED;
     const scoreToReverse = wasCompleted ? progress.scoreAchieved : 0;
     const playSecondsToReverse = wasCompleted
-      ? this.getPlaySeconds(progress.checkedInAt, progress.checkedOutAt)
+      ? getStationPlaySeconds(
+          progress.station.trackingMode,
+          progress.checkedInAt,
+          progress.checkedOutAt,
+        )
       : 0;
     const now = new Date();
 
@@ -1099,22 +1141,22 @@ export class AdminService {
     if (progress.station.trackingMode === 'TIME') {
       throw new BadRequestException('Time-only station does not accept score');
     }
-    this.validateScoreValue(score, progress.game.maxPoints);
+    this.validateScoreValue(
+      score,
+      getEffectiveStationMaxPoints(progress.station.trackingMode, progress.game.maxPoints),
+    );
 
     const scoreBefore = progress.team.totalPoints;
     const oldProgressScore = isEdit ? progress.scoreAchieved : 0;
     const delta = score - oldProgressScore;
     const scoreAfter = scoreBefore + delta;
-    const playSeconds =
-      !isEdit && progress.checkedInAt && progress.checkedOutAt
-        ? Math.max(
-            0,
-            Math.floor(
-              (progress.checkedOutAt.getTime() - progress.checkedInAt.getTime()) /
-                1000,
-            ),
-          )
-        : 0;
+    const playSeconds = !isEdit
+      ? getStationPlaySeconds(
+          progress.station.trackingMode,
+          progress.checkedInAt,
+          progress.checkedOutAt,
+        )
+      : 0;
 
     const updated = await this.prisma.$transaction(async (tx) => {
       const progressUpdate =
@@ -1487,13 +1529,4 @@ export class AdminService {
     }
   }
 
-  private getPlaySeconds(checkedInAt: Date | null, checkedOutAt: Date | null) {
-    if (!checkedInAt || !checkedOutAt) {
-      return 0;
-    }
-    return Math.max(
-      0,
-      Math.floor((checkedOutAt.getTime() - checkedInAt.getTime()) / 1000),
-    );
-  }
 }

@@ -350,9 +350,9 @@ Rotate Check-out không được tự rotate Check-in.
 | --- | --- |
 | Tracking mode | Mỗi Station có `tracking_mode` trong database. |
 | Supported values | `SCORE`, `TIME`, `BOTH`. |
-| `BOTH` | Ghi nhận thời gian thật từ Check-in đến Check-out, sau đó yêu cầu nhập điểm. |
-| `TIME` | Ghi nhận thời gian thật, tự động complete với score bằng `0`, không mở popup nhập điểm. |
-| `SCORE` | Không cộng duration vào kết quả; sau Check-out yêu cầu nhập điểm. |
+| `BOTH` | Ghi nhận thời gian thật từ Check-in đến accepted Check-out QR scan, sau đó yêu cầu nhập điểm. |
+| `TIME` | Ghi nhận thời gian thật từ Check-in đến accepted Check-out QR scan, tự động complete với score bằng `10`, không mở popup nhập điểm. |
+| `SCORE` | Lưu `checkedOutAt` theo accepted Check-out QR scan nhưng không cộng duration vào kết quả; sau Check-out yêu cầu nhập điểm. |
 | Default mode | Nếu không được chỉ định rõ, implementation phải sử dụng default được cấu hình trong hệ thống, không hard-code rải rác. |
 
 ---
@@ -367,7 +367,8 @@ Rotate Check-out không được tự rotate Check-in.
 | Removed mechanism | Hệ thống không còn scoring confirmation code, `SCORING_CODE` configuration hoặc secure hash tương ứng. |
 | Admin score correction | Admin chỉ được correction khi progress đã `COMPLETED`, nhằm điều chỉnh sai sót sau hoàn thành. Correction chỉ thay đổi điểm của progress và tổng điểm Team theo phần chênh lệch; không thay đổi status, `checkedInAt`, `checkedOutAt` hoặc `completedAt`. `reason` không rỗng luôn bắt buộc. |
 | Default max score | Nếu Station không cấu hình riêng thì max score mặc định là `30`. |
-| Score validation | Điểm không được âm và không vượt quá max score của Station. |
+| TIME effective score/max | `TIME` Station luôn award `10` điểm khi Check-out thành công và effective max score là `10`, độc lập với `game.maxPoints` đang lưu. |
+| Score validation | Điểm không được âm và không vượt quá effective max score của Station. |
 | Validation authority | Backend là nguồn xác thực cuối cùng. |
 | Frontend validation | Frontend validation chỉ hỗ trợ UX. |
 | Duplicate submission | Không tạo duplicate score hoặc duplicate completion do double-click, retry mạng hoặc nhiều tab. |

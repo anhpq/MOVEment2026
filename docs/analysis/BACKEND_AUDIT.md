@@ -1,3 +1,12 @@
+## 2026-07-26 Station QR checkout scoring update
+
+- Updated Station QR Check-in/Check-out UX so camera-decoded Station QR tokens auto-submit while manual paste/type still requires Submit.
+- Changed confirmed `TIME` Station Check-out behavior to auto-complete with score `10`, add a `TIME_STATION_AUTO_SCORE` score event, and keep real Check-in to Check-out duration.
+- Changed `SCORE` Check-out to store the accepted QR scan time while preserving zero play-duration contribution through shared scoring helpers.
+- Updated Admin Station create/update maxPossiblePoints synchronization to use effective max points: `TIME = 10`, `SCORE`/`BOTH = game.maxPoints`.
+- Updated Team/User Station list, map drawer, and detail stats to show `Score / Max` using the effective max score.
+- Verification in progress: targeted Player/Admin service tests and backend build passed; full required validation is tracked in the task report.
+
 ## 2026-07-25 Admin Station map position update
 
 - Hardened Admin `/system-config` map marker updates in `StationsMapPanel` by snapshotting the selected Station and finite `mapX`/`mapY` payload before the confirmation modal calls `PATCH /api/admin/stations/:stationId`.

@@ -167,9 +167,9 @@ BOTH
 
 | Mode | Duration | Score |
 | --- | --- | --- |
-| `SCORE` | Does not contribute play duration under the confirmed rule. | Required after Check-out. |
-| `TIME` | Real Check-in to Check-out duration. | Backend completes with score 0; no score modal. |
-| `BOTH` | Real Check-in to Check-out duration. | Required after Check-out. |
+| `SCORE` | Stores accepted Check-out QR scan time but does not contribute play duration. | Required after Check-out. |
+| `TIME` | Real Check-in to accepted Check-out QR scan duration. | Backend completes with score 10; no score modal. |
+| `BOTH` | Real Check-in to accepted Check-out QR scan duration. | Required after Check-out. |
 
 ## Check-in
 
@@ -188,7 +188,7 @@ Backend validates:
 
 Backend resolves purpose from the Station QR token record.
 
-For `TIME`, Check-out completes the progress with score 0.
+For `TIME`, Check-out completes the progress with score 10.
 
 For `SCORE` and `BOTH`, Check-out leaves the progress awaiting score and the frontend opens the score-entry modal.
 
@@ -206,7 +206,7 @@ Score rules:
 
 - integer;
 - minimum 0;
-- maximum Station max score;
+- maximum effective Station max score; `TIME` effective max is 10 even when stored `game.maxPoints` differs;
 - backend authoritative;
 - no scoring confirmation code is required or stored;
 - duplicate request does not duplicate completion or score;
@@ -309,6 +309,8 @@ Admin create/update accepts only `#RRGGBB` or `null`; `null` clears color, missi
 Team-facing UI and single-Team Admin contexts use scoped CSS variables from the active/viewed Team Color with fallback `#FF765C`. Enabled primary buttons in Team context use Team gradients with white `#FFFFFF` text/icons; disabled, danger, default, QR info modal, and non-button semantics remain unchanged. `/teams` remains a multi-Team Admin list with default shell/header/nav while each Team card uses its own scoped color. Admin map route/action behavior is unchanged.
 
 ## QR Camera
+
+Station Check-in and Check-out camera decodes auto-submit the decoded QR token immediately. Manual paste/type remains available and requires the user to press Submit.
 
 Camera availability depends on:
 

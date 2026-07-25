@@ -386,9 +386,9 @@ docs/analysis/BACKEND_AUDIT.md
 
 | Mode | Time | Score input |
 | --- | --- | --- |
-| `SCORE` | Does not contribute duration under the confirmed Business Rule. | Required after Check-out. |
-| `TIME` | Uses real Check-in to Check-out duration. | Not required; score completes as `0`. |
-| `BOTH` | Uses real Check-in to Check-out duration. | Required after Check-out. |
+| `SCORE` | Stores accepted Check-out QR scan time but does not contribute duration under the confirmed Business Rule. | Required after Check-out. |
+| `TIME` | Uses real Check-in to accepted Check-out QR scan duration. | Not required; score completes as `10`. |
+| `BOTH` | Uses real Check-in to accepted Check-out QR scan duration. | Required after Check-out. |
 
 ### Relevant Prompt
 
@@ -437,7 +437,7 @@ docs/prompts/12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md
 
 - Default max score is `30` unless the Station has its own configuration.
 - Score cannot be negative.
-- Score cannot exceed Station max score.
+- Score cannot exceed effective Station max score; `TIME` effective max is `10`.
 - Backend is the final validation authority.
 - Duplicate submissions must not create duplicate completion or score records.
 - The retired scoring-code field, hash, configuration, and UI must not be reintroduced.

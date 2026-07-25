@@ -9,6 +9,11 @@ import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { SubmitScoreDto } from '../../common/dto/score.dto';
 import {
+  getEffectiveStationMaxPoints,
+  getStationPlaySeconds,
+  TIME_STATION_AUTO_SCORE,
+} from '../../common/station/station-scoring';
+import {
   createQrTokenFingerprint,
   normalizeQrToken,
 } from '../../common/qr/qr-token';
@@ -201,31 +206,62 @@ export class PlayerService {
       return progress;
     }
 
-    const checkedOutAt =
-      progress.station.trackingMode === 'SCORE'
-        ? (progress.checkedInAt ?? new Date())
-        : new Date();
+    const checkedOutAt = new Date();
 
     if (progress.station.trackingMode === 'TIME') {
-      const playSeconds = this.getPlaySeconds(progress.checkedInAt, checkedOutAt);
+      const autoScore = TIME_STATION_AUTO_SCORE;
+      const scoreBefore = progress.team.totalPoints;
+      const scoreAfter = scoreBefore + autoScore;
+      const playSeconds = getStationPlaySeconds(
+        progress.station.trackingMode,
+        progress.checkedInAt,
+        checkedOutAt,
+      );
       const updated = await this.prisma.$transaction(async (tx) => {
-        const completed = await tx.teamStationProgress.update({
-          where: { id: progress.id },
+        const claimed = await tx.teamStationProgress.updateMany({
+          where: {
+            id: progress.id,
+            checkedOutAt: null,
+            completedAt: null,
+            status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
+          },
           data: {
             status: ProgressStatus.COMPLETED,
             checkedOutAt,
             completedAt: checkedOutAt,
-            scoreAchieved: 0,
+            scoreAchieved: autoScore,
             scoreEnteredByUserId: null,
           },
         });
+        if (claimed.count !== 1) {
+          const current = await tx.teamStationProgress.findUniqueOrThrow({
+            where: { id: progress.id },
+          });
+          if (current.checkedOutAt || current.completedAt) {
+            return current;
+          }
+          throw new BadRequestException('Station check-out was already submitted');
+        }
         await tx.team.update({
           where: { id: teamId },
           data: {
+            totalPoints: { increment: autoScore },
             totalPlaySeconds: playSeconds ? { increment: playSeconds } : undefined,
           },
         });
-        return completed;
+        await tx.scoreEvent.create({
+          data: {
+            teamId,
+            progressId: progress.id,
+            stationId,
+            scoreBefore,
+            scoreAfter,
+            delta: autoScore,
+            reason: 'TIME_STATION_AUTO_SCORE',
+            createdByUserId: null,
+          },
+        });
+        return tx.teamStationProgress.findUniqueOrThrow({ where: { id: progress.id } });
       });
       await this.activityLog.log({
         actorType: ActorType.TEAM,
@@ -236,6 +272,8 @@ export class PlayerService {
         metadata: {
           stationId: qrToken.stationId,
           trackingMode: progress.station.trackingMode,
+          autoScore,
+          playSeconds,
         },
       });
       return updated;
@@ -305,18 +343,18 @@ export class PlayerService {
     if (progress.station.trackingMode === 'TIME') {
       throw new BadRequestException('Time-only station does not accept score');
     }
-    this.validateScoreValue(dto.score, progress.game.maxPoints);
+    this.validateScoreValue(
+      dto.score,
+      getEffectiveStationMaxPoints(progress.station.trackingMode, progress.game.maxPoints),
+    );
 
     const scoreBefore = progress.team.totalPoints;
     const scoreAfter = scoreBefore + dto.score;
-    const playSeconds = progress.checkedInAt
-      ? Math.max(
-          0,
-          Math.floor(
-            (progress.checkedOutAt.getTime() - progress.checkedInAt.getTime()) / 1000,
-          ),
-        )
-      : 0;
+    const playSeconds = getStationPlaySeconds(
+      progress.station.trackingMode,
+      progress.checkedInAt,
+      progress.checkedOutAt,
+    );
 
     const updated = await this.prisma.$transaction(async (tx) => {
       const claimed = await tx.teamStationProgress.updateMany({
@@ -366,7 +404,7 @@ export class PlayerService {
   private async getProgressForAction(teamId: number, stationId: string) {
     const progress = await this.prisma.teamStationProgress.findUnique({
       where: { teamId_stationId: { teamId, stationId } },
-      include: { station: true },
+      include: { station: true, team: true, game: true },
     });
     if (!progress) {
       throw new NotFoundException('Progress not found for team/station');
@@ -399,16 +437,6 @@ export class PlayerService {
     }
 
     return token;
-  }
-
-  private getPlaySeconds(checkedInAt: Date | null, checkedOutAt: Date | null) {
-    if (!checkedInAt || !checkedOutAt) {
-      return 0;
-    }
-    return Math.max(
-      0,
-      Math.floor((checkedOutAt.getTime() - checkedInAt.getTime()) / 1000),
-    );
   }
 
   private validateScoreValue(score: number, maxPoints: number) {

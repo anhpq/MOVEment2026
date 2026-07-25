@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-26 Station QR checkout scoring update
+
+- [x] Camera-decoded Station Check-in and Check-out QR tokens auto-submit without requiring Modal OK.
+- [x] Manual paste/type Station QR input remains explicit and requires Submit.
+- [x] `TIME` Check-out auto-completes with score `10`, records real duration, and writes a score event.
+- [x] `SCORE` Check-out stores accepted scan time while contributing `0` play seconds.
+- [x] `TIME` effective max score is `10` in Admin maximum synchronization and Team/User score display.
+- [x] Targeted Player/Admin service tests, backend build, frontend lint/build, `git diff --check`, and Graphify update passed during implementation.
+- [ ] Commit and push are tracked by the active task.
+- [ ] Production QR route/static hosting fix is explicitly out of scope for this task.
+
 ## 2026-07-24 Team Color palette and gradient buttons
 
 - [x] Seed-managed Team 01-25 use 25 stable unique uppercase HEX colors without palette rotation.

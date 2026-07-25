@@ -45,6 +45,7 @@ import type {StationDefinition, TeamStation} from "../types";
 import {
   formatDateTime,
   getDisabledReason,
+  getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
 import {QrTokenInput} from "./QrTokenInput";
@@ -429,6 +430,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   );
   const [qrToken, setQrToken] = useState("");
   const [isSubmittingQr, setIsSubmittingQr] = useState(false);
+  const isSubmittingQrRef = useRef(false);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
 
   const activeTeamStations = useMemo(
@@ -711,6 +713,42 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     loadDatabase(await fetchPlayerDatabase());
   };
 
+  const submitCheckInQr = async (rawToken: string) => {
+    if (!scanTarget || isSubmittingQrRef.current) {
+      return;
+    }
+
+    if (session?.role !== "user") {
+      setScanTarget(null);
+      message.info("Admin cannot simulate team QR check-in");
+      return;
+    }
+
+    const token = rawToken.trim();
+    if (!token) {
+      message.warning("Please enter or scan the check-in QR token");
+      return;
+    }
+
+    isSubmittingQrRef.current = true;
+    setIsSubmittingQr(true);
+    try {
+      await checkInStation(scanTarget.stationId, token);
+      await refreshPlayerData();
+      message.success("Check-in QR accepted");
+      const stationId = scanTarget.stationId;
+      setFocusedStationId(null);
+      setScanTarget(null);
+      setQrToken("");
+      navigate(`/stations/${stationId}`);
+    } catch (error: unknown) {
+      message.error(error instanceof Error ? error.message : "Check-in failed");
+    } finally {
+      isSubmittingQrRef.current = false;
+      setIsSubmittingQr(false);
+    }
+  };
+
   return (
     <div className="movement-map-card">
       <div className="movement-map-shell">
@@ -835,8 +873,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               <div className="station-stat">
                 <StarFilled />
                 <span>
-                  <small>Score</small>
-                  <strong>{focusedTeamStation.score}</strong>
+                  <small>Score / Max</small>
+                  <strong>
+                    {focusedTeamStation.score} / {getStationEffectiveMaxPoints(focusedTeamStation)}
+                  </strong>
                 </span>
               </div>
               <div className="station-stat">
@@ -906,40 +946,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
           setQrToken("");
           setScanTarget(null);
         }}
-        onOk={async () => {
-          if (!scanTarget) {
-            return;
-          }
-
-          if (session?.role !== "user") {
-            setScanTarget(null);
-            message.info("Admin cannot simulate team QR check-in");
-            return;
-          }
-
-          if (!qrToken.trim()) {
-            message.warning("Please enter or scan the check-in QR token");
-            return;
-          }
-
-          setIsSubmittingQr(true);
-          try {
-            await checkInStation(scanTarget.stationId, qrToken.trim());
-            await refreshPlayerData();
-            message.success("Check-in QR accepted");
-            const stationId = scanTarget.stationId;
-            setFocusedStationId(null);
-            setScanTarget(null);
-            setQrToken("");
-            navigate(`/stations/${stationId}`);
-          } catch (error: unknown) {
-            message.error(
-              error instanceof Error ? error.message : "Check-in failed",
-            );
-          } finally {
-            setIsSubmittingQr(false);
-          }
-        }}
+        onOk={() => void submitCheckInQr(qrToken)}
         confirmLoading={isSubmittingQr}
         okText="Submit check-in QR"
         cancelText="Close">
@@ -952,6 +959,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
             value={qrToken}
             placeholder="Check-in QR token"
             onChange={setQrToken}
+            onScan={(value) => void submitCheckInQr(value)}
           />
           <Alert
             type="info"

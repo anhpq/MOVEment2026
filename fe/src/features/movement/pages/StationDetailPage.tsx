@@ -24,12 +24,13 @@ import {
   Tag,
   Typography,
 } from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {
   formatDateTime,
   formatDurationFromMs,
+  getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
 import {
@@ -44,7 +45,6 @@ import {
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
-import {DEFAULT_STATION_MAX_POINTS} from "../constants";
 import "./StationDetailPage.css";
 
 type ScoreFormValues = {
@@ -69,6 +69,7 @@ export function StationDetailPage() {
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
   const [checkOutQrToken, setCheckOutQrToken] = useState("");
   const [isSubmittingCheckOut, setIsSubmittingCheckOut] = useState(false);
+  const isSubmittingCheckOutRef = useRef(false);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
 
   const selectedTeamId =
@@ -145,7 +146,7 @@ export function StationDetailPage() {
     );
   }
 
-  const stationMaxPoints = station.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
+  const stationMaxPoints = getStationEffectiveMaxPoints(station);
   const canAdminEditScore =
     session.role === "admin" &&
     station.backendStatus === "COMPLETED" &&
@@ -175,6 +176,51 @@ export function StationDetailPage() {
       );
     } catch {
       navigate("/stations");
+    }
+  };
+
+  const submitCheckOutQr = async (rawToken: string) => {
+    if (session.role !== "user") {
+      setIsFinishScannerOpen(false);
+      scoreForm.setFieldsValue({score: station.score});
+      setIsScoreModalOpen(true);
+      return;
+    }
+
+    if (isSubmittingCheckOutRef.current) {
+      return;
+    }
+
+    const token = rawToken.trim();
+    if (!token) {
+      message.warning("Please enter or scan the check-out QR token");
+      return;
+    }
+
+    isSubmittingCheckOutRef.current = true;
+    setIsSubmittingCheckOut(true);
+    try {
+      await checkOutStation(station.stationId, token);
+      await refreshPlayerData();
+      setCheckOutQrToken("");
+      setIsFinishScannerOpen(false);
+      if (station.trackingMode === "TIME") {
+        message.success("Time-only station completed with +10 points");
+        await navigateAfterTeamStationFinished();
+        return;
+      }
+
+      message.success("Check-out QR accepted");
+      scoreForm.setFieldsValue({
+        score: 0,
+        reason: "",
+      });
+      setIsScoreModalOpen(true);
+    } catch (error: unknown) {
+      message.error(error instanceof Error ? error.message : "Check-out failed");
+    } finally {
+      isSubmittingCheckOutRef.current = false;
+      setIsSubmittingCheckOut(false);
     }
   };
 
@@ -213,8 +259,10 @@ export function StationDetailPage() {
               <StarFilled />
             </span>
             <span>
-              <small>Score</small>
-              <strong>{station.score}</strong>
+              <small>Score / Max</small>
+              <strong>
+                {station.score} / {stationMaxPoints}
+              </strong>
             </span>
           </div>
           <div className="station-detail-stat">
@@ -452,45 +500,7 @@ export function StationDetailPage() {
           setCheckOutQrToken("");
           setIsFinishScannerOpen(false);
         }}
-        onOk={async () => {
-          if (session.role !== "user") {
-            setIsFinishScannerOpen(false);
-            scoreForm.setFieldsValue({score: station.score});
-            setIsScoreModalOpen(true);
-            return;
-          }
-
-          if (!checkOutQrToken.trim()) {
-            message.warning("Please enter or scan the check-out QR token");
-            return;
-          }
-
-          setIsSubmittingCheckOut(true);
-          try {
-            await checkOutStation(station.stationId, checkOutQrToken.trim());
-            await refreshPlayerData();
-            message.success("Check-out QR accepted");
-            setCheckOutQrToken("");
-            setIsFinishScannerOpen(false);
-            if (station.trackingMode === "TIME") {
-              message.success("Time-only station completed");
-              await navigateAfterTeamStationFinished();
-              return;
-            }
-
-            scoreForm.setFieldsValue({
-              score: station.score,
-              reason: "",
-            });
-            setIsScoreModalOpen(true);
-          } catch (error: unknown) {
-            message.error(
-              error instanceof Error ? error.message : "Check-out failed",
-            );
-          } finally {
-            setIsSubmittingCheckOut(false);
-          }
-        }}
+        onOk={() => void submitCheckOutQr(checkOutQrToken)}
         confirmLoading={isSubmittingCheckOut}
         okText="Submit check-out QR"
         cancelText="Close">
@@ -499,6 +509,7 @@ export function StationDetailPage() {
             value={checkOutQrToken}
             placeholder="Check-out QR token"
             onChange={setCheckOutQrToken}
+            onScan={(value) => void submitCheckOutQr(value)}
           />
           <Alert
             type="info"

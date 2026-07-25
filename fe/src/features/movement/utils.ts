@@ -1,3 +1,4 @@
+import {DEFAULT_STATION_MAX_POINTS} from "./constants";
 import type {
   AuthAccount,
   LocalDatabase,
@@ -41,6 +42,12 @@ export function createInitialTeamStations(
     },
     {},
   );
+}
+
+export function getStationEffectiveMaxPoints(
+  station: Pick<TeamStation, "trackingMode" | "maxPoints">,
+) {
+  return station.trackingMode === "TIME" ? 10 : station.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
 }
 
 export const DEFAULT_DATABASE: LocalDatabase = {

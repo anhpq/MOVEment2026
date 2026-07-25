@@ -77,6 +77,7 @@ Manual paste hoặc manual token entry phải luôn được giữ làm fallback
 | Video Element | Video preview phải dùng `autoPlay`, `muted` và `playsInline`. |
 | Decoder Start | Chỉ bắt đầu decode sau khi video metadata sẵn sàng, `video.play()` thành công và video có kích thước khác 0. |
 | Manual Fallback | Luôn giữ Paste QR hoặc manual token entry. |
+| Station QR auto-submit | Station Check-in và Check-out QR chỉ auto-submit khi giá trị đến từ camera decode; manual paste/type vẫn phải nhấn Submit. |
 | Error UX | Lỗi camera và scanner phải hiển thị thông báo an toàn, dễ hiểu và cho phép retry khi phù hợp. |
 | Cleanup | Phải dừng camera tracks, timer và animation frame khi stop, success, error, close hoặc unmount. |
 | Duplicate Protection | Một QR decode thành công không được tạo nhiều submit hoặc API request do nhiều frame, rerender hoặc React Strict Mode. |

@@ -269,7 +269,7 @@ describe('PlayerService station flow', () => {
     )
   })
 
-  it('uses the check-in time as check-out time for score-only stations', async () => {
+  it('uses the accepted scan time as check-out time for score-only stations', async () => {
     const checkedInAt = new Date('2026-07-19T01:00:00.000Z')
     const activeProgress = {
       ...progress,
@@ -301,8 +301,11 @@ describe('PlayerService station flow', () => {
 
     expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
       where: { id: progress.id },
-      data: { checkedOutAt: checkedInAt },
+      data: { checkedOutAt: expect.any(Date) },
     })
+    expect(mockPrisma.teamStationProgress.update.mock.calls[0][0].data.checkedOutAt).not.toBe(
+      checkedInAt,
+    )
   })
 
   it('auto-completes time-only stations on check-out and increments play time', async () => {
@@ -312,6 +315,7 @@ describe('PlayerService station flow', () => {
       status: ProgressStatus.PLAYING,
       checkedInAt,
       station: { trackingMode: StationTrackingMode.TIME },
+      team: { totalPoints: 12 },
     }
     const completed = {
       ...activeProgress,
@@ -322,9 +326,11 @@ describe('PlayerService station flow', () => {
     }
     const tx = {
       teamStationProgress: {
-        update: jest.fn().mockResolvedValue(completed),
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+        findUniqueOrThrow: jest.fn().mockResolvedValue(completed),
       },
       team: { update: jest.fn() },
+      scoreEvent: { create: jest.fn() },
     }
     mockPrisma.qrToken.findUnique.mockResolvedValue({
       id: 2,
@@ -346,19 +352,33 @@ describe('PlayerService station flow', () => {
       service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(completed)
 
-    expect(tx.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(tx.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: progress.id,
+        checkedOutAt: null,
+        completedAt: null,
+        status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
+      },
       data: expect.objectContaining({
         status: ProgressStatus.COMPLETED,
-        scoreAchieved: 0,
+        scoreAchieved: 10,
         completedAt: expect.any(Date),
       }),
     })
     expect(tx.team.update).toHaveBeenCalledWith({
       where: { id: 2 },
       data: {
+        totalPoints: { increment: 10 },
         totalPlaySeconds: { increment: expect.any(Number) },
       },
+    })
+    expect(tx.scoreEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        scoreBefore: 12,
+        scoreAfter: 22,
+        delta: 10,
+        reason: 'TIME_STATION_AUTO_SCORE',
+      }),
     })
   })
 
@@ -419,6 +439,47 @@ describe('PlayerService station flow', () => {
         delta: 40,
         reason: 'staff scored',
       }),
+    })
+  })
+
+  it('keeps score-only stations at zero play seconds after real check-out time', async () => {
+    const checkedOutAt = new Date('2026-07-19T01:10:00.000Z')
+    const checkedInAt = new Date('2026-07-19T01:00:00.000Z')
+    const scoreProgress = {
+      ...progress,
+      checkedInAt,
+      checkedOutAt,
+      station: { trackingMode: StationTrackingMode.SCORE },
+      team: { totalPoints: 12 },
+      game: { maxPoints: 50 },
+    }
+    const completed = {
+      ...scoreProgress,
+      status: ProgressStatus.COMPLETED,
+      completedAt: new Date('2026-07-19T01:12:00.000Z'),
+      scoreAchieved: 40,
+    }
+    const tx = {
+      teamStationProgress: {
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+        findUniqueOrThrow: jest.fn().mockResolvedValue(completed),
+      },
+      team: { update: jest.fn() },
+      scoreEvent: { create: jest.fn() },
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
+    mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) =>
+      callback(tx),
+    )
+
+    await service.submitScore(2, 'ST002', { score: 40 })
+
+    expect(tx.team.update).toHaveBeenCalledWith({
+      where: { id: 2 },
+      data: {
+        totalPoints: { increment: 40 },
+        totalPlaySeconds: { increment: 0 },
+      },
     })
   })
 
