@@ -164,7 +164,7 @@ Rules:
 
 - Fallback Team Color: `#FF765C`.
 - UI uses fallback for null, missing, or legacy invalid values.
-- Enabled primary buttons dùng Team gradient luôn sử dụng chữ và icon trắng `#FFFFFF`; palette và gradient phải tránh tone quá sáng làm giảm độ đọc.
+- Enabled primary buttons dùng Team gradient luôn sử dụng chữ và icon trắng `#FFFFFF`; palette và gradient phải tránh tone quá sáng làm giảm độ đọc. Ngoại lệ: `Watch Video` dùng YouTube red khi chính action đó đại diện cho YouTube.
 - Avoid strong full-page Team color backgrounds that reduce readability.
 - Focus, disabled, mobile, and desktop states must remain readable.
 
@@ -178,7 +178,7 @@ Preferred themed elements:
 
 - shell/header/footer/nav accents;
 - active nav/buttons where locally styled;
-- Team/user `/stations/map` action buttons;
+- Team/user `/stations/map` action buttons, với `Watch Video` dùng YouTube red thay vì Team gradient;
 - selected Station and progress accents;
 - badges/tags/highlights;
 - links/accent icons;

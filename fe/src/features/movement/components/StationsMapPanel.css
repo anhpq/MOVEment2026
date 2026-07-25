@@ -70,6 +70,19 @@
   box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.1);
 }
 
+.movement-map-youtube-button:not(:disabled):not(.ant-btn-disabled) {
+  border-color: #ff0033;
+  background: #ff0033;
+  color: #fff;
+  box-shadow: 0 7px 16px rgba(255, 0, 51, 0.24);
+}
+
+.movement-map-youtube-button:not(:disabled):not(.ant-btn-disabled):hover {
+  border-color: #cc0029;
+  background: #cc0029;
+  color: #fff;
+}
+
 .konvajs-content {
   background: black;
 }

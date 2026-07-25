@@ -824,7 +824,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   focusedTeamStation.youtubeUrl && (
                   <Button
                     type="primary"
-                    className="full-width"
+                    className="full-width movement-map-youtube-button"
                     icon={<YoutubeOutlined />}
                     disabled={!focusedTeamStation.youtubeUrl}
                     onClick={() =>
