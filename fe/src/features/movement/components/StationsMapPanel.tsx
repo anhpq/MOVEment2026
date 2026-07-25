@@ -819,11 +819,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
             )}
 
             {focusedTeamStation && (
-              <Flex justify="space-between" gap={8} className="full-width">
+              <Flex justify="space-between" className="full-width movement-map-actions">
                 {focusedTeamStation.gameType === "ST" &&
                   focusedTeamStation.youtubeUrl && (
                   <Button
-                    type="primary"
+                    block
                     className="full-width movement-map-youtube-button"
                     icon={<YoutubeOutlined />}
                     disabled={!focusedTeamStation.youtubeUrl}
