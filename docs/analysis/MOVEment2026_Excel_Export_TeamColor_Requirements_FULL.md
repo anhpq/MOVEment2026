@@ -178,6 +178,7 @@ Preferred themed elements:
 
 - shell/header/footer/nav accents;
 - active nav/buttons where locally styled;
+- Team/user `/stations/map` action buttons;
 - selected Station and progress accents;
 - badges/tags/highlights;
 - links/accent icons;
@@ -216,7 +217,6 @@ Create Team route `/system-config/teams/new` uses fallback shell theme; typed co
 ## Explicitly Out of Scope
 
 - Do not add Admin map routes.
-- Do not change Team/user `/stations/map`.
 - Do not change `StationsMapPanel` Admin action behavior.
 
 ---

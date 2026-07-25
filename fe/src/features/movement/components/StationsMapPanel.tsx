@@ -614,6 +614,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 {focusedTeamStation.gameType === "ST" &&
                   focusedTeamStation.youtubeUrl && (
                   <Button
+                    type="primary"
                     className="full-width"
                     icon={<YoutubeOutlined />}
                     disabled={!focusedTeamStation.youtubeUrl}

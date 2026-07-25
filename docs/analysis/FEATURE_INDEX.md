@@ -625,6 +625,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 - `Team.color` / `teamColor` API mapping.
 - Admin create/update color validation and clear behavior.
 - Team-facing scoped theme.
+- Team/user `/stations/map` action theming.
 - Admin Team list per-card scoped theme.
 - Admin single-Team context shell/header/nav scoped theme.
 
@@ -641,7 +642,6 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ### Out of Scope
 
 - Admin map routes.
-- Team/user `/stations/map` flow.
 - `StationsMapPanel` Admin action behavior.
 
 ### Must Update After Change
