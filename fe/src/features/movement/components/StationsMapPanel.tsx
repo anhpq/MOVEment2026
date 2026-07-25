@@ -1,6 +1,10 @@
 import {
+  FlagOutlined,
+  PlayCircleFilled,
   PlayCircleOutlined,
   ReloadOutlined,
+  StarFilled,
+  TeamOutlined,
   YoutubeOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -10,7 +14,6 @@ import {
   App as AntdApp,
   Button,
   Card,
-  Descriptions,
   Drawer,
   Empty,
   Flex,
@@ -500,6 +503,21 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     return activeTeamStationById[focusedStation.id] ?? null;
   }, [activeTeamStationById, focusedStation]);
 
+  const focusedPlayingTeamCount = useMemo(() => {
+    if (!focusedTeamStation) {
+      return 0;
+    }
+
+    return Object.values(teamStations).filter((stations) =>
+      stations.some(
+        (item) =>
+          item.stationId === focusedTeamStation.stationId &&
+          (item.backendStatus === "CHECKED_IN" ||
+            item.backendStatus === "PLAYING"),
+      ),
+    ).length;
+  }, [focusedTeamStation, teamStations]);
+
   const resolvedSelectedStationId = useMemo(() => {
     if (!selectedStationId) {
       return stationDefinitions[0]?.id;
@@ -785,84 +803,98 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         onClose={() => setFocusedStationId(null)}
         placement="bottom"
         destroyOnHidden>
-        {focusedStation && (
-          <Flex vertical gap={12} style={{width: "100%"}}>
-            {focusedTeamStation && (
-              <>
+        {focusedStation && focusedTeamStation && (
+          <Card className="surface-card station-card station-showcase-card movement-map-station-card">
+            <div className="station-showcase-header">
+              <div className="station-showcase-avatar" aria-hidden="true">
+                <PlayCircleFilled />
+              </div>
+              <div className="station-showcase-heading">
+                <Flex gap={8} align="center" className="full-width">
+                  <Typography.Title level={4} className="card-title">
+                    {focusedTeamStation.name}
+                  </Typography.Title>
+                  <Tag color={getStationStatusColor(focusedTeamStation.status)}>
+                    {focusedTeamStation.status}
+                  </Tag>
+                </Flex>
                 <Typography.Paragraph className="muted-copy compact-copy">
                   {focusedTeamStation.description}
                 </Typography.Paragraph>
+              </div>
+            </div>
 
-                <Descriptions size="small">
-                  <Descriptions.Item label="Playing Teams" span={2}>
-                    {
-                      Object.values(teamStations).filter((stations) =>
-                        stations.some(
-                          (item) =>
-                            item.stationId === focusedTeamStation.stationId &&
-                            (item.backendStatus === "CHECKED_IN" ||
-                              item.backendStatus === "PLAYING"),
-                        ),
-                      ).length
-                    }
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Score">
-                    {focusedTeamStation.score}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Start Time">
-                    {formatDateTime(focusedTeamStation.startTime)}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="End Time">
-                    {formatDateTime(focusedTeamStation.endTime)}
-                  </Descriptions.Item>
-                </Descriptions>
-              </>
-            )}
+            <div className="station-stats">
+              <div className="station-stat">
+                <TeamOutlined />
+                <span>
+                  <small>Playing Teams</small>
+                  <strong>{focusedPlayingTeamCount}</strong>
+                </span>
+              </div>
+              <div className="station-stat">
+                <StarFilled />
+                <span>
+                  <small>Score</small>
+                  <strong>{focusedTeamStation.score}</strong>
+                </span>
+              </div>
+              <div className="station-stat">
+                <PlayCircleOutlined />
+                <span>
+                  <small>Start Time</small>
+                  <strong>{formatDateTime(focusedTeamStation.startTime)}</strong>
+                </span>
+              </div>
+              <div className="station-stat">
+                <FlagOutlined />
+                <span>
+                  <small>End Time</small>
+                  <strong>{formatDateTime(focusedTeamStation.endTime)}</strong>
+                </span>
+              </div>
+            </div>
 
-            {focusedTeamStation && (
-              <Flex justify="space-between" className="full-width movement-map-actions">
-                {focusedTeamStation.gameType === "ST" &&
-                  focusedTeamStation.youtubeUrl && (
-                  <Button
-                    block
-                    className="full-width station-youtube-button movement-map-youtube-button"
-                    icon={<YoutubeOutlined />}
-                    disabled={!focusedTeamStation.youtubeUrl}
-                    onClick={() =>
-                      openLinkInNewTab(focusedTeamStation.youtubeUrl as string)
-                    }>
-                    Watch Video
-                  </Button>
-                )}
-                <Button
-                  block
-                  type="primary"
-                  className="full-width"
-                  icon={<PlayCircleOutlined />}
-                  onClick={() => {
-                    const disabledReason = getDisabledReason(
-                      focusedTeamStation,
-                      activeStation,
-                    );
+            <div className="station-showcase-actions movement-map-actions">
+              <Button
+                block
+                className="station-youtube-button"
+                icon={<YoutubeOutlined />}
+                disabled={
+                  focusedTeamStation.gameType !== "ST" ||
+                  !focusedTeamStation.youtubeUrl
+                }
+                onClick={() =>
+                  openLinkInNewTab(focusedTeamStation.youtubeUrl as string)
+                }>
+                Watch Video
+              </Button>
+              <Button
+                block
+                type="primary"
+                icon={<PlayCircleOutlined />}
+                onClick={() => {
+                  const disabledReason = getDisabledReason(
+                    focusedTeamStation,
+                    activeStation,
+                  );
 
-                    if (disabledReason) {
-                      message.warning(disabledReason);
-                      return;
-                    }
+                  if (disabledReason) {
+                    message.warning(disabledReason);
+                    return;
+                  }
 
-                    if (focusedTeamStation.status === "In Progress") {
-                      // Navigate to the station detail page if the station is already in progress
-                      navigate(`/stations/${focusedTeamStation.stationId}`);
-                      return;
-                    }
+                  if (focusedTeamStation.status === "In Progress") {
+                    navigate(`/stations/${focusedTeamStation.stationId}`);
+                    return;
+                  }
 
-                    setScanTarget(focusedTeamStation);
-                  }}>
-                  Play
-                </Button>
-              </Flex>
-            )}
-          </Flex>
+                  setScanTarget(focusedTeamStation);
+                }}>
+                Play
+              </Button>
+            </div>
+          </Card>
         )}
       </Drawer>
 
