@@ -18,9 +18,20 @@ import {
   Tag,
   Typography,
 } from "antd";
+import Konva from "konva";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
-import {Image as KonvaImage, Layer, Stage} from "react-konva";
+import {
+  Arc,
+  Circle,
+  Image as KonvaImage,
+  Layer,
+  Path,
+  Rect,
+  Stage,
+  Group,
+  Text,
+} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {fetchAdminDatabase} from "../adminData";
 import {checkInStation, updateAdminStation} from "../api";
@@ -63,6 +74,46 @@ const USER_STATUS_LEGEND: Array<{label: TeamStation["status"]}> = [
   {label: "Finished"},
 ];
 
+// Visual theme per marker state, mirrors the palette that used to live in CSS
+// custom properties (--locked-*, --available-*, --current-*, --completed-*).
+const MARKER_THEME: Record<
+  MarkerUiState,
+  {from: string; to: string; ring: string; glow: string; text: string; radius: number}
+> = {
+  locked: {
+    from: "#f2b155",
+    to: "#c67c1f",
+    ring: "#ffe0a3",
+    glow: "rgba(198,124,31,0.35)",
+    text: "#3a2a12",
+    radius: 20,
+  },
+  available: {
+    from: "#22c3d6",
+    to: "#0e7c8a",
+    ring: "#a3ecf5",
+    glow: "rgba(34,195,214,0.45)",
+    text: "#f0fbff",
+    radius: 20,
+  },
+  active: {
+    from: "#f04fa0",
+    to: "#c21f78",
+    ring: "#ffb3dd",
+    glow: "rgba(240,79,160,0.55)",
+    text: "#3a0a24",
+    radius: 24,
+  },
+  completed: {
+    from: "#3ddc7a",
+    to: "#1e8449",
+    ring: "#a8f5c4",
+    glow: "rgba(61,220,122,0.4)",
+    text: "#04321f",
+    radius: 20,
+  },
+};
+
 function clampMapScale(value: number) {
   return Math.max(MIN_MAP_SCALE, Math.min(MAX_MAP_SCALE, value));
 }
@@ -95,10 +146,6 @@ function getMarkerUiState(teamStation?: TeamStationWithMeta): MarkerUiState {
     default:
       return "available";
   }
-}
-
-function getMarkerStatusLabel(uiState: MarkerUiState) {
-  return uiState;
 }
 
 function clampPercent(value: number) {
@@ -175,6 +222,182 @@ function buildFallbackPositions(stations: StationDefinition[]) {
   );
 }
 
+type StationMarkerProps = {
+  x: number;
+  y: number;
+  code: string;
+  uiState: MarkerUiState;
+  onSelect: () => void;
+};
+
+/**
+ * Native Konva marker. Drawn directly on the canvas (instead of an HTML
+ * <button> overlay) so it correctly pans/zooms with the Stage transform and
+ * can use canvas-only effects (shadow glow, radial gradient, animated rings).
+ */
+function StationMarker({x, y, code, uiState, onSelect}: StationMarkerProps) {
+  const groupRef = useRef<Konva.Group | null>(null);
+  const pulseRef = useRef<Konva.Circle | null>(null);
+  const spinRef = useRef<Konva.Circle | null>(null);
+  const theme = MARKER_THEME[uiState];
+  const radius = theme.radius;
+
+  useEffect(() => {
+    const shouldPulse = uiState === "available" || uiState === "active";
+    const shouldSpin = uiState === "active";
+
+    if (!shouldPulse && !shouldSpin) {
+      return;
+    }
+
+    const layer = groupRef.current?.getLayer() ?? undefined;
+    const animation = new Konva.Animation((frame) => {
+      if (!frame) {
+        return;
+      }
+
+      if (shouldPulse && pulseRef.current) {
+        const cycle = (frame.time % 2000) / 2000;
+        pulseRef.current.radius(radius + cycle * radius * 0.9);
+        pulseRef.current.opacity(0.55 * (1 - cycle));
+      }
+
+      if (shouldSpin && spinRef.current) {
+        spinRef.current.rotation((frame.time / 40) % 360);
+      }
+    }, layer);
+
+    animation.start();
+
+    return () => {
+      animation.stop();
+    };
+  }, [radius, uiState]);
+
+  return (
+    <Group
+      ref={groupRef}
+      x={x}
+      y={y}
+      onClick={(event) => {
+        event.cancelBubble = true;
+        onSelect();
+      }}
+      onTap={(event) => {
+        event.cancelBubble = true;
+        onSelect();
+      }}
+      onMouseEnter={(event) => {
+        const stage = event.target.getStage();
+        if (stage) {
+          stage.container().style.cursor = "pointer";
+        }
+      }}
+      onMouseLeave={(event) => {
+        const stage = event.target.getStage();
+        if (stage) {
+          stage.container().style.cursor = "";
+        }
+      }}>
+      {(uiState === "available" || uiState === "active") && (
+        <Circle
+          ref={pulseRef}
+          radius={radius}
+          stroke={theme.ring}
+          strokeWidth={2}
+          opacity={0.5}
+          listening={false}
+        />
+      )}
+
+      {uiState === "active" && (
+        <Circle
+          ref={spinRef}
+          radius={radius + 8}
+          stroke={theme.ring}
+          strokeWidth={1.5}
+          dash={[6, 5]}
+          opacity={0.6}
+          listening={false}
+        />
+      )}
+
+      <Circle
+        radius={radius}
+        fillRadialGradientStartPoint={{x: -radius * 0.35, y: -radius * 0.4}}
+        fillRadialGradientStartRadius={0}
+        fillRadialGradientEndPoint={{x: 0, y: 0}}
+        fillRadialGradientEndRadius={radius * 1.3}
+        fillRadialGradientColorStops={[0, theme.from, 1, theme.to]}
+        stroke={theme.ring}
+        strokeWidth={2}
+        shadowColor={theme.glow}
+        shadowBlur={16}
+        shadowOpacity={0.9}
+      />
+
+      {uiState !== "completed" && uiState !== "locked" && (
+        <Text
+          text={code}
+          fontSize={11}
+          fontStyle="700"
+          fill={theme.text}
+          width={radius * 2}
+          height={radius * 2}
+          offsetX={radius}
+          offsetY={radius}
+          align="center"
+          verticalAlign="middle"
+          listening={false}
+        />
+      )}
+
+      {uiState === "completed" && (
+        <Path
+          data="M -6 0 L -1.5 5 L 7 -6"
+          stroke={theme.text}
+          strokeWidth={3}
+          lineCap="round"
+          lineJoin="round"
+          listening={false}
+        />
+      )}
+
+      {uiState === "locked" && (
+        <>
+          <Text
+            text={code}
+            fontSize={11}
+            fontStyle="700"
+            fill={theme.text}
+            opacity={0.75}
+            width={radius * 2}
+            height={radius * 2}
+            offsetX={radius}
+            offsetY={radius}
+            align="center"
+            verticalAlign="middle"
+            listening={false}
+          />
+          <Group x={radius * 0.62} y={radius * 0.62} listening={false}>
+            <Circle radius={9} fill="#1e293b" stroke="#0b1220" strokeWidth={1.5} />
+            <Arc
+              innerRadius={3}
+              outerRadius={3}
+              angle={180}
+              rotation={180}
+              y={-1.5}
+              stroke="#94a3b8"
+              strokeWidth={1.4}
+            />
+            <Rect x={-3.5} y={-1} width={7} height={5} cornerRadius={1} fill="#94a3b8" />
+          </Group>
+        </>
+      )}
+    </Group>
+  );
+}
+
 export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const navigate = useNavigate();
   const {modal, message} = AntdApp.useApp();
@@ -243,26 +466,18 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         const markerX = (position.x / 100) * viewportSize.width;
         const markerY = (position.y / 100) * viewportSize.height;
         const uiState = getMarkerUiState(teamStation);
-        const statusLabel = getMarkerStatusLabel(uiState);
 
         return {
           station,
           markerX,
           markerY,
-          screenX: mapPosition.x + markerX * mapScale,
-          screenY: mapPosition.y + markerY * mapScale,
           teamStation,
           uiState,
-          statusLabel,
-          ariaLabel: `${station.name} (${station.id}), status ${statusLabel}`,
         };
       }),
     [
       activeTeamStationById,
       fallbackPositions,
-      mapPosition.x,
-      mapPosition.y,
-      mapScale,
       stationDefinitions,
       viewportSize.height,
       viewportSize.width,
@@ -546,25 +761,19 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     height={viewportSize.height}
                   />
                 )}
+
+                {markerViewModels.map(({station, markerX, markerY, uiState}) => (
+                  <StationMarker
+                    key={station.id}
+                    x={markerX}
+                    y={markerY}
+                    code={station.id}
+                    uiState={uiState}
+                    onSelect={() => setFocusedStationId(station.id)}
+                  />
+                ))}
               </Layer>
             </Stage>
-          )}
-          {viewportSize.width > 0 && viewportSize.height > 0 && (
-            <div className="movement-map-marker-buttons" aria-hidden={false}>
-              {markerViewModels.map(
-                ({station, screenX, screenY, uiState, ariaLabel}) => (
-                  <button
-                    key={station.id}
-                    type="button"
-                    aria-label={ariaLabel}
-                    className={`movement-map-marker-button movement-map-marker-button--${uiState}`}
-                    style={{left: screenX, top: screenY}}
-                    onClick={() => setFocusedStationId(station.id)}>
-                    <span className="movement-map-marker-code">{station.id}</span>
-                  </button>
-                ),
-              )}
-            </div>
           )}
         </div>
       </div>
@@ -614,6 +823,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 {focusedTeamStation.gameType === "ST" &&
                   focusedTeamStation.youtubeUrl && (
                   <Button
+                    type="primary"
                     className="full-width"
                     icon={<YoutubeOutlined />}
                     disabled={!focusedTeamStation.youtubeUrl}
