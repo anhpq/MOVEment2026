@@ -5,7 +5,14 @@
 - Changed `SCORE` Check-out to store the accepted QR scan time while preserving zero play-duration contribution through shared scoring helpers.
 - Updated Admin Station create/update maxPossiblePoints synchronization to use effective max points: `TIME = 10`, `SCORE`/`BOTH = game.maxPoints`.
 - Updated Team/User Station list, map drawer, and detail stats to show `Score / Max` using the effective max score.
-- Verification in progress: targeted Player/Admin service tests and backend build passed; full required validation is tracked in the task report.
+- Verification passed: targeted Player/Admin service tests, backend build, frontend lint/build, `git diff --check`, `stations:sync -- --audit-only`, and `graphify update .`. Frontend build retains the known non-blocking large-chunk warning; Graphify retains warnings for `hooks.json` zero nodes and missing optional `tree_sitter_sql` extraction.
+
+## 2026-07-25 Backend deploy healthcheck race
+
+- Production `Deploy Backend (ECS)` failed after a successful PM2 restart with `curl: (7) Failed to connect to 127.0.0.1 port 8080` because `be/deploy/deploy.sh` healthchecked immediately while Nest was still booting.
+- Updated `deploy.sh` to retry `HEALTHCHECK_URL` up to 30 times every 2 seconds, print PM2 status/logs on final failure, and only then update `/opt/movement/deploy-markers/movement-api.commit`.
+- Manual ECS verification earlier the same day confirmed the API becomes healthy shortly after restart (`http://127.0.0.1:8080/api/docs` and `https://heroes.nalth.top/api/docs` both returned 200).
+
 
 ## 2026-07-25 Admin Station map position update
 
