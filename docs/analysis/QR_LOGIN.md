@@ -204,7 +204,7 @@ Reusable không có nghĩa là token tồn tại vĩnh viễn.
 
 Token phải hỗ trợ:
 
-- expiry hoặc Event validity;
+- non-expiring by time for active Team QR Login;
 - Admin revoke;
 - Admin rotate;
 - rate limiting;
@@ -330,7 +330,9 @@ Secure verification hash nếu implementation dùng fingerprint lookup và secon
 
 ## `expires_at`
 
-Có thể null nếu Event validity được enforce bằng cơ chế khác.
+Team QR Login tokens are non-expiring by time. `expires_at` is nullable and new
+active Team QR tokens use `null`; historical non-null values are ignored by the
+Team QR login path.
 
 ## `last_used_at`
 
@@ -574,12 +576,6 @@ Link đăng nhập không có token.
 
 ```text
 Mã đăng nhập không hợp lệ.
-```
-
-## Expired Token
-
-```text
-Mã đăng nhập đã hết hạn.
 ```
 
 ## Revoked Token
@@ -867,7 +863,7 @@ và phải:
 - [ ] New login revokes old Team session.
 - [ ] Invalid token rejected.
 - [ ] Revoked token rejected.
-- [ ] Expired token rejected.
+- [ ] Historical past `expiresAt` active token remains usable.
 - [ ] Inactive Team rejected.
 - [ ] Raw token not logged.
 - [ ] Rate limit enforced.
@@ -922,7 +918,7 @@ Feature hoàn tất khi:
 - [ ] Token reusable trong thời gian còn active.
 - [ ] Successful login không consume token.
 - [ ] Token hỗ trợ revoke và rotate.
-- [ ] Token hỗ trợ expiry hoặc Event validity.
+- [ ] Token không tự hết hạn theo thời gian; revoke/rotate vẫn vô hiệu hóa token.
 - [ ] Login mới revoke session cũ.
 - [ ] `/qr-login` là public route.
 - [ ] Token bị xóa khỏi visible URL.

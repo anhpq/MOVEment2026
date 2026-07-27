@@ -138,7 +138,7 @@ The token must support:
 - active/inactive state;
 - revoke;
 - rotate;
-- expiry or Event validity;
+- non-expiring by time unless a future Business Rule explicitly reintroduces expiry;
 - usage auditing;
 - rate limiting.
 
@@ -504,8 +504,8 @@ Recommended flow:
 4. verify secure hash if the project uses secondary verification;
 5. check active state;
 6. check `revoked_at`;
-7. check `expires_at`;
-8. check Event validity;
+7. ignore historical time expiry for Team QR Login;
+8. check associated Team active state;
 9. check associated Team active state;
 10. enforce rate limit;
 11. create Team session;
@@ -827,9 +827,6 @@ Link đăng nhập không có token.
 
 Invalid token:
 Mã đăng nhập không hợp lệ.
-
-Expired token:
-Mã đăng nhập đã hết hạn.
 
 Revoked token:
 Mã đăng nhập đã bị thu hồi.

@@ -27,6 +27,7 @@ import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
 import {checkInStation, getPlayerFinal} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
+import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {fetchPlayerDatabase} from "../playerData";
 import {
   formatCooldownRemaining,
@@ -66,15 +67,8 @@ export function StationListPage() {
   const activeStation = sortedStations.find(
     (station) => station.status === "In Progress",
   );
-  const playingTeamCount = (stationId: string) =>
-    Object.values(teamStations).filter((stations) =>
-      stations.some(
-        (item) =>
-          item.stationId === stationId &&
-          (item.backendStatus === "CHECKED_IN" ||
-            item.backendStatus === "PLAYING"),
-      ),
-    ).length;
+  const playingCounts = useStationPlayingCounts(session?.role === "user");
+  const playingTeamCount = (stationId: string) => playingCounts[stationId] ?? 0;
 
   useEffect(() => {
     if (

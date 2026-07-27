@@ -114,9 +114,6 @@ export class AdminService {
     const passwordHash = await bcrypt.hash(dto.password, 10);
     const teamColor = this.normalizeTeamColorInput(dto);
     const rawQrLoginToken = createSecureQrLoginToken();
-    const qrLoginExpiresAt = new Date(
-      Date.now() + this.getQrLoginTtlMinutes() * 60_000,
-    );
 
     const { team, qrLoginToken } = await this.prisma.$transaction(async (tx) => {
       const created = await tx.team.create({
@@ -138,7 +135,7 @@ export class AdminService {
           teamId: created.id,
           tokenHash: createQrTokenFingerprint(rawQrLoginToken),
           rawToken: rawQrLoginToken,
-          expiresAt: qrLoginExpiresAt,
+          expiresAt: null,
           createdByUserId: userId,
         },
       });
@@ -241,7 +238,6 @@ export class AdminService {
       orderBy: { createdAt: 'desc' },
       take: 20,
     });
-    const now = new Date();
     return tokens.map((token) => ({
       id: token.id,
       teamId: token.teamId,
@@ -255,24 +251,23 @@ export class AdminService {
       usageCount: token.usageCount,
       createdAt: token.createdAt,
       lastUsedAt: token.lastUsedAt,
-      status: this.getQrLoginTokenStatus(token, now),
+      status: this.getQrLoginTokenStatus(token),
     }));
   }
 
   async generateTeamQrLoginToken(
     userId: number,
     teamId: number,
-    dto: GenerateQrLoginTokenDto,
+    _dto: GenerateQrLoginTokenDto,
     rotateExisting = true,
   ) {
-    const ttlMinutes = dto.expiresInMinutes ?? this.getQrLoginTtlMinutes();
     const rawToken = createSecureQrLoginToken();
     const token = await this.prisma.$transaction(async (tx) => {
       const team = await tx.team.findUniqueOrThrow({ where: { id: teamId } });
       if (team.status !== 'ACTIVE') {
         throw new ForbiddenException('QR_LOGIN_INACTIVE_TEAM');
       }
-      return this.replaceTeamQrLoginToken(tx, userId, teamId, rawToken, ttlMinutes);
+      return this.replaceTeamQrLoginToken(tx, userId, teamId, rawToken);
     });
 
     await this.activityLog.log({
@@ -284,7 +279,7 @@ export class AdminService {
       entityId: token.id,
       metadata: {
         teamId,
-        expiresAt: token.expiresAt,
+        nonExpiring: true,
       },
     });
 
@@ -322,7 +317,6 @@ export class AdminService {
         teamId,
         isActive: true,
         revokedAt: null,
-        expiresAt: { gt: new Date() },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -1287,14 +1281,6 @@ export class AdminService {
     }
   }
 
-  private getQrLoginTtlMinutes() {
-    const configured = Number(this.config.get<string>('QR_LOGIN_TOKEN_TTL_MINUTES'));
-    if (Number.isInteger(configured) && configured > 0) {
-      return configured;
-    }
-    return 24 * 60;
-  }
-
   private buildQrLoginUrl(rawToken: string) {
     const configured =
       this.config.get<string>('FRONTEND_PUBLIC_URL')?.trim() ??
@@ -1342,7 +1328,6 @@ export class AdminService {
     userId: number,
     teamId: number,
     rawToken: string,
-    ttlMinutes = this.getQrLoginTtlMinutes(),
   ) {
     const normalizedToken = normalizeQrToken(rawToken);
     if (!isOfficialQrLoginToken(normalizedToken)) {
@@ -1357,13 +1342,12 @@ export class AdminService {
       where: { teamId, isActive: true },
       data: { isActive: false, revokedAt: new Date() },
     });
-    const expiresAt = new Date(Date.now() + ttlMinutes * 60_000);
     const token = await tx.qrLoginToken.create({
       data: {
         teamId,
         tokenHash,
         rawToken: normalizedToken,
-        expiresAt,
+        expiresAt: null,
         createdByUserId: userId,
       },
     });
@@ -1462,17 +1446,12 @@ export class AdminService {
     return 'ACTIVE';
   }
 
-  private getQrLoginTokenStatus(
-    token: {
-      expiresAt: Date;
-      isActive: boolean;
-      consumedAt: Date | null;
-      revokedAt: Date | null;
-    },
-    now: Date,
-  ) {
+  private getQrLoginTokenStatus(token: {
+    isActive: boolean;
+    consumedAt: Date | null;
+    revokedAt: Date | null;
+  }) {
     if (token.revokedAt) return 'REVOKED';
-    if (token.expiresAt.getTime() <= now.getTime()) return 'EXPIRED';
     if (token.consumedAt) return 'CONSUMED';
     if (!token.isActive) return 'INACTIVE';
     return 'ACTIVE';

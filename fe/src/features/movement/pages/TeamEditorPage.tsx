@@ -44,13 +44,13 @@ export function TeamEditorPage() {
       centered: true,
       width: 520,
       className: "team-qr-info-modal",
-      title: "One-time Team QR",
+      title: "Team QR Login",
       content: (
         <Flex vertical gap={12} align="center">
           <img src={dataUrl} alt={`${context} QR`} width={260} height={260} />
           <Typography.Text>{context}</Typography.Text>
           <Typography.Text type="warning">
-            Save or download this QR now. For security, the token cannot be viewed again.
+            Save or download this QR securely. Rotate or revoke it if it is exposed.
           </Typography.Text>
           <Button type="primary" onClick={() => {
             const link = document.createElement("a");
@@ -169,14 +169,12 @@ export function TeamEditorPage() {
                       content: (
                         <Flex vertical gap={12}>
                           <Typography.Text>
-                            This reusable URL is shown only now. Store or print the QR securely.
+                            This reusable URL can be reused while active. Store or print the QR securely.
                           </Typography.Text>
                           <Input.TextArea value={qrLoginUrl} readOnly autoSize />
-                          {created.qrLoginExpiresAt && (
-                            <Typography.Text className="muted-copy compact-copy">
-                              Expires at {new Date(created.qrLoginExpiresAt).toLocaleString("vi-VN")}
-                            </Typography.Text>
-                          )}
+                          <Typography.Text className="muted-copy compact-copy">
+                            Không hết hạn · có thể rotate/revoke nếu cần.
+                          </Typography.Text>
                         </Flex>
                       ),
                     });

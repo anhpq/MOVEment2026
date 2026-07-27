@@ -154,7 +154,7 @@ describe('AdminService Team QR login lifecycle', () => {
         teamId: 7,
         tokenHash: expect.stringMatching(/^[a-f0-9]{64}$/),
         rawToken: expect.any(String),
-        expiresAt: expect.any(Date),
+        expiresAt: null,
         createdByUserId: 1,
       },
     });

@@ -17,14 +17,6 @@ function extractQrToken(search: string) {
 function getQrLoginError(error: unknown): QrLoginState {
   const message = error instanceof Error ? error.message : "";
 
-  if (message.includes("QR_LOGIN_EXPIRED")) {
-    return {
-      type: "error",
-      title: "Mã QR đã hết hạn.",
-      description: "Vui lòng liên hệ ban tổ chức để nhận mã QR mới.",
-      canRetry: false,
-    };
-  }
   if (message.includes("QR_LOGIN_CONSUMED")) {
     return {
       type: "error",

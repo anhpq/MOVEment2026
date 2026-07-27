@@ -36,14 +36,6 @@ const frontendPublicUrl =
   process.env.FRONTEND_PUBLIC_URL ??
   process.env.PUBLIC_FRONTEND_URL ??
   'http://localhost:4173';
-const qrLoginTokenTtlMinutes = Number.parseInt(
-  process.env.QR_LOGIN_TOKEN_TTL_MINUTES ?? '',
-  10,
-);
-const safeQrLoginTokenTtlMinutes =
-  Number.isInteger(qrLoginTokenTtlMinutes) && qrLoginTokenTtlMinutes > 0
-    ? qrLoginTokenTtlMinutes
-    : 24 * 60;
 const devQrArtifactPath = resolve(
   process.cwd(),
   '..',
@@ -276,15 +268,12 @@ async function main() {
             teamId: team.id,
             isActive: true,
             revokedAt: null,
-            expiresAt: { gt: new Date() },
+            consumedAt: null,
           },
         });
 
         if (!activeQrLoginToken?.rawToken) {
           const rawToken = createSecureQrLoginToken();
-          const expiresAt = new Date(
-            Date.now() + safeQrLoginTokenTtlMinutes * 60_000,
-          );
           await prisma.$transaction(async (tx) => {
             await tx.qrLoginToken.updateMany({
               where: { teamId: team.id, isActive: true },
@@ -295,7 +284,7 @@ async function main() {
                 teamId: team.id,
                 tokenHash: createQrTokenFingerprint(rawToken),
                 rawToken,
-                expiresAt,
+                expiresAt: null,
               },
             });
           });
@@ -304,7 +293,6 @@ async function main() {
               `Team: ${team.name}`,
               `Username: ${team.username}`,
               `Status: ACTIVE`,
-              `ExpiresAt: ${expiresAt.toISOString()}`,
               `QrLoginUrl: ${buildQrLoginUrl(frontendPublicUrl, rawToken)}`,
             ].join('\n'),
           );

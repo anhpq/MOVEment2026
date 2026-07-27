@@ -43,6 +43,7 @@ import {
   submitStationScore,
 } from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
+import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
 import "./StationDetailPage.css";
@@ -97,17 +98,8 @@ export function StationDetailPage() {
     setActiveTeam,
     teams,
   ]);
-  const playingTeamCount =
-    station ?
-      Object.values(teamStations).filter((stations) =>
-        stations.some(
-          (item) =>
-            item.stationId === station.stationId &&
-            (item.backendStatus === "CHECKED_IN" ||
-              item.backendStatus === "PLAYING"),
-        ),
-      ).length
-    : 0;
+  const playingCounts = useStationPlayingCounts(session?.role === "user");
+  const playingTeamCount = station ? (playingCounts[station.stationId] ?? 0) : 0;
   const canShowLiveClock = Boolean(
     stationStartTime && session?.role === "user",
   );

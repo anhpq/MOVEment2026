@@ -340,8 +340,6 @@ Token bị từ chối khi:
 
 - invalid;
 - revoked;
-- expired;
-- ngoài Event validity;
 - Team inactive;
 - request bị rate limit.
 
@@ -455,7 +453,7 @@ Sau khi implementation được cập nhật:
 - [ ] `FRONTEND_PUBLIC_URL` dùng HTTPS.
 - [ ] Admin action được authorization.
 - [ ] Token revoke/rotate được audit.
-- [ ] Token có expiry hoặc Event validity.
+- [x] Team QR token không tự hết hạn theo thời gian; revoke/rotate là cơ chế vô hiệu hóa chính.
 - [ ] Rate limiting được enforce.
 - [ ] Team inactive không login được.
 - [ ] Session replacement được enforce.

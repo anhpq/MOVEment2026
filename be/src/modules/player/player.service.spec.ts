@@ -22,6 +22,7 @@ const progress = {
 const mockPrisma = {
   qrToken: { findUnique: jest.fn() },
   teamStationProgress: {
+    groupBy: jest.fn(),
     findFirst: jest.fn(),
     findUnique: jest.fn(),
     update: jest.fn(),
@@ -107,6 +108,27 @@ describe('PlayerService station flow', () => {
         action: 'CHECK_IN',
       }),
     )
+  })
+
+  it('returns station playing counts without team identity', async () => {
+    mockPrisma.teamStationProgress.groupBy.mockResolvedValue([
+      { stationId: 'ST001', _count: { _all: 2 } },
+      { stationId: 'ST002', _count: { _all: 1 } },
+    ])
+
+    await expect(service.getStationPlayingCounts()).resolves.toEqual([
+      { stationId: 'ST001', playingTeamCount: 2 },
+      { stationId: 'ST002', playingTeamCount: 1 },
+    ])
+
+    expect(mockPrisma.teamStationProgress.groupBy).toHaveBeenCalledWith({
+      by: ['stationId'],
+      where: {
+        status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
+        station: { isActive: true },
+      },
+      _count: { _all: true },
+    })
   })
 
   it('rejects check-in after eventEndTime with a closed station message', async () => {

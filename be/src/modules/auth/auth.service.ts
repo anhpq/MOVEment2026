@@ -117,7 +117,7 @@ export class AuthService {
       where: { tokenHash },
       include: { team: true },
     });
-    const preflightError = this.getQrLoginRejectCode(existing, now);
+    const preflightError = this.getQrLoginRejectCode(existing);
     if (preflightError) {
       await this.logQrLoginRejected(preflightError, existing);
       this.throwQrLoginError(preflightError);
@@ -129,7 +129,7 @@ export class AuthService {
           id: existing!.id,
           isActive: true,
           revokedAt: null,
-          expiresAt: { gt: now },
+          consumedAt: null,
         },
         data: {
           lastUsedAt: now,
@@ -144,7 +144,7 @@ export class AuthService {
         });
         return {
           authResult: null,
-          error: this.getQrLoginRejectCode(current, now) ?? 'QR_LOGIN_INVALID',
+          error: this.getQrLoginRejectCode(current) ?? 'QR_LOGIN_INVALID',
         };
       }
 
@@ -272,7 +272,6 @@ export class AuthService {
     token:
       | (Prisma.QrLoginTokenGetPayload<{ include: { team: true } }>)
       | null,
-    now: Date,
   ) {
     if (!token) {
       return 'QR_LOGIN_INVALID';
@@ -280,10 +279,6 @@ export class AuthService {
     if (token.revokedAt) {
       return 'QR_LOGIN_REVOKED';
     }
-    if (token.expiresAt.getTime() <= now.getTime()) {
-      return 'QR_LOGIN_EXPIRED';
-    }
-    // Retain the old error for already-consumed Legacy records only.
     if (token.consumedAt) {
       return 'QR_LOGIN_CONSUMED';
     }

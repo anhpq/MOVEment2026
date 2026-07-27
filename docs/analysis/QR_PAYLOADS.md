@@ -205,8 +205,6 @@ Token chỉ bị từ chối khi:
 - không tồn tại;
 - không active;
 - bị revoke;
-- hết hạn;
-- ngoài Event validity;
 - Team không active;
 - request bị rate limit;
 - token không qua verification.

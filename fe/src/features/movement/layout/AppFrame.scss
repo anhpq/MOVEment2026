@@ -1,40 +1,86 @@
 .shell-footer {
-  position: sticky;
+  position: fixed;
+  right: 0;
   bottom: 0;
-  z-index: 10;
-  width: min(calc(100% - 24px), 620px);
-  margin: 0 auto 12px;
-  padding: 10px 12px;
-  border: 1px solid var(--movement-border);
-  border-radius: 999px;
-  background: rgba(255, 252, 250, 0.92);
-  box-shadow: 0 12px 34px rgba(58, 39, 34, 0.13);
+  left: 0;
+  z-index: 20;
+  min-height: calc(64px + env(safe-area-inset-bottom));
+  padding:
+    6px
+    calc(12px + env(safe-area-inset-right))
+    calc(6px + env(safe-area-inset-bottom))
+    calc(12px + env(safe-area-inset-left));
+  border-top: 1px solid var(--movement-border);
+  background: rgba(255, 252, 250, 0.96);
+  box-shadow: none;
   backdrop-filter: blur(16px);
+}
 
-  .ant-flex {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+.fixed-bottom-navigation {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 6px;
+  width: min(100%, 760px);
+  min-height: 52px;
+  margin: 0 auto;
+}
 
-  .ant-flex::-webkit-scrollbar {
-    display: none;
-  }
+.fixed-bottom-navigation__item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--movement-navy-soft);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
 
-  .ant-btn {
-    flex: 0 0 auto;
-    min-width: 46px;
-    height: 42px;
-    border-color: var(--movement-border-neutral);
-    color: var(--movement-navy);
-    box-shadow: var(--movement-shadow-sm);
-  }
+.fixed-bottom-navigation__item:hover,
+.fixed-bottom-navigation__item:focus-visible {
+  background: rgba(237, 118, 87, 0.08);
+  color: var(--movement-coral-dark);
+}
 
-  .ant-btn-primary {
-    border-color: transparent;
-    background: linear-gradient(110deg, #ef8162, var(--movement-coral-dark));
-    color: #fff;
-    box-shadow: 0 8px 18px rgba(220, 88, 57, 0.24);
-  }
+.fixed-bottom-navigation__item:focus-visible {
+  outline: 2px solid rgba(237, 118, 87, 0.48);
+  outline-offset: 2px;
+}
+
+.fixed-bottom-navigation__item.is-active {
+  background: var(--movement-coral-soft);
+  color: var(--movement-coral-dark);
+}
+
+.fixed-bottom-navigation__item.is-active:hover {
+  transform: translateY(-1px);
+}
+
+.fixed-bottom-navigation__icon {
+  display: inline-flex;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.fixed-bottom-navigation__label {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .team-themed-shell {
@@ -56,35 +102,20 @@
       radial-gradient(circle at top right, var(--team-primary-soft), transparent 34%),
       transparent;
   }
-
-  .shell-footer {
-    border-color: var(--team-focus-ring);
-  }
-
-  .shell-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous) {
-    border-color: transparent;
-    background: var(--team-button-gradient);
-    color: var(--team-on-primary);
-    box-shadow: 0 8px 18px var(--team-focus-ring);
-  }
-
-  .shell-footer .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):not(.ant-btn-dangerous):hover {
-    border-color: transparent;
-    background: var(--team-button-gradient-hover);
-    color: var(--team-on-primary);
-  }
 }
 
 @media (max-width: 480px) {
   .shell-footer {
-    width: calc(100% - 20px);
-    margin-bottom: 8px;
-    padding: 8px;
+    padding-right: calc(10px + env(safe-area-inset-right));
+    padding-left: calc(10px + env(safe-area-inset-left));
+  }
 
-    .ant-btn {
-      height: 40px;
-      padding-inline: 13px;
-    }
+  .fixed-bottom-navigation {
+    gap: 4px;
+  }
+
+  .fixed-bottom-navigation__item {
+    padding-inline: 2px;
   }
 }
 
@@ -138,13 +169,11 @@
 
   .ant-list-item-meta-content,
   .ant-list-item-meta-title,
-  .ant-list-item-meta-description {
-    color: white !important;
+  .ant-list-item-meta-description,
+  .ant-tag,
+  .ant-statistic,
+  .ant-statistic-title,
+  .ant-statistic-content {
+    color: var(--movement-surface) !important;
   }
-}
-
-.other-team {
-  border-radius: 1rem;
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
 }

@@ -328,7 +328,7 @@
 - Backend exchange consumes tokens with a conditional update inside a transaction before issuing the normal team JWT/session. Concurrent scans/replay attempts cannot both create sessions; the losing request is rejected as consumed.
 - Admin can generate, inspect, and revoke QR login tokens from the team list in System Config. Generation rotates outstanding active QR login tokens for the team and builds the URL from `FRONTEND_PUBLIC_URL`.
 - Frontend added public `/qr-login`, removes `?token=` from the visible URL immediately, prevents duplicate submissions in the page lifecycle, maps safe backend error codes to user-friendly Vietnamese messages, and redirects successful team QR login to the normal team map flow.
-- Deployment config now requires `FRONTEND_PUBLIC_URL` to be HTTPS in production and documents `QR_LOGIN_TOKEN_TTL_MINUTES`. Existing Nginx SPA fallback covers `/qr-login`; `/api/` remains a separate reverse proxy and must not be rewritten to `index.html`.
+- Historical note: this earlier implementation documented `QR_LOGIN_TOKEN_TTL_MINUTES`; the 2026-07-27 Team QR non-expiring update supersedes that TTL behavior. Existing Nginx SPA fallback covers `/qr-login`; `/api/` remains a separate reverse proxy and must not be rewritten to `index.html`.
 - Verification: `npm.cmd --prefix be run prisma:generate`, backend build, full backend Jest suite (47 tests), and frontend build passed. Frontend has no existing test runner, so QR route behavior is build-verified only.
 
 ## 2026-07-21 QR login URL and seed structure
@@ -549,3 +549,13 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Admin Team Station cards render only a full-width `View & Edit` action and do not expose `Watch Video`.
 - Admin `View & Edit` is consistently primary/coral and no longer changes style based on Station Game Type or YouTube URL.
 - Station detail now uses a responsive visual summary with Station identity/status and a balanced icon-based 2×2 metric grid instead of the default loose `Descriptions` layout.
+## 2026-07-27 Team QR, live counts, reset guard, and map WebP completion
+
+- Fast-forwarded local `develop` to `origin/develop` and reapplied the protected worktree stash without textual conflicts. The semantic overlap in `App.css` and `AppFrame.tsx` was reconciled by preserving remote Team header/logout behavior and the fixed bottom navigation.
+- Team QR Login is now non-expiring by time for active tokens: migration only drops `qr_login_tokens.expires_at` `NOT NULL`, new Team/seed/rotate tokens use `expiresAt: null`, historical past `expiresAt` values are ignored by QR login, and the transaction claim re-checks `consumedAt: null`.
+- Admin Team QR responses/status no longer expose `EXPIRED` as a Team QR status; activity metadata records non-expiring generation without stale expiry, and System Config no longer falls back to historical revoked/consumed tokens for QR display.
+- Added `GET /api/player/stations/playing-counts`, returning only `stationId` and `playingTeamCount`. Player Station list, Station detail, map drawer, and Leaderboard now poll every 5 seconds only while the tab is visible, avoid overlapping requests, preserve old data on transient failures, and logout on auth failures where applicable.
+- Hardened `npm run reset:gameplay`: dry-run remains default, destructive execution requires confirmation guards at the exported execution boundary, Production-like targets require backup acknowledgement, and the reset transaction verifies Team/User preservation, cleared sessions/gameplay/audit rows, canonical Station/progress counts, one EventConfig, one Final Challenge, and one active non-expiring Team QR per Team.
+- Replaced the runtime 6.4 MB PNG map with generated WebP variants at 1280/1920/2950 pixels; the original PNG moved to `fe/source-assets/images/map/`, and the frontend upgrades variants without downgrading or blanking the current map image.
+- Verification passed so far: Prisma Client generation, targeted Backend tests (`76/76`), Backend lint/build, and Frontend lint/build. Frontend build retains the known non-blocking large-chunk warning.
+- Not performed: Production mutation, push, deploy, browser/manual Excel checks, physical QR scan, or destructive reset execute against Production.

@@ -29,6 +29,12 @@ export class PlayerController {
     return this.playerService.getStations(this.requireTeam(auth));
   }
 
+  @Get('stations/playing-counts')
+  getStationPlayingCounts(@CurrentAuth() auth: AuthContext) {
+    this.requireTeam(auth);
+    return this.playerService.getStationPlayingCounts();
+  }
+
   @Get('progress')
   getProgress(@CurrentAuth() auth: AuthContext) {
     return this.playerService.getProgress(this.requireTeam(auth));

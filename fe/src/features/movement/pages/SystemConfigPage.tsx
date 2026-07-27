@@ -60,7 +60,7 @@ export function SystemConfigPage() {
       const [teamEntries, stationEntries] = await Promise.all([
         Promise.all(teams.map(async (team) => {
           const tokens = await getAdminTeamQrLoginTokens(team.id);
-          return [team.id, tokens.find((token) => token.status === "ACTIVE")?.status ?? tokens[0]?.status ?? "NONE"] as const;
+          return [team.id, tokens.find((token) => token.status === "ACTIVE")?.status ?? "NONE"] as const;
         })),
         Promise.all(stationDefinitions.map(async (station) => {
           const tokens = await getAdminStationQrTokens(station.id);
@@ -111,7 +111,7 @@ export function SystemConfigPage() {
           <img src={dataUrl} alt={`${params.context} QR`} width={260} height={260} />
           <Typography.Text>{params.context}</Typography.Text>
           <Typography.Text type="warning">
-            Save or download this QR now. For security, the token cannot be viewed again.
+            Save or download this QR securely. Rotate or revoke it if it is exposed.
           </Typography.Text>
           <Button type="primary" onClick={() => downloadDataUrl(dataUrl, params.filename)}>
             Download PNG
@@ -128,15 +128,15 @@ export function SystemConfigPage() {
     setQrBusyTeamId(team.id);
     try {
       const tokens = await getAdminTeamQrLoginTokens(team.id);
-      const token = tokens.find((item) => item.status === "ACTIVE") ?? tokens[0];
+      const token = tokens.find((item) => item.status === "ACTIVE");
       const cachedToken = getCachedTeamQrToken(team.id);
       const payload =
         token?.qrLoginUrl ||
         token?.loginUrl ||
         (token?.rawToken ? buildTeamQrLoginUrl(token.rawToken) : "") ||
-        (cachedToken ? buildTeamQrLoginUrl(cachedToken) : "");
+        (token && cachedToken ? buildTeamQrLoginUrl(cachedToken) : "");
       if (!payload) {
-        message.warning("Không thể hiển thị QR cũ vì backend chỉ lưu hash token. Hãy nhập lại QR token trong Edit Team nếu cần lưu/show QR hiện tại trên máy này.");
+        message.warning("Team chưa có QR login ACTIVE có thể hiển thị. Hãy generate hoặc rotate QR mới.");
         return;
       }
       cacheTeamQrPayload(team.id, payload);
@@ -144,7 +144,7 @@ export function SystemConfigPage() {
         title: `QR login for ${team.name}`,
         payload,
         filename: `team-${team.id}-qr.png`,
-        context: `${team.name} · Team QR login · ${token?.status ?? "ACTIVE"}`,
+        context: `${team.name} · Team QR login · Không hết hạn`,
       });
     } catch (error) {
       message.error(error instanceof Error ? error.message : "Unable to open Team QR");

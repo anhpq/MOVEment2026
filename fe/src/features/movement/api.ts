@@ -175,6 +175,15 @@ export async function getPlayerProgress(): Promise<PlayerProgressResponse[]> {
   return apiGet<PlayerProgressResponse[]>('/api/player/progress')
 }
 
+export type StationPlayingCountResponse = {
+  stationId: string
+  playingTeamCount: number
+}
+
+export async function getPlayerStationPlayingCounts(): Promise<StationPlayingCountResponse[]> {
+  return apiGet<StationPlayingCountResponse[]>('/api/player/stations/playing-counts')
+}
+
 export async function checkInStation(
   stationId: string,
   qrToken: string,
@@ -235,7 +244,7 @@ export type AdminTeamResponse = {
   color?: string | null
   qrLoginUrl?: string
   loginUrl?: string
-  qrLoginExpiresAt?: string
+  qrLoginExpiresAt?: string | null
 }
 
 export type AdminProgressMatrixResponse = {
@@ -288,14 +297,14 @@ export type AdminQrLoginTokenResponse = {
   loginUrl?: string
   qrLoginUrl?: string
   rawToken?: string
-  expiresAt: string
+  expiresAt: string | null
   isActive: boolean
   consumedAt?: string | null
   revokedAt?: string | null
   usageCount: number
   createdAt: string
   lastUsedAt?: string | null
-  status: 'ACTIVE' | 'EXPIRED' | 'CONSUMED' | 'REVOKED' | 'INACTIVE'
+  status: 'ACTIVE' | 'CONSUMED' | 'REVOKED' | 'INACTIVE'
 }
 
 export const getAdminTeamQrLoginTokens = (teamId: string) =>

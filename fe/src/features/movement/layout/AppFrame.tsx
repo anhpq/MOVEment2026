@@ -17,6 +17,7 @@ import {ROLE_LABELS} from "../constants";
 import {useBodyTeamTheme} from "../hooks/useBodyTeamTheme";
 import {useMovementStore} from "../store";
 import {getTeamThemeVars} from "../teamTheme";
+import {FixedBottomNavigation, type FixedBottomNavigationItem} from "./FixedBottomNavigation";
 import "./AppFrame.scss";
 
 type AppFrameProps = Readonly<PropsWithChildren>;
@@ -81,14 +82,69 @@ export function AppFrame({children}: AppFrameProps) {
     logout();
     navigate("/login");
   };
-  const totalStation = useMovementStore(
-    (state) => state.stationDefinitions.length,
-  );
-  const totalTeams = teams.length;
-
   if (!session) {
     return children;
   }
+
+  const navItems: FixedBottomNavigationItem[] = session.role !== "user" ? [
+    {
+      key: "teams",
+      label: "Teams",
+      icon: <TeamOutlined />,
+      active: location.pathname.startsWith("/teams"),
+      onClick: () => navigate("/teams"),
+    },
+    {
+      key: "rank",
+      label: "Rank",
+      icon: <TrophyOutlined />,
+      active: location.pathname.startsWith("/leaderboard"),
+      onClick: () => navigate("/leaderboard"),
+    },
+    {
+      key: "ops",
+      label: "Ops",
+      icon: <DashboardOutlined />,
+      active: location.pathname.startsWith("/admin/operations"),
+      onClick: () => navigate("/admin/operations"),
+    },
+    {
+      key: "setting",
+      label: "Setting",
+      icon: <SettingOutlined />,
+      active: location.pathname.startsWith("/system-config"),
+      onClick: () => navigate("/system-config"),
+    },
+  ] : [
+    {
+      key: "stations",
+      label: "Stations",
+      icon: <QrcodeOutlined />,
+      active: location.pathname.startsWith("/stations") && !location.pathname.startsWith("/stations/map"),
+      onClick: () => navigate("/stations"),
+    },
+    {
+      key: "rank",
+      label: "Rank",
+      icon: <TrophyOutlined />,
+      active: location.pathname.startsWith("/leaderboard"),
+      onClick: () => navigate("/leaderboard"),
+    },
+    {
+      key: "final",
+      label: "Final",
+      icon: <RubyOutlined />,
+      active: location.pathname.startsWith("/final"),
+      onClick: () => navigate("/final"),
+    },
+    {
+      key: "map",
+      label: "Map",
+      icon: <EnvironmentOutlined />,
+      active: location.pathname.startsWith("/stations/map"),
+      onClick: () => navigate("/stations/map"),
+    },
+  ];
 
   return (
     <Layout className={shellClassName} style={teamThemeVars}>
@@ -130,108 +186,7 @@ export function AppFrame({children}: AppFrameProps) {
 
       <Layout.Content className="page-stack">{children}</Layout.Content>
       <Layout.Footer className="shell-footer">
-        <Flex gap={8} justify="center" align="center" className="full-width">
-          {session.role !== "user" && (
-            <Button
-              size="large"
-              shape="round"
-              type={
-                location.pathname.startsWith("/teams") ? "primary" : "default"
-              }
-              icon={<TeamOutlined />}
-              onClick={() => navigate("/teams")}>
-              {location.pathname.startsWith("/teams") ?
-                `Teams (${totalTeams})`
-              : totalTeams}
-            </Button>
-          )}
-          {session.role === "user" && (
-            <Button
-              size="large"
-              shape="round"
-              type={
-                (
-                  location.pathname.startsWith("/stations") &&
-                  !location.pathname.startsWith("/stations/map")
-                ) ?
-                  "primary"
-                : "default"
-              }
-              icon={<QrcodeOutlined />}
-              onClick={() => navigate("/stations")}>
-              {location.pathname.startsWith("/stations") &&
-              !location.pathname.startsWith("/stations/map") ?
-                `Stations (${totalStation})`
-              : totalStation}
-            </Button>
-          )}
-          <Button
-            size="large"
-            shape="round"
-            type={
-              location.pathname.startsWith("/leaderboard") ?
-                "primary"
-              : "default"
-            }
-            icon={<TrophyOutlined />}
-            onClick={() => navigate("/leaderboard")}>
-            {location.pathname.startsWith("/leaderboard") ? "Rank" : ""}
-          </Button>
-          {session.role === "user" && (
-            <Button
-              size="large"
-              shape="round"
-              type={
-                location.pathname.startsWith("/final") ? "primary" : "default"
-              }
-              icon={<RubyOutlined />}
-              onClick={() => navigate("/final")}>
-              {location.pathname.startsWith("/final") ? "Final Cipher" : ""}
-            </Button>
-          )}
-          {session.role === "user" && (
-            <Button
-              size="large"
-              shape="round"
-              type={
-                location.pathname.startsWith("/stations/map") ?
-                  "primary"
-                : "default"
-              }
-              icon={<EnvironmentOutlined />}
-              onClick={() => navigate("/stations/map")}>
-              {location.pathname.startsWith("/stations/map") ? "Map" : ""}
-            </Button>
-          )}
-          {session.role !== "user" && (
-            <Button
-              size="large"
-              shape="round"
-              type={
-                location.pathname.startsWith("/admin/operations") ?
-                  "primary"
-                : "default"
-              }
-              icon={<DashboardOutlined />}
-              onClick={() => navigate("/admin/operations")}>
-              {location.pathname.startsWith("/admin/operations") ? "Ops" : ""}
-            </Button>
-          )}
-          {session.role !== "user" && (
-            <Button
-              size="large"
-              shape="round"
-              type={
-                location.pathname.startsWith("/system-config") ?
-                  "primary"
-                : "default"
-              }
-              icon={<SettingOutlined />}
-              onClick={() => navigate("/system-config")}>
-              {location.pathname.startsWith("/system-config") ? "Setting" : ""}
-            </Button>
-          )}
-        </Flex>
+        <FixedBottomNavigation items={navItems} />
       </Layout.Footer>
     </Layout>
   );

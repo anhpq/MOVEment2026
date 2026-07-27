@@ -136,6 +136,22 @@ export class PlayerService {
     return this.teamResults.toLeaderboardRows(results);
   }
 
+  async getStationPlayingCounts() {
+    const rows = await this.prisma.teamStationProgress.groupBy({
+      by: ['stationId'],
+      where: {
+        status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
+        station: { isActive: true },
+      },
+      _count: { _all: true },
+    });
+
+    return rows.map((row) => ({
+      stationId: row.stationId,
+      playingTeamCount: row._count._all,
+    }));
+  }
+
   async checkIn(teamId: number, stationId: string, dto: QrActionDto) {
     if (await this.eventConfig.isPastEventEnd()) {
       throw new ForbiddenException('Stations are closed');

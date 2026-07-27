@@ -5,30 +5,67 @@ import {
   TrophyFilled,
 } from "@ant-design/icons";
 import {Card, Empty, List, Typography} from "antd";
-import {useEffect, useState} from "react";
-import {getLeaderboard, type LeaderboardEntryResponse} from "../api";
+import {useEffect, useRef, useState} from "react";
+import {
+  getLeaderboard,
+  isAuthFailure,
+  type LeaderboardEntryResponse,
+} from "../api";
 import {useMovementStore} from "../store";
 import "./LeaderboardPage.css";
 
 export function LeaderboardPage() {
   const [rows, setRows] = useState<LeaderboardEntryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isFetchingRef = useRef(false);
+  const logout = useMovementStore((state) => state.logout);
 
   useEffect(() => {
     let cancelled = false;
 
-    void getLeaderboard()
-      .then((entries) => {
-        if (!cancelled) setRows(entries);
-      })
-      .finally(() => {
-        if (!cancelled) setIsLoading(false);
-      });
+    const refresh = async () => {
+      if (
+        cancelled ||
+        isFetchingRef.current ||
+        document.visibilityState !== "visible"
+      ) {
+        return;
+      }
+
+      isFetchingRef.current = true;
+      try {
+        const entries = await getLeaderboard();
+        if (!cancelled) {
+          setRows(entries);
+        }
+      } catch (error: unknown) {
+        if (!cancelled && isAuthFailure(error)) {
+          logout();
+        }
+      } finally {
+        isFetchingRef.current = false;
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        void refresh();
+      }
+    };
+
+    void refresh();
+    const timer = window.setInterval(() => void refresh(), 5000);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       cancelled = true;
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [logout]);
 
   const playerTeamName = useMovementStore((state) => {
     if (state.session?.role !== "user") {

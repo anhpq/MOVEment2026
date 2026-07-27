@@ -68,7 +68,7 @@ async function main() {
       where: {
         isActive: true,
         revokedAt: null,
-        expiresAt: {gt: new Date()},
+        consumedAt: null,
       },
     }),
     prisma.teamStationProgress.count({where: {stationId: {in: CANONICAL_STATION_IDS}}}),

@@ -104,6 +104,7 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | QR Login flow | Quét QR → mở website → đọc token → gọi backend → tạo Team session → redirect vào ứng dụng. |
 | QR Login payload | QR Login không được chứa username hoặc password. |
 | QR Login token | Token phải là Opaque Random Token, không suy ra từ `teamId`, username hoặc dữ liệu nghiệp vụ. |
+| Team QR expiry | Team QR Login token không tự hết hạn theo thời gian. `expires_at` có thể `null`; token mới/active phải dùng `expiresAt: null`. Revoke và rotate là cơ chế vô hiệu hóa chính. |
 | Team creation | Khi tạo Team mới, backend tự động tạo Team QR Login token nếu request không cung cấp token hợp lệ. |
 | Team seed | Khi seed Team mới, seed tự động tạo Team QR Login token theo cùng policy. |
 | Missing token repair | Seed hoặc maintenance command phải có khả năng bổ sung token cho Team đang thiếu token. |
@@ -416,6 +417,10 @@ Leaderboard sắp xếp theo:
 
 Backend là nguồn xác thực cuối cùng cho Leaderboard.
 
+Player Station list, Station map drawer và Station detail có thể hiển thị live
+`Playing Teams` aggregate theo Station. API chỉ được trả `stationId` và
+`playingTeamCount`, không lộ Team identity.
+
 ---
 
 ## 9. Team Results Excel Export
@@ -618,6 +623,13 @@ Canonical designated `ST` set là `ST001`, `ST002`, `ST003`, và `ST004`; mọi 
 Input `gameType: null`, `undefined`, `standard`, hoặc `STANDARD` normalize thành DB/API `STANDARD`; input `ST` giữ nguyên `ST`; mọi giá trị khác phải fail-fast.
 
 `mapX` và `mapY` hiện là deterministic implementation placeholders theo thứ tự canonical cho đến khi có tọa độ map thật; chúng không phải Business Rule về vị trí thực tế.
+
+Gameplay reset phục vụ rehearsal phải dry-run mặc định. Khi chạy destructive
+execute, mọi target đều cần `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"`;
+Production-like target cần thêm `RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"`.
+Reset phải giữ Team/User identity, vô hiệu hóa session cũ, tạo đúng một active
+Team QR non-expiring cho mỗi Team, khôi phục 17 Station canonical và verify
+invariant trong transaction.
 
 ---
 

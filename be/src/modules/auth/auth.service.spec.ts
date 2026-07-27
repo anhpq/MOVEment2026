@@ -346,7 +346,7 @@ describe('AuthService', () => {
         id: 10,
         teamId: 2,
         team,
-        expiresAt: new Date(Date.now() + 60_000),
+        expiresAt: null,
         isActive: true,
         consumedAt: null,
         revokedAt: null,
@@ -383,7 +383,7 @@ describe('AuthService', () => {
           id: 10,
           isActive: true,
           revokedAt: null,
-          expiresAt: { gt: expect.any(Date) },
+          consumedAt: null,
         },
         data: {
           lastUsedAt: expect.any(Date),
@@ -408,11 +408,24 @@ describe('AuthService', () => {
       })
     })
 
-    it('should reject an expired one-time QR login token', async () => {
+    it('should allow an active QR login token with a historical past expiresAt', async () => {
+      const team = {
+        id: 2,
+        username: 'team01',
+        passwordHash: '$2a$10$bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+        name: 'Team 01',
+        captainName: 'Leader',
+        totalPoints: 0,
+        maxPossiblePoints: 0,
+        totalPlaySeconds: 0,
+        startedAt: null,
+        status: 'ACTIVE',
+        color: '#000000',
+      }
       const token = {
         id: 10,
         teamId: 2,
-        team: { id: 2, status: 'ACTIVE' },
+        team,
         expiresAt: new Date(Date.now() - 60_000),
         isActive: true,
         consumedAt: null,
@@ -421,6 +434,69 @@ describe('AuthService', () => {
         maxUsageCount: 1,
       }
       mockPrisma.qrLoginToken.findUnique.mockResolvedValue(token)
+      mockPrisma.qrLoginToken.updateMany.mockResolvedValue({ count: 1 })
+      mockPrisma.teamSession.findFirst.mockResolvedValue(null)
+      mockPrisma.teamSession.create.mockResolvedValue({ id: 'session-qr-url-1' })
+      mockJwtService.signAsync.mockResolvedValue('team-token-from-qr-url')
+      mockPrisma.teamSession.update.mockResolvedValue({})
+      mockPrisma.team.update.mockResolvedValue({})
+      mockPrisma.activityLog.create.mockResolvedValue({})
+
+      const bcrypt = await import('bcryptjs')
+      jest.spyOn(bcrypt, 'hash').mockImplementation(async () => 'hashed-token')
+
+      const result = await service.loginWithQr({
+        token: 'opaque-random-qr-login-token',
+        deviceLabel: 'web-qr-url',
+      })
+
+      expect(result.accessToken).toBe('team-token-from-qr-url')
+      expect(mockPrisma.qrLoginToken.updateMany).toHaveBeenCalledWith({
+        where: {
+          id: 10,
+          isActive: true,
+          revokedAt: null,
+          consumedAt: null,
+        },
+        data: {
+          lastUsedAt: expect.any(Date),
+          usageCount: { increment: 1 },
+        },
+      })
+    })
+
+    it('rejects when a QR login token is consumed between preflight and transaction claim', async () => {
+      const team = {
+        id: 2,
+        username: 'team01',
+        passwordHash: '$2a$10$bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+        name: 'Team 01',
+        captainName: 'Leader',
+        totalPoints: 0,
+        maxPossiblePoints: 0,
+        totalPlaySeconds: 0,
+        startedAt: null,
+        status: 'ACTIVE',
+        color: '#000000',
+      }
+      const token = {
+        id: 10,
+        teamId: 2,
+        team,
+        expiresAt: null,
+        isActive: true,
+        consumedAt: null,
+        revokedAt: null,
+        usageCount: 0,
+        maxUsageCount: 1,
+      }
+      mockPrisma.qrLoginToken.findUnique
+        .mockResolvedValueOnce(token)
+        .mockResolvedValueOnce({
+          ...token,
+          consumedAt: new Date(),
+        })
+      mockPrisma.qrLoginToken.updateMany.mockResolvedValue({ count: 0 })
       mockPrisma.activityLog.create.mockResolvedValue({})
 
       await expect(
@@ -430,6 +506,7 @@ describe('AuthService', () => {
         }),
       ).rejects.toThrow(UnauthorizedException)
 
+      expect(mockPrisma.teamSession.create).not.toHaveBeenCalled()
       expect(mockPrisma.activityLog.create).toHaveBeenCalledWith({
         data: {
           actorType: 'TEAM',
@@ -437,7 +514,7 @@ describe('AuthService', () => {
           action: 'QR_LOGIN_REJECTED',
           entityType: 'QR_LOGIN_TOKEN',
           entityId: '10',
-          metadata: { reason: 'QR_LOGIN_EXPIRED' },
+          metadata: { reason: 'QR_LOGIN_CONSUMED' },
         },
       })
     })

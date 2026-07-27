@@ -459,3 +459,19 @@ Acceptance:
 2. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
 3. Review diff, run `git diff --check`, and create scoped local commits.
 4. Do not push or deploy without explicit user request.
+## 2026-07-27 Team QR live navigation, reset guard, and map WebP
+
+- [x] Team QR `expiresAt` is nullable and active/new Team QR tokens are non-expiring by time.
+- [x] Team QR migration drops `NOT NULL` only and does not null-out active tokens during rollout.
+- [x] QR login transaction re-checks `consumedAt: null`; race coverage rejects tokens consumed between preflight and claim.
+- [x] Admin Team QR status set is `ACTIVE`, `CONSUMED`, `REVOKED`, and `INACTIVE`; System Config does not render historical revoked/consumed payloads.
+- [x] `GET /api/player/stations/playing-counts` returns only `stationId` and `playingTeamCount`.
+- [x] Player Station list, Station map drawer, Station detail, and Leaderboard use visible-only 5-second polling with overlap protection and stale-data preservation.
+- [x] Fixed bottom navigation is preserved after fast-forward and includes safe-area top/right/bottom/left padding.
+- [x] Gameplay reset execute path enforces confirmation/backup guards before destructive transaction entry.
+- [x] Reset transaction verifies canonical Station/progress/Event/Final/Team QR/session/gameplay invariants.
+- [x] Runtime map asset uses 1280/1920/2950 WebP variants; original large PNG is retained under `fe/source-assets`.
+- [x] Targeted Backend tests, Backend lint/build, Frontend lint/build, and Prisma generate passed during implementation.
+- [ ] Full Backend Jest suite, disposable DB reset execute/idempotency, `db:verify`, Graphify update, and final diff check remain pending in the active run.
+- [ ] Manual browser smoke for live counts, hidden-tab polling, fixed nav safe-area, map persistence, WebP network requests, Team QR lifecycle, and Leaderboard polling remains pending.
+- [ ] Production mutation, push, deploy, and Production runtime verification remain out of scope without explicit approval.
