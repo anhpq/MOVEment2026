@@ -99,13 +99,11 @@
   color: #17223b;
 }
 
-.team-identity-button,
-.team-identity-text {
+.team-identity-button {
   max-width: min(38vw, 220px);
 }
 
-.team-identity-button.ant-btn > span:not(.anticon),
-.team-identity-text {
+.team-identity-button.ant-btn > span:not(.anticon) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -114,14 +112,6 @@
 .team-identity-button.ant-btn > span:not(.anticon) {
   display: inline-block;
   min-width: 0;
-}
-
-.team-identity-text {
-  display: block;
-  color: var(--team-primary, #17223b);
-  font-size: 0.86rem;
-  font-weight: 700;
-  line-height: 1.15;
 }
 
 .nav-strip {
@@ -687,8 +677,7 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
     padding-inline: 10px;
   }
 
-  .team-identity-button,
-  .team-identity-text {
+  .team-identity-button {
     max-width: min(36vw, 148px);
   }
 

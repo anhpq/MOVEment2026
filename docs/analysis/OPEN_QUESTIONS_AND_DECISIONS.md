@@ -90,7 +90,7 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | Login mới | Khi Team đăng nhập trên thiết bị mới, session cũ của Team phải bị revoke. |
 | QR login session | Login bằng QR và login bằng username/password sử dụng cùng một Team session policy. |
 | Session validation | Backend là nơi enforce active session. Frontend không phải nguồn xác thực cuối cùng. |
-| Team header identity | Với Team user, app header hiển thị tên Team hiện tại thay cho label `User`; non-Production vẫn cho phép logout từ header, còn Production chỉ hiển thị tên Team và không render logout button/icon/action. |
+| Team header identity | Với Team user, app header hiển thị tên Team hiện tại trong logout button thay cho label `User`; logout button vẫn hiển thị ở mọi environment cho đến khi có task release riêng để ẩn. |
 | Admin header logout | Admin header giữ nguyên logout button với label `Admin` trong mọi environment. |
 
 ---

@@ -1,9 +1,9 @@
-## 2026-07-27 Team header identity and Production logout visibility
+## 2026-07-27 Team header identity
 
 - Added the confirmed Authentication/User Header rule: Team users see the current Team name in the app header instead of the generic `User` label.
-- Preserved Admin behavior: Admin continues to see the existing `Admin` logout button in non-Production and Production.
-- Updated the Frontend `AppFrame` so Team non-Production keeps a logout button labeled with the Team name, while Team Production renders only the Team name with no logout button, icon, or click action.
-- Removed the redundant Team-only `Current team: ...` header line and added ellipsis styling so long Team names remain constrained; the Team name remains visible on mobile while the Deploy stamp keeps its existing mobile hide behavior.
+- Preserved Admin behavior: Admin continues to see the existing `Admin` logout button in every environment.
+- Updated the Frontend `AppFrame` so Team users keep a logout button labeled with the Team name in every environment; hiding Team logout is deferred to a separate release task.
+- Removed the redundant Team-only `Current team: ...` header line and added ellipsis styling so long Team names remain constrained; the Team logout button remains visible on mobile while the Deploy stamp keeps its existing mobile hide behavior.
 - No Backend API, session policy, seed, migration, QR, or database behavior changed.
 - Verification passed: Frontend lint, Frontend build, Frontend production build, `git diff --check`, and Graphify code graph update. Frontend builds retain the known non-blocking large-chunk warning.
 

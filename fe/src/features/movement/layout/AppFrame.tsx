@@ -66,7 +66,6 @@ export function AppFrame({children}: AppFrameProps) {
   const teamThemeVars = getTeamThemeVars(themedTeam?.teamColor);
   const shellClassName = themedTeam ? "mobile-shell team-themed-shell" : "mobile-shell";
   const activeTeamName = activeTeam?.name ?? "No team";
-  const isProduction = import.meta.env.PROD;
   useBodyTeamTheme(
     themedTeam ? `app-frame:${themedTeam.id}` : "app-frame:none",
     themedTeam ? teamThemeVars : null,
@@ -111,7 +110,7 @@ export function AppFrame({children}: AppFrameProps) {
                 {ROLE_LABELS[session.role]}
               </Button>
             )}
-            {session.role === "user" && !isProduction && (
+            {session.role === "user" && (
               <Button
                 className="team-identity-button"
                 color="danger"
@@ -121,13 +120,6 @@ export function AppFrame({children}: AppFrameProps) {
                 title={`Logout ${activeTeamName}`}>
                 {activeTeamName}
               </Button>
-            )}
-            {session.role === "user" && isProduction && (
-              <Typography.Text
-                className="team-identity-text"
-                title={activeTeamName}>
-                {activeTeamName}
-              </Typography.Text>
             )}
             <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
               {buildTimestampLabel}

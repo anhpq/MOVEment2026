@@ -1,10 +1,10 @@
 # MOVEment 2026 - Implementation Backlog
 
-## 2026-07-27 Team header identity and Production logout visibility
+## 2026-07-27 Team header identity
 
 - [x] Team user header displays the current Team name instead of generic `User`.
-- [x] Team non-Production keeps a logout button, but its visible label is the Team name.
-- [x] Team Production renders only the Team name, with no logout button, logout icon, or click action.
+- [x] Team users keep a logout button in every environment, but its visible label is the Team name.
+- [ ] Hiding Team logout before release is deferred to a separate release task.
 - [x] Admin header logout remains unchanged in every environment.
 - [x] Redundant `Current team: ...` copy was removed; Deploy remains present and keeps the existing mobile hide behavior.
 - [x] Frontend lint/build and production build passed; build retains the known non-blocking large-chunk warning.

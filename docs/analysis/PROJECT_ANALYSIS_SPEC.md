@@ -77,7 +77,7 @@ Rules:
 - QR Login and password login share the same session policy;
 - backend enforces session validity;
 - Team QR token and Team session are separate objects.
-- Team user header identifies the current Team by name. Non-Production keeps a Team-name logout button for testing, while Production shows only the Team name without a logout button, icon, or click action. Admin header logout remains unchanged.
+- Team user header identifies the current Team by name in the logout button instead of the generic `User` label. The Team logout button remains visible in every environment until a separate release task hides it. Admin header logout remains unchanged.
 
 ## Team QR Login
 

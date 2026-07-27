@@ -1,7 +1,7 @@
 # Graph Report - MOVEment2026  (2026-07-27)
 
 ## Corpus Check
-- 176 files · ~372,868 words
+- 176 files · ~372,874 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c4dfa5a3`
+- Built from commit: `02ee5586`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -253,7 +253,7 @@ Nodes (27): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schemat
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.11
-Nodes (19): @eslint/js, eslint-plugin-react-refresh, devDependencies, eslint, @eslint/js, eslint-plugin-react-refresh, globals, @types/node (+11 more)
+Nodes (19): eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-refresh, globals, @types/node, @types/qrcode, @types/react (+11 more)
 
 ### Community 8 - "store.ts"
 Cohesion: 0.09
