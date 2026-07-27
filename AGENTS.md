@@ -109,7 +109,34 @@ Provide only concise:
 - Make safe, evidence-based decisions from the repository.
 - Ask a question only when missing information materially changes the
   implementation or explicit authorization is required.
-- Ask one focused question at a time.
+- Ask one focused question at a time outside Plan Mode. A Plan Mode review round
+  may contain multiple material questions under the seven-round workflow below.
+
+### Plan Mode and Feature Analysis
+
+- Do not use `.kilo/plans` as a planning source or destination.
+- Feature plans are maintained as `docs/analysis/<FEATURE>_ANALYSIS.md` and
+  registered in `docs/analysis/FEATURE_INDEX.md`.
+- In Plan Mode, read the relevant Feature Analysis, Business Rules, routed
+  documents, and current Source Code before proposing implementation.
+- Every Plan Mode task requires at least seven distinct review rounds, including
+  small tasks and urgent requests. This requirement cannot be skipped.
+- Announce each round as `Rà X/7` and state the distinct concern being reviewed.
+- Each round must ask at least one material question. There is no maximum, but
+  filler, repeated, or cosmetically reworded questions do not count.
+- Wait for the user's answer before starting the next round. When the available
+  user-input mechanism expires after at most 240 seconds, use its recommended
+  default, record the assumption, and then count the round as complete.
+- The agent chooses review topics according to task risk; all seven topics must
+  be meaningfully different.
+- Publish the final proposed plan only after seven valid rounds.
+- For a revised plan, restart all seven rounds when the change is material. For
+  a local revision, the agent may carry forward still-valid rounds, but must
+  identify them and ensure the replacement plan has at least seven valid rounds.
+- Store a concise decision log in the Feature Analysis: review concern, decision
+  or default assumption, and effect on the plan. Do not copy the whole chat.
+- Plan Mode is read-only. If no Feature Analysis exists, persist the approved
+  plan as the first execution action after leaving Plan Mode.
 
 ### Implementation workflow
 
@@ -401,6 +428,16 @@ Read when the task affects:
 - Event timing;
 - leaderboard;
 - end-to-end behavior.
+
+Feature-specific implementation analysis files follow this convention:
+
+```text
+docs/analysis/<FEATURE>_ANALYSIS.md
+```
+
+They record scope, current implementation, decisions, verification, risks,
+provenance, and the seven-round decision log. They do not override confirmed
+Business Rules in `OPEN_QUESTIONS_AND_DECISIONS.md`.
 
 ## Implementation Status
 

@@ -197,6 +197,31 @@ Không cần đọc toàn bộ repository hoặc toàn bộ thư mục `docs/` c
 
 ---
 
+## 2.1 Plan Mode và Feature Analysis
+
+- Không dùng `.kilo/plans` để đọc hoặc lưu plan.
+- Plan của Feature được lưu tại `docs/analysis/<FEATURE>_ANALYSIS.md` và đăng ký
+  trong `FEATURE_INDEX.md`.
+- Mọi task trong Plan Mode phải có ít nhất bảy vòng rà khác nhau, kể cả task nhỏ
+  hoặc gấp; không được bỏ qua.
+- Trước mỗi vòng, ghi `Rà X/7` và nêu góc đang kiểm tra.
+- Mỗi vòng hỏi ít nhất một câu có thể khóa hoặc thay đổi plan. Không giới hạn số
+  câu, nhưng câu lặp hoặc câu hỏi lấp chỗ không được tính.
+- Phải chờ user trả lời rồi mới sang vòng tiếp theo. Nếu cơ chế user input hết
+  thời gian chờ tối đa 240 giây, dùng recommended default, ghi assumption và
+  tính vòng đó hoàn tất.
+- Agent tự chọn bảy chủ đề theo rủi ro task; bảy chủ đề phải khác nhau.
+- Chỉ phát hành proposed plan sau đủ bảy vòng hợp lệ.
+- Khi sửa plan, thay đổi lớn phải chạy lại bảy vòng. Thay đổi cục bộ có thể kế
+  thừa vòng cũ còn hợp lệ, nhưng phải nêu rõ và bảo đảm plan thay thế vẫn có ít
+  nhất bảy vòng.
+- Feature Analysis lưu decision log tóm tắt chủ đề, quyết định hoặc assumption
+  và ảnh hưởng; không chép nguyên chat.
+- Plan Mode chỉ đọc. Nếu chưa có analysis, ghi plan đã duyệt xuống repository
+  ngay ở bước execution đầu tiên sau khi rời Plan Mode.
+
+---
+
 # 3. Task Classification
 
 Trước khi làm việc, phải phân loại task vào một trong các nhóm dưới đây.

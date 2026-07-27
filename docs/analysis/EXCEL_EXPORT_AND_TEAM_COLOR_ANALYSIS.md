@@ -1,4 +1,12 @@
-# MOVEment 2026 — Excel Export and Team Color UI Requirements
+# Excel Export and Team Color Analysis
+
+## Status
+
+| Area | Status |
+| --- | --- |
+| Implementation | Completed |
+| Runtime/Production Verification | Pending verification |
+| Browser/Manual Verification | Pending verification |
 
 ## Purpose
 
@@ -8,6 +16,32 @@ This document records the confirmed requirements for:
 2. Team Color UI theming for Team-facing UI and Admin Team-context UI.
 
 `docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md` remains the Business Rule Source of Truth when documents conflict.
+
+## Current Implementation and Verification
+
+- Commit `c7bac12e` added Team Results export and scoped Team Color theming.
+- Commit `147ff07b` added the 25-color seed palette and Team gradients.
+- Commit `d9cccd48` aligned Excel Station headers with tracking modes.
+- Automated Backend tests and Backend/Frontend lint/build are recorded in
+  `BACKEND_AUDIT.md` and `IMPLEMENTATION_BACKLOG.md`.
+- Real Excel/Google Sheets opening, responsive multi-Team browser review, and
+  Production runtime verification remain pending where the backlog says so.
+
+## Decision Log
+
+1. Export scope review: include all non-deleted Teams and active Stations.
+2. Ranking review: share the Leaderboard comparator and stored total fields.
+3. Workbook review: keep one worksheet and the confirmed reduced column set.
+4. Data safety review: exclude secrets, raw tokens, passwords, and retired fields.
+5. Team Color review: use scoped Team variables and validated `#RRGGBB` values.
+6. Seed review: Production may repair only color for existing seed-managed Teams.
+7. Consolidation review: retain manual Excel/browser/Production checks as pending.
+
+## Provenance
+
+- `.kilo/plans/1784834152969-excel-export-team-color-plan.md`
+- `.kilo/plans/1784880849590-team-color-gradient-plan.md`
+- Previous file: `MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md`
 
 ---
 
