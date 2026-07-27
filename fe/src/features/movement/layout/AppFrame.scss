@@ -102,6 +102,28 @@
       radial-gradient(circle at top right, var(--team-primary-soft), transparent 34%),
       transparent;
   }
+
+  .shell-footer {
+    border-top-color: var(--team-focus-ring);
+    background:
+      radial-gradient(circle at 50% 0, var(--team-primary-soft), transparent 48%),
+      rgba(255, 252, 250, 0.96);
+  }
+
+  .fixed-bottom-navigation__item:hover,
+  .fixed-bottom-navigation__item:focus-visible {
+    background: var(--team-primary-soft);
+    color: var(--team-primary);
+  }
+
+  .fixed-bottom-navigation__item:focus-visible {
+    outline-color: var(--team-focus-ring);
+  }
+
+  .fixed-bottom-navigation__item.is-active {
+    background: var(--team-primary-soft);
+    color: var(--team-primary);
+  }
 }
 
 @media (max-width: 480px) {
