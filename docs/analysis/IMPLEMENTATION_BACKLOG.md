@@ -32,6 +32,7 @@
 
 - [x] Canonical Station IDs `ST001`...`ST017` keep their technical value for database, API, route, React key, select value, and QR mapping.
 - [x] Team/Admin Station list shows the shorter display code `01`...`17` beside each Station name.
+- [x] Station List and map drawer avatars show the display code instead of the play icon, without a duplicate code Tag beside the Station name.
 - [x] `ST018` is supported as display code `18` if it appears later.
 - [x] Player map markers and Admin map selector use the same display code helper.
 - [x] Other noncanonical Station IDs remain unchanged when displayed.

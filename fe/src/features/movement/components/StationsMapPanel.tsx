@@ -1,6 +1,5 @@
 import {
   FlagOutlined,
-  PlayCircleFilled,
   PlayCircleOutlined,
   ReloadOutlined,
   StarFilled,
@@ -509,6 +508,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     return activeTeamStationById[focusedStation.id] ?? null;
   }, [activeTeamStationById, focusedStation]);
 
+  const focusedStationDisplayCode =
+    focusedTeamStation ?
+      getStationDisplayCode(focusedTeamStation.stationId)
+    : "";
+
   const focusedPlayingTeamCount = useMemo(() => {
     if (!focusedTeamStation) {
       return 0;
@@ -864,12 +868,17 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         {focusedStation && focusedTeamStation && (
           <Card className="surface-card station-card station-showcase-card movement-map-station-card">
             <div className="station-showcase-header">
-              <div className="station-showcase-avatar" aria-hidden="true">
-                <PlayCircleFilled />
+              <div
+                className={`station-showcase-avatar${
+                  focusedStationDisplayCode.length > 2 ?
+                    " station-showcase-avatar-compact"
+                  : ""
+                }`}
+                aria-label={`Station ${focusedStationDisplayCode}`}>
+                {focusedStationDisplayCode}
               </div>
               <div className="station-showcase-heading">
                 <Flex gap={8} align="center" className="full-width">
-                  <Tag>{getStationDisplayCode(focusedTeamStation.stationId)}</Tag>
                   <Typography.Title level={4} className="card-title">
                     {focusedTeamStation.name}
                   </Typography.Title>

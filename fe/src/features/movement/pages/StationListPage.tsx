@@ -2,7 +2,6 @@ import {
   CheckCircleFilled,
   EditFilled,
   FlagOutlined,
-  PlayCircleFilled,
   PlayCircleOutlined,
   StarFilled,
   TeamOutlined,
@@ -250,12 +249,17 @@ export function StationListPage() {
             <List.Item>
               <Card className="surface-card station-card station-showcase-card">
                 <div className="station-showcase-header">
-                  <div className="station-showcase-avatar" aria-hidden="true">
-                    <PlayCircleFilled />
+                  <div
+                    className={`station-showcase-avatar${
+                      stationDisplayCode.length > 2 ?
+                        " station-showcase-avatar-compact"
+                      : ""
+                    }`}
+                    aria-label={`Station ${stationDisplayCode}`}>
+                    {stationDisplayCode}
                   </div>
                   <div className="station-showcase-heading">
                     <Flex gap={8} align="center" className="full-width">
-                      <Tag>{stationDisplayCode}</Tag>
                       <Typography.Title level={4} className="card-title">
                         {station.name}
                       </Typography.Title>
