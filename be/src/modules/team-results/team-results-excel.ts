@@ -4,6 +4,11 @@ import { RankedTeamResults } from './team-results.service';
 const HCMC_TIME_ZONE = 'Asia/Ho_Chi_Minh';
 const DATETIME_NUM_FMT = 'dd/mm/yyyy hh:mm:ss';
 const DURATION_NUM_FMT = '[h]:mm:ss';
+const STATION_TRACKING_MODE_LABELS = {
+  SCORE: 'Score only',
+  TIME: 'Time only',
+  BOTH: 'Both time and score',
+} satisfies Record<RankedTeamResults['stationColumns'][number]['trackingMode'], string>;
 
 export function formatHcmcTimestampForFileName(date = new Date()) {
   const parts = getHcmcDateParts(date);
@@ -30,11 +35,14 @@ export async function buildTeamResultsWorkbook(results: RankedTeamResults) {
     'Final Submitted At',
     'Final Rank',
     'Final Bonus Score',
-    ...results.stationColumns.flatMap((station) => [
-      `${station.header} - Check-in`,
-      `${station.header} - Check-out`,
-      `${station.header} - Score`,
-    ]),
+    ...results.stationColumns.flatMap((station) => {
+      const stationHeader = `${station.header} [${STATION_TRACKING_MODE_LABELS[station.trackingMode]}]`;
+      return [
+        `${stationHeader} - Check-in`,
+        `${stationHeader} - Check-out`,
+        `${stationHeader} - Score`,
+      ];
+    }),
   ];
   worksheet.addRow(headers);
   worksheet.getRow(1).font = { bold: true };

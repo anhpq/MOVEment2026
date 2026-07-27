@@ -46,6 +46,7 @@ describe('Team Results ranking and Excel', () => {
       stationColumns: [
         { id: 'ST001', name: 'Station', header: 'Station', trackingMode: 'BOTH' },
         { id: 'ST002', name: 'Station', header: 'Station (#02)', trackingMode: 'SCORE' },
+        { id: 'ST003', name: 'Timer', header: 'Timer', trackingMode: 'TIME' },
       ],
       rows: [
         {
@@ -64,6 +65,13 @@ describe('Team Results ranking and Excel', () => {
             },
             ST002: {
               stationId: 'ST002',
+              checkedInAt: new Date('2026-08-21T07:10:00.000Z'),
+              checkedOutAt: new Date('2026-08-21T07:15:00.000Z'),
+              score: 25,
+              completed: true,
+            },
+            ST003: {
+              stationId: 'ST003',
               checkedInAt: null,
               checkedOutAt: null,
               score: 0,
@@ -93,17 +101,29 @@ describe('Team Results ranking and Excel', () => {
       'Final Submitted At',
       'Final Rank',
       'Final Bonus Score',
-      'Station - Check-in',
-      'Station - Check-out',
-      'Station - Score',
-      'Station (#02) - Check-in',
-      'Station (#02) - Check-out',
-      'Station (#02) - Score',
+      'Station [Both time and score] - Check-in',
+      'Station [Both time and score] - Check-out',
+      'Station [Both time and score] - Score',
+      'Station (#02) [Score only] - Check-in',
+      'Station (#02) [Score only] - Check-out',
+      'Station (#02) [Score only] - Score',
+      'Timer [Time only] - Check-in',
+      'Timer [Time only] - Check-out',
+      'Timer [Time only] - Score',
     ]);
-    expect(worksheet!.getRow(1).values).not.toContain('Team Color');
-    expect(worksheet!.getRow(1).values).not.toContain('Team Status');
-    expect(worksheet!.getRow(1).values).not.toContain('Total Stations');
-    expect(worksheet!.getRow(1).values).not.toContain('Final Challenge Status');
+    const headerValues = worksheet!.getRow(1).values as unknown[];
+    expect(worksheet!.getCell('P2').value).not.toBe('');
+    expect(worksheet!.getCell('Q2').value).not.toBe('');
+    expect(worksheet!.getCell('P2').value).not.toEqual(worksheet!.getCell('Q2').value);
+    expect(
+      headerValues.some(
+        (value) => typeof value === 'string' && value.endsWith(' - Duration'),
+      ),
+    ).toBe(false);
+    expect(headerValues).not.toContain('Team Color');
+    expect(headerValues).not.toContain('Team Status');
+    expect(headerValues).not.toContain('Total Stations');
+    expect(headerValues).not.toContain('Final Challenge Status');
     expect(worksheet!.getColumn(6).numFmt).toBe('[h]:mm:ss');
     expect(worksheet!.getColumn(10).numFmt).toBe('dd/mm/yyyy hh:mm:ss');
     expect(JSON.stringify(worksheet!.getSheetValues())).not.toContain('answerSubmitted');

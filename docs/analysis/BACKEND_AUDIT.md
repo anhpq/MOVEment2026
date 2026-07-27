@@ -1,3 +1,12 @@
+## 2026-07-27 Team Results tracking-mode headers
+
+- Extended the confirmed Team Results Excel Business Rule so every active Station's three column headers identify its tracking mode as `[Score only]`, `[Time only]`, or `[Both time and score]`.
+- Updated ExcelJS workbook generation to derive the display label from the existing `TeamResultStationColumn.trackingMode`; no Station column, worksheet, API field, database schema, migration, seed, ranking, score, duration, or timestamp behavior changed.
+- Added workbook regression coverage for all three tracking modes, duplicate Station headers, and a completed `SCORE` Station whose accepted Check-in and Check-out timestamps remain different.
+- Verification passed: targeted Team Results Jest test (`3/3`), full Backend Jest suite (`132/132`), Backend lint, and Backend build.
+- Graphify incremental update was attempted through the saved Python interpreter but stopped before updating the graph because 52 changed documents/images required a semantic extraction backend; `--code-only` was not used because it would omit the changed documentation.
+- Manual Excel/Google Sheets open review, Production runtime verification, push, and deploy were not performed.
+
 ## 2026-07-27 Tester backend ExcelJS dependency detection
 
 - Investigated the Backend build failure in `src/modules/team-results/team-results-excel.ts` where TypeScript could not resolve `exceljs` and then inferred `worksheet.columns.forEach(...)` parameters as `any`.

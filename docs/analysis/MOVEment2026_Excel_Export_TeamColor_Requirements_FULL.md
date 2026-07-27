@@ -58,9 +58,9 @@ Include active Stations only.
 Each active Station has exactly three columns:
 
 ```text
-<Station Header> - Check-in
-<Station Header> - Check-out
-<Station Header> - Score
+<Station Header> [<Tracking Mode>] - Check-in
+<Station Header> [<Tracking Mode>] - Check-out
+<Station Header> [<Tracking Mode>] - Score
 ```
 
 Do not include per-Station `Status` or per-Station `Duration`.
@@ -69,6 +69,8 @@ Station Header rules:
 
 - use `Station.name`;
 - duplicate names receive deterministic suffixes in Station order, e.g. `Station`, `Station (#02)`, `Station (#03)`.
+- append the tracking mode after the unique Station header: `SCORE` → `[Score only]`, `TIME` → `[Time only]`, `BOTH` → `[Both time and score]`.
+- keep accepted Check-in and Check-out timestamps unchanged; the tracking mode label explains whether their difference contributes to play time.
 
 Station order:
 
@@ -227,6 +229,7 @@ Create Team route `/system-config/teams/new` uses fallback shell theme; typed co
 
 - Every non-deleted Team appears once.
 - Active Stations appear as three-column groups only.
+- Every active Station group identifies its tracking mode in all three column headers.
 - Inactive Stations do not create columns or affect computed totals.
 - Not-played/incomplete Stations export blank Check-in/Check-out and score `0`.
 - `Total Play Time` equals `team.totalPlaySeconds`.

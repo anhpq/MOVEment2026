@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Team Results tracking-mode headers
+
+- [x] Every active Station's three Team Results headers display `[Score only]`, `[Time only]`, or `[Both time and score]` from the existing Station tracking mode.
+- [x] Check-in/Check-out timestamps, three-column Station schema, ranking, scores, and play-duration behavior remain unchanged.
+- [x] Workbook tests cover all three tracking modes, duplicate Station names, and different accepted Check-in/Check-out timestamps for a completed `SCORE` Station.
+- [x] Targeted Team Results tests (`3/3`), full Backend Jest suite (`132/132`), Backend lint, and Backend build passed.
+- [ ] Graphify incremental update remains pending because the available CLI stopped before semantic extraction; no code-only graph replacement was performed.
+- [ ] Manual Excel/Google Sheets open review and Production runtime verification remain pending.
+
 ## 2026-07-27 Tester backend ExcelJS dependency detection
 
 - [x] Confirmed Team Results Excel export still uses the declared `exceljs` dependency.

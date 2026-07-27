@@ -295,7 +295,7 @@ Base columns are `Team Code`, `Team Name`, `Captain Name`, `Username`, `Total St
 
 `Team Code` is `Team.id`; the export omits duplicate `Team ID`, `Team Color`, `Team Status`, `Total Stations`, and `Final Challenge Status` columns.
 
-Station columns include active Stations only. Each active Station group has only `Check-in`, `Check-out`, and `Score`, using `Station.name` with deterministic suffixes for duplicate names.
+Station columns include active Stations only. Each active Station group has only `Check-in`, `Check-out`, and `Score`, using `Station.name` with deterministic suffixes for duplicate names. Every Station header appends its tracking mode as `[Score only]`, `[Time only]`, or `[Both time and score]` so actual Check-in/Check-out timestamps remain unambiguous without adding a per-Station `Duration` column.
 
 `Total Score` and Rank use `team.totalPoints`. `Computed Score` is reconciliation only: active completed Station scores plus correct Final bonus. `Total Play Time` uses `team.totalPlaySeconds` for tie-break visibility and is not recomputed by export.
 

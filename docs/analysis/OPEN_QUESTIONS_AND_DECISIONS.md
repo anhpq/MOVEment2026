@@ -427,6 +427,7 @@ Backend là nguồn xác thực cuối cùng cho Leaderboard.
 | Team Code | `Team Code = Team.id`; không thêm cột `Team ID` riêng vì trùng dữ liệu. |
 | Excluded columns | Không export `Team Color`, `Team Status`, `Total Stations`, hoặc `Final Challenge Status`. |
 | Station columns | Mỗi Station active chỉ có `Check-in`, `Check-out`, `Score`; không có per-Station `Status` hoặc `Duration`. |
+| Station tracking mode header | Mỗi Station column header phải hiển thị tracking mode sau tên Station: `SCORE` → `[Score only]`, `TIME` → `[Time only]`, `BOTH` → `[Both time and score]`. |
 | Duplicate Station name | Dùng `Station.name`; tên trùng được suffix theo thứ tự deterministic, ví dụ `Station (#02)`. |
 | Total Play Time | Dùng `team.totalPlaySeconds` để hiển thị tie-break ranking; export không tự repair/recompute field này. |
 | Total Score | Ranking dùng `team.totalPoints`; export không tự repair/recompute field này. |
