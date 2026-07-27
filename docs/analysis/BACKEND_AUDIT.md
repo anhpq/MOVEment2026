@@ -1,3 +1,15 @@
+## 2026-07-27 Localized header visual refinement
+
+- Refined the shared AppFrame header into a floating rounded white card with
+  polished account badge, divider, responsive mobile compaction, and Team-color
+  accents while preserving the existing `RunningPersonIcon` brand logo.
+- Replaced the Ant Design segmented language control with inline circular VI/EN
+  flag buttons, keeping the existing persisted i18next language behavior and
+  Player Station refetch hook unchanged.
+- Verification passed: Frontend lint, Frontend production build, and
+  `git diff --check`. Frontend build retains the known non-blocking large-chunk
+  warning. Manual browser visual smoke was not performed in this workspace.
+
 ## 2026-07-27 Frontend localization follow-up
 
 - Extended the confirmed Frontend localization behavior without Backend,
@@ -8,9 +20,10 @@
 - Updated Team/Admin visible copy on Station list/detail/map, Team list,
   Leaderboard, Final, and Admin Operations to use VI/EN resources. `MOVEment
   2026` remains unchanged.
-- Language switch now displays flag emoji labels `🇻🇳 VI` and `🇬🇧 EN`. Station
-  UI ordering now uses status order then natural `stationId`; Station dropdowns
-  without status sort by Station ID.
+- Language switch initially displayed compact VI/EN labels; the later localized
+  header visual refinement supersedes this with circular inline flag buttons.
+  Station UI ordering now uses status order then natural `stationId`; Station
+  dropdowns without status sort by Station ID.
 - Final UI keeps compact navigation label `Final`, uses a flag icon, and shows
   the full heading as `Thử thách cuối cùng` / `Final Challenge`. Success trophy
   remains unchanged.

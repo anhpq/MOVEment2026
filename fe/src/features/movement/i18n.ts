@@ -9,6 +9,7 @@ export const translationResources = {
   vi: {
     translation: {
       language: {
+        switch: "Chọn ngôn ngữ",
         vi: "🇻🇳 VI",
         en: "🇬🇧 EN",
       },
@@ -305,6 +306,7 @@ export const translationResources = {
   en: {
     translation: {
       language: {
+        switch: "Choose language",
         vi: "🇻🇳 VI",
         en: "🇬🇧 EN",
       },

@@ -91,9 +91,21 @@
       rgba(255, 252, 250, 0.96);
   }
 
+  .header-content {
+    border-color: var(--team-focus-ring);
+  }
+
+  .header-content::before {
+    background: radial-gradient(circle, var(--team-primary-soft), transparent 68%);
+  }
+
   .app-runner-mark,
   .brand-title,
   .brand-subtitle b {
+    color: var(--team-primary);
+  }
+
+  .language-switch__button.is-active {
     color: var(--team-primary);
   }
 

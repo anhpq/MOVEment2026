@@ -497,6 +497,8 @@ Acceptance:
 
 - [x] Keep the Team page label visible beside its icon on mobile.
 - [x] Reduce shared shell and primary page-header sizing consistently.
+- [x] Refine shared AppFrame header into a floating rounded card and circular
+  VI/EN flag switch while preserving the current brand logo.
 - [ ] Perform final visual review on representative desktop and mobile devices.
 
 ## P2 — Team Station list presentation

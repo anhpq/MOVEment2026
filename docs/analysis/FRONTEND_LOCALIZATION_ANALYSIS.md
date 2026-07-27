@@ -37,7 +37,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
   kept, old Station data is preserved, and a localized warning is shown.
 - Admin store keeps `name`, `description`, `nameEn`, and `descriptionEn`.
 - Station Editor always displays separate VI and EN inputs.
-- Language switch labels are `🇻🇳 VI` and `🇬🇧 EN` with no image asset dependency.
+- Language switch renders circular VI/EN flag buttons with no external image
+  asset dependency.
 - Station list/detail/map status labels and visible controls use localized copy.
 - Station UI ordering uses status order `In Progress`, `New`, `Finished`, then
   natural ascending `stationId`; Station dropdowns without status sort by ID.
@@ -48,6 +49,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
   flag icon while the success trophy remains unchanged.
 - Frontend user-facing fallback errors are localized on the updated Station,
   Final, Map, and Operations paths instead of rendering raw Backend messages.
+- Shared AppFrame header uses a floating white card layout inspired by the
+  approved mockup while preserving the existing `RunningPersonIcon` brand logo.
 
 ## Interfaces and Data
 
@@ -78,6 +81,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Completed in the latest follow-up implementation run: Frontend
   `i18n:check`, Frontend lint, Frontend production build, and JSX visible-copy
   scan confirming only the `MOVEment 2026` brand remains as direct text.
+- Completed in the latest header visual follow-up: Frontend lint, Frontend
+  production build, and `git diff --check`.
 - Completed in the earlier Plan 2 implementation run: Prisma generate, targeted
   Backend Player/Admin service tests, Backend lint/build, Frontend lint/build.
 - Still required: migration on disposable DB, two seed runs/idempotency,
@@ -113,6 +118,10 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 11. Follow-up implementation constraint review: choose the least-change path by
     extending existing i18n resources/helpers and avoiding new assets,
     dependencies, database, API, seed, QR, scoring, or Team persistence changes.
+12. Header visual follow-up: user requested a prettier mockup-aligned header
+    without changing the current brand logo; implementation keeps
+    `RunningPersonIcon`, refines AppFrame layout/CSS, and replaces text/emoji
+    segmented language labels with inline circular flag buttons.
 
 ## Provenance
 

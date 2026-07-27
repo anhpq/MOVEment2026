@@ -8,7 +8,7 @@ import {
   TeamOutlined,
   TrophyOutlined,
 } from "@ant-design/icons";
-import {App as AntdApp, Button, Flex, Layout, Typography} from "antd";
+import {App as AntdApp, Button, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
 import {useMemo, useRef} from "react";
 import {useTranslation} from "react-i18next";
@@ -193,32 +193,35 @@ export function AppFrame({children}: AppFrameProps) {
             <span className="brand-title">MOVEment 2026</span>
           </div>
 
-          <Flex vertical align="flex-end" gap={2} className="account-cluster">
-            {session.role === "admin" && (
-              <Button
-                color="danger"
-                variant="filled"
-                icon={<LogoutOutlined />}
-                onClick={handleLogout}>
-                {t("common.admin")}
-              </Button>
-            )}
-            {session.role === "user" && (
-              <Button
-                className="team-identity-button"
-                color="danger"
-                variant="filled"
-                icon={<LogoutOutlined />}
-                onClick={handleLogout}
-                title={`${t("auth.logout")} ${activeTeamName}`}>
-                {activeTeamName}
-              </Button>
-            )}
-            <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
-              {buildTimestampLabel}
-            </Typography.Text>
+          <div className="account-cluster">
+            <div className="account-actions">
+              {session.role === "admin" && (
+                <Button
+                  color="danger"
+                  variant="filled"
+                  icon={<LogoutOutlined />}
+                  onClick={handleLogout}>
+                  {t("common.admin")}
+                </Button>
+              )}
+              {session.role === "user" && (
+                <Button
+                  className="team-identity-button"
+                  color="danger"
+                  variant="filled"
+                  icon={<LogoutOutlined />}
+                  onClick={handleLogout}
+                  title={`${t("auth.logout")} ${activeTeamName}`}>
+                  {activeTeamName}
+                </Button>
+              )}
+              <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
+                {buildTimestampLabel}
+              </Typography.Text>
+            </div>
+            <span className="header-divider" aria-hidden="true" />
             <LanguageSwitch onChange={handleLanguageChange} />
-          </Flex>
+          </div>
         </div>
       </Layout.Header>
 

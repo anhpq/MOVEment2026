@@ -260,8 +260,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/layout/AppFrame.tsx": {
-    "mtime": 1785168999.1786046,
-    "ast_hash": "c0c68efba95bd0b72b21875d7b3f1864",
+    "mtime": 1785171038.0829544,
+    "ast_hash": "00ed3f9757390aef0d8fb0a52815eaeb",
     "semantic_hash": ""
   },
   "fe/src/features/movement/layout/ProtectedRoute.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785169534.4414186,
-    "ast_hash": "2163236e98a9775c538d0c7386988b0a",
+    "mtime": 1785171194.5818028,
+    "ast_hash": "4ad5d8e98c1b5a6e9ba536af0f6fc215",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -515,8 +515,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785169523.5038438,
-    "ast_hash": "128e69c39abb25f81c71c0951726404c",
+    "mtime": 1785171189.221992,
+    "ast_hash": "29f2d06e2d4636725113c9d1062e8f0b",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -985,13 +985,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/LanguageSwitch.tsx": {
-    "mtime": 1785165679.6135333,
-    "ast_hash": "052063512f054247f625dd0cb43c94b8",
+    "mtime": 1785171924.5680285,
+    "ast_hash": "f43528e6f5b5e7f2892b9555e4b1e637",
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1785169291.905675,
-    "ast_hash": "521fa38b002f3a6c7a28c8057e29f180",
+    "mtime": 1785171024.1957262,
+    "ast_hash": "e0ba6ee3ec9ad7eb2d68b14897f593b6",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -1005,8 +1005,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md": {
-    "mtime": 1785169512.999406,
-    "ast_hash": "4b358cf9ca9d2cc2b304f327e9347766",
+    "mtime": 1785171162.8080735,
+    "ast_hash": "dcab4b18a267b05cbf43c4c05538ccb0",
     "semantic_hash": ""
   },
   "docs/analysis/GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md": {
