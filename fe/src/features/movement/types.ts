@@ -1,4 +1,5 @@
 export type Role = "user" | "admin";
+export type SupportedLanguage = "vi" | "en";
 
 export type StationStatus = "New" | "In Progress" | "Finished";
 export type StationTrackingMode = "SCORE" | "TIME" | "BOTH";
@@ -33,7 +34,9 @@ export type Team = {
 export type StationDefinition = {
   id: string;
   name: string;
+  nameEn?: string;
   description?: string | null;
+  descriptionEn?: string | null;
   durationMinutes?: number;
   youtubeUrl?: string | null;
   latitude?: number | null;
@@ -48,8 +51,10 @@ export type StationDefinition = {
 export type TeamStation = {
   id: string;
   name: string;
+  nameEn?: string;
   status: StationStatus;
   description?: string | null;
+  descriptionEn?: string | null;
   durationMinutes: number;
   trackingMode: StationTrackingMode;
   youtubeUrl?: string | null;
@@ -68,7 +73,9 @@ export type TeamStation = {
 export type StationFormValues = {
   id: string;
   name: string;
+  nameEn: string;
   description?: string | null;
+  descriptionEn?: string | null;
   durationMinutes: number;
   trackingMode: StationTrackingMode;
   markerX?: number;

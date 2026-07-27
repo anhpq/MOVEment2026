@@ -1,6 +1,7 @@
 import QRCode from "qrcode";
-import {App as AntdApp, Button, Drawer, Flex, Form, Input, InputNumber, Select, Typography} from "antd";
+import {App as AntdApp, Button, Divider, Drawer, Flex, Form, Input, InputNumber, Select, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {StationFormValues} from "../types";
@@ -17,6 +18,7 @@ export function StationEditorPage() {
   const navigate = useNavigate();
   const params = useParams<{stationId: string}>();
   const {modal, message} = AntdApp.useApp();
+  const {t} = useTranslation();
   const stationDefinitions = useMovementStore(
     (state) => state.stationDefinitions,
   );
@@ -44,13 +46,13 @@ export function StationEditorPage() {
     modal.info({
       centered: true,
       width: 520,
-      title: "One-time Station QR",
+      title: t("stationEditor.oneTimeQr"),
       content: (
         <Flex vertical gap={12} align="center">
           <img src={dataUrl} alt={`${context} QR`} width={260} height={260} />
           <Typography.Text>{context}</Typography.Text>
           <Typography.Text type="warning">
-            Save or download this QR now. For security, the token cannot be viewed again.
+            {t("stationEditor.saveQr")}
           </Typography.Text>
           <Button type="primary" onClick={() => {
             const link = document.createElement("a");
@@ -58,7 +60,7 @@ export function StationEditorPage() {
             link.download = filename;
             link.click();
           }}>
-            Download PNG
+            {t("stationEditor.downloadPng")}
           </Button>
         </Flex>
       ),
@@ -71,6 +73,8 @@ export function StationEditorPage() {
       initialQrTokensRef.current = {checkInQrToken: "", checkOutQrToken: ""};
       form.setFieldsValue({
         ...station,
+        nameEn: station.nameEn ?? station.name,
+        descriptionEn: station.descriptionEn ?? null,
         markerX: station.markerX ?? 50,
         markerY: station.markerY ?? 50,
         trackingMode: station.trackingMode ?? "BOTH",
@@ -93,7 +97,7 @@ export function StationEditorPage() {
       };
     }
 
-    form.setFieldsValue({id: "", name: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "STANDARD", maxPoints: DEFAULT_STATION_MAX_POINTS, checkInQrToken: "", checkOutQrToken: ""});
+    form.setFieldsValue({id: "", name: "", nameEn: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "STANDARD", maxPoints: DEFAULT_STATION_MAX_POINTS, checkInQrToken: "", checkOutQrToken: ""});
     return () => {
       cancelled = true;
     };
@@ -106,7 +110,7 @@ export function StationEditorPage() {
 
   return (
     <Drawer
-      title={isEditing ? "Edit Station" : "Create Station"}
+      title={isEditing ? t("stationEditor.editTitle") : t("stationEditor.createTitle")}
       onClose={handleClose}
       open={isOpen}>
       <Form
@@ -119,25 +123,26 @@ export function StationEditorPage() {
 
           if (duplicate) {
             message.error(
-              "Station ID already exists. Please choose a different ID.",
+              t("stationEditor.duplicateId"),
             );
             return;
           }
 
           modal.confirm({
             centered: true,
-            title: isEditing ? "Update Station?" : "Create New Station?",
-            content:
-              "The station list for all teams will be synchronized with this change.",
-            okText: "Confirm",
-            cancelText: "Cancel",
+            title: isEditing ? t("stationEditor.updateConfirmTitle") : t("stationEditor.createConfirmTitle"),
+            content: t("stationEditor.syncConfirm"),
+            okText: t("stationEditor.confirm"),
+            cancelText: t("stationEditor.cancel"),
             onOk: async () => {
               if (station && session?.role === "admin") {
                 const checkInQrToken = values.checkInQrToken?.trim() ?? "";
                 const checkOutQrToken = values.checkOutQrToken?.trim() ?? "";
                 const updated = await updateAdminStation(station.id, {
                   name: values.name,
+                  nameEn: values.nameEn,
                   description: values.description ?? null,
+                  descriptionEn: values.descriptionEn ?? null,
                   trackingMode: values.trackingMode,
                   mapX: values.markerX,
                   mapY: values.markerY,
@@ -161,7 +166,9 @@ export function StationEditorPage() {
                 const createdStation = await createAdminStation({
                   id: values.id,
                   name: values.name,
+                  nameEn: values.nameEn,
                   description: values.description ?? null,
+                  descriptionEn: values.descriptionEn ?? null,
                   trackingMode: values.trackingMode,
                   mapX: values.markerX ?? 50,
                   mapY: values.markerY ?? 50,
@@ -193,8 +200,8 @@ export function StationEditorPage() {
               loadDatabase(await fetchAdminDatabase());
               message.success(
                 isEditing ?
-                  "Station updated successfully"
-                : "New station created successfully",
+                  t("stationEditor.updated")
+                : t("stationEditor.created"),
               );
               handleClose();
             },
@@ -204,81 +211,94 @@ export function StationEditorPage() {
           label="ID"
           name="id"
           rules={[
-            {required: true, message: "Please enter an ID for the station"},
+            {required: true, message: t("stationEditor.idRequired")},
           ]}>
           <Input disabled={isEditing} placeholder="ST06" />
         </Form.Item>
+        <Divider>{t("stationEditor.viSection")}</Divider>
         <Form.Item
-          label="Name"
+          label={t("stationEditor.nameVi")}
           name="name"
           rules={[
-            {required: true, message: "Please enter a name for the station"},
+            {required: true, message: t("stationEditor.nameViRequired")},
+          ]}>
+          <Input placeholder="Mê Trận" />
+        </Form.Item>
+        <Form.Item label={t("stationEditor.descriptionVi")} name="description">
+          <Input placeholder="Mô tả Station" />
+        </Form.Item>
+        <Divider>{t("stationEditor.enSection")}</Divider>
+        <Form.Item
+          label={t("stationEditor.nameEn")}
+          name="nameEn"
+          rules={[
+            {required: true, message: t("stationEditor.nameEnRequired")},
           ]}>
           <Input placeholder="Maze" />
         </Form.Item>
-        <Form.Item label="Description" name="description">
+        <Form.Item label={t("stationEditor.descriptionEn")} name="descriptionEn">
           <Input placeholder="Station description" />
         </Form.Item>
         <Form.Item
-          label="Tracking Mode"
+          label={t("stationEditor.trackingMode")}
           name="trackingMode"
-          tooltip="Score: no duration; Time: QR start/end record duration; Both: record duration and allow points"
+          tooltip={t("stationEditor.trackingModeHelp")}
           rules={[
             {
               required: true,
-              message: "Please choose how this station is counted",
+              message: t("stationEditor.trackingModeRequired"),
             },
           ]}>
           <Select
             options={[
-              {value: "BOTH", label: "Both time and score"},
-              {value: "SCORE", label: "Score only"},
-              {value: "TIME", label: "Time only"},
+              {value: "BOTH", label: t("stationEditor.both")},
+              {value: "SCORE", label: t("stationEditor.scoreOnly")},
+              {value: "TIME", label: t("stationEditor.timeOnly")},
             ]}
           />
         </Form.Item>
         <Form.Item
-          label="YouTube Video URL"
+          label={t("stationEditor.youtube")}
           name="youtubeUrl"
           rules={[
             {
               required: selectedGameType === "ST",
-              message: "ST stations require a YouTube URL",
+              message: t("stationEditor.youtubeRequired"),
             },
-            {type: "url", message: "Please enter a valid URL"},
+            {type: "url", message: t("stationEditor.validUrl")},
           ]}>
           <Input placeholder="YouTube video URL" />
         </Form.Item>
-        <Form.Item label="Map X (%)" name="markerX" rules={[{required: true}]}>
+        <Form.Item label={t("stationEditor.mapX")} name="markerX" rules={[{required: true}]}>
           <InputNumber min={0} max={100} className="full-width" />
         </Form.Item>
-        <Form.Item label="Map Y (%)" name="markerY" rules={[{required: true}]}>
+        <Form.Item label={t("stationEditor.mapY")} name="markerY" rules={[{required: true}]}>
           <InputNumber min={0} max={100} className="full-width" />
         </Form.Item>
-        <Form.Item label="Game Type" name="gameType" rules={[{required: true}]}>
+        <Form.Item label={t("stationEditor.gameType")} name="gameType" rules={[{required: true}]}>
           <Select options={[...GAME_TYPE_OPTIONS]} />
         </Form.Item>
-        <Form.Item label="Max Points" name="maxPoints" rules={[{required: true}]}>
+        <Form.Item label={t("stationEditor.maxPoints")} name="maxPoints" rules={[{required: true}]}>
           <InputNumber min={0} precision={0} className="full-width" />
         </Form.Item>
         {isEditing && (
           <>
             <Form.Item
-              label="Check-in QR token"
+              label={t("stationEditor.checkInQr")}
               name="checkInQrToken"
-              help="Leave empty to keep the current token. Enter a new token to replace it.">
+              help={t("stationEditor.keepQrHelp")}>
               <Input placeholder="MV26-SQ1-I-..." autoComplete="off" />
             </Form.Item>
             <Form.Item
-              label="Check-out QR token"
+              label={t("stationEditor.checkOutQr")}
               name="checkOutQrToken"
-              help="Leave empty to keep the current token. Enter a new token to replace it.">
+              help={t("stationEditor.keepQrHelp")}>
               <Input placeholder="MV26-SQ1-O-..." autoComplete="off" />
             </Form.Item>
           </>
         )}
         <Button type="primary" htmlType="submit" block>
-          {isEditing ? "Update Station Info" : "Create Station"}
+          {isEditing ? t("stationEditor.updateButton") : t("stationEditor.createButton")}
         </Button>
       </Form>
     </Drawer>

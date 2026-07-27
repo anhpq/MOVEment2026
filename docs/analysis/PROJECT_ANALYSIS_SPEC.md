@@ -10,6 +10,19 @@ docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 
 This file summarizes shared product behavior. It does not override the Source of Truth.
 
+## Feature Analysis Workflow
+
+Implementation plans are stored directly in `docs/analysis` as
+`<FEATURE>_ANALYSIS.md` and routed through `FEATURE_INDEX.md`. `.kilo/plans` is
+not used. These analysis files record implementation and verification status,
+but never override confirmed Business Rules.
+
+Frontend Vietnamese/English localization is currently planned in
+`FRONTEND_LOCALIZATION_ANALYSIS.md`; Plan 2 is implemented for i18n
+infrastructure, core Login/QR/AppFrame copy, Backend-projected Player Station
+content, and Admin bilingual Station editing. Full browser/manual verification
+remains pending.
+
 ## Product Scope
 
 MOVEment 2026 is a mobile-first station game web application.
@@ -157,6 +170,23 @@ A Team may play only one Station at a time.
 
 Cancel returns the Team Station to `AVAILABLE` and applies the configured cooldown, default 5 minutes.
 Player Station list and map UI must surface this cooldown from `nextCheckInAllowedAt` as a countdown and prevent opening the Check-in QR modal until the deadline passes. Backend remains the authority if the client clock is wrong.
+
+## Station Localization
+
+Vietnamese is canonical/default for Station `name` and `description`. Station
+records also store `name_en` and nullable `description_en`.
+
+Player Station APIs accept `lang=vi|en`. They keep the public shape
+`name`/`description`, but Backend projects those values by locale. Missing or
+invalid locale uses Vietnamese. Missing English content falls back per field to
+the Vietnamese value.
+
+Admin Station data includes `name`, `description`, `nameEn`, and
+`descriptionEn`. Admin create requires non-empty `name` and `nameEn`; update
+trims and validates only supplied fields.
+
+Excel export, backend operational consumers, Team names, Station IDs, enum/API
+values, `Game.title`, and `clueText` remain outside this localization scope.
 
 ## Tracking Modes
 

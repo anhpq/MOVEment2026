@@ -6,6 +6,8 @@ import {
   type PlayerStationResponse,
 } from "./api";
 import type {LocalDatabaseSeed, TeamStation} from "./types";
+import type {SupportedLanguage} from "./types";
+import {readStoredLanguage} from "./i18n";
 
 export type PlayerMapImageVariant = {
   src: string;
@@ -19,6 +21,7 @@ export const PLAYER_MAP_IMAGE_VARIANTS: PlayerMapImageVariant[] = [
 ];
 
 export const PLAYER_MAP_IMAGE_SRC = PLAYER_MAP_IMAGE_VARIANTS[0].src;
+let playerDatabaseRequestSeq = 0;
 
 const playerMapImageCache = new Map<string, Promise<HTMLImageElement>>();
 
@@ -58,6 +61,10 @@ export function preloadPlayerMapImage() {
   void loadPlayerMapImage(PLAYER_MAP_IMAGE_SRC).catch(() => undefined);
 }
 
+export function getPlayerDatabaseRequestSeq() {
+  return playerDatabaseRequestSeq;
+}
+
 function mapProgressStatus(
   status: PlayerProgressResponse["status"],
 ): TeamStation["status"] {
@@ -91,7 +98,9 @@ function buildPlayerSeed(
     stationDefinitions: stations.map((station) => ({
       id: station.id,
       name: station.name,
+      nameEn: station.nameEn,
       description: station.description ?? station.game?.clueText ?? null,
+      descriptionEn: station.descriptionEn,
       durationMinutes: 0,
       trackingMode: station.trackingMode ?? "BOTH",
       youtubeUrl: station.game?.mediaUrl ?? null,
@@ -104,8 +113,10 @@ function buildPlayerSeed(
       [teamId]: stations.map((station) => ({
         id: `${teamId}-${station.id}`,
         name: station.name,
+        nameEn: station.nameEn,
         status: mapProgressStatus(station.progress?.status ?? "AVAILABLE"),
         description: station.description ?? station.game?.clueText ?? null,
+        descriptionEn: station.descriptionEn,
         durationMinutes: 0,
         trackingMode: station.trackingMode ?? "BOTH",
         youtubeUrl: station.game?.mediaUrl ?? null,
@@ -126,12 +137,16 @@ function buildPlayerSeed(
   };
 }
 
-export async function fetchPlayerDatabase(): Promise<LocalDatabaseSeed> {
+export async function fetchPlayerDatabase(language: SupportedLanguage = readStoredLanguage()): Promise<LocalDatabaseSeed> {
+  const requestSeq = ++playerDatabaseRequestSeq;
   const [dashboard, stations, progress] = await Promise.all([
     getPlayerDashboard(),
-    getPlayerStations(),
-    getPlayerProgress(),
+    getPlayerStations(language),
+    getPlayerProgress(language),
   ]);
+  if (requestSeq !== playerDatabaseRequestSeq) {
+    throw new Error("STALE_PLAYER_DATABASE_RESPONSE");
+  }
   const progressByStation = new Map(
     progress.map((item) => [item.stationId, item]),
   );

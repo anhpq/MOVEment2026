@@ -1,4 +1,4 @@
-import type { GameType, StationTrackingMode } from "./types"
+import type { GameType, StationTrackingMode, SupportedLanguage } from "./types"
 import {
   apiDelete,
   apiDownloadFile,
@@ -123,7 +123,9 @@ export type PlayerDashboardResponse = {
 export type PlayerStationResponse = {
   id: string
   name: string
+  nameEn?: string
   description: string | null
+  descriptionEn?: string | null
   mapX: number | null
   mapY: number | null
   trackingMode: StationTrackingMode
@@ -167,12 +169,12 @@ export async function getPlayerDashboard(): Promise<PlayerDashboardResponse> {
   return apiGet<PlayerDashboardResponse>('/api/player/me')
 }
 
-export async function getPlayerStations(): Promise<PlayerStationResponse[]> {
-  return apiGet<PlayerStationResponse[]>('/api/player/stations')
+export async function getPlayerStations(language: SupportedLanguage = "vi"): Promise<PlayerStationResponse[]> {
+  return apiGet<PlayerStationResponse[]>(`/api/player/stations?lang=${encodeURIComponent(language)}`)
 }
 
-export async function getPlayerProgress(): Promise<PlayerProgressResponse[]> {
-  return apiGet<PlayerProgressResponse[]>('/api/player/progress')
+export async function getPlayerProgress(language: SupportedLanguage = "vi"): Promise<PlayerProgressResponse[]> {
+  return apiGet<PlayerProgressResponse[]>(`/api/player/progress?lang=${encodeURIComponent(language)}`)
 }
 
 export type StationPlayingCountResponse = {
@@ -215,7 +217,9 @@ export async function submitStationScore(
 
 export type AdminStationUpdateInput = {
   name?: string
+  nameEn?: string
   description?: string | null
+  descriptionEn?: string | null
   trackingMode?: StationTrackingMode
   mapX?: number
   mapY?: number
@@ -251,7 +255,9 @@ export type AdminProgressMatrixResponse = {
   stations: Array<{
     id: string
     name: string
+    nameEn: string
     description: string | null
+    descriptionEn: string | null
     mapX: number | null
     mapY: number | null
     trackingMode: StationTrackingMode
@@ -358,11 +364,12 @@ export const reopenAdminProgress = (progressId: number, reason: string) =>
 export type AdminCreatedStationResponse = {
   id: string
   name: string
+  nameEn: string
   qrTokens?: AdminStationQrTokenResponse[]
 }
 
 export const createAdminStation = (values: {
-  id: string; name: string; description?: string | null
+  id: string; name: string; nameEn: string; description?: string | null; descriptionEn?: string | null
   trackingMode: StationTrackingMode; mapX: number; mapY: number
   gameType: GameType; maxPoints?: number; mediaUrl?: string | null
 }) => apiPost<AdminCreatedStationResponse>('/api/admin/stations', values)

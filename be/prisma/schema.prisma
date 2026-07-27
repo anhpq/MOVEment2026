@@ -102,7 +102,9 @@ model TeamSession {
 model Station {
   id           String              @id
   name         String
+  nameEn       String              @map("name_en")
   description  String?
+  descriptionEn String?            @map("description_en")
   mapX         Float               @map("map_x")
   mapY         Float               @map("map_y")
   latitude     Decimal?            @db.Decimal(10, 7)

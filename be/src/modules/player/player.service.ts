@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ActorType, Game, ProgressStatus, QrPurpose } from '@prisma/client';
+import { ActorType, Game, ProgressStatus, QrPurpose, Station } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { SubmitScoreDto } from '../../common/dto/score.dto';
@@ -59,7 +59,8 @@ export class PlayerService {
     };
   }
 
-  async getStations(teamId: number) {
+  async getStations(teamId: number, lang?: string) {
+    const locale = this.normalizeLocale(lang);
     const [stations, isPastEventEnd] = await Promise.all([
       this.prisma.station.findMany({
         where: { isActive: true },
@@ -74,8 +75,7 @@ export class PlayerService {
 
     return stations.map((station) => ({
       id: station.id,
-      name: station.name,
-      description: station.description,
+      ...this.toLocalizedStationFields(station, locale),
       mapX: station.mapX,
       mapY: station.mapY,
       trackingMode: station.trackingMode,
@@ -103,7 +103,8 @@ export class PlayerService {
     }));
   }
 
-  async getProgress(teamId: number) {
+  async getProgress(teamId: number, lang?: string) {
+    const locale = this.normalizeLocale(lang);
     const [progress, isPastEventEnd] = await Promise.all([
       this.prisma.teamStationProgress.findMany({
         where: { teamId },
@@ -116,9 +117,10 @@ export class PlayerService {
       this.eventConfig.isPastEventEnd(),
     ]);
 
-    return progress.map(({ game, ...item }) => ({
+    return progress.map(({ game, station, ...item }) => ({
       ...item,
       status: this.toEffectiveProgressStatus(item.status, isPastEventEnd),
+      station: this.toPublicStation(station, locale),
       game: this.toPublicGame(game),
     }));
   }
@@ -491,6 +493,47 @@ export class PlayerService {
       isActive: game.isActive,
       createdAt: game.createdAt,
       updatedAt: game.updatedAt,
+    };
+  }
+
+  private normalizeLocale(lang: string | undefined) {
+    return lang?.trim().toLowerCase() === 'en' ? 'en' : 'vi';
+  }
+
+  private pickLocalizedValue(primary: string | null | undefined, fallback: string | null) {
+    const normalized = primary?.trim();
+    return normalized ? normalized : fallback;
+  }
+
+  private toLocalizedStationFields(
+    station: Pick<Station, 'name' | 'nameEn' | 'description' | 'descriptionEn'>,
+    locale: 'vi' | 'en',
+  ) {
+    if (locale === 'en') {
+      return {
+        name: this.pickLocalizedValue(station.nameEn, station.name),
+        description: this.pickLocalizedValue(station.descriptionEn, station.description),
+      };
+    }
+    return {
+      name: station.name,
+      description: station.description,
+    };
+  }
+
+  private toPublicStation(station: Station, locale: 'vi' | 'en') {
+    return {
+      id: station.id,
+      ...this.toLocalizedStationFields(station, locale),
+      mapX: station.mapX,
+      mapY: station.mapY,
+      latitude: station.latitude,
+      longitude: station.longitude,
+      trackingMode: station.trackingMode,
+      isActive: station.isActive,
+      sortOrder: station.sortOrder,
+      createdAt: station.createdAt,
+      updatedAt: station.updatedAt,
     };
   }
 }

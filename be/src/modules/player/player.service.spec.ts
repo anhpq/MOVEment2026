@@ -20,6 +20,7 @@ const progress = {
 }
 
 const mockPrisma = {
+  station: { findMany: jest.fn() },
   qrToken: { findUnique: jest.fn() },
   teamStationProgress: {
     groupBy: jest.fn(),
@@ -129,6 +130,57 @@ describe('PlayerService station flow', () => {
       },
       _count: { _all: true },
     })
+  })
+
+  it('localizes player Station list by lang with per-field fallback', async () => {
+    mockPrisma.station.findMany.mockResolvedValue([
+      {
+        id: 'ST001',
+        name: 'Tên VI',
+        nameEn: 'English Name',
+        description: 'Mô tả VI',
+        descriptionEn: '',
+        mapX: 10,
+        mapY: 20,
+        trackingMode: StationTrackingMode.BOTH,
+        isActive: true,
+        games: [],
+        progress: [],
+      },
+    ])
+
+    await expect(service.getStations(2, 'en')).resolves.toEqual([
+      expect.objectContaining({
+        id: 'ST001',
+        name: 'English Name',
+        description: 'Mô tả VI',
+      }),
+    ])
+  })
+
+  it('falls back to Vietnamese Station values for invalid player locale', async () => {
+    mockPrisma.station.findMany.mockResolvedValue([
+      {
+        id: 'ST001',
+        name: 'Tên VI',
+        nameEn: 'English Name',
+        description: 'Mô tả VI',
+        descriptionEn: 'English description',
+        mapX: 10,
+        mapY: 20,
+        trackingMode: StationTrackingMode.BOTH,
+        isActive: true,
+        games: [],
+        progress: [],
+      },
+    ])
+
+    await expect(service.getStations(2, 'fr')).resolves.toEqual([
+      expect.objectContaining({
+        name: 'Tên VI',
+        description: 'Mô tả VI',
+      }),
+    ])
   })
 
   it('rejects check-in after eventEndTime with a closed station message', async () => {

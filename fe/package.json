@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:prod": "vite build",
+    "i18n:check": "node scripts/check-i18n-parity.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -14,12 +15,14 @@
     "@ant-design/icons": "^6.3.2",
     "@tanstack/react-query": "^5.101.2",
     "antd": "^6.5.0",
+    "i18next": "^26.3.6",
     "jsqr": "^1.4.0",
     "konva": "^10.3.0",
     "lodash": "^4.18.1",
     "qrcode": "^1.5.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.11",
     "react-konva": "^19.2.5",
     "react-router-dom": "^7.18.1",
     "zustand": "^5.0.14"

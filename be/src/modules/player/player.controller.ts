@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CurrentAuth } from '../../common/auth/auth.decorators';
@@ -25,8 +26,8 @@ export class PlayerController {
   }
 
   @Get('stations')
-  getStations(@CurrentAuth() auth: AuthContext) {
-    return this.playerService.getStations(this.requireTeam(auth));
+  getStations(@CurrentAuth() auth: AuthContext, @Query('lang') lang?: string) {
+    return this.playerService.getStations(this.requireTeam(auth), lang);
   }
 
   @Get('stations/playing-counts')
@@ -36,8 +37,8 @@ export class PlayerController {
   }
 
   @Get('progress')
-  getProgress(@CurrentAuth() auth: AuthContext) {
-    return this.playerService.getProgress(this.requireTeam(auth));
+  getProgress(@CurrentAuth() auth: AuthContext, @Query('lang') lang?: string) {
+    return this.playerService.getProgress(this.requireTeam(auth), lang);
   }
 
   @Get('activity-log')

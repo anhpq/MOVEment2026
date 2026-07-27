@@ -99,7 +99,9 @@ describe('AdminService Team QR login lifecycle', () => {
     mockPrisma.station.create.mockResolvedValue({
       id: 'ST999',
       name: 'Station Secure',
+      nameEn: 'Secure Station',
       description: null,
+      descriptionEn: null,
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
@@ -292,7 +294,9 @@ describe('AdminService Team QR login lifecycle', () => {
     const result = await service.createStation(1, {
       id: 'st999',
       name: 'Station Secure',
+      nameEn: 'Secure Station',
       description: null,
+      descriptionEn: null,
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
@@ -338,7 +342,9 @@ describe('AdminService Team QR login lifecycle', () => {
     await service.createStation(1, {
       id: 'st999',
       name: 'Station Secure',
+      nameEn: 'Secure Station',
       description: null,
+      descriptionEn: null,
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
@@ -373,7 +379,9 @@ describe('AdminService Team QR login lifecycle', () => {
     await service.createStation(1, {
       id: 'st999',
       name: 'Station Secure',
+      nameEn: 'Secure Station',
       description: null,
+      descriptionEn: null,
       trackingMode: StationTrackingMode.TIME,
       mapX: 10,
       mapY: 20,
@@ -403,7 +411,9 @@ describe('AdminService Team QR login lifecycle', () => {
     await service.createStation(1, {
       id: 'st999',
       name: 'Station Secure',
+      nameEn: 'Secure Station',
       description: null,
+      descriptionEn: null,
       trackingMode: StationTrackingMode.BOTH,
       mapX: 10,
       mapY: 20,
@@ -436,7 +446,9 @@ describe('AdminService Team QR login lifecycle', () => {
       service.createStation(1, {
         id: 'st999',
         name: 'Station Secure',
+        nameEn: 'Secure Station',
         description: null,
+        descriptionEn: null,
         trackingMode: StationTrackingMode.BOTH,
         mapX: 10,
         mapY: 20,
@@ -677,7 +689,9 @@ describe('AdminService Team QR login lifecycle', () => {
       service.createStation(1, {
         id: 'st999',
         name: 'Station Video',
+        nameEn: 'Video Station',
         description: null,
+        descriptionEn: null,
         trackingMode: StationTrackingMode.BOTH,
         mapX: 10,
         mapY: 20,

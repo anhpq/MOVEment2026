@@ -426,8 +426,10 @@ export class AdminService {
       const updated = await tx.station.update({
         where: { id: stationId },
         data: {
-          name: dto.name,
-          description: dto.description,
+          ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
+          ...(dto.nameEn !== undefined ? { nameEn: dto.nameEn.trim() } : {}),
+          ...(dto.description !== undefined ? { description: this.normalizeOptionalText(dto.description) } : {}),
+          ...(dto.descriptionEn !== undefined ? { descriptionEn: this.normalizeOptionalText(dto.descriptionEn) } : {}),
           trackingMode: dto.trackingMode,
           mapX: dto.mapX,
           mapY: dto.mapY,
@@ -490,7 +492,9 @@ export class AdminService {
       entityId: stationId,
       metadata: {
         name: dto.name ?? null,
+        nameEn: dto.nameEn ?? null,
         description: dto.description ?? null,
+        descriptionEn: dto.descriptionEn ?? null,
         trackingMode: dto.trackingMode ?? null,
         mapX: dto.mapX ?? null,
         mapY: dto.mapY ?? null,
@@ -522,7 +526,9 @@ export class AdminService {
         data: {
           id: stationId,
           name: dto.name.trim(),
+          nameEn: dto.nameEn.trim(),
           description: dto.description?.trim() || null,
+          descriptionEn: dto.descriptionEn?.trim() || null,
           trackingMode: dto.trackingMode,
           mapX: dto.mapX,
           mapY: dto.mapY,
@@ -1256,6 +1262,16 @@ export class AdminService {
       return '';
     }
     return JSON.stringify(metadata);
+  }
+
+  private normalizeOptionalText(value: string | null | undefined) {
+    if (value === undefined) {
+      return undefined;
+    }
+    if (value === null) {
+      return null;
+    }
+    return value.trim() || null;
   }
 
   private validateGameVideoConfiguration(

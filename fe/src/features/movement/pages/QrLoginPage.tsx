@@ -1,7 +1,9 @@
 import {Button, Result, Spin, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
 import {loginWithQrToken} from "../api";
+import {LanguageSwitch} from "../components/LanguageSwitch";
 import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
 import {useMovementStore} from "../store";
 
@@ -14,54 +16,54 @@ function extractQrToken(search: string) {
   return new URLSearchParams(search).get("token")?.trim() ?? "";
 }
 
-function getQrLoginError(error: unknown): QrLoginState {
+function getQrLoginError(error: unknown, t: (key: string) => string): QrLoginState {
   const message = error instanceof Error ? error.message : "";
 
   if (message.includes("QR_LOGIN_CONSUMED")) {
     return {
       type: "error",
-      title: "Mã QR cũ không còn hiệu lực.",
-      description: "Vui lòng liên hệ ban tổ chức để nhận mã QR hiện tại.",
+      title: t("qrLogin.consumedTitle"),
+      description: t("qrLogin.consumedDescription"),
       canRetry: false,
     };
   }
   if (message.includes("QR_LOGIN_REVOKED")) {
     return {
       type: "error",
-      title: "Mã QR đã bị thu hồi.",
-      description: "Vui lòng liên hệ ban tổ chức để nhận mã QR mới.",
+      title: t("qrLogin.revokedTitle"),
+      description: t("qrLogin.revokedDescription"),
       canRetry: false,
     };
   }
   if (message.includes("QR_LOGIN_INACTIVE_TEAM")) {
     return {
       type: "error",
-      title: "Tài khoản đội không hoạt động.",
-      description: "Vui lòng liên hệ ban tổ chức để kiểm tra trạng thái đội.",
+      title: t("qrLogin.inactiveTitle"),
+      description: t("qrLogin.inactiveDescription"),
       canRetry: false,
     };
   }
   if (message.includes("QR_LOGIN_RATE_LIMITED")) {
     return {
       type: "error",
-      title: "Thử quá nhiều lần.",
-      description: "Vui lòng chờ một lúc rồi thử lại.",
+      title: t("qrLogin.rateLimitedTitle"),
+      description: t("qrLogin.rateLimitedDescription"),
       canRetry: true,
     };
   }
   if (message.includes("QR_LOGIN_INVALID")) {
     return {
       type: "error",
-      title: "Mã QR không hợp lệ.",
-      description: "Vui lòng kiểm tra lại mã QR hoặc liên hệ ban tổ chức.",
+      title: t("qrLogin.invalidTitle"),
+      description: t("qrLogin.invalidDescription"),
       canRetry: false,
     };
   }
 
   return {
     type: "error",
-    title: "Không thể xác thực mã QR.",
-    description: "Vui lòng kiểm tra kết nối mạng rồi thử lại.",
+    title: t("qrLogin.genericTitle"),
+    description: t("qrLogin.genericDescription"),
     canRetry: true,
   };
 }
@@ -69,6 +71,7 @@ function getQrLoginError(error: unknown): QrLoginState {
 export function QrLoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const {t, i18n} = useTranslation();
   const login = useMovementStore((state) => state.login);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const session = useMovementStore((state) => state.session);
@@ -78,11 +81,11 @@ export function QrLoginPage() {
   const inFlightRef = useRef(false);
   const [state, setState] = useState<QrLoginState>(() =>
     initialToken
-      ? {type: "loading", message: "Đang xác thực mã QR..."}
+      ? {type: "loading", message: t("qrLogin.loading")}
       : {
           type: "error",
-          title: "Liên kết QR không hợp lệ.",
-          description: "Liên kết này thiếu mã xác thực QR.",
+          title: t("qrLogin.missingTitle"),
+          description: t("qrLogin.missingDescription"),
           canRetry: false,
         },
   );
@@ -110,7 +113,7 @@ export function QrLoginPage() {
 
     submittedRef.current = true;
     inFlightRef.current = true;
-    setState({type: "loading", message: "Đang xác thực mã QR..."});
+    setState({type: "loading", message: t("qrLogin.loading")});
 
     const controller = new AbortController();
     try {
@@ -127,14 +130,14 @@ export function QrLoginPage() {
       });
       preloadPlayerMapImage();
       try {
-        loadDatabase(await fetchPlayerDatabase());
+        loadDatabase(await fetchPlayerDatabase(i18n.language === "en" ? "en" : "vi"));
       } catch {
         // ProtectedRoute will retry player data on the authenticated screen.
       }
       navigate("/stations/map", {replace: true});
     } catch (error) {
       inFlightRef.current = false;
-      setState(getQrLoginError(error));
+      setState(getQrLoginError(error, t));
     }
   };
 
@@ -147,11 +150,12 @@ export function QrLoginPage() {
   if (state.type === "conflict") {
     return (
       <div className="login-screen">
+        <LanguageSwitch />
         <Result
           status="warning"
-          title="Bạn đang đăng nhập."
-          subTitle="Hãy đăng xuất tài khoản hiện tại trước khi dùng mã QR của đội khác."
-          extra={<Button onClick={() => navigate("/stations/map")}>Quay lại</Button>}
+          title={t("qrLogin.conflictTitle")}
+          subTitle={t("qrLogin.conflictDescription")}
+          extra={<Button onClick={() => navigate("/stations/map")}>{t("qrLogin.back")}</Button>}
         />
       </div>
     );
@@ -160,6 +164,7 @@ export function QrLoginPage() {
   if (state.type === "loading") {
     return (
       <div className="login-screen">
+        <LanguageSwitch />
         <Spin size="large">
           <Typography.Title level={4}>{state.message}</Typography.Title>
         </Spin>
@@ -169,6 +174,7 @@ export function QrLoginPage() {
 
   return (
     <div className="login-screen">
+      <LanguageSwitch />
       <Result
         status="error"
         title={state.title}
@@ -182,11 +188,11 @@ export function QrLoginPage() {
                 void submitQrLogin();
               }}
             >
-              Thử lại
+              {t("qrLogin.retry")}
             </Button>
           ) : (
             <Button type="primary" onClick={() => navigate("/login")}>
-              Về trang đăng nhập
+              {t("qrLogin.login")}
             </Button>
           )
         }

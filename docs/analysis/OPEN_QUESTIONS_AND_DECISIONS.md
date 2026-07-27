@@ -140,6 +140,23 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 
 ---
 
+## 3.1 Station Localization
+
+| Chủ đề | Quyết định |
+| --- | --- |
+| Canonical/default language | Tiếng Việt là canonical/default cho Station `name` và `description`. |
+| English fields | Station lưu thêm `name_en` bắt buộc và `description_en` nullable để phục vụ UI tiếng Anh. |
+| Player locale | Player Station APIs hỗ trợ `lang=vi\|en`; thiếu hoặc invalid `lang` fallback về `vi`. |
+| Player response shape | Player vẫn nhận field `name` và `description`; Backend project giá trị theo locale thay vì trả raw bilingual fields. |
+| EN fallback | Khi `name_en` rỗng, fallback field đó sang `name`; khi `description_en` null/rỗng, fallback field đó sang `description`. |
+| Admin Station data | Admin Station responses/progress matrix trả đủ `name`, `description`, `nameEn`, `descriptionEn` để chỉnh sửa song ngữ. |
+| Admin validation | Admin create Station yêu cầu `name` và `nameEn` không rỗng; `description` và `descriptionEn` optional. Admin update chỉ validate field được gửi và trim trước khi lưu. |
+| Operational consumers | Excel export, backend operational views và canonical Station naming ngoài Player UI tiếp tục dùng tiếng Việt. |
+| Seed behavior | Canonical Station seed có EN provisional. Normal seed được phép cập nhật riêng `name_en`/`description_en` cho 17 Station canonical khi inventory gameplay còn hợp lệ, không reset progress/game/QR và không cần confirmation destructive replacement. |
+| Out of scope | `Game.title` và `clueText` không được dịch trong scope này. |
+
+---
+
 ## 4. Station QR
 
 ### 4.1 Station QR Policy
@@ -581,6 +598,7 @@ Production phải sử dụng quy trình tạo dữ liệu riêng, ngoại trừ
 1. Final Challenge seed-managed record được phép create/update canonical values đến hết `2026-08-21 23:59:59 Asia/Ho_Chi_Minh` và ngừng overwrite từ `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`.
 2. Existing seed-managed Team 01-25 được nhận diện bằng username ổn định `team01`...`team25` được phép repair/overwrite chỉ trường `color` theo palette cố định.
 3. Canonical Station inventory được phép tạo trên Production trống. Nếu Production đã có Station data không khớp canonical inventory, seed chỉ được replace toàn bộ Station/game/scoring state khi `CONFIRM_REPLACE_ALL_PROD_STATIONS=YES`; nếu thiếu confirmation phải dừng và hướng dẫn dùng `stations:sync`.
+4. Khi canonical Station inventory gameplay đã khớp, Production seed được phép cập nhật riêng `name_en` và `description_en` cho 17 Station canonical để sửa bản dịch EN provisional, không reset progress/game/QR và không cần `CONFIRM_REPLACE_ALL_PROD_STATIONS=YES`.
 
 Production seed không được tạo Team fixture mới khi thiếu `team01`...`team25`; missing seed-managed Team trong Production được skip im lặng cho scope color repair.
 

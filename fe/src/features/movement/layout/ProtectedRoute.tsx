@@ -1,6 +1,7 @@
 import { Button, Result, Spin, Typography } from 'antd'
 import { useEffect, useState, type PropsWithChildren } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import {useTranslation} from 'react-i18next'
 import { AppFrame } from './AppFrame'
 import { useMovementStore } from '../store'
 import type { Role } from '../types'
@@ -10,6 +11,7 @@ type ProtectedRouteProps = Readonly<PropsWithChildren<{ allow?: Role[] }>>
 
 export function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
   const navigate = useNavigate()
+  const {i18n} = useTranslation()
   const session = useMovementStore((state) => state.session)
   const teams = useMovementStore((state) => state.teams)
   const teamStations = useMovementStore((state) => state.teamStations)
@@ -30,7 +32,9 @@ export function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
 
     let cancelled = false
 
-    void fetchPlayerDatabase()
+    const language = i18n.language === 'en' ? 'en' : 'vi'
+
+    void fetchPlayerDatabase(language)
       .then((seed) => {
         if (!cancelled) {
           loadDatabase(seed)
@@ -47,7 +51,7 @@ export function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
     return () => {
       cancelled = true
     }
-  }, [hasPlayerData, loadDatabase, retryKey, session])
+  }, [hasPlayerData, i18n.language, loadDatabase, retryKey, session])
 
   if (!session) {
     return <Navigate to="/login" replace />

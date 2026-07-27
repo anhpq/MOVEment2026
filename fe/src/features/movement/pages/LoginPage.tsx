@@ -16,6 +16,7 @@ import {
   Divider,
 } from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {
@@ -32,6 +33,7 @@ import {
   supportsCameraQrScan,
 } from "../qrDetect";
 import {RunningPersonIcon} from "../components/RunningPersonIcon";
+import {LanguageSwitch} from "../components/LanguageSwitch";
 import type {QrFrameDetector} from "../qrDetect";
 
 type LoginFormValues = {
@@ -125,6 +127,7 @@ function parseQrLoginPayload(
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const {t, i18n} = useTranslation();
   const login = useMovementStore((state) => state.login);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const session = useMovementStore((state) => state.session);
@@ -205,13 +208,13 @@ export function LoginPage() {
         });
         preloadPlayerMapImage();
         try {
-          loadDatabase(await fetchPlayerDatabase());
+          loadDatabase(await fetchPlayerDatabase(i18n.language === "en" ? "en" : "vi"));
         } catch {
           message.warning(
-            "Login succeeded. Player data will retry on the next screen.",
+            t("auth.bootstrapRetry"),
           );
         }
-        message.success("Login successful");
+        message.success(t("auth.loginSuccess"));
         navigate("/stations/map");
         return;
       } catch (error) {
@@ -228,7 +231,7 @@ export function LoginPage() {
         teamId: null,
         accessToken: userResponse.accessToken,
       });
-      message.success("Login successful");
+      message.success(t("auth.loginSuccess"));
       navigate(
         mapBackendRole(userResponse.user.role) === "admin" ?
           "/teams"
@@ -236,8 +239,8 @@ export function LoginPage() {
       );
     } catch (error) {
       const messageText =
-        error instanceof Error ? error.message : "Invalid username or password";
-      message.error(messageText || "Invalid username or password");
+        error instanceof Error ? error.message : t("auth.invalidCredentials");
+      message.error(messageText || t("auth.invalidCredentials"));
     } finally {
       setIsSubmitting(false);
     }
@@ -250,7 +253,7 @@ export function LoginPage() {
 
     const qrPayload = parseQrLoginPayload(rawValue);
     if (!qrPayload) {
-      message.error("QR code must contain a valid login URL or team QR token");
+      message.error(t("auth.invalidQr"));
       return;
     }
 
@@ -270,18 +273,18 @@ export function LoginPage() {
       });
       preloadPlayerMapImage();
       try {
-        loadDatabase(await fetchPlayerDatabase());
+        loadDatabase(await fetchPlayerDatabase(i18n.language === "en" ? "en" : "vi"));
       } catch {
         message.warning(
-          "Login succeeded. Player data will retry on the next screen.",
+          t("auth.bootstrapRetry"),
         );
       }
-      message.success("QR login successful");
+      message.success(t("auth.qrLoginSuccess"));
       navigate("/stations/map");
     } catch (error) {
       const messageText =
-        error instanceof Error ? error.message : "Invalid team QR token";
-      message.error(messageText || "Invalid team QR token");
+        error instanceof Error ? error.message : t("auth.invalidQr");
+      message.error(messageText || t("auth.invalidQr"));
     } finally {
       qrSubmittingRef.current = false;
       setIsSubmitting(false);
@@ -291,7 +294,7 @@ export function LoginPage() {
   const startQrScanner = async () => {
     if (!supportsCameraQrScan()) {
       message.error(
-        "This browser does not support camera QR scanning. Use Paste QR or open the site over HTTPS.",
+        t("auth.cameraUnsupported"),
       );
       return;
     }
@@ -367,7 +370,7 @@ export function LoginPage() {
               const messageText =
                 error instanceof Error ?
                   error.message
-                : "Unable to scan QR code";
+                : t("auth.qrScanFailed");
               message.error(messageText);
             }
           })
@@ -381,7 +384,7 @@ export function LoginPage() {
       }
       stopQrScanner();
       const messageText =
-        error instanceof Error ? error.message : "Unable to start camera";
+        error instanceof Error ? error.message : t("auth.cameraStartFailed");
       message.error(messageText);
     }
   };
@@ -413,26 +416,27 @@ export function LoginPage() {
             <Typography.Title level={2} className="brand-title login-title">
               MOVEment 2026
             </Typography.Title>
+            <LanguageSwitch />
           </div>
 
           {!isScanningQr && (
             <Form form={form} layout="vertical" onFinish={submitLogin}>
               <Form.Item
-                label="Username"
+                label={t("auth.username")}
                 name="username"
                 rules={[
-                  {required: true, message: "Please enter your username"},
-                  {min: 3, message: "Username must be at least 3 characters"},
+                  {required: true, message: t("auth.username")},
+                  {min: 3, message: t("auth.username")},
                 ]}>
                 <Input prefix={<UserOutlined />} placeholder="team.lead" />
               </Form.Item>
 
               <Form.Item
-                label="Password"
+                label={t("auth.password")}
                 name="password"
                 rules={[
-                  {required: true, message: "Please enter your password"},
-                  {min: 5, message: "Password must be at least 5 characters"},
+                  {required: true, message: t("auth.password")},
+                  {min: 5, message: t("auth.password")},
                 ]}>
                 <Input.Password
                   prefix={<LockOutlined />}
@@ -446,10 +450,10 @@ export function LoginPage() {
                 block
                 size="large"
                 loading={isSubmitting}>
-                Login
+                {t("auth.login")}
               </Button>
 
-              <Divider>OR</Divider>
+              <Divider>{t("auth.or")}</Divider>
             </Form>
           )}
 
@@ -473,21 +477,21 @@ export function LoginPage() {
                 icon={<CameraOutlined />}
                 onClick={startQrScanner}
                 disabled={isScanningQr || isSubmitting}>
-                Scan QR login
+                {t("auth.scanQr")}
               </Button>
               <Button
                 className="full-width"
                 icon={<QrcodeOutlined />}
                 onClick={() => {
                   const payload = window.prompt(
-                    "Paste the team QR login token",
+                    t("auth.pastePrompt"),
                   );
                   if (payload) {
                     void submitQrPayload(payload);
                   }
                 }}
                 disabled={isSubmitting}>
-                Paste QR
+                {t("auth.pasteQr")}
               </Button>
             </Flex>
             {isScanningQr ?
@@ -497,7 +501,7 @@ export function LoginPage() {
                   danger
                   variant="filled"
                   onClick={() => stopQrScanner()}>
-                  Stop scanner
+                  {t("auth.stopScanner")}
                 </Button>
               </div>
             : null}

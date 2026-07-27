@@ -1,5 +1,43 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Station localization and FE language switch
+
+- [x] Station schema includes `name_en` and nullable `description_en`.
+- [x] Migration backfills provisional EN for 17 canonical Stations and safe
+  `name_en = name` fallback for noncanonical rows.
+- [x] Canonical seed/replacement writes VI and EN Station content while gameplay
+  signature excludes translation fields.
+- [x] Player Station APIs accept `lang=vi|en`, localize `name`/`description`,
+  fallback invalid locale to VI, and fallback missing EN per field.
+- [x] Admin Station create/update and progress matrix carry both VI and EN
+  Station content fields.
+- [x] Frontend has persisted `movement-language`, AntD locale sync, `<html lang>`
+  sync, Login/QR/AppFrame switch, runtime Player Station refetch, stale response
+  guard, failure warning, and Admin Station Editor VI/EN sections.
+- [x] Targeted Backend Player/Admin service tests, full Backend Jest suite,
+  Backend lint/build, Frontend lint/build, and Prisma generate passed in this
+  run.
+- [x] Local migration deploy, two seed runs, canonical `name_en` count check,
+  and `db:verify` passed.
+- [x] Locale resource parity/no-empty automation exists and passed with `86`
+  keys.
+- [x] `git diff --check` and Graphify code graph update passed; Graphify retained
+  warnings for `hooks.json` zero nodes and missing optional `tree_sitter_sql`.
+- [ ] Manual desktop/mobile Team/Admin browser smoke remains pending.
+- [ ] Existing npm audit high-severity findings remain outside this scope.
+
+## 2026-07-27 Feature Analysis workflow and localization planning
+
+- [x] Defined the mandatory seven-round Plan Mode review workflow.
+- [x] Registered Feature Analysis files directly under `docs/analysis`.
+- [x] Consolidated all 11 `.kilo/plans` sources with provenance and split
+  implementation/runtime/browser statuses.
+- [x] Renamed and re-routed the Excel Export/Team Color analysis.
+- [ ] Implement `FRONTEND_LOCALIZATION_ANALYSIS.md` after a separate execution
+  request and complete bilingual desktop/mobile browser verification.
+- [ ] Complete the Production and manual browser/Excel checks retained as
+  pending in the consolidated Feature Analysis files.
+
 ## 2026-07-27 Team header identity
 
 - [x] Team user header displays the current Team name instead of generic `User`.

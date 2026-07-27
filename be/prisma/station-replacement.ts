@@ -75,7 +75,9 @@ export async function replaceAllStations(tx: Prisma.TransactionClient): Promise<
       data: {
         id: station.id,
         name: station.name,
+        nameEn: station.nameEn,
         description: station.shortDescription,
+        descriptionEn: station.shortDescriptionEn,
         mapX: station.mapX,
         mapY: station.mapY,
         trackingMode: 'BOTH',

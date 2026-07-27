@@ -8,13 +8,16 @@ import {
   TeamOutlined,
   TrophyOutlined,
 } from "@ant-design/icons";
-import {Button, Flex, Layout, Typography} from "antd";
+import {App as AntdApp, Button, Flex, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
+import {useRef} from "react";
+import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
 import {logout as logoutApi} from "../api";
+import {LanguageSwitch} from "../components/LanguageSwitch";
 import {RunningPersonIcon} from "../components/RunningPersonIcon";
-import {ROLE_LABELS} from "../constants";
 import {useBodyTeamTheme} from "../hooks/useBodyTeamTheme";
+import {fetchPlayerDatabase} from "../playerData";
 import {useMovementStore} from "../store";
 import {getTeamThemeVars} from "../teamTheme";
 import {FixedBottomNavigation, type FixedBottomNavigationItem} from "./FixedBottomNavigation";
@@ -56,10 +59,14 @@ function getRouteTeamContextId(pathname: string, role: string | undefined) {
 export function AppFrame({children}: AppFrameProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const {message} = AntdApp.useApp();
+  const {t} = useTranslation();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
+  const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const logout = useMovementStore((state) => state.logout);
+  const stationLocaleRequestRef = useRef(0);
 
   const activeTeam = teams.find((team) => team.id === activeTeamId);
   const routeTeamId = getRouteTeamContextId(location.pathname, session?.role);
@@ -82,6 +89,26 @@ export function AppFrame({children}: AppFrameProps) {
     logout();
     navigate("/login");
   };
+  const handleLanguageChange = async (language: "vi" | "en") => {
+    if (session?.role !== "user") {
+      return;
+    }
+    const requestId = stationLocaleRequestRef.current + 1;
+    stationLocaleRequestRef.current = requestId;
+    try {
+      const seed = await fetchPlayerDatabase(language);
+      if (stationLocaleRequestRef.current === requestId) {
+        loadDatabase(seed);
+      }
+    } catch (error) {
+      if (
+        stationLocaleRequestRef.current === requestId &&
+        !(error instanceof Error && error.message === "STALE_PLAYER_DATABASE_RESPONSE")
+      ) {
+        message.warning(t("stationData.refreshFailed"));
+      }
+    }
+  };
   if (!session) {
     return children;
   }
@@ -89,28 +116,28 @@ export function AppFrame({children}: AppFrameProps) {
   const navItems: FixedBottomNavigationItem[] = session.role !== "user" ? [
     {
       key: "teams",
-      label: "Teams",
+      label: t("nav.teams"),
       icon: <TeamOutlined />,
       active: location.pathname.startsWith("/teams"),
       onClick: () => navigate("/teams"),
     },
     {
       key: "rank",
-      label: "Rank",
+      label: t("nav.rank"),
       icon: <TrophyOutlined />,
       active: location.pathname.startsWith("/leaderboard"),
       onClick: () => navigate("/leaderboard"),
     },
     {
       key: "ops",
-      label: "Ops",
+      label: t("nav.ops"),
       icon: <DashboardOutlined />,
       active: location.pathname.startsWith("/admin/operations"),
       onClick: () => navigate("/admin/operations"),
     },
     {
       key: "setting",
-      label: "Setting",
+      label: t("nav.setting"),
       icon: <SettingOutlined />,
       active: location.pathname.startsWith("/system-config"),
       onClick: () => navigate("/system-config"),
@@ -118,28 +145,28 @@ export function AppFrame({children}: AppFrameProps) {
   ] : [
     {
       key: "stations",
-      label: "Stations",
+      label: t("nav.stations"),
       icon: <QrcodeOutlined />,
       active: location.pathname.startsWith("/stations") && !location.pathname.startsWith("/stations/map"),
       onClick: () => navigate("/stations"),
     },
     {
       key: "rank",
-      label: "Rank",
+      label: t("nav.rank"),
       icon: <TrophyOutlined />,
       active: location.pathname.startsWith("/leaderboard"),
       onClick: () => navigate("/leaderboard"),
     },
     {
       key: "final",
-      label: "Final",
+      label: t("nav.final"),
       icon: <RubyOutlined />,
       active: location.pathname.startsWith("/final"),
       onClick: () => navigate("/final"),
     },
     {
       key: "map",
-      label: "Map",
+      label: t("nav.map"),
       icon: <EnvironmentOutlined />,
       active: location.pathname.startsWith("/stations/map"),
       onClick: () => navigate("/stations/map"),
@@ -163,7 +190,7 @@ export function AppFrame({children}: AppFrameProps) {
                 variant="filled"
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}>
-                {ROLE_LABELS[session.role]}
+                Admin
               </Button>
             )}
             {session.role === "user" && (
@@ -180,6 +207,7 @@ export function AppFrame({children}: AppFrameProps) {
             <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
               {buildTimestampLabel}
             </Typography.Text>
+            <LanguageSwitch onChange={handleLanguageChange} />
           </Flex>
         </div>
       </Layout.Header>

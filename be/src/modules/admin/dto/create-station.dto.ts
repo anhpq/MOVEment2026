@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsInt,
   IsIn,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -21,13 +22,24 @@ export class CreateStationDto {
   id!: string;
 
   @IsString()
+  @IsNotEmpty()
   @MaxLength(120)
   name!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(120)
+  nameEn!: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(500)
   description?: string | null;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  descriptionEn?: string | null;
 
   @IsEnum(StationTrackingMode)
   trackingMode!: StationTrackingMode;

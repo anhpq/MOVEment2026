@@ -64,7 +64,31 @@ If Source Code conflicts with confirmed Business Rules:
 | `QR_LOGIN.md` | Feature analysis for Automatic URL QR Login. |
 | `QR_PAYLOADS.md` | QR payload formats, Legacy formats, and migration references. |
 | `IOS_SAFARI_QR_CAMERA_FIX.md` | Browser and camera compatibility analysis for iOS QR scanning. |
+| `*_ANALYSIS.md` | Feature implementation analysis, status, verification, provenance, and seven-round decision log. |
 | `docs/prompts/*.md` | Task execution instructions. Prompt files are not Business Rule sources. |
+
+---
+
+## Feature Analysis Lifecycle
+
+- Feature plans live directly in `docs/analysis` as `*_ANALYSIS.md` files.
+- `.kilo/plans` is not a planning source or destination.
+- Completed analysis remains in place and records implementation, runtime, and
+  browser/manual verification statuses separately.
+- A Feature Analysis is not a Business Rule authority. When it conflicts with
+  `OPEN_QUESTIONS_AND_DECISIONS.md`, the confirmed Business Rule wins.
+- Every new or materially revised plan follows the seven-round Plan Mode workflow
+  defined in `AGENTS.md` and `docs/prompts/00_WORKFLOW.md`.
+
+| Analysis | Feature coverage |
+| --- | --- |
+| `EVENT_TIMING_AND_FINAL_ANALYSIS.md` | Event start/end, Final start, and Station lock behavior. |
+| `EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md` | Team Results Excel export and Team Color UI. |
+| `GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md` | Guarded gameplay reset and canonical Station seed/sync. |
+| `STATION_MAP_ANALYSIS.md` | Station map markers, position persistence, and WebP delivery. |
+| `STATION_QR_AND_SCORING_ANALYSIS.md` | Station QR auto-submit, checkout, and scoring. |
+| `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
+| `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
 
 ---
 
@@ -601,7 +625,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
-docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
@@ -611,7 +635,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
-docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
@@ -634,7 +658,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
-docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
@@ -649,14 +673,57 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
-docs/analysis/MOVEment2026_Excel_Export_TeamColor_Requirements_FULL.md
+docs/analysis/EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
 
 ---
 
-## 14. Git and Delivery Rules
+## 14. Frontend Localization
+
+### Scope
+
+- Vietnamese and English runtime language switching.
+- Team and Admin Frontend copy, validation, messages, status labels, and ARIA text.
+- Persisted language preference, HTML language, Ant Design locale, and formatting.
+- Responsive language control before and after authentication.
+- Backend-projected Player Station localization via `lang=vi|en`.
+- Admin bilingual Station create/update fields and canonical Station seed EN content.
+
+### Required Reading
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+### Important Boundaries
+
+- `Station.name` and `Station.description` remain Vietnamese canonical/default.
+- Player Station APIs return localized `name`/`description` while preserving the
+  public response shape.
+- Admin Station APIs return and edit both VI and EN Station fields.
+- Excel export, backend operational consumers, Team names, Station IDs,
+  usernames, tokens, enum/API values, `Game.title`, and `clueText` remain outside
+  localization for this scope.
+- Team Color rules remain unchanged.
+
+### Must Update After Change
+
+```text
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+---
+
+## 15. Git and Delivery Rules
 
 ### Scope
 

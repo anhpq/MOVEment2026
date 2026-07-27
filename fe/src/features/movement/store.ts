@@ -95,6 +95,7 @@ function createNewTeamStation(
   return {
     id: `${teamId}-${stationId}`,
     name,
+    nameEn: name,
     status: "New",
     durationMinutes,
     trackingMode,
@@ -188,7 +189,9 @@ function upsertStationDefinition(
     return {
       ...station,
       name: values.name,
+      nameEn: values.nameEn,
       description: values.description,
+      descriptionEn: values.descriptionEn,
       durationMinutes: values.durationMinutes,
       trackingMode: values.trackingMode,
       stationId: values.id,

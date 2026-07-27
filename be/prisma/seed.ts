@@ -124,7 +124,9 @@ async function main() {
               data: {
                 id: station.id,
                 name: station.name,
+                nameEn: station.nameEn,
                 description: station.shortDescription,
+                descriptionEn: station.shortDescriptionEn,
                 mapX: station.mapX,
                 mapY: station.mapY,
                 trackingMode: 'BOTH',
@@ -156,7 +158,9 @@ async function main() {
           create: {
             id: station.id,
             name: station.name,
+            nameEn: station.nameEn,
             description: station.shortDescription,
+            descriptionEn: station.shortDescriptionEn,
             mapX: station.mapX,
             mapY: station.mapY,
             trackingMode: 'BOTH',
@@ -165,7 +169,9 @@ async function main() {
           },
           update: {
             name: station.name,
+            nameEn: station.nameEn,
             description: station.shortDescription,
+            descriptionEn: station.shortDescriptionEn,
             mapX: station.mapX,
             mapY: station.mapY,
             isActive: true,

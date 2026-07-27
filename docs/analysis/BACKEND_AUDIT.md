@@ -1,3 +1,49 @@
+## 2026-07-27 Station localization and FE language switch
+
+- Added Station bilingual storage with `stations.name_en` and nullable
+  `stations.description_en`; Vietnamese `name`/`description` remain canonical.
+- Added provisional English content for the 17 canonical Stations in migration
+  and seed data. Canonical signature intentionally ignores EN fields so normal
+  seed can update translations without destructive Station replacement when the
+  gameplay inventory already matches.
+- Player Station and Progress APIs accept `lang=vi|en`, preserve the public
+  `name`/`description` response shape, fallback invalid/missing locale to VI,
+  and fallback missing EN per field to VI without exposing raw bilingual fields
+  to Player responses.
+- Admin Station create/update and progress matrix now support
+  `name`, `description`, `nameEn`, and `descriptionEn`; create requires non-empty
+  VI/EN names, update trims only supplied fields, and QR/scoring/progress
+  transaction behavior is unchanged.
+- Frontend added `i18next`/`react-i18next`, persisted `movement-language`, AntD
+  locale sync, `<html lang>` sync, Login/QR/AppFrame language switch, Player
+  Station refetch on language change with latest-request-wins, and Admin Station
+  Editor VI/EN sections.
+- Verification passed: Prisma Client generation, migration deploy on local
+  disposable-style DB target `127.0.0.1:55432/movement`, two consecutive seed
+  runs, `db:verify`, canonical `name_en` count check (`17`), targeted
+  `player.service.spec.ts` (`24/24`), targeted `admin.service.spec.ts` (`34/34`),
+  full Backend Jest suite (`144/144`), Backend lint/build, Frontend
+  `i18n:check` (`86` keys), Frontend lint/build, `git diff --check`, and
+  Graphify code graph update. Frontend build retains the known non-blocking
+  large-chunk warning. Graphify retains warnings for `hooks.json` zero nodes and
+  missing optional `tree_sitter_sql` SQL extraction.
+- Pending: browser smoke and final commit.
+- `npm install i18next react-i18next` reported existing 4 high-severity npm audit
+  findings; vulnerability remediation is not part of this localization change.
+
+## 2026-07-27 Feature Analysis workflow consolidation
+
+- Replaced `.kilo/plans` with seven routed Feature Analysis documents directly
+  under `docs/analysis`.
+- Consolidated 11 historical plans with provenance, current implementation
+  status, pending runtime/browser verification, risks, and stale assumptions.
+- Renamed the Excel/Team Color requirements file to
+  `EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md` and updated tracked references.
+- Added the mandatory seven-round Plan Mode workflow to `AGENTS.md` and
+  `docs/prompts/00_WORKFLOW.md`.
+- This is documentation/workflow reconciliation only; no Backend, Frontend,
+  migration, seed, API, or Production behavior changed.
+
 ## 2026-07-27 Team header identity
 
 - Added the confirmed Authentication/User Header rule: Team users see the current Team name in the app header instead of the generic `User` label.
