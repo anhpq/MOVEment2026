@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "C:\\Users\\Admin\\AppData\\Roaming\\uv\\tools\\graphifyy\\Scripts\\graphify.exe hook-check"
+            "command": "python -m graphify hook-check"
           }
         ]
       }
