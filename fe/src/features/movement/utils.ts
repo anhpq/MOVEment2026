@@ -51,8 +51,8 @@ export function getStationEffectiveMaxPoints(
 }
 
 export function getStationDisplayCode(stationId: string) {
-  const canonicalMatch = /^ST0(0[1-9]|1[0-7])$/.exec(stationId);
-  return canonicalMatch ? `ST${canonicalMatch[1]}` : stationId;
+  const canonicalMatch = /^ST0(0[1-9]|1[0-8])$/.exec(stationId);
+  return canonicalMatch ? canonicalMatch[1] : stationId;
 }
 
 export const DEFAULT_DATABASE: LocalDatabase = {

@@ -588,7 +588,7 @@ Nếu environment không xác định hoặc không an toàn, seed phải dừng
 
 Canonical active Station inventory hiện tại có đúng `17` Station, `17` active Game, Team `maxPossiblePoints = 300`, đúng `4` Game Type `ST`, đúng `13` Game Type `STANDARD`, và đúng `34` active Station QR token (`CHECK_IN` + `CHECK_OUT` cho mỗi Station). Tổng các `games.max_points` theo danh sách hiện tại là dữ liệu cấu hình Station, không được dùng làm validation cứng cho `maxPossiblePoints`.
 
-Station technical ID vẫn là `ST001`...`ST017` cho database, API, route, React key, select value và QR mapping. UI danh sách Station và map hiển thị display code rút gọn `ST01`...`ST17` cho các Station canonical tương ứng. ID không canonical như `ST018`, `ST047` hoặc `ST15A` giữ nguyên khi hiển thị.
+Station technical ID vẫn là `ST001`...`ST017` cho database, API, route, React key, select value và QR mapping. UI danh sách Station và map hiển thị display code rút gọn `01`...`17` cho các Station canonical tương ứng và hỗ trợ sẵn `ST018` hiển thị là `18` nếu xuất hiện sau này. ID không canonical khác như `ST047` hoặc `ST15A` giữ nguyên khi hiển thị.
 
 | ID | Name | Game Type | Max Score |
 | --- | --- | --- | --- |

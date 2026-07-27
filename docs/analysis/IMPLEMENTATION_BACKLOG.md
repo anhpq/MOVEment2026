@@ -1,11 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
-## 2026-07-27 Station display code UI
+## 2026-07-27 Station numeric display code UI
 
 - [x] Canonical Station IDs `ST001`...`ST017` keep their technical value for database, API, route, React key, select value, and QR mapping.
-- [x] Team/Admin Station list shows the shorter display code `ST01`...`ST17` beside each Station name.
+- [x] Team/Admin Station list shows the shorter display code `01`...`17` beside each Station name.
+- [x] `ST018` is supported as display code `18` if it appears later.
 - [x] Player map markers and Admin map selector use the same display code helper.
-- [x] Noncanonical Station IDs remain unchanged when displayed.
+- [x] Other noncanonical Station IDs remain unchanged when displayed.
 - [x] Frontend lint/build and `git diff --check` passed; build retains the known non-blocking large-chunk warning.
 - [x] Local commit created for the scoped implementation.
 - [ ] Manual browser review of List/Map display remains pending.
