@@ -1,5 +1,17 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Team header identity and Production logout visibility
+
+- [x] Team user header displays the current Team name instead of generic `User`.
+- [x] Team non-Production keeps a logout button, but its visible label is the Team name.
+- [x] Team Production renders only the Team name, with no logout button, logout icon, or click action.
+- [x] Admin header logout remains unchanged in every environment.
+- [x] Redundant `Current team: ...` copy was removed; Deploy remains present and keeps the existing mobile hide behavior.
+- [x] Frontend lint/build and production build passed; build retains the known non-blocking large-chunk warning.
+- [x] `git diff --check` and Graphify code graph update passed.
+- [x] Local commit created for the scoped implementation.
+- [ ] Manual browser review across desktop/mobile and long Team names remains pending.
+
 ## 2026-07-27 Player cancel cooldown UX
 
 - [x] Backend keeps Cancel cooldown authoritative and rejects Check-in before `nextCheckInAllowedAt`.

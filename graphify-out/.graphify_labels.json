@@ -186,5 +186,6 @@
   "184": "migration.sql",
   "185": "migration.sql",
   "186": "migration.sql",
-  "191": "ts-jest"
+  "187": "ts-node",
+  "188": "@types/react"
 }

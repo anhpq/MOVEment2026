@@ -65,6 +65,8 @@ export function AppFrame({children}: AppFrameProps) {
   const themedTeam = session?.role === "user" ? activeTeam : teams.find((team) => team.id === routeTeamId);
   const teamThemeVars = getTeamThemeVars(themedTeam?.teamColor);
   const shellClassName = themedTeam ? "mobile-shell team-themed-shell" : "mobile-shell";
+  const activeTeamName = activeTeam?.name ?? "No team";
+  const isProduction = import.meta.env.PROD;
   useBodyTeamTheme(
     themedTeam ? `app-frame:${themedTeam.id}` : "app-frame:none",
     themedTeam ? teamThemeVars : null,
@@ -100,21 +102,36 @@ export function AppFrame({children}: AppFrameProps) {
           </div>
 
           <Flex vertical align="flex-end" gap={2} className="account-cluster">
-            <Button
-              color="danger"
-              variant="filled"
-              icon={<LogoutOutlined />}
-              onClick={handleLogout}>
-              {ROLE_LABELS[session.role]}
-            </Button>
+            {session.role === "admin" && (
+              <Button
+                color="danger"
+                variant="filled"
+                icon={<LogoutOutlined />}
+                onClick={handleLogout}>
+                {ROLE_LABELS[session.role]}
+              </Button>
+            )}
+            {session.role === "user" && !isProduction && (
+              <Button
+                className="team-identity-button"
+                color="danger"
+                variant="filled"
+                icon={<LogoutOutlined />}
+                onClick={handleLogout}
+                title={`Logout ${activeTeamName}`}>
+                {activeTeamName}
+              </Button>
+            )}
+            {session.role === "user" && isProduction && (
+              <Typography.Text
+                className="team-identity-text"
+                title={activeTeamName}>
+                {activeTeamName}
+              </Typography.Text>
+            )}
             <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
               {buildTimestampLabel}
             </Typography.Text>
-            {session.role === "user" && (
-              <Typography.Text className="brand-subtitle">
-                Current team: <b>{activeTeam?.name ?? "No team"}</b>
-              </Typography.Text>
-            )}
           </Flex>
         </div>
       </Layout.Header>

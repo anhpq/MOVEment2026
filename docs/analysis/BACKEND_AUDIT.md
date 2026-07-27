@@ -1,3 +1,12 @@
+## 2026-07-27 Team header identity and Production logout visibility
+
+- Added the confirmed Authentication/User Header rule: Team users see the current Team name in the app header instead of the generic `User` label.
+- Preserved Admin behavior: Admin continues to see the existing `Admin` logout button in non-Production and Production.
+- Updated the Frontend `AppFrame` so Team non-Production keeps a logout button labeled with the Team name, while Team Production renders only the Team name with no logout button, icon, or click action.
+- Removed the redundant Team-only `Current team: ...` header line and added ellipsis styling so long Team names remain constrained; the Team name remains visible on mobile while the Deploy stamp keeps its existing mobile hide behavior.
+- No Backend API, session policy, seed, migration, QR, or database behavior changed.
+- Verification passed: Frontend lint, Frontend build, Frontend production build, `git diff --check`, and Graphify code graph update. Frontend builds retain the known non-blocking large-chunk warning.
+
 ## 2026-07-27 Player cancel cooldown UX
 
 - Preserved the confirmed Station Flow Business Rule: Cancel returns the Team Station to `AVAILABLE` and applies the configured cooldown, default 5 minutes.
