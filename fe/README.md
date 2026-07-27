@@ -95,3 +95,11 @@ npm run build
 ```
 
 The production build may report a known non-blocking Vite large chunk warning.
+
+## Map Assets
+
+The Station map served at runtime uses WebP variants from
+`public/images/map/suoitien-map-1280.webp`,
+`public/images/map/suoitien-map-1920.webp`, and
+`public/images/map/suoitien-map-2950.webp`. The original PNG source is kept in
+`source-assets/images/map/` and is not served directly.

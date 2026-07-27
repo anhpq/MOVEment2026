@@ -7,11 +7,55 @@ import {
 } from "./api";
 import type {LocalDatabaseSeed, TeamStation} from "./types";
 
-export const PLAYER_MAP_IMAGE_SRC = "/images/map/suoitien-map1.png";
+export type PlayerMapImageVariant = {
+  src: string;
+  width: number;
+};
+
+export const PLAYER_MAP_IMAGE_VARIANTS: PlayerMapImageVariant[] = [
+  {src: "/images/map/suoitien-map-1280.webp", width: 1280},
+  {src: "/images/map/suoitien-map-1920.webp", width: 1920},
+  {src: "/images/map/suoitien-map-2950.webp", width: 2950},
+];
+
+export const PLAYER_MAP_IMAGE_SRC = PLAYER_MAP_IMAGE_VARIANTS[0].src;
+
+const playerMapImageCache = new Map<string, Promise<HTMLImageElement>>();
+
+export function selectPlayerMapImageVariant(
+  containerWidth: number,
+  devicePixelRatio = globalThis.devicePixelRatio || 1,
+  highZoom = false,
+) {
+  if (highZoom) {
+    return PLAYER_MAP_IMAGE_VARIANTS[PLAYER_MAP_IMAGE_VARIANTS.length - 1];
+  }
+
+  const targetWidth = Math.max(1, containerWidth) * Math.max(1, devicePixelRatio);
+  return (
+    PLAYER_MAP_IMAGE_VARIANTS.find((variant) => variant.width >= targetWidth) ??
+    PLAYER_MAP_IMAGE_VARIANTS[PLAYER_MAP_IMAGE_VARIANTS.length - 1]
+  );
+}
+
+export function loadPlayerMapImage(src: string) {
+  const cached = playerMapImageCache.get(src);
+  if (cached) {
+    return cached;
+  }
+
+  const promise = new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new globalThis.Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error(`Unable to load map image ${src}`));
+    image.src = src;
+  });
+  playerMapImageCache.set(src, promise);
+  return promise;
+}
 
 export function preloadPlayerMapImage() {
-  const image = new globalThis.Image();
-  image.src = PLAYER_MAP_IMAGE_SRC;
+  void loadPlayerMapImage(PLAYER_MAP_IMAGE_SRC).catch(() => undefined);
 }
 
 function mapProgressStatus(

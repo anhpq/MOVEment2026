@@ -38,7 +38,12 @@ import {
 import {useNavigate} from "react-router-dom";
 import {fetchAdminDatabase} from "../adminData";
 import {checkInStation, updateAdminStation} from "../api";
-import {fetchPlayerDatabase, PLAYER_MAP_IMAGE_SRC} from "../playerData";
+import {
+  fetchPlayerDatabase,
+  loadPlayerMapImage,
+  selectPlayerMapImageVariant,
+} from "../playerData";
+import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {useMovementStore} from "../store";
 import type {StationDefinition, TeamStation} from "../types";
 import {
@@ -434,6 +439,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const [isSubmittingQr, setIsSubmittingQr] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const isSubmittingQrRef = useRef(false);
+  const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
 
   const activeTeamStations = useMemo(
@@ -513,20 +519,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       getStationDisplayCode(focusedTeamStation.stationId)
     : "";
 
-  const focusedPlayingTeamCount = useMemo(() => {
-    if (!focusedTeamStation) {
-      return 0;
-    }
-
-    return Object.values(teamStations).filter((stations) =>
-      stations.some(
-        (item) =>
-          item.stationId === focusedTeamStation.stationId &&
-          (item.backendStatus === "CHECKED_IN" ||
-            item.backendStatus === "PLAYING"),
-      ),
-    ).length;
-  }, [focusedTeamStation, teamStations]);
+  const playingCounts = useStationPlayingCounts(session?.role === "user");
+  const focusedPlayingTeamCount = focusedTeamStation ?
+    (playingCounts[focusedTeamStation.stationId] ?? 0)
+  : 0;
 
   const resolvedSelectedStationId = useMemo(() => {
     if (!selectedStationId) {
@@ -558,20 +554,34 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     focusedCooldownRemaining > 0;
 
   useEffect(() => {
-    let cancelled = false;
-    const image = new globalThis.Image();
+    if (!viewportSize.width) {
+      return;
+    }
 
-    image.src = PLAYER_MAP_IMAGE_SRC;
-    image.onload = () => {
-      if (!cancelled) {
-        setMapImage(image);
-      }
-    };
+    let cancelled = false;
+    const variant = selectPlayerMapImageVariant(
+      viewportSize.width,
+      globalThis.devicePixelRatio || 1,
+      mapScale >= 2.5,
+    );
+
+    if (variant.width <= loadedMapWidthRef.current) {
+      return;
+    }
+
+    void loadPlayerMapImage(variant.src)
+      .then((image) => {
+        if (!cancelled && variant.width >= loadedMapWidthRef.current) {
+          loadedMapWidthRef.current = variant.width;
+          setMapImage(image);
+        }
+      })
+      .catch(() => undefined);
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [mapScale, viewportSize.width]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNowMs(Date.now()), 1000);

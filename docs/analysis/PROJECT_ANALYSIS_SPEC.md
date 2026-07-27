@@ -83,7 +83,8 @@ Rules:
 
 Each active Team has one active reusable controlled QR Login token.
 
-Token must be random, opaque, unique, revocable, rotatable, and subject to expiry or Event validity.
+Token must be random, opaque, unique, revocable, rotatable, and non-expiring by
+time. New and active Team QR Login API responses use `expiresAt: null`.
 
 Successful login does not permanently consume the token.
 
@@ -289,6 +290,11 @@ Leaderboard ranks all non-deleted Teams and uses the same centralized comparator
 
 Backend is authoritative.
 
+Player Station list, Station map drawer, and Station detail show live Playing
+Teams counts from `GET /api/player/stations/playing-counts`. The endpoint
+returns only `stationId` and `playingTeamCount`, and the frontend polls it only
+while the tab is visible.
+
 ## Team Results Excel Export
 
 Admin can export a new one-worksheet Team Results `.xlsx` file with exactly one row per non-deleted Team.
@@ -310,6 +316,14 @@ Team Color reuses `Team.color`. API responses expose canonical `teamColor` and t
 Admin create/update accepts only `#RRGGBB` or `null`; `null` clears color, missing update field leaves it unchanged, and conflicting `teamColor`/`color` aliases return `400`.
 
 Team-facing UI and single-Team Admin contexts use scoped CSS variables from the active/viewed Team Color with fallback `#FF765C`. Enabled primary buttons in Team context use Team gradients with white `#FFFFFF` text/icons; disabled, danger, default, QR info modal, and non-button semantics remain unchanged. `/teams` remains a multi-Team Admin list with default shell/header/nav while each Team card uses its own scoped color. Admin map route/action behavior is unchanged.
+
+## Map Assets
+
+The runtime Station map uses WebP variants at 1280, 1920, and 2950 pixels wide.
+The original PNG source asset is kept outside `public` under `fe/source-assets`.
+Frontend selection is based on rendered width and device pixel ratio, keeps the
+current image while an upgrade loads, and only upgrades to the full-width image
+for high zoom rather than downgrading on resize.
 
 ## QR Camera
 
@@ -352,6 +366,11 @@ It must provision:
 
 Production seed must not print raw secrets or create local test credentials automatically.
 
+`npm run reset:gameplay` is dry-run by default. `--execute` requires
+`RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"` for all targets and
+`RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"` for Production-like
+targets.
+
 Temporary Production Final Challenge seed override remains enabled through `2026-08-21 23:59:59 Asia/Ho_Chi_Minh`: each seed run overwrites only seed-managed Final Challenge fields with canonical values. Starting `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`, Production seed preserves an existing Final Challenge record and only creates it if missing.
 
 ## Audit and Logging
@@ -371,7 +390,6 @@ Do not log raw QR tokens, passwords, JWTs, or refresh tokens.
 
 Historical audit indicates that current or recent implementation may still contain:
 
-- one-time consumed Automatic URL QR tokens;
 - predictable Legacy Team QR tokens;
 - predictable Station QR containing Station code;
 - smoke scripts and fixtures using Legacy payloads;
