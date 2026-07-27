@@ -175,6 +175,7 @@ export class PlayerService {
         checkedOutAt: null,
         completedAt: null,
         cancelledAt: null,
+        nextCheckInAllowedAt: null,
         scoreAchieved: 0,
         attemptNo: { increment: 1 },
       },

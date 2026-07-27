@@ -1,3 +1,11 @@
+## 2026-07-27 Player cancel cooldown UX
+
+- Preserved the confirmed Station Flow Business Rule: Cancel returns the Team Station to `AVAILABLE` and applies the configured cooldown, default 5 minutes.
+- Added PlayerService regression coverage for `Start game -> Cancel/cooldown -> Start game`: Backend rejects restart before `nextCheckInAllowedAt`, allows restart after the deadline, and clears `nextCheckInAllowedAt` on the successful new Check-in.
+- Mapped `nextCheckInAllowedAt` into the Frontend `TeamStation` model and added shared cooldown helpers so Station List and Player Map show `Cooldown mm:ss`, disable the Play action during cooldown, and avoid opening the Check-in QR modal before the deadline.
+- Verification passed: targeted PlayerService Jest test (`21/21`), full Backend Jest suite (`134/134`), Backend lint/build, Frontend lint/build, and `git diff --check`. Frontend build retains the known non-blocking large-chunk warning.
+- Graphify code graph update passed through the saved Python interpreter; full semantic doc/image update was attempted but failed because 52 doc/image files required an LLM backend/API key in this environment.
+
 ## 2026-07-27 Team Results tracking-mode headers
 
 - Extended the confirmed Team Results Excel Business Rule so every active Station's three column headers identify its tracking mode as `[Score only]`, `[Time only]`, or `[Both time and score]`.

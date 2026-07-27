@@ -154,6 +154,7 @@ Stations are not unlocked in a fixed sequence.
 A Team may play only one Station at a time.
 
 Cancel returns the Team Station to `AVAILABLE` and applies the configured cooldown, default 5 minutes.
+Player Station list and map UI must surface this cooldown from `nextCheckInAllowedAt` as a countdown and prevent opening the Check-in QR modal until the deadline passes. Backend remains the authority if the client clock is wrong.
 
 ## Tracking Modes
 

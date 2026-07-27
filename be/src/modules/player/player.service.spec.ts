@@ -96,6 +96,7 @@ describe('PlayerService station flow', () => {
       data: expect.objectContaining({
         status: ProgressStatus.PLAYING,
         checkedInAt: expect.any(Date),
+        nextCheckInAllowedAt: null,
         attemptNo: { increment: 1 },
       }),
     })
@@ -191,6 +192,88 @@ describe('PlayerService station flow', () => {
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_IN' }),
     ).resolves.toEqual(updated)
+  })
+
+  it('rejects restart during cancel cooldown and allows restart after the deadline', async () => {
+    const futureCooldown = new Date(Date.now() + 5 * 60_000)
+    const pastCooldown = new Date(Date.now() - 1_000)
+    const updated = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date(),
+      nextCheckInAllowedAt: null,
+      attemptNo: 1,
+    }
+
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValueOnce({
+      ...progress,
+      cancelledAt: new Date(),
+      nextCheckInAllowedAt: futureCooldown,
+    })
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).rejects.toThrow('Cancel cooldown is still active')
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValueOnce({
+      ...progress,
+      cancelledAt: new Date(),
+      nextCheckInAllowedAt: pastCooldown,
+    })
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
+    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).resolves.toEqual(updated)
+
+    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
+      where: { id: progress.id },
+      data: expect.objectContaining({
+        status: ProgressStatus.PLAYING,
+        nextCheckInAllowedAt: null,
+      }),
+    })
+  })
+
+  it('cancels an active station back to available with a cooldown deadline', async () => {
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+    }
+    const cancelledProgress = {
+      ...activeProgress,
+      status: ProgressStatus.AVAILABLE,
+      checkedInAt: null,
+      cancelledAt: new Date(),
+      nextCheckInAllowedAt: new Date(Date.now() + 5 * 60_000),
+    }
+
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+    mockEventConfig.getConfig.mockResolvedValue({ cancelCooldownMinutes: 5 })
+    mockPrisma.teamStationProgress.update.mockResolvedValue(cancelledProgress)
+
+    await expect(service.cancel(2, 'ST002')).resolves.toEqual(cancelledProgress)
+
+    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
+      where: { id: progress.id },
+      data: expect.objectContaining({
+        status: ProgressStatus.AVAILABLE,
+        checkedInAt: null,
+        checkedOutAt: null,
+        cancelledAt: expect.any(Date),
+        nextCheckInAllowedAt: expect.any(Date),
+      }),
+    })
+    expect(mockActivityLog.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorType: ActorType.TEAM,
+        actorId: 2,
+        action: 'CANCEL_STATION',
+      }),
+    )
   })
 
   it('allows check-out after eventEndTime for a station already in progress', async () => {

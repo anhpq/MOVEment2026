@@ -56,6 +56,7 @@ export type TeamStation = {
   score: number;
   startTime: string | null;
   endTime: string | null;
+  nextCheckInAllowedAt?: string | null;
   teamId: string;
   stationId: string;
   progressId?: number;

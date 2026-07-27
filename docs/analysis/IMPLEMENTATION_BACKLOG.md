@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Player cancel cooldown UX
+
+- [x] Backend keeps Cancel cooldown authoritative and rejects Check-in before `nextCheckInAllowedAt`.
+- [x] Successful Check-in after the cooldown deadline clears `nextCheckInAllowedAt`.
+- [x] Player Station List maps and displays cooldown as `Cooldown mm:ss`, disables Play during cooldown, and avoids opening the Check-in QR modal before the deadline.
+- [x] Player Map drawer uses the same cooldown countdown and disabled Play behavior.
+- [x] Targeted PlayerService Jest test (`21/21`), full Backend Jest suite (`134/134`), Backend lint/build, Frontend lint/build, and `git diff --check` passed.
+- [x] Graphify code graph update passed through the saved Python interpreter.
+- [ ] Full Graphify semantic doc/image update remains pending because 52 changed doc/image files require an LLM backend/API key in this environment.
+- [ ] Manual browser click-through remains pending.
+
 ## 2026-07-27 Team Results tracking-mode headers
 
 - [x] Every active Station's three Team Results headers display `[Score only]`, `[Time only]`, or `[Both time and score]` from the existing Station tracking mode.

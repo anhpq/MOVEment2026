@@ -71,6 +71,7 @@ function buildPlayerSeed(
           station.progress?.completedAt ??
           station.progress?.checkedOutAt ??
           null,
+        nextCheckInAllowedAt: station.progress?.nextCheckInAllowedAt ?? null,
         teamId,
         stationId: station.id,
         maxPoints: station.game?.maxPoints,

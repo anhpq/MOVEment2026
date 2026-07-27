@@ -285,9 +285,33 @@ export function formatDurationFromMs(durationMs: number) {
   return `${hours}:${minutes}:${seconds}`;
 }
 
+export function getStationCooldownRemainingSeconds(
+  station: Pick<TeamStation, "nextCheckInAllowedAt">,
+  nowMs = Date.now(),
+) {
+  if (!station.nextCheckInAllowedAt) {
+    return 0;
+  }
+
+  const nextAllowedMs = new Date(station.nextCheckInAllowedAt).getTime();
+  if (!Number.isFinite(nextAllowedMs)) {
+    return 0;
+  }
+
+  return Math.max(0, Math.ceil((nextAllowedMs - nowMs) / 1000));
+}
+
+export function formatCooldownRemaining(seconds: number) {
+  const safeSeconds = Math.max(0, Math.ceil(seconds));
+  const minutes = String(Math.floor(safeSeconds / 60)).padStart(2, "0");
+  const remainderSeconds = String(safeSeconds % 60).padStart(2, "0");
+  return `${minutes}:${remainderSeconds}`;
+}
+
 export function getDisabledReason(
   station: TeamStation,
   activeStation: TeamStation | undefined,
+  nowMs = Date.now(),
 ) {
   if (station.backendStatus === "LOCKED") {
     return "Station đã đóng";
@@ -295,6 +319,11 @@ export function getDisabledReason(
 
   if (station.status === "Finished") {
     return "Station has already been completed";
+  }
+
+  const cooldownRemaining = getStationCooldownRemainingSeconds(station, nowMs);
+  if (cooldownRemaining > 0) {
+    return `Try again in ${formatCooldownRemaining(cooldownRemaining)}`;
   }
 
   if (activeStation && activeStation.stationId !== station.stationId) {

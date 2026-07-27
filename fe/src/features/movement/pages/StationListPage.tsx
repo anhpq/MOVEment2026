@@ -30,8 +30,10 @@ import {checkInStation, getPlayerFinal} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {fetchPlayerDatabase} from "../playerData";
 import {
+  formatCooldownRemaining,
   formatDateTime,
   getDisabledReason,
+  getStationCooldownRemainingSeconds,
   getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
@@ -52,6 +54,7 @@ export function StationListPage() {
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
   const isSubmittingCheckInRef = useRef(false);
   const [isFinalReady, setIsFinalReady] = useState(false);
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
   const selectedTeamId =
     session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
@@ -118,6 +121,11 @@ export function StationListPage() {
     };
   }, [session?.role]);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => setNowMs(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   if (!session || !team) {
     return null;
   }
@@ -128,7 +136,7 @@ export function StationListPage() {
       return;
     }
 
-    const disabledReason = getDisabledReason(station, activeStation);
+    const disabledReason = getDisabledReason(station, activeStation, nowMs);
     if (disabledReason) {
       message.warning(disabledReason);
       return;
@@ -229,6 +237,14 @@ export function StationListPage() {
         locale={{emptyText: <Empty description="No stations available" />}}
         renderItem={(station) => {
           const stationDisplayCode = getStationDisplayCode(station.stationId);
+          const cooldownRemaining = getStationCooldownRemainingSeconds(
+            station,
+            nowMs,
+          );
+          const isCooldownActive =
+            session.role === "user" &&
+            station.status !== "In Progress" &&
+            cooldownRemaining > 0;
 
           return (
             <List.Item>
@@ -246,6 +262,11 @@ export function StationListPage() {
                       <Tag color={getStationStatusColor(station.status)}>
                         {station.status}
                       </Tag>
+                      {isCooldownActive && (
+                        <Tag color="orange">
+                          Cooldown {formatCooldownRemaining(cooldownRemaining)}
+                        </Tag>
+                      )}
                     </Flex>
                     <Typography.Paragraph className="muted-copy compact-copy">
                       {station.description}
@@ -312,8 +333,13 @@ export function StationListPage() {
                             <PlayCircleOutlined />
                           : <EditFilled />
                         }
+                        disabled={isCooldownActive}
                         onClick={() => handleStationClick(station)}>
-                        {session.role === "user" ? "Play" : "View & Edit"}
+                        {session.role === "user" ?
+                          isCooldownActive ?
+                            `Cooldown ${formatCooldownRemaining(cooldownRemaining)}`
+                          : "Play"
+                        : "View & Edit"}
                       </Button>
                 </div>
               </Card>

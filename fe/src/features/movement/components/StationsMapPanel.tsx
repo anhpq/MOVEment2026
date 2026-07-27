@@ -43,8 +43,10 @@ import {fetchPlayerDatabase, PLAYER_MAP_IMAGE_SRC} from "../playerData";
 import {useMovementStore} from "../store";
 import type {StationDefinition, TeamStation} from "../types";
 import {
+  formatCooldownRemaining,
   formatDateTime,
   getDisabledReason,
+  getStationCooldownRemainingSeconds,
   getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
@@ -431,6 +433,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   );
   const [qrToken, setQrToken] = useState("");
   const [isSubmittingQr, setIsSubmittingQr] = useState(false);
+  const [nowMs, setNowMs] = useState(() => Date.now());
   const isSubmittingQrRef = useRef(false);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -542,6 +545,13 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       ) ?? null,
     [resolvedSelectedStationId, stationDefinitions],
   );
+  const focusedCooldownRemaining = focusedTeamStation ?
+    getStationCooldownRemainingSeconds(focusedTeamStation, nowMs)
+  : 0;
+  const isFocusedCooldownActive =
+    session?.role === "user" &&
+    focusedTeamStation?.status !== "In Progress" &&
+    focusedCooldownRemaining > 0;
 
   useEffect(() => {
     let cancelled = false;
@@ -557,6 +567,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNowMs(Date.now()), 1000);
+    return () => window.clearInterval(timer);
   }, []);
 
   useLayoutEffect(() => {
@@ -861,6 +876,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   <Tag color={getStationStatusColor(focusedTeamStation.status)}>
                     {focusedTeamStation.status}
                   </Tag>
+                  {isFocusedCooldownActive && (
+                    <Tag color="orange">
+                      Cooldown {formatCooldownRemaining(focusedCooldownRemaining)}
+                    </Tag>
+                  )}
                 </Flex>
                 <Typography.Paragraph className="muted-copy compact-copy">
                   {focusedTeamStation.description}
@@ -919,10 +939,12 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 block
                 type="primary"
                 icon={<PlayCircleOutlined />}
+                disabled={isFocusedCooldownActive}
                 onClick={() => {
                   const disabledReason = getDisabledReason(
                     focusedTeamStation,
                     activeStation,
+                    nowMs,
                   );
 
                   if (disabledReason) {
@@ -937,7 +959,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
                   setScanTarget(focusedTeamStation);
                 }}>
-                Play
+                {isFocusedCooldownActive ?
+                  `Cooldown ${formatCooldownRemaining(focusedCooldownRemaining)}`
+                : "Play"}
               </Button>
             </div>
           </Card>
