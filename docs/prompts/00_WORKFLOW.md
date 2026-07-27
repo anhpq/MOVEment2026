@@ -652,10 +652,17 @@ Graphify không được override:
 
 ## Nếu Graphify không khả dụng
 
-1. Không dừng task chỉ vì thiếu Graphify.
-2. Inspect code bằng search và đọc file trực tiếp.
-3. Báo rõ Graphify không chạy được nếu nó có ý nghĩa với task.
-4. Không tuyên bố đã update graph nếu command chưa chạy thành công.
+1. Thử `graphify` console entrypoint.
+2. Nếu entrypoint không có trong `PATH`, thử interpreter đã lưu trong
+   `graphify-out/.graphify_python` với `-m graphify`.
+3. Nếu chưa có interpreter guard, thử `python -m graphify`,
+   `python3 -m graphify`, hoặc `py -m graphify` tùy host.
+4. Không coi Graphify là unavailable và không chuyển sang NetworkX nếu module
+   invocation chạy thành công.
+5. Chỉ khi cả console entrypoint và module invocation đều thất bại mới inspect
+   code trực tiếp hoặc dùng read-only NetworkX fallback.
+6. Báo rõ Graphify không chạy được nếu nó có ý nghĩa với task.
+7. Không tuyên bố đã update graph nếu command chưa chạy thành công.
 
 ---
 

@@ -498,6 +498,19 @@ graphify path "<A>" "<B>"
 graphify explain "<concept>"
 ```
 
+Before declaring Graphify unavailable or using a NetworkX fallback, resolve the
+command in this order:
+
+1. the `graphify` console entrypoint;
+2. the interpreter recorded in `graphify-out/.graphify_python`, invoked with
+   `-m graphify`;
+3. `python -m graphify`, `python3 -m graphify`, or `py -m graphify`, whichever
+   imports successfully on the host.
+
+A missing `graphify` console entrypoint in `PATH` does not make Graphify
+unavailable when a module invocation succeeds. Do not report a PATH blocker or
+switch to NetworkX in that case.
+
 If `graphify-out/graph.json` is missing and Graphify is required:
 
 ```text
@@ -514,6 +527,8 @@ graphify . --code-only
 - Do not run Graphify for a small documentation edit or obvious single-file fix.
 - Do not stop the task merely because Graphify is unavailable.
 - If Graphify is unavailable, inspect documentation and Source Code directly.
+- Use inline NetworkX only after both the console entrypoint and Python module
+  invocation fail.
 - Report Graphify unavailability only when Graphify would have been materially useful.
 - Never claim Graphify was updated unless the update command actually succeeded.
 

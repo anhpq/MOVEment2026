@@ -50,7 +50,7 @@ Drop any folder of code, docs, papers, images, or video into graphify and get a 
 
 If the user invoked `/graphify --help` or `/graphify -h` (with no other arguments), print the contents of the `## Usage` section above verbatim and stop. Do not run any commands, do not detect files, do not default the path to `.`. Just print the Usage block and return.
 
-**Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and jump straight to `## For /graphify query`.** Run `graphify query "<question>"` immediately. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
+**Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and jump straight to `## For /graphify query`.** Run `graphify query "<question>"` immediately. If the console entrypoint is missing from `PATH`, run the same subcommand through the saved interpreter or `python -m graphify`; do not jump directly to NetworkX. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
 
 If no path was given, use `.` (current directory). Do not ask the user for a path.
 
@@ -620,6 +620,35 @@ The graph is the map. Your job after the pipeline is to be the guide.
 
 ---
 
+## Command resolution before any fallback
+
+The `graphify` console entrypoint and the importable Python module are equivalent
+CLI entrypoints. Before declaring the CLI unavailable or using inline NetworkX,
+try these routes in order:
+
+1. `graphify <subcommand>` when the console entrypoint resolves.
+2. The interpreter stored in `graphify-out/.graphify_python` with
+   `-m graphify <subcommand>`.
+3. `python -m graphify <subcommand>`, `python3 -m graphify <subcommand>`, or
+   `py -m graphify <subcommand>` when that interpreter imports `graphify`.
+
+PowerShell example using the saved interpreter:
+
+```powershell
+$graphifyPython = (Get-Content -Raw 'graphify-out/.graphify_python').Trim()
+& $graphifyPython -m graphify query "<question>"
+```
+
+Bash example using the saved interpreter:
+
+```bash
+"$(cat graphify-out/.graphify_python)" -m graphify query "<question>"
+```
+
+Do not say Graphify is unavailable, report a PATH blocker, or use NetworkX when
+any module invocation succeeds. NetworkX is the last read-only fallback only
+after the console entrypoint and all viable module invocations fail.
+
 ## Interpreter guard for subcommands
 
 Before running any subcommand below (`--update`, `--cluster-only`, `query`, `path`, `explain`, `add`), check that `.graphify_python` exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the interpreter first:
@@ -652,7 +681,7 @@ When `graphify-out/graph.json` already exists and the user asks a question about
 graphify query "<question>"
 ```
 
-Before traversal, expand the question against the graph's own vocabulary so a wording mismatch does not collapse the answer to noise. If the `graphify query` CLI is unavailable, fall back to an inline NetworkX traversal of `graphify-out/graph.json`. Answer using only what the graph output contains, and quote `source_location` when citing a specific fact. For that vocab-expansion step, the BFS/DFS traversal modes, the `--budget` cap, the NetworkX fallback, `save-result` feedback, and the `/graphify path` and `/graphify explain` flows, see `references/query.md`.
+Before traversal, expand the question against the graph's own vocabulary so a wording mismatch does not collapse the answer to noise. If the `graphify` console entrypoint is unavailable, retry `query` through the saved Python interpreter or `python -m graphify`. Fall back to inline NetworkX only when those module invocations also fail. Answer using only what the graph output contains, and quote `source_location` when citing a specific fact. For that vocab-expansion step, the BFS/DFS traversal modes, the `--budget` cap, the NetworkX fallback, `save-result` feedback, and the `/graphify path` and `/graphify explain` flows, see `references/query.md`.
 
 ---
 

@@ -20,7 +20,7 @@
 - Added a frontend-only Station display code for canonical Station IDs: `ST001`...`ST017` render as `01`...`17`, and `ST018` renders as `18` if it appears later, in the Team/Admin Station list, Player map markers, Admin map station selector, map drawer title, and check-in modal copy.
 - Preserved the technical Station ID contract for database/API/routes/keys/select values: actions still use raw IDs such as `ST001`; other noncanonical IDs such as `ST047` or `ST15A` render unchanged.
 - No Backend, database schema, migration, seed, QR, scoring, Station Detail, System Config editor, or sorting behavior was changed.
-- Verification passed: frontend lint, frontend build, and `git diff --check`. Frontend build retains the known non-blocking large-chunk warning. Graphify query/update could not run because the `graphify` CLI is not available in PATH on this host.
+- Verification passed: frontend lint, frontend build, and `git diff --check`. Frontend build retains the known non-blocking large-chunk warning. The bare `graphify` console entrypoint was absent from the inherited PATH, but the installed CLI remained available through `python -m graphify`; a NetworkX fallback was not required.
 
 ## 2026-07-26 Station QR checkout scoring update
 

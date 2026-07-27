@@ -1,6 +1,6 @@
 # graphify reference: query, path, explain
 
-Load this when the user asks a question against an existing graph, or runs `/graphify path` or `/graphify explain`. The core's query stub points here for the full traversal flow. These flows use the `graphify query` CLI when it is available and fall back to an inline NetworkX traversal otherwise.
+Load this when the user asks a question against an existing graph, or runs `/graphify path` or `/graphify explain`. The core's query stub points here for the full traversal flow. These flows prefer the `graphify` console entrypoint, then retry the same CLI through an importable Python module, and use inline NetworkX only if both routes fail.
 
 Two traversal modes - choose based on the question:
 
@@ -62,13 +62,27 @@ If the list is empty, say so plainly and stop — do not proceed to traversal.
 
 Build the **expanded query string** by joining the selected tokens with spaces. Use this string as `QUESTION` below — NOT the original user question. (The original question is preserved only for `save-result` at the end.)
 
-Prefer the CLI when it is installed:
+Prefer the console entrypoint when it resolves:
 ```bash
 graphify query "QUESTION"
 # or: graphify query "QUESTION" --dfs --budget 3000
 ```
 
-If the CLI is unavailable, load `graphify-out/graph.json` and run the traversal inline:
+If the console entrypoint is absent from `PATH`, retry the same command through
+the interpreter guard before considering NetworkX:
+
+```bash
+"$(cat graphify-out/.graphify_python)" -m graphify query "QUESTION"
+# If no guard exists yet, use an interpreter that imports graphify:
+python -m graphify query "QUESTION"
+```
+
+On PowerShell, invoke the saved interpreter with `&` as documented in the core
+skill. A successful module invocation means the CLI is available; do not report
+a PATH blocker or switch to NetworkX.
+
+Only if both the console entrypoint and viable module invocations fail, load
+`graphify-out/graph.json` and run the traversal inline:
 
 1. Find the 1-3 nodes whose label best matches the expanded tokens.
 2. Run the appropriate traversal from each starting node.
@@ -191,7 +205,9 @@ Find the shortest path between two named concepts in the graph. Prefer the CLI w
 graphify path "NODE_A" "NODE_B"
 ```
 
-If the CLI is unavailable, run it inline:
+If the console entrypoint is unavailable, first retry with
+`python -m graphify path "NODE_A" "NODE_B"` or the saved interpreter. Run the
+inline fallback only if the module invocation also fails:
 
 ```bash
 $(cat graphify-out/.graphify_python) -c "
@@ -259,7 +275,9 @@ Give a plain-language explanation of a single node - everything connected to it.
 graphify explain "NODE_NAME"
 ```
 
-If the CLI is unavailable, run it inline:
+If the console entrypoint is unavailable, first retry with
+`python -m graphify explain "NODE_NAME"` or the saved interpreter. Run the
+inline fallback only if the module invocation also fails:
 
 ```bash
 $(cat graphify-out/.graphify_python) -c "
