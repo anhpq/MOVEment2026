@@ -193,7 +193,7 @@ Assert-PortAvailable $PrismaStudioPort "Prisma Studio"
 
 if (!$SkipInstall) {
   Step "Installing dependencies when needed"
-  Ensure-Dependencies "Backend" $BackendDir @("prisma", "ts-node", "nest", "tsc")
+  Ensure-Dependencies "Backend" $BackendDir @("prisma", "ts-node", "nest", "tsc") @("exceljs")
   Ensure-Dependencies "Frontend" $FrontendDir @("vite", "tsc") @("jsqr")
 }
 

@@ -1,3 +1,11 @@
+## 2026-07-27 Tester backend ExcelJS dependency detection
+
+- Investigated the Backend build failure in `src/modules/team-results/team-results-excel.ts` where TypeScript could not resolve `exceljs` and then inferred `worksheet.columns.forEach(...)` parameters as `any`.
+- Confirmed `exceljs` is already declared in `be/package.json`/`be/package-lock.json`; the failure was caused by an incomplete local Backend `node_modules`, not by a missing source dependency or Team Results Excel implementation error.
+- Restored local dependencies with `npm ci`, regenerated Prisma Client after reinstall, and confirmed `npm run build` passes in `be`.
+- Updated `scripts/tester-run.ps1` so Backend dependency detection treats `exceljs` as a required package and triggers install when it is missing.
+- No Backend API, database schema, migration, seed, Team Results workbook content, routing, or Business Rule behavior was changed.
+
 ## 2026-07-27 Station numeric display code UI
 
 - Added a frontend-only Station display code for canonical Station IDs: `ST001`...`ST017` render as `01`...`17`, and `ST018` renders as `18` if it appears later, in the Team/Admin Station list, Player map markers, Admin map station selector, map drawer title, and check-in modal copy.

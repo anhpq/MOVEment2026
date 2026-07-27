@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Tester backend ExcelJS dependency detection
+
+- [x] Confirmed Team Results Excel export still uses the declared `exceljs` dependency.
+- [x] Restored local Backend install and regenerated Prisma Client so Backend build can resolve `exceljs` and generated Prisma types.
+- [x] Updated `scripts/tester-run.ps1` to detect missing Backend package `exceljs` and run dependency installation before build.
+- [x] Backend build passed after `npm ci` and `npm run prisma:generate`.
+- [ ] Production/runtime deployment verification was not performed and remains out of scope without explicit approval.
+
 ## 2026-07-27 Station numeric display code UI
 
 - [x] Canonical Station IDs `ST001`...`ST017` keep their technical value for database, API, route, React key, select value, and QR mapping.
