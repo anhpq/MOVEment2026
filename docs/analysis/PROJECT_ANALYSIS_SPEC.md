@@ -185,8 +185,21 @@ Admin Station data includes `name`, `description`, `nameEn`, and
 `descriptionEn`. Admin create requires non-empty `name` and `nameEn`; update
 trims and validates only supplied fields.
 
-Excel export, backend operational consumers, Team names, Station IDs, enum/API
-values, `Game.title`, and `clueText` remain outside this localization scope.
+Excel export, backend operational consumers, Station IDs, enum/API values,
+`Game.title`, and `clueText` remain outside this localization scope.
+
+Team display names are localized only in the Frontend display layer for raw
+seed-style names `Team NN` or `Đội NN`: Vietnamese shows `Đội NN`, English shows
+`Team NN`, and custom Team names remain unchanged. Database, API, seed, Team ID,
+username, QR payload, and token values are not changed.
+
+Frontend Station UI sorts status-bearing Station lists by `In Progress`, `New`,
+`Finished`, then natural ascending `stationId`. Station collections without
+status sort by Station ID. Map marker coordinates are not changed by sorting.
+
+Final navigation can remain the compact label `Final`; the full screen heading
+is `Thử thách cuối cùng` in Vietnamese and `Final Challenge` in English. Final
+UI uses a flag icon for navigation/heading and keeps trophy success iconography.
 
 ## Tracking Modes
 

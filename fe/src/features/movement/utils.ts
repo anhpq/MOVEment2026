@@ -1,4 +1,5 @@
 import {DEFAULT_STATION_MAX_POINTS} from "./constants";
+import {STATUS_ORDER} from "./constants";
 import type {
   AuthAccount,
   LocalDatabase,
@@ -53,6 +54,33 @@ export function getStationEffectiveMaxPoints(
 export function getStationDisplayCode(stationId: string) {
   const canonicalMatch = /^ST0(0[1-9]|1[0-8])$/.exec(stationId);
   return canonicalMatch ? canonicalMatch[1] : stationId;
+}
+
+export function compareStationIds(left: string, right: string) {
+  return left.localeCompare(right, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
+
+export function compareTeamStations(
+  left: Pick<TeamStation, "status" | "stationId">,
+  right: Pick<TeamStation, "status" | "stationId">,
+) {
+  return (
+    STATUS_ORDER[left.status] - STATUS_ORDER[right.status] ||
+    compareStationIds(left.stationId, right.stationId)
+  );
+}
+
+export function getLocalizedTeamName(teamName: string, language: "vi" | "en") {
+  const match = /^(?:Team|Đội)\s*(\d{1,3})$/i.exec(teamName.trim());
+  if (!match) {
+    return teamName;
+  }
+
+  const number = match[1].padStart(2, "0");
+  return language === "en" ? `Team ${number}` : `Đội ${number}`;
 }
 
 export const DEFAULT_DATABASE: LocalDatabase = {
@@ -262,12 +290,12 @@ export function normalizeDatabaseSeed(seed?: LocalDatabaseSeed): LocalDatabase {
   };
 }
 
-export function formatDateTime(value: string | null) {
+export function formatDateTime(value: string | null, language: "vi" | "en" = "vi") {
   if (!value) {
     return "--";
   }
 
-  return new Intl.DateTimeFormat("vi-VN", {
+  return new Intl.DateTimeFormat(language === "en" ? "en-US" : "vi-VN", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -312,22 +340,40 @@ export function getDisabledReason(
   station: TeamStation,
   activeStation: TeamStation | undefined,
   nowMs = Date.now(),
+  translate?: (key: string, options?: Record<string, unknown>) => string,
 ) {
+  const t = translate ?? ((key: string, options?: Record<string, unknown>) => {
+    switch (key) {
+      case "errors.stationClosed":
+        return "Station đã đóng";
+      case "errors.stationCompleted":
+        return "Station has already been completed";
+      case "errors.tryAgainIn":
+        return `Try again in ${String(options?.time ?? "")}`;
+      case "errors.activeStation":
+        return `There is an active station ${String(options?.station ?? "")} in progress`;
+      default:
+        return key;
+    }
+  });
+
   if (station.backendStatus === "LOCKED") {
-    return "Station đã đóng";
+    return t("errors.stationClosed");
   }
 
   if (station.status === "Finished") {
-    return "Station has already been completed";
+    return t("errors.stationCompleted");
   }
 
   const cooldownRemaining = getStationCooldownRemainingSeconds(station, nowMs);
   if (cooldownRemaining > 0) {
-    return `Try again in ${formatCooldownRemaining(cooldownRemaining)}`;
+    return t("errors.tryAgainIn", {
+      time: formatCooldownRemaining(cooldownRemaining),
+    });
   }
 
   if (activeStation && activeStation.stationId !== station.stationId) {
-    return `There is an active station ${activeStation.name} in progress`;
+    return t("errors.activeStation", {station: activeStation.name});
   }
 
   return null;

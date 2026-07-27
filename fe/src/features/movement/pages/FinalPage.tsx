@@ -2,6 +2,7 @@ import {
   BulbFilled,
   CheckCircleFilled,
   ClockCircleOutlined,
+  FlagFilled,
   InfoCircleFilled,
   LockFilled,
   SendOutlined,
@@ -10,6 +11,7 @@ import {
 import {App, Button, Card, Form, Input, Spin, Typography} from "antd";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 import {getPlayerFinal, submitFinalAnswer, type FinalResponse} from "../api";
 import "./FinalPage.css";
 
@@ -31,6 +33,7 @@ function getRemainingSeconds(nextAttemptAt: string | null) {
 export function FinalPage() {
   const navigate = useNavigate();
   const {message} = App.useApp();
+  const {t} = useTranslation();
   const [form] = Form.useForm<FinalFormValues>();
   const [final, setFinal] = useState<FinalResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,10 +69,10 @@ export function FinalPage() {
     <Card className="final-cipher-card">
       <header className="final-cipher-heading">
         <span className="final-heading-icon" aria-hidden="true">
-          <BulbFilled />
+          <FlagFilled />
         </span>
         <div>
-          <Typography.Title level={2}>Final Cipher</Typography.Title>
+          <Typography.Title level={2}>{t("final.heading")}</Typography.Title>
         </div>
       </header>
 
@@ -78,8 +81,8 @@ export function FinalPage() {
           <section className="final-state-panel final-state-loading">
             <Spin size="large" />
             <div>
-              <Typography.Title level={3}>Loading Final Challenge</Typography.Title>
-              <Typography.Text>Checking the event status...</Typography.Text>
+              <Typography.Title level={3}>{t("final.loadingTitle")}</Typography.Title>
+              <Typography.Text>{t("final.loadingDescription")}</Typography.Text>
             </div>
           </section>
         ) : !final.isOpen ? (
@@ -89,11 +92,13 @@ export function FinalPage() {
             </span>
             <div>
               <Typography.Title level={3}>
-                Final Challenge is not open yet
+                {t("final.notOpenTitle")}
               </Typography.Title>
               <Typography.Paragraph>
-                Stations close at <strong>{final.eventEndTime}</strong>. Final opens at{" "}
-                <strong>{final.finalStartsAt}</strong>.
+                {t("final.notOpenDescription", {
+                  eventEndTime: final.eventEndTime,
+                  finalStartsAt: final.finalStartsAt,
+                })}
               </Typography.Paragraph>
             </div>
           </section>
@@ -104,11 +109,10 @@ export function FinalPage() {
             </span>
             <div className="final-state-copy">
               <Typography.Title level={3}>
-                Finish your active station first
+                {t("final.blockedTitle")}
               </Typography.Title>
               <Typography.Paragraph>
-                Final Cipher is open, but your team must finish the current
-                station before entering.
+                {t("final.blockedDescription")}
               </Typography.Paragraph>
               {final.activeStationId && (
                 <Button
@@ -116,7 +120,7 @@ export function FinalPage() {
                   onClick={() =>
                     navigate(`/stations/${final.activeStationId}`)
                   }>
-                  Continue Station
+                  {t("final.continueStation")}
                 </Button>
               )}
             </div>
@@ -127,19 +131,21 @@ export function FinalPage() {
               <CheckCircleFilled />
             </span>
             <Typography.Text className="final-success-label">
-              Cipher solved
+              {t("final.solved")}
             </Typography.Text>
-            <Typography.Title level={2}>Final answer accepted</Typography.Title>
+            <Typography.Title level={2}>{t("final.accepted")}</Typography.Title>
             <div className="final-success-results">
               <div>
                 <TrophyFilled />
-                <span>Rank</span>
+                <span>{t("common.rank")}</span>
                 <strong>{final.teamSubmission.winnerRank ?? "-"}</strong>
               </div>
               <div>
                 <span className="final-points-mark">+</span>
-                <span>Bonus</span>
-                <strong>{final.teamSubmission.pointsAwarded} pts</strong>
+                <span>{t("common.bonus")}</span>
+                <strong>
+                  {final.teamSubmission.pointsAwarded} {t("common.points")}
+                </strong>
               </div>
             </div>
           </section>
@@ -150,9 +156,9 @@ export function FinalPage() {
                 <BulbFilled />
               </span>
               <div>
-                <Typography.Text>Final clue</Typography.Text>
+                <Typography.Text>{t("final.clue")}</Typography.Text>
                 <Typography.Paragraph>
-                  {final.clueText || "Enter the final keyword to solve the cipher."}
+                  {final.clueText || t("final.fallbackClue")}
                 </Typography.Paragraph>
               </div>
             </section>
@@ -165,13 +171,12 @@ export function FinalPage() {
                 <ClockCircleOutlined />
                 <div>
                   <strong>
-                    {final.wrongAttemptCount} wrong attempt
-                    {final.wrongAttemptCount === 1 ? "" : "s"}
+                    {t("final.wrongAttempt", {count: final.wrongAttemptCount})}
                   </strong>
                   <span>
                     {isCoolingDown ?
-                      `Try again in ${remainingCooldownSeconds}s`
-                    : "You can submit another answer now"}
+                      t("final.tryAgain", {seconds: remainingCooldownSeconds})
+                    : t("final.canSubmit")}
                   </span>
                 </div>
                 {isCoolingDown && (
@@ -197,30 +202,30 @@ export function FinalPage() {
                   form.resetFields();
                   await refresh();
                   if (result.isCorrect) {
-                    message.success("Final answer accepted");
+                    message.success(t("final.acceptedMessage"));
                   } else {
-                    message.warning("Wrong answer. Cooldown applied.");
+                    message.warning(t("final.wrongMessage"));
                   }
-                } catch (error) {
+                } catch {
                   await refresh();
                   message.error(
-                    error instanceof Error ? error.message : "Submit failed",
+                    t("errors.submitFailed"),
                   );
                 } finally {
                   setIsSubmitting(false);
                 }
               }}>
               <Form.Item
-                label="Your answer"
+                label={t("final.yourAnswer")}
                 name="answer"
                 normalize={(value: string | undefined) =>
                   value ? value.toUpperCase() : value
                 }
-                rules={[{required: true, message: "Enter the final answer"}]}>
+                rules={[{required: true, message: t("final.answerRequired")}]} >
                 <Input
                   size="large"
                   autoComplete="off"
-                  placeholder="TYPE THE FINAL CIPHER"
+                  placeholder={t("final.placeholder")}
                   disabled={!canSubmit || isSubmitting}
                 />
               </Form.Item>
@@ -232,7 +237,7 @@ export function FinalPage() {
                 icon={<SendOutlined />}
                 loading={isSubmitting}
                 disabled={!canSubmit}>
-                Submit Final Answer
+                {t("final.submit")}
               </Button>
             </Form>
           </div>

@@ -157,6 +157,22 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 
 ---
 
+## 3.2 Frontend Localization Display Rules
+
+| Chủ đề | Quyết định |
+| --- | --- |
+| Frontend copy | Frontend-owned visible copy phải hỗ trợ VI/EN, bao gồm label, button, placeholder, validation, toast, modal, status, loading/empty/error state, tooltip và ARIA text. |
+| Brand | `MOVEment 2026` giữ nguyên ở mọi ngôn ngữ. |
+| Preserved values | Station ID, Team ID, username, token, URL, QR payload, enum/API values, `Game.title` và `clueText` không tự dịch trong Frontend. |
+| Language control | Language switch hiển thị cờ bằng text/emoji `🇻🇳 VI` và `🇬🇧 EN`; không cần thêm image asset. |
+| Final terminology | Menu có thể giữ label ngắn `Final`; heading đầy đủ là `Thử thách cuối cùng` trong VI và `Final Challenge` trong EN. Từ `cipher/mật mã` chỉ dùng khi nói về đáp án/mật mã thực tế. |
+| Final icon | UI Final dùng biểu tượng cờ cho navigation và heading; icon cúp thành công giữ nguyên. |
+| Station ordering | Danh sách Station có trạng thái sắp theo `In Progress` → `New` → `Finished`; trong từng nhóm sắp tự nhiên tăng dần theo `stationId`. Danh sách/dropdown Station không có status sắp theo Station ID. |
+| Team display name | Localization tên Team là display-layer only. Tên raw dạng `Team NN` hoặc `Đội NN` hiển thị là `Đội NN` trong VI và `Team NN` trong EN; custom Team name giữ nguyên. Không đổi database, API hoặc seed. |
+| API error UI | Frontend không hiển thị raw Backend error message cho user; UI dùng fallback localized theo action/status, nhưng vẫn giữ error code/sentinel nội bộ để phân nhánh logic. |
+
+---
+
 ## 4. Station QR
 
 ### 4.1 Station QR Policy

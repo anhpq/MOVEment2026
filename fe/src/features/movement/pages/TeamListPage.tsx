@@ -3,15 +3,19 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import {Card, Empty, List, Typography} from "antd";
+import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {getTeamThemeVars} from "../teamTheme";
+import {getLocalizedTeamName} from "../utils";
 import "./TeamListPage.css";
 
 export function TeamListPage() {
   const navigate = useNavigate();
+  const {i18n, t} = useTranslation();
   const teams = useMovementStore((state) => state.teams);
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
+  const language = i18n.language === "en" ? "en" : "vi";
   const sortedTeams = [...teams].sort((left, right) => {
     if (right.finish !== left.finish) {
       return right.finish - left.finish;
@@ -36,19 +40,20 @@ export function TeamListPage() {
           <TeamOutlined />
         </span>
         <div className="teams-hero-copy">
-          <Typography.Title level={2}>Team</Typography.Title>
+          <Typography.Title level={2}>{t("teamsPage.title")}</Typography.Title>
         </div>
         <div className="teams-total">
           <strong>{teams.length}</strong>
-          <span>Total teams</span>
+          <span>{t("teamsPage.totalTeams")}</span>
         </div>
       </header>
 
       <List
         className="teams-list"
         dataSource={sortedTeams}
-        locale={{emptyText: <Empty description="No teams available" />}}
+        locale={{emptyText: <Empty description={t("teamsPage.empty")} />}}
         renderItem={(team) => {
+          const displayName = getLocalizedTeamName(team.name, language);
           return (
             <List.Item>
               <Card
@@ -57,7 +62,7 @@ export function TeamListPage() {
                 hoverable
                 role="button"
                 tabIndex={0}
-                aria-label={`Open ${team.name}`}
+                aria-label={t("teamsPage.openTeam", {team: displayName})}
                 onClick={() => openTeam(team.id)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
@@ -69,7 +74,7 @@ export function TeamListPage() {
                   <div className="team-select-identity">
                     <div className="team-select-name-row">
                       <Typography.Title level={3}>
-                        {team.name}
+                        {displayName}
                       </Typography.Title>
                     </div>
                     <Typography.Text>{team.id}</Typography.Text>

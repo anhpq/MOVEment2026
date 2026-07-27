@@ -171,13 +171,12 @@
   "169": "CreateTeamDto",
   "170": "GenerateQrLoginTokenDto",
   "171": "player.service.spec.ts",
-  "172": "konva",
   "173": "14. Frontend Localization",
-  "174": "MOVEment 2026 - Feature Index",
   "175": "package.json",
   "176": "eslint-plugin-react-refresh",
   "177": "react-dom",
   "178": "@types/qrcode",
   "179": "typescript",
+  "180": "antd",
   "187": "ts-node"
 }

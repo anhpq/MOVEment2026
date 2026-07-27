@@ -708,8 +708,16 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
   public response shape.
 - Admin Station APIs return and edit both VI and EN Station fields.
 - Excel export, backend operational consumers, Team names, Station IDs,
-  usernames, tokens, enum/API values, `Game.title`, and `clueText` remain outside
-  localization for this scope.
+- Excel export, backend operational consumers, Station IDs, usernames, tokens,
+  enum/API values, `Game.title`, and `clueText` remain outside localization for
+  this scope.
+- Team display names are localized only at the Frontend display layer for raw
+  seed-style names `Team NN`/`Đội NN`; database, API, seed, Team IDs, and custom
+  Team names remain unchanged.
+- Final navigation may stay `Final`, but the full heading is localized as
+  `Thử thách cuối cùng` / `Final Challenge`; Final UI uses a flag icon.
+- Station UI ordering is status order `In Progress`, `New`, `Finished`, then
+  natural ascending `stationId`; Station collections without status sort by ID.
 - Team Color rules remain unchanged.
 
 ### Must Update After Change

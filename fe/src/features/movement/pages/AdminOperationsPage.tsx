@@ -23,6 +23,7 @@ import {
   Typography,
 } from "antd";
 import {useCallback, useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {
   downloadAdminTeamResults,
   getAdminActivityLogs,
@@ -45,9 +46,12 @@ function formatLabel(value: string) {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
-function formatValue(value: unknown) {
+function formatValue(
+  value: unknown,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) {
   if (value === null || value === undefined || value === "") return "—";
-  if (typeof value === "boolean") return value ? "Yes" : "No";
+  if (typeof value === "boolean") return value ? t("ops.yes") : t("ops.no");
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
 }
@@ -55,9 +59,11 @@ function formatValue(value: unknown) {
 function OperationList({
   items,
   emptyText,
+  t,
 }: {
   items: OperationRecord[];
   emptyText: string;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }) {
   return (
     <List
@@ -80,7 +86,9 @@ function OperationList({
             </div>
             <div className="ops-record-content">
               <Typography.Text className="ops-record-title" strong>
-                {titleEntry ? formatValue(titleEntry[1]) : `Record ${index + 1}`}
+                {titleEntry ?
+                  formatValue(titleEntry[1], t)
+                : t("ops.record", {index: index + 1})}
               </Typography.Text>
               <div className="ops-record-fields">
                 {entries
@@ -88,8 +96,8 @@ function OperationList({
                   .map(([key, value]) => (
                     <div className="ops-record-field" key={key}>
                       <span>{formatLabel(key)}</span>
-                      <strong title={formatValue(value)}>
-                        {formatValue(value)}
+                      <strong title={formatValue(value, t)}>
+                        {formatValue(value, t)}
                       </strong>
                     </div>
                   ))}
@@ -104,6 +112,7 @@ function OperationList({
 
 export function AdminOperationsPage() {
   const {message} = App.useApp();
+  const {t} = useTranslation();
   const [dashboard, setDashboard] = useState<OperationRecord>({});
   const [queue, setQueue] = useState<OperationRecord[]>([]);
   const [logs, setLogs] = useState<OperationRecord[]>([]);
@@ -129,14 +138,12 @@ export function AdminOperationsPage() {
       setSubmissions(s);
       eventForm.setFieldsValue(e);
       finalForm.setFieldsValue({...f, answer: ""});
-    } catch (error) {
-      message.error(
-        error instanceof Error ? error.message : "Unable to load operations",
-      );
+    } catch {
+      message.error(t("ops.unableLoad"));
     } finally {
       setIsRefreshing(false);
     }
-  }, [eventForm, finalForm, message]);
+  }, [eventForm, finalForm, message, t]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => void refresh(), 0);
@@ -150,7 +157,7 @@ export function AdminOperationsPage() {
   const tabs = [
     {
       key: "dashboard",
-      label: "Dashboard",
+      label: t("ops.dashboard"),
       icon: <DashboardOutlined />,
       children: (
         <div className="ops-tab-panel">
@@ -160,7 +167,7 @@ export function AdminOperationsPage() {
                 <Card className={`ops-metric-card metric-tone-${index % 4}`}>
                   <Typography.Text>{formatLabel(key)}</Typography.Text>
                   <Typography.Title level={3}>
-                    {formatValue(value)}
+                    {formatValue(value, t)}
                   </Typography.Title>
                 </Card>
               </Col>
@@ -170,31 +177,31 @@ export function AdminOperationsPage() {
             className="ops-export-button"
             icon={<FileExcelOutlined />}
              onClick={() => void downloadAdminTeamResults()}>
-            Export Team Results
+            {t("ops.exportTeamResults")}
           </Button>
         </div>
       ),
     },
     {
       key: "queue",
-      label: `Score Queue (${queue.length})`,
+      label: t("ops.scoreQueue", {count: queue.length}),
       icon: <UnorderedListOutlined />,
       children: (
-        <OperationList items={queue} emptyText="Score queue is empty" />
+        <OperationList items={queue} emptyText={t("ops.scoreQueueEmpty")} t={t} />
       ),
     },
     {
       key: "event",
-      label: "Event Config",
+      label: t("ops.eventConfig"),
       icon: <CalendarOutlined />,
       children: (
         <Card className="ops-form-card">
           <div className="ops-section-heading">
             <CalendarOutlined />
             <div>
-              <Typography.Title level={3}>Event configuration</Typography.Title>
+              <Typography.Title level={3}>{t("ops.eventConfiguration")}</Typography.Title>
               <Typography.Text>
-                Timing and operational rules for the current event.
+                {t("ops.eventDescription")}
               </Typography.Text>
             </div>
           </div>
@@ -204,38 +211,37 @@ export function AdminOperationsPage() {
             className="ops-form"
             onFinish={async (values) => {
               await updateAdminEventConfig(values);
-              message.success("Event config updated");
+              message.success(t("ops.eventUpdated"));
               await refresh();
             }}>
             <div className="ops-form-grid">
-              <Form.Item name="eventEndTime" label="Event end">
+              <Form.Item name="eventEndTime" label={t("ops.eventEnd")}>
                 <Input />
               </Form.Item>
-              <Form.Item name="finalStartsAt" label="Final starts at">
+              <Form.Item name="finalStartsAt" label={t("ops.finalStartsAt")}>
                 <Input />
               </Form.Item>
             </div>
             <div className="ops-info-note">
-              Event end closes new Station check-ins. Final starts at opens the
-              Final Challenge.
+              {t("ops.eventNote")}
             </div>
             <div className="ops-form-grid">
               <Form.Item
                 name="notifyBeforeMinutes"
-                label="Notify before (minutes)">
+                label={t("ops.notifyBefore")}>
                 <InputNumber min={1} className="full-width" />
               </Form.Item>
               <Form.Item
                 name="cancelCooldownMinutes"
-                label="Cancel cooldown (minutes)">
+                label={t("ops.cancelCooldown")}>
                 <InputNumber min={0} className="full-width" />
               </Form.Item>
             </div>
-            <Form.Item name="timezone" label="Timezone">
+            <Form.Item name="timezone" label={t("ops.timezone")}>
               <Input />
             </Form.Item>
             <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
-              Save event config
+              {t("ops.saveEvent")}
             </Button>
           </Form>
         </Card>
@@ -243,7 +249,7 @@ export function AdminOperationsPage() {
     },
     {
       key: "final",
-      label: "Final Config",
+      label: t("ops.finalConfig"),
       icon: <ExperimentOutlined />,
       children: (
         <div className="ops-tab-panel">
@@ -252,10 +258,10 @@ export function AdminOperationsPage() {
               <ExperimentOutlined />
               <div>
                 <Typography.Title level={3}>
-                  Final Challenge configuration
+                  {t("ops.finalConfiguration")}
                 </Typography.Title>
                 <Typography.Text>
-                  Configure the clue and optionally rotate the keyword.
+                  {t("ops.finalDescription")}
                 </Typography.Text>
               </div>
             </div>
@@ -274,38 +280,38 @@ export function AdminOperationsPage() {
                     {answer}
                   : {}),
                 });
-                message.success("Final config updated");
+                message.success(t("ops.finalUpdated"));
                 await refresh();
               }}>
-              <Form.Item name="title" label="Title">
+              <Form.Item name="title" label={t("ops.title")}>
                 <Input />
               </Form.Item>
-              <Form.Item name="clueText" label="Clue">
+              <Form.Item name="clueText" label={t("ops.clue")}>
                 <Input.TextArea autoSize={{minRows: 3, maxRows: 6}} />
               </Form.Item>
               <div className="ops-form-grid">
-                <Form.Item name="currentKeyword" label="Current keyword">
+                <Form.Item name="currentKeyword" label={t("ops.currentKeyword")}>
                   <Input readOnly />
                 </Form.Item>
-                <Form.Item name="answer" label="New keyword">
+                <Form.Item name="answer" label={t("ops.newKeyword")}>
                   <Input.Password autoComplete="new-password" />
                 </Form.Item>
               </div>
               <div className="ops-info-note">
-                Final opens at the Final starts at time configured in Event
-                Config. Bonus: Rank 1 = 10, Rank 10 = 1, Rank 11+ = 0.
+                {t("ops.finalNote")}
               </div>
               <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
-                Save Final config
+                {t("ops.saveFinal")}
               </Button>
             </Form>
           </Card>
           <Card
             className="ops-submissions-card"
-            title={`Final submissions (${submissions.length})`}>
+            title={t("ops.finalSubmissions", {count: submissions.length})}>
             <OperationList
               items={submissions}
-              emptyText="No Final submissions yet"
+              emptyText={t("ops.noFinalSubmissions")}
+              t={t}
             />
           </Card>
         </div>
@@ -313,9 +319,11 @@ export function AdminOperationsPage() {
     },
     {
       key: "logs",
-      label: `Activity Logs (${logs.length})`,
+      label: t("ops.activityLogs", {count: logs.length}),
       icon: <FileSearchOutlined />,
-      children: <OperationList items={logs} emptyText="No activity logs" />,
+      children: (
+        <OperationList items={logs} emptyText={t("ops.noActivityLogs")} t={t} />
+      ),
     },
   ];
 
@@ -325,12 +333,12 @@ export function AdminOperationsPage() {
         <span className="admin-ops-hero-icon">
           <DashboardOutlined />
         </span>
-        <Typography.Title level={2}>Operations Center</Typography.Title>
+        <Typography.Title level={2}>{t("ops.operationsCenter")}</Typography.Title>
         <Button
           shape="circle"
           icon={<ReloadOutlined />}
           loading={isRefreshing}
-          aria-label="Refresh operations data"
+          aria-label={t("ops.refreshAria")}
           onClick={() => void refresh()}
         />
       </header>

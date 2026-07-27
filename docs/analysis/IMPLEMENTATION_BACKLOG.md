@@ -1,5 +1,27 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Frontend localization follow-up
+
+- [x] Language switch displays `🇻🇳 VI` and `🇬🇧 EN` without new image assets.
+- [x] Final navigation keeps compact `Final`, Final heading is localized as
+  `Thử thách cuối cùng` / `Final Challenge`, and Final navigation/heading uses a
+  flag icon while success trophy remains unchanged.
+- [x] Station list/detail/map visible labels, statuses, actions, empty states,
+  modal copy, and key fallback errors use VI/EN resources.
+- [x] Station ordering uses `In Progress`, `New`, `Finished`, then natural
+  ascending `stationId`; Station map editor dropdown sorts by Station ID.
+- [x] Seed-style Team names localize in display only: `Team NN`/`Đội NN` become
+  `Team NN` in EN and `Đội NN` in VI; custom Team names remain unchanged.
+- [x] Team list, Leaderboard, Final, and Admin Operations visible copy use the
+  existing i18n resource architecture.
+- [x] Frontend `i18n:check`, Frontend lint, Frontend production build, and JSX
+  visible-copy scan passed. Build retains the known non-blocking large-chunk
+  warning.
+- [ ] Manual desktop/mobile Team/Admin browser smoke remains pending.
+- [ ] Full hard-coded copy audit beyond JSX direct text remains recommended
+  before event lock, because complex prop strings and dynamic API field labels
+  may still need product review.
+
 ## 2026-07-27 Station localization and FE language switch
 
 - [x] Station schema includes `name_en` and nullable `description_en`.

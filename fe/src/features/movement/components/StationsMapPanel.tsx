@@ -24,6 +24,7 @@ import {
 import Konva from "konva";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {
   Arc,
   Circle,
@@ -54,6 +55,7 @@ import {
   getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
+  compareStationIds,
 } from "../utils";
 import {QrTokenInput} from "./QrTokenInput";
 import "./StationsMapPanel.css";
@@ -413,6 +415,7 @@ function StationMarker({x, y, code, uiState, onSelect}: StationMarkerProps) {
 export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const navigate = useNavigate();
   const {modal, message} = AntdApp.useApp();
+  const {i18n, t} = useTranslation();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const stationDefinitions = useMovementStore(
@@ -441,6 +444,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const isSubmittingQrRef = useRef(false);
   const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
+  const language = i18n.language === "en" ? "en" : "vi";
 
   const activeTeamStations = useMemo(
     () => (teamStations[activeTeamId] ?? []) as TeamStationWithMeta[],
@@ -668,7 +672,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     }
 
     if (!selectedStation) {
-      message.warning("Please select a station before placing a marker");
+      message.warning(t("map.selectStation"));
       return;
     }
 
@@ -696,27 +700,27 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       !isValidMapCoordinate(nextMarker.mapX) ||
       !isValidMapCoordinate(nextMarker.mapY)
     ) {
-      message.error("Marker position must be a finite number from 0 to 100");
+      message.error(t("map.markerFinite"));
       return;
     }
 
     modal.confirm({
       centered: true,
-      title: "Update marker position?",
-      content: `${stationSnapshot.name} will be updated with the new position.`,
-      okText: "Update",
-      cancelText: "Cancel",
+      title: t("map.updateMarkerTitle"),
+      content: t("map.updateMarkerContent", {station: stationSnapshot.name}),
+      okText: t("common.update"),
+      cancelText: t("common.cancel"),
       onOk: async () => {
         try {
           await updateAdminStation(stationSnapshot.id, nextMarker);
           loadDatabase(await fetchAdminDatabase());
-          message.success(`Updated position for station ${stationSnapshot.name}`);
+          message.success(t("map.updatedMarker", {station: stationSnapshot.name}));
         } catch (error: unknown) {
           loadDatabase(await fetchAdminDatabase());
           message.error(
             error instanceof Error ?
               error.message
-            : "Could not update station position",
+            : t("map.updateMarkerFailed"),
           );
           throw error;
         }
@@ -727,7 +731,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   if (!stationDefinitions.length) {
     return (
       <Card className="surface-card">
-        <Empty description="No station data available to display the map" />
+        <Empty description={t("map.noMapData")} />
       </Card>
     );
   }
@@ -750,13 +754,13 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
     if (session?.role !== "user") {
       setScanTarget(null);
-      message.info("Admin cannot simulate team QR check-in");
+      message.info(t("map.adminNoSimulate"));
       return;
     }
 
     const token = rawToken.trim();
     if (!token) {
-      message.warning("Please enter or scan the check-in QR token");
+      message.warning(t("errors.checkInRequired"));
       return;
     }
 
@@ -765,14 +769,14 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     try {
       await checkInStation(scanTarget.stationId, token);
       await refreshPlayerData();
-      message.success("Check-in QR accepted");
+      message.success(t("map.checkInAccepted"));
       const stationId = scanTarget.stationId;
       setFocusedStationId(null);
       setScanTarget(null);
       setQrToken("");
       navigate(`/stations/${stationId}`);
-    } catch (error: unknown) {
-      message.error(error instanceof Error ? error.message : "Check-in failed");
+    } catch {
+      message.error(t("errors.checkInFailed"));
     } finally {
       isSubmittingQrRef.current = false;
       setIsSubmittingQr(false);
@@ -791,7 +795,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     className="movement-map-legend-dot"
                     style={{backgroundColor: getMarkerFill(item.label)}}
                   />
-                  {item.label}
+                  {t(`status.${item.label}`)}
                 </span>
               ))}
             </Flex>
@@ -802,14 +806,16 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               <Select
                 value={resolvedSelectedStationId}
                 style={{minWidth: 240, flex: 1}}
-                placeholder="Select a station to place a marker"
-                options={stationDefinitions.map((station) => ({
+                placeholder={t("map.selectStation")}
+                options={[...stationDefinitions].sort((left, right) =>
+                  compareStationIds(left.id, right.id),
+                ).map((station) => ({
                   label: `${getStationDisplayCode(station.id)} - ${station.name}`,
                   value: station.id,
                 }))}
                 onChange={setSelectedStationId}
               />
-              <Tag color="gold">Click on the map to place a marker</Tag>
+              <Tag color="gold">{t("map.clickToPlace")}</Tag>
             </div>
           )}
         </div>
@@ -869,7 +875,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         title={
           focusedStation ?
             `${getStationDisplayCode(focusedStation.id)} - ${focusedStation.name}`
-          : "Station Details"
+          : t("map.stationDetails")
         }
         open={Boolean(focusedStation)}
         onClose={() => setFocusedStationId(null)}
@@ -884,7 +890,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     " station-showcase-avatar-compact"
                   : ""
                 }`}
-                aria-label={`Station ${focusedStationDisplayCode}`}>
+                aria-label={t("common.stationLabel", {code: focusedStationDisplayCode})}>
                 {focusedStationDisplayCode}
               </div>
               <div className="station-showcase-heading">
@@ -893,11 +899,13 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     {focusedTeamStation.name}
                   </Typography.Title>
                   <Tag color={getStationStatusColor(focusedTeamStation.status)}>
-                    {focusedTeamStation.status}
+                    {t(`status.${focusedTeamStation.status}`)}
                   </Tag>
                   {isFocusedCooldownActive && (
                     <Tag color="orange">
-                      Cooldown {formatCooldownRemaining(focusedCooldownRemaining)}
+                      {t("common.cooldown", {
+                        time: formatCooldownRemaining(focusedCooldownRemaining),
+                      })}
                     </Tag>
                   )}
                 </Flex>
@@ -911,14 +919,14 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               <div className="station-stat">
                 <TeamOutlined />
                 <span>
-                  <small>Playing Teams</small>
+                  <small>{t("common.playingTeams")}</small>
                   <strong>{focusedPlayingTeamCount}</strong>
                 </span>
               </div>
               <div className="station-stat">
                 <StarFilled />
                 <span>
-                  <small>Score / Max</small>
+                  <small>{t("common.scoreMax")}</small>
                   <strong>
                     {focusedTeamStation.score} / {getStationEffectiveMaxPoints(focusedTeamStation)}
                   </strong>
@@ -927,15 +935,15 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               <div className="station-stat">
                 <PlayCircleOutlined />
                 <span>
-                  <small>Start Time</small>
-                  <strong>{formatDateTime(focusedTeamStation.startTime)}</strong>
+                  <small>{t("common.startTime")}</small>
+                  <strong>{formatDateTime(focusedTeamStation.startTime, language)}</strong>
                 </span>
               </div>
               <div className="station-stat">
                 <FlagOutlined />
                 <span>
-                  <small>End Time</small>
-                  <strong>{formatDateTime(focusedTeamStation.endTime)}</strong>
+                  <small>{t("common.endTime")}</small>
+                  <strong>{formatDateTime(focusedTeamStation.endTime, language)}</strong>
                 </span>
               </div>
             </div>
@@ -952,7 +960,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 onClick={() =>
                   openLinkInNewTab(focusedTeamStation.youtubeUrl as string)
                 }>
-                Watch Video
+                {t("common.watchVideo")}
               </Button>
               <Button
                 block
@@ -964,6 +972,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     focusedTeamStation,
                     activeStation,
                     nowMs,
+                    t,
                   );
 
                   if (disabledReason) {
@@ -979,8 +988,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   setScanTarget(focusedTeamStation);
                 }}>
                 {isFocusedCooldownActive ?
-                  `Cooldown ${formatCooldownRemaining(focusedCooldownRemaining)}`
-                : "Play"}
+                  t("common.cooldown", {
+                    time: formatCooldownRemaining(focusedCooldownRemaining),
+                  })
+                : t("common.play")}
               </Button>
             </div>
           </Card>
@@ -989,7 +1000,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
       <Modal
         centered
-        title="Scan QR to Start Game"
+        title={t("map.scanStartGameTitle")}
         open={Boolean(scanTarget)}
         onCancel={() => {
           setQrToken("");
@@ -997,27 +1008,26 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         }}
         onOk={() => void submitCheckInQr(qrToken)}
         confirmLoading={isSubmittingQr}
-        okText="Submit check-in QR"
-        cancelText="Close">
+        okText={t("stationsPage.submitCheckIn")}
+        cancelText={t("common.close")}>
         <Flex vertical gap={12} style={{width: "100%"}}>
           <Typography.Text>
-            Scan or enter the check-in QR token for station{" "}
-            <strong>
-              {scanTarget ?
+            {t("map.scanStartGameDescription", {
+              station: scanTarget ?
                 `${getStationDisplayCode(scanTarget.stationId)} - ${scanTarget.name}`
-              : ""}
-            </strong>.
+              : "",
+            })}
           </Typography.Text>
           <QrTokenInput
             value={qrToken}
-            placeholder="Check-in QR token"
+            placeholder={t("stationsPage.checkInPlaceholder")}
             onChange={setQrToken}
             onScan={(value) => void submitCheckInQr(value)}
           />
           <Alert
             type="info"
             showIcon
-            description="Camera scanning can paste the decoded token here; manual entry remains available for rehearsal devices."
+            description={t("map.scanHelp")}
           />
         </Flex>
       </Modal>

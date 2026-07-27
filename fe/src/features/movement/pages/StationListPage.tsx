@@ -21,8 +21,8 @@ import {
   Typography,
 } from "antd";
 import {useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
-import {STATUS_ORDER} from "../constants";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
 import {checkInStation, getPlayerFinal} from "../api";
@@ -30,9 +30,11 @@ import {QrTokenInput} from "../components/QrTokenInput";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {fetchPlayerDatabase} from "../playerData";
 import {
+  compareTeamStations,
   formatCooldownRemaining,
   formatDateTime,
   getDisabledReason,
+  getLocalizedTeamName,
   getStationCooldownRemainingSeconds,
   getStationDisplayCode,
   getStationEffectiveMaxPoints,
@@ -43,6 +45,7 @@ export function StationListPage() {
   const navigate = useNavigate();
   const params = useParams<{teamId: string}>();
   const {message} = AntdApp.useApp();
+  const {i18n, t} = useTranslation();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
@@ -59,10 +62,10 @@ export function StationListPage() {
   const selectedTeamId =
     session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
   const team = teams.find((item) => item.id === selectedTeamId);
+  const language = i18n.language === "en" ? "en" : "vi";
+  const localizedTeamName = team ? getLocalizedTeamName(team.name, language) : "";
   const sortedStations = [...(teamStations[selectedTeamId] ?? [])].sort(
-    (left, right) =>
-      STATUS_ORDER[left.status] - STATUS_ORDER[right.status] ||
-      left.name.localeCompare(right.name),
+    compareTeamStations,
   );
   const activeStation = sortedStations.find(
     (station) => station.status === "In Progress",
@@ -129,7 +132,7 @@ export function StationListPage() {
       return;
     }
 
-    const disabledReason = getDisabledReason(station, activeStation, nowMs);
+    const disabledReason = getDisabledReason(station, activeStation, nowMs, t);
     if (disabledReason) {
       message.warning(disabledReason);
       return;
@@ -156,7 +159,7 @@ export function StationListPage() {
 
     const token = rawToken.trim();
     if (!token) {
-      message.warning("Please scan or enter the check-in QR token");
+      message.warning(t("errors.checkInRequired"));
       return;
     }
 
@@ -165,13 +168,13 @@ export function StationListPage() {
     try {
       await checkInStation(scanTarget.stationId, token);
       loadDatabase(await fetchPlayerDatabase());
-      message.success("QR code scanned successfully");
+      message.success(t("stationsPage.qrScanned"));
       const stationId = scanTarget.stationId;
       setCheckInQrToken("");
       setScanTarget(null);
       navigate(`/stations/${stationId}`);
-    } catch (error: unknown) {
-      message.error(error instanceof Error ? error.message : "Check-in failed");
+    } catch {
+      message.error(t("errors.checkInFailed"));
     } finally {
       isSubmittingCheckInRef.current = false;
       setIsSubmittingCheckIn(false);
@@ -185,7 +188,7 @@ export function StationListPage() {
           <div className="station-team-avatar" aria-hidden="true">
             <UsergroupAddOutlined />
           </div>
-          <Typography.Title level={2}>{team.name}</Typography.Title>
+          <Typography.Title level={2}>{localizedTeamName}</Typography.Title>
         </div>
 
         <div className="station-team-metrics">
@@ -194,7 +197,7 @@ export function StationListPage() {
               <StarFilled />
             </span>
             <span>
-              <small>Total Score</small>
+              <small>{t("common.totalScore")}</small>
               <strong>{team.score}</strong>
             </span>
           </div>
@@ -203,7 +206,7 @@ export function StationListPage() {
               <CheckCircleFilled />
             </span>
             <span>
-              <small>Finished</small>
+              <small>{t("common.finished")}</small>
               <strong>
                 {team.finish} / {sortedStations.length}
               </strong>
@@ -216,10 +219,12 @@ export function StationListPage() {
         <Alert
           type="success"
           showIcon
-          message="Final Challenge is open"
-          description="Your team is free to enter the Final Challenge."
+          message={t("stationsPage.finalOpen")}
+          description={t("stationsPage.finalOpenDescription")}
           action={
-            <Button onClick={() => navigate("/final")}>Enter Final</Button>
+            <Button onClick={() => navigate("/final")}>
+              {t("stationsPage.enterFinal")}
+            </Button>
           }
         />
       )}
@@ -227,7 +232,7 @@ export function StationListPage() {
       <List
         className="card-list"
         dataSource={sortedStations}
-        locale={{emptyText: <Empty description="No stations available" />}}
+        locale={{emptyText: <Empty description={t("stationsPage.empty")} />}}
         renderItem={(station) => {
           const stationDisplayCode = getStationDisplayCode(station.stationId);
           const cooldownRemaining = getStationCooldownRemainingSeconds(
@@ -249,7 +254,7 @@ export function StationListPage() {
                         " station-showcase-avatar-compact"
                       : ""
                     }`}
-                    aria-label={`Station ${stationDisplayCode}`}>
+                    aria-label={t("common.stationLabel", {code: stationDisplayCode})}>
                     {stationDisplayCode}
                   </div>
                   <div className="station-showcase-heading">
@@ -258,11 +263,13 @@ export function StationListPage() {
                         {station.name}
                       </Typography.Title>
                       <Tag color={getStationStatusColor(station.status)}>
-                        {station.status}
+                        {t(`status.${station.status}`)}
                       </Tag>
                       {isCooldownActive && (
                         <Tag color="orange">
-                          Cooldown {formatCooldownRemaining(cooldownRemaining)}
+                          {t("common.cooldown", {
+                            time: formatCooldownRemaining(cooldownRemaining),
+                          })}
                         </Tag>
                       )}
                     </Flex>
@@ -276,14 +283,14 @@ export function StationListPage() {
                   <div className="station-stat">
                     <TeamOutlined />
                     <span>
-                      <small>Playing Teams</small>
+                      <small>{t("common.playingTeams")}</small>
                       <strong>{playingTeamCount(station.stationId)}</strong>
                     </span>
                   </div>
                   <div className="station-stat">
                     <StarFilled />
                     <span>
-                      <small>Score / Max</small>
+                      <small>{t("common.scoreMax")}</small>
                       <strong>
                         {station.score} / {getStationEffectiveMaxPoints(station)}
                       </strong>
@@ -292,15 +299,15 @@ export function StationListPage() {
                   <div className="station-stat">
                     <PlayCircleOutlined />
                     <span>
-                      <small>Start Time</small>
-                      <strong>{formatDateTime(station.startTime)}</strong>
+                      <small>{t("common.startTime")}</small>
+                      <strong>{formatDateTime(station.startTime, language)}</strong>
                     </span>
                   </div>
                   <div className="station-stat">
                     <FlagOutlined />
                     <span>
-                      <small>End Time</small>
-                      <strong>{formatDateTime(station.endTime)}</strong>
+                      <small>{t("common.endTime")}</small>
+                      <strong>{formatDateTime(station.endTime, language)}</strong>
                     </span>
                   </div>
                 </div>
@@ -320,7 +327,7 @@ export function StationListPage() {
                         onClick={() =>
                           openLinkInNewTab(station.youtubeUrl as string)
                         }>
-                        Watch Video
+                        {t("common.watchVideo")}
                       </Button>
                     )}
                       <Button
@@ -335,9 +342,11 @@ export function StationListPage() {
                         onClick={() => handleStationClick(station)}>
                         {session.role === "user" ?
                           isCooldownActive ?
-                            `Cooldown ${formatCooldownRemaining(cooldownRemaining)}`
-                          : "Play"
-                        : "View & Edit"}
+                            t("common.cooldown", {
+                              time: formatCooldownRemaining(cooldownRemaining),
+                            })
+                          : t("common.play")
+                        : t("common.viewEdit")}
                       </Button>
                 </div>
               </Card>
@@ -348,7 +357,7 @@ export function StationListPage() {
 
       <Modal
         centered
-        title="Scan QR to Start"
+        title={t("stationsPage.scanStartTitle")}
         open={Boolean(scanTarget)}
         onCancel={() => {
           setCheckInQrToken("");
@@ -356,20 +365,19 @@ export function StationListPage() {
         }}
         onOk={() => void submitCheckInQr(checkInQrToken)}
         confirmLoading={isSubmittingCheckIn}
-        okText="Submit Check-in QR"
-        cancelText="Close">
+        okText={t("stationsPage.submitCheckIn")}
+        cancelText={t("common.close")}>
         <Flex vertical gap={12} className="full-width">
           <Typography.Text>
-            Scan the check-in QR code for station{" "}
-            <strong>
-              {scanTarget ?
+            {t("stationsPage.scanStartDescription", {
+              station: scanTarget ?
                 `${getStationDisplayCode(scanTarget.stationId)} - ${scanTarget.name}`
-              : ""}
-            </strong>.
+              : "",
+            })}
           </Typography.Text>
           <QrTokenInput
             value={checkInQrToken}
-            placeholder="Check-in QR token"
+            placeholder={t("stationsPage.checkInPlaceholder")}
             onChange={setCheckInQrToken}
             onScan={(value) => void submitCheckInQr(value)}
           />
@@ -378,10 +386,9 @@ export function StationListPage() {
             showIcon
             description={
               <Flex vertical gap={4}>
-                <Typography.Text strong>User Flow</Typography.Text>
+                <Typography.Text strong>{t("stationsPage.userFlow")}</Typography.Text>
                 <Typography.Text>
-                  After the backend accepts the QR, the status changes to In
-                  Progress and the Station Detail screen opens.
+                  {t("stationsPage.userFlowDescription")}
                 </Typography.Text>
               </Flex>
             }

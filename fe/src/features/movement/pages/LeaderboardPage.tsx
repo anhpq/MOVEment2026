@@ -6,19 +6,23 @@ import {
 } from "@ant-design/icons";
 import {Card, Empty, List, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {
   getLeaderboard,
   isAuthFailure,
   type LeaderboardEntryResponse,
 } from "../api";
 import {useMovementStore} from "../store";
+import {getLocalizedTeamName} from "../utils";
 import "./LeaderboardPage.css";
 
 export function LeaderboardPage() {
   const [rows, setRows] = useState<LeaderboardEntryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const isFetchingRef = useRef(false);
+  const {i18n, t} = useTranslation();
   const logout = useMovementStore((state) => state.logout);
+  const language = i18n.language === "en" ? "en" : "vi";
 
   useEffect(() => {
     let cancelled = false;
@@ -82,51 +86,58 @@ export function LeaderboardPage() {
           <TrophyFilled />
         </span>
         <div className="leaderboard-heading-copy">
-          <Typography.Title level={2}>Leaderboard</Typography.Title>
+          <Typography.Title level={2}>{t("leaderboard.title")}</Typography.Title>
         </div>
-        <span className="leaderboard-team-count">{rows.length} teams</span>
+        <span className="leaderboard-team-count">
+          {rows.length} {t("common.teams")}
+        </span>
       </header>
 
       <List
         className="leaderboard-list"
         loading={isLoading}
         dataSource={rows}
-        locale={{emptyText: <Empty description="No ranking data" />}}
-        renderItem={(row) => (
+        locale={{emptyText: <Empty description={t("leaderboard.empty")} />}}
+        renderItem={(row) => {
+          const displayTeamName = getLocalizedTeamName(row.teamName, language);
+          return (
           <List.Item
             className={`leaderboard-row rank-${Math.min(row.rank, 4)} ${
               row.teamName === playerTeamName ? "is-current-team" : ""
             }`}>
-            <div className="leaderboard-rank" aria-label={`Rank ${row.rank}`}>
+            <div className="leaderboard-rank" aria-label={`${t("common.rank")} ${row.rank}`}>
               {row.rank === 1 && <CrownFilled className="rank-crown" />}
               <span>{row.rank}</span>
             </div>
 
             <div className="leaderboard-team">
               <div className="leaderboard-team-name">
-                <Typography.Text strong>{row.teamName}</Typography.Text>
+                <Typography.Text strong>{displayTeamName}</Typography.Text>
                 {row.teamName === playerTeamName && (
-                  <span className="current-team-badge">Your team</span>
+                  <span className="current-team-badge">
+                    {t("leaderboard.currentTeam")}
+                  </span>
                 )}
               </div>
               <div className="leaderboard-meta">
                 <span>
                   <QrcodeOutlined />
-                  {row.completedStations} stations
+                  {row.completedStations} {t("common.stations")}
                 </span>
                 <span>
                   <ClockCircleOutlined />
-                  {Math.round(row.totalPlaySeconds / 60)} min
+                  {Math.round(row.totalPlaySeconds / 60)} {t("common.minutes")}
                 </span>
               </div>
             </div>
 
             <div className="leaderboard-points">
               <strong>{row.totalPoints}</strong>
-              <span>pts</span>
+              <span>{t("common.points")}</span>
             </div>
           </List.Item>
-        )}
+          );
+        }}
       />
     </Card>
   );

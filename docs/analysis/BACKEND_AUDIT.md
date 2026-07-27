@@ -1,3 +1,26 @@
+## 2026-07-27 Frontend localization follow-up
+
+- Extended the confirmed Frontend localization behavior without Backend,
+  migration, seed, QR, scoring, or API contract changes.
+- Added display-layer Team name localization for seed-style `Team NN`/`Đội NN`
+  names while preserving raw Team data, Team IDs, usernames, tokens, and custom
+  Team names.
+- Updated Team/Admin visible copy on Station list/detail/map, Team list,
+  Leaderboard, Final, and Admin Operations to use VI/EN resources. `MOVEment
+  2026` remains unchanged.
+- Language switch now displays flag emoji labels `🇻🇳 VI` and `🇬🇧 EN`. Station
+  UI ordering now uses status order then natural `stationId`; Station dropdowns
+  without status sort by Station ID.
+- Final UI keeps compact navigation label `Final`, uses a flag icon, and shows
+  the full heading as `Thử thách cuối cùng` / `Final Challenge`. Success trophy
+  remains unchanged.
+- Verification passed: Frontend `i18n:check` (`259` keys), Frontend lint,
+  Frontend production build, and JSX visible-copy scan showing only the
+  permitted `MOVEment 2026` brand text remains. Frontend build retains the known
+  non-blocking large-chunk warning.
+- Pending: manual desktop/mobile Team/Admin browser smoke and full hard-coded
+  copy audit beyond the JSX direct-text scan.
+
 ## 2026-07-27 Station localization and FE language switch
 
 - Added Station bilingual storage with `stations.name_en` and nullable

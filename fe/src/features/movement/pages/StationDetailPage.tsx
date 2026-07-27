@@ -25,6 +25,7 @@ import {
   Typography,
 } from "antd";
 import {useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {
@@ -57,6 +58,7 @@ export function StationDetailPage() {
   const navigate = useNavigate();
   const params = useParams<{teamId?: string; stationId: string}>();
   const {modal, message} = AntdApp.useApp();
+  const {i18n, t} = useTranslation();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
@@ -72,6 +74,7 @@ export function StationDetailPage() {
   const [isSubmittingCheckOut, setIsSubmittingCheckOut] = useState(false);
   const isSubmittingCheckOutRef = useRef(false);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const language = i18n.language === "en" ? "en" : "vi";
 
   const selectedTeamId =
     session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
@@ -133,7 +136,7 @@ export function StationDetailPage() {
   if (!station) {
     return (
       <Card className="surface-card">
-        <Empty description="Không tìm thấy trạm" />
+        <Empty description={t("stationDetail.notFound")} />
       </Card>
     );
   }
@@ -146,7 +149,7 @@ export function StationDetailPage() {
 
   const openLinkInNewTab = (url: string | undefined) => {
     if (!url) {
-      message.warning("Không có link video");
+      message.warning(t("common.noVideo"));
       return;
     }
     window.open(url, "_blank", "noopener,noreferrer");
@@ -185,7 +188,7 @@ export function StationDetailPage() {
 
     const token = rawToken.trim();
     if (!token) {
-      message.warning("Please enter or scan the check-out QR token");
+      message.warning(t("errors.checkOutRequired"));
       return;
     }
 
@@ -197,19 +200,19 @@ export function StationDetailPage() {
       setCheckOutQrToken("");
       setIsFinishScannerOpen(false);
       if (station.trackingMode === "TIME") {
-        message.success("Time-only station completed with +10 points");
+        message.success(t("stationDetail.timeCompleted"));
         await navigateAfterTeamStationFinished();
         return;
       }
 
-      message.success("Check-out QR accepted");
+      message.success(t("stationDetail.checkOutAccepted"));
       scoreForm.setFieldsValue({
         score: 0,
         reason: "",
       });
       setIsScoreModalOpen(true);
-    } catch (error: unknown) {
-      message.error(error instanceof Error ? error.message : "Check-out failed");
+    } catch {
+      message.error(t("errors.checkOutFailed"));
     } finally {
       isSubmittingCheckOutRef.current = false;
       setIsSubmittingCheckOut(false);
@@ -227,7 +230,7 @@ export function StationDetailPage() {
             <div className="station-detail-title-row">
               <Typography.Title level={2}>{station.name}</Typography.Title>
               <Tag color={getStationStatusColor(station.status)}>
-                {station.status}
+                {t(`status.${station.status}`)}
               </Tag>
             </div>
             <Typography.Paragraph>
@@ -242,7 +245,7 @@ export function StationDetailPage() {
               <TeamOutlined />
             </span>
             <span>
-              <small>Playing Teams</small>
+              <small>{t("common.playingTeams")}</small>
               <strong>{playingTeamCount}</strong>
             </span>
           </div>
@@ -251,7 +254,7 @@ export function StationDetailPage() {
               <StarFilled />
             </span>
             <span>
-              <small>Score / Max</small>
+              <small>{t("common.scoreMax")}</small>
               <strong>
                 {station.score} / {stationMaxPoints}
               </strong>
@@ -262,8 +265,8 @@ export function StationDetailPage() {
               <PlayCircleFilled />
             </span>
             <span>
-              <small>Start Time</small>
-              <strong>{formatDateTime(station.startTime)}</strong>
+              <small>{t("common.startTime")}</small>
+              <strong>{formatDateTime(station.startTime, language)}</strong>
             </span>
           </div>
           <div className="station-detail-stat">
@@ -271,8 +274,8 @@ export function StationDetailPage() {
               <FlagOutlined />
             </span>
             <span>
-              <small>End Time</small>
-              <strong>{formatDateTime(station.endTime)}</strong>
+              <small>{t("common.endTime")}</small>
+              <strong>{formatDateTime(station.endTime, language)}</strong>
             </span>
           </div>
         </div>
@@ -284,7 +287,7 @@ export function StationDetailPage() {
             icon={<YoutubeOutlined />}
             disabled={!station.youtubeUrl}
             onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
-            Watch Video
+            {t("common.watchVideo")}
           </Button>
         )}
       </Card>
@@ -306,7 +309,7 @@ export function StationDetailPage() {
               shape="round"
               icon={<CheckCircleOutlined />}
               onClick={() => setIsFinishScannerOpen(true)}>
-              Finished
+              {t("stationDetail.completedButton")}
             </Button>
             <Button
               danger
@@ -315,15 +318,15 @@ export function StationDetailPage() {
                 try {
                   await cancelPlayerStation(station.stationId);
                   await refreshPlayerData();
-                  message.success("Station cancelled; cooldown applied");
+                  message.success(t("stationDetail.cancelled"));
                   navigate("/stations/map");
-                } catch (error) {
+                } catch {
                   message.error(
-                    error instanceof Error ? error.message : "Cancel failed",
+                    t("errors.generic"),
                   );
                 }
               }}>
-              Cancel Station
+              {t("stationDetail.cancelStation")}
             </Button>
           </Flex>
         </Card>
@@ -334,9 +337,9 @@ export function StationDetailPage() {
                 <EditOutlined />
               </span>
               <div>
-                <Typography.Title level={3}>Score adjustment</Typography.Title>
+                <Typography.Title level={3}>{t("stationDetail.scoreAdjustment")}</Typography.Title>
                 <Typography.Text>
-                  Update this team&apos;s score for the current Station.
+                  {t("stationDetail.scoreAdjustmentDescription")}
                 </Typography.Text>
               </div>
             </header>
@@ -346,30 +349,27 @@ export function StationDetailPage() {
               onFinish={(values) => {
                 modal.confirm({
                   centered: true,
-                  title: "Save Score?",
-                  content:
-                    "Only the score will be updated. Status and timestamps will remain unchanged.",
-                  okText: "Save",
-                  cancelText: "Cancel",
+                  title: t("stationDetail.saveScoreTitle"),
+                  content: t("stationDetail.saveScoreContent"),
+                  okText: t("common.save"),
+                  cancelText: t("common.cancel"),
                   onOk: async () => {
-                    if (!station.progressId)
-                      throw new Error("Progress record is unavailable");
+                      if (!station.progressId)
+                      throw new Error(t("errors.progressUnavailable"));
                     try {
                       if (!values.reason?.trim())
-                        throw new Error("Reason is required");
+                        throw new Error(t("errors.reasonRequired"));
                       await editAdminProgressScore(
                         station.progressId,
                         values.score,
                         values.reason.trim(),
                       );
                       await refreshAdminData();
-                      message.success("Score saved successfully");
+                      message.success(t("stationDetail.scoreSaved"));
                       navigate(adminStationListPath);
                     } catch (error) {
                       message.error(
-                        error instanceof Error ?
-                          error.message
-                        : "Unable to save score",
+                        t("errors.saveScoreFailed"),
                       );
                       throw error;
                     }
@@ -381,11 +381,11 @@ export function StationDetailPage() {
                   className="mb-4"
                   type="info"
                   showIcon
-                  description="Score correction is available only after this Station is completed."
+                  description={t("stationDetail.correctionOnlyCompleted")}
                 />
               )}
               <Form.Item
-                label="Input Score"
+                label={t("stationDetail.inputScore")}
                 name="score"
                 rules={[{required: true}]}>
                 <InputNumber
@@ -396,19 +396,19 @@ export function StationDetailPage() {
                 />
               </Form.Item>
               <Form.Item
-                label="Reason"
+                label={t("stationDetail.reason")}
                 name="reason"
                 rules={[
                   {
                     required: true,
                     whitespace: true,
-                    message: "Reason is required",
+                    message: t("errors.reasonRequired"),
                   },
                 ]}>
                 <Input.TextArea
                   rows={2}
                   disabled={!canAdminEditScore}
-                  placeholder="Required for every Admin score change"
+                  placeholder={t("stationDetail.reasonPlaceholder")}
                 />
               </Form.Item>
               <Button
@@ -416,7 +416,7 @@ export function StationDetailPage() {
                 htmlType="submit"
                 disabled={!canAdminEditScore}
                 icon={<SaveOutlined />}>
-                Save score
+                {t("stationDetail.saveScore")}
               </Button>
             </Form>
           </Card>
@@ -427,16 +427,16 @@ export function StationDetailPage() {
                 <WarningOutlined />
               </span>
               <div>
-                <Typography.Title level={3}>Status reset</Typography.Title>
+                <Typography.Title level={3}>{t("stationDetail.statusReset")}</Typography.Title>
                 <Typography.Text>
-                  Return this Station to New and clear its start/end time.
+                  {t("stationDetail.statusResetDescription")}
                 </Typography.Text>
               </div>
             </header>
             <Alert
               type="warning"
               showIcon
-              description="This action changes progress state and cannot be undone from this screen."
+              description={t("stationDetail.resetWarning")}
             />
             <Button
               danger
@@ -445,16 +445,15 @@ export function StationDetailPage() {
               onClick={() => {
                 modal.confirm({
                   centered: true,
-                  title: "Reset status?",
-                  content:
-                    "The status will revert to New and start/end time will be cleared.",
-                  okText: "Reset",
-                  cancelText: "Cancel",
+                  title: t("stationDetail.resetStatusTitle"),
+                  content: t("stationDetail.resetStatusContent"),
+                  okText: t("common.reset"),
+                  cancelText: t("common.cancel"),
                   onOk: async () => {
-                    if (!station.progressId)
-                      throw new Error("Progress record is unavailable");
+                      if (!station.progressId)
+                      throw new Error(t("errors.progressUnavailable"));
                     try {
-                      const reason = "Reset by admin from station detail";
+                      const reason = t("stationDetail.resetReason");
                       if (station.backendStatus === "COMPLETED") {
                         await reopenAdminProgress(station.progressId, reason);
                       } else {
@@ -465,20 +464,18 @@ export function StationDetailPage() {
                         );
                       }
                       await refreshAdminData();
-                      message.success("Status reset successfully");
+                      message.success(t("stationDetail.resetSuccess"));
                       navigate(adminStationListPath);
                     } catch (error) {
                       message.error(
-                        error instanceof Error ?
-                          error.message
-                        : "Unable to reset status",
+                        t("errors.resetStatusFailed"),
                       );
                       throw error;
                     }
                   },
                 });
               }}>
-              Reset status
+              {t("stationDetail.statusReset")}
             </Button>
           </Card>
         </div>
@@ -486,7 +483,7 @@ export function StationDetailPage() {
 
       <Modal
         centered
-        title="Scan QR to Complete Station"
+        title={t("stationDetail.scanCompleteTitle")}
         open={isFinishScannerOpen}
         onCancel={() => {
           setCheckOutQrToken("");
@@ -494,26 +491,26 @@ export function StationDetailPage() {
         }}
         onOk={() => void submitCheckOutQr(checkOutQrToken)}
         confirmLoading={isSubmittingCheckOut}
-        okText="Submit check-out QR"
-        cancelText="Close">
+        okText={t("stationDetail.submitCheckOut")}
+        cancelText={t("common.close")}>
         <Flex vertical gap={12}>
           <QrTokenInput
             value={checkOutQrToken}
-            placeholder="Check-out QR token"
+            placeholder={t("stationDetail.checkOutPlaceholder")}
             onChange={setCheckOutQrToken}
             onScan={(value) => void submitCheckOutQr(value)}
           />
           <Alert
             type="info"
             showIcon
-            description="After a valid check-out QR, score can be entered on this team device."
+            description={t("stationDetail.checkOutHelp")}
           />
         </Flex>
       </Modal>
 
       <Modal
         centered
-        title="Enter Score"
+        title={t("stationDetail.enterScore")}
         open={isScoreModalOpen}
         onCancel={() => setIsScoreModalOpen(false)}
         footer={null}>
@@ -523,24 +520,24 @@ export function StationDetailPage() {
           onFinish={(values) => {
             modal.confirm({
               centered: true,
-              title: "Confirm Station Completion",
-              content: "The score will be submitted for this Station.",
-              okText: "Confirm",
-              cancelText: "Cancel",
+              title: t("stationDetail.confirmCompletion"),
+              content: t("stationDetail.confirmCompletionContent"),
+              okText: t("common.confirm"),
+              cancelText: t("common.cancel"),
               onOk: async () => {
                 if (session.role !== "user") {
                   if (!station.progressId)
-                    throw new Error("Progress record is unavailable");
+                    throw new Error(t("errors.progressUnavailable"));
                   try {
                     if (!values.reason?.trim())
-                      throw new Error("Reason is required");
+                      throw new Error(t("errors.reasonRequired"));
                     await editAdminProgressScore(
                       station.progressId,
                       values.score,
                       values.reason.trim(),
                     );
                     await refreshAdminData();
-                    message.success("Station completed successfully");
+                    message.success(t("stationDetail.completedSuccess"));
                     setIsScoreModalOpen(false);
                     navigate(adminStationListPath);
                     return;
@@ -548,7 +545,7 @@ export function StationDetailPage() {
                     message.error(
                       error instanceof Error ?
                         error.message
-                      : "Unable to submit score",
+                      : t("stationDetail.scoreSubmissionFailed"),
                     );
                     throw error;
                   }
@@ -562,14 +559,14 @@ export function StationDetailPage() {
                     values.reason,
                   );
                   await refreshPlayerData();
-                  message.success("Station completed successfully");
+                  message.success(t("stationDetail.completedSuccess"));
                   setIsScoreModalOpen(false);
                   await navigateAfterTeamStationFinished();
                 } catch (error: unknown) {
                   message.error(
                     error instanceof Error ?
                       error.message
-                    : "Score submission failed",
+                    : t("stationDetail.scoreSubmissionFailed"),
                   );
                 } finally {
                   setIsSubmittingScore(false);
@@ -578,21 +575,21 @@ export function StationDetailPage() {
             });
           }}>
           <Form.Item
-            label="Input Score"
+            label={t("stationDetail.inputScore")}
             name="score"
             initialValue={0}
             rules={[{required: true}]}>
             <InputNumber min={0} max={stationMaxPoints} className="full-width" />
           </Form.Item>
-          <Form.Item label="Reason" name="reason">
-            <Input.TextArea rows={2} placeholder="Optional note" />
+          <Form.Item label={t("stationDetail.reason")} name="reason">
+            <Input.TextArea rows={2} placeholder={t("stationDetail.optionalNote")} />
           </Form.Item>
           <Button
             type="primary"
             htmlType="submit"
             block
             loading={isSubmittingScore}>
-            Save Score
+            {t("stationDetail.saveScore")}
           </Button>
         </Form>
       </Modal>

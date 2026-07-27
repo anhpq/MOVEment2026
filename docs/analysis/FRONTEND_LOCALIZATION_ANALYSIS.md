@@ -4,7 +4,7 @@
 
 | Area | Status |
 | --- | --- |
-| Implementation | Completed for i18n infrastructure, language switch, Player Station Backend localization, Admin bilingual Station editor, and core Login/QR/AppFrame copy |
+| Implementation | Completed for i18n infrastructure, language switch, Player Station Backend localization, Admin bilingual Station editor, core Login/QR/AppFrame copy, Station list/detail/map, Team list, Leaderboard, Final, and Admin Operations copy |
 | Runtime/Production Verification | Not performed |
 | Browser/Manual Verification | Pending desktop/mobile smoke |
 
@@ -37,6 +37,17 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
   kept, old Station data is preserved, and a localized warning is shown.
 - Admin store keeps `name`, `description`, `nameEn`, and `descriptionEn`.
 - Station Editor always displays separate VI and EN inputs.
+- Language switch labels are `🇻🇳 VI` and `🇬🇧 EN` with no image asset dependency.
+- Station list/detail/map status labels and visible controls use localized copy.
+- Station UI ordering uses status order `In Progress`, `New`, `Finished`, then
+  natural ascending `stationId`; Station dropdowns without status sort by ID.
+- Team display names localize seed-style raw names only: `Team NN`/`Đội NN`
+  display as `Đội NN` in VI and `Team NN` in EN. Custom names remain unchanged.
+- Final navigation stays compact as `Final`; the screen heading is localized as
+  `Thử thách cuối cùng` / `Final Challenge`, and Final navigation/heading uses a
+  flag icon while the success trophy remains unchanged.
+- Frontend user-facing fallback errors are localized on the updated Station,
+  Final, Map, and Operations paths instead of rendering raw Backend messages.
 
 ## Interfaces and Data
 
@@ -55,15 +66,20 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - `Station.name` and `Station.description` remain Vietnamese canonical/default.
 - Excel export and operational consumers continue to use Vietnamese Station
   names.
-- Team names, Station IDs, usernames, tokens, enum/API values, `Game.title`, and
+- Station IDs, Team IDs, usernames, tokens, enum/API values, `Game.title`, and
   `clueText` are not translated in this scope.
+- Team name localization is display-layer only for seed-style names; database,
+  API, and seed values remain canonical/raw.
 - EN Station seed text is provisional and may be updated later by canonical seed
   without destructive Station replacement.
 
 ## Verification Plan and Risks
 
-- Completed in this implementation run: Prisma generate, targeted Backend
-  Player/Admin service tests, Backend lint/build, Frontend lint/build.
+- Completed in the latest follow-up implementation run: Frontend
+  `i18n:check`, Frontend lint, Frontend production build, and JSX visible-copy
+  scan confirming only the `MOVEment 2026` brand remains as direct text.
+- Completed in the earlier Plan 2 implementation run: Prisma generate, targeted
+  Backend Player/Admin service tests, Backend lint/build, Frontend lint/build.
 - Still required: migration on disposable DB, two seed runs/idempotency,
   `db:verify`, full Backend Jest suite, locale parity/no-empty check, and manual
   desktop/mobile browser smoke.
@@ -86,6 +102,17 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
    inventory is valid.
 7. Consumer review: Excel/backend operational consumers continue using VI;
    `Game.title` and `clueText` remain out of scope.
+8. Follow-up copy review: user requested all visible Frontend copy except
+   `MOVEment`; implementation expands localized resources across Team/Admin
+   screens and keeps dynamic identifiers unmodified.
+9. Follow-up visual terminology review: language switch uses flag emoji labels;
+   Final means the final challenge, keeps compact nav label `Final`, uses a flag
+   icon, and reserves cipher wording for actual answer/cipher copy.
+10. Follow-up ordering/name review: Station cards sort by status then
+    `stationId`; Team seed-style names localize only in the display layer.
+11. Follow-up implementation constraint review: choose the least-change path by
+    extending existing i18n resources/helpers and avoiding new assets,
+    dependencies, database, API, seed, QR, scoring, or Team persistence changes.
 
 ## Provenance
 

@@ -1,16 +1,16 @@
 import {
   DashboardOutlined,
   EnvironmentOutlined,
+  FlagOutlined,
   LogoutOutlined,
   QrcodeOutlined,
-  RubyOutlined,
   SettingOutlined,
   TeamOutlined,
   TrophyOutlined,
 } from "@ant-design/icons";
 import {App as AntdApp, Button, Flex, Layout, Typography} from "antd";
 import type {PropsWithChildren} from "react";
-import {useRef} from "react";
+import {useMemo, useRef} from "react";
 import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
 import {logout as logoutApi} from "../api";
@@ -20,26 +20,30 @@ import {useBodyTeamTheme} from "../hooks/useBodyTeamTheme";
 import {fetchPlayerDatabase} from "../playerData";
 import {useMovementStore} from "../store";
 import {getTeamThemeVars} from "../teamTheme";
+import {getLocalizedTeamName} from "../utils";
 import {FixedBottomNavigation, type FixedBottomNavigationItem} from "./FixedBottomNavigation";
 import "./AppFrame.scss";
 
 type AppFrameProps = Readonly<PropsWithChildren>;
 
-function formatBuildTimestamp(value: string) {
+function formatBuildTimestamp(
+  value: string,
+  language: "vi" | "en",
+  t: (key: string, options?: Record<string, unknown>) => string,
+) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Deploy: unknown";
+    return t("common.deployUnknown");
   }
-  return `Deploy: ${date.toLocaleString("vi-VN", {
+  const formatted = date.toLocaleString(language === "en" ? "en-US" : "vi-VN", {
     day: "2-digit",
     month: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  })}`;
+  });
+  return t("common.deploy", {value: formatted});
 }
-
-const buildTimestampLabel = formatBuildTimestamp(__APP_BUILD_TIMESTAMP__);
 
 function getRouteTeamContextId(pathname: string, role: string | undefined) {
   if (role !== "admin") {
@@ -60,7 +64,7 @@ export function AppFrame({children}: AppFrameProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const {message} = AntdApp.useApp();
-  const {t} = useTranslation();
+  const {i18n, t} = useTranslation();
   const session = useMovementStore((state) => state.session);
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const teams = useMovementStore((state) => state.teams);
@@ -73,7 +77,13 @@ export function AppFrame({children}: AppFrameProps) {
   const themedTeam = session?.role === "user" ? activeTeam : teams.find((team) => team.id === routeTeamId);
   const teamThemeVars = getTeamThemeVars(themedTeam?.teamColor);
   const shellClassName = themedTeam ? "mobile-shell team-themed-shell" : "mobile-shell";
-  const activeTeamName = activeTeam?.name ?? "No team";
+  const language = i18n.language === "en" ? "en" : "vi";
+  const activeTeamName =
+    activeTeam ? getLocalizedTeamName(activeTeam.name, language) : t("common.noTeam");
+  const buildTimestampLabel = useMemo(
+    () => formatBuildTimestamp(__APP_BUILD_TIMESTAMP__, language, t),
+    [language, t],
+  );
   useBodyTeamTheme(
     themedTeam ? `app-frame:${themedTeam.id}` : "app-frame:none",
     themedTeam ? teamThemeVars : null,
@@ -160,7 +170,7 @@ export function AppFrame({children}: AppFrameProps) {
     {
       key: "final",
       label: t("nav.final"),
-      icon: <RubyOutlined />,
+      icon: <FlagOutlined />,
       active: location.pathname.startsWith("/final"),
       onClick: () => navigate("/final"),
     },
@@ -190,7 +200,7 @@ export function AppFrame({children}: AppFrameProps) {
                 variant="filled"
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}>
-                Admin
+                {t("common.admin")}
               </Button>
             )}
             {session.role === "user" && (
@@ -200,7 +210,7 @@ export function AppFrame({children}: AppFrameProps) {
                 variant="filled"
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}
-                title={`Logout ${activeTeamName}`}>
+                title={`${t("auth.logout")} ${activeTeamName}`}>
                 {activeTeamName}
               </Button>
             )}
