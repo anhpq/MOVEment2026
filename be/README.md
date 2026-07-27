@@ -49,6 +49,7 @@ docker exec movement-postgres-dev psql -U postgres -d movement -f /tmp/init.sql
 - `GET /api/event-config`
 - `GET /api/player/me`
 - `GET /api/player/stations`
+- `GET /api/player/stations/playing-counts`
 - `GET /api/player/progress`
 - `GET /api/player/activity-log`
 - `POST /api/player/stations/:stationId/check-in`
@@ -181,6 +182,27 @@ For local development only, a disposable database can be reset and reseeded:
 ```bash
 npm run db:reset
 ```
+
+For rehearsal/gameplay-only reset, start with the dry-run:
+
+```bash
+npm run reset:gameplay
+```
+
+Destructive execution requires explicit guards:
+
+```bash
+RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY" npm run reset:gameplay -- --execute
+```
+
+Production-like targets also require:
+
+```bash
+RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"
+```
+
+Do not run execute mode against Production without a verified backup and
+explicit operational approval.
 
 Production must set non-development values for `DATABASE_URL`, `JWT_SECRET`,
 and `CORS_ORIGIN`. `CORS_ORIGIN` may be one frontend origin or a

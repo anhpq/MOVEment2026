@@ -504,7 +504,6 @@ $baseEnv = @{
   JWT_EXPIRES_IN = "12h"
   CORS_ORIGIN = $HttpsOrigin
   FRONTEND_PUBLIC_URL = $HttpsOrigin
-  QR_LOGIN_TOKEN_TTL_MINUTES = "1440"
 }
 
 Invoke-Checked "Backend Prisma generate" $BackendDir "npm.cmd" @("run", "prisma:generate") $baseEnv

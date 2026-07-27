@@ -18,6 +18,7 @@
     "prisma:seed": "prisma db seed",
     "seed": "prisma db seed",
     "stations:sync": "ts-node scripts/sync-stations.ts",
+    "reset:gameplay": "ts-node prisma/reset-gameplay-seed.ts",
     "db:reset": "prisma migrate reset --force && prisma generate && prisma db seed",
     "db:verify": "ts-node scripts/verify-seed.ts"
   },
