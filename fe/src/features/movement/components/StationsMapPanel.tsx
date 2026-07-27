@@ -45,6 +45,7 @@ import type {StationDefinition, TeamStation} from "../types";
 import {
   formatDateTime,
   getDisabledReason,
+  getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
@@ -774,7 +775,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 style={{minWidth: 240, flex: 1}}
                 placeholder="Select a station to place a marker"
                 options={stationDefinitions.map((station) => ({
-                  label: `${station.id} - ${station.name}`,
+                  label: `${getStationDisplayCode(station.id)} - ${station.name}`,
                   value: station.id,
                 }))}
                 onChange={setSelectedStationId}
@@ -824,7 +825,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     key={station.id}
                     x={markerX}
                     y={markerY}
-                    code={station.id}
+                    code={getStationDisplayCode(station.id)}
                     uiState={uiState}
                     onSelect={() => setFocusedStationId(station.id)}
                   />
@@ -836,7 +837,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       </div>
 
       <Drawer
-        title={focusedStation?.name ?? "Station Details"}
+        title={
+          focusedStation ?
+            `${getStationDisplayCode(focusedStation.id)} - ${focusedStation.name}`
+          : "Station Details"
+        }
         open={Boolean(focusedStation)}
         onClose={() => setFocusedStationId(null)}
         placement="bottom"
@@ -849,6 +854,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               </div>
               <div className="station-showcase-heading">
                 <Flex gap={8} align="center" className="full-width">
+                  <Tag>{getStationDisplayCode(focusedTeamStation.stationId)}</Tag>
                   <Typography.Title level={4} className="card-title">
                     {focusedTeamStation.name}
                   </Typography.Title>
@@ -953,7 +959,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
         <Flex vertical gap={12} style={{width: "100%"}}>
           <Typography.Text>
             Scan or enter the check-in QR token for station{" "}
-            <strong>{scanTarget?.name}</strong>.
+            <strong>
+              {scanTarget ?
+                `${getStationDisplayCode(scanTarget.stationId)} - ${scanTarget.name}`
+              : ""}
+            </strong>.
           </Typography.Text>
           <QrTokenInput
             value={qrToken}

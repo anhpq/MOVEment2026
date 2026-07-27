@@ -50,6 +50,11 @@ export function getStationEffectiveMaxPoints(
   return station.trackingMode === "TIME" ? 10 : station.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
 }
 
+export function getStationDisplayCode(stationId: string) {
+  const canonicalMatch = /^ST0(0[1-9]|1[0-7])$/.exec(stationId);
+  return canonicalMatch ? `ST${canonicalMatch[1]}` : stationId;
+}
+
 export const DEFAULT_DATABASE: LocalDatabase = {
   activeTeamId: "",
   teams: [],

@@ -1,3 +1,10 @@
+## 2026-07-27 Station display code UI
+
+- Added a frontend-only Station display code for canonical Station IDs: `ST001`...`ST017` render as `ST01`...`ST17` in the Team/Admin Station list, Player map markers, Admin map station selector, map drawer title, and check-in modal copy.
+- Preserved the technical Station ID contract for database/API/routes/keys/select values: actions still use raw IDs such as `ST001`; noncanonical IDs such as `ST018`, `ST047`, or `ST15A` render unchanged.
+- No Backend, database schema, migration, seed, QR, scoring, Station Detail, System Config editor, or sorting behavior was changed.
+- Verification passed: frontend lint, frontend build, and `git diff --check`. Frontend build retains the known non-blocking large-chunk warning. Graphify update could not run because the `graphify` CLI is not available in PATH on this host.
+
 ## 2026-07-26 Station QR checkout scoring update
 
 - Updated Station QR Check-in/Check-out UX so camera-decoded Station QR tokens auto-submit while manual paste/type still requires Submit.

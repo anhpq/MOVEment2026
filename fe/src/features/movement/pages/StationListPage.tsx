@@ -32,6 +32,7 @@ import {fetchPlayerDatabase} from "../playerData";
 import {
   formatDateTime,
   getDisabledReason,
+  getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
@@ -227,6 +228,8 @@ export function StationListPage() {
         dataSource={sortedStations}
         locale={{emptyText: <Empty description="No stations available" />}}
         renderItem={(station) => {
+          const stationDisplayCode = getStationDisplayCode(station.stationId);
+
           return (
             <List.Item>
               <Card className="surface-card station-card station-showcase-card">
@@ -236,6 +239,7 @@ export function StationListPage() {
                   </div>
                   <div className="station-showcase-heading">
                     <Flex gap={8} align="center" className="full-width">
+                      <Tag>{stationDisplayCode}</Tag>
                       <Typography.Title level={4} className="card-title">
                         {station.name}
                       </Typography.Title>
@@ -333,7 +337,11 @@ export function StationListPage() {
         <Flex vertical gap={12} className="full-width">
           <Typography.Text>
             Scan the check-in QR code for station{" "}
-            <strong>{scanTarget?.name}</strong>.
+            <strong>
+              {scanTarget ?
+                `${getStationDisplayCode(scanTarget.stationId)} - ${scanTarget.name}`
+              : ""}
+            </strong>.
           </Typography.Text>
           <QrTokenInput
             value={checkInQrToken}

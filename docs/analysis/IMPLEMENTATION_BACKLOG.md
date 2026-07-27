@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-27 Station display code UI
+
+- [x] Canonical Station IDs `ST001`...`ST017` keep their technical value for database, API, route, React key, select value, and QR mapping.
+- [x] Team/Admin Station list shows the shorter display code `ST01`...`ST17` beside each Station name.
+- [x] Player map markers and Admin map selector use the same display code helper.
+- [x] Noncanonical Station IDs remain unchanged when displayed.
+- [x] Frontend lint/build and `git diff --check` passed; build retains the known non-blocking large-chunk warning.
+- [x] Local commit created for the scoped implementation.
+- [ ] Manual browser review of List/Map display remains pending.
+
 ## 2026-07-26 Station QR checkout scoring update
 
 - [x] Camera-decoded Station Check-in and Check-out QR tokens auto-submit without requiring Modal OK.
