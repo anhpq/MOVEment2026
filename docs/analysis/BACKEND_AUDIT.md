@@ -1,3 +1,23 @@
+# 2026-07-28 Tester auto-stop conflicting local processes
+
+- Added opt-in `-StopConflictingProcesses` handling to `tester-run.ps1` and
+  enabled it for root `tester`, `tester:no-seed`, `tester:smoke`, and
+  `tester:serve` npm scripts. Direct script invocation without the switch keeps
+  the existing fail-fast port guard.
+- Before preparation, the runner now stops only unique listener PIDs on the
+  configured API, Frontend, and Prisma Studio ports, logs PID/process name,
+  refuses protected/current PIDs, waits up to five seconds for release, and
+  re-runs the availability assertion before database/build work.
+- Full `npm run tester:smoke -- -SkipInstall -SkipSeed` verification auto-stopped
+  the existing Frontend listener PID `24060` on `4173`, completed Prisma
+  generate/migrate, Backend/Frontend builds, started and probed API/Frontend/
+  Prisma Studio, exited `0`, and left ports `3000`, `4173`, and `5555` free.
+- Graphify code update completed with `2366` nodes, `3866` edges, and `206`
+  communities; it retained the known `hooks.json` zero-node and no-Gemini
+  documentation semantic-extraction warnings.
+- The known non-blocking Vite large-chunk warning remains. Production, remote
+  database, push, and deploy actions were not performed.
+
 # 2026-07-28 Admin System Config Station locale display
 
 - Confirmed by live `GET /api/admin/progress-matrix` inspection that Backend

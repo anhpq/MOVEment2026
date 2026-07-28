@@ -4,6 +4,7 @@ param(
   [switch]$AllowRemoteDatabase,
   [switch]$KeepOpen,
   [switch]$Smoke,
+  [switch]$StopConflictingProcesses,
   [int]$ApiPort = 3000,
   [int]$FrontendPort = 4173,
   [int]$PrismaStudioPort = 5555
@@ -155,6 +156,49 @@ function Assert-PortAvailable($Port, $Name) {
   }
 }
 
+function Stop-ConflictingPortProcesses($Port, $Name) {
+  $processIds = @(
+    Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue |
+      Select-Object -ExpandProperty OwningProcess -Unique
+  )
+
+  foreach ($processId in $processIds) {
+    if ($processId -le 4 -or $processId -eq $PID) {
+      throw "Refusing to stop protected PID $processId holding $Name port $Port. Stop it manually or pass a different port."
+    }
+
+    $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
+    if (!$process) {
+      continue
+    }
+
+    Write-Host "Stopping existing $Name listener on port $Port (PID $processId, $($process.ProcessName))..." -ForegroundColor Yellow
+    Stop-Process -Id $processId -Force -ErrorAction Stop
+  }
+
+  $deadline = (Get-Date).AddSeconds(5)
+  do {
+    $remaining = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue |
+      Select-Object -First 1
+    if (!$remaining) {
+      if ($processIds.Count -gt 0) {
+        Write-Host "$Name port $Port is now available." -ForegroundColor Green
+      }
+      return
+    }
+    Start-Sleep -Milliseconds 100
+  } while ((Get-Date) -lt $deadline)
+
+  throw "$Name port $Port is still in use by PID $($remaining.OwningProcess) after stopping the previous listener."
+}
+
+function Prepare-RunnerPort($Port, $Name) {
+  if ($StopConflictingProcesses) {
+    Stop-ConflictingPortProcesses $Port $Name
+  }
+  Assert-PortAvailable $Port $Name
+}
+
 function Stop-RunnerJobs {
   if ($script:ApiJob) {
     Stop-Job -Job $script:ApiJob -ErrorAction SilentlyContinue | Out-Null
@@ -187,9 +231,9 @@ if (!(Test-Path -LiteralPath $BackendEnv)) {
 
 $DatabaseUrl = Read-EnvValue $BackendEnv "DATABASE_URL"
 Ensure-LocalDatabase $DatabaseUrl
-Assert-PortAvailable $ApiPort "Backend API"
-Assert-PortAvailable $FrontendPort "Frontend"
-Assert-PortAvailable $PrismaStudioPort "Prisma Studio"
+Prepare-RunnerPort $ApiPort "Backend API"
+Prepare-RunnerPort $FrontendPort "Frontend"
+Prepare-RunnerPort $PrismaStudioPort "Prisma Studio"
 
 if (!$SkipInstall) {
   Step "Installing dependencies when needed"

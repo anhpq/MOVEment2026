@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785226204.4107525,
-    "ast_hash": "80298f3342170e999857eb7c3675d7df",
+    "mtime": 1785227571.118685,
+    "ast_hash": "05bb7d06cf37e8c07388bbfc202302a1",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -515,8 +515,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785226203.822821,
-    "ast_hash": "9179ba7156182fe8dbb523f6536824b3",
+    "mtime": 1785227570.5268712,
+    "ast_hash": "08d5efcab5adb08eea86152ee372efbd",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -620,13 +620,13 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1785122405.410186,
-    "ast_hash": "cbdc152615352804282da695138b8fd3",
+    "mtime": 1785227411.218344,
+    "ast_hash": "190454fac9e9f363150773d01f33fb4d",
     "semantic_hash": ""
   },
   "scripts/tester-run.ps1": {
-    "mtime": 1785144994.9047747,
-    "ast_hash": "5de005444dfc771a5712eb893e9b1afd",
+    "mtime": 1785227410.6740582,
+    "ast_hash": "49b023ed816b60a91d4326d15e83a33a",
     "semantic_hash": ""
   },
   "docker-compose.tester.yml": {
@@ -1005,8 +1005,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md": {
-    "mtime": 1785226203.2639694,
-    "ast_hash": "5bf101998e9470d5a72412ad1759a742",
+    "mtime": 1785226287.5339694,
+    "ast_hash": "26ccd3cc6d3dc8241b6e0fda066590a3",
     "semantic_hash": ""
   },
   "docs/analysis/GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md": {

@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-28 Tester auto-stop conflicting local processes
+
+- [x] Add opt-in exact-port listener cleanup with protected/current PID guards
+  and a bounded port-release wait to `tester-run.ps1`.
+- [x] Enable cleanup for root `tester`, `tester:no-seed`, `tester:smoke`, and
+  `tester:serve` npm scripts while preserving direct-script fail-fast behavior.
+- [x] Verify PowerShell/package syntax and `git diff --check`.
+- [x] Run full smoke with an existing listener on `4173`; confirm auto-stop,
+  three-service readiness, exit `0`, cleanup, and all configured ports free.
+- [x] Update Graphify code graph (`2366` nodes, `3866` edges, `206`
+  communities), retaining the known `hooks.json`/no-Gemini warnings.
+- [ ] Production/remote-database runtime verification remains out of scope.
+
 ## 2026-07-28 Admin System Config Station locale display
 
 - [x] Verify live Admin progress-matrix payload contains VI/EN Station fields.
