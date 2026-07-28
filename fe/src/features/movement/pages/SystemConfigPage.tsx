@@ -37,8 +37,24 @@ import {
   cacheTeamQrPayload,
   getCachedTeamQrToken,
 } from "../teamQrTokenCache";
-import type {StationTrackingMode} from "../types";
+import type {StationDefinition, StationTrackingMode} from "../types";
 import {getLocalizedTeamName} from "../utils";
+
+function getLocalizedStationDisplay(
+  station: StationDefinition,
+  language: "vi" | "en",
+) {
+  if (language !== "en") {
+    return {
+      name: station.name,
+      description: station.description,
+    };
+  }
+  return {
+    name: station.nameEn?.trim() || station.name,
+    description: station.descriptionEn?.trim() || station.description,
+  };
+}
 
 export function SystemConfigPage() {
   const navigate = useNavigate();
@@ -191,6 +207,7 @@ export function SystemConfigPage() {
   const handleOpenStationQr = async (station: (typeof stationDefinitions)[number]) => {
     setQrBusyStationId(station.id);
     try {
+      const stationDisplay = getLocalizedStationDisplay(station, language);
       const tokens = await getAdminStationQrTokens(station.id);
       const activeTokens = tokens.filter((token) => token.status === "ACTIVE");
       const tokensWithRawValue = activeTokens.map((token) => ({
@@ -210,7 +227,7 @@ export function SystemConfigPage() {
       modal.info({
         centered: true,
         width: 720,
-        title: t("systemConfig.stationQrTitle", {station: station.name}),
+        title: t("systemConfig.stationQrTitle", {station: stationDisplay.name}),
         content: (
           <Flex vertical gap={12}>
             <Typography.Text>
@@ -223,7 +240,7 @@ export function SystemConfigPage() {
                     src={dataUrl}
                     alt={t("systemConfig.stationQrAlt", {
                       purpose: token.purpose,
-                      station: station.name,
+                      station: stationDisplay.name,
                     })}
                     width={220}
                     height={220}
@@ -264,104 +281,110 @@ export function SystemConfigPage() {
               <List
                 className="card-list"
                 dataSource={stationDefinitions}
-                renderItem={(station) => (
-                  <List.Item>
-                    <Card className="surface-card station-card">
-                      <div className="station-row">
-                        <Flex
-                          vertical
-                          gap={4}
-                          className="full-width">
-                          <Flex gap={8} className="full-width">
-                            <Typography.Title level={4} className="card-title full-width">
-                              {station.name}
-                            </Typography.Title>
-                            <Button
-                              shape="circle"
-                              variant="filled"
-                              className="delete-icon-button"
-                              icon={<EditOutlined />}
-                              aria-label={t("systemConfig.editStationAria", {
-                                station: station.name,
-                              })}
-                              title={t("systemConfig.editStationAria", {
-                                station: station.name,
-                              })}
-                              onClick={() =>
-                                navigate(
-                                  `/system-config/stations/${station.id}`,
-                                )
-                              }></Button>
+                renderItem={(station) => {
+                  const stationDisplay = getLocalizedStationDisplay(
+                    station,
+                    language,
+                  );
+                  return (
+                    <List.Item>
+                      <Card className="surface-card station-card">
+                        <div className="station-row">
+                          <Flex
+                            vertical
+                            gap={4}
+                            className="full-width">
+                            <Flex gap={8} className="full-width">
+                              <Typography.Title level={4} className="card-title full-width">
+                                {stationDisplay.name}
+                              </Typography.Title>
+                              <Button
+                                shape="circle"
+                                variant="filled"
+                                className="delete-icon-button"
+                                icon={<EditOutlined />}
+                                aria-label={t("systemConfig.editStationAria", {
+                                  station: stationDisplay.name,
+                                })}
+                                title={t("systemConfig.editStationAria", {
+                                  station: stationDisplay.name,
+                                })}
+                                onClick={() =>
+                                  navigate(
+                                    `/system-config/stations/${station.id}`,
+                                  )
+                                }></Button>
 
-                            <Button
-                              shape="circle"
-                              color="danger"
-                              variant="filled"
-                              className="delete-icon-button"
-                              icon={<DeleteOutlined />}
-                              aria-label={t("systemConfig.deleteStationAria", {
-                                station: station.name,
-                              })}
-                              title={t("systemConfig.deleteStationAria", {
-                                station: station.name,
-                              })}
-                              onClick={() => {
-                                modal.confirm({
-                                  centered: true,
-                                  title: t("systemConfig.deleteStationTitle"),
-                                  content: t("systemConfig.deleteStationContent"),
-                                  okText: t("systemConfig.delete"),
-                                  cancelText: t("common.cancel"),
-                                  onOk: async () => {
-                                    try {
-                                      await deleteAdminStation(station.id);
-                                      loadDatabase(await fetchAdminDatabase());
-                                      message.success(
-                                        t("systemConfig.stationDeactivated"),
-                                      );
-                                    } catch (error) {
-                                      message.error(
-                                        t("systemConfig.deleteStationFailed"),
-                                      );
-                                      throw error;
-                                    }
-                                  },
-                                });
-                              }}></Button>
+                              <Button
+                                shape="circle"
+                                color="danger"
+                                variant="filled"
+                                className="delete-icon-button"
+                                icon={<DeleteOutlined />}
+                                aria-label={t("systemConfig.deleteStationAria", {
+                                  station: stationDisplay.name,
+                                })}
+                                title={t("systemConfig.deleteStationAria", {
+                                  station: stationDisplay.name,
+                                })}
+                                onClick={() => {
+                                  modal.confirm({
+                                    centered: true,
+                                    title: t("systemConfig.deleteStationTitle"),
+                                    content: t("systemConfig.deleteStationContent"),
+                                    okText: t("systemConfig.delete"),
+                                    cancelText: t("common.cancel"),
+                                    onOk: async () => {
+                                      try {
+                                        await deleteAdminStation(station.id);
+                                        loadDatabase(await fetchAdminDatabase());
+                                        message.success(
+                                          t("systemConfig.stationDeactivated"),
+                                        );
+                                      } catch (error) {
+                                        message.error(
+                                          t("systemConfig.deleteStationFailed"),
+                                        );
+                                        throw error;
+                                      }
+                                    },
+                                  });
+                                }}></Button>
+                            </Flex>
+                            <Typography.Text className="muted-copy compact-copy">
+                              {station.id}
+                            </Typography.Text>
+                            <Typography.Text className="muted-copy compact-copy">
+                              {stationDisplay.description}
+                            </Typography.Text>
+                            <Select
+                              className="full-width"
+                              value={station.trackingMode ?? "BOTH"}
+                              options={[
+                                {value: "BOTH", label: t("stationEditor.both")},
+                                {value: "SCORE", label: t("stationEditor.scoreOnly")},
+                                {value: "TIME", label: t("stationEditor.timeOnly")},
+                              ]}
+                              onChange={(value) =>
+                                void handleTrackingModeChange(station, value)
+                              }
+                            />
                           </Flex>
-                          <Typography.Text className="muted-copy compact-copy">
-                            {station.id}
-                          </Typography.Text>
-                          <Typography.Text className="muted-copy compact-copy">
-                            {station.description}
-                          </Typography.Text>
-                          <Select
-                            className="full-width"
-                            value={station.trackingMode ?? "BOTH"}
-                            options={[
-                              {value: "BOTH", label: t("stationEditor.both")},
-                              {value: "SCORE", label: t("stationEditor.scoreOnly")},
-                              {value: "TIME", label: t("stationEditor.timeOnly")},
-                            ]}
-                            onChange={(value) =>
-                              void handleTrackingModeChange(station, value)
-                            }
-                          />
-                        </Flex>
-                        <Flex gap={8} className="station-actions" wrap align="center">
-                          <Tag>QR {formatQrStatus(stationQrStatus[station.id])}</Tag>
-                          <Button
-                            type="primary"
-                            icon={<QrcodeOutlined />}
-                            loading={qrBusyStationId === station.id}
-                            onClick={() => void handleOpenStationQr(station)}>
-                            {t("systemConfig.showQr")}
-                          </Button>
-                        </Flex>
-                      </div>
-                    </Card>
-                  </List.Item>
-                )}
+                          <Flex gap={8} className="station-actions" wrap align="center">
+                            <Tag>QR {formatQrStatus(stationQrStatus[station.id])}</Tag>
+                            <Button
+                              type="primary"
+                              icon={<QrcodeOutlined />}
+                              loading={qrBusyStationId === station.id}
+                              onClick={() => void handleOpenStationQr(station)}>
+                              {t("systemConfig.showQr")}
+                            </Button>
+                          </Flex>
+                        </div>
+                      </Card>
+                    </List.Item>
+                  );
+                }}
               />
             </Flex>
           ),

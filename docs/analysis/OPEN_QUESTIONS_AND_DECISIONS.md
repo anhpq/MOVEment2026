@@ -156,7 +156,8 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | EN fallback | Khi `name_en` rỗng, fallback field đó sang `name`; khi `description_en` null/rỗng, fallback field đó sang `description`. |
 | Admin Station data | Admin Station responses/progress matrix trả đủ `name`, `description`, `nameEn`, `descriptionEn` để chỉnh sửa song ngữ. |
 | Admin validation | Admin create Station yêu cầu `name` và `nameEn` không rỗng; `description` và `descriptionEn` optional. Admin update chỉ validate field được gửi và trim trước khi lưu. |
-| Operational consumers | Excel export, backend operational views và canonical Station naming ngoài Player UI tiếp tục dùng tiếng Việt. |
+| Operational consumers | Excel export và Backend operational views tiếp tục dùng canonical tiếng Việt. Localized Admin Frontend display không thuộc nhóm này và được phép chọn field VI/EN theo locale. |
+| Admin Frontend locale | Admin System Config dùng `nameEn`/`descriptionEn` khi locale là `en`, fallback từng field về `name`/`description`; locale `vi` dùng canonical VI. Không cần refetch khi đổi locale vì Admin progress matrix đã trả đủ bốn field. |
 | Seed behavior | Canonical Station seed có EN provisional. Normal seed được phép cập nhật riêng `name_en`/`description_en` cho 17 Station canonical khi inventory gameplay còn hợp lệ, không reset progress/game/QR và không cần confirmation destructive replacement. |
 | Out of scope | `Game.title` và `clueText` không được dịch trong scope này. |
 

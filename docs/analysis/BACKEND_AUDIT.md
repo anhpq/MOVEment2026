@@ -1,3 +1,23 @@
+# 2026-07-28 Admin System Config Station locale display
+
+- Confirmed by live `GET /api/admin/progress-matrix` inspection that Backend
+  returns `name`, `nameEn`, `description`, and `descriptionEn`; ST001 returned
+  `Memory Waterway` and its English description alongside canonical VI data.
+- Commit-history comparison confirmed the earlier localization patch did not
+  remove an Admin locale fetch or EN selection: System Config rendered
+  `station.name`/`station.description` before and after that patch.
+- Updated System Config to select EN Station name/description locally when the
+  Admin locale is English, with per-field VI fallback. Card text, Station QR
+  modal text, alt text, and edit/delete accessibility labels share the localized
+  display name. No redundant Backend refetch is required.
+- Frontend lint and production build passed. Vite retains the known non-blocking
+  large-chunk warning. Local Frontend HTTP smoke at `127.0.0.1:4173` could not
+  run because no preview server was listening; post-fix browser/mobile and
+  Production runtime verification were not run.
+- Graphify code update completed with `2362` nodes, `3860` edges, and `209`
+  communities; it retained the known `hooks.json` zero-node and no-Gemini
+  documentation semantic-extraction warnings.
+
 # 2026-07-28 YouTube-style Player video action
 
 - Restyled enabled Player `Watch Video` actions across Station List, Map drawer,

@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-28 Admin System Config Station locale display
+
+- [x] Verify live Admin progress-matrix payload contains VI/EN Station fields.
+- [x] Confirm commit history did not remove an Admin EN fetch/selection path.
+- [x] Select `nameEn`/`descriptionEn` for English System Config display with
+  per-field VI fallback and no redundant Backend refetch.
+- [x] Apply localized Station display to card, QR modal, alt text, and ARIA copy.
+- [x] Pass Frontend lint and production build.
+- [x] Update Graphify code graph (`2362` nodes, `3860` edges, `209`
+  communities), retaining the known `hooks.json`/no-Gemini warnings.
+- [ ] Complete post-fix desktop/mobile Admin browser smoke and Production
+  runtime verification.
+
 ## 2026-07-28 YouTube-style Player video action
 
 - [x] Apply YouTube-red enabled styling and a filled YouTube icon to Player

@@ -189,6 +189,11 @@ Admin Station data includes `name`, `description`, `nameEn`, and
 `descriptionEn`. Admin create requires non-empty `name` and `nameEn`; update
 trims and validates only supplied fields.
 
+Admin System Config selects `nameEn`/`descriptionEn` for English display and
+falls back per field to canonical `name`/`description`; Vietnamese display uses
+the canonical fields. The locale switch does not refetch Admin data because the
+progress matrix already contains all four fields.
+
 Excel export, backend operational consumers, Station IDs, enum/API values,
 `Game.title`, and `clueText` remain outside this localization scope.
 

@@ -36,6 +36,10 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - If Player Station refetch fails after a language switch, the new locale is
   kept, old Station data is preserved, and a localized warning is shown.
 - Admin store keeps `name`, `description`, `nameEn`, and `descriptionEn`.
+- Admin System Config derives Station card, QR modal, and accessibility display
+  text from `nameEn`/`descriptionEn` in English with per-field VI fallback. It
+  switches locally without another Backend request because the Admin progress
+  matrix already includes all four fields.
 - Station Editor always displays separate VI and EN inputs.
 - Language switch renders circular VI/EN flag buttons with no external image
   asset dependency.
@@ -75,8 +79,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 ## Boundaries
 
 - `Station.name` and `Station.description` remain Vietnamese canonical/default.
-- Excel export and operational consumers continue to use Vietnamese Station
-  names.
+- Excel export and Backend operational consumers continue to use Vietnamese
+  Station names; localized Admin Frontend display may select the EN fields.
 - Station IDs, Team IDs, usernames, tokens, enum/API values, `Game.title`, and
   `clueText` are not translated in this scope.
 - Team name localization is display-layer only for seed-style names; database,
@@ -86,6 +90,10 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 
 ## Verification Plan and Risks
 
+- Admin Station locale-display correction passed live Backend progress-matrix
+  inspection, commit-history comparison, Frontend lint, Frontend production
+  build, `git diff --check`, and Graphify code update (`2362` nodes, `3860`
+  edges, `209` communities). Post-fix browser/manual smoke remains pending.
 - Admin System Config localization fix passed Frontend `i18n:check` with `314`
   parity/no-empty keys, Frontend lint, Frontend production build, the focused
   hard-coded-copy scan, `git diff --check`, and Graphify code update (`2357`
@@ -141,6 +149,9 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
     language state changed while page-local copy stayed English; the fix extends
     existing resources without changing canonical Station data, API contracts,
     QR lifecycle, database, migration, or seed behavior.
+14. Admin Station data display clarification: English System Config must select
+    the bilingual fields already present in the Admin payload instead of
+    rendering canonical VI fields or issuing a redundant locale refetch.
 
 ## Provenance
 
