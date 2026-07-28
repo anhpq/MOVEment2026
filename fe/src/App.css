@@ -651,6 +651,10 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   gap: 12px;
 }
 
+.station-showcase-actions .station-gameplay-button {
+  grid-column: 1 / -1;
+}
+
 .station-showcase-actions .ant-btn {
   height: 44px;
   border-color: #ed7657;
@@ -663,17 +667,17 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   color: #fff;
 }
 
-.station-youtube-button:not(:disabled):not(.ant-btn-disabled) {
-  border-color: #ff0033 !important;
-  background: #ff0033 !important;
-  color: #fff;
-  box-shadow: 0 7px 16px rgba(255, 0, 51, 0.24) !important;
+.station-showcase-actions .station-media-button:not(:disabled):not(.ant-btn-disabled) {
+  border-color: rgba(15, 23, 42, 0.28);
+  background: #fff;
+  color: #1f2937;
+  box-shadow: none;
 }
 
-.station-youtube-button:not(:disabled):not(.ant-btn-disabled):hover {
-  border-color: #cc0029 !important;
-  background: #cc0029 !important;
-  color: #fff;
+.station-showcase-actions .station-media-button:not(:disabled):not(.ant-btn-disabled):hover {
+  border-color: var(--team-primary, #ed7657);
+  background: #fff;
+  color: var(--team-primary, #e96547);
 }
 
 .station-showcase-actions .ant-btn:disabled,
@@ -688,6 +692,19 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
 
 .station-showcase-actions.admin-edit-only .ant-btn {
   grid-column: 1 / -1;
+}
+
+.station-detail-player-actions {
+  width: 100%;
+}
+
+.station-image-editor-list {
+  margin-bottom: 24px;
+}
+
+.station-image-editor-field {
+  flex: 1;
+  margin-bottom: 0;
 }
 
 .station-actions {

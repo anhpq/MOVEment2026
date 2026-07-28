@@ -44,6 +44,8 @@ import {
 } from '../../common/station/station-scoring';
 
 const DEFAULT_STATION_MAX_POINTS = 30;
+const MAX_STATION_IMAGES = 10;
+const MAX_STATION_IMAGE_URL_LENGTH = 2048;
 
 @Injectable()
 export class AdminService {
@@ -350,6 +352,10 @@ export class AdminService {
         where: { isActive: true },
         orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
         include: {
+          images: {
+            orderBy: { sortOrder: 'asc' },
+            select: { url: true },
+          },
           games: {
             where: { isActive: true },
             orderBy: { id: 'asc' },
@@ -370,7 +376,10 @@ export class AdminService {
     ]);
 
     return {
-      stations,
+      stations: stations.map(({ images, ...station }) => ({
+        ...station,
+        imageUrls: images.map(({ url }) => url),
+      })),
       rows: teams.map(({ progress, ...team }) => ({
         team: this.toPublicTeam(team),
         cells: stations.map((station) => {
@@ -399,6 +408,10 @@ export class AdminService {
   async updateStation(userId: number, stationId: string, dto: UpdateStationDto) {
     const checkInQrToken = this.getOptionalQrToken(dto.checkInQrToken);
     const checkOutQrToken = this.getOptionalQrToken(dto.checkOutQrToken);
+    const imageUrls =
+      dto.imageUrls === undefined
+        ? undefined
+        : this.normalizeStationImageUrls(dto.imageUrls);
     const result = await this.prisma.$transaction(async (tx) => {
       const needsActiveGame =
         dto.trackingMode !== undefined ||
@@ -451,6 +464,9 @@ export class AdminService {
           },
         });
       }
+      if (imageUrls !== undefined) {
+        await this.replaceStationImages(tx, stationId, imageUrls);
+      }
       if (activeGame && currentStation) {
         const oldEffectiveMax = getEffectiveStationMaxPoints(
           currentStation.trackingMode,
@@ -480,7 +496,19 @@ export class AdminService {
       if (checkOutQrToken) {
         qrTokens.push(await this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_OUT, checkOutQrToken));
       }
-      return { station: updated, qrTokens, effectiveMaxPoints };
+      const persistedImages = await tx.stationImage.findMany({
+        where: { stationId },
+        orderBy: { sortOrder: 'asc' },
+        select: { url: true },
+      });
+      return {
+        station: {
+          ...updated,
+          imageUrls: persistedImages.map(({ url }) => url),
+        },
+        qrTokens,
+        effectiveMaxPoints,
+      };
     });
 
     await this.activityLog.log({
@@ -499,10 +527,11 @@ export class AdminService {
         mapX: dto.mapX ?? null,
         mapY: dto.mapY ?? null,
         gameType: dto.gameType ?? null,
-          maxPoints: dto.maxPoints ?? null,
-          effectiveMaxPoints:
-            result.effectiveMaxPoints === undefined ? null : result.effectiveMaxPoints,
-          mediaUrl: dto.mediaUrl ?? null,
+        maxPoints: dto.maxPoints ?? null,
+        effectiveMaxPoints:
+          result.effectiveMaxPoints === undefined ? null : result.effectiveMaxPoints,
+        mediaUrl: dto.mediaUrl ?? null,
+        imageCount: imageUrls?.length ?? null,
       },
     });
 
@@ -516,6 +545,7 @@ export class AdminService {
     const stationId = dto.id.trim().toUpperCase();
     const maxPoints = dto.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
     const effectiveMaxPoints = getEffectiveStationMaxPoints(dto.trackingMode, maxPoints);
+    const imageUrls = this.normalizeStationImageUrls(dto.imageUrls ?? []);
     this.validateGameVideoConfiguration(dto.gameType, dto.mediaUrl);
     const [teamIds, sortOrder] = await Promise.all([
       this.prisma.team.findMany({ select: { id: true } }),
@@ -544,6 +574,15 @@ export class AdminService {
           mediaUrl: dto.mediaUrl ?? null,
         },
       });
+      if (imageUrls.length) {
+        await tx.stationImage.createMany({
+          data: imageUrls.map((url, sortOrder) => ({
+            stationId,
+            url,
+            sortOrder,
+          })),
+        });
+      }
       const createdQrTokens = [];
       for (const purpose of [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT]) {
         createdQrTokens.push(await this.createStationQrToken(tx, stationId, purpose));
@@ -561,7 +600,10 @@ export class AdminService {
           data: { maxPossiblePoints: { increment: effectiveMaxPoints } },
         });
       }
-      return { station: created, qrTokens: createdQrTokens };
+      return {
+        station: { ...created, imageUrls },
+        qrTokens: createdQrTokens,
+      };
     });
     await this.activityLog.log({
       actorType: ActorType.USER,
@@ -570,7 +612,12 @@ export class AdminService {
       action: 'CREATE_STATION',
       entityType: 'STATION',
       entityId: stationId,
-      metadata: { maxPoints, effectiveMaxPoints, gameType: dto.gameType },
+      metadata: {
+        maxPoints,
+        effectiveMaxPoints,
+        gameType: dto.gameType,
+        imageCount: imageUrls.length,
+      },
     });
     return {
       ...station,
@@ -1272,6 +1319,58 @@ export class AdminService {
       return null;
     }
     return value.trim() || null;
+  }
+
+  private normalizeStationImageUrls(imageUrls: string[]) {
+    if (!Array.isArray(imageUrls) || imageUrls.length > MAX_STATION_IMAGES) {
+      throw new BadRequestException(
+        `Station gallery supports at most ${MAX_STATION_IMAGES} images`,
+      );
+    }
+
+    const normalized = imageUrls.map((value) => {
+      if (typeof value !== 'string') {
+        throw new BadRequestException('Station image URL must be a string');
+      }
+      const url = value.trim();
+      if (!url || url.length > MAX_STATION_IMAGE_URL_LENGTH) {
+        throw new BadRequestException(
+          `Station image URL must contain 1-${MAX_STATION_IMAGE_URL_LENGTH} characters`,
+        );
+      }
+      try {
+        if (new URL(url).protocol !== 'https:') {
+          throw new Error('Unsupported protocol');
+        }
+      } catch {
+        throw new BadRequestException(
+          'Station image URL must be a valid HTTPS URL',
+        );
+      }
+      return url;
+    });
+
+    if (new Set(normalized).size !== normalized.length) {
+      throw new BadRequestException('Station image URLs must be unique');
+    }
+    return normalized;
+  }
+
+  private async replaceStationImages(
+    tx: Prisma.TransactionClient,
+    stationId: string,
+    imageUrls: string[],
+  ) {
+    await tx.stationImage.deleteMany({ where: { stationId } });
+    if (imageUrls.length) {
+      await tx.stationImage.createMany({
+        data: imageUrls.map((url, sortOrder) => ({
+          stationId,
+          url,
+          sortOrder,
+        })),
+      });
+    }
   }
 
   private validateGameVideoConfiguration(

@@ -44,6 +44,7 @@ import {
   submitStationScore,
 } from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
+import {StationImageGallery} from "../components/StationImageGallery";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {fetchPlayerDatabase} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
@@ -280,7 +281,7 @@ export function StationDetailPage() {
           </div>
         </div>
 
-        {station.gameType === "ST" && station.youtubeUrl && (
+        {session.role === "admin" && station.gameType === "ST" && station.youtubeUrl && (
           <Button
             type="primary"
             className="full-width mt-4"
@@ -303,14 +304,26 @@ export function StationDetailPage() {
             <Typography.Title level={2} className="section-title live-clock">
               {elapsed}
             </Typography.Title>
-            <Button
-              type="primary"
-              size="large"
-              shape="round"
-              icon={<CheckCircleOutlined />}
-              onClick={() => setIsFinishScannerOpen(true)}>
-              {t("stationDetail.completedButton")}
-            </Button>
+            <div className="station-showcase-actions station-detail-player-actions">
+              <Button
+                block
+                className="station-media-button station-youtube-button"
+                icon={<YoutubeOutlined />}
+                disabled={station.gameType !== "ST" || !station.youtubeUrl}
+                onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
+                {t("common.watchVideo")}
+              </Button>
+              <StationImageGallery imageUrls={station.imageUrls} />
+              <Button
+                block
+                type="primary"
+                size="large"
+                className="station-gameplay-button"
+                icon={<CheckCircleOutlined />}
+                onClick={() => setIsFinishScannerOpen(true)}>
+                {t("stationDetail.completedButton")}
+              </Button>
+            </div>
             <Button
               danger
               icon={<ReloadOutlined />}

@@ -281,6 +281,18 @@ STANDARD
 - Legacy `CIPHER` Games migrate to `STANDARD`. Station cipher-answer UI, API, validation, and storage are removed.
 - Final Challenge remains independent from Station Game Type and is unchanged.
 
+## Station Media Gallery
+
+- Gallery belongs to a Station and is independent from `ST`/`STANDARD` Game Type.
+- Each Station stores at most 10 ordered, unique HTTPS image URLs without captions.
+- Backend validates and stores URLs but never fetches external images server-side.
+- Admin Station create/edit manages `imageUrls`; create omission produces an empty gallery, update omission preserves, and an empty array clears.
+- Player and Admin Station responses expose ordered `imageUrls: string[]` without persistence IDs.
+- Player Station List, Map drawer, and Detail always render `View Images`; it is disabled when the gallery is empty.
+- List/Map media actions share the first row and the current gameplay action spans the row below. `In Progress` replaces `Play` for an active Station and still opens Station Detail.
+- Station Detail keeps `Complete` for Check-out and keeps Cancel as a separate action.
+- Existing canonical Stations remain empty until Admin supplies image URLs; migration and seed do not backfill guessed content.
+
 ## Event Config
 
 Event start time, Event end time, and Final start time are managed by Admin Event Config.

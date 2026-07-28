@@ -1,5 +1,9 @@
 import { StationTrackingMode } from '@prisma/client';
+import { Transform } from 'class-transformer';
 import {
+  ArrayMaxSize,
+  ArrayUnique,
+  IsArray,
   IsEnum,
   IsInt,
   IsIn,
@@ -66,4 +70,18 @@ export class CreateStationDto {
   @IsUrl()
   @MaxLength(500)
   mediaUrl?: string | null;
+
+  @IsOptional()
+  @Transform(({ value }: { value: unknown }) =>
+    Array.isArray(value)
+      ? value.map((item) => (typeof item === 'string' ? item.trim() : item))
+      : value,
+  )
+  @IsArray()
+  @ArrayMaxSize(10)
+  @ArrayUnique()
+  @IsString({ each: true })
+  @MaxLength(2048, { each: true })
+  @IsUrl({ protocols: ['https'], require_protocol: true }, { each: true })
+  imageUrls?: string[];
 }

@@ -131,6 +131,7 @@ export type PlayerStationResponse = {
   mapX: number | null
   mapY: number | null
   trackingMode: StationTrackingMode
+  imageUrls: string[]
   game: {
     id: string
     title: string
@@ -228,6 +229,7 @@ export type AdminStationUpdateInput = {
   gameType?: GameType
   maxPoints?: number
   mediaUrl?: string | null
+  imageUrls?: string[]
   checkInQrToken?: string
   checkOutQrToken?: string
 }
@@ -263,6 +265,7 @@ export type AdminProgressMatrixResponse = {
     mapX: number | null
     mapY: number | null
     trackingMode: StationTrackingMode
+    imageUrls: string[]
     games?: Array<{type: GameType; maxPoints: number; mediaUrl: string | null}>
   }>
   rows: Array<{
@@ -367,13 +370,14 @@ export type AdminCreatedStationResponse = {
   id: string
   name: string
   nameEn: string
+  imageUrls: string[]
   qrTokens?: AdminStationQrTokenResponse[]
 }
 
 export const createAdminStation = (values: {
   id: string; name: string; nameEn: string; description?: string | null; descriptionEn?: string | null
   trackingMode: StationTrackingMode; mapX: number; mapY: number
-  gameType: GameType; maxPoints?: number; mediaUrl?: string | null
+  gameType: GameType; maxPoints?: number; mediaUrl?: string | null; imageUrls?: string[]
 }) => apiPost<AdminCreatedStationResponse>('/api/admin/stations', values)
 
 export const deleteAdminStation = (stationId: string) =>

@@ -39,6 +39,7 @@ export type StationDefinition = {
   descriptionEn?: string | null;
   durationMinutes?: number;
   youtubeUrl?: string | null;
+  imageUrls?: string[];
   latitude?: number | null;
   longitude?: number | null;
   markerX?: number | null;
@@ -58,6 +59,7 @@ export type TeamStation = {
   durationMinutes: number;
   trackingMode: StationTrackingMode;
   youtubeUrl?: string | null;
+  imageUrls: string[];
   score: number;
   startTime: string | null;
   endTime: string | null;
@@ -83,6 +85,7 @@ export type StationFormValues = {
   gameType?: GameType;
   maxPoints?: number;
   youtubeUrl?: string | null;
+  imageUrls: string[];
   checkInQrToken?: string;
   checkOutQrToken?: string;
 };

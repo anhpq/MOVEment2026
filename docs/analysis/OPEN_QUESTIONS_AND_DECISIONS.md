@@ -20,6 +20,8 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-28: Chốt Station Media Gallery: mỗi Station có tối đa 10 HTTPS image URL có thứ tự, Admin quản lý trong Station create/edit, Player xem qua gallery tại Station List/Map/Detail, và canonical Station hiện tại không được tự backfill ảnh.
+
 This document stores only the latest confirmed Business Rules.
 
 Historical implementation details belong in:
@@ -744,6 +746,32 @@ Business Rules:
 - Route danh sách và chi tiết Station của Admin phải giữ Team ID để back/navigation không làm mất Team đang xem.
 - Player vẫn sử dụng menu và route Station riêng theo Player flow.
 - Các page header vận hành như Teams, Leaderboard và Operations dùng layout compact, ưu tiên title/action và không cần subtitle mô tả hiển nhiên.
+
+---
+
+## 13.3 Station Media Gallery
+
+| Chủ đề | Quyết định |
+| --- | --- |
+| Ownership | Gallery thuộc `Station`, không phụ thuộc `Game Type`. |
+| Số lượng | Mỗi Station có tối đa `10` ảnh. |
+| Dữ liệu | Mỗi ảnh chỉ lưu HTTPS URL và thứ tự; không lưu caption. |
+| URL policy | Backend trim, chỉ chấp nhận `https://`, tối đa 2048 ký tự, reject URL rỗng hoặc trùng sau normalize và không fetch URL từ server. |
+| Admin create | Thiếu `imageUrls` tạo gallery rỗng. |
+| Admin update | Thiếu `imageUrls` giữ nguyên; `imageUrls: []` xóa gallery; mảng mới replace gallery atomically theo đúng thứ tự. |
+| Player response | Player và Admin Station response trả `imageUrls: string[]` theo thứ tự, không expose database image ID. |
+| Player visibility | `View Images` luôn hiện tại Station List, Map drawer và Station Detail; disabled khi gallery rỗng và không phụ thuộc `ST`/`STANDARD`. |
+| Viewer | Player xem ảnh trong app bằng preview overlay có chuyển ảnh, zoom và đóng. |
+| Existing inventory | 17 Station canonical hiện tại giữ gallery rỗng cho tới khi Admin cấu hình; seed/migration không đoán hoặc tự backfill URL. |
+| Server-side fetch | Backend không tải hoặc probe URL ảnh để tránh SSRF; lỗi ảnh được xử lý tại Frontend. |
+
+Player action layout:
+
+- Station List và Map drawer hiển thị `Watch Video | View Images` ở hàng trên.
+- Action full-width ở hàng dưới giữ Team primary style và icon Play.
+- Station `In Progress` hiển thị `In Progress` thay cho `Play` nhưng vẫn mở Station Detail.
+- Station Detail giữ `Complete` để mở QR Check-out; `Cancel` vẫn là action riêng.
+- Admin Team Station action `View & Edit` và các Admin flow ngoài Station Editor không thay đổi.
 
 ---
 

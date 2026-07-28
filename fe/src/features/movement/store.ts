@@ -95,6 +95,7 @@ function createNewTeamStation(
     status: "New",
     durationMinutes,
     trackingMode,
+    imageUrls: [],
     score: 0,
     startTime: null,
     endTime: null,

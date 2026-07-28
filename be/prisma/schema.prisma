@@ -116,11 +116,27 @@ model Station {
   updatedAt    DateTime            @updatedAt @map("updated_at")
 
   games       Game[]
+  images      StationImage[]
   progress    TeamStationProgress[]
   qrTokens    QrToken[]
   scoreEvents ScoreEvent[]
 
   @@map("stations")
+}
+
+model StationImage {
+  id        Int      @id @default(autoincrement())
+  stationId String   @map("station_id")
+  station   Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  url       String
+  sortOrder Int      @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([stationId, sortOrder])
+  @@unique([stationId, url])
+  @@index([stationId, sortOrder])
+  @@map("station_images")
 }
 
 model Game {

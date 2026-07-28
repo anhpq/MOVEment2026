@@ -69,6 +69,20 @@ CREATE TABLE "games" (
   "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE "station_images" (
+  "id" SERIAL PRIMARY KEY,
+  "station_id" TEXT NOT NULL REFERENCES "stations"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  "url" TEXT NOT NULL,
+  "sort_order" INTEGER NOT NULL CHECK ("sort_order" >= 0 AND "sort_order" <= 9),
+  "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT "station_images_station_id_sort_order_key" UNIQUE ("station_id", "sort_order"),
+  CONSTRAINT "station_images_station_id_url_key" UNIQUE ("station_id", "url")
+);
+
+CREATE INDEX "station_images_station_id_sort_order_idx"
+  ON "station_images"("station_id", "sort_order");
+
 CREATE TABLE "team_station_progress" (
   "id" SERIAL PRIMARY KEY,
   "team_id" INTEGER NOT NULL REFERENCES "teams"("id") ON DELETE RESTRICT ON UPDATE CASCADE,

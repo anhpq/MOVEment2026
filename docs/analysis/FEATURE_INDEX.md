@@ -86,6 +86,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md` | Team Results Excel export and Team Color UI. |
 | `GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md` | Guarded gameplay reset and canonical Station seed/sync. |
 | `STATION_MAP_ANALYSIS.md` | Station map markers, position persistence, and WebP delivery. |
+| `STATION_MEDIA_GALLERY_ANALYSIS.md` | Ordered Station image URLs, Admin management, Player gallery, and action layout. |
 | `STATION_QR_AND_SCORING_ANALYSIS.md` | Station QR auto-submit, checkout, and scoring. |
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
 | `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
@@ -731,7 +732,48 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 
 ---
 
-## 15. Git and Delivery Rules
+## 15. Station Media Gallery
+
+### Scope
+
+- Ordered Station image URL persistence.
+- Admin Station create/edit gallery management.
+- Player Station List, Map drawer, and Detail gallery preview.
+- Player media/action layout and `In Progress` action copy.
+
+### Required Reading
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/STATION_MEDIA_GALLERY_ANALYSIS.md
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+### Confirmed Rules
+
+- A Station owns at most 10 ordered HTTPS image URLs without captions.
+- Admin create/update uses `imageUrls`; update omission preserves and an empty array clears.
+- Player/Admin responses expose ordered `imageUrls` only.
+- Image actions are independent of Station Game Type and disabled when empty.
+- Backend validates URL input without fetching external resources.
+
+### Must Update After Change
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/STATION_MEDIA_GALLERY_ANALYSIS.md
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+---
+
+## 16. Git and Delivery Rules
 
 ### Scope
 

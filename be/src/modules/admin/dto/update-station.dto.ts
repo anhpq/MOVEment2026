@@ -1,5 +1,21 @@
 import { StationTrackingMode } from '@prisma/client';
-import { IsEnum, IsIn, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  ArrayMaxSize,
+  ArrayUnique,
+  IsArray,
+  IsEnum,
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { GAME_TYPES, GameType } from '../../../common/game/game-type';
 
 export class UpdateStationDto {
@@ -54,6 +70,20 @@ export class UpdateStationDto {
   @IsUrl()
   @MaxLength(500)
   mediaUrl?: string | null;
+
+  @IsOptional()
+  @Transform(({ value }: { value: unknown }) =>
+    Array.isArray(value)
+      ? value.map((item) => (typeof item === 'string' ? item.trim() : item))
+      : value,
+  )
+  @IsArray()
+  @ArrayMaxSize(10)
+  @ArrayUnique()
+  @IsString({ each: true })
+  @MaxLength(2048, { each: true })
+  @IsUrl({ protocols: ['https'], require_protocol: true }, { each: true })
+  imageUrls?: string[];
 
   @IsOptional()
   @IsString()

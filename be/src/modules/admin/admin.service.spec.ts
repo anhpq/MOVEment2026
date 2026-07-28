@@ -33,7 +33,13 @@ const mockPrisma = {
     count: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
+    findMany: jest.fn(),
     findUniqueOrThrow: jest.fn(),
+  },
+  stationImage: {
+    createMany: jest.fn(),
+    deleteMany: jest.fn(),
+    findMany: jest.fn(),
   },
   team: {
     create: jest.fn(),
@@ -114,6 +120,7 @@ describe('AdminService Team QR login lifecycle', () => {
       id: 'ST999',
       isActive: true,
     });
+    mockPrisma.stationImage.findMany.mockResolvedValue([]);
     mockPrisma.team.findMany.mockResolvedValue([{id: 7}, {id: 8}]);
     mockPrisma.team.create.mockResolvedValue(team);
     mockPrisma.team.findUniqueOrThrow.mockResolvedValue(team);
@@ -361,7 +368,12 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({
         action: 'CREATE_STATION',
-        metadata: {maxPoints: 30, effectiveMaxPoints: 30, gameType: 'STANDARD'},
+        metadata: expect.objectContaining({
+          maxPoints: 30,
+          effectiveMaxPoints: 30,
+          gameType: 'STANDARD',
+          imageCount: 0,
+        }),
       }),
     );
   });
@@ -701,6 +713,185 @@ describe('AdminService Team QR login lifecycle', () => {
       }),
     ).rejects.toThrow('ST stations require a valid HTTPS YouTube URL');
     expect(mockPrisma.station.create).not.toHaveBeenCalled();
+  });
+
+  it('creates an ordered Station image gallery in the Station transaction', async () => {
+    mockPrisma.qrToken.create.mockImplementation(({data}) =>
+      Promise.resolve({
+        id: data.purpose === QrPurpose.CHECK_IN ? 101 : 102,
+        createdAt: new Date(),
+        expiresAt: null,
+        ...data,
+      }),
+    );
+
+    const result = await service.createStation(1, {
+      id: 'st999',
+      name: 'Station Gallery',
+      nameEn: 'Gallery Station',
+      trackingMode: StationTrackingMode.BOTH,
+      mapX: 10,
+      mapY: 20,
+      gameType: 'STANDARD',
+      imageUrls: [
+        ' https://cdn.example.com/first.webp ',
+        'https://cdn.example.com/second.jpg',
+      ],
+    });
+
+    expect(mockPrisma.stationImage.createMany).toHaveBeenCalledWith({
+      data: [
+        {
+          stationId: 'ST999',
+          url: 'https://cdn.example.com/first.webp',
+          sortOrder: 0,
+        },
+        {
+          stationId: 'ST999',
+          url: 'https://cdn.example.com/second.jpg',
+          sortOrder: 1,
+        },
+      ],
+    });
+    expect(result.imageUrls).toEqual([
+      'https://cdn.example.com/first.webp',
+      'https://cdn.example.com/second.jpg',
+    ]);
+  });
+
+  it('returns ordered imageUrls without Station image persistence fields', async () => {
+    mockPrisma.station.findMany.mockResolvedValue([
+      {
+        id: 'ST999',
+        name: 'Station Gallery',
+        images: [
+          {url: 'https://cdn.example.com/first.webp'},
+          {url: 'https://cdn.example.com/second.jpg'},
+        ],
+        games: [],
+      },
+    ]);
+    mockPrisma.team.findMany.mockResolvedValue([]);
+
+    const result = await service.progressMatrix();
+
+    expect(result.stations).toEqual([
+      expect.objectContaining({
+        id: 'ST999',
+        imageUrls: [
+          'https://cdn.example.com/first.webp',
+          'https://cdn.example.com/second.jpg',
+        ],
+      }),
+    ]);
+    expect(result.stations[0]).not.toHaveProperty('images');
+  });
+
+  it('replaces, reorders, clears, and preserves Station galleries explicitly', async () => {
+    mockPrisma.station.update.mockResolvedValue({
+      id: 'ST999',
+      name: 'Station Gallery',
+    });
+    mockPrisma.stationImage.findMany.mockResolvedValueOnce([
+      {url: 'https://cdn.example.com/second.jpg'},
+      {url: 'https://cdn.example.com/first.webp'},
+    ]);
+
+    const replaced = await service.updateStation(1, 'ST999', {
+      imageUrls: [
+        'https://cdn.example.com/second.jpg',
+        'https://cdn.example.com/first.webp',
+      ],
+    });
+    expect(mockPrisma.stationImage.deleteMany).toHaveBeenCalledWith({
+      where: {stationId: 'ST999'},
+    });
+    expect(mockPrisma.stationImage.createMany).toHaveBeenCalledWith({
+      data: [
+        {
+          stationId: 'ST999',
+          url: 'https://cdn.example.com/second.jpg',
+          sortOrder: 0,
+        },
+        {
+          stationId: 'ST999',
+          url: 'https://cdn.example.com/first.webp',
+          sortOrder: 1,
+        },
+      ],
+    });
+    expect(replaced.imageUrls).toEqual([
+      'https://cdn.example.com/second.jpg',
+      'https://cdn.example.com/first.webp',
+    ]);
+
+    mockPrisma.stationImage.deleteMany.mockClear();
+    mockPrisma.stationImage.createMany.mockClear();
+    mockPrisma.stationImage.findMany.mockReset();
+    mockPrisma.station.update.mockReset();
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999'});
+    mockPrisma.stationImage.findMany.mockResolvedValue([]);
+    await service.updateStation(1, 'ST999', {imageUrls: []});
+    expect(mockPrisma.stationImage.deleteMany).toHaveBeenCalledTimes(1);
+    expect(mockPrisma.stationImage.createMany).not.toHaveBeenCalled();
+
+    mockPrisma.stationImage.deleteMany.mockClear();
+    mockPrisma.stationImage.createMany.mockClear();
+    mockPrisma.stationImage.findMany.mockReset();
+    mockPrisma.station.update.mockReset();
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999'});
+    mockPrisma.stationImage.findMany.mockResolvedValue([
+      {url: 'https://cdn.example.com/existing.jpg'},
+    ]);
+    const preserved = await service.updateStation(1, 'ST999', {name: 'Renamed'});
+    expect(mockPrisma.stationImage.deleteMany).not.toHaveBeenCalled();
+    expect(preserved.imageUrls).toEqual([
+      'https://cdn.example.com/existing.jpg',
+    ]);
+  });
+
+  it('rejects unsafe, duplicate, oversized, and excessive Station galleries', async () => {
+    await expect(
+      service.updateStation(1, 'ST999', {
+        imageUrls: ['http://cdn.example.com/image.jpg'],
+      }),
+    ).rejects.toThrow('valid HTTPS URL');
+    await expect(
+      service.updateStation(1, 'ST999', {
+        imageUrls: [
+          'https://cdn.example.com/image.jpg',
+          ' https://cdn.example.com/image.jpg ',
+        ],
+      }),
+    ).rejects.toThrow('must be unique');
+    await expect(
+      service.updateStation(1, 'ST999', {
+        imageUrls: [`https://cdn.example.com/${'a'.repeat(2049)}`],
+      }),
+    ).rejects.toThrow('1-2048 characters');
+    await expect(
+      service.updateStation(1, 'ST999', {
+        imageUrls: Array.from(
+          {length: 11},
+          (_, index) => `https://cdn.example.com/${index}.jpg`,
+        ),
+      }),
+    ).rejects.toThrow('at most 10 images');
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled();
+  });
+
+  it('does not write an activity log when gallery replacement fails', async () => {
+    mockPrisma.station.update.mockResolvedValue({id: 'ST999'});
+    mockPrisma.stationImage.createMany.mockRejectedValueOnce(
+      new Error('image-create-failed'),
+    );
+
+    await expect(
+      service.updateStation(1, 'ST999', {
+        imageUrls: ['https://cdn.example.com/image.jpg'],
+      }),
+    ).rejects.toThrow('image-create-failed');
+    expect(mockActivityLog.log).not.toHaveBeenCalled();
   });
 
   it('rejects invalid and duplicate Station QR tokens', async () => {

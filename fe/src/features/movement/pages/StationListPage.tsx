@@ -27,6 +27,7 @@ import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
 import {checkInStation, getPlayerFinal} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
+import {StationImageGallery} from "../components/StationImageGallery";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {fetchPlayerDatabase} from "../playerData";
 import {
@@ -316,38 +317,46 @@ export function StationListPage() {
                   className={`station-showcase-actions ${
                     session.role === "admin" ? "admin-edit-only" : ""
                   }`}>
-                    {session.role === "user" && (
-                      <Button
-                        block
-                        className="station-youtube-button"
-                        icon={<YoutubeOutlined />}
-                        disabled={
-                          station.gameType !== "ST" || !station.youtubeUrl
-                        }
-                        onClick={() =>
-                          openLinkInNewTab(station.youtubeUrl as string)
-                        }>
-                        {t("common.watchVideo")}
-                      </Button>
-                    )}
-                      <Button
-                        block
-                        type="primary"
-                        icon={
-                          session.role === "user" ?
-                            <PlayCircleOutlined />
-                          : <EditFilled />
-                        }
-                        disabled={isCooldownActive}
-                        onClick={() => handleStationClick(station)}>
-                        {session.role === "user" ?
-                          isCooldownActive ?
-                            t("common.cooldown", {
-                              time: formatCooldownRemaining(cooldownRemaining),
-                            })
-                          : t("common.play")
-                        : t("common.viewEdit")}
-                      </Button>
+                  {session.role === "user" && (
+                    <Button
+                      block
+                      className="station-media-button station-youtube-button"
+                      icon={<YoutubeOutlined />}
+                      disabled={
+                        station.gameType !== "ST" || !station.youtubeUrl
+                      }
+                      onClick={() =>
+                        openLinkInNewTab(station.youtubeUrl as string)
+                      }>
+                      {t("common.watchVideo")}
+                    </Button>
+                  )}
+                  {session.role === "user" && (
+                    <StationImageGallery imageUrls={station.imageUrls} />
+                  )}
+                  <Button
+                    block
+                    type="primary"
+                    className={
+                      session.role === "user" ? "station-gameplay-button" : undefined
+                    }
+                    icon={
+                      session.role === "user" ?
+                        <PlayCircleOutlined />
+                      : <EditFilled />
+                    }
+                    disabled={isCooldownActive}
+                    onClick={() => handleStationClick(station)}>
+                    {session.role === "user" ?
+                      isCooldownActive ?
+                        t("common.cooldown", {
+                          time: formatCooldownRemaining(cooldownRemaining),
+                        })
+                      : station.status === "In Progress" ?
+                        t("status.In Progress")
+                      : t("common.play")
+                    : t("common.viewEdit")}
+                  </Button>
                 </div>
               </Card>
             </List.Item>

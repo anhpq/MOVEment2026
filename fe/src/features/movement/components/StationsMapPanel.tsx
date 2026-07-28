@@ -58,6 +58,7 @@ import {
   compareStationIds,
 } from "../utils";
 import {QrTokenInput} from "./QrTokenInput";
+import {StationImageGallery} from "./StationImageGallery";
 import "./StationsMapPanel.css";
 
 type StationsMapPanelProps = Readonly<{
@@ -1021,7 +1022,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
             <div className="station-showcase-actions movement-map-actions">
               <Button
                 block
-                className="station-youtube-button"
+                className="station-media-button station-youtube-button"
                 icon={<YoutubeOutlined />}
                 disabled={
                   focusedTeamStation.gameType !== "ST" ||
@@ -1032,9 +1033,15 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 }>
                 {t("common.watchVideo")}
               </Button>
+              {session?.role === "user" && (
+                <StationImageGallery imageUrls={focusedTeamStation.imageUrls} />
+              )}
               <Button
                 block
                 type="primary"
+                className={
+                  session?.role === "user" ? "station-gameplay-button" : undefined
+                }
                 icon={<PlayCircleOutlined />}
                 disabled={isFocusedCooldownActive}
                 onClick={() => {
@@ -1061,6 +1068,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   t("common.cooldown", {
                     time: formatCooldownRemaining(focusedCooldownRemaining),
                   })
+                : session?.role === "user" && focusedTeamStation.status === "In Progress" ?
+                  t("status.In Progress")
                 : t("common.play")}
               </Button>
             </div>

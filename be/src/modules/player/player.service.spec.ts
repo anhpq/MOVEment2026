@@ -144,6 +144,10 @@ describe('PlayerService station flow', () => {
         mapY: 20,
         trackingMode: StationTrackingMode.BOTH,
         isActive: true,
+        images: [
+          {url: 'https://cdn.example.com/first.webp'},
+          {url: 'https://cdn.example.com/second.jpg'},
+        ],
         games: [],
         progress: [],
       },
@@ -154,6 +158,10 @@ describe('PlayerService station flow', () => {
         id: 'ST001',
         name: 'English Name',
         description: 'Mô tả VI',
+        imageUrls: [
+          'https://cdn.example.com/first.webp',
+          'https://cdn.example.com/second.jpg',
+        ],
       }),
     ])
   })
@@ -170,6 +178,7 @@ describe('PlayerService station flow', () => {
         mapY: 20,
         trackingMode: StationTrackingMode.BOTH,
         isActive: true,
+        images: [],
         games: [],
         progress: [],
       },
@@ -179,6 +188,7 @@ describe('PlayerService station flow', () => {
       expect.objectContaining({
         name: 'Tên VI',
         description: 'Mô tả VI',
+        imageUrls: [],
       }),
     ])
   })

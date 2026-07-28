@@ -1,3 +1,24 @@
+# 2026-07-28 Station Media Gallery and Player action layout
+
+- Added normalized `station_images` persistence with ordered/cascade/unique/range
+  constraints. Existing 17 canonical Stations remain empty until Admin supplies
+  at most 10 unique HTTPS URLs; Backend validates without fetching external URLs.
+- Admin Station create/update now manages `imageUrls` atomically with preserve,
+  clear, replace, and reorder semantics. Player/Admin Station responses return
+  ordered URL arrays without persistence IDs.
+- Added VI/EN Admin gallery controls and a shared Player Image PreviewGroup with
+  no-referrer loading and broken-image fallback. Station List/Map show Video and
+  Images above full-width Play/In Progress; Detail keeps Complete and Cancel.
+- Verification passed: Prisma generate, local migration deploy, database
+  constraint/index inspection, seed twice, `db:verify`, targeted tests `63/63`,
+  full Backend Jest `153/153`, Backend lint/build, Frontend i18n parity `273`,
+  Frontend lint/build, authenticated API smoke, and Chrome visual review at
+  320/375/1280px. Vite retains the known non-blocking large-chunk warning.
+- Graphify code update completed with 2355 nodes, 3848 edges, and 208 communities;
+  it retained the known `hooks.json` zero-node warning and did not semantically
+  re-extract changed docs because no Gemini backend was configured.
+- Production deploy/runtime and physical-device verification were not performed.
+
 ## 2026-07-28 Station map interaction performance
 
 - Reduced the Konva Stage backing canvas to the visible viewport while keeping

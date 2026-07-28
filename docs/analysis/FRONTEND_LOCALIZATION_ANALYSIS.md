@@ -40,6 +40,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Language switch renders circular VI/EN flag buttons with no external image
   asset dependency.
 - Station list/detail/map status labels and visible controls use localized copy.
+- Station gallery actions, preview alt text, Admin URL controls, validation copy,
+  and reorder/remove ARIA labels are localized in both VI and EN.
 - Station UI ordering uses status order `In Progress`, `New`, `Finished`, then
   natural ascending `stationId`; Station dropdowns without status sort by ID.
 - Team display names localize seed-style raw names only: `Team NN`/`Đội NN`
@@ -63,6 +65,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Admin Station responses/progress matrix include four Station content fields.
 - Admin create requires `name` and `nameEn`; descriptions are optional.
 - Admin update trims and validates only fields present in the request.
+- Player/Admin Station responses include locale-independent ordered
+  `imageUrls: string[]`; only gallery labels and accessibility copy are translated.
 
 ## Boundaries
 
@@ -81,6 +85,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Completed in the latest follow-up implementation run: Frontend
   `i18n:check`, Frontend lint, Frontend production build, and JSX visible-copy
   scan confirming only the `MOVEment 2026` brand remains as direct text.
+- Station gallery follow-up passed i18n parity with `273` keys, Frontend lint,
+  production build, and Chrome headless visual review at 320/375/1280px.
 - Completed in the latest header visual follow-up: Frontend lint, Frontend
   production build, and `git diff --check`.
 - Completed in the earlier Plan 2 implementation run: Prisma generate, targeted

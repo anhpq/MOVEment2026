@@ -1,4 +1,10 @@
 import QRCode from "qrcode";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {App as AntdApp, Button, Divider, Drawer, Flex, Form, Input, InputNumber, Select, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
@@ -97,7 +103,7 @@ export function StationEditorPage() {
       };
     }
 
-    form.setFieldsValue({id: "", name: "", nameEn: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "STANDARD", maxPoints: DEFAULT_STATION_MAX_POINTS, checkInQrToken: "", checkOutQrToken: ""});
+    form.setFieldsValue({id: "", name: "", nameEn: "", durationMinutes: 0, trackingMode: "BOTH", markerX: 50, markerY: 50, gameType: "STANDARD", maxPoints: DEFAULT_STATION_MAX_POINTS, imageUrls: [], checkInQrToken: "", checkOutQrToken: ""});
     return () => {
       cancelled = true;
     };
@@ -117,6 +123,11 @@ export function StationEditorPage() {
         form={form}
         {...layout}
         onFinish={(values) => {
+          const imageUrls = (values.imageUrls ?? []).map((url) => url.trim());
+          if (new Set(imageUrls).size !== imageUrls.length) {
+            message.error(t("stationEditor.imageUrlsDuplicate"));
+            return;
+          }
           const duplicate = stationDefinitions.some(
             (item) => item.id === values.id && item.id !== station?.id,
           );
@@ -149,6 +160,7 @@ export function StationEditorPage() {
                   gameType: values.gameType,
                   maxPoints: values.maxPoints,
                   mediaUrl: values.youtubeUrl ?? null,
+                  imageUrls,
                   ...(checkInQrToken && checkInQrToken !== initialQrTokensRef.current.checkInQrToken ? {checkInQrToken} : {}),
                   ...(checkOutQrToken && checkOutQrToken !== initialQrTokensRef.current.checkOutQrToken ? {checkOutQrToken} : {}),
                 });
@@ -175,6 +187,7 @@ export function StationEditorPage() {
                   gameType: values.gameType ?? "STANDARD",
                   maxPoints: values.maxPoints,
                   mediaUrl: values.youtubeUrl ?? null,
+                  imageUrls,
                 });
                 if (createdStation.qrTokens?.length) {
                   cacheStationQrTokens(createdStation.id, createdStation.qrTokens);
@@ -269,6 +282,77 @@ export function StationEditorPage() {
           ]}>
           <Input placeholder="YouTube video URL" />
         </Form.Item>
+        <Divider>{t("stationEditor.gallerySection")}</Divider>
+        <Form.List name="imageUrls">
+          {(fields, {add, remove, move}) => (
+            <Flex vertical gap={10} className="station-image-editor-list">
+              {fields.map((field, index) => (
+                <Flex key={field.key} gap={8} align="start">
+                  <Form.Item
+                    {...field}
+                    className="station-image-editor-field"
+                    rules={[
+                      {
+                        required: true,
+                        message: t("stationEditor.imageUrlRequired"),
+                      },
+                      {max: 2048},
+                      {
+                        validator: async (_, value: unknown) => {
+                          if (typeof value !== "string" || !value.trim()) {
+                            return;
+                          }
+                          try {
+                            const parsed = new URL(value.trim());
+                            if (parsed.protocol !== "https:") {
+                              throw new Error("Unsupported protocol");
+                            }
+                          } catch {
+                            throw new Error(t("stationEditor.imageUrlHttps"));
+                          }
+                        },
+                      },
+                    ]}>
+                    <Input
+                      placeholder={t("stationEditor.imageUrl")}
+                      autoComplete="off"
+                    />
+                  </Form.Item>
+                  <Button
+                    icon={<ArrowUpOutlined />}
+                    disabled={index === 0}
+                    aria-label={t("stationEditor.moveImageUp")}
+                    title={t("stationEditor.moveImageUp")}
+                    onClick={() => move(index, index - 1)}
+                  />
+                  <Button
+                    icon={<ArrowDownOutlined />}
+                    disabled={index === fields.length - 1}
+                    aria-label={t("stationEditor.moveImageDown")}
+                    title={t("stationEditor.moveImageDown")}
+                    onClick={() => move(index, index + 1)}
+                  />
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    aria-label={t("stationEditor.removeImage")}
+                    title={t("stationEditor.removeImage")}
+                    onClick={() => remove(index)}
+                  />
+                </Flex>
+              ))}
+              <Typography.Text type="secondary">
+                {t("stationEditor.maxImages")}
+              </Typography.Text>
+              <Button
+                icon={<PlusOutlined />}
+                disabled={fields.length >= 10}
+                onClick={() => add("")}>
+                {t("stationEditor.addImage")}
+              </Button>
+            </Flex>
+          )}
+        </Form.List>
         <Form.Item label={t("stationEditor.mapX")} name="markerX" rules={[{required: true}]}>
           <InputNumber min={0} max={100} className="full-width" />
         </Form.Item>

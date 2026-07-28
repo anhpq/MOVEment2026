@@ -104,6 +104,7 @@ function buildPlayerSeed(
       durationMinutes: 0,
       trackingMode: station.trackingMode ?? "BOTH",
       youtubeUrl: station.game?.mediaUrl ?? null,
+      imageUrls: station.imageUrls,
       gameType: station.game?.type,
       maxPoints: station.game?.maxPoints,
       markerX: station.mapX,
@@ -120,6 +121,7 @@ function buildPlayerSeed(
         durationMinutes: 0,
         trackingMode: station.trackingMode ?? "BOTH",
         youtubeUrl: station.game?.mediaUrl ?? null,
+        imageUrls: station.imageUrls,
         score: station.progress?.scoreAchieved ?? 0,
         startTime: station.progress?.checkedInAt ?? null,
         endTime:

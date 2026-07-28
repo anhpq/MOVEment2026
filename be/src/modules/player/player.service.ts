@@ -4,7 +4,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ActorType, Game, ProgressStatus, QrPurpose, Station } from '@prisma/client';
+import {
+  ActorType,
+  Game,
+  ProgressStatus,
+  QrPurpose,
+  Station,
+  StationImage,
+} from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { SubmitScoreDto } from '../../common/dto/score.dto';
@@ -66,6 +73,10 @@ export class PlayerService {
         where: { isActive: true },
         orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
         include: {
+          images: {
+            orderBy: { sortOrder: 'asc' },
+            select: { url: true },
+          },
           games: { where: { isActive: true }, take: 1 },
           progress: { where: { teamId }, take: 1 },
         },
@@ -80,6 +91,7 @@ export class PlayerService {
       mapY: station.mapY,
       trackingMode: station.trackingMode,
       isActive: station.isActive,
+      imageUrls: station.images.map(({ url }) => url),
       game: station.games[0]
         ? {
             id: station.games[0].id,
@@ -109,7 +121,14 @@ export class PlayerService {
       this.prisma.teamStationProgress.findMany({
         where: { teamId },
         include: {
-          station: true,
+          station: {
+            include: {
+              images: {
+                orderBy: { sortOrder: 'asc' },
+                select: { url: true },
+              },
+            },
+          },
           game: true,
         },
         orderBy: [{ station: { sortOrder: 'asc' } }, { stationId: 'asc' }],
@@ -521,7 +540,10 @@ export class PlayerService {
     };
   }
 
-  private toPublicStation(station: Station, locale: 'vi' | 'en') {
+  private toPublicStation(
+    station: Station & { images: Pick<StationImage, 'url'>[] },
+    locale: 'vi' | 'en',
+  ) {
     return {
       id: station.id,
       ...this.toLocalizedStationFields(station, locale),
@@ -532,6 +554,7 @@ export class PlayerService {
       trackingMode: station.trackingMode,
       isActive: station.isActive,
       sortOrder: station.sortOrder,
+      imageUrls: station.images.map(({ url }) => url),
       createdAt: station.createdAt,
       updatedAt: station.updatedAt,
     };

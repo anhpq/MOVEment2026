@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+# 2026-07-28 Station Media Gallery and Player action layout
+
+- [x] Confirm gallery Business Rules through the nine-round Plan Mode review.
+- [x] Register `STATION_MEDIA_GALLERY_ANALYSIS.md` and document the target API/UI behavior.
+- [x] Add `station_images` schema/migration and transactional Admin create/update handling.
+- [x] Return ordered `imageUrls` in Player/Admin Station responses.
+- [x] Add Admin gallery inputs and Player List/Map/Detail gallery preview/action layout.
+- [x] Complete migration, seed, automated, API, and representative visual verification.
+- [x] Complete Graphify code update and final diff review; `hooks.json` remains a known zero-node warning and changed docs were not semantically re-extracted without Gemini.
+- [x] Create the verified local commit after the final status/diff review.
+- [ ] Existing routing references `docs/prompts/02_PLAYER_SCREENS_PROMPT.md`, which is absent; do not recreate it unless the repeatable Player-screen workflow is intentionally restored.
+- [ ] Production deployment/runtime verification remains out of scope and requires explicit approval.
+
 ## 2026-07-27 Frontend localization follow-up
 
 - [x] Language switch displays `🇻🇳 VI` and `🇬🇧 EN` without new image assets.
