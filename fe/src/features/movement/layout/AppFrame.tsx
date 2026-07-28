@@ -194,6 +194,11 @@ export function AppFrame({children}: AppFrameProps) {
           </div>
 
           <div className="account-cluster">
+            <LanguageSwitch onChange={handleLanguageChange} />
+            <span className="header-divider" aria-hidden="true" />
+            <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
+              {buildTimestampLabel}
+            </Typography.Text>
             <div className="account-actions">
               {session.role === "admin" && (
                 <Button
@@ -215,12 +220,7 @@ export function AppFrame({children}: AppFrameProps) {
                   {activeTeamName}
                 </Button>
               )}
-              <Typography.Text className="deploy-stamp" title={__APP_BUILD_TIMESTAMP__}>
-                {buildTimestampLabel}
-              </Typography.Text>
             </div>
-            <span className="header-divider" aria-hidden="true" />
-            <LanguageSwitch onChange={handleLanguageChange} />
           </div>
         </div>
       </Layout.Header>

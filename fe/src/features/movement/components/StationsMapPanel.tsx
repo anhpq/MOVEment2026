@@ -241,15 +241,52 @@ type StationMarkerProps = {
   y: number;
   code: string;
   uiState: MarkerUiState;
+  animate: boolean;
   onSelect: () => void;
 };
+
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
+    typeof globalThis.matchMedia === "function" ?
+      globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches
+    : false,
+  );
+
+  useEffect(() => {
+    if (typeof globalThis.matchMedia !== "function") {
+      return;
+    }
+
+    const mediaQuery = globalThis.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, []);
+
+  return prefersReducedMotion;
+}
 
 /**
  * Native Konva marker. Drawn directly on the canvas (instead of an HTML
  * <button> overlay) so it correctly pans/zooms with the Stage transform and
  * can use canvas-only effects (shadow glow, radial gradient, animated rings).
  */
-function StationMarker({x, y, code, uiState, onSelect}: StationMarkerProps) {
+function StationMarker({
+  x,
+  y,
+  code,
+  uiState,
+  animate,
+  onSelect,
+}: StationMarkerProps) {
   const groupRef = useRef<Konva.Group | null>(null);
   const pulseRef = useRef<Konva.Circle | null>(null);
   const spinRef = useRef<Konva.Circle | null>(null);
@@ -257,10 +294,10 @@ function StationMarker({x, y, code, uiState, onSelect}: StationMarkerProps) {
   const radius = theme.radius;
 
   useEffect(() => {
-    const shouldPulse = uiState === "available" || uiState === "active";
+    const shouldPulse = animate && uiState === "active";
     const shouldSpin = uiState === "active";
 
-    if (!shouldPulse && !shouldSpin) {
+    if (!animate || (!shouldPulse && !shouldSpin)) {
       return;
     }
 
@@ -286,7 +323,7 @@ function StationMarker({x, y, code, uiState, onSelect}: StationMarkerProps) {
     return () => {
       animation.stop();
     };
-  }, [radius, uiState]);
+  }, [animate, radius, uiState]);
 
   return (
     <Group
@@ -348,6 +385,8 @@ function StationMarker({x, y, code, uiState, onSelect}: StationMarkerProps) {
         shadowColor={theme.glow}
         shadowBlur={16}
         shadowOpacity={0.9}
+        perfectDrawEnabled={false}
+        shadowForStrokeEnabled={false}
       />
 
       {uiState !== "completed" && uiState !== "locked" && (
@@ -435,6 +474,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   });
   const [mapScale, setMapScale] = useState(1);
   const [mapPosition, setMapPosition] = useState({x: 0, y: 0});
+  const [isDraggingMap, setIsDraggingMap] = useState(false);
   const [scanTarget, setScanTarget] = useState<TeamStationWithMeta | null>(
     null,
   );
@@ -444,7 +484,16 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   const isSubmittingQrRef = useRef(false);
   const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const language = i18n.language === "en" ? "en" : "vi";
+
+  const mapWorldSize = useMemo(
+    () => ({
+      width: viewportSize.height * 2.5,
+      height: viewportSize.height,
+    }),
+    [viewportSize.height],
+  );
 
   const activeTeamStations = useMemo(
     () => (teamStations[activeTeamId] ?? []) as TeamStationWithMeta[],
@@ -482,8 +531,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
           fallbackPositions[station.id],
         );
         const teamStation = activeTeamStationById[station.id];
-        const markerX = (position.x / 100) * viewportSize.width;
-        const markerY = (position.y / 100) * viewportSize.height;
+        const markerX = (position.x / 100) * mapWorldSize.width;
+        const markerY = (position.y / 100) * mapWorldSize.height;
         const uiState = getMarkerUiState(teamStation);
 
         return {
@@ -497,9 +546,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     [
       activeTeamStationById,
       fallbackPositions,
+      mapWorldSize.height,
+      mapWorldSize.width,
       stationDefinitions,
-      viewportSize.height,
-      viewportSize.width,
     ],
   );
 
@@ -523,7 +572,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
       getStationDisplayCode(focusedTeamStation.stationId)
     : "";
 
-  const playingCounts = useStationPlayingCounts(session?.role === "user");
+  const playingCounts = useStationPlayingCounts(
+    session?.role === "user" && Boolean(focusedStationId),
+  );
   const focusedPlayingTeamCount = focusedTeamStation ?
     (playingCounts[focusedTeamStation.stationId] ?? 0)
   : 0;
@@ -588,9 +639,13 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
   }, [mapScale, viewportSize.width]);
 
   useEffect(() => {
+    if (!focusedStationId) {
+      return;
+    }
+
     const timer = window.setInterval(() => setNowMs(Date.now()), 1000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [focusedStationId]);
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
@@ -599,10 +654,14 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     }
 
     const updateSize = () => {
-      setViewportSize({
-        width: element.clientHeight * 2.5,
-        height: element.clientHeight,
-      });
+      const width = element.clientWidth;
+      const height = element.clientHeight;
+
+      setViewportSize((current) =>
+        current.width === width && current.height === height ?
+          current
+        : {width, height},
+      );
     };
 
     updateSize();
@@ -636,7 +695,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
   const handleResetTransform = () => {
     setMapScale(2);
-    setMapPosition({x: -viewportSize.width / 2, y: -viewportSize.height});
+    setMapPosition({x: -mapWorldSize.width / 2, y: -mapWorldSize.height});
   };
 
   const handleZoomIn = () => {
@@ -688,10 +747,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     }
 
     const markerX = clampPercent(
-      ((pointer.x - mapPosition.x) / mapScale / viewportSize.width) * 100,
+      ((pointer.x - mapPosition.x) / mapScale / mapWorldSize.width) * 100,
     );
     const markerY = clampPercent(
-      ((pointer.y - mapPosition.y) / mapScale / viewportSize.height) * 100,
+      ((pointer.y - mapPosition.y) / mapScale / mapWorldSize.height) * 100,
     );
     const stationSnapshot = selectedStation;
     const nextMarker = {mapX: markerX, mapY: markerY};
@@ -839,22 +898,29 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               scaleX={mapScale}
               scaleY={mapScale}
               draggable
+              onDragStart={() => {
+                setIsDraggingMap(true);
+              }}
               onDragEnd={(event) => {
                 setMapPosition(event.target.position());
+                setIsDraggingMap(false);
               }}
               onWheel={handleWheel}
               onClick={handleMapClick}
               onTap={handleMapClick}
               style={{cursor: editable ? "crosshair" : "grab"}}>
-              <Layer>
+              <Layer listening={false}>
                 {mapImage && (
                   <KonvaImage
                     image={mapImage}
-                    width={viewportSize.width}
-                    height={viewportSize.height}
+                    width={mapWorldSize.width}
+                    height={mapWorldSize.height}
+                    listening={false}
                   />
                 )}
+              </Layer>
 
+              <Layer>
                 {markerViewModels.map(({station, markerX, markerY, uiState}) => (
                   <StationMarker
                     key={station.id}
@@ -862,7 +928,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                     y={markerY}
                     code={getStationDisplayCode(station.id)}
                     uiState={uiState}
-                    onSelect={() => setFocusedStationId(station.id)}
+                    animate={!isDraggingMap && !prefersReducedMotion}
+                    onSelect={() => {
+                      setNowMs(Date.now());
+                      setFocusedStationId(station.id);
+                    }}
                   />
                 ))}
               </Layer>

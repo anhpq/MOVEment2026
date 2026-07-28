@@ -527,6 +527,25 @@ Acceptance:
 2. Run `docs/prompts/08_IMPLEMENTATION_SYNC_PROMPT.md`.
 3. Review diff, run `git diff --check`, and create scoped local commits.
 4. Do not push or deploy without explicit user request.
+
+## 2026-07-28 Station map interaction performance
+
+- [x] Size the Konva Stage to the visible viewport while retaining the existing
+  logical map size and persisted marker coordinate behavior.
+- [x] Separate the static, non-listening map image Layer from the interactive
+  marker Layer.
+- [x] Animate only the active Station; pause animation during drag and for
+  `prefers-reduced-motion`.
+- [x] Select normal-zoom WebP variants from visible viewport width and retain the
+  current one-way high-zoom upgrade behavior.
+- [x] Limit map live-count polling and cooldown clock updates to an open Station
+  drawer.
+- [x] Full Backend tests (`148/148`), Backend lint/build, Frontend lint/build,
+  Frontend i18n parity (`261` keys), and `git diff --check` pass; the existing
+  non-blocking large-chunk warning remains.
+- [ ] Profile pan/zoom FPS and frame time on representative iPhone and Android
+  devices, and confirm WebP requests plus maximum-zoom sharpness in DevTools.
+
 ## 2026-07-27 Team QR live navigation, reset guard, and map WebP
 
 - [x] Team QR `expiresAt` is nullable and active/new Team QR tokens are non-expiring by time.

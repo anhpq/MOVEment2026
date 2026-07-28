@@ -1,3 +1,22 @@
+## 2026-07-28 Station map interaction performance
+
+- Reduced the Konva Stage backing canvas to the visible viewport while keeping
+  the existing logical map size, persisted `0..100` marker coordinates, Admin
+  update API, and pan/zoom transform behavior unchanged.
+- Isolated the static WebP map image in a non-listening background Layer and
+  markers in a separate interactive Layer, preventing marker animation from
+  continuously redrawing the background image.
+- Limited animation to the active Station, paused it during dragging, honored
+  `prefers-reduced-motion`, and disabled unnecessary perfect/stroke-shadow draw
+  work on the marker body.
+- Normal-zoom WebP selection now uses visible viewport width. Map live-count
+  polling and the cooldown timer run only while the Station drawer is open.
+- Final worktree verification passed: full Backend Jest suite (`148/148`),
+  Backend lint/build, Frontend lint/build, Frontend i18n parity (`261` keys), and
+  `git diff --check`. The known non-blocking large-chunk warning remains.
+  Browser/device FPS profiling, authenticated persistence smoke, and Production
+  runtime verification were not performed.
+
 ## 2026-07-28 Daily 22:00 session expiry
 
 - Changed the confirmed session policy for both Admin and Team authentication:
@@ -26,6 +45,9 @@
 - Refined the shared AppFrame header into a floating rounded white card with
   polished account badge, divider, responsive mobile compaction, and Team-color
   accents while preserving the existing `RunningPersonIcon` brand logo.
+- Finalized the account cluster order as language switch, divider/build stamp,
+  then account actions so locale and deployment context stay visible before the
+  logout control on both Admin and Team headers.
 - Replaced the Ant Design segmented language control with inline circular VI/EN
   flag buttons, keeping the existing persisted i18next language behavior and
   Player Station refetch hook unchanged.

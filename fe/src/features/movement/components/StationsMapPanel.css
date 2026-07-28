@@ -24,6 +24,9 @@
   width: 100%;
   height: clamp(320px, 100vh, 80vh);
   background: linear-gradient(180deg, #e9eff6 0%, #dbe5ee 100%);
+  contain: layout paint;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
 
 .movement-map-controls {
@@ -86,6 +89,6 @@
   margin: 0;
 }
 
-.konvajs-content {
+.movement-map-viewport .konvajs-content {
   background: black;
 }

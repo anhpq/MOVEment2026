@@ -372,6 +372,13 @@ Frontend selection is based on rendered width and device pixel ratio, keeps the
 current image while an upgrade loads, and only upgrades to the full-width image
 for high zoom rather than downgrading on resize.
 
+The Konva Stage is limited to the visible viewport while the existing logical
+map coordinate space remains unchanged. The static map image is isolated in a
+non-listening background Layer; markers render in a separate interactive Layer.
+Only the active Station animates, with animation paused during map dragging and
+when the device requests reduced motion. Map-drawer live counts and cooldown
+clock updates run only while the drawer is open.
+
 ## QR Camera
 
 Station Check-in and Check-out camera decodes auto-submit the decoded QR token immediately. Manual paste/type remains available and requires the user to press Submit.

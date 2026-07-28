@@ -17,10 +17,19 @@ responsive WebP map delivery without changing Station coordinates or APIs.
 
 - Marker UI derives state from authoritative backend status with a display-status
   fallback and keeps accessible labels/reduced-motion behavior.
+- The Konva Stage matches the visible viewport instead of allocating the full
+  off-screen map width; the existing logical `2.5:1` map space still owns image
+  and marker coordinates so persisted positions and transforms remain unchanged.
+- The static map image uses a non-listening background Layer, while interactive
+  markers use a separate Layer. Only the active Station animates, and marker
+  animation pauses during drag or when `prefers-reduced-motion` is enabled.
 - Position updates preserve the existing Admin API contract and numeric `0..100`
   coordinate validation.
 - Commit `18c7207a` added 1280/1920/2950 WebP variants, DPR/container selection,
   cached loading, and one-way high-zoom upgrade without image flicker.
+- Normal-zoom WebP selection now uses the visible viewport width rather than the
+  wider logical map space, avoiding premature 2950-pixel loads on portrait and
+  high-DPR devices.
 - The original 2950x1440 PNG is outside `public` as a source asset.
 
 ## Decisions and Stale Assumptions
@@ -35,12 +44,17 @@ responsive WebP map delivery without changing Station coordinates or APIs.
 - Existing Station map position update endpoint remains unchanged.
 - `TeamStation.backendStatus` remains authoritative for map state.
 - Static WebP variants are selected only by rendered width, DPR, and high zoom.
+- Playing-count polling and the one-second cooldown clock run on the map only
+  while the Station detail drawer is open.
 
 ## Verification and Risks
 
-- Frontend lint/build and static asset checks passed when implemented.
+- Frontend lint and production build passed after the viewport/Layer/animation
+  performance patch on 2026-07-28. The existing non-blocking Vite large-chunk
+  warning remains.
 - Remaining: authenticated browser persistence smoke, Network request inspection,
-  mobile/desktop framing, and maximum-zoom verification.
+  mobile/desktop framing, maximum-zoom verification, and physical-device FPS/
+  frame-time profiling during pan and zoom.
 - Production runtime asset delivery is not claimed until deployed and observed.
 
 ## Decision Log
@@ -52,6 +66,8 @@ responsive WebP map delivery without changing Station coordinates or APIs.
 5. Asset review: serve committed WebP variants, not the source PNG.
 6. Loading review: cache, retain current image, and only upgrade at high zoom.
 7. Consolidation review: retain manual persistence/network checks as pending.
+8. Performance review: preserve WebP quality and logical coordinates; first
+   reduce canvas area, background redraws, and unnecessary marker animation.
 
 ## Provenance
 
