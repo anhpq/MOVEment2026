@@ -16,6 +16,7 @@ import {
 } from "antd";
 import QRCode from "qrcode";
 import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {fetchAdminDatabase} from "../adminData";
 import {
@@ -37,10 +38,12 @@ import {
   getCachedTeamQrToken,
 } from "../teamQrTokenCache";
 import type {StationTrackingMode} from "../types";
+import {getLocalizedTeamName} from "../utils";
 
 export function SystemConfigPage() {
   const navigate = useNavigate();
   const {modal, message} = AntdApp.useApp();
+  const {i18n, t} = useTranslation();
   const stationDefinitions = useMovementStore(
     (state) => state.stationDefinitions,
   );
@@ -53,6 +56,28 @@ export function SystemConfigPage() {
   const [qrBusyStationId, setQrBusyStationId] = useState<string | null>(null);
   const [teamQrStatus, setTeamQrStatus] = useState<Record<string, string>>({});
   const [stationQrStatus, setStationQrStatus] = useState<Record<string, string>>({});
+  const language = i18n.language === "en" ? "en" : "vi";
+
+  const formatQrStatus = (status: string | undefined) => {
+    if (!status) {
+      return t("systemConfig.qrStatus.loading");
+    }
+    const activeCount = /^ACTIVE x(\d+)$/.exec(status);
+    if (activeCount) {
+      return t("systemConfig.qrStatus.activeCount", {
+        count: Number(activeCount[1]),
+      });
+    }
+    const statusKeys: Record<string, string> = {
+      ACTIVE: "active",
+      CONSUMED: "consumed",
+      INACTIVE: "inactive",
+      NONE: "none",
+      REVOKED: "revoked",
+    };
+    const statusKey = statusKeys[status];
+    return statusKey ? t(`systemConfig.qrStatus.${statusKey}`) : status;
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -83,9 +108,13 @@ export function SystemConfigPage() {
     station: (typeof stationDefinitions)[number],
     trackingMode: StationTrackingMode,
   ) => {
-    await updateAdminStation(station.id, {trackingMode});
-    loadDatabase(await fetchAdminDatabase());
-    message.success("Station tracking mode updated");
+    try {
+      await updateAdminStation(station.id, {trackingMode});
+      loadDatabase(await fetchAdminDatabase());
+      message.success(t("systemConfig.trackingModeUpdated"));
+    } catch {
+      message.error(t("systemConfig.trackingModeUpdateFailed"));
+    }
   };
 
   const downloadDataUrl = (dataUrl: string, filename: string) => {
@@ -108,13 +137,18 @@ export function SystemConfigPage() {
       title: params.title,
       content: (
         <Flex vertical gap={12} align="center">
-          <img src={dataUrl} alt={`${params.context} QR`} width={260} height={260} />
+          <img
+            src={dataUrl}
+            alt={t("systemConfig.qrCodeAlt", {context: params.context})}
+            width={260}
+            height={260}
+          />
           <Typography.Text>{params.context}</Typography.Text>
           <Typography.Text type="warning">
-            Save or download this QR securely. Rotate or revoke it if it is exposed.
+            {t("systemConfig.saveQrSecurely")}
           </Typography.Text>
           <Button type="primary" onClick={() => downloadDataUrl(dataUrl, params.filename)}>
-            Download PNG
+            {t("systemConfig.downloadPng")}
           </Button>
         </Flex>
       ),
@@ -127,6 +161,7 @@ export function SystemConfigPage() {
   const handleOpenTeamQr = async (team: (typeof teams)[number]) => {
     setQrBusyTeamId(team.id);
     try {
+      const teamName = getLocalizedTeamName(team.name, language);
       const tokens = await getAdminTeamQrLoginTokens(team.id);
       const token = tokens.find((item) => item.status === "ACTIVE");
       const cachedToken = getCachedTeamQrToken(team.id);
@@ -136,18 +171,18 @@ export function SystemConfigPage() {
         (token?.rawToken ? buildTeamQrLoginUrl(token.rawToken) : "") ||
         (token && cachedToken ? buildTeamQrLoginUrl(cachedToken) : "");
       if (!payload) {
-        message.warning("Team chưa có QR login ACTIVE có thể hiển thị. Hãy generate hoặc rotate QR mới.");
+        message.warning(t("systemConfig.teamQrMissing"));
         return;
       }
       cacheTeamQrPayload(team.id, payload);
       await showOneTimeQrPreview({
-        title: `QR login for ${team.name}`,
+        title: t("systemConfig.teamQrTitle", {team: teamName}),
         payload,
         filename: `team-${team.id}-qr.png`,
-        context: `${team.name} · Team QR login · Không hết hạn`,
+        context: t("systemConfig.teamQrContext", {team: teamName}),
       });
-    } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to open Team QR");
+    } catch {
+      message.error(t("systemConfig.openTeamQrFailed"));
     } finally {
       setQrBusyTeamId(null);
     }
@@ -163,7 +198,7 @@ export function SystemConfigPage() {
         rawToken: token.rawToken ?? getCachedStationQrToken(station.id, token.purpose),
       })).filter((token) => token.rawToken);
       if (!tokensWithRawValue.length) {
-        message.warning("Không thể hiển thị QR cũ vì backend chỉ lưu hash token. Hãy nhập lại Check-in/Check-out QR token trong Edit Station nếu cần lưu/show QR hiện tại trên máy này.");
+        message.warning(t("systemConfig.stationQrMissing"));
         return;
       }
 
@@ -175,19 +210,27 @@ export function SystemConfigPage() {
       modal.info({
         centered: true,
         width: 720,
-        title: `Station QR for ${station.name}`,
+        title: t("systemConfig.stationQrTitle", {station: station.name}),
         content: (
           <Flex vertical gap={12}>
             <Typography.Text>
-              Existing active Check-in and Check-out QR tokens for this Station.
+              {t("systemConfig.stationQrDescription")}
             </Typography.Text>
             <Flex gap={16} wrap justify="center">
               {previews.map(({token, dataUrl}) => (
                 <Flex key={token.purpose} vertical gap={8} align="center">
-                  <img src={dataUrl} alt={`${station.name} ${token.purpose} QR`} width={220} height={220} />
+                  <img
+                    src={dataUrl}
+                    alt={t("systemConfig.stationQrAlt", {
+                      purpose: token.purpose,
+                      station: station.name,
+                    })}
+                    width={220}
+                    height={220}
+                  />
                   <Typography.Text>{token.purpose} · {token.status}</Typography.Text>
                   <Button onClick={() => downloadDataUrl(dataUrl, `station-${station.id}-${token.purpose.toLowerCase()}-qr.png`)}>
-                    Download PNG
+                    {t("systemConfig.downloadPng")}
                   </Button>
                 </Flex>
               ))}
@@ -195,8 +238,8 @@ export function SystemConfigPage() {
           </Flex>
         ),
       });
-    } catch (error) {
-      message.error(error instanceof Error ? error.message : "Unable to open Station QR");
+    } catch {
+      message.error(t("systemConfig.openStationQrFailed"));
     } finally {
       setQrBusyStationId(null);
     }
@@ -208,13 +251,15 @@ export function SystemConfigPage() {
       items={[
         {
           key: "stations",
-          label: "Station list (" + stationDefinitions.length + ")",
+          label: t("systemConfig.stationList", {
+            count: stationDefinitions.length,
+          }),
           children: (
             <Flex vertical gap={16} className="full-width">
               <Button
                 type="primary"
                 onClick={() => navigate("/system-config/stations/new")}>
-                Add new Station
+                {t("systemConfig.addStation")}
               </Button>
               <List
                 className="card-list"
@@ -236,6 +281,12 @@ export function SystemConfigPage() {
                               variant="filled"
                               className="delete-icon-button"
                               icon={<EditOutlined />}
+                              aria-label={t("systemConfig.editStationAria", {
+                                station: station.name,
+                              })}
+                              title={t("systemConfig.editStationAria", {
+                                station: station.name,
+                              })}
                               onClick={() =>
                                 navigate(
                                   `/system-config/stations/${station.id}`,
@@ -248,20 +299,32 @@ export function SystemConfigPage() {
                               variant="filled"
                               className="delete-icon-button"
                               icon={<DeleteOutlined />}
+                              aria-label={t("systemConfig.deleteStationAria", {
+                                station: station.name,
+                              })}
+                              title={t("systemConfig.deleteStationAria", {
+                                station: station.name,
+                              })}
                               onClick={() => {
                                 modal.confirm({
                                   centered: true,
-                                  title: "Delete station?",
-                                  content:
-                                    "The station and its QR tokens will be deactivated. Historical progress is retained.",
-                                  okText: "Delete",
-                                  cancelText: "Cancel",
+                                  title: t("systemConfig.deleteStationTitle"),
+                                  content: t("systemConfig.deleteStationContent"),
+                                  okText: t("systemConfig.delete"),
+                                  cancelText: t("common.cancel"),
                                   onOk: async () => {
-                                    await deleteAdminStation(station.id);
-                                    loadDatabase(await fetchAdminDatabase());
-                                    message.success(
-                                      "Station deactivated successfully",
-                                    );
+                                    try {
+                                      await deleteAdminStation(station.id);
+                                      loadDatabase(await fetchAdminDatabase());
+                                      message.success(
+                                        t("systemConfig.stationDeactivated"),
+                                      );
+                                    } catch (error) {
+                                      message.error(
+                                        t("systemConfig.deleteStationFailed"),
+                                      );
+                                      throw error;
+                                    }
                                   },
                                 });
                               }}></Button>
@@ -276,9 +339,9 @@ export function SystemConfigPage() {
                             className="full-width"
                             value={station.trackingMode ?? "BOTH"}
                             options={[
-                              {value: "BOTH", label: "Both time and score"},
-                              {value: "SCORE", label: "Score only"},
-                              {value: "TIME", label: "Time only"},
+                              {value: "BOTH", label: t("stationEditor.both")},
+                              {value: "SCORE", label: t("stationEditor.scoreOnly")},
+                              {value: "TIME", label: t("stationEditor.timeOnly")},
                             ]}
                             onChange={(value) =>
                               void handleTrackingModeChange(station, value)
@@ -286,13 +349,13 @@ export function SystemConfigPage() {
                           />
                         </Flex>
                         <Flex gap={8} className="station-actions" wrap align="center">
-                          <Tag>QR {stationQrStatus[station.id] ?? "loading"}</Tag>
+                          <Tag>QR {formatQrStatus(stationQrStatus[station.id])}</Tag>
                           <Button
                             type="primary"
                             icon={<QrcodeOutlined />}
                             loading={qrBusyStationId === station.id}
                             onClick={() => void handleOpenStationQr(station)}>
-                            Show QR
+                            {t("systemConfig.showQr")}
                           </Button>
                         </Flex>
                       </div>
@@ -305,101 +368,119 @@ export function SystemConfigPage() {
         },
         {
           key: "teams",
-          label: "Team list (" + teams.length + ")",
+          label: t("systemConfig.teamList", {count: teams.length}),
           children: (
             <Flex vertical gap={16} className="full-width">
               <Button
                 type="primary"
                 onClick={() => navigate("/system-config/teams/new")}>
-                Add new Team
+                {t("systemConfig.addTeam")}
               </Button>
               <List
                 className="card-list"
                 dataSource={teams}
-                renderItem={(team) => (
-                  <List.Item>
-                    <Card className="surface-card station-card">
-                      <div className="station-row">
-                        <Flex
-                          vertical
-                          gap={4}
-                          className="full-width">
-                          <Flex align="center" gap={8} className="full-width">
-                            <Typography.Title
-                              level={4}
-                              className="card-title full-width">
-                              {team.name}
-                            </Typography.Title>
-                            <Button
-                              shape="circle"
-                              variant="filled"
-                              className="delete-icon-button"
-                              icon={<EditOutlined />}
-                              onClick={() =>
-                                navigate(`/system-config/teams/${team.id}`)
-                              }></Button>
-                            <Button
-                              shape="circle"
-                              color="danger"
-                              variant="filled"
-                              className="delete-icon-button"
-                              icon={<DeleteOutlined />}
-                              onClick={() => {
-                                modal.confirm({
-                                  centered: true,
-                                  title: "Delete team?",
-                                  content:
-                                    "Team will be removed from the system and all progress will be lost.",
-                                  okText: "Delete",
-                                  cancelText: "Cancel",
-                                  onOk: async () => {
-                                    try {
-                                      await deleteAdminTeam(team.id);
-                                      loadDatabase(await fetchAdminDatabase());
-                                      message.success(
-                                        "Team deleted successfully",
-                                      );
-                                    } catch (error) {
-                                      message.error(
-                                        error instanceof Error ?
-                                          error.message
-                                        : "Unable to delete team",
-                                      );
-                                      throw error;
-                                    }
-                                  },
-                                });
-                              }}></Button>
+                renderItem={(team) => {
+                  const teamName = getLocalizedTeamName(team.name, language);
+                  return (
+                    <List.Item>
+                      <Card className="surface-card station-card">
+                        <div className="station-row">
+                          <Flex
+                            vertical
+                            gap={4}
+                            className="full-width">
+                            <Flex align="center" gap={8} className="full-width">
+                              <Typography.Title
+                                level={4}
+                                className="card-title full-width">
+                                {teamName}
+                              </Typography.Title>
+                              <Button
+                                shape="circle"
+                                variant="filled"
+                                className="delete-icon-button"
+                                icon={<EditOutlined />}
+                                aria-label={t("systemConfig.editTeamAria", {
+                                  team: teamName,
+                                })}
+                                title={t("systemConfig.editTeamAria", {
+                                  team: teamName,
+                                })}
+                                onClick={() =>
+                                  navigate(`/system-config/teams/${team.id}`)
+                                }></Button>
+                              <Button
+                                shape="circle"
+                                color="danger"
+                                variant="filled"
+                                className="delete-icon-button"
+                                icon={<DeleteOutlined />}
+                                aria-label={t("systemConfig.deleteTeamAria", {
+                                  team: teamName,
+                                })}
+                                title={t("systemConfig.deleteTeamAria", {
+                                  team: teamName,
+                                })}
+                                onClick={() => {
+                                  modal.confirm({
+                                    centered: true,
+                                    title: t("systemConfig.deleteTeamTitle"),
+                                    content: t("systemConfig.deleteTeamContent"),
+                                    okText: t("systemConfig.delete"),
+                                    cancelText: t("common.cancel"),
+                                    onOk: async () => {
+                                      try {
+                                        await deleteAdminTeam(team.id);
+                                        loadDatabase(await fetchAdminDatabase());
+                                        message.success(
+                                          t("systemConfig.teamDeleted"),
+                                        );
+                                      } catch (error) {
+                                        message.error(
+                                          t("systemConfig.deleteTeamFailed"),
+                                        );
+                                        throw error;
+                                      }
+                                    },
+                                  });
+                                }}></Button>
+                            </Flex>
+                            <Typography.Text className="muted-copy compact-copy">
+                              {t("systemConfig.teamScore", {
+                                id: team.id,
+                                score: team.score,
+                              })}
+                            </Typography.Text>
+                            <Typography.Text className="muted-copy compact-copy">
+                              {t("systemConfig.teamProgress", {
+                                finished: team.finish,
+                                minutes: team.totalTimeMinutes,
+                                total: totalStations,
+                              })}
+                            </Typography.Text>
                           </Flex>
-                          <Typography.Text className="muted-copy compact-copy">
-                            {team.id} · Score {team.score}
-                          </Typography.Text>
-                          <Typography.Text className="muted-copy compact-copy">
-                            Finished {team.finish}/{totalStations} in{" "}
-                            {team.totalTimeMinutes} min
-                          </Typography.Text>
-                        </Flex>
-                        <Flex gap={8} className="station-actions" wrap align="center">
-                          <Tag>QR {teamQrStatus[team.id] ?? "loading"}</Tag>
-                          <Button
-                            type="primary"
-                            icon={<QrcodeOutlined />}
-                            loading={qrBusyTeamId === team.id}
-                            onClick={() => void handleOpenTeamQr(team)}>
-                            Show QR
-                          </Button>
-                        </Flex>
-                      </div>
-                    </Card>
-                  </List.Item>
-                )}
+                          <Flex gap={8} className="station-actions" wrap align="center">
+                            <Tag>QR {formatQrStatus(teamQrStatus[team.id])}</Tag>
+                            <Button
+                              type="primary"
+                              icon={<QrcodeOutlined />}
+                              loading={qrBusyTeamId === team.id}
+                              onClick={() => void handleOpenTeamQr(team)}>
+                              {t("systemConfig.showQr")}
+                            </Button>
+                          </Flex>
+                        </div>
+                      </Card>
+                    </List.Item>
+                  );
+                }}
               />
             </Flex>
           ),
         },
         {
           key: "map",
-          label: "Map",
+          label: t("nav.map"),
           children: <StationsMapPanel editable />,
         },
       ]}

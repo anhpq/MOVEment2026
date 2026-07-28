@@ -4,7 +4,7 @@
 
 | Area | Status |
 | --- | --- |
-| Implementation | Completed for i18n infrastructure, language switch, Player Station Backend localization, Admin bilingual Station editor, core Login/QR/AppFrame copy, Station list/detail/map, Team list, Leaderboard, Final, and Admin Operations copy |
+| Implementation | Completed for i18n infrastructure, language switch, Player Station Backend localization, Admin bilingual Station editor, core Login/QR/AppFrame copy, Station list/detail/map, Team list, Leaderboard, Final, Admin Operations, and Admin System Config copy |
 | Runtime/Production Verification | Not performed |
 | Browser/Manual Verification | Pending desktop/mobile smoke |
 
@@ -40,6 +40,10 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Language switch renders circular VI/EN flag buttons with no external image
   asset dependency.
 - Station list/detail/map status labels and visible controls use localized copy.
+- Admin System Config tabs, actions, tracking modes, QR status/preview copy,
+  confirmations, toasts, Team summaries, fallback errors, and icon-button ARIA
+  labels use localized resources. Seed-style Team names localize in display;
+  canonical Admin Station content and preserved identifiers remain unchanged.
 - Station gallery actions, preview alt text, Admin URL controls, validation copy,
   and reorder/remove ARIA labels are localized in both VI and EN.
 - Station UI ordering uses status order `In Progress`, `New`, `Finished`, then
@@ -82,6 +86,11 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 
 ## Verification Plan and Risks
 
+- Admin System Config localization fix passed Frontend `i18n:check` with `314`
+  parity/no-empty keys, Frontend lint, Frontend production build, the focused
+  hard-coded-copy scan, `git diff --check`, and Graphify code update (`2357`
+  nodes, `3853` edges, `206` communities). Post-fix browser/manual smoke is
+  still pending.
 - Completed in the latest follow-up implementation run: Frontend
   `i18n:check`, Frontend lint, Frontend production build, and JSX visible-copy
   scan confirming only the `MOVEment 2026` brand remains as direct text.
@@ -128,6 +137,10 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
     without changing the current brand logo; implementation keeps
     `RunningPersonIcon`, refines AppFrame layout/CSS, and replaces text/emoji
     segmented language labels with inline circular flag buttons.
+13. Admin System Config gap review: user screenshots confirmed the shared
+    language state changed while page-local copy stayed English; the fix extends
+    existing resources without changing canonical Station data, API contracts,
+    QR lifecycle, database, migration, or seed behavior.
 
 ## Provenance
 

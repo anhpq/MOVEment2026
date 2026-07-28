@@ -17,11 +17,11 @@ Implementation plans are stored directly in `docs/analysis` as
 not used. These analysis files record implementation and verification status,
 but never override confirmed Business Rules.
 
-Frontend Vietnamese/English localization is currently planned in
+Frontend Vietnamese/English localization is tracked in
 `FRONTEND_LOCALIZATION_ANALYSIS.md`; Plan 2 is implemented for i18n
-infrastructure, core Login/QR/AppFrame copy, Backend-projected Player Station
-content, and Admin bilingual Station editing. Full browser/manual verification
-remains pending.
+infrastructure, Login/QR/AppFrame and Admin System Config copy,
+Backend-projected Player Station content, and Admin bilingual Station editing.
+Full browser/manual verification remains pending.
 
 ## Product Scope
 

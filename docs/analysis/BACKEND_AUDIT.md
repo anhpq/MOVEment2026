@@ -1,3 +1,22 @@
+# 2026-07-28 Admin System Config localization fix
+
+- Localized Admin System Config tabs, create/show/delete actions, tracking-mode
+  options, QR status and preview copy, confirmations, toasts, Team progress
+  summaries, fallback errors, and icon-button accessibility labels in VI/EN.
+- Applied display-layer localization to seed-style Team names while preserving
+  canonical Vietnamese Admin Station content, Station/Team IDs, QR payloads,
+  token purpose/status values, API contracts, and Backend behavior.
+- Removed raw Backend error messages from updated System Config user-facing
+  branches and replaced them with localized action-specific fallback copy.
+- Verification passed: Frontend i18n parity/no-empty check (`314` keys),
+  Frontend lint, Frontend production build, focused hard-coded-copy scan, and
+  `git diff --check`. Vite retains the known non-blocking large-chunk warning.
+- Graphify code update completed with `2357` nodes, `3853` edges, and `206`
+  communities. It retained the known `hooks.json` zero-node warning and did not
+  semantically re-extract changed docs without Gemini.
+- Post-fix desktop/mobile browser smoke and Production runtime verification were
+  not performed.
+
 # 2026-07-28 Station Media Gallery and Player action layout
 
 - Added normalized `station_images` persistence with ordered/cascade/unique/range

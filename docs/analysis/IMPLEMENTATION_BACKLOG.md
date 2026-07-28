@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-28 Admin System Config localization fix
+
+- [x] Localize System Config tabs, actions, tracking modes, QR copy/status,
+  confirmations, toasts, Team summaries, fallback errors, and ARIA labels.
+- [x] Preserve canonical Admin Station data and technical IDs/token values while
+  localizing seed-style Team display names.
+- [x] Pass Frontend i18n parity/no-empty (`314` keys), lint, production build,
+  focused hard-coded-copy scan, and `git diff --check`.
+- [x] Update the Graphify code graph (`2357` nodes, `3853` edges, `206`
+  communities); retain the known `hooks.json`/no-Gemini documentation warnings.
+- [ ] Complete post-fix desktop/mobile Admin browser smoke and Production
+  runtime verification.
+
 # 2026-07-28 Station Media Gallery and Player action layout
 
 - [x] Confirm gallery Business Rules through the nine-round Plan Mode review.
