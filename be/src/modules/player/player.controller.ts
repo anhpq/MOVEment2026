@@ -55,6 +55,11 @@ export class PlayerController {
     return this.playerService.checkIn(this.requireTeam(auth), stationId, dto);
   }
 
+  @Post('qr-action')
+  qrAction(@CurrentAuth() auth: AuthContext, @Body() dto: QrActionDto) {
+    return this.playerService.qrAction(this.requireTeam(auth), dto);
+  }
+
   @Post('stations/:stationId/check-out')
   checkOut(
     @CurrentAuth() auth: AuthContext,

@@ -28,6 +28,9 @@ export type Team = {
   finish: number;
   totalTimeMinutes: number;
   captainName?: string;
+  maxPossiblePoints?: number;
+  status?: string;
+  rank?: number | null;
   teamColor?: string | null;
 };
 

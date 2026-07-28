@@ -9,6 +9,7 @@ import {StationsMapPage} from "./pages/StationsMapPage";
 import {SystemConfigPage} from "./pages/SystemConfigPage";
 import {TeamEditorPage} from "./pages/TeamEditorPage";
 import {TeamListPage} from "./pages/TeamListPage";
+import {TeamGameplayV2Page} from "./pages/TeamGameplayV2Page";
 import {LeaderboardPage} from "./pages/LeaderboardPage";
 import {FinalPage} from "./pages/FinalPage";
 import {AdminOperationsPage} from "./pages/AdminOperationsPage";
@@ -31,6 +32,14 @@ export function MovementRoutes() {
         element={
           <ProtectedRoute allow={["user"]}>
             <StationsMapPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/team/v2"
+        element={
+          <ProtectedRoute allow={["user"]} fullscreen>
+            <TeamGameplayV2Page />
           </ProtectedRoute>
         }
       />

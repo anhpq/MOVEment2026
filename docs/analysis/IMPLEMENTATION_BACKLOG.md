@@ -1,5 +1,40 @@
 # MOVEment 2026 - Implementation Backlog
 
+# 2026-07-28 Team Gameplay V2 parallel implementation
+
+- [x] Create and register `TEAM_GAMEPLAY_V2_ANALYSIS.md`.
+- [x] Add Team-only `/team/v2` fullscreen route without changing default login redirect.
+- [x] Keep V1 `/stations/map` available and add a V2 entry button there.
+- [x] Add Backend `POST /api/player/qr-action` using database-resolved Station
+  QR purpose and existing check-in/check-out logic.
+- [x] Keep duplicate Check-in from creating another attempt and duplicate
+  completed Check-out from writing again.
+- [x] Add V2 Settings, Station preview, Leaderboard, scanner, score entry, Zalo,
+  V1 return, and logout controls.
+- [x] Apply whole-overlay opacity to Settings, Leaderboard, and Station preview;
+  persist in `movement-team-v2-panel-opacity`.
+- [x] Add VI/EN V2 and shared QR scanner copy.
+- [x] Return successful Team Station Detail actions opened with
+  `?from=team-v2` to `/team/v2`.
+- [x] Pass targeted PlayerService Jest (`28/28`), full Backend Jest (`157/157`),
+  Backend lint/build, Frontend `i18n:check`, Frontend lint/build, and
+  `git diff --check`.
+- [x] Complete authenticated headless Chrome responsive HUD smoke at 320, 375,
+  430 portrait and 667x375, 844x390, 1024x768 tablet landscape.
+- [ ] Complete real camera permission denied/retry/manual fallback smoke.
+- [x] Confirm pan, wheel/pinch zoom, double-click/double-tap reset, 44px marker
+  hit targets, and overlay rotation state in headless Chrome.
+- [x] Center Station preview and make Settings, Leaderboard, QR scanner, and
+  score entry near-fullscreen modal layers in portrait and landscape.
+- [x] Document the V2 palette, typography, HUD copy, exact `MOVEment 2026`
+  center brand, icon inventory, and overlay layout policy.
+- [ ] Confirm opacity persistence through logout/Team switch, Zalo launch, and
+  old map/Admin route regressions in browser.
+- [ ] Review whether Team login/logout should be hidden before 2026-08-20; this
+  task intentionally keeps logout.
+- [ ] Production runtime verification remains out of scope without explicit
+  approval.
+
 ## 2026-07-28 Tester auto-stop conflicting local processes
 
 - [x] Add opt-in exact-port listener cleanup with protected/current PID guards

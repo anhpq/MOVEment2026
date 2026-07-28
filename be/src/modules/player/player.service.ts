@@ -173,6 +173,25 @@ export class PlayerService {
     }));
   }
 
+  async qrAction(teamId: number, dto: QrActionDto) {
+    const qrToken = await this.validateStationQrToken(dto.qrToken);
+    const progress =
+      qrToken.purpose === QrPurpose.CHECK_IN
+        ? await this.checkIn(teamId, qrToken.stationId, dto)
+        : await this.checkOut(teamId, qrToken.stationId, dto);
+
+    return {
+      action:
+        qrToken.purpose === QrPurpose.CHECK_IN ? 'CHECK_IN' : 'CHECK_OUT',
+      stationId: qrToken.stationId,
+      requiresScore:
+        qrToken.purpose === QrPurpose.CHECK_OUT &&
+        Boolean(progress.checkedOutAt) &&
+        !progress.completedAt,
+      progress,
+    };
+  }
+
   async checkIn(teamId: number, stationId: string, dto: QrActionDto) {
     if (await this.eventConfig.isPastEventEnd()) {
       throw new ForbiddenException('Stations are closed');
@@ -183,6 +202,14 @@ export class PlayerService {
       throw new ForbiddenException('QR token does not match station');
     }
     const progress = await this.getProgressForAction(teamId, qrToken.stationId);
+    if (
+      (progress.status === ProgressStatus.PLAYING ||
+        progress.status === ProgressStatus.CHECKED_IN) &&
+      !progress.checkedOutAt &&
+      !progress.completedAt
+    ) {
+      return progress;
+    }
     if (progress.status !== ProgressStatus.AVAILABLE) {
       throw new BadRequestException('Station is not available for check-in');
     }
@@ -234,14 +261,14 @@ export class PlayerService {
       throw new ForbiddenException('QR token does not match station');
     }
     const progress = await this.getProgressForAction(teamId, qrToken.stationId);
+    if (progress.checkedOutAt || progress.completedAt) {
+      return progress;
+    }
     if (
       progress.status !== ProgressStatus.PLAYING &&
       progress.status !== ProgressStatus.CHECKED_IN
     ) {
       throw new BadRequestException('Station is not currently playing');
-    }
-    if (progress.checkedOutAt) {
-      return progress;
     }
 
     const checkedOutAt = new Date();
@@ -451,6 +478,16 @@ export class PlayerService {
   }
 
   private async validateStationQr(rawToken: string, expectedPurpose: QrPurpose) {
+    const token = await this.validateStationQrToken(rawToken);
+
+    if (token.purpose !== expectedPurpose) {
+      throw new ForbiddenException('QR token purpose mismatch');
+    }
+
+    return token;
+  }
+
+  private async validateStationQrToken(rawToken: string) {
     const normalizedToken = normalizeQrToken(rawToken);
     const tokenFingerprint = createQrTokenFingerprint(normalizedToken);
     const token = await this.prisma.qrToken.findUnique({
@@ -466,9 +503,6 @@ export class PlayerService {
     }
     if (token.expiresAt && token.expiresAt <= new Date()) {
       throw new ForbiddenException('QR token has expired');
-    }
-    if (token.purpose !== expectedPurpose) {
-      throw new ForbiddenException('QR token purpose mismatch');
     }
     if (!token.station.isActive) {
       throw new ForbiddenException('Station is inactive');

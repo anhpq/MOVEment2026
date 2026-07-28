@@ -399,6 +399,58 @@ Only the active Station animates, with animation paused during map dragging and
 when the device requests reduced motion. Map-drawer live counts and cooldown
 clock updates run only while the drawer is open.
 
+## Team Gameplay V2
+
+Team users can open the parallel fullscreen gameplay screen at:
+
+```text
+/team/v2
+```
+
+The default login redirect remains unchanged and still opens the existing Team
+UI. The existing Station map exposes an explicit V2 entry button, and V2 can
+return to `/stations/map`.
+
+V2 reuses the existing Suoi Tien WebP map assets, Station coordinates, Team
+Station state, Team Color scoped variables, language persistence, QR scanner
+component, leaderboard API, and Team score submission API. Settings, Station
+preview, and the V2 leaderboard use a device-local opacity setting stored in:
+
+```text
+movement-team-v2-panel-opacity
+```
+
+Opacity applies to the whole overlay, including background, text, icons,
+buttons, and controls. The supported range is 50-100, with default 85.
+
+The main V2 screen uses a black-grid neon HUD with localized Team identity at
+the upper left, exact invariant brand copy `MOVEment 2026` and green points at
+the upper center, Settings at the upper right, and progress/QR/Leaderboard at
+the bottom. Settings, Leaderboard, QR scanner, and score entry are blocking,
+centered near-fullscreen modal layers in both orientations. Station preview is
+a centered dialog; overlays must not be rendered as a small corner panel.
+
+V2 uses unified Station QR action:
+
+```http
+POST /api/player/qr-action
+```
+
+The backend resolves Station and `QrPurpose` from the stored QR token record,
+then runs the same domain behavior as the existing check-in/check-out endpoints.
+`TIME` checkout completes immediately. `SCORE` and `BOTH` checkout return
+`requiresScore: true`, after which score entry still uses the Team session on
+the same device.
+
+Station Detail opened from V2 uses:
+
+```text
+?from=team-v2
+```
+
+Successful Team gameplay actions from that detail page return to `/team/v2`.
+No arbitrary return URL is accepted.
+
 ## QR Camera
 
 Station Check-in and Check-out camera decodes auto-submit the decoded QR token immediately. Manual paste/type remains available and requires the user to press Submit.

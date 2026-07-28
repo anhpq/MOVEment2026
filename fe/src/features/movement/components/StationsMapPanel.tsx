@@ -858,6 +858,12 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   {t(`status.${item.label}`)}
                 </span>
               ))}
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => navigate("/team/v2")}>
+                {t("teamV2.openV2")}
+              </Button>
             </Flex>
           )}
 

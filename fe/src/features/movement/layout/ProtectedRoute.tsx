@@ -7,9 +7,12 @@ import { useMovementStore } from '../store'
 import type { Role } from '../types'
 import { fetchPlayerDatabase } from '../playerData'
 
-type ProtectedRouteProps = Readonly<PropsWithChildren<{ allow?: Role[] }>>
+type ProtectedRouteProps = Readonly<PropsWithChildren<{
+  allow?: Role[]
+  fullscreen?: boolean
+}>>
 
-export function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
+export function ProtectedRoute({ children, allow, fullscreen = false }: ProtectedRouteProps) {
   const navigate = useNavigate()
   const {i18n} = useTranslation()
   const session = useMovementStore((state) => state.session)
@@ -74,36 +77,46 @@ export function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
   }
 
   if (session.role === 'user' && !hasPlayerData) {
+    const loadingContent = loadError ? (
+      <Result
+        status="error"
+        title="Cannot load team data"
+        subTitle={loadError}
+        extra={
+          <Button
+            type="primary"
+            onClick={() => {
+              setLoadError(null)
+              setRetryKey((value) => value + 1)
+            }}
+          >
+            Retry
+          </Button>
+        }
+      />
+    ) : (
+      <div style={{ minHeight: 320, display: 'grid', placeItems: 'center' }}>
+        <Spin size="large" description="Loading team and station data...">
+          <Typography.Text aria-hidden style={{ opacity: 0 }}>
+            Loading
+          </Typography.Text>
+        </Spin>
+      </div>
+    )
+
+    if (fullscreen) {
+      return loadingContent
+    }
+
     return (
       <AppFrame>
-        {loadError ? (
-          <Result
-            status="error"
-            title="Cannot load team data"
-            subTitle={loadError}
-            extra={
-              <Button
-                type="primary"
-                onClick={() => {
-                  setLoadError(null)
-                  setRetryKey((value) => value + 1)
-                }}
-              >
-                Retry
-              </Button>
-            }
-          />
-        ) : (
-          <div style={{ minHeight: 320, display: 'grid', placeItems: 'center' }}>
-            <Spin size="large" description="Loading team and station data...">
-              <Typography.Text aria-hidden style={{ opacity: 0 }}>
-                Loading
-              </Typography.Text>
-            </Spin>
-          </div>
-        )}
+        {loadingContent}
       </AppFrame>
     )
+  }
+
+  if (fullscreen) {
+    return children
   }
 
   return <AppFrame>{children}</AppFrame>

@@ -1,3 +1,36 @@
+# 2026-07-28 Team Gameplay V2 parallel implementation
+
+- Added a parallel Team-only fullscreen gameplay route `/team/v2` while keeping
+  the default login redirect and existing `/stations/map` flow unchanged.
+- Added Backend `POST /api/player/qr-action`, which validates the raw Station QR
+  token through the database token record, resolves the authoritative
+  `QrPurpose`, and reuses existing check-in/check-out domain logic. The response
+  returns action, Station ID, `requiresScore`, and progress without exposing raw
+  tokens or backend internals.
+- Preserved V1 check-in/check-out endpoints and added idempotent duplicate scan
+  behavior: duplicate active Check-in does not increment `attemptNo`, and
+  duplicate completed Check-out returns existing progress without another write.
+- Frontend V2 uses the existing WebP map assets, Station coordinates, QR camera
+  input, Team session, Team Color scoped vars, localized Team display name, and
+  live polling. Settings, Leaderboard, and Station preview share the whole-panel
+  opacity setting saved in `movement-team-v2-panel-opacity`.
+- Frontend V2 main HUD now follows the approved neon reference layout and keeps
+  all in-viewport Station names/maximum points visible through screen-space
+  collision handling. Pan, wheel/pinch zoom, and double-click/double-tap reset
+  no longer depend on floating map-control buttons.
+- V2 Settings, Leaderboard, QR scanner, and score entry now use blocking,
+  centered near-fullscreen modal layers in portrait and landscape; Station
+  preview is centered and the exact top-center brand casing is `MOVEment 2026`.
+- Station Detail honors fixed `?from=team-v2` for Team gameplay action returns;
+  no arbitrary return URL was added.
+- Verification passed: targeted PlayerService Jest (`28/28`), full Backend Jest
+  (`157/157`), Backend lint/build, Frontend `i18n:check` (`356` keys), Frontend
+  lint/build, responsive headless Chrome screenshots, map interaction smoke,
+  centered/near-fullscreen overlay geometry smoke, exact brand-casing smoke,
+  and `git diff --check`. Vite retains the known non-blocking large-chunk warning.
+- Not performed: real camera scan, physical iOS/Android verification,
+  Production runtime verification, push, or deploy.
+
 # 2026-07-28 Production deploy preflight and partial smoke
 
 - Confirmed `origin/master` and `origin/develop` both point at

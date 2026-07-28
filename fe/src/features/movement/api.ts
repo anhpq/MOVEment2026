@@ -112,8 +112,11 @@ export type PlayerDashboardResponse = {
     id: number
     name: string
     username?: string
+    captainName?: string | null
     totalPoints: number
+    maxPossiblePoints?: number
     totalPlaySeconds: number
+    status?: string
     rank: number | null
     teamColor?: string | null
     color?: string | null
@@ -187,6 +190,21 @@ export type StationPlayingCountResponse = {
 
 export async function getPlayerStationPlayingCounts(): Promise<StationPlayingCountResponse[]> {
   return apiGet<StationPlayingCountResponse[]>('/api/player/stations/playing-counts')
+}
+
+export type PlayerQrActionResponse = {
+  action: 'CHECK_IN' | 'CHECK_OUT'
+  stationId: string
+  requiresScore: boolean
+  progress: PlayerProgressResponse
+}
+
+export async function submitPlayerQrAction(
+  qrToken: string,
+): Promise<PlayerQrActionResponse> {
+  return apiPost<PlayerQrActionResponse>('/api/player/qr-action', {
+    qrToken,
+  })
 }
 
 export async function checkInStation(

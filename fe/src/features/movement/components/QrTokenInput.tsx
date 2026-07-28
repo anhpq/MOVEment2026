@@ -1,6 +1,7 @@
 import {CameraOutlined} from "@ant-design/icons";
 import {Alert, Button, Flex, Input, Typography} from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {
   createQrFrameDetector,
   normalizeDecodedQrValue,
@@ -32,19 +33,13 @@ type CameraFailureCategory =
   | "Camera stream started but video playback failed"
   | "QR scanner initialization failed";
 
-const cameraErrorMessages: Record<CameraFailureCategory, string> = {
-  "Camera permission was denied":
-    "Bạn đã từ chối quyền camera. Hãy bật quyền camera cho trình duyệt rồi thử lại.",
-  "No camera is available":
-    "Thiết bị không có camera khả dụng. Vui lòng nhập mã QR thủ công.",
-  "Camera is being used by another application":
-    "Camera đang được ứng dụng khác sử dụng. Hãy đóng ứng dụng đó rồi thử lại.",
-  "Browser cannot start the requested camera":
-    "Trình duyệt không thể mở camera yêu cầu. Hãy thử lại hoặc nhập mã thủ công.",
-  "Camera stream started but video playback failed":
-    "Camera đã mở nhưng trình duyệt không phát được hình ảnh xem trước.",
-  "QR scanner initialization failed":
-    "Không thể khởi động bộ quét QR. Vui lòng nhập mã QR thủ công.",
+const cameraErrorKeys: Record<CameraFailureCategory, string> = {
+  "Camera permission was denied": "qrScanner.permissionDenied",
+  "No camera is available": "qrScanner.noCamera",
+  "Camera is being used by another application": "qrScanner.cameraInUse",
+  "Browser cannot start the requested camera": "qrScanner.cannotStart",
+  "Camera stream started but video playback failed": "qrScanner.playbackFailed",
+  "QR scanner initialization failed": "qrScanner.initFailed",
 };
 
 function getCameraFailureCategory(
@@ -128,6 +123,7 @@ export function QrTokenInput({
   onScan,
   placeholder,
 }: QrTokenInputProps) {
+  const {t} = useTranslation();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -212,7 +208,7 @@ export function QrTokenInput({
 
       const category = getCameraFailureCategory(error, fallbackCategory);
       stopScanner(category);
-      setCameraError(cameraErrorMessages[category]);
+      setCameraError(cameraErrorKeys[category]);
       setScannerState("error");
 
       logCameraDiagnostic("error", {
@@ -275,8 +271,8 @@ export function QrTokenInput({
     if (!canUseCamera) {
       setCameraError(
         window.isSecureContext ?
-          cameraErrorMessages["Browser cannot start the requested camera"]
-        : "Camera chỉ hoạt động trên HTTPS hoặc localhost. Vui lòng nhập mã QR thủ công.",
+          cameraErrorKeys["Browser cannot start the requested camera"]
+        : "qrScanner.secureContext",
       );
       setScannerState("error");
       return;
@@ -410,7 +406,7 @@ export function QrTokenInput({
             }}
           />
           <Typography.Text type="secondary">
-            Đưa camera vào mã QR của trạm.
+            {t("qrScanner.instruction")}
           </Typography.Text>
         </Flex>
       )}
@@ -433,16 +429,16 @@ export function QrTokenInput({
 
           startCamera();
         }}>
-        {isCameraRunning ? "Stop Camera" : "Scan with Camera"}
+        {isCameraRunning ? t("qrScanner.stopCamera") : t("qrScanner.scanWithCamera")}
       </Button>
       {!canUseCamera && (
         <Alert
           type="warning"
           showIcon
-          description="Camera chỉ hoạt động khi trình duyệt cho phép getUserMedia, thường là HTTPS hoặc localhost. Bạn vẫn có thể nhập mã QR thủ công."
+          description={t("qrScanner.unsupportedWarning")}
         />
       )}
-      {cameraError && <Alert type="error" showIcon description={cameraError} />}
+      {cameraError && <Alert type="error" showIcon description={t(cameraError)} />}
     </Flex>
   );
 }

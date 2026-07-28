@@ -26,7 +26,7 @@ import {
 } from "antd";
 import {useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {
   formatDateTime,
@@ -58,6 +58,7 @@ type ScoreFormValues = {
 export function StationDetailPage() {
   const navigate = useNavigate();
   const params = useParams<{teamId?: string; stationId: string}>();
+  const [searchParams] = useSearchParams();
   const {modal, message} = AntdApp.useApp();
   const {i18n, t} = useTranslation();
   const session = useMovementStore((state) => state.session);
@@ -76,6 +77,8 @@ export function StationDetailPage() {
   const isSubmittingCheckOutRef = useRef(false);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const language = i18n.language === "en" ? "en" : "vi";
+  const isFromTeamV2 =
+    session?.role === "user" && searchParams.get("from") === "team-v2";
 
   const selectedTeamId =
     session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
@@ -165,6 +168,11 @@ export function StationDetailPage() {
   };
 
   const navigateAfterTeamStationFinished = async () => {
+    if (isFromTeamV2) {
+      navigate("/team/v2");
+      return;
+    }
+
     try {
       const final = await getPlayerFinal();
       navigate(
@@ -332,7 +340,7 @@ export function StationDetailPage() {
                   await cancelPlayerStation(station.stationId);
                   await refreshPlayerData();
                   message.success(t("stationDetail.cancelled"));
-                  navigate("/stations/map");
+                  navigate(isFromTeamV2 ? "/team/v2" : "/stations/map");
                 } catch {
                   message.error(
                     t("errors.generic"),

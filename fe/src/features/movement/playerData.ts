@@ -87,6 +87,10 @@ function buildPlayerSeed(
         name: dashboardTeam.name,
         username: dashboardTeam.username ?? `team${dashboardTeam.id}`,
         password: "",
+        captainName: dashboardTeam.captainName ?? undefined,
+        maxPossiblePoints: dashboardTeam.maxPossiblePoints,
+        status: dashboardTeam.status,
+        rank: dashboardTeam.rank,
         teamColor: dashboardTeam.teamColor ?? dashboardTeam.color ?? null,
         score: dashboardTeam.totalPoints,
         finish: stations.filter(

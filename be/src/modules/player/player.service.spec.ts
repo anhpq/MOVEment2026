@@ -111,6 +111,44 @@ describe('PlayerService station flow', () => {
     )
   })
 
+  it('runs a unified QR action for check-in without requiring a frontend station id', async () => {
+    const updated = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date(),
+      attemptNo: 1,
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
+    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+
+    await expect(
+      service.qrAction(2, { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).resolves.toEqual({
+      action: 'CHECK_IN',
+      stationId: 'ST002',
+      requiresScore: false,
+      progress: updated,
+    })
+  })
+
+  it('does not create a second attempt for duplicate check-in on the same active station', async () => {
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      attemptNo: 1,
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+
+    await expect(
+      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).resolves.toEqual(activeProgress)
+
+    expect(mockPrisma.teamStationProgress.findFirst).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+  })
+
   it('returns station playing counts without team identity', async () => {
     mockPrisma.teamStationProgress.groupBy.mockResolvedValue([
       { stationId: 'ST001', _count: { _all: 2 } },
@@ -434,6 +472,70 @@ describe('PlayerService station flow', () => {
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'CHECK_OUT' }),
     )
+  })
+
+  it('runs a unified QR action for score-required check-out', async () => {
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+    }
+    const checkedOut = {
+      ...activeProgress,
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+    }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+
+    await expect(
+      service.qrAction(2, { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).resolves.toEqual({
+      action: 'CHECK_OUT',
+      stationId: 'ST002',
+      requiresScore: true,
+      progress: checkedOut,
+    })
+  })
+
+  it('keeps duplicate completed check-out idempotent', async () => {
+    const completedProgress = {
+      ...progress,
+      status: ProgressStatus.COMPLETED,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+      completedAt: new Date('2026-07-19T01:11:00.000Z'),
+      scoreAchieved: 10,
+    }
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST002',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: { isActive: true },
+    })
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(completedProgress)
+
+    await expect(
+      service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
+    ).resolves.toEqual(completedProgress)
+
+    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
 
   it('uses the accepted scan time as check-out time for score-only stations', async () => {
