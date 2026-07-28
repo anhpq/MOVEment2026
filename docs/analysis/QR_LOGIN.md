@@ -443,12 +443,19 @@ QR Login và username/password login dùng chung session policy:
 Mỗi Team chỉ có một active session tại một thời điểm.
 ```
 
+Session được tạo bởi QR Login dùng cùng cutoff với password login: hết hạn tại
+`22:00 Asia/Ho_Chi_Minh` kế tiếp. Login đúng hoặc sau `22:00` hết hạn lúc
+`22:00` ngày hôm sau. Backend trả cùng một `expiresAt` đã dùng cho JWT `exp` và
+Frontend không được tự tính TTL khác; tab đang mở phải clear local session tại
+`expiresAt`.
+
 Khi Team QR Login thành công trên thiết bị mới:
 
 1. backend tạo session mới;
 2. backend revoke session cũ;
 3. thiết bị cũ bị từ chối ở authenticated request tiếp theo;
-4. QR token vẫn active nếu chưa expire hoặc revoke.
+4. QR token vẫn active nếu chưa bị revoke hoặc rotate; session expiry không làm
+   Team QR hết hạn theo thời gian.
 
 Phân biệt:
 

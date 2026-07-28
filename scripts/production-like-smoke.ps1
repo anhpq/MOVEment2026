@@ -501,7 +501,6 @@ if (Test-DockerReady) {
 $baseEnv = @{
   DATABASE_URL = $DatabaseUrl
   JWT_SECRET = $JwtSecret
-  JWT_EXPIRES_IN = "12h"
   CORS_ORIGIN = $HttpsOrigin
   FRONTEND_PUBLIC_URL = $HttpsOrigin
 }

@@ -127,6 +127,7 @@ export function QrLoginPage() {
         role: "user",
         teamId: String(teamResponse.team.id),
         accessToken: teamResponse.accessToken,
+        expiresAt: teamResponse.expiresAt,
       });
       preloadPlayerMapImage();
       try {

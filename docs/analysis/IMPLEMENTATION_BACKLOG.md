@@ -404,6 +404,12 @@ Acceptance:
 - [x] Admin username/password authentication exists.
 - [x] Team username/password authentication exists.
 - [x] New Team login replaces previous active Team session.
+- [x] Admin and Team JWTs expire at the next daily `22:00 Asia/Ho_Chi_Minh` cutoff.
+- [x] Login exactly at or after `22:00` expires at `22:00` the next day.
+- [x] All login responses return Backend-authoritative `expiresAt`; Frontend no longer calculates a separate TTL.
+- [x] Frontend globally clears local auth state at Backend `expiresAt`, including while a tab remains open.
+- [x] Verify cutoff boundary, JWT `exp`/response alignment, full Backend suite, and Backend/Frontend lint/build.
+- [ ] Verify the `22:00` cutoff against an actual Production runtime and browser clock.
 - [x] Verify session replacement after reusable Automatic URL QR migration.
 - [x] Verify inactive Team and revoked/expired QR behavior after migration.
 - [x] Verify QR rate limiting on the active implementation.

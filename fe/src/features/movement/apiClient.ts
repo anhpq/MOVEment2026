@@ -143,7 +143,8 @@ function getStoredSession(): Session | null {
       return null
     }
 
-    if (new Date(session.expiresAt).getTime() <= Date.now()) {
+    const expiresAt = new Date(session.expiresAt).getTime()
+    if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
       window.localStorage.removeItem(SESSION_STORAGE_KEY)
       return null
     }

@@ -73,12 +73,18 @@ describe('AuthService', () => {
 
       expect(result).toEqual({
         accessToken: 'token-123',
+        expiresAt: expect.any(String),
         user: {
           id: 1,
           username: 'admin',
           role: 'ADMIN',
         },
       })
+      expect(mockJwtService.signAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          exp: Math.floor(new Date(result.expiresAt).getTime() / 1000),
+        }),
+      )
       expect(mockPrisma.activityLog.create).toHaveBeenCalled()
     })
 
@@ -124,6 +130,7 @@ describe('AuthService', () => {
 
       expect(result).toEqual({
         accessToken: 'team-token',
+        expiresAt: expect.any(String),
         team: {
           id: 2,
           username: 'team01',
@@ -138,6 +145,11 @@ describe('AuthService', () => {
           color: '#000000',
         },
       })
+      expect(mockJwtService.signAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          exp: Math.floor(new Date(result.expiresAt).getTime() / 1000),
+        }),
+      )
       expect(mockPrisma.teamSession.create).toHaveBeenCalled()
       expect(mockPrisma.team.update).toHaveBeenCalled()
     })
@@ -227,6 +239,7 @@ describe('AuthService', () => {
 
       expect(result).toEqual({
         accessToken: 'team-token-2',
+        expiresAt: expect.any(String),
         team: {
           id: 2,
           username: 'team01',

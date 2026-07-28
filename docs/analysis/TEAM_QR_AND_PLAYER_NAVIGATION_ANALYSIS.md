@@ -27,11 +27,16 @@ visible-only polling, and fixed bottom navigation themed by Team Color.
   Team variables while preserving default Movement coral outside Team context.
 - Team QR APIs return `expiresAt: null`; active lookup never falls back to revoked
   or consumed historical tokens.
+- Team sessions created by QR login now return a separate session `expiresAt`
+  matching JWT `exp` at the next daily `22:00 Asia/Ho_Chi_Minh` cutoff; this does
+  not change the non-expiring Team QR credential lifecycle.
 - Playing-count responses expose only Station ID and Team count.
 
 ## Decisions and Stale Assumptions
 
 - Team QR is reusable, revocable, rotatable, and non-expiring.
+- Team session expiry is an absolute daily `22:00 Asia/Ho_Chi_Minh` cutoff;
+  login exactly at or after `22:00` uses the next day's cutoff.
 - Historical Team QR `EXPIRED` state and TTL settings are superseded.
 - Poll every five seconds only while visible, prevent overlap, retain prior data
   on network/5xx, and clear auth on 401/403.
@@ -46,8 +51,9 @@ visible-only polling, and fixed bottom navigation themed by Team Color.
 
 ## Verification and Risks
 
-- Targeted Backend tests, Backend/Frontend lint/build, and diff checks passed and
-  are recorded in audit/backlog.
+- Full Backend tests (`148/148`) and Backend/Frontend lint/build passed for the
+  session-cutoff change; browser/manual and Production runtime verification remain
+  pending.
 - Remaining: live-count, hidden-tab, leaderboard, QR lifecycle, safe-area, and
   multi-Team-color browser smoke; Production mutation/deploy remains pending.
 

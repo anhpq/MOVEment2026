@@ -10,7 +10,7 @@ export type Session = {
   role: Role;
   teamId: string | null;
   accessToken?: string;
-  expiresAt?: string;
+  expiresAt: string;
 };
 
 export type AuthAccount = {

@@ -1,3 +1,26 @@
+## 2026-07-28 Daily 22:00 session expiry
+
+- Changed the confirmed session policy for both Admin and Team authentication:
+  every session expires at the next daily `22:00 Asia/Ho_Chi_Minh` cutoff;
+  login exactly at or after `22:00` expires at `22:00` the following day.
+- Backend now computes one authoritative cutoff, writes it to JWT `exp`, and
+  returns the matching ISO `expiresAt` from password, Legacy Team QR, and
+  Automatic URL Team QR login responses. The cutoff is absolute and is not
+  extended by activity or `lastSeenAt`.
+- Frontend login flows now persist Backend `expiresAt` unchanged, globally clear
+  local auth state at that cutoff even while the tab remains open, and no longer
+  create an independent 24-hour expiry. Removed the obsolete tracked
+  `JWT_EXPIRES_IN=12h` configuration from examples, tester Compose, and the
+  production-like smoke harness; local secret env files were not modified.
+- Verification passed: cutoff unit tests for before/exactly-at/after `22:00`,
+  full Backend Jest suite (`148/148`), Backend lint/build, and Frontend lint/build.
+  Frontend dependencies were synchronized with `npm ci`; npm reported four high
+  severity advisories in the full tree, and `npm audit --omit=dev` reported two
+  high `react-router` advisories whose available `--force` fix is breaking. They
+  were not auto-fixed in this task.
+- Not performed: browser clock/manual expiry test, Production runtime
+  verification, deploy, push, or destructive Git operations.
+
 ## 2026-07-27 Localized header visual refinement
 
 - Refined the shared AppFrame header into a floating rounded white card with

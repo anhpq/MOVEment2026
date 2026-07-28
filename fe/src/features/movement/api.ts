@@ -12,6 +12,7 @@ export {ApiError, isAuthFailure} from "./apiClient"
 
 export type UserLoginResponse = {
   accessToken: string
+  expiresAt: string
   user: {
     id: number
     username: string
@@ -21,6 +22,7 @@ export type UserLoginResponse = {
 
 export type TeamLoginResponse = {
   accessToken: string
+  expiresAt: string
   team: {
     id: number
     name: string

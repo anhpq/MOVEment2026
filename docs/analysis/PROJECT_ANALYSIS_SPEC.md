@@ -88,6 +88,10 @@ Rules:
 - one active session per Team;
 - new Team login revokes the previous Team session;
 - QR Login and password login share the same session policy;
+- every Admin and Team session expires at the next daily `22:00 Asia/Ho_Chi_Minh` cutoff;
+- a login exactly at or after `22:00` expires at `22:00` the next day;
+- backend signs the JWT and returns `expiresAt` for that same cutoff; frontend persists that value without calculating a separate TTL and clears local auth state when the cutoff is reached;
+- session activity and `lastSeenAt` do not extend the absolute cutoff;
 - backend enforces session validity;
 - Team QR token and Team session are separate objects.
 - Team user header identifies the current Team by name in the logout button instead of the generic `User` label. The Team logout button remains visible in every environment until a separate release task hides it. Admin header logout remains unchanged.

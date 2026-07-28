@@ -148,6 +148,13 @@ Password login and QR Login use the same Team session policy.
 
 A successful new Team login must revoke the previous active Team session.
 
+Every Admin and Team session expires at the next daily
+`22:00 Asia/Ho_Chi_Minh` cutoff. Login exactly at or after `22:00` expires at
+`22:00` the next day. Backend JWT `exp` and response `expiresAt` must match;
+Frontend must persist the Backend value and must not calculate a separate TTL.
+Frontend must clear local auth state at the cutoff even while the tab remains
+open. Activity does not extend the cutoff.
+
 QR token lifecycle and Team session lifecycle are separate.
 
 Do not revoke the QR token merely because a Team session expires or is replaced.
@@ -926,6 +933,11 @@ Add or update tests for relevant changed behavior.
 - valid reusable QR login;
 - same token can log in again while active;
 - new login revokes old Team session;
+- login before `22:00` expires at `22:00` the same local day;
+- login exactly at and after `22:00` expires at `22:00` the next local day;
+- JWT `exp`, login response `expiresAt`, and persisted Frontend session agree;
+- an open Frontend tab clears local auth state at `expiresAt`;
+- activity does not extend the cutoff;
 - invalid token;
 - missing token;
 - expired token;

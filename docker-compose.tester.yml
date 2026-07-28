@@ -25,7 +25,6 @@ services:
       PORT: 3000
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/movement
       JWT_SECRET: tester-local-secret
-      JWT_EXPIRES_IN: 12h
       CORS_ORIGIN: http://localhost:4173
       FRONTEND_PUBLIC_URL: http://localhost:4173
     ports:

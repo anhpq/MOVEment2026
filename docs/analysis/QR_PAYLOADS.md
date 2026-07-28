@@ -846,6 +846,10 @@ Backend:
 11. update usage metadata;
 12. trả safe response.
 
+Team session được tạo ở bước 9 phải có JWT `exp` và response `expiresAt` cùng
+trỏ tới mốc `22:00 Asia/Ho_Chi_Minh` kế tiếp. Login đúng hoặc sau `22:00` dùng
+cutoff `22:00` ngày hôm sau; Frontend không tự tính TTL.
+
 ## 16.2 Station QR
 
 Backend:

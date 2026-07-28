@@ -14,7 +14,6 @@ import type {
 
 const SESSION_STORAGE_KEY = "movement-session";
 const ACTIVE_TEAM_STORAGE_KEY = "movement-active-team";
-const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
 function readPersistedSession(): Session | null {
   if (typeof window === "undefined") {
@@ -34,7 +33,8 @@ function readPersistedSession(): Session | null {
       return null;
     }
 
-    if (new Date(session.expiresAt).getTime() <= Date.now()) {
+    const expiresAt = new Date(session.expiresAt).getTime();
+    if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
       window.localStorage.removeItem(SESSION_STORAGE_KEY);
       return null;
     }
@@ -56,11 +56,7 @@ function persistSession(session: Session | null) {
     return;
   }
 
-  const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
-  window.localStorage.setItem(
-    SESSION_STORAGE_KEY,
-    JSON.stringify({...session, expiresAt}),
-  );
+  window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
 }
 
 function readPersistedActiveTeamId() {

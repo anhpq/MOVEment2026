@@ -317,6 +317,13 @@ Password login và QR Login dùng chung Team session policy:
 Mỗi Team chỉ có một active session tại một thời điểm.
 ```
 
+Admin và Team session đều hết hạn tại mốc `22:00 Asia/Ho_Chi_Minh` kế tiếp.
+Login trước `22:00` hết hạn lúc `22:00` cùng ngày; login đúng hoặc sau
+`22:00` hết hạn lúc `22:00` ngày hôm sau. Backend trả `expiresAt` theo đúng
+JWT `exp`; Frontend persist giá trị này và không tự tính TTL riêng. Activity
+hoặc `lastSeenAt` không kéo dài cutoff. Frontend đang mở phải tự clear local
+session khi chạm `expiresAt`.
+
 Khi Team login thành công trên thiết bị mới:
 
 1. backend tạo session mới;

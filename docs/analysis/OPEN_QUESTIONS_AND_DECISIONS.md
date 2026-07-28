@@ -89,6 +89,9 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | Team active session | Mỗi Team chỉ có một active session tại một thời điểm. |
 | Login mới | Khi Team đăng nhập trên thiết bị mới, session cũ của Team phải bị revoke. |
 | QR login session | Login bằng QR và login bằng username/password sử dụng cùng một Team session policy. |
+| Session daily expiry | Mọi Admin và Team session hết hạn tại mốc `22:00 Asia/Ho_Chi_Minh` kế tiếp. Session được tạo trước `22:00` hết hạn lúc `22:00` cùng ngày; session được tạo đúng hoặc sau `22:00` hết hạn lúc `22:00` ngày hôm sau. |
+| Session expiry authority | Backend phải ký access token theo đúng cutoff và trả `expiresAt` trong mọi login response. Frontend phải dùng chính `expiresAt` từ Backend, không tự tính TTL riêng, và tự clear local session tại cutoff kể cả khi tab đang mở. |
+| Session expiry mode | Cutoff `22:00` là absolute expiry, không được kéo dài theo activity hoặc `lastSeenAt`. |
 | Session validation | Backend là nơi enforce active session. Frontend không phải nguồn xác thực cuối cùng. |
 | Team header identity | Với Team user, app header hiển thị tên Team hiện tại trong logout button thay cho label `User`; logout button vẫn hiển thị ở mọi environment cho đến khi có task release riêng để ẩn. |
 | Admin header logout | Admin header giữ nguyên logout button với label `Admin` trong mọi environment. |

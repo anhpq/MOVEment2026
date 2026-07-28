@@ -17,6 +17,10 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TeamLoginDto, UserLoginDto } from './dto/login.dto';
 import { QrLoginDto } from './dto/qr-login.dto';
 import { TeamQrLoginDto } from './dto/team-qr-login.dto';
+import {
+  getNextSessionExpiry,
+  toJwtExpirySeconds,
+} from './session-expiry';
 
 type TeamForSession = {
   id: number;
@@ -53,10 +57,12 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    const expiresAt = getNextSessionExpiry();
     const accessToken = await this.jwtService.signAsync({
       sub: user.id,
       type: 'USER',
       role: user.role,
+      exp: toJwtExpirySeconds(expiresAt),
     });
 
     await this.prisma.activityLog.create({
@@ -72,6 +78,7 @@ export class AuthService {
 
     return {
       accessToken,
+      expiresAt: expiresAt.toISOString(),
       user: {
         id: user.id,
         username: user.username,
@@ -215,10 +222,12 @@ export class AuthService {
       },
     });
 
+    const expiresAt = getNextSessionExpiry();
     const accessToken = await this.jwtService.signAsync({
       sub: team.id,
       type: 'TEAM',
       sessionId: session.id,
+      exp: toJwtExpirySeconds(expiresAt),
     });
 
     await prisma.teamSession.update({
@@ -242,6 +251,7 @@ export class AuthService {
 
     return {
       accessToken,
+      expiresAt: expiresAt.toISOString(),
       team: this.toTeamResponse(team),
     };
   }

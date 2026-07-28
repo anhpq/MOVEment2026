@@ -205,6 +205,7 @@ export function LoginPage() {
           role: "user",
           teamId: String(teamResponse.team.id),
           accessToken: teamResponse.accessToken,
+          expiresAt: teamResponse.expiresAt,
         });
         preloadPlayerMapImage();
         try {
@@ -230,6 +231,7 @@ export function LoginPage() {
         role: mapBackendRole(userResponse.user.role),
         teamId: null,
         accessToken: userResponse.accessToken,
+        expiresAt: userResponse.expiresAt,
       });
       message.success(t("auth.loginSuccess"));
       navigate(
@@ -270,6 +272,7 @@ export function LoginPage() {
         role: "user",
         teamId: String(teamResponse.team.id),
         accessToken: teamResponse.accessToken,
+        expiresAt: teamResponse.expiresAt,
       });
       preloadPlayerMapImage();
       try {
