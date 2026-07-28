@@ -6,7 +6,7 @@ import {
   StarFilled,
   TeamOutlined,
   UsergroupAddOutlined,
-  YoutubeOutlined,
+  YoutubeFilled,
 } from "@ant-design/icons";
 import {
   Alert,
@@ -321,7 +321,7 @@ export function StationListPage() {
                     <Button
                       block
                       className="station-media-button station-youtube-button"
-                      icon={<YoutubeOutlined />}
+                      icon={<YoutubeFilled />}
                       disabled={
                         station.gameType !== "ST" || !station.youtubeUrl
                       }

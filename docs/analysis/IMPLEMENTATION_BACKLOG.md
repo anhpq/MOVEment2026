@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-28 YouTube-style Player video action
+
+- [x] Apply YouTube-red enabled styling and a filled YouTube icon to Player
+  video actions on Station List, Map drawer, and Station Detail.
+- [x] Preserve neutral disabled styling and the existing `ST`/valid URL gate.
+- [x] Pass Frontend lint, production build, and `git diff --check`.
+- [x] Update Graphify code graph (`2359` nodes, `3855` edges, `205`
+  communities), retaining the known `hooks.json`/no-Gemini warnings.
+- [ ] Complete post-change desktop/mobile browser smoke and Production runtime
+  verification.
+
 ## 2026-07-28 Admin System Config localization fix
 
 - [x] Localize System Config tabs, actions, tracking modes, QR copy/status,

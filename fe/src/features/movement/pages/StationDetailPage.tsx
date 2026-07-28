@@ -8,7 +8,7 @@ import {
   StarFilled,
   TeamOutlined,
   WarningOutlined,
-  YoutubeOutlined,
+  YoutubeFilled,
 } from "@ant-design/icons";
 import {
   Alert,
@@ -285,7 +285,7 @@ export function StationDetailPage() {
           <Button
             type="primary"
             className="full-width mt-4"
-            icon={<YoutubeOutlined />}
+            icon={<YoutubeFilled />}
             disabled={!station.youtubeUrl}
             onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
             {t("common.watchVideo")}
@@ -308,7 +308,7 @@ export function StationDetailPage() {
               <Button
                 block
                 className="station-media-button station-youtube-button"
-                icon={<YoutubeOutlined />}
+                icon={<YoutubeFilled />}
                 disabled={station.gameType !== "ST" || !station.youtubeUrl}
                 onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
                 {t("common.watchVideo")}

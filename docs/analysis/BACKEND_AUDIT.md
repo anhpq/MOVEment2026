@@ -1,3 +1,19 @@
+# 2026-07-28 YouTube-style Player video action
+
+- Restyled enabled Player `Watch Video` actions across Station List, Map drawer,
+  and Station Detail with YouTube red, white copy/icon, filled YouTube mark, and
+  explicit hover/focus/active feedback.
+- Preserved the existing neutral disabled style and the eligibility gate:
+  `gameType = ST` plus a usable YouTube URL. Gameplay, Team Color primary
+  actions, Admin Team Station cards, Backend, API, database, migration, and seed
+  behavior are unchanged.
+- Verification passed: Frontend lint, Frontend production build, and
+  `git diff --check`. Vite retains the known non-blocking large-chunk warning;
+  post-change browser/mobile and Production runtime verification were not run.
+- Graphify code update completed with `2359` nodes, `3855` edges, and `205`
+  communities; it retained the known `hooks.json` zero-node and no-Gemini
+  documentation semantic-extraction warnings.
+
 # 2026-07-28 Admin System Config localization fix
 
 - Localized Admin System Config tabs, create/show/delete actions, tracking-mode

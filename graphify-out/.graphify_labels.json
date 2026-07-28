@@ -202,7 +202,6 @@
   "201": "migration.sql",
   "203": "Q: be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau",
   "204": "Q: Implement Station Media Gallery and new action layout",
-  "205": "antd",
   "206": "migration.sql",
   "207": "IMPLEMENTATION_BACKLOG.md"
 }

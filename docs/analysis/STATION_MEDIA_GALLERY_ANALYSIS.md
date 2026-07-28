@@ -33,6 +33,9 @@ action layout across Station List, Map drawer, and Station Detail.
   zoom, close, disabled-empty behavior, and broken-image fallback.
 - Station List/Map use two media buttons above one full-width gameplay action;
   Station Detail uses the same media row above Complete and retains Cancel.
+- Enabled Player video actions use a YouTube-red button and filled YouTube icon
+  across List, Map drawer, and Detail. Disabled video actions retain the neutral
+  style and existing `ST` plus valid-URL gate.
 
 ## Target Interfaces and Data
 
@@ -54,6 +57,8 @@ action layout across Station List, Map drawer, and Station Detail.
 - Player Detail: media actions above full-width Complete; Cancel stays separate.
 - `View Images` is always rendered and disabled for an empty gallery.
 - Admin Team Station `View & Edit` behavior is unchanged.
+- Enabled `Watch Video` uses branded YouTube red with white copy/icon and
+  dedicated hover/focus/active feedback; disabled video remains neutral.
 
 ## Verification Plan and Risks
 
@@ -81,6 +86,10 @@ action layout across Station List, Map drawer, and Station Detail.
 - `graphify update .` rebuilt the code graph to 2355 nodes, 3848 edges, and 208
   communities. It retained the known `hooks.json` zero-node warning; changed docs
   were not semantically re-extracted because no Gemini backend was configured.
+- YouTube button visual follow-up passed Frontend lint, Frontend production
+  build, `git diff --check`, and Graphify code update (`2359` nodes, `3855`
+  edges, `205` communities); post-change browser/manual review remains pending.
+  The existing non-blocking Vite large-chunk warning remains.
 - Physical-device and Production runtime verification were not performed.
 
 ## Decision Log
@@ -94,6 +103,9 @@ action layout across Station List, Map drawer, and Station Detail.
 7. Play style: Team primary, full-width, and retain the Play icon.
 8. Active flow: List/Map show `In Progress`; Detail retains Complete for Check-out.
 9. Initial inventory: existing canonical Station galleries remain empty for Admin entry.
+10. Video visual follow-up: user requested a YouTube-like design; apply branded
+    red only to enabled Player video actions while preserving the neutral
+    disabled state and all existing eligibility rules.
 
 ## Provenance
 

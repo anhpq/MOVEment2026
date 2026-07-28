@@ -4,7 +4,7 @@ import {
   ReloadOutlined,
   StarFilled,
   TeamOutlined,
-  YoutubeOutlined,
+  YoutubeFilled,
   ZoomInOutlined,
   ZoomOutOutlined,
 } from "@ant-design/icons";
@@ -1023,7 +1023,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               <Button
                 block
                 className="station-media-button station-youtube-button"
-                icon={<YoutubeOutlined />}
+                icon={<YoutubeFilled />}
                 disabled={
                   focusedTeamStation.gameType !== "ST" ||
                   !focusedTeamStation.youtubeUrl

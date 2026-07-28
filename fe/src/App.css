@@ -680,6 +680,33 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   color: var(--team-primary, #e96547);
 }
 
+.station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled) {
+  border-color: #ff0033;
+  background: #ff0033;
+  color: #fff;
+  box-shadow: 0 8px 18px -10px rgba(255, 0, 51, 0.72);
+}
+
+.station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled):hover,
+.station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled):focus-visible {
+  border-color: #d9002b;
+  background: #d9002b;
+  color: #fff;
+  box-shadow: 0 10px 22px -10px rgba(217, 0, 43, 0.78);
+  transform: translateY(-1px);
+}
+
+.station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled):active {
+  border-color: #b80025;
+  background: #b80025;
+  color: #fff;
+  transform: translateY(0);
+}
+
+.station-youtube-button .anticon {
+  font-size: 1.05rem;
+}
+
 .station-showcase-actions .ant-btn:disabled,
 .station-showcase-actions .ant-btn.ant-btn-disabled {
   border-color: #d9dce3;
