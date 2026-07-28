@@ -5,7 +5,7 @@
 | Area | Status |
 | --- | --- |
 | Implementation | Completed for i18n infrastructure, language switch, Player Station Backend localization, Admin bilingual Station editor, core Login/QR/AppFrame copy, Station list/detail/map, Team list, Leaderboard, Final, Admin Operations, and Admin System Config copy |
-| Runtime/Production Verification | Not performed |
+| Runtime/Production Verification | Blocked: 2026-07-28 read-only smoke found stale/broken Production JS asset reference |
 | Browser/Manual Verification | Pending desktop/mobile smoke |
 
 ## Objective and Scope
@@ -111,6 +111,13 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Still required: migration on disposable DB, two seed runs/idempotency,
   `db:verify`, full Backend Jest suite, locale parity/no-empty check, and manual
   desktop/mobile browser smoke.
+- 2026-07-28 Production read-only smoke found that `https://heroes.nalth.top/`
+  and `/qr-login?token=__codex_readonly_probe__` return SPA `index.html`, but
+  the deployed HTML references `/assets/index-BTYLObga.js` while the current
+  local build references `/assets/index-DAFO-QAT.js`; direct JS asset HEAD checks
+  returned OBS `403 AccessDenied`. Backend `/api/docs` returned Swagger UI.
+  Full runtime localization verification remains blocked until the frontend
+  deployment is repaired or rerun successfully.
 - Main risks: remaining hard-coded UI copy outside the core screens, manual
   browser coverage pending, and existing npm audit high-severity findings not
   addressed in this feature scope.

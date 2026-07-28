@@ -1,3 +1,36 @@
+# 2026-07-28 Production deploy preflight and partial smoke
+
+- Confirmed `origin/master` and `origin/develop` both point at
+  `9929d0252687a629b3f8d19cdce2906c159d3907`; no repository push was required
+  for the current local HEAD to be available on the deployment branch.
+- Confirmed current source deployment workflows differ from older staged docs:
+  [`.github/workflows/be-deploy.yml`](../../.github/workflows/be-deploy.yml)
+  supports `push` to `master` and `workflow_dispatch`, and
+  [`.github/workflows/fe-deploy.yml`](../../.github/workflows/fe-deploy.yml)
+  deploys directly to OBS with required HTTPS `VITE_API_BASE_URL`.
+- Backend Production read-only smoke passed for
+  `https://heroes.nalth.top/api/docs`: it returned Swagger UI for
+  `MOVEment 2026 API` version `0.1.0`.
+- Frontend Production read-only smoke found a blocker:
+  `https://heroes.nalth.top/` and `/qr-login?token=__codex_readonly_probe__`
+  return SPA `index.html`, but that HTML references
+  `/assets/index-BTYLObga.js`; the current local build references
+  `/assets/index-DAFO-QAT.js`, and direct HEAD checks for both JS assets returned
+  OBS `403 AccessDenied`. The browser-visible app may fail to load until the
+  frontend deployment is repaired or rerun successfully.
+- Deployment was not triggered from this workspace because GitHub CLI is not
+  installed, no GitHub dispatch token is present, and no Huawei
+  `HUAWEI_ACCESS_KEY`/`HUAWEI_SECRET_KEY` credentials are present for direct OBS
+  sync. Backend redeploy was also not attempted because the user requested to
+  skip DB work and the recent commit range includes migration/seed/schema
+  changes that the backend deploy detector would treat as database-related
+  unless the server marker already proves those changes are deployed.
+- Graphify query ran successfully through the console entrypoint. Earlier
+  fallback attempts through missing `.graphify_python`, `py`, and `python`
+  failed in this Windows session, but no NetworkX fallback was needed.
+- No Source Code, migration, seed, Production data, push, or destructive Git
+  operation was performed.
+
 # 2026-07-28 Tester auto-stop conflicting local processes
 
 - Added opt-in `-StopConflictingProcesses` handling to `tester-run.ps1` and

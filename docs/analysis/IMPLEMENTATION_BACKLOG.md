@@ -13,6 +13,28 @@
   communities), retaining the known `hooks.json`/no-Gemini warnings.
 - [ ] Production/remote-database runtime verification remains out of scope.
 
+## 2026-07-28 Production deploy preflight and partial smoke
+
+- [x] Confirm remote `master` and `develop` both point at current HEAD
+  `9929d0252687a629b3f8d19cdce2906c159d3907`.
+- [x] Verify current source workflows: Backend deploy is ECS with push/manual
+  triggers; Frontend deploy is OBS with required HTTPS `VITE_API_BASE_URL`.
+- [x] Verify Production Backend `/api/docs` returns Swagger UI for
+  `MOVEment 2026 API`.
+- [x] Verify Production `/` and `/qr-login?token=__codex_readonly_probe__`
+  return SPA `index.html`.
+- [ ] Repair or rerun Frontend Production deployment: deployed HTML references
+  `/assets/index-BTYLObga.js`, current local build references
+  `/assets/index-DAFO-QAT.js`, and direct JS asset HEAD checks returned OBS
+  `403 AccessDenied`.
+- [ ] Trigger GitHub Actions or direct OBS deploy only after a GitHub dispatch
+  token/CLI or Huawei OBS credentials are available.
+- [ ] Do not force Backend deployment to skip DB detection. If Backend deploy is
+  still needed, first establish the server deployment marker/base commit; stop
+  if the range requires migrate/seed under the user's no-DB instruction.
+- [ ] Complete authenticated desktop/mobile Team/Admin browser smoke after the
+  frontend asset blocker is resolved.
+
 ## 2026-07-28 Admin System Config Station locale display
 
 - [x] Verify live Admin progress-matrix payload contains VI/EN Station fields.
