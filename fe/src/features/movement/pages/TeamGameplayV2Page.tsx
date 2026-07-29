@@ -16,7 +16,7 @@ import {useTranslation} from "react-i18next";
 import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {
-  getLeaderboard,
+  getPlayerLeaderboard,
   ApiError,
   isAuthFailure,
   logout as logoutApi,
@@ -31,7 +31,9 @@ import {
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
+import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import {
+  executePlayerMutation,
   fetchPlayerDatabase,
   loadPlayerMapImage,
   selectPlayerMapImageVariant,
@@ -57,17 +59,19 @@ const STATION_LABEL_HEIGHT = 44;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
-  "Invalid QR token": "teamV2.qrErrors.invalid",
-  "QR token has been revoked": "teamV2.qrErrors.revoked",
-  "QR token has expired": "teamV2.qrErrors.expired",
-  "QR token purpose mismatch": "teamV2.qrErrors.invalid",
-  "Station is inactive": "teamV2.qrErrors.stationInactive",
-  "Stations are closed": "teamV2.qrErrors.stationsClosed",
-  "Station is not available for check-in": "teamV2.qrErrors.notAvailable",
-  "Cancel cooldown is still active": "teamV2.qrErrors.cooldown",
-  "Team is already playing another station": "teamV2.qrErrors.alreadyPlaying",
-  "Station is not currently playing": "teamV2.qrErrors.notPlaying",
-  "Station check-out was already submitted": "teamV2.qrErrors.notPlaying",
+  PLAYER_QR_INVALID: "teamV2.qrErrors.invalid",
+  PLAYER_QR_REVOKED: "teamV2.qrErrors.revoked",
+  PLAYER_QR_EXPIRED: "teamV2.qrErrors.expired",
+  PLAYER_QR_PURPOSE_MISMATCH: "teamV2.qrErrors.invalid",
+  PLAYER_QR_STATION_MISMATCH: "teamV2.qrErrors.invalid",
+  PLAYER_STATION_INACTIVE: "teamV2.qrErrors.stationInactive",
+  PLAYER_STATIONS_CLOSED: "teamV2.qrErrors.stationsClosed",
+  PLAYER_STATION_NOT_AVAILABLE: "teamV2.qrErrors.notAvailable",
+  PLAYER_CANCEL_COOLDOWN_ACTIVE: "teamV2.qrErrors.cooldown",
+  PLAYER_ACTIVE_STATION_CONFLICT: "teamV2.qrErrors.alreadyPlaying",
+  PLAYER_PROGRESS_NOT_FOUND: "teamV2.qrErrors.notPlaying",
+  PLAYER_STATION_NOT_PLAYING: "teamV2.qrErrors.notPlaying",
+  PLAYER_CHECKOUT_CONFLICT: "teamV2.qrErrors.notPlaying",
 };
 
 function getQrActionErrorKey(error: unknown) {
@@ -80,7 +84,10 @@ function getQrActionErrorKey(error: unknown) {
   if (error.status >= 500) {
     return "teamV2.qrErrors.server";
   }
-  return QR_ACTION_ERROR_KEYS[error.message] ?? "teamV2.qrErrors.generic";
+  return (
+    (error.backendCode ? QR_ACTION_ERROR_KEYS[error.backendCode] : undefined) ??
+    "teamV2.qrErrors.generic"
+  );
 }
 
 type ViewportSize = {
@@ -667,55 +674,36 @@ function LeaderboardOverlay({
   const logout = useMovementStore((state) => state.logout);
   const [rows, setRows] = useState<LeaderboardEntryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const isFetchingRef = useRef(false);
+  const mountedRef = useRef(false);
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    let cancelled = false;
-    const refresh = async () => {
-      if (
-        cancelled ||
-        isFetchingRef.current ||
-        document.visibilityState !== "visible"
-      ) {
-        return;
-      }
-      isFetchingRef.current = true;
-      setIsLoading(true);
-      try {
-        const entries = await getLeaderboard();
-        if (!cancelled) {
-          setRows(entries);
-        }
-      } catch (error) {
-        if (!cancelled && isAuthFailure(error)) {
-          logout();
-        }
-      } finally {
-        isFetchingRef.current = false;
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    };
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        void refresh();
-      }
-    };
-
-    void refresh();
-    const timer = window.setInterval(() => void refresh(), 5000);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    mountedRef.current = true;
     return () => {
-      cancelled = true;
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      mountedRef.current = false;
     };
-  }, [logout, open]);
+  }, []);
+
+  const refresh = useCallback(async () => {
+    if (mountedRef.current) {
+      setIsLoading(true);
+    }
+    try {
+      const entries = await getPlayerLeaderboard();
+      if (mountedRef.current) {
+        setRows(entries);
+      }
+    } catch (error) {
+      if (mountedRef.current && isAuthFailure(error)) {
+        logout();
+      }
+    } finally {
+      if (mountedRef.current) {
+        setIsLoading(false);
+      }
+    }
+  }, [logout]);
+
+  useVisibleOnlinePolling(refresh, {enabled: open});
 
   if (!open) {
     return null;
@@ -799,7 +787,6 @@ export function TeamGameplayV2Page() {
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
   const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
-  const isRefreshingRef = useRef(false);
   const isSubmittingQrRef = useRef(false);
   const pinchRef = useRef<{distance: number; scale: number} | null>(null);
   const panRef = useRef<{
@@ -841,23 +828,6 @@ export function TeamGameplayV2Page() {
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
     [mapTransform, markerViewModels, viewportSize],
   );
-
-  const refreshPlayerData = useCallback(async () => {
-    if (isRefreshingRef.current || document.visibilityState !== "visible") {
-      return;
-    }
-    isRefreshingRef.current = true;
-    try {
-      loadDatabase(await fetchPlayerDatabase(language));
-    } catch (error) {
-      if (isAuthFailure(error)) {
-        clearSession();
-        navigate("/login");
-      }
-    } finally {
-      isRefreshingRef.current = false;
-    }
-  }, [clearSession, language, loadDatabase, navigate]);
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
@@ -926,21 +896,6 @@ export function TeamGameplayV2Page() {
       cancelled = true;
     };
   }, [mapTransform.scale, viewportSize]);
-
-  useEffect(() => {
-    void refreshPlayerData();
-    const refreshWhenVisible = () => {
-      if (document.visibilityState === "visible") {
-        void refreshPlayerData();
-      }
-    };
-    const timer = window.setInterval(() => void refreshPlayerData(), 5000);
-    document.addEventListener("visibilitychange", refreshWhenVisible);
-    return () => {
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", refreshWhenVisible);
-    };
-  }, [refreshPlayerData]);
 
   const applyScaleAtPoint = (nextScale: number, point: {x: number; y: number}) => {
     setMapTransform((current) => {
@@ -1088,8 +1043,10 @@ export function TeamGameplayV2Page() {
     }
     isSubmittingQrRef.current = true;
     try {
-      const result = await submitPlayerQrAction(token);
-      await refreshPlayerData();
+      const {result} = await executePlayerMutation(
+        () => submitPlayerQrAction(token),
+        language,
+      );
       setQrToken("");
       setIsScannerOpen(false);
       if (result.action === "CHECK_IN") {
@@ -1106,7 +1063,7 @@ export function TeamGameplayV2Page() {
       message.success(t("teamV2.checkOutSuccess"));
       return {status: "accepted"};
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) {
+      if (isAuthFailure(error)) {
         clearSession();
         navigate("/login");
         return {status: "accepted"};
@@ -1472,8 +1429,14 @@ export function TeamGameplayV2Page() {
                   onOk: async () => {
                     setIsSubmittingScore(true);
                     try {
-                      await submitStationScore(scoreStation.stationId, values.score, values.reason);
-                      await refreshPlayerData();
+                      await executePlayerMutation(
+                        () => submitStationScore(
+                          scoreStation.stationId,
+                          values.score,
+                          values.reason,
+                        ),
+                        language,
+                      );
                       message.success(t("stationDetail.completedSuccess"));
                       setScoreStationId(null);
                     } catch {

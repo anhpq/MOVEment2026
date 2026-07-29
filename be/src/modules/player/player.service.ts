@@ -1,18 +1,15 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import {
   ActorType,
   Game,
+  Prisma,
   ProgressStatus,
   QrPurpose,
   Station,
   StationImage,
 } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { createHash } from 'node:crypto';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { SubmitScoreDto } from '../../common/dto/score.dto';
 import {
@@ -28,6 +25,11 @@ import { EventConfigService } from '../event-config/event-config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TeamResultsService } from '../team-results/team-results.service';
 import { QrActionDto } from './dto/player-actions.dto';
+import {
+  PLAYER_ERROR_CODES,
+  PlayerActionException,
+  PlayerErrorCode,
+} from './player-error';
 
 @Injectable()
 export class PlayerService {
@@ -40,9 +42,22 @@ export class PlayerService {
 
   async getDashboard(teamId: number) {
     const [team, progress, leaderboard] = await Promise.all([
-      this.prisma.team.findUniqueOrThrow({ where: { id: teamId } }),
+      this.prisma.team.findUniqueOrThrow({
+        where: { id: teamId },
+        select: {
+          id: true,
+          name: true,
+          captainName: true,
+          totalPoints: true,
+          maxPossiblePoints: true,
+          totalPlaySeconds: true,
+          startedAt: true,
+          status: true,
+          color: true,
+        },
+      }),
       this.getProgress(teamId),
-      this.getLeaderboard(),
+      this.getPlayerLeaderboard(),
     ]);
     const rank = leaderboard.find((entry) => entry.teamId === teamId)?.rank ?? null;
     const completedStations = progress.filter((item) => item.status === 'COMPLETED').length;
@@ -63,6 +78,206 @@ export class PlayerService {
       },
       completedStations,
       serverNow: new Date().toISOString(),
+    };
+  }
+
+  async getCatalog(lang?: string) {
+    const locale = this.normalizeLocale(lang);
+    const stations = await this.prisma.station.findMany({
+      where: { isActive: true },
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+      select: {
+        id: true,
+        name: true,
+        nameEn: true,
+        description: true,
+        descriptionEn: true,
+        mapX: true,
+        mapY: true,
+        trackingMode: true,
+        updatedAt: true,
+        images: {
+          orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+          select: { id: true, updatedAt: true },
+        },
+        games: {
+          where: { isActive: true },
+          orderBy: { id: 'asc' },
+          select: {
+            id: true,
+            title: true,
+            type: true,
+            difficulty: true,
+            maxPoints: true,
+            clueText: true,
+            mediaUrl: true,
+            updatedAt: true,
+          },
+        },
+      },
+    });
+
+    return {
+      catalogVersion: this.buildCatalogVersion(stations),
+      stations: stations.map((station) => ({
+        id: station.id,
+        ...this.toLocalizedStationFields(station, locale),
+        mapX: station.mapX,
+        mapY: station.mapY,
+        trackingMode: station.trackingMode,
+        imageCount: station.images.length,
+        game: station.games[0]
+          ? {
+              id: String(station.games[0].id),
+              title: station.games[0].title,
+              type: station.games[0].type,
+              difficulty: station.games[0].difficulty,
+              maxPoints: station.games[0].maxPoints,
+              clueText: station.games[0].clueText,
+              mediaUrl: station.games[0].mediaUrl,
+            }
+          : null,
+      })),
+    };
+  }
+
+  async getCatalogVersion() {
+    const stations = await this.prisma.station.findMany({
+      where: { isActive: true },
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+      select: {
+        id: true,
+        updatedAt: true,
+        images: {
+          orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+          select: { id: true, updatedAt: true },
+        },
+        games: {
+          where: { isActive: true },
+          orderBy: { id: 'asc' },
+          select: { id: true, updatedAt: true },
+        },
+      },
+    });
+    return this.buildCatalogVersion(stations);
+  }
+
+  async getState(teamId: number) {
+    const now = new Date();
+    const [team, eventConfig, catalogVersion, leaderboard, finalChallenge] =
+      await Promise.all([
+        this.prisma.team.findUniqueOrThrow({
+          where: { id: teamId },
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            captainName: true,
+            totalPoints: true,
+            maxPossiblePoints: true,
+            totalPlaySeconds: true,
+            status: true,
+            color: true,
+            progress: {
+              orderBy: [{ station: { sortOrder: 'asc' } }, { stationId: 'asc' }],
+              select: {
+                id: true,
+                teamId: true,
+                stationId: true,
+                status: true,
+                checkedInAt: true,
+                checkedOutAt: true,
+                completedAt: true,
+                cancelledAt: true,
+                nextCheckInAllowedAt: true,
+                scoreAchieved: true,
+                attemptNo: true,
+              },
+            },
+          },
+        }),
+        this.eventConfig.getPublicConfig(),
+        this.getCatalogVersion(),
+        this.getPlayerLeaderboard(),
+        this.prisma.finalChallenge.findFirst({
+          where: { isActive: true },
+          orderBy: { startsAt: 'asc' },
+          select: { id: true },
+        }),
+      ]);
+    const progress = team.progress.map((item) => ({
+      ...item,
+      status: this.toEffectiveProgressStatus(
+        item.status,
+        eventConfig.isPastEventEnd,
+      ),
+    }));
+    const activeProgress = progress.find(
+      (item) =>
+        item.status === ProgressStatus.CHECKED_IN ||
+        item.status === ProgressStatus.PLAYING,
+    );
+    const finalSubmissionState = finalChallenge
+      ? await this.getFinalSubmissionState(finalChallenge.id, teamId, now)
+      : { hasCorrectSubmission: false, isCoolingDown: false };
+    const finalIsOpen =
+      Boolean(finalChallenge) &&
+      eventConfig.isPastFinalStart &&
+      !activeProgress;
+    const rank =
+      leaderboard.find((entry) => entry.teamId === teamId)?.rank ?? null;
+
+    return {
+      catalogVersion,
+      serverNow: now.toISOString(),
+      team: {
+        id: team.id,
+        name: team.name,
+        username: team.username,
+        captainName: team.captainName,
+        totalPoints: team.totalPoints,
+        maxPossiblePoints: team.maxPossiblePoints,
+        totalPlaySeconds: team.totalPlaySeconds,
+        status: team.status,
+        rank,
+        teamColor: team.color,
+        color: team.color,
+      },
+      completedStations: progress.filter(
+        (item) => item.status === ProgressStatus.COMPLETED,
+      ).length,
+      progress,
+      final: {
+        isOpen: finalIsOpen,
+        canSubmit:
+          finalIsOpen &&
+          !finalSubmissionState.hasCorrectSubmission &&
+          !finalSubmissionState.isCoolingDown,
+        blockedByActiveStation: Boolean(activeProgress),
+        activeStationId: activeProgress?.stationId ?? null,
+        finalStartsAt: eventConfig.finalStartsAt,
+        eventEndTime: eventConfig.eventEndTime,
+      },
+    };
+  }
+
+  async getStationImages(stationId: string) {
+    const station = await this.prisma.station.findFirst({
+      where: { id: stationId, isActive: true },
+      select: {
+        id: true,
+        images: {
+          orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+          select: { url: true },
+        },
+      },
+    });
+    if (!station) {
+      throw new NotFoundException('Station not found');
+    }
+    return {
+      stationId: station.id,
+      imageUrls: station.images.map((image) => image.url),
     };
   }
 
@@ -157,6 +372,10 @@ export class PlayerService {
     return this.teamResults.toLeaderboardRows(results);
   }
 
+  async getPlayerLeaderboard() {
+    return this.teamResults.getLeanLeaderboard();
+  }
+
   async getStationPlayingCounts() {
     const rows = await this.prisma.teamStationProgress.groupBy({
       by: ['stationId'],
@@ -177,8 +396,8 @@ export class PlayerService {
     const qrToken = await this.validateStationQrToken(dto.qrToken);
     const progress =
       qrToken.purpose === QrPurpose.CHECK_IN
-        ? await this.checkIn(teamId, qrToken.stationId, dto)
-        : await this.checkOut(teamId, qrToken.stationId, dto);
+        ? await this.checkInValidated(teamId, qrToken.stationId)
+        : await this.checkOutValidated(teamId, qrToken.stationId);
 
     return {
       action:
@@ -193,15 +412,25 @@ export class PlayerService {
   }
 
   async checkIn(teamId: number, stationId: string, dto: QrActionDto) {
-    if (await this.eventConfig.isPastEventEnd()) {
-      throw new ForbiddenException('Stations are closed');
-    }
-
+    await this.assertStationsOpen();
     const qrToken = await this.validateStationQr(dto.qrToken, QrPurpose.CHECK_IN);
     if (qrToken.stationId !== stationId) {
-      throw new ForbiddenException('QR token does not match station');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.qrStationMismatch,
+        'QR token does not match station',
+      );
     }
-    const progress = await this.getProgressForAction(teamId, qrToken.stationId);
+    return this.claimCheckIn(teamId, qrToken.stationId);
+  }
+
+  private async checkInValidated(teamId: number, stationId: string) {
+    await this.assertStationsOpen();
+    return this.claimCheckIn(teamId, stationId);
+  }
+
+  private async claimCheckIn(teamId: number, stationId: string) {
+    const progress = await this.getProgressForAction(teamId, stationId);
     if (
       (progress.status === ProgressStatus.PLAYING ||
         progress.status === ProgressStatus.CHECKED_IN) &&
@@ -211,46 +440,100 @@ export class PlayerService {
       return progress;
     }
     if (progress.status !== ProgressStatus.AVAILABLE) {
-      throw new BadRequestException('Station is not available for check-in');
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.stationNotAvailable,
+        'Station is not available for check-in',
+      );
     }
     if (
       progress.nextCheckInAllowedAt &&
       progress.nextCheckInAllowedAt > new Date()
     ) {
-      throw new BadRequestException('Cancel cooldown is still active');
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.cancelCooldownActive,
+        'Cancel cooldown is still active',
+      );
     }
 
     const activeProgress = await this.prisma.teamStationProgress.findFirst({
       where: {
         teamId,
-        stationId: { not: qrToken.stationId },
+        stationId: { not: stationId },
         status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
       },
+      select: { id: true, stationId: true },
     });
     if (activeProgress) {
-      throw new BadRequestException('Team is already playing another station');
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.activeStationConflict,
+        'Team is already playing another station',
+      );
     }
 
-    const updated = await this.prisma.teamStationProgress.update({
-      where: { id: progress.id },
-      data: {
-        status: ProgressStatus.PLAYING,
-        checkedInAt: new Date(),
-        checkedOutAt: null,
-        completedAt: null,
-        cancelledAt: null,
-        nextCheckInAllowedAt: null,
-        scoreAchieved: 0,
-        attemptNo: { increment: 1 },
-      },
-    });
+    let updated;
+    try {
+      const claimed = await this.prisma.teamStationProgress.updateMany({
+        where: {
+          id: progress.id,
+          teamId,
+          stationId,
+          status: ProgressStatus.AVAILABLE,
+          OR: [
+            { nextCheckInAllowedAt: null },
+            { nextCheckInAllowedAt: { lte: new Date() } },
+          ],
+        },
+        data: {
+          status: ProgressStatus.PLAYING,
+          checkedInAt: new Date(),
+          checkedOutAt: null,
+          completedAt: null,
+          cancelledAt: null,
+          nextCheckInAllowedAt: null,
+          scoreAchieved: 0,
+          attemptNo: { increment: 1 },
+        },
+      });
+      const current =
+        await this.prisma.teamStationProgress.findUniqueOrThrow({
+          where: { id: progress.id },
+        });
+      if (claimed.count !== 1) {
+        if (
+          (current.status === ProgressStatus.PLAYING ||
+            current.status === ProgressStatus.CHECKED_IN) &&
+          !current.checkedOutAt &&
+          !current.completedAt
+        ) {
+          return current;
+        }
+        throw this.playerError(
+          HttpStatus.CONFLICT,
+          PLAYER_ERROR_CODES.stationNotAvailable,
+          'Station is not available for check-in',
+        );
+      }
+      updated = current;
+    } catch (error) {
+      if (this.isConcurrentTransitionError(error)) {
+        throw this.playerError(
+          HttpStatus.CONFLICT,
+          PLAYER_ERROR_CODES.activeStationConflict,
+          'Team is already playing another station',
+        );
+      }
+      throw error;
+    }
     await this.activityLog.log({
       actorType: ActorType.TEAM,
       actorId: teamId,
       action: 'CHECK_IN',
       entityType: 'TEAM_STATION_PROGRESS',
       entityId: updated.id,
-      metadata: { stationId: qrToken.stationId },
+      metadata: { stationId },
     });
     return updated;
   }
@@ -258,9 +541,17 @@ export class PlayerService {
   async checkOut(teamId: number, stationId: string, dto: QrActionDto) {
     const qrToken = await this.validateStationQr(dto.qrToken, QrPurpose.CHECK_OUT);
     if (qrToken.stationId !== stationId) {
-      throw new ForbiddenException('QR token does not match station');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.qrStationMismatch,
+        'QR token does not match station',
+      );
     }
-    const progress = await this.getProgressForAction(teamId, qrToken.stationId);
+    return this.checkOutValidated(teamId, qrToken.stationId);
+  }
+
+  private async checkOutValidated(teamId: number, stationId: string) {
+    const progress = await this.getProgressForAction(teamId, stationId);
     if (progress.checkedOutAt || progress.completedAt) {
       return progress;
     }
@@ -268,7 +559,11 @@ export class PlayerService {
       progress.status !== ProgressStatus.PLAYING &&
       progress.status !== ProgressStatus.CHECKED_IN
     ) {
-      throw new BadRequestException('Station is not currently playing');
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.stationNotPlaying,
+        'Station is not currently playing',
+      );
     }
 
     const checkedOutAt = new Date();
@@ -282,79 +577,123 @@ export class PlayerService {
         progress.checkedInAt,
         checkedOutAt,
       );
-      const updated = await this.prisma.$transaction(async (tx) => {
-        const claimed = await tx.teamStationProgress.updateMany({
-          where: {
-            id: progress.id,
-            checkedOutAt: null,
-            completedAt: null,
-            status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
-          },
-          data: {
-            status: ProgressStatus.COMPLETED,
-            checkedOutAt,
-            completedAt: checkedOutAt,
-            scoreAchieved: autoScore,
-            scoreEnteredByUserId: null,
-          },
-        });
-        if (claimed.count !== 1) {
-          const current = await tx.teamStationProgress.findUniqueOrThrow({
-            where: { id: progress.id },
+      try {
+        const result = await this.prisma.$transaction(async (tx) => {
+          const claimed = await tx.teamStationProgress.updateMany({
+            where: {
+              id: progress.id,
+              checkedOutAt: null,
+              completedAt: null,
+              status: {
+                in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN],
+              },
+            },
+            data: {
+              status: ProgressStatus.COMPLETED,
+              checkedOutAt,
+              completedAt: checkedOutAt,
+              scoreAchieved: autoScore,
+              scoreEnteredByUserId: null,
+            },
           });
-          if (current.checkedOutAt || current.completedAt) {
-            return current;
+          if (claimed.count !== 1) {
+            const current = await tx.teamStationProgress.findUniqueOrThrow({
+              where: { id: progress.id },
+            });
+            if (current.checkedOutAt || current.completedAt) {
+              return { progress: current, transitioned: false };
+            }
+            throw this.playerError(
+              HttpStatus.CONFLICT,
+              PLAYER_ERROR_CODES.checkoutConflict,
+              'Station check-out was already submitted',
+            );
           }
-          throw new BadRequestException('Station check-out was already submitted');
+          await tx.team.update({
+            where: { id: teamId },
+            data: {
+              totalPoints: { increment: autoScore },
+              totalPlaySeconds: playSeconds
+                ? { increment: playSeconds }
+                : undefined,
+            },
+          });
+          await tx.scoreEvent.create({
+            data: {
+              teamId,
+              progressId: progress.id,
+              stationId,
+              scoreBefore,
+              scoreAfter,
+              delta: autoScore,
+              reason: 'TIME_STATION_AUTO_SCORE',
+              createdByUserId: null,
+            },
+          });
+          return {
+            progress: await tx.teamStationProgress.findUniqueOrThrow({
+              where: { id: progress.id },
+            }),
+            transitioned: true,
+          };
+        });
+        if (result.transitioned) {
+          await this.activityLog.log({
+            actorType: ActorType.TEAM,
+            actorId: teamId,
+            action: 'CHECK_OUT',
+            entityType: 'TEAM_STATION_PROGRESS',
+            entityId: result.progress.id,
+            metadata: {
+              stationId,
+              trackingMode: progress.station.trackingMode,
+              autoScore,
+              playSeconds,
+            },
+          });
         }
-        await tx.team.update({
-          where: { id: teamId },
-          data: {
-            totalPoints: { increment: autoScore },
-            totalPlaySeconds: playSeconds ? { increment: playSeconds } : undefined,
-          },
-        });
-        await tx.scoreEvent.create({
-          data: {
-            teamId,
-            progressId: progress.id,
-            stationId,
-            scoreBefore,
-            scoreAfter,
-            delta: autoScore,
-            reason: 'TIME_STATION_AUTO_SCORE',
-            createdByUserId: null,
-          },
-        });
-        return tx.teamStationProgress.findUniqueOrThrow({ where: { id: progress.id } });
-      });
-      await this.activityLog.log({
-        actorType: ActorType.TEAM,
-        actorId: teamId,
-        action: 'CHECK_OUT',
-        entityType: 'TEAM_STATION_PROGRESS',
-        entityId: updated.id,
-        metadata: {
-          stationId: qrToken.stationId,
-          trackingMode: progress.station.trackingMode,
-          autoScore,
-          playSeconds,
-        },
-      });
-      return updated;
+        return result.progress;
+      } catch (error) {
+        if (this.isConcurrentTransitionError(error)) {
+          throw this.playerError(
+            HttpStatus.CONFLICT,
+            PLAYER_ERROR_CODES.checkoutConflict,
+            'Station check-out was already submitted',
+          );
+        }
+        throw error;
+      }
     }
 
-    const updated = await this.prisma.teamStationProgress.update({
-      where: { id: progress.id },
+    const claimed = await this.prisma.teamStationProgress.updateMany({
+      where: {
+        id: progress.id,
+        checkedOutAt: null,
+        completedAt: null,
+        status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
+      },
       data: { checkedOutAt },
     });
+    const updated = await this.prisma.teamStationProgress.findUniqueOrThrow({
+      where: { id: progress.id },
+    });
+    if (claimed.count !== 1) {
+      if (updated.checkedOutAt || updated.completedAt) {
+        return updated;
+      }
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.checkoutConflict,
+        'Station check-out was already submitted',
+      );
+    }
     await this.activityLog.log({
       actorType: ActorType.TEAM,
       actorId: teamId,
       action: 'CHECK_OUT',
       entityType: 'TEAM_STATION_PROGRESS',
       entityId: updated.id,
-      metadata: { stationId: qrToken.stationId },
+      metadata: { stationId },
     });
     return updated;
   }
@@ -362,10 +701,27 @@ export class PlayerService {
   async cancel(teamId: number, stationId: string) {
     const progress = await this.getProgressForAction(teamId, stationId);
     if (
+      progress.status === ProgressStatus.AVAILABLE &&
+      Boolean(progress.cancelledAt)
+    ) {
+      return progress;
+    }
+    if (
       progress.status !== ProgressStatus.PLAYING &&
       progress.status !== ProgressStatus.CHECKED_IN
     ) {
-      throw new BadRequestException('Only active station attempts can be cancelled');
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.cancelConflict,
+        'Only active station attempts can be cancelled',
+      );
+    }
+    if (progress.checkedOutAt || progress.completedAt) {
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.cancelConflict,
+        'Only active station attempts can be cancelled',
+      );
     }
 
     const config = await this.eventConfig.getConfig();
@@ -373,8 +729,13 @@ export class PlayerService {
     const nextCheckInAllowedAt = new Date(
       now.getTime() + config.cancelCooldownMinutes * 60_000,
     );
-    const updated = await this.prisma.teamStationProgress.update({
-      where: { id: progress.id },
+    const claimed = await this.prisma.teamStationProgress.updateMany({
+      where: {
+        id: progress.id,
+        checkedOutAt: null,
+        completedAt: null,
+        status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
+      },
       data: {
         status: ProgressStatus.AVAILABLE,
         checkedInAt: null,
@@ -383,6 +744,22 @@ export class PlayerService {
         nextCheckInAllowedAt,
       },
     });
+    const updated = await this.prisma.teamStationProgress.findUniqueOrThrow({
+      where: { id: progress.id },
+    });
+    if (claimed.count !== 1) {
+      if (
+        updated.status === ProgressStatus.AVAILABLE &&
+        Boolean(updated.cancelledAt)
+      ) {
+        return updated;
+      }
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.cancelConflict,
+        'Only active station attempts can be cancelled',
+      );
+    }
     await this.activityLog.log({
       actorType: ActorType.TEAM,
       actorId: teamId,
@@ -400,13 +777,35 @@ export class PlayerService {
       include: { team: true, game: true, station: true },
     });
     if (!progress) {
-      throw new NotFoundException('Progress not found for team/station');
+      throw this.playerError(
+        HttpStatus.NOT_FOUND,
+        PLAYER_ERROR_CODES.progressNotFound,
+        'Progress not found for team/station',
+      );
     }
-    if (!progress.checkedOutAt || progress.completedAt) {
-      throw new BadRequestException('Progress is not waiting for score');
+    if (progress.completedAt) {
+      if (progress.scoreAchieved === dto.score) {
+        return progress;
+      }
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.scoreConflict,
+        'Progress score was already submitted',
+      );
+    }
+    if (!progress.checkedOutAt) {
+      throw this.playerError(
+        HttpStatus.CONFLICT,
+        PLAYER_ERROR_CODES.scoreNotPending,
+        'Progress is not waiting for score',
+      );
     }
     if (progress.station.trackingMode === 'TIME') {
-      throw new BadRequestException('Time-only station does not accept score');
+      throw this.playerError(
+        HttpStatus.BAD_REQUEST,
+        PLAYER_ERROR_CODES.timeStationScoreForbidden,
+        'Time-only station does not accept score',
+      );
     }
     this.validateScoreValue(
       dto.score,
@@ -421,49 +820,87 @@ export class PlayerService {
       progress.checkedOutAt,
     );
 
-    const updated = await this.prisma.$transaction(async (tx) => {
-      const claimed = await tx.teamStationProgress.updateMany({
-        where: { id: progress.id, completedAt: null, checkedOutAt: { not: null } },
-        data: {
-          status: ProgressStatus.COMPLETED,
-          completedAt: new Date(),
-          scoreAchieved: dto.score,
-          scoreEnteredByUserId: null,
-        },
+    try {
+      const result = await this.prisma.$transaction(async (tx) => {
+        const claimed = await tx.teamStationProgress.updateMany({
+          where: {
+            id: progress.id,
+            completedAt: null,
+            checkedOutAt: { not: null },
+          },
+          data: {
+            status: ProgressStatus.COMPLETED,
+            completedAt: new Date(),
+            scoreAchieved: dto.score,
+            scoreEnteredByUserId: null,
+          },
+        });
+        if (claimed.count !== 1) {
+          const current = await tx.teamStationProgress.findUniqueOrThrow({
+            where: { id: progress.id },
+          });
+          if (current.completedAt && current.scoreAchieved === dto.score) {
+            return { progress: current, transitioned: false };
+          }
+          throw this.playerError(
+            HttpStatus.CONFLICT,
+            PLAYER_ERROR_CODES.scoreConflict,
+            'Progress score was already submitted',
+          );
+        }
+        await tx.team.update({
+          where: { id: teamId },
+          data: {
+            totalPoints: { increment: dto.score },
+            totalPlaySeconds: { increment: playSeconds },
+          },
+        });
+        await tx.scoreEvent.create({
+          data: {
+            teamId,
+            progressId: progress.id,
+            stationId,
+            scoreBefore,
+            scoreAfter,
+            delta: dto.score,
+            reason: dto.reason,
+          },
+        });
+        return {
+          progress: await tx.teamStationProgress.findUniqueOrThrow({
+            where: { id: progress.id },
+          }),
+          transitioned: true,
+        };
       });
-      if (claimed.count !== 1) {
-        throw new BadRequestException('Progress score was already submitted');
-      }
-      await tx.team.update({
-        where: { id: teamId },
-        data: {
-          totalPoints: { increment: dto.score },
-          totalPlaySeconds: { increment: playSeconds },
-        },
-      });
-      await tx.scoreEvent.create({
-        data: {
-          teamId,
-          progressId: progress.id,
-          stationId,
-          scoreBefore,
-          scoreAfter,
-          delta: dto.score,
-          reason: dto.reason,
-        },
-      });
-      return tx.teamStationProgress.findUniqueOrThrow({ where: { id: progress.id } });
-    });
 
-    await this.activityLog.log({
-      actorType: ActorType.TEAM,
-      actorId: teamId,
-      action: 'SUBMIT_SCORE_BY_STAFF_ON_TEAM_DEVICE',
-      entityType: 'TEAM_STATION_PROGRESS',
-      entityId: progress.id,
-      metadata: { stationId, score: dto.score, reason: dto.reason ?? null },
-    });
-    return updated;
+      if (result.transitioned) {
+        await this.activityLog.log({
+          actorType: ActorType.TEAM,
+          actorId: teamId,
+          action: 'SUBMIT_SCORE_BY_STAFF_ON_TEAM_DEVICE',
+          entityType: 'TEAM_STATION_PROGRESS',
+          entityId: progress.id,
+          metadata: { stationId, score: dto.score, reason: dto.reason ?? null },
+        });
+      }
+      return result.progress;
+    } catch (error) {
+      if (this.isConcurrentTransitionError(error)) {
+        const current = await this.prisma.teamStationProgress.findUnique({
+          where: { id: progress.id },
+        });
+        if (current?.completedAt && current.scoreAchieved === dto.score) {
+          return current;
+        }
+        throw this.playerError(
+          HttpStatus.CONFLICT,
+          PLAYER_ERROR_CODES.scoreConflict,
+          'Progress score was already submitted',
+        );
+      }
+      throw error;
+    }
   }
 
   private async getProgressForAction(teamId: number, stationId: string) {
@@ -472,7 +909,11 @@ export class PlayerService {
       include: { station: true, team: true, game: true },
     });
     if (!progress) {
-      throw new NotFoundException('Progress not found for team/station');
+      throw this.playerError(
+        HttpStatus.NOT_FOUND,
+        PLAYER_ERROR_CODES.progressNotFound,
+        'Progress not found for team/station',
+      );
     }
     return progress;
   }
@@ -481,7 +922,11 @@ export class PlayerService {
     const token = await this.validateStationQrToken(rawToken);
 
     if (token.purpose !== expectedPurpose) {
-      throw new ForbiddenException('QR token purpose mismatch');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.qrPurposeMismatch,
+        'QR token purpose mismatch',
+      );
     }
 
     return token;
@@ -496,30 +941,140 @@ export class PlayerService {
     });
 
     if (!token || !(await bcrypt.compare(normalizedToken, token.tokenHash))) {
-      throw new ForbiddenException('Invalid QR token');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.qrInvalid,
+        'Invalid QR token',
+      );
     }
     if (!token.isActive || token.revokedAt) {
-      throw new ForbiddenException('QR token has been revoked');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.qrRevoked,
+        'QR token has been revoked',
+      );
     }
     if (token.expiresAt && token.expiresAt <= new Date()) {
-      throw new ForbiddenException('QR token has expired');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.qrExpired,
+        'QR token has expired',
+      );
     }
     if (!token.station.isActive) {
-      throw new ForbiddenException('Station is inactive');
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.stationInactive,
+        'Station is inactive',
+      );
     }
 
     return token;
   }
 
+  private async assertStationsOpen() {
+    if (await this.eventConfig.isPastEventEnd()) {
+      throw this.playerError(
+        HttpStatus.FORBIDDEN,
+        PLAYER_ERROR_CODES.stationsClosed,
+        'Stations are closed',
+      );
+    }
+  }
+
+  private playerError(
+    status: HttpStatus,
+    code: PlayerErrorCode,
+    message: string,
+  ) {
+    return new PlayerActionException(status, code, message);
+  }
+
+  private isConcurrentTransitionError(error: unknown) {
+    return (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      (error.code === 'P2002' || error.code === 'P2034')
+    );
+  }
+
+  private buildCatalogVersion(
+    stations: Array<{
+      id: string;
+      updatedAt: Date;
+      games: Array<{ id: number; updatedAt: Date }>;
+      images: Array<{ id: number; updatedAt: Date }>;
+    }>,
+  ) {
+    const versionInput = stations.map((station) => ({
+      id: station.id,
+      updatedAt: station.updatedAt.toISOString(),
+      games: station.games.map((game) => [
+        game.id,
+        game.updatedAt.toISOString(),
+      ]),
+      images: station.images.map((image) => [
+        image.id,
+        image.updatedAt.toISOString(),
+      ]),
+    }));
+    return createHash('sha256')
+      .update(JSON.stringify(versionInput))
+      .digest('hex');
+  }
+
+  private async getFinalSubmissionState(
+    finalChallengeId: number,
+    teamId: number,
+    now: Date,
+  ) {
+    const [correctSubmission, wrongAttemptCount, latestWrongSubmission] =
+      await Promise.all([
+        this.prisma.finalSubmission.findFirst({
+          where: { finalChallengeId, teamId, isCorrect: true },
+          select: { id: true },
+        }),
+        this.prisma.finalSubmission.count({
+          where: { finalChallengeId, teamId, isCorrect: false },
+        }),
+        this.prisma.finalSubmission.findFirst({
+          where: { finalChallengeId, teamId, isCorrect: false },
+          orderBy: { submittedAt: 'desc' },
+          select: { submittedAt: true },
+        }),
+      ]);
+    const cooldownSeconds = Math.min(wrongAttemptCount, 10);
+    const nextAttemptAt = latestWrongSubmission
+      ? new Date(
+          latestWrongSubmission.submittedAt.getTime() + cooldownSeconds * 1000,
+        )
+      : null;
+    return {
+      hasCorrectSubmission: Boolean(correctSubmission),
+      isCoolingDown: Boolean(nextAttemptAt && nextAttemptAt > now),
+    };
+  }
+
   private validateScoreValue(score: number, maxPoints: number) {
     if (!Number.isInteger(score)) {
-      throw new BadRequestException('Score must be an integer');
+      throw this.playerError(
+        HttpStatus.BAD_REQUEST,
+        PLAYER_ERROR_CODES.scoreInvalid,
+        'Score must be an integer',
+      );
     }
     if (score < 0) {
-      throw new BadRequestException('Score must be at least 0');
+      throw this.playerError(
+        HttpStatus.BAD_REQUEST,
+        PLAYER_ERROR_CODES.scoreInvalid,
+        'Score must be at least 0',
+      );
     }
     if (score > maxPoints) {
-      throw new BadRequestException('Score exceeds game max points');
+      throw this.playerError(
+        HttpStatus.BAD_REQUEST,
+        PLAYER_ERROR_CODES.scoreInvalid,
+        'Score exceeds game max points',
+      );
     }
   }
 

@@ -6,9 +6,20 @@ import {
   apiPatch,
   apiPost,
   apiRequest,
+  getStoredSessionPrincipalKey,
+  isCompatibilityFallback,
 } from "./apiClient"
+import {
+  runSingleFlight,
+  StaleSessionResponseError,
+} from "./runtimeCoordinator"
 
-export {ApiError, isAuthFailure} from "./apiClient"
+export {
+  ApiError,
+  getSafeApiErrorTranslationKey,
+  isAuthFailure,
+  isCompatibilityFallback,
+} from "./apiClient"
 
 export type UserLoginResponse = {
   accessToken: string
@@ -162,6 +173,56 @@ export type PlayerProgressResponse = {
   game?: PlayerStationResponse['game']
 }
 
+export type PlayerCatalogStationResponse = {
+  id: string
+  name: string
+  description: string | null
+  mapX: number | null
+  mapY: number | null
+  trackingMode: StationTrackingMode
+  imageCount: number
+  game: {
+    id: string
+    title: string
+    type: GameType
+    difficulty: number
+    maxPoints: number
+    clueText: string | null
+    mediaUrl: string | null
+  } | null
+}
+
+export type PlayerCatalogResponse = {
+  catalogVersion: string
+  stations: PlayerCatalogStationResponse[]
+}
+
+export type PlayerStateProgressResponse = Omit<
+  PlayerProgressResponse,
+  'teamId' | 'game'
+>
+
+export type PlayerStateResponse = {
+  catalogVersion: string
+  serverNow: string
+  team: PlayerDashboardResponse['team']
+  completedStations: number
+  progress: PlayerStateProgressResponse[]
+  final: {
+    isOpen: boolean
+    canSubmit: boolean
+    blockedByActiveStation: boolean
+    activeStationId: string | null
+    finalStartsAt: string
+    eventEndTime: string
+  }
+}
+
+export type PlayerStationImagesResponse = {
+  stationId: string
+  imageUrls: string[]
+}
+
 export type LeaderboardEntryResponse = {
   rank: number
   teamId: number
@@ -183,13 +244,34 @@ export async function getPlayerProgress(language: SupportedLanguage = "vi"): Pro
   return apiGet<PlayerProgressResponse[]>(`/api/player/progress?lang=${encodeURIComponent(language)}`)
 }
 
+export async function getPlayerCatalog(
+  language: SupportedLanguage = 'vi',
+): Promise<PlayerCatalogResponse> {
+  return apiGet<PlayerCatalogResponse>(
+    `/api/player/catalog?lang=${encodeURIComponent(language)}`,
+  )
+}
+
+export async function getPlayerState(): Promise<PlayerStateResponse> {
+  return apiGet<PlayerStateResponse>('/api/player/state')
+}
+
+export async function getPlayerStationImages(
+  stationId: string,
+): Promise<PlayerStationImagesResponse> {
+  return apiGet<PlayerStationImagesResponse>(
+    `/api/player/stations/${encodeURIComponent(stationId)}/images`,
+  )
+}
+
 export type StationPlayingCountResponse = {
   stationId: string
   playingTeamCount: number
 }
 
 export async function getPlayerStationPlayingCounts(): Promise<StationPlayingCountResponse[]> {
-  return apiGet<StationPlayingCountResponse[]>('/api/player/stations/playing-counts')
+  return runPlayerRead('player-playing-counts', () =>
+    apiGet<StationPlayingCountResponse[]>('/api/player/stations/playing-counts'))
 }
 
 export type PlayerQrActionResponse = {
@@ -448,6 +530,29 @@ export const cancelPlayerStation = (stationId: string) =>
 export const getLeaderboard = () =>
   apiGet<LeaderboardEntryResponse[]>('/api/leaderboard')
 
+async function runPlayerRead<T>(key: string, request: () => Promise<T>) {
+  const principalKey = getStoredSessionPrincipalKey()
+  return runSingleFlight(`${key}:${principalKey ?? 'anonymous'}`, async () => {
+    const result = await request()
+    if (getStoredSessionPrincipalKey() !== principalKey) {
+      throw new StaleSessionResponseError()
+    }
+    return result
+  })
+}
+
+export const getPlayerLeaderboard = () =>
+  runPlayerRead('player-leaderboard', async () => {
+    try {
+      return await apiGet<LeaderboardEntryResponse[]>('/api/player/leaderboard')
+    } catch (error) {
+      if (!isCompatibilityFallback(error)) {
+        throw error
+      }
+      return getLeaderboard()
+    }
+  })
+
 export type FinalResponse = {
   id: number; title: string; clueText: string | null; startsAt: string
   eventEndTime: string; finalStartsAt: string; maxWinners: number; pointsByRank: number[]; isOpen: boolean
@@ -459,7 +564,8 @@ export type FinalSubmissionResponse = {
   id: number; teamId: number; isCorrect: boolean; winnerRank: number | null
   pointsAwarded: number; submittedAt: string
 }
-export const getPlayerFinal = () => apiGet<FinalResponse>('/api/player/final')
+export const getPlayerFinal = () =>
+  runPlayerRead('player-final', () => apiGet<FinalResponse>('/api/player/final'))
 export const submitFinalAnswer = (answer: string) =>
   apiPost<FinalSubmissionResponse>('/api/player/final/submit', {answer})
 

@@ -2,9 +2,9 @@ import {Button, Result, Spin, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import {loginWithQrToken} from "../api";
+import {ApiError, loginWithQrToken} from "../api";
 import {LanguageSwitch} from "../components/LanguageSwitch";
-import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
+import {fetchPlayerDatabase} from "../playerData";
 import {useMovementStore} from "../store";
 
 type QrLoginState =
@@ -17,9 +17,10 @@ function extractQrToken(search: string) {
 }
 
 function getQrLoginError(error: unknown, t: (key: string) => string): QrLoginState {
-  const message = error instanceof Error ? error.message : "";
+  const errorCode =
+    error instanceof ApiError ? error.backendCode ?? error.reason : null;
 
-  if (message.includes("QR_LOGIN_CONSUMED")) {
+  if (errorCode === "QR_LOGIN_CONSUMED") {
     return {
       type: "error",
       title: t("qrLogin.consumedTitle"),
@@ -27,7 +28,7 @@ function getQrLoginError(error: unknown, t: (key: string) => string): QrLoginSta
       canRetry: false,
     };
   }
-  if (message.includes("QR_LOGIN_REVOKED")) {
+  if (errorCode === "QR_LOGIN_REVOKED") {
     return {
       type: "error",
       title: t("qrLogin.revokedTitle"),
@@ -35,7 +36,7 @@ function getQrLoginError(error: unknown, t: (key: string) => string): QrLoginSta
       canRetry: false,
     };
   }
-  if (message.includes("QR_LOGIN_INACTIVE_TEAM")) {
+  if (errorCode === "QR_LOGIN_INACTIVE_TEAM") {
     return {
       type: "error",
       title: t("qrLogin.inactiveTitle"),
@@ -43,7 +44,7 @@ function getQrLoginError(error: unknown, t: (key: string) => string): QrLoginSta
       canRetry: false,
     };
   }
-  if (message.includes("QR_LOGIN_RATE_LIMITED")) {
+  if (errorCode === "QR_LOGIN_RATE_LIMITED") {
     return {
       type: "error",
       title: t("qrLogin.rateLimitedTitle"),
@@ -51,7 +52,7 @@ function getQrLoginError(error: unknown, t: (key: string) => string): QrLoginSta
       canRetry: true,
     };
   }
-  if (message.includes("QR_LOGIN_INVALID")) {
+  if (errorCode === "QR_LOGIN_INVALID") {
     return {
       type: "error",
       title: t("qrLogin.invalidTitle"),
@@ -129,7 +130,6 @@ export function QrLoginPage() {
         accessToken: teamResponse.accessToken,
         expiresAt: teamResponse.expiresAt,
       });
-      preloadPlayerMapImage();
       try {
         loadDatabase(await fetchPlayerDatabase(i18n.language === "en" ? "en" : "vi"));
       } catch {

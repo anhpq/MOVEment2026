@@ -1,5 +1,5 @@
 import * as ExcelJS from 'exceljs';
-import { compareTeamResultRows } from './team-results.service';
+import { compareTeamResultRows, TeamResultsService } from './team-results.service';
 import { buildTeamResultsWorkbook, formatHcmcTimestampForFileName } from './team-results-excel';
 
 const baseRow = {
@@ -132,6 +132,78 @@ describe('Team Results ranking and Excel', () => {
   it('formats filename timestamp in Asia/Ho_Chi_Minh', () => {
     expect(formatHcmcTimestampForFileName(new Date('2026-08-21T17:59:58.000Z'))).toBe(
       '20260822-005958',
+    );
+  });
+});
+
+describe('TeamResultsService lean leaderboard', () => {
+  it('uses the shared comparator and returns only Team UI fields', async () => {
+    const prisma = {
+      team: {
+        findMany: jest.fn().mockResolvedValue([
+          {
+            id: 1,
+            name: 'Team 1',
+            totalPoints: 100,
+            totalPlaySeconds: 300,
+            progress: [
+              {
+                completedAt: new Date('2026-07-29T01:05:00.000Z'),
+                station: { name: 'Station 1' },
+              },
+            ],
+          },
+          {
+            id: 2,
+            name: 'Team 2',
+            totalPoints: 100,
+            totalPlaySeconds: 300,
+            progress: [
+              {
+                completedAt: new Date('2026-07-29T01:04:00.000Z'),
+                station: { name: 'Station 2' },
+              },
+            ],
+          },
+        ]),
+      },
+      finalChallenge: {
+        findFirst: jest.fn().mockResolvedValue({ id: 9 }),
+      },
+      finalSubmission: {
+        findMany: jest.fn().mockResolvedValue([
+          {
+            teamId: 2,
+            submittedAt: new Date('2026-07-29T02:00:00.000Z'),
+          },
+        ]),
+      },
+    };
+    const service = new TeamResultsService(prisma as never);
+
+    const leaderboard = await service.getLeanLeaderboard();
+
+    expect(leaderboard).toEqual([
+      {
+        rank: 1,
+        teamId: 2,
+        teamName: 'Team 2',
+        totalPoints: 100,
+        completedStations: 1,
+        totalPlaySeconds: 300,
+      },
+      {
+        rank: 2,
+        teamId: 1,
+        teamName: 'Team 1',
+        totalPoints: 100,
+        completedStations: 1,
+        totalPlaySeconds: 300,
+      },
+    ]);
+    expect(JSON.stringify(leaderboard)).not.toContain('username');
+    expect(prisma.team.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ select: expect.any(Object) }),
     );
   });
 });

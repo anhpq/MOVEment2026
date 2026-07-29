@@ -22,6 +22,12 @@ export const translationResources = {
         final: "Final",
         map: "Bản đồ",
       },
+      route: {
+        loading: "Đang tải màn hình...",
+        chunkErrorTitle: "Không thể tải màn hình",
+        chunkErrorDescription: "Kết nối có thể bị gián đoạn hoặc ứng dụng vừa được cập nhật. Hãy thử lại.",
+        retry: "Thử lại",
+      },
       auth: {
         username: "Tên đăng nhập",
         password: "Mật khẩu",
@@ -130,6 +136,10 @@ export const translationResources = {
       },
       stationData: {
         refreshFailed: "Không tải được dữ liệu Station theo ngôn ngữ mới. Đang giữ dữ liệu hiện tại.",
+        loadFailedTitle: "Không thể tải dữ liệu đội",
+        loadFailedDescription: "Vui lòng kiểm tra kết nối rồi thử lại. Dữ liệu cũ sẽ được giữ khi có thể.",
+        loading: "Đang tải dữ liệu đội và Station...",
+        imagesLoadFailed: "Không thể tải ảnh Station. Vui lòng thử lại.",
       },
       systemConfig: {
         stationList: "Danh sách Station ({{count}})",
@@ -217,6 +227,11 @@ export const translationResources = {
       },
       errors: {
         generic: "Có lỗi xảy ra. Vui lòng thử lại.",
+        network: "Không thể kết nối tới máy chủ. Hãy kiểm tra mạng rồi thử lại.",
+        timeout: "Yêu cầu mất quá nhiều thời gian. Vui lòng thử lại.",
+        sessionExpired: "Phiên đăng nhập không còn hiệu lực. Vui lòng đăng nhập lại.",
+        rateLimited: "Bạn thao tác quá nhanh. Vui lòng chờ rồi thử lại.",
+        serviceUnavailable: "Máy chủ đang bận. Vui lòng thử lại sau.",
         checkInRequired: "Vui lòng quét hoặc nhập Check-in QR token",
         checkInFailed: "Check-in thất bại",
         checkOutRequired: "Vui lòng nhập hoặc quét Check-out QR token",
@@ -360,9 +375,12 @@ export const translationResources = {
         title: "Bảng xếp hạng",
         empty: "Chưa có dữ liệu xếp hạng",
         currentTeam: "Đội của bạn",
+        staleData: "Không thể cập nhật bảng xếp hạng. Đang hiển thị dữ liệu gần nhất.",
       },
       final: {
         heading: "Thử thách cuối cùng",
+        loadFailed: "Không thể tải trạng thái Final. Vui lòng kiểm tra kết nối rồi thử lại.",
+        staleData: "Không thể cập nhật Final. Đang hiển thị trạng thái gần nhất.",
         loadingTitle: "Đang tải Thử thách cuối cùng",
         loadingDescription: "Đang kiểm tra trạng thái sự kiện...",
         notOpenTitle: "Thử thách cuối cùng chưa mở",
@@ -439,6 +457,12 @@ export const translationResources = {
         stations: "Stations",
         final: "Final",
         map: "Map",
+      },
+      route: {
+        loading: "Loading screen...",
+        chunkErrorTitle: "Unable to load this screen",
+        chunkErrorDescription: "Your connection may have been interrupted or the app was just updated. Please try again.",
+        retry: "Retry",
       },
       auth: {
         username: "Username",
@@ -548,6 +572,10 @@ export const translationResources = {
       },
       stationData: {
         refreshFailed: "Could not load station data for the new language. Keeping the current data.",
+        loadFailedTitle: "Unable to load team data",
+        loadFailedDescription: "Check your connection and try again. Existing data is kept when available.",
+        loading: "Loading team and station data...",
+        imagesLoadFailed: "Unable to load station images. Please try again.",
       },
       systemConfig: {
         stationList: "Station list ({{count}})",
@@ -635,6 +663,11 @@ export const translationResources = {
       },
       errors: {
         generic: "Something went wrong. Please try again.",
+        network: "Unable to reach the server. Check your connection and try again.",
+        timeout: "The request took too long. Please try again.",
+        sessionExpired: "Your session is no longer valid. Please sign in again.",
+        rateLimited: "Too many requests. Please wait and try again.",
+        serviceUnavailable: "The server is busy. Please try again shortly.",
         checkInRequired: "Please scan or enter the check-in QR token",
         checkInFailed: "Check-in failed",
         checkOutRequired: "Please enter or scan the check-out QR token",
@@ -778,9 +811,12 @@ export const translationResources = {
         title: "Leaderboard",
         empty: "No ranking data",
         currentTeam: "Your team",
+        staleData: "Unable to refresh the leaderboard. Showing the latest available data.",
       },
       final: {
         heading: "Final Challenge",
+        loadFailed: "Unable to load Final status. Check your connection and try again.",
+        staleData: "Unable to refresh Final. Showing the latest available status.",
         loadingTitle: "Loading Final Challenge",
         loadingDescription: "Checking the event status...",
         notOpenTitle: "Final Challenge is not open yet",

@@ -20,13 +20,14 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {
+  getSafeApiErrorTranslationKey,
   isAuthFailure,
   loginTeam,
   loginTeamWithQr,
   loginUser,
   loginWithQrToken,
 } from "../api";
-import {fetchPlayerDatabase, preloadPlayerMapImage} from "../playerData";
+import {fetchPlayerDatabase} from "../playerData";
 import {
   createQrFrameDetector,
   openQrCameraStream,
@@ -207,7 +208,6 @@ export function LoginPage() {
           accessToken: teamResponse.accessToken,
           expiresAt: teamResponse.expiresAt,
         });
-        preloadPlayerMapImage();
         try {
           loadDatabase(await fetchPlayerDatabase(i18n.language === "en" ? "en" : "vi"));
         } catch {
@@ -240,9 +240,11 @@ export function LoginPage() {
         : "/stations",
       );
     } catch (error) {
-      const messageText =
-        error instanceof Error ? error.message : t("auth.invalidCredentials");
-      message.error(messageText || t("auth.invalidCredentials"));
+      message.error(t(getSafeApiErrorTranslationKey(
+        error,
+        "auth.invalidCredentials",
+        "auth.invalidCredentials",
+      )));
     } finally {
       setIsSubmitting(false);
     }
@@ -274,7 +276,6 @@ export function LoginPage() {
         accessToken: teamResponse.accessToken,
         expiresAt: teamResponse.expiresAt,
       });
-      preloadPlayerMapImage();
       try {
         loadDatabase(await fetchPlayerDatabase(i18n.language === "en" ? "en" : "vi"));
       } catch {
@@ -285,9 +286,11 @@ export function LoginPage() {
       message.success(t("auth.qrLoginSuccess"));
       navigate("/stations/map");
     } catch (error) {
-      const messageText =
-        error instanceof Error ? error.message : t("auth.invalidQr");
-      message.error(messageText || t("auth.invalidQr"));
+      message.error(t(getSafeApiErrorTranslationKey(
+        error,
+        "auth.invalidQr",
+        "auth.invalidQr",
+      )));
     } finally {
       qrSubmittingRef.current = false;
       setIsSubmitting(false);
@@ -367,28 +370,22 @@ export function LoginPage() {
               void submitQrPayload(firstCode);
             }
           })
-          .catch((error: unknown) => {
+          .catch(() => {
             if (scanRunRef.current === scanRun) {
               stopQrScanner();
-              const messageText =
-                error instanceof Error ?
-                  error.message
-                : t("auth.qrScanFailed");
-              message.error(messageText);
+              message.error(t("auth.qrScanFailed"));
             }
           })
           .finally(() => {
             isDetecting = false;
           });
       }, 500);
-    } catch (error) {
+    } catch {
       if (scanRunRef.current !== scanRun || !scannerActiveRef.current) {
         return;
       }
       stopQrScanner();
-      const messageText =
-        error instanceof Error ? error.message : t("auth.cameraStartFailed");
-      message.error(messageText);
+      message.error(t("auth.cameraStartFailed"));
     }
   };
 

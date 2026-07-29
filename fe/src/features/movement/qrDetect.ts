@@ -65,9 +65,15 @@ export function normalizeDecodedQrValue(rawValue: string): string {
 
 export function createQrFrameDetector(): QrFrameDetector {
   const Detector = getBarcodeDetector();
-  const barcodeDetector = Detector
-    ? new Detector({formats: ["qr_code"]})
-    : null;
+  let barcodeDetector: BarcodeDetectorLike | null = null;
+  if (Detector) {
+    try {
+      barcodeDetector = new Detector({formats: ["qr_code"]});
+    } catch {
+      // Some browsers expose BarcodeDetector but reject QR initialization.
+      // Canvas/jsQR remains the supported decoder fallback.
+    }
+  }
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d", {willReadFrequently: true});
   let disposed = false;

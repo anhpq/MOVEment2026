@@ -3,11 +3,16 @@ import {
   Controller,
   ForbiddenException,
   Get,
+  Header,
+  HttpStatus,
   Param,
   Post,
   Query,
+  Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { CurrentAuth } from '../../common/auth/auth.decorators';
 import { AuthContext, isTeam } from '../../common/auth/auth-context';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard';
@@ -25,6 +30,34 @@ export class PlayerController {
     return this.playerService.getDashboard(this.requireTeam(auth));
   }
 
+  @Get('catalog')
+  async getCatalog(
+    @CurrentAuth() auth: AuthContext,
+    @Query('lang') lang: string | undefined,
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    this.requireTeam(auth);
+    const catalog = await this.playerService.getCatalog(lang);
+    const locale = lang?.trim().toLowerCase() === 'en' ? 'en' : 'vi';
+    if (
+      this.applyPrivateCache(
+        request,
+        response,
+        `${catalog.catalogVersion}-${locale}`,
+      )
+    ) {
+      return;
+    }
+    return catalog;
+  }
+
+  @Get('state')
+  @Header('Cache-Control', 'no-store')
+  getState(@CurrentAuth() auth: AuthContext) {
+    return this.playerService.getState(this.requireTeam(auth));
+  }
+
   @Get('stations')
   getStations(@CurrentAuth() auth: AuthContext, @Query('lang') lang?: string) {
     return this.playerService.getStations(this.requireTeam(auth), lang);
@@ -34,6 +67,37 @@ export class PlayerController {
   getStationPlayingCounts(@CurrentAuth() auth: AuthContext) {
     this.requireTeam(auth);
     return this.playerService.getStationPlayingCounts();
+  }
+
+  @Get('stations/:stationId/images')
+  async getStationImages(
+    @CurrentAuth() auth: AuthContext,
+    @Param('stationId') stationId: string,
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    this.requireTeam(auth);
+    const [images, catalogVersion] = await Promise.all([
+      this.playerService.getStationImages(stationId),
+      this.playerService.getCatalogVersion(),
+    ]);
+    if (
+      this.applyPrivateCache(
+        request,
+        response,
+        `${catalogVersion}-${stationId}`,
+      )
+    ) {
+      return;
+    }
+    return images;
+  }
+
+  @Get('leaderboard')
+  @Header('Cache-Control', 'no-store')
+  getPlayerLeaderboard(@CurrentAuth() auth: AuthContext) {
+    this.requireTeam(auth);
+    return this.playerService.getPlayerLeaderboard();
   }
 
   @Get('progress')
@@ -88,5 +152,20 @@ export class PlayerController {
       throw new ForbiddenException('Team token required');
     }
     return auth.id;
+  }
+
+  private applyPrivateCache(
+    request: Request,
+    response: Response,
+    version: string,
+  ) {
+    const etag = `"${version}"`;
+    response.setHeader('Cache-Control', 'private, max-age=300, must-revalidate');
+    response.setHeader('ETag', etag);
+    if (request.header('If-None-Match') === etag) {
+      response.status(HttpStatus.NOT_MODIFIED).end();
+      return true;
+    }
+    return false;
   }
 }

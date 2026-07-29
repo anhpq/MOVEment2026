@@ -85,6 +85,7 @@ export function getLocalizedTeamName(teamName: string, language: "vi" | "en") {
 }
 
 export const DEFAULT_DATABASE: LocalDatabase = {
+  dataSessionKey: null,
   activeTeamId: "",
   teams: [],
   authAccounts: [],
@@ -218,26 +219,10 @@ function computeTeamStats(team: Team, teamStations: TeamStation[]) {
   const completedStations = teamStations.filter(
     (station) => station.status === "Finished",
   );
-  const score = completedStations.reduce(
-    (total, station) => total + station.score,
-    0,
-  );
-  const totalTimeMinutes = completedStations.reduce((total, station) => {
-    if (!station.startTime || !station.endTime) {
-      return total;
-    }
-
-    const duration =
-      new Date(station.endTime).getTime() -
-      new Date(station.startTime).getTime();
-    return total + Math.max(1, Math.round(duration / 60_000));
-  }, 0);
 
   return {
     ...team,
-    score,
     finish: completedStations.length,
-    totalTimeMinutes,
   };
 }
 
@@ -284,6 +269,7 @@ export function normalizeDatabaseSeed(seed?: LocalDatabaseSeed): LocalDatabase {
     : (teams[0]?.id ?? DEFAULT_DATABASE.activeTeamId);
 
   return {
+    dataSessionKey: seed?.dataSessionKey ?? null,
     activeTeamId,
     stationDefinitions,
     teams,

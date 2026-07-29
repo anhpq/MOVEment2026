@@ -43,6 +43,7 @@ export type StationDefinition = {
   durationMinutes?: number;
   youtubeUrl?: string | null;
   imageUrls?: string[];
+  imageCount?: number;
   latitude?: number | null;
   longitude?: number | null;
   markerX?: number | null;
@@ -63,6 +64,7 @@ export type TeamStation = {
   trackingMode: StationTrackingMode;
   youtubeUrl?: string | null;
   imageUrls: string[];
+  imageCount?: number;
   score: number;
   startTime: string | null;
   endTime: string | null;
@@ -149,6 +151,7 @@ export type SqlTeamStationProgress = {
 };
 
 export type LocalDatabaseSeed = {
+  dataSessionKey?: string | null;
   activeTeamId?: string;
   teams?: Team[];
   authAccounts?: AuthAccount[];
@@ -160,6 +163,7 @@ export type LocalDatabaseSeed = {
 };
 
 export type LocalDatabase = {
+  dataSessionKey: string | null;
   activeTeamId: string;
   teams: Team[];
   authAccounts: AuthAccount[];
@@ -169,6 +173,7 @@ export type LocalDatabase = {
 
 export type MovementStore = {
   session: Session | null;
+  dataSessionKey: string | null;
   activeTeamId: string;
   teams: Team[];
   authAccounts: AuthAccount[];
@@ -176,6 +181,7 @@ export type MovementStore = {
   teamStations: Record<string, TeamStation[]>;
   loadDatabase: (seed: LocalDatabaseSeed) => void;
   login: (session: Session) => void;
+  syncSession: (session: Session | null) => void;
   logout: () => void;
   setActiveTeam: (teamId: string) => void;
   startStation: (teamId: string, stationId: string) => void;

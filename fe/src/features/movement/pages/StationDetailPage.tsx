@@ -46,7 +46,7 @@ import {
 import {QrTokenInput} from "../components/QrTokenInput";
 import {StationImageGallery} from "../components/StationImageGallery";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
-import {fetchPlayerDatabase} from "../playerData";
+import {executePlayerMutation} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
 import "./StationDetailPage.css";
 
@@ -159,10 +159,6 @@ export function StationDetailPage() {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const refreshPlayerData = async () => {
-    loadDatabase(await fetchPlayerDatabase());
-  };
-
   const refreshAdminData = async () => {
     loadDatabase(await fetchAdminDatabase());
   };
@@ -204,8 +200,10 @@ export function StationDetailPage() {
     isSubmittingCheckOutRef.current = true;
     setIsSubmittingCheckOut(true);
     try {
-      await checkOutStation(station.stationId, token);
-      await refreshPlayerData();
+      await executePlayerMutation(
+        () => checkOutStation(station.stationId, token),
+        language,
+      );
       setCheckOutQrToken("");
       setIsFinishScannerOpen(false);
       if (station.trackingMode === "TIME") {
@@ -321,7 +319,11 @@ export function StationDetailPage() {
                 onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
                 {t("common.watchVideo")}
               </Button>
-              <StationImageGallery imageUrls={station.imageUrls} />
+              <StationImageGallery
+                stationId={station.stationId}
+                imageCount={station.imageCount}
+                imageUrls={station.imageUrls}
+              />
               <Button
                 block
                 type="primary"
@@ -337,8 +339,10 @@ export function StationDetailPage() {
               icon={<ReloadOutlined />}
               onClick={async () => {
                 try {
-                  await cancelPlayerStation(station.stationId);
-                  await refreshPlayerData();
+                  await executePlayerMutation(
+                    () => cancelPlayerStation(station.stationId),
+                    language,
+                  );
                   message.success(t("stationDetail.cancelled"));
                   navigate(isFromTeamV2 ? "/team/v2" : "/stations/map");
                 } catch {
@@ -574,21 +578,19 @@ export function StationDetailPage() {
 
                 setIsSubmittingScore(true);
                 try {
-                  await submitStationScore(
-                    station.stationId,
-                    values.score,
-                    values.reason,
+                  await executePlayerMutation(
+                    () => submitStationScore(
+                      station.stationId,
+                      values.score,
+                      values.reason,
+                    ),
+                    language,
                   );
-                  await refreshPlayerData();
                   message.success(t("stationDetail.completedSuccess"));
                   setIsScoreModalOpen(false);
                   await navigateAfterTeamStationFinished();
-                } catch (error: unknown) {
-                  message.error(
-                    error instanceof Error ?
-                      error.message
-                    : t("stationDetail.scoreSubmissionFailed"),
-                  );
+                } catch {
+                  message.error(t("stationDetail.scoreSubmissionFailed"));
                 } finally {
                   setIsSubmittingScore(false);
                 }
