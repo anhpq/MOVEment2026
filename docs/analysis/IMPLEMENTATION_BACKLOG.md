@@ -1,5 +1,30 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-29 Team runtime stability resume completion
+
+- [x] Review mutation reconciliation, session-principal isolation, polling
+  guards, and lean-to-legacy fallback after checkpoint `d952af55`.
+- [x] Restore Frontend dependencies from lockfile and make Vitest Web Storage
+  setup deterministic on Node v26.
+- [x] Add automated hidden/offline/non-overlap polling and one-refresh mutation
+  reconciliation coverage; Frontend Vitest passes `19/19`.
+- [x] Re-run Backend Jest `162/162`, Backend lint/build, Frontend lint, i18n
+  parity `388`, production build, and bundle gate.
+- [x] Pass production-like HTTPS smoke on a disposable database: 18 migrations,
+  seed twice, `db:verify`, auth/QR/scoring/Final/leaderboard, secret scan, and
+  production environment guards.
+- [x] Measure lean canonical payloads: state `3,885` bytes, catalog `5,908`
+  bytes, 17 Stations, and no catalog `imageUrls`.
+- [x] Reconcile production-like fixtures with bilingual Station DTO,
+  idempotent duplicate score behavior, TIME score `10`, and independent
+  `finalStartsAt`.
+- [ ] Manual responsive Team V1/V2 browser smoke and physical iOS/Android remain
+  pending.
+- [ ] Production migration/deploy/runtime verification remains pending and
+  requires explicit authorization.
+- [ ] React Router reports two high-severity advisories limited to unused
+  unstable RSC APIs; a breaking forced upgrade remains deferred.
+
 # 2026-07-28 Team Gameplay V2 parallel implementation
 
 - [x] Create and register `TEAM_GAMEPLAY_V2_ANALYSIS.md`.

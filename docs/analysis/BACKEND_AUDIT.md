@@ -1,3 +1,25 @@
+# 2026-07-29 Team runtime stability resume completion
+
+- Completed the post-checkpoint review of lean/legacy Player data, mutation
+  reconciliation, session-principal isolation, visible/online polling, and
+  route/heavy-module loading.
+- Added Node v26-safe Vitest Web Storage setup and tests for hidden/offline
+  polling, non-overlap, successful mutation reconciliation, and unknown mutation
+  outcome reconciliation.
+- Updated `scripts/production-like-smoke.ps1` for current bilingual Station DTO,
+  idempotent duplicate score behavior, TIME score `10`, separate
+  `finalStartsAt`, and lean payload assertions.
+- Verification passed: Backend Jest `162/162`, lint, build; Frontend Vitest
+  `19/19`, lint, i18n parity `388`, production build/bundle gate; disposable
+  PostgreSQL all 18 migrations, seed twice, `db:verify`, HTTPS authenticated
+  smoke, secret scan, and production environment guard.
+- Measured `/api/player/state` at `3,885` bytes and VI catalog at `5,908` bytes
+  with 17 Stations and no `imageUrls`. Initial static JavaScript remained
+  `203.27–203.28 KiB` gzip against the `420 KiB` limit.
+- Production deploy/runtime, physical iOS/Android, and manual responsive browser
+  verification were not performed. Two high-severity React Router RSC-only npm
+  advisories remain accepted without a breaking forced upgrade.
+
 # 2026-07-29 Team Gameplay V2 supplied-reference reconciliation
 
 - Reconciled only `/team/v2` to the supplied HTML reference: fixed cyan/green/

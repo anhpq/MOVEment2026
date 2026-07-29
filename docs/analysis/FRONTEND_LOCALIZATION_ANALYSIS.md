@@ -8,6 +8,17 @@
 | Runtime/Production Verification | Blocked: 2026-07-28 read-only smoke found stale/broken Production JS asset reference |
 | Browser/Manual Verification | Pending desktop/mobile smoke |
 
+## 2026-07-29 Runtime Stability Integration
+
+- Lean Player catalog requests remain language-aware and reload only when the
+  language or backend catalog version changes; legacy endpoints remain the
+  compatibility fallback for `404/405` only.
+- Team/Login surfaces map network, timeout, auth, rate-limit, and service errors
+  to safe VI/EN copy without rendering raw Backend text.
+- Frontend i18n parity passed with `388` keys and production-like local smoke
+  passed. The previously recorded Production asset issue and manual
+  desktop/mobile verification remain outside this local completion.
+
 ## Objective and Scope
 
 Deliver a Vietnamese/English runtime language switch for Team and Admin UI.

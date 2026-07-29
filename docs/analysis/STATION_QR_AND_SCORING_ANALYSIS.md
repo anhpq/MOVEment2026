@@ -5,8 +5,19 @@
 | Area | Status |
 | --- | --- |
 | Implementation | Completed |
-| Runtime/Production Verification | Pending verification |
+| Runtime/Production Verification | Production-like local QR/scoring smoke completed; Production pending |
 | Browser/Manual Verification | Pending verification |
+
+## 2026-07-29 Runtime Stability Integration
+
+- Check-in, check-out, cancel, unified QR action, and score transitions are
+  conditional/idempotent and protected by the database one-active-Station
+  invariant.
+- Frontend mutations are never automatically replayed and perform at most one
+  fresh state reconciliation after the POST.
+- Production-like local smoke verified wrong-purpose QR, SCORE/TIME/BOTH,
+  idempotent duplicate score completion, active-Station Final blocking, and
+  separate `finalStartsAt` behavior. Production/physical QR remain unverified.
 
 ## Objective and Scope
 

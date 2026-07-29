@@ -1,6 +1,7 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
 import {ApiError} from "./apiClient";
 import {
+  executePlayerMutation,
   fetchPlayerDatabase,
   loadPlayerMapImage,
   resetPlayerRuntimeCachesForTests,
@@ -162,6 +163,37 @@ describe("lean player projection", () => {
     await expect(fetchPlayerDatabase("vi")).rejects.toMatchObject({status: 503});
     expect(apiMocks.getPlayerDashboard).not.toHaveBeenCalled();
     expect(apiMocks.getPlayerStations).not.toHaveBeenCalled();
+  });
+});
+
+describe("player mutation reconciliation", () => {
+  it("runs one fresh state reconciliation after a successful mutation", async () => {
+    mockLeanResponses();
+    const mutation = vi.fn().mockResolvedValue({action: "CHECK_IN"});
+
+    await expect(executePlayerMutation(mutation, "vi")).resolves.toMatchObject({
+      result: {action: "CHECK_IN"},
+      reconciled: true,
+    });
+
+    expect(mutation).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getPlayerState).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getPlayerCatalog).toHaveBeenCalledTimes(1);
+  });
+
+  it("reconciles once before surfacing an unknown mutation outcome", async () => {
+    mockLeanResponses();
+    const error = new ApiError("safe", 0, "POST", "/api/player/qr-action", {
+      code: "NETWORK",
+      retryable: true,
+    });
+    const mutation = vi.fn().mockRejectedValue(error);
+
+    await expect(executePlayerMutation(mutation, "vi")).rejects.toBe(error);
+
+    expect(mutation).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getPlayerState).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getPlayerCatalog).toHaveBeenCalledTimes(1);
   });
 });
 

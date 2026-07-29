@@ -8,6 +8,18 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-29 Runtime Stability Integration
+
+- V2 state refresh now shares the Team runtime coordinator and polls every 15
+  seconds only while visible and online; requests never overlap.
+- Closed-overlay steady state uses the lean state request plus visible playing
+  counts, staying within the eight-periodic-GET-per-minute budget.
+- QR and score mutations execute once and perform at most one fresh state
+  reconciliation; transient reconciliation failure does not replay mutations.
+- Frontend tests cover hidden/offline polling and mutation reconciliation;
+  production-like local smoke passed. Physical devices and Production remain
+  unverified.
+
 ## Objective and Scope
 
 Add a parallel Team-only gameplay screen at `/team/v2` while preserving the

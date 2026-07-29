@@ -4,14 +4,32 @@
 
 | Area | Status |
 | --- | --- |
-| Implementation | In progress |
-| Runtime/Production Verification | Not performed |
-| Browser/Manual Verification | Pending |
+| Implementation | Completed locally |
+| Runtime/Production Verification | Production-like local smoke completed; Production not performed |
+| Browser/Manual Verification | Pending physical/responsive manual verification |
+
+## Resume Completion — 2026-07-29
+
+- Reviewed mutation reconciliation, session-principal isolation, polling guards,
+  and lean-to-legacy fallback behavior after the checkpoint.
+- Added deterministic Node v26-compatible Web Storage setup for Vitest plus
+  automated coverage for hidden/offline polling, non-overlap, and exactly one
+  state reconciliation after a successful or unknown-outcome mutation.
+- Production-like HTTPS smoke passed against a disposable PostgreSQL database:
+  all 18 migrations, seed twice, `db:verify`, auth/QR/scoring/Final/leaderboard,
+  secret scanning, and production environment guards.
+- Canonical payloads measured `3,885` bytes for `/api/player/state` and `5,908`
+  bytes for `/api/player/catalog?lang=vi`; catalog contained 17 Stations and no
+  `imageUrls`.
+- Final validation passed: Backend Jest `162/162`, lint, build; Frontend Vitest
+  `19/19`, i18n parity `388`, lint, production build, and bundle gate at
+  `203.27–203.28 KiB` initial gzip JavaScript.
+- Production runtime and physical iOS/Android verification remain unperformed.
 
 ## Execution Checkpoint — 2026-07-29 17:12 Asia/Saigon
 
-Work is intentionally paused so the workstation can be shut down. The current
-working state is captured in a local checkpoint commit for continuation.
+This historical checkpoint was resumed and completed by the verification and
+documentation pass recorded above.
 
 ### Completed before pause
 

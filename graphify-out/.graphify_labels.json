@@ -193,6 +193,7 @@
   "191": "final.service.spec.ts",
   "192": "Prompt Routing",
   "193": "Q: đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè",
+  "194": "17. Team Runtime Stability and Data Loading",
   "195": "migration.sql",
   "196": "migration.sql",
   "197": "migration.sql",
@@ -200,16 +201,7 @@
   "199": "migration.sql",
   "200": "migration.sql",
   "201": "migration.sql",
-  "202": "migration.sql",
   "203": "Q: be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau",
   "204": "Q: Implement Station Media Gallery and new action layout",
-  "205": "migration.sql",
-  "206": "migration.sql",
-  "207": "IMPLEMENTATION_BACKLOG.md",
-  "208": "migration.sql",
-  "209": "migration.sql",
-  "210": "migration.sql",
-  "211": "migration.sql",
-  "212": "migration.sql",
-  "213": "migration.sql"
+  "207": "IMPLEMENTATION_BACKLOG.md"
 }

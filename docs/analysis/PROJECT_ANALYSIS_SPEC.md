@@ -23,6 +23,13 @@ infrastructure, Login/QR/AppFrame and Admin System Config copy,
 Backend-projected Player Station content, and Admin bilingual Station editing.
 Full browser/manual verification remains pending.
 
+Team runtime now uses lean Player catalog/state/image/leaderboard projections,
+session-principal-owned data, visible/online non-overlapping 15-second polling,
+bounded GET retry, and one post-mutation state reconciliation. Existing Player
+APIs remain available for compatibility. A production-like local smoke measured
+the canonical state/catalog at 3,885/5,908 bytes and passed the full auth, QR,
+scoring, Final, leaderboard, migration, seed, and environment-guard flow.
+
 ## Product Scope
 
 MOVEment 2026 is a mobile-first station game web application.

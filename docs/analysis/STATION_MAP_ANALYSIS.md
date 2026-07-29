@@ -5,8 +5,18 @@
 | Area | Status |
 | --- | --- |
 | Implementation | Completed |
-| Runtime/Production Verification | Pending verification |
+| Runtime/Production Verification | Local automated build/cache/polling verification completed; Production pending |
 | Browser/Manual Verification | Pending verification |
+
+## 2026-07-29 Runtime Stability Integration
+
+- Team map data now comes from the lean catalog/state split; image URLs and map
+  image variants load lazily and rejected map image requests are evicted/retried.
+- Playing counts and state polling run only while their consumers are visible
+  and online, never overlap, and preserve last-known marker data on transient
+  failure.
+- Automated polling/cache tests and the production bundle gate pass; physical
+  responsive map verification remains pending.
 
 ## Objective and Scope
 
