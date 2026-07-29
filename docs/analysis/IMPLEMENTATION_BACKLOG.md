@@ -36,6 +36,22 @@
   captures at 390x844 and 844x390, including fixed-palette isolation across
   different Team colors, semantic score green, main-HUD opacity, and
   near-fullscreen Settings geometry.
+- [x] Replace only the V2 QR CTA with the inline-SVG 112/96/88px cyan/red badge;
+  preserve V1, Login, and shared `QrTokenInput` markup/lifecycle.
+- [x] Add the V2-only persistent scanner with camera auto-start, safe VI/EN
+  errors, manual fallback after failure, rejected-token suppression, 600ms
+  empty-frame re-arm, and full success/close/unmount cleanup.
+- [x] Override the higher-specificity global Team Color primary-button rule
+  inside `/team/v2` so scanner/manual primary controls keep the V2 blue gradient.
+- [x] Pass Chrome fake-camera smoke for responsive badge geometry/palette,
+  persistent rejection preview, held-token dedupe, different-token retry,
+  600ms re-arm, manual reject/accept, permission/playback fallback, and track/
+  decode cleanup. The accepted frontend path used a synthetic successful API
+  response; rejected paths used the local Backend.
+- [x] Pass Frontend `i18n:check` (`372` keys), lint, production build, and
+  `git diff --check`; retain the known non-blocking Vite large-chunk warning.
+- [ ] Complete physical HTTPS scan and camera-indicator cleanup verification on
+  iPhone Safari, Chrome iOS, and Android.
 - [ ] Confirm opacity persistence through logout/Team switch, Zalo launch, and
   old map/Admin route regressions in browser.
 - [ ] Review whether Team login/logout should be hidden before 2026-08-20; this

@@ -412,13 +412,26 @@ UI. The existing Station map exposes an explicit V2 entry button, and V2 can
 return to `/stations/map`.
 
 V2 reuses the existing Suoi Tien WebP map assets, Station coordinates, Team
-Station state, language persistence, QR scanner
-component, leaderboard API, and Team score submission API. Settings, Station
+Station state, language persistence, shared QR decode helpers, leaderboard API,
+and Team score submission API. Its `TeamV2QrScanner` is route-specific so API
+rejection can keep camera preview active without changing V1/Login scanner
+behavior. Settings, Station
 preview, and the V2 leaderboard use a device-local opacity setting stored in:
 
 ```text
 movement-team-v2-panel-opacity
 ```
+
+The V2 center QR CTA is an inline SVG/CSS badge with fixed cyan `#7DF9FF` and
+decorative lower red `#FF4D4F`. It renders at 112px landscape/desktop, 96px
+portrait, and 88px at viewport widths up to 360px. Its palette and V2 primary
+controls must override inherited Team Color rules locally.
+
+Opening the V2 scanner auto-starts the camera. Backend/API rejection keeps the
+healthy stream active, exposes safe localized feedback and manual input, and
+blocks the rejected token until a different token appears or the frame remains
+empty for at least 600ms. Success, close, and unmount stop all tracks and decode
+callbacks.
 
 Opacity applies to the whole overlay, including background, text, icons,
 buttons, and controls. The supported range is 50-100, with default 85.

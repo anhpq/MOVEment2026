@@ -88,7 +88,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `STATION_MAP_ANALYSIS.md` | Station map markers, position persistence, and WebP delivery. |
 | `STATION_MEDIA_GALLERY_ANALYSIS.md` | Ordered Station image URLs, Admin management, Player gallery, and action layout. |
 | `STATION_QR_AND_SCORING_ANALYSIS.md` | Station QR auto-submit, checkout, and scoring. |
-| `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, overlays, responsive HUD, and V2 navigation. |
+| `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, dedicated persistent scanner, QR badge, overlays, responsive HUD, and V2 navigation. |
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
 | `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
 
@@ -782,7 +782,8 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 - Fullscreen responsive neon HUD with exact `MOVEment 2026` center brand and
   centered/near-fullscreen Settings, scanner, score, preview, and Leaderboard overlays.
 - Shared map canvas reuse with existing Suoi Tien WebP variants and Station coordinates.
-- Unified Team Station QR action for camera and manual fallback.
+- Unified Team Station QR action through the V2-only persistent camera scanner
+  and manual fallback, plus the fixed cyan/red inline-SVG QR badge.
 - Station Detail return behavior through fixed `?from=team-v2`.
 - V2-specific VI/EN copy, fixed V2 palette isolated from Team Color, and
   overlay opacity persistence.

@@ -4,9 +4,9 @@
 
 | Area | Status |
 | --- | --- |
-| Implementation | Completed for parallel V2 route, unified QR endpoint, reference HUD, responsive overlays, i18n, and return navigation |
-| Runtime/Production Verification | Pending verification |
-| Browser/Manual Verification | Headless Chrome HUD/responsive interaction smoke completed; physical device and camera smoke pending |
+| Implementation | Completed for V2 QR badge and persistent scanner; prior V2 route, unified QR endpoint, HUD, overlays, i18n, and navigation remain completed |
+| Runtime/Production Verification | Local runtime verification completed; Production verification not performed |
+| Browser/Manual Verification | Headless Chrome HUD/responsive and fake-camera lifecycle smoke completed; physical iOS/Android verification pending |
 
 ## Objective and Scope
 
@@ -84,6 +84,8 @@ not from Frontend input or visible QR purpose code.
 | Token / role | Value | Usage |
 | --- | --- | --- |
 | HUD accent | `#1677FF` | Team identity, HUD frames, default markers, QR focus, and V2 primary controls |
+| QR halo | `#7DF9FF` | QR badge outer rings, glyph highlights, and focus glow |
+| QR lower arc | `#FF4D4F` | Decorative lower badge arc only; never an error-state signal |
 | Page background | `#010406` | Fullscreen canvas and empty map space |
 | Strong panel | `rgba(2, 7, 13, 0.97)` | Settings, scanner, leaderboard, score, and preview panels |
 | Main text | `#F6FBFF` | Headings, values, controls, and readable foreground |
@@ -109,7 +111,7 @@ progress, QR, or Leaderboard HUD controls.
 | Top center | `MOVEment 2026`, Team total, `PTS` | Clipped brand tab plus green neon score |
 | Top right | Settings gear | 44px target, fixed V2 accent border and glow |
 | Bottom left | Localized progress, `<completed>/17`, completed label | Accent HUD chip with score-green completed count |
-| Bottom center | QR action, localized scan title/help | Large circular QR icon with fixed accent ring and pedestal |
+| Bottom center | QR action, localized scan title/help | Responsive inline-SVG badge with cyan rings, decorative red lower arc, QR glyph/text, and HUD pedestal |
 | Bottom right | Localized leaderboard label | Trophy icon and fixed accent HUD chip |
 
 ### Icon Inventory
@@ -117,7 +119,7 @@ progress, QR, or Leaderboard HUD controls.
 | Action/meaning | Icon |
 | --- | --- |
 | Settings | `SettingOutlined` |
-| QR gameplay | `QrcodeOutlined` |
+| QR gameplay | V2-only inline SVG `TeamV2QrBadge` |
 | Progress | `CompassOutlined` |
 | Leaderboard | `TrophyFilled` |
 | Close overlay | `CloseOutlined` |
@@ -212,6 +214,27 @@ danger semantics.
 7. Typography: retain the existing Aptos/Segoe UI stack and create the reference
    look with uppercase, spacing, weight, outlines, and neon effects.
 
+### QR Badge and Persistent Scanner Review Rounds
+
+1. Visual scope: replace the complete V2 center QR badge, not the adjacent
+   Progress/Leaderboard chips.
+2. Badge colors: fixed V2 blue/cyan rings plus a decorative red lower arc; red
+   does not carry error semantics.
+3. Rendering: inline SVG for rings/glyph/text and CSS for glow/interaction; no
+   bitmap asset and no idle animation.
+4. Responsive size: 112px landscape/desktop, 96px portrait, and 88px at widths
+   up to 360px; keep CTA below and hide the secondary hint on portrait.
+5. Scanner boundary: create a V2-only scanner component using `qrDetect`
+   helpers; do not modify V1, Login, or shared `QrTokenInput` behavior.
+6. Camera start: opening the V2 scanner auto-requests the camera; camera failure
+   exposes localized error, manual input, and retry.
+7. API rejection: keep the stream/preview open, show safe localized error, and
+   expose manual token input while decode is re-armed.
+8. Duplicate guard: suppress the rejected token until a different token is
+   detected or no QR has been visible continuously for at least 600ms.
+9. Error safety: map only whitelisted backend messages/status groups to VI/EN;
+   never render raw backend bodies, stack traces, or raw tokens in logs.
+
 ## Acceptance Criteria
 
 - Team users can open `/team/v2`; Admin users cannot access it.
@@ -227,6 +250,15 @@ danger semantics.
   centered dialog.
 - Camera and manual QR input call the same backend action.
 - Duplicate camera frames do not send duplicate requests from the frontend.
+- The V2 badge matches the approved multi-ring cyan/red reference without
+  changing the fixed palette of other HUD elements.
+- Opening the V2 scanner auto-starts camera permission/startup.
+- Rejected camera/manual tokens keep the scanner open; camera continues when it
+  is healthy and manual input becomes visible.
+- A rejected token is not resubmitted until it leaves the frame for at least
+  600ms or a different token is detected.
+- Success, close, and unmount stop every camera track, detector, timer, and
+  animation-frame callback.
 - Station Detail opened from V2 returns to `/team/v2` after back/action success.
 - VI/EN copy covers HUD, Settings, QR, preview, Leaderboard, loading/error, and
   ARIA labels.
@@ -245,6 +277,11 @@ danger semantics.
 - Browser smoke for camera permission denied, retry, manual input, opacity
   persistence, Zalo, logout, language persistence, stale polling, and V2 Station
   Detail return.
+- V2 scanner smoke for auto-start, accepted token cleanup, rejected-token
+  persistent preview, manual fallback, 600ms frame re-arm, different-token
+  immediate retry, safe error mapping, and single-request duplicate protection.
+- Regression diff/browser check that V1/Login/shared `QrTokenInput` markup and
+  lifecycle remain unchanged.
 
 ## Implementation Notes
 
@@ -266,6 +303,13 @@ danger semantics.
 - The map keeps the source WebP aspect ratio, uses fixed-size screen-space
   markers/labels with 44px hit targets, and preserves map/overlay state across
   responsive resize without remounting the page.
+- The center QR CTA now uses the V2-only `TeamV2QrBadge` inline SVG with fixed
+  cyan/red tokens and responsive 112/96/88px sizing. Its primary-control CSS
+  has sufficient route-local specificity to override the general Team Color
+  button rule without changing other Team routes.
+- `TeamV2QrScanner` owns V2 camera lifecycle, auto-start, safe manual fallback,
+  rejected-token suppression/re-arm, and accepted/close/unmount cleanup while
+  continuing to reuse only the shared `qrDetect` helpers.
 
 ## Verification Result
 
@@ -292,9 +336,25 @@ danger semantics.
   and 844x390 both computed V2 accent `#1677FF`, heading/chip RGB
   `22, 119, 255`, score RGB `0, 255, 114`, no inherited `--team-primary`,
   Settings opacity `0.85`, and main-HUD opacity `1`.
-- Passed: `git diff --check`; Windows CRLF conversion warnings were non-fatal.
-- Not performed: real camera permission/retry smoke, physical iOS/Android
-  testing, Production runtime verification, push, or deploy.
+- Passed on 2026-07-29: V2 QR badge computed 88px at 320x568, 96px at
+  390x844, and 112px at 844x390, with no viewport crop or Progress/Leaderboard
+  overlap. Computed badge strokes remained cyan `rgb(125, 249, 255)` and red
+  `rgb(255, 77, 79)` under an authenticated Team 05 session.
+- Passed on 2026-07-29: Chrome fake-camera smoke verified auto-start, hidden
+  initial manual input, persistent live preview after actual Backend rejection,
+  single-request suppression for a held rejected QR, immediate different-token
+  handling, 600ms empty-frame re-arm, manual rejection while the camera stayed
+  live, safe permission/playback errors with retry/manual fallback, and no raw
+  Backend message in the UI.
+- Passed on 2026-07-29: synthetic accepted-response frontend smoke verified one
+  submit, modal unmount/navigation, stopped media track, and no decode callback
+  after close. Shared V1/Login `QrTokenInput` was unchanged by the diff.
+- Passed on 2026-07-29: Frontend `i18n:check` (`372` keys), lint, production
+  build, and `git diff --check`. Vite retained the known non-blocking large
+  chunk warning.
+- Windows CRLF conversion warnings from `git diff --check` were non-fatal.
+- Not performed: physical HTTPS scan on iPhone Safari/Chrome iOS or Android,
+  Production runtime verification, push, or deploy.
 
 ## Rollout Notes
 

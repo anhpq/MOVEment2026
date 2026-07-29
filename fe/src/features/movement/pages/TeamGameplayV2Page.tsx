@@ -1,11 +1,9 @@
 import {
   ArrowLeftOutlined,
-  CameraOutlined,
   CloseOutlined,
   CompassOutlined,
   CustomerServiceOutlined,
   LogoutOutlined,
-  QrcodeOutlined,
   SettingOutlined,
   StarFilled,
   TeamOutlined,
@@ -19,6 +17,7 @@ import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from
 import {useNavigate} from "react-router-dom";
 import {
   getLeaderboard,
+  ApiError,
   isAuthFailure,
   logout as logoutApi,
   submitPlayerQrAction,
@@ -26,7 +25,11 @@ import {
   type LeaderboardEntryResponse,
 } from "../api";
 import {LanguageSwitch} from "../components/LanguageSwitch";
-import {QrTokenInput} from "../components/QrTokenInput";
+import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
+import {
+  TeamV2QrScanner,
+  type TeamV2QrSubmitResult,
+} from "../components/TeamV2QrScanner";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
 import {
   fetchPlayerDatabase,
@@ -52,6 +55,33 @@ const MAX_MAP_ZOOM = 5;
 const STATION_LABEL_WIDTH = 120;
 const STATION_LABEL_HEIGHT = 44;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
+
+const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
+  "Invalid QR token": "teamV2.qrErrors.invalid",
+  "QR token has been revoked": "teamV2.qrErrors.revoked",
+  "QR token has expired": "teamV2.qrErrors.expired",
+  "QR token purpose mismatch": "teamV2.qrErrors.invalid",
+  "Station is inactive": "teamV2.qrErrors.stationInactive",
+  "Stations are closed": "teamV2.qrErrors.stationsClosed",
+  "Station is not available for check-in": "teamV2.qrErrors.notAvailable",
+  "Cancel cooldown is still active": "teamV2.qrErrors.cooldown",
+  "Team is already playing another station": "teamV2.qrErrors.alreadyPlaying",
+  "Station is not currently playing": "teamV2.qrErrors.notPlaying",
+  "Station check-out was already submitted": "teamV2.qrErrors.notPlaying",
+};
+
+function getQrActionErrorKey(error: unknown) {
+  if (!(error instanceof ApiError)) {
+    return "teamV2.qrErrors.generic";
+  }
+  if (error.status === 0) {
+    return "teamV2.qrErrors.network";
+  }
+  if (error.status >= 500) {
+    return "teamV2.qrErrors.server";
+  }
+  return QR_ACTION_ERROR_KEYS[error.message] ?? "teamV2.qrErrors.generic";
+}
 
 type ViewportSize = {
   width: number;
@@ -762,7 +792,6 @@ export function TeamGameplayV2Page() {
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [qrToken, setQrToken] = useState("");
-  const [isSubmittingQr, setIsSubmittingQr] = useState(false);
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
@@ -1049,17 +1078,15 @@ export function TeamGameplayV2Page() {
     panRef.current = null;
   };
 
-  const handleQrAction = async (rawToken: string) => {
+  const handleQrAction = async (rawToken: string): Promise<TeamV2QrSubmitResult> => {
     if (isSubmittingQrRef.current) {
-      return;
+      return {status: "rejected", message: t("teamV2.qrErrors.inProgress")};
     }
     const token = rawToken.trim();
     if (!token) {
-      message.warning(t("teamV2.qrRequired"));
-      return;
+      return {status: "rejected", message: t("teamV2.qrRequired")};
     }
     isSubmittingQrRef.current = true;
-    setIsSubmittingQr(true);
     try {
       const result = await submitPlayerQrAction(token);
       await refreshPlayerData();
@@ -1068,20 +1095,28 @@ export function TeamGameplayV2Page() {
       if (result.action === "CHECK_IN") {
         message.success(t("teamV2.checkInSuccess"));
         navigate(`/stations/${result.stationId}?from=team-v2`);
-        return;
+        return {status: "accepted"};
       }
       if (result.requiresScore) {
         scoreForm.setFieldsValue({score: 0, reason: ""});
         setScoreStationId(result.stationId);
         message.success(t("teamV2.checkOutScoreRequired"));
-        return;
+        return {status: "accepted"};
       }
       message.success(t("teamV2.checkOutSuccess"));
-    } catch {
-      message.error(t("teamV2.qrActionFailed"));
+      return {status: "accepted"};
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        clearSession();
+        navigate("/login");
+        return {status: "accepted"};
+      }
+      return {
+        status: "rejected",
+        message: t(getQrActionErrorKey(error)),
+      };
     } finally {
       isSubmittingQrRef.current = false;
-      setIsSubmittingQr(false);
     }
   };
 
@@ -1279,17 +1314,15 @@ export function TeamGameplayV2Page() {
           </span>
         </button>
         <div className="team-v2-scan-action">
-          <button
-            type="button"
-            className="team-v2-scan-button"
+          <TeamV2QrBadge
+            ariaLabel={t("teamV2.openScanner")}
             onClick={() => {
               setIsSettingsOpen(false);
               setIsLeaderboardOpen(false);
+              setQrToken("");
               setIsScannerOpen(true);
             }}
-            aria-label={t("teamV2.openScanner")}>
-            <QrcodeOutlined />
-          </button>
+          />
           <strong>{t("teamV2.scanGameQr")}</strong>
           <small>{t("teamV2.scanGameHint")}</small>
         </div>
@@ -1395,20 +1428,12 @@ export function TeamGameplayV2Page() {
                 <CloseOutlined />
               </button>
             </div>
-            <QrTokenInput
+            <TeamV2QrScanner
               value={qrToken}
               onChange={setQrToken}
-              onScan={(value) => void handleQrAction(value)}
+              onSubmitToken={handleQrAction}
               placeholder={t("teamV2.qrPlaceholder")}
             />
-            <Button
-              type="primary"
-              block
-              loading={isSubmittingQr}
-              icon={<CameraOutlined />}
-              onClick={() => void handleQrAction(qrToken)}>
-              {t("teamV2.submitQr")}
-            </Button>
           </section>
         </div>
       )}

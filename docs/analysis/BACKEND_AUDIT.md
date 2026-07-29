@@ -1,3 +1,27 @@
+# 2026-07-29 Team Gameplay V2 QR badge and persistent scanner
+
+- Replaced only `/team/v2`'s center QR CTA with `TeamV2QrBadge`, an inline SVG
+  using fixed cyan `#7DF9FF`, decorative lower red `#FF4D4F`, and responsive
+  112/96/88px sizing. V1, Login, and shared `QrTokenInput` remain unchanged.
+- Added V2-only `TeamV2QrScanner`: camera auto-start, persistent preview after
+  safe API rejection, manual fallback after camera/API failure, held rejected
+  token suppression, immediate different-token handling, 600ms empty-frame
+  re-arm, and complete success/close/unmount track/detector/RAF/metadata cleanup.
+- Added VI/EN safe error mapping for QR lifecycle, Station state, cooldown,
+  conflicting play, checkout state, network/server, and generic failures. Raw
+  Backend bodies, stack traces, and QR tokens are not rendered or logged.
+- Fixed a remaining V2 palette override: the global Team Color primary-button
+  selector had higher specificity than the V2 scanner rule. Route-local V2
+  selectors now retain the fixed blue gradient and white content.
+- Verification passed: Frontend `i18n:check` (`372` keys), lint, production
+  build, `git diff --check`, authenticated 320x568/390x844/844x390 badge smoke,
+  and Chrome fake-camera scanner lifecycle smoke. Actual local Backend rejects
+  verified persistent preview and `403` no-logout behavior; the accepted
+  frontend cleanup path used a synthetic `200` response.
+- Not performed: physical HTTPS camera scan on iPhone Safari/Chrome iOS or
+  Android, Production runtime verification, push, or deploy. Vite retains the
+  known non-blocking large-chunk warning.
+
 # 2026-07-29 Team Gameplay V2 fixed-palette isolation
 
 - Root cause: `TeamGameplayV2Page` called `getTeamThemeVars(activeTeam.teamColor)`

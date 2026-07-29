@@ -20,6 +20,7 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-29: Chốt QR CTA và persistent scanner riêng cho `/team/v2`: inline SVG badge có cyan ring/red decorative arc, camera auto-start, API rejection không tắt camera, manual token input xuất hiện sau lỗi, và duplicate token được re-arm khi rời frame ít nhất 600ms hoặc gặp token khác; V1/Login/shared scanner không đổi.
 - 2026-07-29: Chốt `/team/v2` dùng fixed V2 palette riêng và không nhận màu từ `Team.color`, inherited `--team-*`, body Team theme, hoặc global Ant Design theme; các Team UI ngoài V2 tiếp tục dùng Team Color.
 - 2026-07-28: Chốt Station Media Gallery: mỗi Station có tối đa 10 HTTPS image URL có thứ tự, Admin quản lý trong Station create/edit, Player xem qua gallery tại Station List/Map/Detail, và canonical Station hiện tại không được tự backfill ảnh.
 
@@ -502,6 +503,8 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Seed repair | Mỗi lần seed được phép repair/overwrite `Team.color` của seed-managed Team 01-25 theo palette cố định; palette thắng custom color Admin đã chỉnh. |
 | Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
 | Team Gameplay V2 palette | `/team/v2` là ngoại lệ có fixed HUD palette riêng: HUD accent `#1677FF`, score `#00FF72`, active `#00F5FF`, selected `#FF20DF`, completed `#00F574`. Route này không được derive hoặc ghi đè HUD/marker/control colors từ `Team.color`, `--team-primary`, body Team theme, hoặc global Ant Design theme. Team Color vẫn áp dụng cho các Team UI ngoài V2. |
+| Team Gameplay V2 QR badge | QR CTA trung tâm của `/team/v2` dùng inline SVG/CSS với cyan `#7DF9FF` và lower red arc `#FF4D4F`. Red chỉ là visual decoration, không biểu thị lỗi. Badge responsive 112px landscape/desktop, 96px portrait, 88px khi viewport không quá 360px; không có idle animation. |
+| Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
 | Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |
 | Overlays | AntD `Modal`, `Drawer`, và `modal.confirm()` trong Team context được theme primary button bằng Team Color qua runtime scoped/body vars; QR info modal sau create/update Team có thể giữ default/current overlay style. |
