@@ -97,6 +97,9 @@ Team Color is scoped to the V2 page. It controls Team name, HUD borders, the
 Settings button, QR ring, default Station markers, focus rings, and primary
 actions. It must not replace score green or the active/selected/completed
 semantic colors, and it must not mutate `:root` or the global Ant Design theme.
+The main HUD keeps Team Color at full opacity; the saved panel-opacity setting
+applies only to modal/preview overlay layers and must not attenuate the header,
+score, progress, QR, or Leaderboard HUD controls.
 
 ### HUD Layout and Copy
 
@@ -215,6 +218,7 @@ semantics.
 - V2 renders fullscreen in portrait and landscape, with safe-area support.
 - All 17 markers remain tappable with roughly 44px hit targets.
 - Settings, Leaderboard, and Station preview share the configured opacity.
+- Main HUD Team Color remains full-strength when panel opacity is below 100%.
 - Settings, Leaderboard, QR scanner, and score entry block the underlying HUD
   and are centered/near-fullscreen in both orientations; Station preview is a
   centered dialog.
@@ -275,6 +279,14 @@ semantics.
   one active dialog, a full-viewport blocking layer, centered 808x366 Settings
   at 844x390, and near-fullscreen 359x651 Settings/scanner/Leaderboard at
   375x667.
+- Passed on 2026-07-29: visual reconciliation changed generic rounded HUD
+  controls to angular sci-fi frames, added Team Color corner/line/glow accents,
+  and decoupled main-HUD opacity from the modal panel-opacity preference.
+- Passed on 2026-07-29: authenticated Chrome captures at 390x844 and 844x390
+  verified Team 01 `#1677FF` and Team 05 `#C41D7F` propagate through HUD lines,
+  markers, QR focus, and controls while score remains semantic green
+  `#00FF72`. Settings remained near-fullscreen at 374x828 with saved opacity
+  `0.85`, while the main HUD computed opacity remained `1`.
 - Passed: `git diff --check`; Windows CRLF conversion warnings were non-fatal.
 - Not performed: real camera permission/retry smoke, physical iOS/Android
   testing, Production runtime verification, push, or deploy.

@@ -1203,7 +1203,7 @@ export function TeamGameplayV2Page() {
         )}
       </div>
 
-      <header className="team-v2-header" style={{opacity: panelOpacity / 100}}>
+      <header className="team-v2-header">
         <div className="team-v2-team">
           <Typography.Title level={2}>
             {getLocalizedTeamName(activeTeam.name, language)}
@@ -1271,7 +1271,7 @@ export function TeamGameplayV2Page() {
         </div>
       )}
 
-      <footer className="team-v2-bottom" style={{opacity: panelOpacity / 100}}>
+      <footer className="team-v2-bottom">
         <button type="button" className="team-v2-bottom-chip team-v2-progress-chip">
           <span className="team-v2-bottom-icon"><CompassOutlined /></span>
           <span className="team-v2-bottom-copy">

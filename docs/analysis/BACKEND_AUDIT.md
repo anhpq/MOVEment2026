@@ -1,3 +1,22 @@
+# 2026-07-29 Team Gameplay V2 HUD and Team Color reconciliation
+
+- Reconciled the rendered Team Gameplay V2 screen with the approved angular
+  black-grid/neon HUD specification. Team identity plates, Settings, bottom HUD
+  chips, the QR pedestal, and overlay corners now use sharper sci-fi geometry
+  with scoped Team Color lines, wash, and glow.
+- Corrected panel-opacity scope: the saved opacity still applies to Settings,
+  Leaderboard, scanner, score, and Station preview overlay layers, but no longer
+  attenuates the main header/footer HUD or its Team Color identity.
+- Preserved semantic colors: score and Station points remain `#00FF72`; active,
+  selected, and completed Station colors remain independent of Team Color.
+- Verification passed: Frontend i18n parity (`356` keys), lint, production
+  build, `git diff --check`, and authenticated headless Chrome captures at
+  390x844 and 844x390. Team 01 resolved to `#1677FF`, Team 05 to `#C41D7F`,
+  score stayed `#00FF72`, Settings measured 374x828 at 390x844 with opacity
+  `0.85`, and the main HUD computed opacity was `1`.
+- Not performed: physical-device review, Production deployment/runtime
+  verification, push, or deploy.
+
 # 2026-07-28 Team Gameplay V2 parallel implementation
 
 - Added a parallel Team-only fullscreen gameplay route `/team/v2` while keeping
