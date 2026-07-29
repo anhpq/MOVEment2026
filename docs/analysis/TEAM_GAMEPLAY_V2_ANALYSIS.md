@@ -4,9 +4,9 @@
 
 | Area | Status |
 | --- | --- |
-| Implementation | Completed for V2 QR badge and persistent scanner; prior V2 route, unified QR endpoint, HUD, overlays, i18n, and navigation remain completed |
-| Runtime/Production Verification | Local runtime verification completed; Production verification not performed |
-| Browser/Manual Verification | Headless Chrome HUD/responsive and fake-camera lifecycle smoke completed; physical iOS/Android verification pending |
+| Implementation | Completed for supplied reference HTML palette/layout; V2 route, unified QR endpoint, persistent scanner, i18n, and navigation remain completed |
+| Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
+| Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
 ## Objective and Scope
 
@@ -70,9 +70,10 @@ not from Frontend input or visible QR purpose code.
 
 ### Visual Direction
 
-- The screen uses a black sci-fi HUD direction over the real Suoi Tien map.
-- The background is `#010406` with a subtle cyan 40px grid, edge vignette, and
-  dark top/bottom gradients so outdoor-facing text remains readable.
+- The screen follows the supplied black/cyan fantasy HUD reference over the real
+  Suoi Tien map.
+- The background is ink `#030C14` with edge vignette and dark top/bottom
+  gradients so outdoor-facing text remains readable.
 - The exact invariant brand copy at the top center is `MOVEment 2026`. CSS must
   preserve this casing and must not transform it to `MOVEMENT 2026`.
 - The existing Aptos/Segoe UI stack remains authoritative. The HUD look comes
@@ -83,17 +84,16 @@ not from Frontend input or visible QR purpose code.
 
 | Token / role | Value | Usage |
 | --- | --- | --- |
-| HUD accent | `#1677FF` | Team identity, HUD frames, default markers, QR focus, and V2 primary controls |
-| QR halo | `#7DF9FF` | QR badge outer rings, glyph highlights, and focus glow |
-| QR lower arc | `#FF4D4F` | Decorative lower badge arc only; never an error-state signal |
-| Page background | `#010406` | Fullscreen canvas and empty map space |
-| Strong panel | `rgba(2, 7, 13, 0.97)` | Settings, scanner, leaderboard, score, and preview panels |
-| Main text | `#F6FBFF` | Headings, values, controls, and readable foreground |
-| Muted text | `#9FB2C5` | Kicker, help, metadata, and secondary copy |
-| Score neon | `#00FF72` | Total points, Station maximum points, completed-count accent |
-| Active semantic | `#00F5FF` | Active/playing Station marker and focus glow |
-| Selected semantic | `#FF20DF` | Selected Station marker and connector |
-| Completed semantic | `#00F574` | Completed Station marker |
+| HUD accent / active | `#2FE4F0` | HUD frames, default/active markers, QR focus, and V2 primary controls |
+| Cyan soft | `#7DF3F9` | Brand, icon, and secondary highlight |
+| Score / completed | `#4DFF8A` | Total points, Station maximum points, completed state/count |
+| Selected | `#FF3FD8` | Selected Station marker/connector and QR ring |
+| QR secondary | `#B06BFF` | QR conic ring transition |
+| Leaderboard | `#FFC94D` | Leaderboard trophy accent |
+| Page background | `#030C14` | Fullscreen canvas and empty map space |
+| Panel | `rgba(3, 14, 20, 0.82)` | HUD pill, labels, and overlays |
+| Main text | `#EAFCFF` | Headings, values, controls, and readable foreground |
+| Muted text | `#9FD4D9` | Kicker, help, metadata, and secondary copy |
 
 V2 owns this fixed palette and does not derive HUD, marker, overlay, or control
 colors from authenticated `Team.color`, inherited `--team-*` variables, body
@@ -107,12 +107,13 @@ progress, QR, or Leaderboard HUD controls.
 
 | Position | Visible copy/data | Visual treatment |
 | --- | --- | --- |
-| Top left | Localized Team name, `#Team.id`, localized captain label/name | Fixed V2 accent, bold, glow, black readability plate |
-| Top center | `MOVEment 2026`, Team total, `PTS` | Clipped brand tab plus green neon score |
+| Top left/row | Localized Team name, `#Team.id`, localized captain label/name | White/cyan glow, no Team Color |
+| Top center | `MOVEment 2026` | Centered clipped cyan brand tab |
+| Top right/row | Team total, `PTS` | Green neon score below Settings row |
 | Top right | Settings gear | 44px target, fixed V2 accent border and glow |
-| Bottom left | Localized progress, `<completed>/17`, completed label | Accent HUD chip with score-green completed count |
-| Bottom center | QR action, localized scan title/help | Responsive inline-SVG badge with cyan rings, decorative red lower arc, QR glyph/text, and HUD pedestal |
-| Bottom right | Localized leaderboard label | Trophy icon and fixed accent HUD chip |
+| Bottom left | Localized leaderboard label | Gold trophy inside the pill HUD |
+| Bottom center | QR action, localized scan title/help | 74/64px floating dark badge with static pink-purple-cyan ring |
+| Bottom right | Localized progress, `<completed>/17`, completed label | Cyan/green progress inside the pill HUD |
 
 ### Icon Inventory
 
@@ -235,6 +236,22 @@ danger semantics.
 9. Error safety: map only whitelisted backend messages/status groups to VI/EN;
    never render raw backend bodies, stack traces, or raw tokens in logs.
 
+### Supplied HTML Reference Reconciliation
+
+1. Adopt the reference cyan/green/pink/purple/gold tokens as fixed V2 tokens;
+   this supersedes the earlier blue HUD and red lower QR arc.
+2. Keep `MOVEment 2026` product copy and existing localized Team/gameplay copy;
+   the reference controls composition and styling, not product data.
+3. Recompose the existing header into a centered clipped brand plus Team/score
+   row and Settings target without changing route/session behavior.
+4. Recompose the footer into a centered pill panel with Leaderboard left,
+   Progress right, and a floating QR CTA in the middle.
+5. Keep inline SVG, accessibility target size, no idle animation, scanner
+   lifecycle, overlays, map interactions, and V1/Login boundaries unchanged.
+6. Apply every reference token through V2-owned constants/custom properties;
+   do not read inherited Team Color variables even when global selectors have
+   higher specificity.
+
 ## Acceptance Criteria
 
 - Team users can open `/team/v2`; Admin users cannot access it.
@@ -297,16 +314,16 @@ danger semantics.
   actions to `/team/v2`.
 - Settings, Leaderboard, and Station preview use the V2 opacity value on the
   entire overlay.
-- The main HUD now follows the approved black-grid/neon reference: localized
-  Team identity at the upper left, `MOVEment 2026` plus points at center, fixed V2
-  accent Settings at the upper right, and progress/QR/Leaderboard at the bottom.
+- The main HUD now follows the supplied black/cyan fantasy HUD reference:
+  centered clipped `MOVEment 2026` brand, Settings at the upper right, localized
+  Team identity/green score row, and centered bottom pill HUD.
 - The map keeps the source WebP aspect ratio, uses fixed-size screen-space
   markers/labels with 44px hit targets, and preserves map/overlay state across
   responsive resize without remounting the page.
-- The center QR CTA now uses the V2-only `TeamV2QrBadge` inline SVG with fixed
-  cyan/red tokens and responsive 112/96/88px sizing. Its primary-control CSS
-  has sufficient route-local specificity to override the general Team Color
-  button rule without changing other Team routes.
+- The center QR CTA uses the V2-only `TeamV2QrBadge` inline SVG with a static
+  pink-purple-cyan conic ring, dark core, 74px default size, and 64px size up to
+  380px. Its primary-control CSS retains sufficient route-local specificity to
+  override the general Team Color button rule without changing other routes.
 - `TeamV2QrScanner` owns V2 camera lifecycle, auto-start, safe manual fallback,
   rejected-token suppression/re-arm, and accepted/close/unmount cleanup while
   continuing to reuse only the shared `qrDetect` helpers.
@@ -352,6 +369,20 @@ danger semantics.
 - Passed on 2026-07-29: Frontend `i18n:check` (`372` keys), lint, production
   build, and `git diff --check`. Vite retained the known non-blocking large
   chunk warning.
+- Superseded on 2026-07-29: the blue/red 112/96/88px QR/HUD visual was replaced
+  by the supplied HTML reference while retaining its scanner lifecycle and
+  fixed-palette isolation rules.
+- Passed on 2026-07-29: authenticated Team 01 and Team 05 Chrome captures at
+  390x844 and 844x390 both computed fixed accent `#2FE4F0`, heading white,
+  score `rgb(77, 255, 138)`, no inherited `--team-primary`, Settings opacity
+  `0.85`, and main-HUD opacity `1`.
+- Passed on 2026-07-29: 320x568 computed a 64x64 QR target, 44x44 Settings and
+  bottom targets, centered QR ring
+  `#FF3FD8` → `#B06BFF` → `#2FE4F0`, Leaderboard on the left, and Progress on
+  the right without viewport crop.
+- Passed on 2026-07-29: reference reconciliation retained the previous scanner
+  implementation and did not modify V1, Login, shared `QrTokenInput`, Backend,
+  database, migration, seed, or token format.
 - Windows CRLF conversion warnings from `git diff --check` were non-fatal.
 - Not performed: physical HTTPS scan on iPhone Safari/Chrome iOS or Android,
   Production runtime verification, push, or deploy.

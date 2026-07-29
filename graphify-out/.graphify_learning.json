@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-28T03:45:59.453554+00:00",
+  "generated_at": "2026-07-29T05:36:39.311936+00:00",
   "nodes": {
     "be_src_common_auth_jwt_auth_guard": {
       "code_fingerprint": "59241f318f435acd7bbb7f23942612e13ae00568c70cd3254ae1e1258570767e",
@@ -12,13 +12,13 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 0.998295124,
+      "score": 0.973763465,
       "source_file": "be/src/common/auth/jwt-auth.guard.ts",
       "status": "tentative",
       "uses": 1
     },
     "be_src_modules_admin_admin_service": {
-      "code_fingerprint": "c15eb4499373bd6e3c381abf9974b8db392acd92a0910f91b26b4a941c3803c7",
+      "code_fingerprint": "2b291c1cb1cc678a81dd3094f87b7f8d0d49819711988946c8cf9f84b46b9420",
       "label": "admin.service.ts",
       "last": "2026-07-28T01:59:38.687313+00:00",
       "provenance": [
@@ -28,13 +28,29 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 0.998295124,
+      "score": 0.973763465,
+      "source_file": "be/src/modules/admin/admin.service.ts",
+      "status": "tentative",
+      "uses": 1
+    },
+    "be_src_modules_admin_admin_service_adminservice": {
+      "code_fingerprint": "2b291c1cb1cc678a81dd3094f87b7f8d0d49819711988946c8cf9f84b46b9420",
+      "label": "AdminService",
+      "last": "2026-07-28T03:46:40.321338+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-28T03:46:40.321338+00:00",
+          "outcome": "useful",
+          "q": "Implement Station Media Gallery and new action layout"
+        }
+      ],
+      "score": 0.975437106,
       "source_file": "be/src/modules/admin/admin.service.ts",
       "status": "tentative",
       "uses": 1
     },
     "be_src_modules_auth_auth_module": {
-      "code_fingerprint": "84d7c0cd1168022200b0fd51a05d5cb90bfc81dc7bccace9f1d3bf9454550cb2",
+      "code_fingerprint": "326c07c48bf2eb7ebb2986e0b2994506cc73bbdd511d7c72e8840a40b7c4c63a",
       "label": "auth.module.ts",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -49,13 +65,13 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 1.996991333,
+      "score": 1.947918159,
       "source_file": "be/src/modules/auth/auth.module.ts",
       "status": "preferred",
       "uses": 2
     },
     "be_src_modules_auth_auth_service": {
-      "code_fingerprint": "9d17a44b415f7704395435cb429a117dbd0d613264e48173109c3a05b912fea2",
+      "code_fingerprint": "83780ae479268802dfbad248ec962883e1d8bb9c4711d7989166419a100498a9",
       "label": "auth.service.ts",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -70,13 +86,13 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 1.996991333,
+      "score": 1.947918159,
       "source_file": "be/src/modules/auth/auth.service.ts",
       "status": "preferred",
       "uses": 2
     },
     "be_src_modules_player_player_service": {
-      "code_fingerprint": "0748fa869aba54568a5b61a30cb9623a7163fd2e7adc54e853d10a1e05535d7b",
+      "code_fingerprint": "8465d9c931b9627dde52d8de7bc8de29064682ecbae1a52c769dc1e2e67327ab",
       "label": "player.service.ts",
       "last": "2026-07-28T01:59:38.687313+00:00",
       "provenance": [
@@ -86,13 +102,29 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 0.998295124,
+      "score": 0.973763465,
+      "source_file": "be/src/modules/player/player.service.ts",
+      "status": "tentative",
+      "uses": 1
+    },
+    "be_src_modules_player_player_service_playerservice": {
+      "code_fingerprint": "8465d9c931b9627dde52d8de7bc8de29064682ecbae1a52c769dc1e2e67327ab",
+      "label": "PlayerService",
+      "last": "2026-07-28T03:46:40.321338+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-28T03:46:40.321338+00:00",
+          "outcome": "useful",
+          "q": "Implement Station Media Gallery and new action layout"
+        }
+      ],
+      "score": 0.975437106,
       "source_file": "be/src/modules/player/player.service.ts",
       "status": "tentative",
       "uses": 1
     },
     "fe_src_features_movement_api": {
-      "code_fingerprint": "76507e7656dbb51c1d28a42f7792476135865dd145a753201fbb7bb399d97fd8",
+      "code_fingerprint": "dc0ab09970298f1c2c5725cb8f753afd00133bcec1458100a3bb9ea7dabf403e",
       "label": "api.ts",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -102,13 +134,13 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.99869621,
+      "score": 0.974154694,
       "source_file": "fe/src/features/movement/api.ts",
       "status": "tentative",
       "uses": 1
     },
     "fe_src_features_movement_apiclient": {
-      "code_fingerprint": "2370891c67293a10297ef12ad714f4ebbfae3392520c5711f0a614ac1d40483a",
+      "code_fingerprint": "d1f525241f9d589d4dfbabeffd179eb23adf019b0bd026d4a4986a7ce5aea82f",
       "label": "apiClient.ts",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -118,13 +150,29 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.99869621,
+      "score": 0.974154694,
       "source_file": "fe/src/features/movement/apiClient.ts",
       "status": "tentative",
       "uses": 1
     },
+    "fe_src_features_movement_components_stationsmappanel": {
+      "code_fingerprint": "64ce59d1e029bfa2e92897ba1625d1203cf52cd81dbd18bdae60bad8ec8b7112",
+      "label": "StationsMapPanel.tsx",
+      "last": "2026-07-28T03:46:40.321338+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-28T03:46:40.321338+00:00",
+          "outcome": "useful",
+          "q": "Implement Station Media Gallery and new action layout"
+        }
+      ],
+      "score": 0.975437106,
+      "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
     "fe_src_features_movement_pages_loginpage": {
-      "code_fingerprint": "124b1eff6f30ddae5a09588e59dbeb4b07dd9c1fe625de8bd8615419a4826086",
+      "code_fingerprint": "8c34cbfc60500e148be7fde46f66a4fbee3e980c2d3e9a8ddb9e64f329109d5c",
       "label": "LoginPage.tsx",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -134,13 +182,13 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.99869621,
+      "score": 0.974154694,
       "source_file": "fe/src/features/movement/pages/LoginPage.tsx",
       "status": "tentative",
       "uses": 1
     },
     "fe_src_features_movement_pages_qrloginpage": {
-      "code_fingerprint": "e9e4bb8c95dacee3ebf147a476e43f12b1ced759e47f71256ad211346211b410",
+      "code_fingerprint": "dc5035af5de274c12ca2f5f760af931aa4a4d4931b8295852ce2076bb0dea3da",
       "label": "QrLoginPage.tsx",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -150,13 +198,61 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.99869621,
+      "score": 0.974154694,
       "source_file": "fe/src/features/movement/pages/QrLoginPage.tsx",
       "status": "tentative",
       "uses": 1
     },
+    "fe_src_features_movement_pages_stationdetailpage": {
+      "code_fingerprint": "4476f64ab8ea0f205f8fe2528faed5ea1475b87451ce22ebd59b06de18d4d3ce",
+      "label": "StationDetailPage.tsx",
+      "last": "2026-07-28T03:46:40.321338+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-28T03:46:40.321338+00:00",
+          "outcome": "useful",
+          "q": "Implement Station Media Gallery and new action layout"
+        }
+      ],
+      "score": 0.975437106,
+      "source_file": "fe/src/features/movement/pages/StationDetailPage.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
+    "fe_src_features_movement_pages_stationeditorpage": {
+      "code_fingerprint": "0b30495faf69b497f7714e10ab70b9f8b6bb5d4707c2bf31f55b2d9ea957c865",
+      "label": "StationEditorPage.tsx",
+      "last": "2026-07-28T03:46:40.321338+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-28T03:46:40.321338+00:00",
+          "outcome": "useful",
+          "q": "Implement Station Media Gallery and new action layout"
+        }
+      ],
+      "score": 0.975437106,
+      "source_file": "fe/src/features/movement/pages/StationEditorPage.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
+    "fe_src_features_movement_pages_stationlistpage": {
+      "code_fingerprint": "4e5b8341a3cc24aab366dd9b61394be476fde3d0bbf5b337a6b9bcb2dbb08303",
+      "label": "StationListPage.tsx",
+      "last": "2026-07-28T03:46:40.321338+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-28T03:46:40.321338+00:00",
+          "outcome": "useful",
+          "q": "Implement Station Media Gallery and new action layout"
+        }
+      ],
+      "score": 0.975437106,
+      "source_file": "fe/src/features/movement/pages/StationListPage.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
     "fe_src_features_movement_store": {
-      "code_fingerprint": "ef9b30610a1defbd7bd811cf52d96db933cf1ee4e05c9bd55ce6afb22c7f917e",
+      "code_fingerprint": "0915cca2daca0e3143927416571ff4ca7278b502c7c551edc507d6977f03b3f7",
       "label": "store.ts",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -171,13 +267,13 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 1.996991333,
+      "score": 1.947918159,
       "source_file": "fe/src/features/movement/store.ts",
       "status": "preferred",
       "uses": 2
     },
     "fe_src_movementproviders": {
-      "code_fingerprint": "e4e3930051032ea8c373044e1a984a38cbd2ddd0d1d3eec3328cf75e2136e83e",
+      "code_fingerprint": "dba340b2fcda8c1f5b9c7e1150b2e95e5c117d16cb0dcb0aa36bd6d530e67ec0",
       "label": "MovementProviders.tsx",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -187,7 +283,7 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.99869621,
+      "score": 0.974154694,
       "source_file": "fe/src/MovementProviders.tsx",
       "status": "tentative",
       "uses": 1

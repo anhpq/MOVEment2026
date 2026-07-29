@@ -422,10 +422,11 @@ preview, and the V2 leaderboard use a device-local opacity setting stored in:
 movement-team-v2-panel-opacity
 ```
 
-The V2 center QR CTA is an inline SVG/CSS badge with fixed cyan `#7DF9FF` and
-decorative lower red `#FF4D4F`. It renders at 112px landscape/desktop, 96px
-portrait, and 88px at viewport widths up to 360px. Its palette and V2 primary
-controls must override inherited Team Color rules locally.
+The V2 center QR CTA is an inline SVG/CSS badge with a static conic ring from
+pink `#FF3FD8` through purple `#B06BFF` to cyan `#2FE4F0`, a dark core, and a
+light QR glyph. It renders at 74px by default and 64px at viewport widths up to
+380px. Its palette and V2 primary controls override inherited Team Color rules
+locally.
 
 Opening the V2 scanner auto-starts the camera. Backend/API rejection keeps the
 healthy stream active, exposes safe localized feedback and manual input, and
@@ -436,15 +437,18 @@ callbacks.
 Opacity applies to the whole overlay, including background, text, icons,
 buttons, and controls. The supported range is 50-100, with default 85.
 
-The main V2 screen uses a black-grid neon HUD with localized Team identity at
-the upper left, exact invariant brand copy `MOVEment 2026` and green points at
-the upper center, Settings at the upper right, and progress/QR/Leaderboard at
-the bottom. Settings, Leaderboard, QR scanner, and score entry are blocking,
+The main V2 screen follows the supplied black/cyan fantasy HUD reference with
+exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
+at the upper right, localized Team identity and green score in the row below,
+plus a centered pill footer containing Leaderboard left, floating QR center,
+and Progress right. Settings, Leaderboard, QR scanner, and score entry are blocking,
 centered near-fullscreen modal layers in both orientations. Station preview is
 a centered dialog; overlays must not be rendered as a small corner panel.
 
-V2 owns a fixed route-local palette: HUD accent `#1677FF`, score `#00FF72`,
-active `#00F5FF`, selected `#FF20DF`, and completed `#00F574`. It must not
+V2 owns a fixed route-local palette: cyan/active `#2FE4F0`, cyan-soft
+`#7DF3F9`, score/completed `#4DFF8A`, selected `#FF3FD8`, QR secondary
+`#B06BFF`, Leaderboard gold `#FFC94D`, ink `#030C14`, text `#EAFCFF`, muted
+text `#9FD4D9`, and panel `rgba(3,14,20,0.82)`. It must not
 inherit or derive its HUD, marker, overlay, or primary-control colors from
 `Team.color`, `--team-*`, body Team theme, or global Ant Design theme. Other
 Team-facing routes continue to use Team Color normally.

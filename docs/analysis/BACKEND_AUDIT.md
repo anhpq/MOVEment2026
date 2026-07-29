@@ -1,3 +1,23 @@
+# 2026-07-29 Team Gameplay V2 supplied-reference reconciliation
+
+- Reconciled only `/team/v2` to the supplied HTML reference: fixed cyan/green/
+  pink/purple/gold palette, centered clipped brand, Team/score row, rounded pill
+  footer, gold Leaderboard left, Progress right, and floating QR center.
+- Replaced the prior blue/red oversized badge visual with a 74px default/64px
+  small-screen inline SVG QR glyph and static pink-purple-cyan conic ring. The
+  persistent scanner implementation and no-idle-animation decision remain.
+- V2 palette ownership remains route-local in `--team-v2-*` variables and the
+  canvas `V2_HUD_ACCENT`; no `Team.color`, inherited `--team-*`, or global AntD
+  theme value participates in the rendered HUD/marker/control colors.
+- Verification passed: Frontend `i18n:check` (`372` keys), lint, production
+  build, `git diff --check`, and authenticated Team 01/05 Chrome captures at
+  320x568, 390x844, and 844x390. Both Teams computed accent `#2FE4F0`, white
+  heading, score `rgb(77, 255, 138)`, no inherited `--team-primary`, overlay
+  opacity `0.85`, and main-HUD opacity `1`.
+- Backend, database, migration, seed, QR token format, V1, Login, and shared
+  `QrTokenInput` were not changed. Physical iOS/Android and Production runtime
+  verification were not performed; push/deploy were not performed.
+
 # 2026-07-29 Team Gameplay V2 QR badge and persistent scanner
 
 - Replaced only `/team/v2`'s center QR CTA with `TeamV2QrBadge`, an inline SVG

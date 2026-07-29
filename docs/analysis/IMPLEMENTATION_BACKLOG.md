@@ -50,6 +50,15 @@
   response; rejected paths used the local Backend.
 - [x] Pass Frontend `i18n:check` (`372` keys), lint, production build, and
   `git diff --check`; retain the known non-blocking Vite large-chunk warning.
+- [x] Reconcile `/team/v2` to the supplied HTML reference: fixed cyan/green/
+  pink/purple/gold palette, centered clipped brand, Team/score row, pill footer,
+  gold Leaderboard left, Progress right, and floating conic-ring QR center.
+- [x] Keep the new reference palette route-local in CSS and canvas constants;
+  authenticated Team 01 and Team 05 resolve identical accent/score/heading
+  colors and no inherited `--team-primary`.
+- [x] Pass authenticated reference visual smoke at 320x568, 390x844, and
+  844x390, including 44px minimum controls, 64px small-screen QR, uncropped HUD,
+  preserved overlay opacity, and exact `MOVEment 2026` casing.
 - [ ] Complete physical HTTPS scan and camera-indicator cleanup verification on
   iPhone Safari, Chrome iOS, and Android.
 - [ ] Confirm opacity persistence through logout/Team switch, Zalo launch, and

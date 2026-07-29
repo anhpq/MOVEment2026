@@ -47,7 +47,7 @@ import "./TeamGameplayV2Page.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity";
 const DEFAULT_PANEL_OPACITY = 85;
-const V2_HUD_ACCENT = "#1677FF";
+const V2_HUD_ACCENT = "#2FE4F0";
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MIN_MAP_ZOOM = 0.8;
@@ -194,32 +194,32 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   if (marker.isSelected) {
     return {
-      fill: "rgba(32, 3, 30, 0.96)",
-      stroke: "#ff20df",
-      text: "#ffffff",
-      glow: "#ff20df",
+      fill: "rgba(32, 5, 29, 0.94)",
+      stroke: "#FF3FD8",
+      text: "#EAFCFF",
+      glow: "#FF3FD8",
     };
   }
   if (marker.isActive) {
     return {
-      fill: "rgba(2, 27, 31, 0.96)",
-      stroke: "#00f5ff",
-      text: "#ffffff",
-      glow: "#00f5ff",
+      fill: "rgba(3, 26, 32, 0.94)",
+      stroke: "#2FE4F0",
+      text: "#EAFCFF",
+      glow: "#2FE4F0",
     };
   }
   if (marker.isCompleted) {
     return {
-      fill: "rgba(3, 34, 20, 0.96)",
-      stroke: "#00f574",
-      text: "#ffffff",
-      glow: "#00f574",
+      fill: "rgba(3, 32, 21, 0.94)",
+      stroke: "#4DFF8A",
+      text: "#EAFCFF",
+      glow: "#4DFF8A",
     };
   }
   return {
-    fill: "rgba(3, 13, 20, 0.96)",
+    fill: "rgba(3, 14, 20, 0.94)",
     stroke: hudAccent,
-    text: "#ffffff",
+    text: "#EAFCFF",
     glow: hudAccent,
   };
 }
@@ -261,8 +261,8 @@ function getStationLabelLayouts(
       return secondPriority - firstPriority || first.anchorY - second.anchorY || first.anchorX - second.anchorX;
     });
   const isPortrait = viewport.height > viewport.width;
-  const safeTop = isPortrait ? 116 : 88;
-  const safeBottom = isPortrait ? 124 : 84;
+  const safeTop = isPortrait ? 126 : 116;
+  const safeBottom = isPortrait ? 104 : 96;
   const safeArea = {
     x: 8,
     y: Math.min(safeTop, Math.max(8, viewport.height / 3)),
@@ -586,7 +586,7 @@ function TeamMarkerLabel({
       <Rect
         width={STATION_LABEL_WIDTH}
         height={STATION_LABEL_HEIGHT}
-        fill="rgba(2, 7, 13, 0.96)"
+        fill="rgba(3, 14, 20, 0.92)"
         stroke={colors.stroke}
         strokeWidth={1.2}
         cornerRadius={4}
@@ -603,7 +603,7 @@ function TeamMarkerLabel({
         fontFamily="Aptos, Segoe UI, sans-serif"
         fontSize={8.5}
         fontStyle="bold"
-        fill="#f7fbff"
+        fill="#EAFCFF"
         align="center"
         verticalAlign="middle"
         wrap="word"
@@ -617,7 +617,7 @@ function TeamMarkerLabel({
         fontFamily="Aptos, Segoe UI, sans-serif"
         fontSize={9.5}
         fontStyle="bold"
-        fill="#00ff72"
+        fill="#4DFF8A"
         align="center"
         listening={false}
       />
