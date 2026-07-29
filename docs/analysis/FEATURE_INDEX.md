@@ -784,7 +784,8 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 - Shared map canvas reuse with existing Suoi Tien WebP variants and Station coordinates.
 - Unified Team Station QR action for camera and manual fallback.
 - Station Detail return behavior through fixed `?from=team-v2`.
-- V2-specific VI/EN copy, scoped Team Color, and overlay opacity persistence.
+- V2-specific VI/EN copy, fixed V2 palette isolated from Team Color, and
+  overlay opacity persistence.
 
 ### Required Reading
 
@@ -807,6 +808,8 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 - Keep `/stations/map` and existing player check-in/check-out endpoints compatible.
 - Backend resolves Station QR purpose from the token record, not Frontend input.
 - Admin users must not access the Team Gameplay V2 route.
+- V2 HUD/marker/overlay/control colors use the fixed V2 palette and must not be
+  overridden by `Team.color`, inherited `--team-*`, or global theme styling.
 
 ### Must Update After Change
 

@@ -440,18 +440,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785292412.8959029,
-    "ast_hash": "9409202aabfeb14e0377c6084ab431cc",
+    "mtime": 1785293789.9479785,
+    "ast_hash": "43bc1731b95c93e2165e572fe84d8291",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1785229744.1261995,
-    "ast_hash": "0b8568ee41c5bf9cdce0944e32f9a76f",
+    "mtime": 1785293989.428542,
+    "ast_hash": "b781a3a97dc93e603b315874b053feb8",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1785290707.4505444,
-    "ast_hash": "2f7a869445513bd3fe7f92db2c850a64",
+    "mtime": 1785293788.5151012,
+    "ast_hash": "5bef849074d746a7133cb3d1e9f813a6",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -515,8 +515,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785292413.7068503,
-    "ast_hash": "64104d8d9aaa14113630e94b31bc2f8c",
+    "mtime": 1785293990.7040534,
+    "ast_hash": "b902b69b621526821649766747aa6c28",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -700,8 +700,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FEATURE_INDEX.md": {
-    "mtime": 1785290707.4197474,
-    "ast_hash": "33038fa60b6a124067b1ec6af4911b80",
+    "mtime": 1785293789.1822796,
+    "ast_hash": "2ef8ce5bd97b60fcadacdc4d38204a91",
     "semantic_hash": ""
   },
   "docs/prompts/09_CODEX_MASTER_EXECUTION_PROMPT.md": {
@@ -1035,13 +1035,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.tsx": {
-    "mtime": 1785292199.306846,
-    "ast_hash": "a6a98a6eb32f2d8854571b0e51ea15fc",
+    "mtime": 1785293444.8351665,
+    "ast_hash": "1472a636f8aa016aa050d617eeb318bf",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {
-    "mtime": 1785292412.1589596,
-    "ast_hash": "e17abb0496545bb164415344738668e2",
+    "mtime": 1785294105.0760806,
+    "ast_hash": "e43abced9360f95d8e9a8615373047b9",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {

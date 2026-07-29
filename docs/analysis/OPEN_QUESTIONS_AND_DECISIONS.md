@@ -20,6 +20,7 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-29: Chốt `/team/v2` dùng fixed V2 palette riêng và không nhận màu từ `Team.color`, inherited `--team-*`, body Team theme, hoặc global Ant Design theme; các Team UI ngoài V2 tiếp tục dùng Team Color.
 - 2026-07-28: Chốt Station Media Gallery: mỗi Station có tối đa 10 HTTPS image URL có thứ tự, Admin quản lý trong Station create/edit, Player xem qua gallery tại Station List/Map/Detail, và canonical Station hiện tại không được tự backfill ảnh.
 
 This document stores only the latest confirmed Business Rules.
@@ -500,7 +501,9 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Seed palette | Seed-managed Team 01-25 phải có 25 màu `#RRGGBB` unique theo palette cố định, nhận diện bằng username `team01`...`team25`. |
 | Seed repair | Mỗi lần seed được phép repair/overwrite `Team.color` của seed-managed Team 01-25 theo palette cố định; palette thắng custom color Admin đã chỉnh. |
 | Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
+| Team Gameplay V2 palette | `/team/v2` là ngoại lệ có fixed HUD palette riêng: HUD accent `#1677FF`, score `#00FF72`, active `#00F5FF`, selected `#FF20DF`, completed `#00F574`. Route này không được derive hoặc ghi đè HUD/marker/control colors từ `Team.color`, `--team-primary`, body Team theme, hoặc global Ant Design theme. Team Color vẫn áp dụng cho các Team UI ngoài V2. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
+| Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |
 | Overlays | AntD `Modal`, `Drawer`, và `modal.confirm()` trong Team context được theme primary button bằng Team Color qua runtime scoped/body vars; QR info modal sau create/update Team có thể giữ default/current overlay style. |
 | Admin Team list | `/teams` là multi-Team context: shell/header/nav giữ default; từng Team card dùng scoped color riêng. |
 | Admin Team context | Single-Team Admin routes như `/system-config/teams/:teamId`, `/teams/:teamId/stations`, `/teams/:teamId/stations/:stationId` có thể theme shell/header/nav theo Team Color của Team đang xem. |

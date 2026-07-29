@@ -29,12 +29,13 @@
 - [x] Document the V2 palette, typography, HUD copy, exact `MOVEment 2026`
   center brand, icon inventory, and overlay layout policy.
 - [x] Reconcile the rendered V2 HUD with the angular sci-fi reference: keep
-  Team Color full-strength on the main HUD, scope saved opacity to overlay
-  panels, strengthen Team Color lines/corners/glow, and preserve score and
+  the fixed V2 accent full-strength on the main HUD, scope saved opacity to
+  overlay panels, strengthen V2 lines/corners/glow, and preserve score and
   Station-state semantic colors.
 - [x] Verify the reconciled HUD with authenticated Team 01/Team 05 Chrome
-  captures at 390x844 and 844x390, including Team Color propagation, semantic
-  score green, main-HUD opacity, and near-fullscreen Settings geometry.
+  captures at 390x844 and 844x390, including fixed-palette isolation across
+  different Team colors, semantic score green, main-HUD opacity, and
+  near-fullscreen Settings geometry.
 - [ ] Confirm opacity persistence through logout/Team switch, Zalo launch, and
   old map/Admin route regressions in browser.
 - [ ] Review whether Team login/logout should be hidden before 2026-08-20; this

@@ -34,7 +34,6 @@ import {
   selectPlayerMapImageVariant,
 } from "../playerData";
 import {useMovementStore} from "../store";
-import {getTeamThemeVars} from "../teamTheme";
 import type {StationDefinition, SupportedLanguage, Team, TeamStation} from "../types";
 import {
   getLocalizedTeamName,
@@ -45,6 +44,7 @@ import "./TeamGameplayV2Page.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity";
 const DEFAULT_PANEL_OPACITY = 85;
+const V2_HUD_ACCENT = "#1677FF";
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MIN_MAP_ZOOM = 0.8;
@@ -161,7 +161,7 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
   };
 }
 
-function getMarkerColors(marker: MarkerViewModel, teamColor: string) {
+function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   if (marker.isSelected) {
     return {
       fill: "rgba(32, 3, 30, 0.96)",
@@ -188,9 +188,9 @@ function getMarkerColors(marker: MarkerViewModel, teamColor: string) {
   }
   return {
     fill: "rgba(3, 13, 20, 0.96)",
-    stroke: teamColor,
+    stroke: hudAccent,
     text: "#ffffff",
-    glow: teamColor,
+    glow: hudAccent,
   };
 }
 
@@ -438,18 +438,18 @@ function getStationLabelLayouts(
 
 function TeamMarker({
   marker,
-  teamColor,
+  hudAccent,
   x,
   y,
   onSelect,
 }: {
   marker: MarkerViewModel;
-  teamColor: string;
+  hudAccent: string;
   x: number;
   y: number;
   onSelect: () => void;
 }) {
-  const colors = getMarkerColors(marker, teamColor);
+  const colors = getMarkerColors(marker, hudAccent);
 
   return (
     <Group
@@ -518,17 +518,17 @@ function TeamMarker({
 
 function TeamMarkerLabel({
   layout,
-  teamColor,
+  hudAccent,
   pointsUnit,
   onSelect,
 }: {
   layout: MarkerScreenLayout;
-  teamColor: string;
+  hudAccent: string;
   pointsUnit: string;
   onSelect: () => void;
 }) {
   const {marker, labelX, labelY} = layout;
-  const colors = getMarkerColors(marker, teamColor);
+  const colors = getMarkerColors(marker, hudAccent);
   const label = marker.teamStation?.name ?? marker.station.name;
   const points = getStationEffectiveMaxPoints({
     trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
@@ -597,13 +597,13 @@ function TeamMarkerLabel({
 
 function TeamMarkerConnector({
   layout,
-  teamColor,
+  hudAccent,
 }: {
   layout: MarkerScreenLayout;
-  teamColor: string;
+  hudAccent: string;
 }) {
   const {marker, anchorX, anchorY, labelX, labelY} = layout;
-  const colors = getMarkerColors(marker, teamColor);
+  const colors = getMarkerColors(marker, hudAccent);
   const connectorX = Math.max(labelX, Math.min(labelX + STATION_LABEL_WIDTH, anchorX));
   const connectorY = Math.max(labelY, Math.min(labelY + STATION_LABEL_HEIGHT, anchorY));
 
@@ -756,8 +756,6 @@ export function TeamGameplayV2Page() {
     [activeTeamId, teamStations],
   );
   const language = i18n.language === "en" ? "en" : "vi";
-  const teamThemeVars = getTeamThemeVars(activeTeam?.teamColor);
-  const teamPrimary = String(teamThemeVars["--team-primary"]);
   const [panelOpacity, setPanelOpacity] = useState(readStoredPanelOpacity);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -1106,7 +1104,7 @@ export function TeamGameplayV2Page() {
 
   if (!activeTeam) {
     return (
-      <main className="team-v2-page" style={teamThemeVars}>
+      <main className="team-v2-page">
         <div className="team-v2-empty"><Spin /></div>
       </main>
     );
@@ -1118,7 +1116,7 @@ export function TeamGameplayV2Page() {
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
 
   return (
-    <main className="team-v2-page" style={teamThemeVars}>
+    <main className="team-v2-page">
       <div
         className="team-v2-map-backdrop"
         ref={mapViewportRef}
@@ -1172,7 +1170,7 @@ export function TeamGameplayV2Page() {
                   <TeamMarkerConnector
                     key={`connector-${marker.station.id}`}
                     layout={layout}
-                    teamColor={teamPrimary}
+                    hudAccent={V2_HUD_ACCENT}
                   />
                 ) : null;
               })}
@@ -1180,7 +1178,7 @@ export function TeamGameplayV2Page() {
                 <TeamMarker
                   key={`marker-${marker.station.id}`}
                   marker={marker}
-                  teamColor={teamPrimary}
+                  hudAccent={V2_HUD_ACCENT}
                   x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
                   y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
                   onSelect={() => setSelectedStationId(marker.station.id)}
@@ -1192,7 +1190,7 @@ export function TeamGameplayV2Page() {
                   <TeamMarkerLabel
                     key={`label-${marker.station.id}`}
                     layout={layout}
-                    teamColor={teamPrimary}
+                    hudAccent={V2_HUD_ACCENT}
                     pointsUnit={t("teamV2.pointsUnit")}
                     onSelect={() => setSelectedStationId(marker.station.id)}
                   />

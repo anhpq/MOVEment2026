@@ -412,7 +412,7 @@ UI. The existing Station map exposes an explicit V2 entry button, and V2 can
 return to `/stations/map`.
 
 V2 reuses the existing Suoi Tien WebP map assets, Station coordinates, Team
-Station state, Team Color scoped variables, language persistence, QR scanner
+Station state, language persistence, QR scanner
 component, leaderboard API, and Team score submission API. Settings, Station
 preview, and the V2 leaderboard use a device-local opacity setting stored in:
 
@@ -429,6 +429,12 @@ the upper center, Settings at the upper right, and progress/QR/Leaderboard at
 the bottom. Settings, Leaderboard, QR scanner, and score entry are blocking,
 centered near-fullscreen modal layers in both orientations. Station preview is
 a centered dialog; overlays must not be rendered as a small corner panel.
+
+V2 owns a fixed route-local palette: HUD accent `#1677FF`, score `#00FF72`,
+active `#00F5FF`, selected `#FF20DF`, and completed `#00F574`. It must not
+inherit or derive its HUD, marker, overlay, or primary-control colors from
+`Team.color`, `--team-*`, body Team theme, or global Ant Design theme. Other
+Team-facing routes continue to use Team Color normally.
 
 V2 uses unified Station QR action:
 

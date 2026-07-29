@@ -1,3 +1,21 @@
+# 2026-07-29 Team Gameplay V2 fixed-palette isolation
+
+- Root cause: `TeamGameplayV2Page` called `getTeamThemeVars(activeTeam.teamColor)`
+  and passed `--team-primary` into CSS plus canvas markers. Team 05 therefore
+  replaced the approved V2 blue/green HUD with its magenta Team Color.
+- Removed V2's dependency on `getTeamThemeVars`, inline `--team-*` values, and
+  per-Team canvas marker colors. Route-local V2 tokens now own HUD accent,
+  gradients, focus rings, overlays, QR, default markers, and primary controls.
+- Fixed V2 palette is HUD `#1677FF`, score `#00FF72`, active `#00F5FF`, selected
+  `#FF20DF`, and completed `#00F574`. V1 and other Team-facing routes retain
+  the existing Team Color behavior.
+- Verification passed: Frontend i18n parity (`356` keys), lint, production
+  build, and authenticated Team 01/Team 05 Chrome captures at 390x844 and
+  844x390. Both Teams computed the same V2 accent/heading/chip colors, score
+  remained green, and V2 inherited no `--team-primary` value.
+- Not performed: physical-device review, Production deployment/runtime
+  verification, push, or deploy.
+
 # 2026-07-29 Team Gameplay V2 HUD and Team Color reconciliation
 
 - Reconciled the rendered Team Gameplay V2 screen with the approved angular

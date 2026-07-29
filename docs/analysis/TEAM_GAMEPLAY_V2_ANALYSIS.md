@@ -23,7 +23,7 @@ This feature covers:
 - unified Team Station QR action endpoint for camera and manual QR input;
 - V2 leaderboard overlay and Station preview overlay;
 - Station Detail return behavior through `?from=team-v2`;
-- VI/EN copy and scoped Team Color.
+- VI/EN copy and a fixed V2 palette isolated from Team Color.
 
 ## Boundaries
 
@@ -83,6 +83,7 @@ not from Frontend input or visible QR purpose code.
 
 | Token / role | Value | Usage |
 | --- | --- | --- |
+| HUD accent | `#1677FF` | Team identity, HUD frames, default markers, QR focus, and V2 primary controls |
 | Page background | `#010406` | Fullscreen canvas and empty map space |
 | Strong panel | `rgba(2, 7, 13, 0.97)` | Settings, scanner, leaderboard, score, and preview panels |
 | Main text | `#F6FBFF` | Headings, values, controls, and readable foreground |
@@ -91,26 +92,25 @@ not from Frontend input or visible QR purpose code.
 | Active semantic | `#00F5FF` | Active/playing Station marker and focus glow |
 | Selected semantic | `#FF20DF` | Selected Station marker and connector |
 | Completed semantic | `#00F574` | Completed Station marker |
-| Team Color fallback | `#FF765C` | Used only when authenticated Team Color is missing/invalid |
 
-Team Color is scoped to the V2 page. It controls Team name, HUD borders, the
-Settings button, QR ring, default Station markers, focus rings, and primary
-actions. It must not replace score green or the active/selected/completed
-semantic colors, and it must not mutate `:root` or the global Ant Design theme.
-The main HUD keeps Team Color at full opacity; the saved panel-opacity setting
-applies only to modal/preview overlay layers and must not attenuate the header,
-score, progress, QR, or Leaderboard HUD controls.
+V2 owns this fixed palette and does not derive HUD, marker, overlay, or control
+colors from authenticated `Team.color`, inherited `--team-*` variables, body
+Team theme, or global Ant Design theme. Team Color remains available in V1 and
+other Team-facing routes. Score and Station-state semantic colors must not be
+replaced by the fixed HUD accent. The saved panel-opacity setting applies only
+to modal/preview overlay layers and must not attenuate the header, score,
+progress, QR, or Leaderboard HUD controls.
 
 ### HUD Layout and Copy
 
 | Position | Visible copy/data | Visual treatment |
 | --- | --- | --- |
-| Top left | Localized Team name, `#Team.id`, localized captain label/name | Team Color, bold, glow, black readability plate |
+| Top left | Localized Team name, `#Team.id`, localized captain label/name | Fixed V2 accent, bold, glow, black readability plate |
 | Top center | `MOVEment 2026`, Team total, `PTS` | Clipped brand tab plus green neon score |
-| Top right | Settings gear | 44px target, Team Color border and glow |
-| Bottom left | Localized progress, `<completed>/17`, completed label | Compass icon and Team Color HUD chip |
-| Bottom center | QR action, localized scan title/help | Large circular QR icon with Team Color ring and pedestal |
-| Bottom right | Localized leaderboard label | Trophy icon and Team Color HUD chip |
+| Top right | Settings gear | 44px target, fixed V2 accent border and glow |
+| Bottom left | Localized progress, `<completed>/17`, completed label | Accent HUD chip with score-green completed count |
+| Bottom center | QR action, localized scan title/help | Large circular QR icon with fixed accent ring and pedestal |
+| Bottom right | Localized leaderboard label | Trophy icon and fixed accent HUD chip |
 
 ### Icon Inventory
 
@@ -128,9 +128,9 @@ score, progress, QR, or Leaderboard HUD controls.
 | Station score | `StarFilled` |
 | Teams playing | `TeamOutlined` |
 
-All primary gameplay targets remain at least 44px. Icons inherit Team Color or
-semantic color from their container; danger/logout retains Ant Design danger
-semantics.
+All primary gameplay targets remain at least 44px. Icons inherit the fixed V2
+accent or semantic color from their container; danger/logout retains Ant Design
+danger semantics.
 
 ### Overlay Layout Policy
 
@@ -175,8 +175,8 @@ semantics.
    present, total points, and Settings.
 2. Team ID: do not infer code from username; use the Team ID returned by the
    authenticated Team contract.
-3. Team Color: use scoped CSS variables with fallback `#FF765C`; do not mutate
-   `:root` or global Ant Design theme.
+3. V2 palette: use fixed route-local V2 tokens; do not inherit Team Color,
+   mutate `:root`, or depend on the global Ant Design theme.
 4. Overlay shape: portrait uses a near-fullscreen modal and landscape uses a
    centered near-fullscreen modal; overlays must not remain in a screen corner.
 5. Opacity scope: opacity applies to the whole overlay including background,
@@ -201,8 +201,9 @@ semantics.
    their markers are inside the viewport; do not use selected/zoom thresholds.
 2. Portrait framing: keep the map large enough to read and use pan/pinch instead
    of shrinking the complete wide map into the portrait viewport.
-3. Team Color: apply Team Color to Team identity, HUD outlines, QR focus, and
-   default markers; retain neon green points and semantic active/selected colors.
+3. V2 colors: apply fixed accent `#1677FF` to Team identity, HUD outlines, QR
+   focus, default markers, and primary controls; retain neon green points and
+   semantic active/selected/completed colors.
 4. Center identity: show the invariant `MOVEment 2026` brand tab above the score.
 5. Collision strategy: place labels in screen space with connector lines and a
    deterministic non-overlapping landscape grid when all 17 markers are visible.
@@ -218,7 +219,9 @@ semantics.
 - V2 renders fullscreen in portrait and landscape, with safe-area support.
 - All 17 markers remain tappable with roughly 44px hit targets.
 - Settings, Leaderboard, and Station preview share the configured opacity.
-- Main HUD Team Color remains full-strength when panel opacity is below 100%.
+- Main HUD fixed V2 accent remains full-strength when panel opacity is below 100%.
+- Switching between Teams with different `Team.color` values does not change
+  V2 HUD, default marker, QR, overlay, or primary-control colors.
 - Settings, Leaderboard, QR scanner, and score entry block the underlying HUD
   and are centered/near-fullscreen in both orientations; Station preview is a
   centered dialog.
@@ -258,8 +261,8 @@ semantics.
 - Settings, Leaderboard, and Station preview use the V2 opacity value on the
   entire overlay.
 - The main HUD now follows the approved black-grid/neon reference: localized
-  Team identity at the upper left, `MOVEment 2026` plus points at center, Team
-  Color Settings at the upper right, and progress/QR/Leaderboard at the bottom.
+  Team identity at the upper left, `MOVEment 2026` plus points at center, fixed V2
+  accent Settings at the upper right, and progress/QR/Leaderboard at the bottom.
 - The map keeps the source WebP aspect ratio, uses fixed-size screen-space
   markers/labels with 44px hit targets, and preserves map/overlay state across
   responsive resize without remounting the page.
@@ -279,22 +282,24 @@ semantics.
   one active dialog, a full-viewport blocking layer, centered 808x366 Settings
   at 844x390, and near-fullscreen 359x651 Settings/scanner/Leaderboard at
   375x667.
-- Passed on 2026-07-29: visual reconciliation changed generic rounded HUD
-  controls to angular sci-fi frames, added Team Color corner/line/glow accents,
-  and decoupled main-HUD opacity from the modal panel-opacity preference.
-- Passed on 2026-07-29: authenticated Chrome captures at 390x844 and 844x390
-  verified Team 01 `#1677FF` and Team 05 `#C41D7F` propagate through HUD lines,
-  markers, QR focus, and controls while score remains semantic green
-  `#00FF72`. Settings remained near-fullscreen at 374x828 with saved opacity
-  `0.85`, while the main HUD computed opacity remained `1`.
+- Superseded on 2026-07-29: the first visual reconciliation allowed Team Color
+  to replace the HUD accent. Cross-Team captures exposed that Team 05 changed
+  V2 from the approved blue/green palette to magenta.
+- Passed on 2026-07-29: fixed-palette reconciliation changed generic rounded HUD
+  controls to angular sci-fi frames, isolated every V2 color token from
+  `Team.color`/`--team-*`, and decoupled main-HUD opacity from panel opacity.
+- Passed on 2026-07-29: authenticated Team 01 and Team 05 captures at 390x844
+  and 844x390 both computed V2 accent `#1677FF`, heading/chip RGB
+  `22, 119, 255`, score RGB `0, 255, 114`, no inherited `--team-primary`,
+  Settings opacity `0.85`, and main-HUD opacity `1`.
 - Passed: `git diff --check`; Windows CRLF conversion warnings were non-fatal.
 - Not performed: real camera permission/retry smoke, physical iOS/Android
   testing, Production runtime verification, push, or deploy.
 
 ## Rollout Notes
 
-- Do not update `OPEN_QUESTIONS_AND_DECISIONS.md`; this implementation follows
-  existing Business Rules.
+- `OPEN_QUESTIONS_AND_DECISIONS.md` records the fixed-palette V2 exception to
+  the general Team Color rule.
 - Register this document in `FEATURE_INDEX.md`.
 - Update `PROJECT_ANALYSIS_SPEC.md`, `BACKEND_AUDIT.md`, and
   `IMPLEMENTATION_BACKLOG.md` after implementation and verification.
