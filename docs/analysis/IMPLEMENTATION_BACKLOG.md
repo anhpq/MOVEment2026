@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 exact Bézier Konva marker
+
+- [x] Replace polygon/circuit artwork with the supplied `640×620` curved outer
+  and inner Bézier paths, exact rings/core/highlights, and 180-Arc circular
+  neon gradient.
+- [x] Align tip `(320,606)` to the unchanged Station anchor and preserve the
+  `32..64px` size clamp, state halo, hit target, labels, and map behavior.
+- [x] Pass Frontend lint, production build, bundle gate, focused marker-layout
+  Vitest `3/3`, diff check, and direct Chrome rendering of the repo component.
+
 ## 2026-07-31 Team V2 single-line marker labels
 
 - [x] Keep marker code/name on one line and truncate overflow with ellipsis.
@@ -16,7 +26,7 @@
   landscape while preserving authoritative score data and green neon styling.
 - [x] Pass Frontend lint, production build, bundle gate, and diff check.
 
-## 2026-07-31 Team V2 supplied Konva-native marker
+## 2026-07-31 Team V2 supplied Konva-native marker (superseded)
 
 - [x] Replace the interim SVG-image marker with the supplied native Konva
   geometry, gradients, rings, circuit traces, speed lines, and glow.

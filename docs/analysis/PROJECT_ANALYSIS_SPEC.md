@@ -492,9 +492,11 @@ overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
 Each label keeps Station code/name on one ellipsized line and the points value
 on a dedicated second line.
-The marker uses route-local Konva-native cyan/purple scanner-pin geometry. Its
-inner group has one uniform scale and offsets the supplied lower-tip coordinate
-to the Station screen anchor. Its visual size scales once from `32px` to `64px`
+The marker uses the route-local `640×620` Konva Bézier reference with curved
+outer/inner pin paths, a radius-148 outer ring, black/white core, and a seamless
+180-segment green/mint/purple circular neon ring. Its inner group has one
+uniform scale and offsets tip `(320,606)` to the Station screen anchor. Its
+visual size scales once from `32px` to `64px`
 with normalized zoom; no number renders inside the pin, while Station code
 remains in the anchored label. The state-colored halo remains a canvas overlay,
 and the label connector starts at the pin's upper attachment edge.

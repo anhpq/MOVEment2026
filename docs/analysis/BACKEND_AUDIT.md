@@ -1,3 +1,14 @@
+# 2026-07-31 Team V2 exact Bézier Konva marker
+
+- Replaced the prior polygon/circuit artwork with the supplied exact component:
+  curved outer/inner `Path` geometry, radius-148 outer ring, black/white core,
+  two highlights, and a seamless 180-`Arc` circular neon gradient.
+- The `640×620` design uses center `(320,248)` and tip offset `(320,606)` while
+  retaining the existing `32..64px` normalized-zoom clamp, state halo, minimum
+  hit target, labels, Station coordinates, and V1 UI.
+- Frontend lint, production build, bundle gate, focused marker-layout Vitest
+  (`3/3`), diff check, and direct Chrome rendering of the repo component passed.
+
 # 2026-07-31 Team V2 single-line marker labels
 
 - Changed the Team V2 Konva marker name row from word wrapping to one line with
@@ -16,7 +27,7 @@
   column in portrait and landscape while retaining its green neon treatment.
 - Frontend lint, production build, bundle gate, and diff check passed.
 
-# 2026-07-31 Team V2 supplied Konva-native marker
+# 2026-07-31 Team V2 supplied Konva-native marker (superseded)
 
 - Replaced the interim SVG image/load path with the supplied native Konva
   geometry: gradient body, concentric rings, circuit traces, speed lines, and

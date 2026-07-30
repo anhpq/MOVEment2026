@@ -20,6 +20,11 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Marker `/team/v2` dùng reference Konva Bézier mới: design
+  `640×620`, center `(320,248)`, tip anchor `(320,606)`, inner pin, outer ring
+  radius `148`, và vòng neon green/mint/purple 360° không seam. Marker không có
+  số bên trong; size vẫn clamp `32..64px` và Station code nằm trong label.
+
 - 2026-07-31: Nhãn Station trên `/team/v2` luôn giữ code/tên trên đúng một dòng;
   nội dung dài dùng ellipsis trong khung hiện tại. Điểm tiếp tục nằm ở dòng
   riêng phía dưới; anchor, gap và label size không đổi.

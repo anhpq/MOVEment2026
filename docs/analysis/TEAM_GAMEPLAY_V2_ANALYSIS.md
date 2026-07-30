@@ -26,19 +26,21 @@
 - Frontend lint, production build, bundle gate, focused marker-layout Vitest
   (`3/3`), and diff check passed.
 
-## 2026-07-31 Supplied Konva-native marker
+## 2026-07-31 Exact Bézier Konva marker reference
 
-- Replaced the interim SVG-image marker with the supplied Konva-native geometry:
-  gradient pin body, concentric core rings, circuit traces, speed lines, and
-  restrained cyan/purple glow.
-- A single inner-group transform uses `offsetX=320`, `offsetY=590`, and uniform
-  scale `0.15`, so the supplied lower tip remains the unchanged Station screen
-  anchor without an image load or second zoom application.
+- Replaced the previous polygon/circuit marker with the supplied exact
+  Konva-native geometry: `640×620` design, curved outer and inner Bézier pin,
+  radius-148 outer ring, black/white core, two highlights, and a seamless
+  180-segment green/mint/purple circular neon ring.
+- A single artwork transform uses center `(320,248)` and tip offset `(320,606)`,
+  so the supplied lower tip remains the unchanged Station screen anchor without
+  an image load or second zoom application.
 - Marker artwork scales from `32px` to `64px` with normalized zoom and no longer
   contains a number; the Station code remains in the anchored label. The
   state-colored halo, minimum 44px hit target, labels/connectors, interactions,
   map data, and non-V2 screens remain unchanged. Focused marker
-  layout Vitest (`3/3`), Frontend lint, production build, and bundle gate passed;
+  layout Vitest (`3/3`), Frontend lint, production build, bundle gate, and a
+  direct Chrome render of the actual repo component passed;
   authenticated in-map and physical-device visual verification remain pending.
 
 ## 2026-07-29 Runtime Stability Integration
