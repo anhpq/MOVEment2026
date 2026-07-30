@@ -1159,3 +1159,17 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   rendered a 17-marker stress preview with correct normal
   and silver artwork/glow and no cache clipping. Authenticated physical-device
   FPS profiling remains pending.
+
+# 2026-07-31 Team V2 Settings and compact Leaderboard
+
+- Changed only V2 Settings sizing from fixed/full portrait height to centered
+  intrinsic content height with the existing viewport cap and overflow scroll.
+- Added a pure V2 Leaderboard projection: first five API rows, plus the current
+  Team as display rank `6` when it is not in those rows. Team name, completed
+  Stations, and score still come from the authoritative response.
+- The source array is not mutated. Backend ranking, sorting, scoring, APIs,
+  schema, seed, and non-V2 screens are unchanged.
+- Focused Vitest passed (`10/10`) and full Frontend Vitest passed (`37/37`);
+  i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
+  visual verification at `390x844` confirmed centered intrinsic Settings
+  height. Authenticated Leaderboard-data verification remains pending.

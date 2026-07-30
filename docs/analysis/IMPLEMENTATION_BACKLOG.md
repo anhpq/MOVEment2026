@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 Settings and compact Leaderboard
+
+- [x] Center Settings at intrinsic content height on desktop and portrait while
+  retaining viewport-capped scrolling.
+- [x] Display the first five Leaderboard response rows and append the current
+  Team with V2 display rank `6` only when it is outside those rows.
+- [x] Preserve the authoritative response and all Backend ranking/scoring/API
+  behavior; add focused projection coverage including non-mutation.
+- [x] Pass focused Vitest `10/10`, full Frontend Vitest `37/37`, i18n parity,
+  Frontend lint, production build, bundle gate, diff check, and Settings Chrome
+  visual verification at `390x844`.
+- [ ] Complete authenticated Leaderboard-data and physical-device verification.
+
 ## 2026-07-31 Team V2 marker interaction performance
 
 - [x] Cache unchanged normal/silver marker artwork while preserving the exact

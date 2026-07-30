@@ -20,6 +20,13 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Settings overlay trong `/team/v2` dùng intrinsic content height,
+  căn giữa viewport và chỉ giới hạn bằng available height để scroll khi cần;
+  portrait không ép full-height. Leaderboard overlay chỉ hiển thị năm Team đầu
+  theo response authoritative; nếu Team hiện tại không thuộc năm dòng đó thì
+  append thành dòng thứ sáu và hiển thị rank `6` trong riêng V2 overlay. Không
+  thay đổi Backend ranking hoặc dữ liệu Leaderboard gốc.
+
 - 2026-07-31: Team V2 Detail dùng intrinsic content height, căn giữa viewport và
   chỉ giới hạn bằng available height để scroll khi cần; không ép full-height trên
   điện thoại. Footer dùng copy ngắn `BXH` trong VI (`RANK` trong EN), QR CTA có

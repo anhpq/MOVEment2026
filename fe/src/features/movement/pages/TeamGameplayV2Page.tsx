@@ -43,6 +43,7 @@ import {
   createLatestFrameScheduler,
   type LatestFrameScheduler,
 } from "./teamV2FrameScheduler";
+import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
 import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
@@ -418,6 +419,10 @@ function LeaderboardOverlay({
   const [rows, setRows] = useState<LeaderboardEntryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const mountedRef = useRef(false);
+  const visibleRows = useMemo(
+    () => getTeamV2LeaderboardRows(rows, activeTeam?.id),
+    [activeTeam?.id, rows],
+  );
 
   useEffect(() => {
     mountedRef.current = true;
@@ -479,7 +484,7 @@ function LeaderboardOverlay({
           <Empty description={t("leaderboard.empty")} />
         ) : (
           <div className="team-v2-rank-list">
-            {rows.map((row) => {
+            {visibleRows.map((row) => {
               const isCurrent = String(row.teamId) === activeTeam?.id;
               return (
                 <div key={row.teamId} className={`team-v2-rank-row${isCurrent ? " is-current" : ""}`}>

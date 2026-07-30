@@ -8,6 +8,23 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Settings sizing and compact Leaderboard
+
+- Settings now uses intrinsic content height and remains centered by the shared
+  overlay grid. Its existing `max-height: 100%` and scrolling remain available
+  only when the content exceeds the viewport; portrait no longer stretches it
+  to full height.
+- The V2 Leaderboard projects the authoritative API response to the first five
+  rows. If the active Team is absent from those rows but exists later in the
+  response, it is appended as the sixth row with display rank `6` and keeps its
+  authoritative name, Station count, and score.
+- The projection does not mutate the response or change Backend ranking,
+  sorting, scoring, API contracts, or other Leaderboard screens.
+- Focused Vitest passed (`10/10`) and full Frontend Vitest passed (`37/37`);
+  i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
+  visual verification at `390x844` confirmed centered intrinsic Settings
+  height; authenticated Leaderboard data verification remains pending.
+
 ## 2026-07-31 Marker interaction performance
 
 - Root cause: every visible marker redrew its exact 180-`Arc` neon ring on each
