@@ -1051,17 +1051,6 @@ export function TeamGameplayV2Page() {
       </div>
 
       <header className="team-v2-header">
-        <div className="team-v2-team">
-          <Typography.Title level={2}>
-            {getLocalizedTeamName(activeTeam.name, language)}
-          </Typography.Title>
-          <div className="team-v2-team-meta">
-            <span>#{activeTeam.id}</span>
-            {activeTeam.captainName && (
-              <span>{t("teamV2.captain")}: {activeTeam.captainName}</span>
-            )}
-          </div>
-        </div>
         <div className="team-v2-center-score">
           <div className="team-v2-event-banner" aria-label="MOVEment 2026">
             <span className="team-v2-event-rail is-left" aria-hidden="true" />

@@ -8,6 +8,15 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Centered score-only map header
+
+- Removed the `.team-v2-team` identity block from the V2 map HUD. Team identity
+  data and authenticated state remain unchanged and continue to be available in
+  the right footer/settings where already used.
+- Total score remains authoritative state data and now occupies the centered
+  header grid area in portrait and landscape. Brand and Settings placement are
+  unchanged. This section supersedes earlier Team/score-row descriptions.
+
 ## 2026-07-31 Supplied Konva-native marker
 
 - Replaced the interim SVG-image marker with the supplied Konva-native geometry:
@@ -197,9 +206,8 @@ progress, QR, or Leaderboard HUD controls.
 
 | Position | Visible copy/data | Visual treatment |
 | --- | --- | --- |
-| Top left/row | Localized Team name, `#Team.id`, localized captain label/name | White/cyan glow, no Team Color |
 | Top center | `MOVEment 2026` | Centered clipped cyan brand tab |
-| Top right/row | Team total, `PTS` | Green neon score below Settings row |
+| Center below brand | Team total, `PTS` | Green neon score always centered in the viewport |
 | Top right | Settings gear | 44px target, fixed V2 accent border and glow |
 | Bottom left | Localized leaderboard label | Gold trophy inside the pill HUD |
 | Bottom center | QR action, localized scan title/help | 74/64px floating dark badge with static pink-purple-cyan ring |
@@ -406,9 +414,9 @@ danger semantics.
   V1 Player Detail no longer contains a V2 compatibility query branch.
 - Settings, Leaderboard, and Station Detail use the V2 opacity value on the
   entire overlay.
-- The main HUD now follows the supplied black/cyan fantasy HUD reference:
-  centered clipped `MOVEment 2026` brand, Settings at the upper right, localized
-  Team identity/green score row, and centered bottom pill HUD.
+- The main HUD uses a centered clipped `MOVEment 2026` brand, Settings at the
+  upper right, no Team identity block on the map, a viewport-centered green
+  total score, and three independent bottom controls.
 - The map keeps the source WebP aspect ratio, uses fixed-size screen-space
   markers/labels with 44px hit targets, and preserves map/overlay state across
   responsive resize without remounting the page.

@@ -446,9 +446,9 @@ buttons, and controls. The supported range is 50-100, with default 85.
 
 The main V2 screen follows the supplied black/cyan fantasy HUD reference with
 exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
-at the upper right, localized Team identity and green score in the row below,
-using a tall angular brand plate, symmetric striped cyan rails, and a bright
-green multi-layer neon total score centered below the brand in landscape, plus
+at the upper right, no Team identity block on the map HUD, a tall angular brand
+plate with symmetric striped cyan rails, and a bright green multi-layer neon
+total score centered below the brand in every responsive mode, plus
 three independent sci-fi footer controls: Leaderboard left, a raised
 floating QR/pedestal center, and Team plus completed Station count right. Thin
 cyan rails may connect visually to the QR pedestal but must not create one

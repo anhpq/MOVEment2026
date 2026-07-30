@@ -1,3 +1,12 @@
+# 2026-07-31 Team V2 centered score-only map header
+
+- Removed only the `.team-v2-team` block from the Team V2 map header; Team data,
+  authentication, footer progress, Settings, APIs, and other screens remain
+  unchanged.
+- Reworked the header grid so `.team-v2-score` always occupies the centered
+  column in portrait and landscape while retaining its green neon treatment.
+- Frontend lint, production build, bundle gate, and diff check passed.
+
 # 2026-07-31 Team V2 supplied Konva-native marker
 
 - Replaced the interim SVG image/load path with the supplied native Konva

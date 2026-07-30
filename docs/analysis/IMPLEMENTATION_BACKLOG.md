@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 centered score-only map header
+
+- [x] Remove `.team-v2-team` identity markup and route-local styles from the V2
+  map header without changing Team state or other identity surfaces.
+- [x] Keep `.team-v2-score` in the centered header grid area for portrait and
+  landscape while preserving authoritative score data and green neon styling.
+- [x] Pass Frontend lint, production build, bundle gate, and diff check.
+
 ## 2026-07-31 Team V2 supplied Konva-native marker
 
 - [x] Replace the interim SVG-image marker with the supplied native Konva
