@@ -20,6 +20,21 @@
   production-like local smoke passed. Physical devices and Production remain
   unverified.
 
+## 2026-07-30 V2-owned Detail and map HUD refinement
+
+- Marker/label selection opens a near-fullscreen V2-owned Station Detail
+  overlay without changing `/team/v2` or routing through Player Detail V1.
+- The overlay has state-aware Start/Complete/Cancel behavior, V2 scanner/score
+  integration, live timer, stats, video, and a V2-owned lazy image gallery.
+- Check-in, completion, and cancel success close back to the V2 map. An active
+  Station changes the QR caption to localized `In Progress` plus Station identity;
+  camera startup remains user-triggered and rejection keeps the scanner open.
+- The fixed banner now uses a shallow center plate with fluid striped rails;
+  screen-space labels prefer a compact top position, may overlap each other,
+  and always render below marker circles.
+- This section supersedes every historical `?from=team-v2`, compact preview,
+  collision-free-label-grid, and shared V1 Detail statement below.
+
 ## Objective and Scope
 
 Add a parallel Team-only gameplay screen at `/team/v2` while preserving the
@@ -33,8 +48,7 @@ This feature covers:
   coordinates, pan/zoom, and marker state;
 - Team-only settings, opacity, language, Zalo, legacy UI return, and logout;
 - unified Team Station QR action endpoint for camera and manual QR input;
-- V2 leaderboard overlay and Station preview overlay;
-- Station Detail return behavior through `?from=team-v2`;
+- V2 leaderboard and V2-owned Station Detail overlays;
 - VI/EN copy and a fixed V2 palette isolated from Team Color.
 
 ## Boundaries
@@ -51,7 +65,7 @@ This feature covers:
 ### Frontend
 
 - Route: `/team/v2`.
-- Station Detail return marker: `?from=team-v2`.
+- Station Detail stays inside `/team/v2`; no Detail route/query is used.
 - Opacity storage key: `movement-team-v2-panel-opacity`.
 - Language storage key remains `movement-language`.
 - Zalo support URL: `https://zalo.me/0909384697`.
@@ -155,10 +169,11 @@ danger semantics.
 - Landscape centers a near-fullscreen panel with 12px vertical and 18px
   horizontal minimum inset; width may grow to 820px and height fills the safe
   viewport rather than becoming a small corner/side panel.
-- Station preview is a centered dialog capped at 560px width and 82dvh height.
+- Station Detail is a safe-area-aware near-fullscreen overlay capped at 960px
+  in landscape and fills the inset viewport in portrait.
 - Clicking the backdrop or Close icon dismisses the active overlay. Only one
-  primary overlay is visible at a time; Station preview is suppressed while a
-  primary overlay is open.
+  primary overlay is visible at a time; Station Detail is suppressed while a
+  scanner/settings/score/leaderboard overlay is open.
 - The saved opacity value applies to the whole modal layer, including backdrop,
   panel, text, icons, buttons, and controls.
 - Rotating/resizing the viewport must not remount the page or close the active
@@ -175,8 +190,8 @@ danger semantics.
 3. Responsive model: portrait uses header, map, and bottom HUD; landscape keeps
    the map expanded and moves overlays to the right without remounting state.
 4. Marker density: show all `01`...`17` marker codes plus localized names and
-   maximum points for every Station currently inside the viewport; use a
-   collision-free layout rather than hiding labels by selection or zoom level.
+   maximum points for every Station currently inside the viewport; labels may
+   overlap each other but must stay below and never cover marker circles.
 5. Station information: preview cards stay compact; media, long description,
    time, and detail content remain in Station Detail.
 6. Backend contract: add a Team-only unified QR action endpoint using existing
@@ -270,13 +285,13 @@ danger semantics.
 - V1 map has a visible path to V2, and V2 can return to the existing UI.
 - V2 renders fullscreen in portrait and landscape, with safe-area support.
 - All 17 markers remain tappable with roughly 44px hit targets.
-- Settings, Leaderboard, and Station preview share the configured opacity.
+- Settings, Leaderboard, and Station Detail share the configured opacity.
 - Main HUD fixed V2 accent remains full-strength when panel opacity is below 100%.
 - Switching between Teams with different `Team.color` values does not change
   V2 HUD, default marker, QR, overlay, or primary-control colors.
 - Settings, Leaderboard, QR scanner, and score entry block the underlying HUD
-  and are centered/near-fullscreen in both orientations; Station preview is a
-  centered dialog.
+  and are centered/near-fullscreen in both orientations; Station Detail uses
+  the same blocking near-fullscreen policy.
 - Camera and manual QR input call the same backend action.
 - Duplicate camera frames do not send duplicate requests from the frontend.
 - The V2 badge matches the approved multi-ring cyan/red reference without
@@ -288,7 +303,8 @@ danger semantics.
   600ms or a different token is detected.
 - Success, close, and unmount stop every camera track, detector, timer, and
   animation-frame callback.
-- Station Detail opened from V2 returns to `/team/v2` after back/action success.
+- Station Detail never leaves `/team/v2`; close, Check-in, completion, and
+  cancel return to the preserved map state.
 - VI/EN copy covers HUD, Settings, QR, preview, Leaderboard, loading/error, and
   ARIA labels.
 - Existing `/stations/map`, Station Detail, Leaderboard route, and Admin UI do
@@ -322,9 +338,9 @@ danger semantics.
   progress without a second update or score award.
 - Frontend added fullscreen `/team/v2` under a Team-only protected route.
 - `/stations/map` now exposes a Team-only V2 entry button.
-- Station Detail opened with `?from=team-v2` returns successful Team gameplay
-  actions to `/team/v2`.
-- Settings, Leaderboard, and Station preview use the V2 opacity value on the
+- Marker/label selection opens the V2-owned Station Detail overlay directly;
+  V1 Player Detail no longer contains a V2 compatibility query branch.
+- Settings, Leaderboard, and Station Detail use the V2 opacity value on the
   entire overlay.
 - The main HUD now follows the supplied black/cyan fantasy HUD reference:
   centered clipped `MOVEment 2026` brand, Settings at the upper right, localized
@@ -398,6 +414,26 @@ danger semantics.
 - Windows CRLF conversion warnings from `git diff --check` were non-fatal.
 - Not performed: physical HTTPS scan on iPhone Safari/Chrome iOS or Android,
   Production runtime verification, push, or deploy.
+- Passed on 2026-07-30: V2 Detail/gallery/scanner targeted Vitest (`8/8`), full
+  Frontend Vitest (`26/26`), i18n parity (`391` keys), Frontend lint,
+  production build, and bundle gate.
+- Passed on 2026-07-30: authenticated Chrome smoke verified banner/rails at
+  the approved seven viewport sizes and opening an Available Detail while the
+  URL remains `/team/v2`.
+- Pending on 2026-07-30: authenticated browser verification for active QR
+  caption, Complete/Cancel, and physical mobile camera behavior.
+
+### 2026-07-30 Decision Log
+
+1. Boundary: V2 Detail stays inside `/team/v2`; Settings may still return to V1.
+2. Navigation: Detail is an overlay, not a nested or modal route.
+3. Capability: match Player V1 Detail features with V2-owned presentation.
+4. State actions: Available starts, In Progress completes/cancels, Finished reads.
+5. Responsive: use near-fullscreen safe-area geometry.
+6. Ownership: V2 owns Detail/gallery UI and reuses shared data/domain helpers.
+7. Transition: successful Check-in/Complete/Cancel closes back to the V2 map.
+8. Active QR: show localized active Station context; camera starts only on click.
+9. Scanner error: preserve the current persistent rejection/retry behavior.
 
 ## Rollout Notes
 

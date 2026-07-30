@@ -61,6 +61,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
   canonical Admin Station content and preserved identifiers remain unchanged.
 - Station gallery actions, preview alt text, Admin URL controls, validation copy,
   and reorder/remove ARIA labels are localized in both VI and EN.
+- V2-owned Station Detail, state-aware scan/close/timer copy, active QR Station
+  context, and gallery presentation use the same runtime VI/EN resources.
 - Station UI ordering uses status order `In Progress`, `New`, `Finished`, then
   natural ascending `stationId`; Station dropdowns without status sort by ID.
 - Team display names localize seed-style raw names only: `Team NN`/`Đội NN`
@@ -115,6 +117,9 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
   scan confirming only the `MOVEment 2026` brand remains as direct text.
 - Station gallery follow-up passed i18n parity with `273` keys, Frontend lint,
   production build, and Chrome headless visual review at 320/375/1280px.
+- V2 Detail follow-up passed i18n parity with `391` keys, full Frontend Vitest
+  (`26/26`), lint, production build, and bundle gate on 2026-07-30; authenticated
+  multi-viewport visual review remains pending.
 - Completed in the latest header visual follow-up: Frontend lint, Frontend
   production build, and `git diff --check`.
 - Completed in the earlier Plan 2 implementation run: Prisma generate, targeted

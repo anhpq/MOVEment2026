@@ -20,6 +20,10 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-30: Chốt Station Detail riêng cho `/team/v2`: marker/label mở
+  near-fullscreen overlay ngay trong map, không route qua Player Station Detail
+  V1 và không dùng `?from=team-v2`. V2 Detail dùng presentation/gallery riêng,
+  reuse data/mutation helpers, và giữ V2 scanner/score flow.
 - 2026-07-29: Chốt visual reference HTML mới cho `/team/v2`: HUD dùng fixed cyan/green/pink/purple/gold palette, header có centered clipped brand và Team/score row, bottom HUD là pill panel với QR nổi ở giữa. Toàn bộ token vẫn route-local và không được nhận màu từ `Team.color` hoặc global theme.
 - 2026-07-29 (visual badge đã được reference mới supersede): Chốt persistent scanner riêng cho `/team/v2`: camera auto-start, API rejection không tắt camera, manual token input xuất hiện sau lỗi, và duplicate token được re-arm khi rời frame ít nhất 600ms hoặc gặp token khác; V1/Login/shared scanner không đổi.
 - 2026-07-29: Chốt `/team/v2` dùng fixed V2 palette riêng và không nhận màu từ `Team.color`, inherited `--team-*`, body Team theme, hoặc global Ant Design theme; các Team UI ngoài V2 tiếp tục dùng Team Color.
@@ -507,6 +511,9 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Team Gameplay V2 HUD layout | Header V2 dùng clipped brand tab ở top-center, Settings ở top-right và Team identity/score row bên dưới. Bottom HUD dùng centered pill panel, Leaderboard ở trái, Progress ở phải và QR CTA nổi giữa. Giữ product copy, safe-area, accessibility và gameplay behavior hiện có. |
 | Team Gameplay V2 QR badge | QR CTA trung tâm của `/team/v2` dùng inline SVG/CSS theo reference với static conic ring pink `#FF3FD8` → purple `#B06BFF` → cyan `#2FE4F0`, dark core và light QR glyph. Badge 74px mặc định, 64px khi viewport không quá 380px; không có idle animation. |
 | Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
+| Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, media và action theo trạng thái; dùng V2-owned presentation/gallery và reuse shared data/API/mutation helpers. Không dùng `?from=team-v2`. |
+| Team Gameplay V2 Detail actions | `Available` mở V2 scanner để bắt đầu; `In Progress` có Complete và Cancel; `Finished` chỉ xem kết quả/media. Check-in, completion và cancel success đóng Detail về map V2. API rejection giữ V2 scanner mở theo scanner rule hiện hành. |
+| Team Gameplay V2 active QR context | Khi Team có Station `In Progress`, caption dưới QR hiển thị localized active status cùng Station code/name. Camera chỉ mở khi user bấm QR/Detail scan action; QR success/close/unmount cleanup scanner như hiện hành. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
 | Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |
 | Overlays | AntD `Modal`, `Drawer`, và `modal.confirm()` trong Team context được theme primary button bằng Team Color qua runtime scoped/body vars; QR info modal sau create/update Team có thể giữ default/current overlay style. |
@@ -779,7 +786,9 @@ Player action layout:
 - Station List và Map drawer hiển thị `Watch Video | View Images` ở hàng trên.
 - Action full-width ở hàng dưới giữ Team primary style và icon Play.
 - Station `In Progress` hiển thị `In Progress` thay cho `Play` nhưng vẫn mở Station Detail.
-- Station Detail giữ `Complete` để mở QR Check-out; `Cancel` vẫn là action riêng.
+- Player Station Detail V1 giữ `Complete` để mở QR Check-out và `Cancel` là
+  action riêng. Team Gameplay V2 dùng Detail overlay riêng với cùng capability,
+  V2 scanner/score flow và state-aware actions.
 - Admin Team Station action `View & Edit` và các Admin flow ngoài Station Editor không thay đổi.
 
 ---

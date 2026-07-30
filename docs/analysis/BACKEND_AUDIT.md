@@ -1,3 +1,21 @@
+# 2026-07-30 Team Gameplay V2-owned Detail overlay
+
+- Replaced V2-to-V1 `?from=team-v2` navigation with a V2-owned near-fullscreen
+  Detail overlay; V1 Player/Admin Station Detail behavior remains native.
+- Added V2-owned lazy gallery presentation while reusing the existing image API,
+  Player state, QR action, cancel, and score mutation helpers.
+- Added state-aware Detail actions and active Station QR caption. Scanner camera
+  remains on-demand; rejection persistence and cleanup behavior are unchanged.
+- Refined the V2 banner rails, compact marker-label placement, connectors, and
+  Konva label/marker draw order without changing Station coordinates or APIs.
+- Verification passed: targeted Detail/gallery/scanner Vitest `8/8`, full Frontend
+  Vitest `26/26`, i18n parity `391`, lint, production build, and bundle gate.
+- Authenticated Chrome smoke passed for banner/rails across the approved seven
+  viewport sizes and opening an Available Detail without URL change. The
+  active-Station Complete/Cancel browser path remains pending; physical mobile
+  camera and Production runtime verification were not performed.
+  Backend/database/migration/seed were unchanged.
+
 # 2026-07-30 Frontend OBS deploy sync reliability
 
 - Root cause of the recurring `Deploy Frontend (OBS)` failure: `obsutil sync`

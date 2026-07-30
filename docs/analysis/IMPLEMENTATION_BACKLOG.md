@@ -1,5 +1,22 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-30 Team Gameplay V2-owned Detail and map HUD
+
+- [x] Replace V2 routing through `?from=team-v2` with a V2-owned Detail overlay
+  that preserves `/team/v2` URL and map state.
+- [x] Add state-aware Start/Complete/Cancel behavior using existing V2 scanner,
+  score, cancel, Player state, and backend-authoritative QR action contracts.
+- [x] Add a V2-owned lazy Station gallery presentation without changing V1.
+- [x] Show localized active Station status/code/name below the on-demand QR CTA.
+- [x] Refine the reference banner, compact label placement/connectors, and
+  label-below-marker draw order without changing Station coordinates.
+- [x] Pass targeted V2 Detail/Gallery/Scanner Vitest `8/8`, full Frontend Vitest `26/26`, i18n parity
+  `391`, Frontend lint, production build, and bundle gate.
+- [~] Authenticated Chrome smoke passed banner/rails at all approved viewports
+  and Detail opening without URL change; active-Station Complete/Cancel remains
+  pending browser verification.
+- [ ] Complete physical iOS/Android camera and Production runtime verification.
+
 ## 2026-07-29 Team runtime stability resume completion
 
 - [x] Review mutation reconciliation, session-principal isolation, polling

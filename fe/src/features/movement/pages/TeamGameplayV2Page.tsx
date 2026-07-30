@@ -5,11 +5,9 @@ import {
   CustomerServiceOutlined,
   LogoutOutlined,
   SettingOutlined,
-  StarFilled,
-  TeamOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Tag, Typography} from "antd";
+import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
@@ -18,6 +16,7 @@ import {useNavigate} from "react-router-dom";
 import {
   getPlayerLeaderboard,
   ApiError,
+  cancelPlayerStation,
   isAuthFailure,
   logout as logoutApi,
   submitPlayerQrAction,
@@ -26,6 +25,7 @@ import {
 } from "../api";
 import {LanguageSwitch} from "../components/LanguageSwitch";
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
+import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
 import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
@@ -56,6 +56,8 @@ const MIN_MAP_ZOOM = 0.8;
 const MAX_MAP_ZOOM = 5;
 const STATION_LABEL_WIDTH = 120;
 const STATION_LABEL_HEIGHT = 44;
+const MARKER_EXCLUSION_RADIUS = 32;
+const MARKER_LABEL_GAP = 6;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
@@ -119,6 +121,7 @@ type MarkerScreenLayout = {
   labelX: number;
   labelY: number;
   isInViewport: boolean;
+  hasConnector: boolean;
 };
 
 type Bounds = {
@@ -255,18 +258,12 @@ function getStationLabelLayouts(
     anchorX: transform.x + marker.x * transform.scale,
     anchorY: transform.y + marker.y * transform.scale,
   }));
-  const visibleMarkers = screenMarkers
-    .filter(({anchorX, anchorY}) =>
+  const visibleMarkers = screenMarkers.filter(({anchorX, anchorY}) =>
       anchorX >= -24 &&
       anchorX <= viewport.width + 24 &&
       anchorY >= -24 &&
       anchorY <= viewport.height + 24,
-    )
-    .sort((first, second) => {
-      const firstPriority = Number(first.marker.isSelected) * 2 + Number(first.marker.isActive);
-      const secondPriority = Number(second.marker.isSelected) * 2 + Number(second.marker.isActive);
-      return secondPriority - firstPriority || first.anchorY - second.anchorY || first.anchorX - second.anchorX;
-    });
+    );
   const isPortrait = viewport.height > viewport.width;
   const safeTop = isPortrait ? 126 : 116;
   const safeBottom = isPortrait ? 104 : 96;
@@ -280,10 +277,10 @@ function getStationLabelLayouts(
     ),
   };
   const markerBounds = visibleMarkers.map(({anchorX, anchorY}) => ({
-    x: anchorX - 25,
-    y: anchorY - 25,
-    width: 50,
-    height: 50,
+    x: anchorX - MARKER_EXCLUSION_RADIUS - MARKER_LABEL_GAP,
+    y: anchorY - MARKER_EXCLUSION_RADIUS - MARKER_LABEL_GAP,
+    width: (MARKER_EXCLUSION_RADIUS + MARKER_LABEL_GAP) * 2,
+    height: (MARKER_EXCLUSION_RADIUS + MARKER_LABEL_GAP) * 2,
   }));
   const hudReservedBounds: Bounds[] = isPortrait ? [] : [
     {
@@ -293,108 +290,43 @@ function getStationLabelLayouts(
       height: 148,
     },
   ];
-  const placed: Bounds[] = [];
   const layouts = new Map<string, MarkerScreenLayout>();
-  const offsets = [
-    {x: -STATION_LABEL_WIDTH / 2, y: -STATION_LABEL_HEIGHT - 34},
-    {x: 34, y: -STATION_LABEL_HEIGHT / 2},
-    {x: -STATION_LABEL_WIDTH / 2, y: 34},
-    {x: -STATION_LABEL_WIDTH - 34, y: -STATION_LABEL_HEIGHT / 2},
-    {x: 28, y: -STATION_LABEL_HEIGHT - 28},
-    {x: 28, y: 28},
-    {x: -STATION_LABEL_WIDTH - 28, y: 28},
-    {x: -STATION_LABEL_WIDTH - 28, y: -STATION_LABEL_HEIGHT - 28},
-  ];
-
-  if (!isPortrait && visibleMarkers.length >= 12) {
-    const columns = Math.max(
-      1,
-      Math.floor((safeArea.width + 8) / (STATION_LABEL_WIDTH + 8)),
-    );
-    const rows = Math.min(
-      4,
-      Math.max(
-        1,
-        Math.floor((safeArea.height + 4) / (STATION_LABEL_HEIGHT + 4)),
-      ),
-    );
-    const horizontalGap =
-      columns > 1 ?
-        (safeArea.width - columns * STATION_LABEL_WIDTH) / (columns - 1)
-      : 0;
-    const verticalGap =
-      rows > 1 ?
-        (safeArea.height - rows * STATION_LABEL_HEIGHT) / (rows - 1)
-      : 0;
-    const availableSlots: Bounds[] = [];
-    for (let row = 0; row < rows; row += 1) {
-      for (let column = 0; column < columns; column += 1) {
-        const slot = {
-          x: safeArea.x + column * (STATION_LABEL_WIDTH + horizontalGap),
-          y: safeArea.y + row * (STATION_LABEL_HEIGHT + verticalGap),
-          width: STATION_LABEL_WIDTH,
-          height: STATION_LABEL_HEIGHT,
-        };
-        if (
-          hudReservedBounds.every(
-            (reserved) => getIntersectionArea(slot, reserved) === 0,
-          )
-        ) {
-          availableSlots.push(slot);
-        }
-      }
-    }
-    if (availableSlots.length >= visibleMarkers.length) {
-      for (const screenMarker of visibleMarkers) {
-        let bestSlotIndex = 0;
-        let bestDistance = Number.POSITIVE_INFINITY;
-        for (let index = 0; index < availableSlots.length; index += 1) {
-          const slot = availableSlots[index];
-          const distance = Math.hypot(
-            slot.x + slot.width / 2 - screenMarker.anchorX,
-            slot.y + slot.height / 2 - screenMarker.anchorY,
-          );
-          if (distance < bestDistance) {
-            bestDistance = distance;
-            bestSlotIndex = index;
-          }
-        }
-        const [slot] = availableSlots.splice(bestSlotIndex, 1);
-        placed.push(slot);
-        layouts.set(screenMarker.marker.station.id, {
-          ...screenMarker,
-          labelX: slot.x,
-          labelY: slot.y,
-          isInViewport: true,
-        });
-      }
-    }
-  }
-
-  const clampCandidate = (candidate: Bounds): Bounds => ({
-    ...candidate,
-    x: Math.min(
-      safeArea.x + safeArea.width - candidate.width,
-      Math.max(safeArea.x, candidate.x),
-    ),
-    y: Math.min(
-      safeArea.y + safeArea.height - candidate.height,
-      Math.max(safeArea.y, candidate.y),
-    ),
-  });
+  const isCandidateValid = (candidate: Bounds) =>
+    candidate.x >= safeArea.x &&
+    candidate.y >= safeArea.y &&
+    candidate.x + candidate.width <= safeArea.x + safeArea.width &&
+    candidate.y + candidate.height <= safeArea.y + safeArea.height &&
+    markerBounds.every((markerBound) => getIntersectionArea(candidate, markerBound) === 0) &&
+    hudReservedBounds.every((reserved) => getIntersectionArea(candidate, reserved) === 0);
 
   for (const screenMarker of visibleMarkers) {
-    if (layouts.has(screenMarker.marker.station.id)) {
-      continue;
-    }
-    const directCandidates = offsets.map((offset) =>
-      clampCandidate({
-        x: screenMarker.anchorX + offset.x,
-        y: screenMarker.anchorY + offset.y,
+    const distanceFromMarker = MARKER_EXCLUSION_RADIUS + MARKER_LABEL_GAP;
+    const directCandidates: Bounds[] = [
+      {
+        x: screenMarker.anchorX - STATION_LABEL_WIDTH / 2,
+        y: screenMarker.anchorY - distanceFromMarker - STATION_LABEL_HEIGHT,
         width: STATION_LABEL_WIDTH,
         height: STATION_LABEL_HEIGHT,
-      }),
-    );
+      },
+      {
+        x: screenMarker.anchorX - STATION_LABEL_WIDTH / 2,
+        y: screenMarker.anchorY + distanceFromMarker,
+        width: STATION_LABEL_WIDTH,
+        height: STATION_LABEL_HEIGHT,
+      },
+      {
+        x: screenMarker.anchorX + distanceFromMarker,
+        y: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
+        width: STATION_LABEL_WIDTH,
+        height: STATION_LABEL_HEIGHT,
+      },
+      {
+        x: screenMarker.anchorX - distanceFromMarker - STATION_LABEL_WIDTH,
+        y: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
+        width: STATION_LABEL_WIDTH,
+        height: STATION_LABEL_HEIGHT,
+      },
+    ];
     const gridCandidates: Bounds[] = [];
     for (
       let y = safeArea.y;
@@ -414,48 +346,26 @@ function getStationLabelLayouts(
         });
       }
     }
+    gridCandidates.sort((first, second) => {
+      const firstDistance = Math.hypot(
+        first.x + first.width / 2 - screenMarker.anchorX,
+        first.y + first.height / 2 - screenMarker.anchorY,
+      );
+      const secondDistance = Math.hypot(
+        second.x + second.width / 2 - screenMarker.anchorX,
+        second.y + second.height / 2 - screenMarker.anchorY,
+      );
+      return firstDistance - secondDistance;
+    });
     const candidates = [...directCandidates, ...gridCandidates];
-    let bestCandidate = candidates[0];
-    let bestScore = Number.POSITIVE_INFINITY;
-    for (const candidate of candidates) {
-      const centerX = candidate.x + candidate.width / 2;
-      const centerY = candidate.y + candidate.height / 2;
-      const distance = Math.hypot(
-        centerX - screenMarker.anchorX,
-        centerY - screenMarker.anchorY,
-      );
-      const labelOverlap = placed.reduce(
-        (total, existing) => total + getIntersectionArea(candidate, existing),
-        0,
-      );
-      const markerOverlap = markerBounds.reduce(
-        (total, markerBoundsItem) =>
-          total + getIntersectionArea(candidate, markerBoundsItem),
-        0,
-      );
-      const hudOverlap = hudReservedBounds.reduce(
-        (total, reserved) => total + getIntersectionArea(candidate, reserved),
-        0,
-      );
-      const score =
-        labelOverlap * 1_000 +
-        hudOverlap * 2_000 +
-        markerOverlap * 8 +
-        distance;
-      if (score < bestScore) {
-        bestScore = score;
-        bestCandidate = candidate;
-      }
-      if (score === distance) {
-        break;
-      }
-    }
-    placed.push(bestCandidate);
+    const candidateIndex = candidates.findIndex(isCandidateValid);
+    const bestCandidate = candidateIndex >= 0 ? candidates[candidateIndex] : directCandidates[0];
     layouts.set(screenMarker.marker.station.id, {
       ...screenMarker,
       labelX: bestCandidate.x,
       labelY: bestCandidate.y,
       isInViewport: true,
+      hasConnector: candidateIndex !== 0,
     });
   }
 
@@ -466,6 +376,7 @@ function getStationLabelLayouts(
         labelX: screenMarker.anchorX + 34,
         labelY: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
         isInViewport: false,
+        hasConnector: false,
       });
     }
   }
@@ -643,10 +554,15 @@ function TeamMarkerConnector({
   const colors = getMarkerColors(marker, hudAccent);
   const connectorX = Math.max(labelX, Math.min(labelX + STATION_LABEL_WIDTH, anchorX));
   const connectorY = Math.max(labelY, Math.min(labelY + STATION_LABEL_HEIGHT, anchorY));
+  const deltaX = connectorX - anchorX;
+  const deltaY = connectorY - anchorY;
+  const distance = Math.hypot(deltaX, deltaY) || 1;
+  const startX = anchorX + (deltaX / distance) * MARKER_EXCLUSION_RADIUS;
+  const startY = anchorY + (deltaY / distance) * MARKER_EXCLUSION_RADIUS;
 
   return (
     <Line
-      points={[anchorX, anchorY, connectorX, connectorY]}
+      points={[startX, startY, connectorX, connectorY]}
       stroke={colors.stroke}
       strokeWidth={1.2}
       opacity={0.72}
@@ -802,9 +718,9 @@ export function TeamGameplayV2Page() {
   const completedCount = activeTeamStations.filter((station) => station.status === "Finished").length;
   const scoreStation = activeTeamStations.find((station) => station.stationId === scoreStationId) ?? null;
   const selectedStation =
-    activeTeamStations.find((station) => station.stationId === selectedStationId) ??
-    activeTeamStations.find((station) => station.status === "In Progress") ??
-    null;
+    activeTeamStations.find((station) => station.stationId === selectedStationId) ?? null;
+  const activeStation =
+    activeTeamStations.find((station) => station.status === "In Progress") ?? null;
 
   const markerViewModels = useMemo<MarkerViewModel[]>(() => {
     const byStationId = new Map(activeTeamStations.map((station) => [station.stationId, station]));
@@ -1051,19 +967,21 @@ export function TeamGameplayV2Page() {
       setIsScannerOpen(false);
       if (result.action === "CHECK_IN") {
         message.success(t("teamV2.checkInSuccess"));
-        navigate(`/stations/${result.stationId}?from=team-v2`);
+        setSelectedStationId(null);
         return {status: "accepted"};
       }
       if (result.requiresScore) {
         scoreForm.setFieldsValue({score: 0, reason: ""});
         setScoreStationId(result.stationId);
+        setSelectedStationId(null);
         message.success(t("teamV2.checkOutScoreRequired"));
         return {status: "accepted"};
       }
+      setSelectedStationId(null);
       message.success(t("teamV2.checkOutSuccess"));
       return {status: "accepted"};
     } catch (error) {
-      if (isAuthFailure(error)) {
+      if (error instanceof ApiError && error.status === 401) {
         clearSession();
         navigate("/login");
         return {status: "accepted"};
@@ -1103,7 +1021,6 @@ export function TeamGameplayV2Page() {
   }
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
-  const selectedMaxPoints = selectedStation ? getStationEffectiveMaxPoints(selectedStation) : 0;
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
 
@@ -1158,7 +1075,7 @@ export function TeamGameplayV2Page() {
               scaleY={1 / mapTransform.scale}>
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport ? (
+                return layout?.isInViewport && layout.hasConnector ? (
                   <TeamMarkerConnector
                     key={`connector-${marker.station.id}`}
                     layout={layout}
@@ -1166,16 +1083,6 @@ export function TeamGameplayV2Page() {
                   />
                 ) : null;
               })}
-              {markerViewModels.map((marker) => (
-                <TeamMarker
-                  key={`marker-${marker.station.id}`}
-                  marker={marker}
-                  hudAccent={V2_HUD_ACCENT}
-                  x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
-                  y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
-                  onSelect={() => setSelectedStationId(marker.station.id)}
-                />
-              ))}
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport ? (
@@ -1188,6 +1095,22 @@ export function TeamGameplayV2Page() {
                   />
                 ) : null;
               })}
+            </Layer>
+            <Layer
+              x={-mapTransform.x / mapTransform.scale}
+              y={-mapTransform.y / mapTransform.scale}
+              scaleX={1 / mapTransform.scale}
+              scaleY={1 / mapTransform.scale}>
+              {markerViewModels.map((marker) => (
+                <TeamMarker
+                  key={`marker-${marker.station.id}`}
+                  marker={marker}
+                  hudAccent={V2_HUD_ACCENT}
+                  x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
+                  y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
+                  onSelect={() => setSelectedStationId(marker.station.id)}
+                />
+              ))}
             </Layer>
           </Stage>
         )}
@@ -1206,7 +1129,14 @@ export function TeamGameplayV2Page() {
           </div>
         </div>
         <div className="team-v2-center-score">
-          <span className="team-v2-event-brand">MOVEment 2026</span>
+          <div className="team-v2-event-banner" aria-label="MOVEment 2026">
+            <span className="team-v2-event-rail is-left" aria-hidden="true" />
+            <span className="team-v2-event-brand">
+              <span>MOVEment</span>
+              <small>2026</small>
+            </span>
+            <span className="team-v2-event-rail is-right" aria-hidden="true" />
+          </div>
           <div className="team-v2-score" aria-label={`${t("common.totalScore")}: ${activeTeam.score}`}>
             <strong>{activeTeam.score}</strong>
             <span>{t("teamV2.pointsUnit")}</span>
@@ -1226,39 +1156,29 @@ export function TeamGameplayV2Page() {
       </header>
 
       {selectedStation && !isPrimaryOverlayOpen && (
-        <div
-          className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) setSelectedStationId(null);
-          }}>
-          <section
-            className="team-v2-overlay team-v2-preview"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="team-v2-preview-title">
-            <div className="team-v2-preview-title">
-              <span className="team-v2-station-code">{getStationDisplayCode(selectedStation.stationId)}</span>
-              <div>
-                <Typography.Title id="team-v2-preview-title" level={4}>{selectedStation.name}</Typography.Title>
-                <Tag>{t(`status.${selectedStation.status}`)}</Tag>
-              </div>
-              <button type="button" className="team-v2-icon-button" onClick={() => setSelectedStationId(null)} aria-label={t("teamV2.closeOverlay")}>
-                <CloseOutlined />
-              </button>
-            </div>
-            <div className="team-v2-preview-stats">
-              <span><StarFilled /> {selectedStation.score}/{selectedMaxPoints}</span>
-              <span><TeamOutlined /> {selectedPlayingCount}</span>
-            </div>
-            <Button
-              type="primary"
-              block
-              onClick={() => navigate(`/stations/${selectedStation.stationId}?from=team-v2`)}>
-              {t("teamV2.openStationDetail")}
-            </Button>
-          </section>
-        </div>
+        <TeamV2StationDetailOverlay
+          station={selectedStation}
+          playingTeamCount={selectedPlayingCount}
+          opacity={panelOpacity}
+          language={language}
+          onClose={() => setSelectedStationId(null)}
+          onRequestScan={() => {
+            setQrToken("");
+            setIsScannerOpen(true);
+          }}
+          onCancel={async () => {
+            try {
+              await executePlayerMutation(
+                () => cancelPlayerStation(selectedStation.stationId),
+                language,
+              );
+              message.success(t("stationDetail.cancelled"));
+              setSelectedStationId(null);
+            } catch {
+              message.error(t("errors.generic"));
+            }
+          }}
+        />
       )}
 
       <footer className="team-v2-bottom">
@@ -1280,8 +1200,12 @@ export function TeamGameplayV2Page() {
               setIsScannerOpen(true);
             }}
           />
-          <strong>{t("teamV2.scanGameQr")}</strong>
-          <small>{t("teamV2.scanGameHint")}</small>
+          <strong>{activeStation ? t("status.In Progress") : t("teamV2.scanGameQr")}</strong>
+          <small className={activeStation ? "is-active-context" : undefined}>
+            {activeStation ?
+              `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}`
+            : t("teamV2.scanGameHint")}
+          </small>
         </div>
         <button
           type="button"
@@ -1439,6 +1363,7 @@ export function TeamGameplayV2Page() {
                       );
                       message.success(t("stationDetail.completedSuccess"));
                       setScoreStationId(null);
+                      setSelectedStationId(null);
                     } catch {
                       message.error(t("stationDetail.scoreSubmissionFailed"));
                     } finally {

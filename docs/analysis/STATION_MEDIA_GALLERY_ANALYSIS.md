@@ -31,6 +31,9 @@ action layout across Station List, Map drawer, and Station Detail.
 - Admin Station Editor provides add/remove/up/down controls for at most 10 URLs.
 - A shared Player preview component provides no-referrer gallery navigation,
   zoom, close, disabled-empty behavior, and broken-image fallback.
+- `/team/v2` uses a dedicated gallery presentation with the same lazy image API,
+  ordering, no-referrer, preview/zoom, disabled-empty, and fallback rules; V1
+  keeps the shared Player component.
 - Station List/Map use two media buttons above one full-width gameplay action;
   Station Detail uses the same media row above Complete and retains Cancel.
 - Enabled Player video actions use a YouTube-red button and filled YouTube icon
@@ -91,6 +94,9 @@ action layout across Station List, Map drawer, and Station Detail.
   edges, `205` communities); post-change browser/manual review remains pending.
   The existing non-blocking Vite large-chunk warning remains.
 - Physical-device and Production runtime verification were not performed.
+- On 2026-07-30 the V2-owned Detail/gallery integration passed full Frontend
+  Vitest (`26/26`), i18n parity (`391`), lint, production build, and bundle gate;
+  authenticated responsive browser review remains pending.
 
 ## Decision Log
 

@@ -422,8 +422,8 @@ V2 reuses the existing Suoi Tien WebP map assets, Station coordinates, Team
 Station state, language persistence, shared QR decode helpers, leaderboard API,
 and Team score submission API. Its `TeamV2QrScanner` is route-specific so API
 rejection can keep camera preview active without changing V1/Login scanner
-behavior. Settings, Station
-preview, and the V2 leaderboard use a device-local opacity setting stored in:
+behavior. Settings, V2-owned Station Detail, and the V2 leaderboard use a
+device-local opacity setting stored in:
 
 ```text
 movement-team-v2-panel-opacity
@@ -449,8 +449,8 @@ exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
 at the upper right, localized Team identity and green score in the row below,
 plus a centered pill footer containing Leaderboard left, floating QR center,
 and Progress right. Settings, Leaderboard, QR scanner, and score entry are blocking,
-centered near-fullscreen modal layers in both orientations. Station preview is
-a centered dialog; overlays must not be rendered as a small corner panel.
+centered near-fullscreen modal layers in both orientations. V2 Station Detail
+is also a near-fullscreen overlay and must not be rendered as a small corner panel.
 
 V2 owns a fixed route-local palette: cyan/active `#2FE4F0`, cyan-soft
 `#7DF3F9`, score/completed `#4DFF8A`, selected `#FF3FD8`, QR secondary
@@ -472,14 +472,15 @@ then runs the same domain behavior as the existing check-in/check-out endpoints.
 `requiresScore: true`, after which score entry still uses the Team session on
 the same device.
 
-Station Detail opened from V2 uses:
+Marker/label selection opens a V2-owned Station Detail overlay without changing
+the `/team/v2` URL. It uses state-aware Start/Complete/Cancel actions, the V2
+scanner and score overlay, shared authoritative Player data/mutations, and a
+V2-owned lazy gallery presentation. It never routes through
+`/stations/:stationId` and does not use `?from=team-v2`.
 
-```text
-?from=team-v2
-```
-
-Successful Team gameplay actions from that detail page return to `/team/v2`.
-No arbitrary return URL is accepted.
+Check-in, completion, and cancel success close Detail back to the preserved map.
+While a Station is active, the center QR caption shows localized `In Progress`
+plus Station code/name; camera startup remains user-triggered.
 
 ## QR Camera
 

@@ -35,6 +35,8 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
 - Commit `794143e8` aligned QR scan auto-submit, TIME score `10`, SCORE/BOTH
   checkout behavior, and effective max-score UI.
 - Camera decode auto-submits; manual paste/type still requires explicit submit.
+- V2 Detail opens the existing V2 scanner on demand for Start/Complete; rejected
+  tokens keep that scanner open and successful transitions return to the V2 map.
 - Backend resolves Station and purpose from the stored token, not visible payload.
 - TIME completes at checkout with score `10`; SCORE/BOTH wait for validated score
   input and prevent duplicate completion/award.
@@ -58,6 +60,9 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
   recorded in audit/backlog.
 - Remaining: real camera/browser smoke, duplicate interaction smoke, and
   Production migration/runtime verification where backlog remains open.
+- The 2026-07-30 V2 Detail integration passed V2 scanner/Detail targeted tests,
+  the full Frontend suite, i18n parity, lint, build, and bundle gate. No Backend
+  QR/scoring contract changed.
 
 ## Decision Log
 
