@@ -1,3 +1,32 @@
+# 2026-07-30 Frontend OBS deploy sync reliability
+
+- Root cause of the recurring `Deploy Frontend (OBS)` failure: `obsutil sync`
+  reported `Succeed count: 11  Failed count: 1` and exited `8`, which failed the
+  step. Runs `30427654430`, `30338153365` (1 failed object) and `30345371924`
+  (3 failed objects) share the same signature, so the failure is intermittent
+  per-object upload loss, not a credential, bucket, or argument problem.
+- Confirmed the per-object cause was never observable: obsutil writes it only to
+  the result files under `OutputDir` (`/home/runner/.obsutil_output`), never to
+  stdout. Run metrics (`max cost:38816 ms`, `average tps:0.18`, ~68KB/s across 5
+  parallel jobs) point at the largest assets, `fe/dist/images/map/*.png`
+  (1.86MB and 936KB), timing out while sharing low regional throughput.
+- Changed only [`.github/workflows/fe-deploy.yml`](../../.github/workflows/fe-deploy.yml):
+  `sync` and the `index.html` `cp` now run through a 3-attempt retry with
+  10s/20s backoff, `sync` uses `-j=3` and `-o=<workspace>/obsutil-report`, the
+  failed result files are printed when all attempts fail, and they are uploaded
+  as the `obsutil-report` artifact on failure.
+- Retry is safe because `sync` skips objects already present with matching
+  size/mtime, so a retry re-uploads only the objects that actually failed.
+- Verification: `fe-deploy.yml` parsed as YAML, the step script passed
+  `bash -n`, and the rendered script was executed against an obsutil stub for
+  the succeed-first, fail-twice-then-succeed, and always-fail cases. Exit codes
+  were `0`, `0`, and `1`, and the failure case printed the failed report.
+- Not performed: a real OBS deploy run, so the fix is not yet confirmed against
+  live Huawei Cloud throughput. `-meta=Cache-Control:no-cache,no-store,must-revalidate`
+  was left unquoted because obsutil separates metadata pairs with `#`, not `,`,
+  and the shell does not split on commas. `NODE_VERSION` remains `20`; the Node
+  20 deprecation warning is unrelated to this failure. No push or deploy.
+
 # 2026-07-29 Team runtime stability resume completion
 
 - Completed the post-checkpoint review of lean/legacy Player data, mutation
