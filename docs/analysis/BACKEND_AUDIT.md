@@ -1183,3 +1183,16 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   Login, QR Login, AppFrame, Backend, APIs, schema, and seed are unaffected.
 - Full Frontend Vitest (`37/37`), i18n parity, Frontend lint, production build,
   bundle gate, and Chrome visual verification using the real component passed.
+
+# 2026-07-31 Team V2 background-only overlay opacity
+
+- Changed Team V2 overlay default opacity from `85%` to `95%` and versioned the
+  local-storage key so existing clients adopt the new default once. Later
+  Settings slider changes continue to persist.
+- Replaced parent-layer CSS `opacity` on Leaderboard, Settings, Station Detail,
+  Scanner, and Score with a typed `--team-v2-overlay-opacity` variable consumed
+  only by backdrop and panel backgrounds. Text, icons, controls, and media now
+  retain full opacity.
+- No Backend, API, schema, seed, gameplay, or non-V2 screen changed. Focused
+  Vitest (`11/11`), full Frontend Vitest (`39/39`), i18n parity, Frontend lint,
+  production build, bundle gate, and Chrome visual verification passed.

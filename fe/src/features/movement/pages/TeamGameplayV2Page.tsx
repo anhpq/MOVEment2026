@@ -32,6 +32,10 @@ import {
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
 import {
+  DEFAULT_TEAM_V2_OVERLAY_OPACITY,
+  getTeamV2OverlayStyle,
+} from "../components/teamV2OverlayOpacity";
+import {
   getStationLabelLayouts,
   isTeamV2MarkerLocked,
   shouldRenderTeamV2Marker,
@@ -65,8 +69,7 @@ import {
 } from "../utils";
 import "./TeamGameplayV2Page.css";
 
-const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity";
-const DEFAULT_PANEL_OPACITY = 85;
+const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
@@ -135,12 +138,12 @@ type ScoreFormValues = {
 
 function readStoredPanelOpacity() {
   if (typeof window === "undefined") {
-    return DEFAULT_PANEL_OPACITY;
+    return DEFAULT_TEAM_V2_OVERLAY_OPACITY;
   }
   const value = Number(window.localStorage.getItem(PANEL_OPACITY_STORAGE_KEY));
   return Number.isFinite(value) && value >= 50 && value <= 100 ?
       Math.round(value / 5) * 5
-    : DEFAULT_PANEL_OPACITY;
+    : DEFAULT_TEAM_V2_OVERLAY_OPACITY;
 }
 
 function persistPanelOpacity(value: number) {
@@ -460,7 +463,7 @@ function LeaderboardOverlay({
   return (
     <div
       className="team-v2-overlay-layer"
-      style={{opacity: opacity / 100}}
+      style={getTeamV2OverlayStyle(opacity)}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}>
@@ -1087,7 +1090,7 @@ export function TeamGameplayV2Page() {
       {isSettingsOpen && (
         <div
           className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
+          style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setIsSettingsOpen(false);
           }}>
@@ -1153,7 +1156,7 @@ export function TeamGameplayV2Page() {
       {isScannerOpen && (
         <div
           className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
+          style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setIsScannerOpen(false);
           }}>
@@ -1184,7 +1187,7 @@ export function TeamGameplayV2Page() {
       {scoreStation && (
         <div
           className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
+          style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setScoreStationId(null);
           }}>

@@ -1,5 +1,17 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 background-only overlay opacity
+
+- [x] Set the new Team V2 overlay default to `95%` and reset the old stored
+  preference once through a versioned storage key.
+- [x] Apply opacity only to backdrop/panel background colors through a shared
+  typed CSS-variable helper; keep all overlay content at `100%` opacity.
+- [x] Cover default, invalid-value fallback, clamping, and absence of parent
+  `opacity` with focused tests.
+- [x] Pass focused Vitest `11/11`, full Frontend Vitest `39/39`, i18n parity,
+  Frontend lint, production build, bundle gate, diff check, and Chrome visual
+  verification.
+
 ## 2026-07-31 Team V2 inactive language contrast
 
 - [x] Darken and desaturate the unselected Settings language control while

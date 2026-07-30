@@ -12,6 +12,7 @@ import {Button, Tag} from "antd";
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import type {SupportedLanguage, TeamStation} from "../types";
+import {getTeamV2OverlayStyle} from "./teamV2OverlayOpacity";
 import {
   formatDateTime,
   formatDurationFromMs,
@@ -78,7 +79,7 @@ export function TeamV2StationDetailOverlay({
   return (
     <div
       className="team-v2-overlay-layer team-v2-detail-layer"
-      style={{opacity: opacity / 100}}
+      style={getTeamV2OverlayStyle(opacity)}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}>

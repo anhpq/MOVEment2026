@@ -511,6 +511,10 @@ the API response or alter Backend ranking, sorting, or scoring.
 Within Team V2 Settings, the unselected language choice uses a visibly darker,
 desaturated treatment than the active cyan choice. This contrast override is
 route-local and must not alter shared `LanguageSwitch` styling elsewhere.
+All Team V2 overlays default to `95%` opacity for backdrop/panel backgrounds.
+The opacity preference must be represented as a background CSS variable rather
+than parent `opacity`, so overlay text, icons, buttons, inputs, and media remain
+fully opaque. The Settings slider may persist later user choices.
 The marker uses the route-local `640×620` Konva Bézier reference with curved
 outer/inner pin paths, a radius-148 outer ring, black/white core, and a seamless
 180-segment green/mint/purple circular neon ring. Its inner group has one

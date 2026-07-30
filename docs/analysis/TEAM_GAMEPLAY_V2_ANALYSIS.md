@@ -8,6 +8,20 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Background-only overlay opacity
+
+- All Team V2 overlays now default to `95%` background opacity. A versioned
+  local-storage key resets the previous default/preference once, after which
+  the existing Settings slider continues to persist new choices.
+- Opacity is carried by `--team-v2-overlay-opacity` and applied only to backdrop
+  and panel background colors. The overlay DOM container no longer uses CSS
+  `opacity`, so text, icons, buttons, form controls, and media render at `100%`.
+- A shared typed helper is used by Leaderboard, Settings, Station Detail,
+  Scanner, and Score overlays and clamps invalid values safely.
+- Focused Vitest passed (`11/11`) and full Frontend Vitest passed (`39/39`);
+  i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
+  visual verification confirmed a 95% background with fully opaque content.
+
 ## 2026-07-31 Inactive language control contrast
 
 - The unselected language button inside Team V2 Settings now uses a near-black

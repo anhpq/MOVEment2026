@@ -20,6 +20,13 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Tất cả overlay trong `/team/v2` dùng default background opacity
+  `95%`. Opacity chỉ áp dụng cho backdrop và nền panel, không áp dụng lên DOM
+  container chứa nội dung; chữ, icon và interactive controls luôn render ở
+  opacity `100%`. Preference opacity cũ được reset một lần về default mới bằng
+  versioned local-storage key; user vẫn có thể điều chỉnh slider và lưu giá trị
+  mới sau đó.
+
 - 2026-07-31: Settings overlay trong `/team/v2` dùng intrinsic content height,
   căn giữa viewport và chỉ giới hạn bằng available height để scroll khi cần;
   portrait không ép full-height. Leaderboard overlay chỉ hiển thị năm Team đầu

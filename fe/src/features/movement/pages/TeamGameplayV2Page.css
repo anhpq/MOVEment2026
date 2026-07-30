@@ -570,7 +570,7 @@
     max(10px, env(safe-area-inset-bottom, 0))
     max(10px, env(safe-area-inset-left, 0));
   overflow: hidden;
-  background: rgba(0, 2, 6, 0.76);
+  background: rgba(0, 2, 6, var(--team-v2-overlay-opacity, 0.95));
   backdrop-filter: blur(7px);
   pointer-events: auto;
 }
@@ -582,7 +582,7 @@
   border-radius: 3px;
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--team-v2-accent) 7%, transparent), transparent 32%),
-    var(--team-v2-panel-strong);
+    rgba(3, 14, 20, var(--team-v2-overlay-opacity, 0.95));
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.03),
     0 0 28px var(--team-v2-focus-ring),
