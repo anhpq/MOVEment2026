@@ -1,5 +1,18 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 marker states and disabled media controls
+
+- [x] Keep YouTube and image-gallery controls visible and style unavailable
+  actions as readable disabled silver-neon controls.
+- [x] Hide the complete Team V2 marker group for `Finished`/`COMPLETED`
+  Stations without changing Station coordinates or progress data.
+- [x] Render backend `LOCKED` Stations with an authoritative silver-neon
+  marker, halo, label, and connector.
+- [x] Pass focused Vitest `12/12`, Frontend lint, production build, and bundle
+  gate.
+- [ ] Complete authenticated in-map state comparison and physical-device visual
+  verification.
+
 ## 2026-07-31 Team V2 exact Bézier Konva marker
 
 - [x] Replace polygon/circuit artwork with the supplied `640×620` curved outer

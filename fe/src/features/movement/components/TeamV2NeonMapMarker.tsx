@@ -21,6 +21,10 @@ const COLORS = {
   innerBlackBorder: "#131625",
   white: "#FFFFFF",
   whiteGlow: "#DDFEFF",
+  silverLight: "#F2F7FB",
+  silver: "#C3CED8",
+  silverMid: "#98A5B2",
+  silverDark: "#66727F",
 };
 
 const PIN_PATH = [
@@ -98,6 +102,13 @@ function getCircularGradientColor(progress: number) {
   return COLORS.neonGreen;
 }
 
+function getCircularSilverColor(progress: number) {
+  const position = ((progress % 1) + 1) % 1;
+  return position <= 0.5 ?
+      mixColors(COLORS.silverLight, COLORS.silverDark, position * 2)
+    : mixColors(COLORS.silverDark, COLORS.silverLight, (position - 0.5) * 2);
+}
+
 type CircularNeonGradientRingProps = {
   x: number;
   y: number;
@@ -106,6 +117,7 @@ type CircularNeonGradientRingProps = {
   segmentCount?: number;
   rotation?: number;
   glow?: boolean;
+  silver?: boolean;
 };
 
 const CircularNeonGradientRing = memo(function CircularNeonGradientRing({
@@ -116,6 +128,7 @@ const CircularNeonGradientRing = memo(function CircularNeonGradientRing({
   segmentCount = 180,
   rotation = -90,
   glow = true,
+  silver = false,
 }: CircularNeonGradientRingProps) {
   const segments = useMemo(() => {
     const segmentAngle = 360 / segmentCount;
@@ -124,9 +137,11 @@ const CircularNeonGradientRing = memo(function CircularNeonGradientRing({
       key: index,
       rotation: rotation + index * segmentAngle,
       angle: segmentAngle + overlap,
-      color: getCircularGradientColor(index / segmentCount),
+      color: silver ?
+        getCircularSilverColor(index / segmentCount)
+      : getCircularGradientColor(index / segmentCount),
     }));
-  }, [rotation, segmentCount]);
+  }, [rotation, segmentCount, silver]);
 
   return (
     <Group listening={false}>
@@ -135,10 +150,10 @@ const CircularNeonGradientRing = memo(function CircularNeonGradientRing({
           x={x}
           y={y}
           radius={radius}
-          stroke={COLORS.neonMint}
+          stroke={silver ? COLORS.silver : COLORS.neonMint}
           strokeWidth={strokeWidth + 5}
           opacity={0.2}
-          shadowColor={COLORS.neonPurple}
+          shadowColor={silver ? COLORS.silverLight : COLORS.neonPurple}
           shadowBlur={18}
           shadowOpacity={0.65}
           listening={false}
@@ -168,6 +183,7 @@ type TeamV2NeonMapMarkerProps = {
   scale?: number;
   rotation?: number;
   opacity?: number;
+  silver?: boolean;
 };
 
 export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
@@ -176,7 +192,13 @@ export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
   scale = 1,
   rotation = 0,
   opacity = 1,
+  silver = false,
 }: TeamV2NeonMapMarkerProps) {
+  const accent = silver ? COLORS.silver : COLORS.cyan;
+  const accentLight = silver ? COLORS.silverLight : COLORS.cyanLight;
+  const secondary = silver ? COLORS.silverDark : COLORS.purple;
+  const tertiary = silver ? COLORS.silverMid : COLORS.pink;
+
   return (
     <Group
       x={x}
@@ -191,12 +213,12 @@ export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
       <Path
         data={PIN_PATH}
         fill="transparent"
-        stroke={COLORS.cyanLight}
+        stroke={accentLight}
         strokeWidth={36}
         opacity={0.14}
         lineJoin="round"
         lineCap="round"
-        shadowColor={COLORS.pink}
+        shadowColor={tertiary}
         shadowBlur={36}
         shadowOpacity={0.45}
         listening={false}
@@ -207,19 +229,19 @@ export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
         strokeLinearGradientStartPoint={{x: 130, y: 80}}
         strokeLinearGradientEndPoint={{x: 500, y: 560}}
         strokeLinearGradientColorStops={[
-          0, COLORS.cyanLight, 0.34, COLORS.cyan, 0.68, COLORS.purple, 1, COLORS.pink,
+          0, accentLight, 0.34, accent, 0.68, secondary, 1, tertiary,
         ]}
         strokeWidth={20}
         lineJoin="round"
         lineCap="round"
-        shadowColor={COLORS.cyan}
+        shadowColor={accent}
         shadowBlur={12}
         shadowOpacity={0.48}
       />
       <Path
         data={INNER_PIN_PATH}
         fill={COLORS.bodyInner}
-        stroke="#82B6C6"
+        stroke={silver ? COLORS.silverMid : "#82B6C6"}
         strokeWidth={5}
         opacity={0.86}
         lineJoin="round"
@@ -234,10 +256,10 @@ export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
         strokeLinearGradientStartPoint={{x: 180, y: 115}}
         strokeLinearGradientEndPoint={{x: 455, y: 390}}
         strokeLinearGradientColorStops={[
-          0, COLORS.cyanLight, 0.52, COLORS.cyan, 1, COLORS.purple,
+          0, accentLight, 0.52, accent, 1, secondary,
         ]}
         strokeWidth={9}
-        shadowColor={COLORS.cyan}
+        shadowColor={accent}
         shadowBlur={9}
         shadowOpacity={0.4}
         listening={false}
@@ -248,6 +270,7 @@ export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
         radius={84}
         strokeWidth={18}
         segmentCount={180}
+        silver={silver}
       />
       <Circle
         x={TEAM_V2_MARKER_CENTER_X}

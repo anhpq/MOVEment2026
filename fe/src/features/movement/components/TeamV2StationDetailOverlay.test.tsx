@@ -58,6 +58,14 @@ function renderDetail(
 }
 
 describe("TeamV2StationDetailOverlay", () => {
+  it("keeps an unavailable YouTube action visible and disabled", () => {
+    renderDetail();
+
+    expect(screen.getByRole("button", {name: i18n.t("common.watchVideo")})).toBeVisible();
+    expect(screen.getByRole("button", {name: i18n.t("common.watchVideo")})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "gallery"})).toBeVisible();
+  });
+
   it("offers scan-to-start only for an available Station", async () => {
     const user = userEvent.setup();
     const {onRequestScan} = renderDetail();

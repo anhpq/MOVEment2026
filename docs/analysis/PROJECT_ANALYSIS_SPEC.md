@@ -492,6 +492,12 @@ overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
 Each label keeps Station code/name on one ellipsized line and the points value
 on a dedicated second line.
+Team V2 omits the complete marker group (marker, label, and connector) after a
+Station reaches Player `Finished` or backend `COMPLETED`. A backend `LOCKED`
+Station remains visible with an authoritative gray/silver-neon marker, halo,
+label, and connector. Station Detail keeps both YouTube and image-gallery
+controls visible; unavailable media renders as a readable disabled
+silver-neon control instead of disappearing.
 The marker uses the route-local `640×620` Konva Bézier reference with curved
 outer/inner pin paths, a radius-148 outer ring, black/white core, and a seamless
 180-segment green/mint/purple circular neon ring. Its inner group has one

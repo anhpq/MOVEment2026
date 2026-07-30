@@ -33,6 +33,8 @@ import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
 import {
   getStationLabelLayouts,
+  isTeamV2MarkerLocked,
+  shouldRenderTeamV2Marker,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
   type MarkerScreenLayout,
@@ -111,7 +113,7 @@ export type MarkerViewModel = {
   y: number;
   code: string;
   isActive: boolean;
-  isCompleted: boolean;
+  isLocked: boolean;
   isSelected: boolean;
 };
 
@@ -196,6 +198,12 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 }
 
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
+  if (marker.isLocked) {
+    return {
+      stroke: "#C3CED8",
+      glow: "#F2F7FB",
+    };
+  }
   if (marker.isSelected) {
     return {
       stroke: "#FF3FD8",
@@ -206,12 +214,6 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
     return {
       stroke: "#2FE4F0",
       glow: "#2FE4F0",
-    };
-  }
-  if (marker.isCompleted) {
-    return {
-      stroke: "#4DFF8A",
-      glow: "#4DFF8A",
     };
   }
   return {
@@ -267,7 +269,7 @@ function TeamMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
-      <TeamV2NeonMapMarker scale={drawScale} />
+      <TeamV2NeonMapMarker scale={drawScale} silver={marker.isLocked} />
       <Circle
         y={markerCenterY}
         radius={148 * drawScale}
@@ -545,19 +547,22 @@ export function TeamGameplayV2Page() {
 
   const markerViewModels = useMemo<MarkerViewModel[]>(() => {
     const byStationId = new Map(activeTeamStations.map((station) => [station.stationId, station]));
-    return stationDefinitions.map((station, index) => {
+    return stationDefinitions.flatMap((station, index): MarkerViewModel[] => {
       const position = getStationPosition(station, index, stationDefinitions.length);
       const teamStation = byStationId.get(station.id) ?? null;
-      return {
+      if (!shouldRenderTeamV2Marker(teamStation)) {
+        return [];
+      }
+      return [{
         station,
         teamStation,
         x: (position.x / 100) * MAP_WORLD_WIDTH,
         y: (position.y / 100) * MAP_WORLD_HEIGHT,
         code: getStationDisplayCode(station.id),
         isActive: teamStation?.status === "In Progress",
-        isCompleted: teamStation?.status === "Finished",
+        isLocked: isTeamV2MarkerLocked(teamStation),
         isSelected: selectedStationId === station.id,
-      };
+      }];
     });
   }, [activeTeamStations, selectedStationId, stationDefinitions]);
 

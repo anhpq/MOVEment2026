@@ -20,6 +20,12 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Team V2 media/marker states: nút YouTube và Xem hình ảnh luôn hiện
+  trong Detail; khi không có nội dung vẫn disabled nhưng dùng khung neon-muted
+  đọc được. Marker `COMPLETED`/`Finished` không render trên map. Marker có
+  authoritative `backendStatus === "LOCKED"` dùng silver-neon cho artwork,
+  halo, label và connector.
+
 - 2026-07-31: Marker `/team/v2` dùng reference Konva Bézier mới: design
   `640×620`, center `(320,248)`, tip anchor `(320,606)`, inner pin, outer ring
   radius `148`, và vòng neon green/mint/purple 360° không seam. Marker không có
@@ -537,6 +543,7 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
 | Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, media và action theo trạng thái; dùng V2-owned presentation/gallery và reuse shared data/API/mutation helpers. Không dùng `?from=team-v2`. |
 | Team Gameplay V2 Detail actions | `Available` mở V2 scanner để bắt đầu; `In Progress` có Complete và Cancel; `Finished` chỉ xem kết quả/media. Check-in, completion và cancel success đóng Detail về map V2. API rejection giữ V2 scanner mở theo scanner rule hiện hành. |
+| Team Gameplay V2 media/marker states | Detail luôn hiển thị nút YouTube và Xem hình ảnh; nút thiếu nội dung vẫn disabled nhưng phải đọc được bằng neon-muted styling. Map không render marker/label/connector của Station `COMPLETED`/`Finished`. Marker có `backendStatus === "LOCKED"` dùng silver-neon cho artwork, halo, label và connector. |
 | Team Gameplay V2 active QR context | Khi Team có Station `In Progress`, caption dưới QR hiển thị localized active status cùng Station code/name. Camera chỉ mở khi user bấm QR/Detail scan action; QR success/close/unmount cleanup scanner như hiện hành. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
 | Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |

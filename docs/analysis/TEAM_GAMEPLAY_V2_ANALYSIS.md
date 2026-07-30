@@ -8,6 +8,23 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Station marker visibility and media affordances
+
+- Team V2 always renders the YouTube and image-gallery controls in Station
+  Detail. When their required media is unavailable, the control remains
+  readable but disabled with a muted silver-neon treatment; no media action is
+  invoked.
+- Stations whose Player progress is `Finished` or whose backend status is
+  `COMPLETED` do not render a marker, label, or connector. This is a render-only
+  filter and does not modify Station coordinates, progress, APIs, or gameplay.
+- A backend `LOCKED` Station retains its marker but uses the dedicated
+  gray/silver-neon marker, halo, label, and connector palette. Locked state is
+  evaluated before selected/active presentation so its unavailable state stays
+  visually authoritative.
+- Focused Team V2 tests passed (`12/12`) together with Frontend lint,
+  production build, and bundle gate. Authenticated in-map and physical-device
+  visual verification of these three states remains pending.
+
 ## 2026-07-31 Centered score-only map header
 
 - Removed the `.team-v2-team` identity block from the V2 map HUD. Team identity

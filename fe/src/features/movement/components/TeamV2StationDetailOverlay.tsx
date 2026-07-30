@@ -125,6 +125,7 @@ export function TeamV2StationDetailOverlay({
 
         <div className="team-v2-detail-media">
           <Button
+            aria-label={t("common.watchVideo")}
             block
             className="team-v2-detail-media-button team-v2-detail-youtube-button"
             icon={<YoutubeFilled />}

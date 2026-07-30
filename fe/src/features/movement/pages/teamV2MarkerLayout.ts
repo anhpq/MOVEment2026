@@ -31,6 +31,19 @@ export type MarkerLabelSource = {
   y: number;
 };
 
+export type TeamV2MarkerStateSource = {
+  status: string;
+  backendStatus?: string;
+};
+
+export function shouldRenderTeamV2Marker(station: TeamV2MarkerStateSource | null) {
+  return station?.status !== "Finished" && station?.backendStatus !== "COMPLETED";
+}
+
+export function isTeamV2MarkerLocked(station: TeamV2MarkerStateSource | null) {
+  return station?.backendStatus === "LOCKED";
+}
+
 export type MarkerScreenLayout<T extends MarkerLabelSource = MarkerLabelSource> = {
   marker: T;
   anchorX: number;

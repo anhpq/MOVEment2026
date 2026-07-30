@@ -1111,3 +1111,18 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Replaced the runtime 6.4 MB PNG map with generated WebP variants at 1280/1920/2950 pixels; the original PNG moved to `fe/source-assets/images/map/`, and the frontend upgrades variants without downgrading or blanking the current map image.
 - Verification passed so far: Prisma Client generation, targeted Backend tests (`76/76`), Backend lint/build, and Frontend lint/build. Frontend build retains the known non-blocking large-chunk warning.
 - Not performed: Production mutation, push, deploy, browser/manual Excel checks, physical QR scan, or destructive reset execute against Production.
+
+# 2026-07-31 Team V2 marker states and disabled media controls
+
+- Added a V2-only render filter that removes marker, label, and connector for
+  Player `Finished` or backend `COMPLETED` Stations without mutating Station
+  coordinates or Backend progress.
+- Added an authoritative silver-neon Konva palette for backend `LOCKED`
+  Stations, including marker artwork, halo, label, and connector.
+- Kept YouTube and gallery controls visible in Team V2 Station Detail and added
+  a readable silver-neon disabled treatment when the required media is absent.
+  The YouTube button now has an explicit localized accessible name.
+- No Backend, API, schema, migration, seed, or non-V2 screen changed. Focused
+  Vitest passed (`12/12`); Frontend lint, production build, and bundle gate
+  passed. Authenticated visual smoke and physical-device verification remain
+  pending.
