@@ -1173,3 +1173,13 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
   visual verification at `390x844` confirmed centered intrinsic Settings
   height. Authenticated Leaderboard-data verification remains pending.
+
+# 2026-07-31 Team V2 inactive language contrast
+
+- Added a Team V2 Settings-only inactive language style with near-black
+  background, restrained border/shadow, and lower flag saturation, brightness,
+  and opacity. Hover/focus remains visible without resembling the active state.
+- The active language style and shared `LanguageSwitch` component are unchanged;
+  Login, QR Login, AppFrame, Backend, APIs, schema, and seed are unaffected.
+- Full Frontend Vitest (`37/37`), i18n parity, Frontend lint, production build,
+  bundle gate, and Chrome visual verification using the real component passed.

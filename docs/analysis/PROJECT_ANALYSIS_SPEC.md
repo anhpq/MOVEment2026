@@ -508,6 +508,9 @@ viewport-capped scrolling. Its Leaderboard overlay displays the first five
 authoritative API rows; when the current Team is outside those rows, it is
 appended as a sixth row with V2 display rank `6`. The projection must not mutate
 the API response or alter Backend ranking, sorting, or scoring.
+Within Team V2 Settings, the unselected language choice uses a visibly darker,
+desaturated treatment than the active cyan choice. This contrast override is
+route-local and must not alter shared `LanguageSwitch` styling elsewhere.
 The marker uses the route-local `640×620` Konva Bézier reference with curved
 outer/inner pin paths, a radius-148 outer ring, black/white core, and a seamless
 180-segment green/mint/purple circular neon ring. Its inner group has one

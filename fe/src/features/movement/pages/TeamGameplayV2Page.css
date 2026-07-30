@@ -778,6 +778,26 @@
   box-shadow: 0 0 0 3px var(--team-v2-focus-ring);
 }
 
+.team-v2-settings .language-switch__button:not(.is-active) {
+  border-color: rgba(125, 243, 249, 0.1);
+  background: rgba(0, 5, 9, 0.82);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.72);
+}
+
+.team-v2-settings .language-switch__button:not(.is-active) .language-switch__flag {
+  filter: grayscale(1) brightness(0.46) opacity(0.4);
+}
+
+.team-v2-settings .language-switch__button:not(.is-active):hover,
+.team-v2-settings .language-switch__button:not(.is-active):focus-visible {
+  background: rgba(3, 14, 20, 0.94);
+}
+
+.team-v2-settings .language-switch__button:not(.is-active):hover .language-switch__flag,
+.team-v2-settings .language-switch__button:not(.is-active):focus-visible .language-switch__flag {
+  filter: grayscale(0.8) brightness(0.62) opacity(0.58);
+}
+
 .team-v2-page .language-switch__flag svg {
   display: block;
   width: 22px;

@@ -8,6 +8,17 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Inactive language control contrast
+
+- The unselected language button inside Team V2 Settings now uses a near-black
+  background, subdued border/inset shadow, and a strongly desaturated,
+  darkened flag. Hover/focus raises it slightly while keeping it visibly
+  inactive; the selected cyan treatment remains unchanged.
+- Selectors are scoped to `.team-v2-settings`, so Login, QR Login, AppFrame,
+  and other shared `LanguageSwitch` consumers are unchanged.
+- Full Frontend Vitest passed (`37/37`), i18n parity, Frontend lint, production
+  build, bundle gate, and a Chrome render of the real `LanguageSwitch` passed.
+
 ## 2026-07-31 Settings sizing and compact Leaderboard
 
 - Settings now uses intrinsic content height and remains centered by the shared

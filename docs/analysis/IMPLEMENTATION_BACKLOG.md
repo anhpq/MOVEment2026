@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 inactive language contrast
+
+- [x] Darken and desaturate the unselected Settings language control while
+  preserving a readable hover/focus state and the selected cyan treatment.
+- [x] Scope the override to Team V2 Settings without modifying the shared
+  component or other screens.
+- [x] Pass full Frontend Vitest `37/37`, i18n parity, Frontend lint, production
+  build, bundle gate, diff check, and Chrome visual verification using the real
+  `LanguageSwitch` component.
+
 ## 2026-07-31 Team V2 Settings and compact Leaderboard
 
 - [x] Center Settings at intrinsic content height on desktop and portrait while
