@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 single-line marker labels
+
+- [x] Keep marker code/name on one line and truncate overflow with ellipsis.
+- [x] Preserve the points row beneath the name plus all anchor/scale/gap
+  geometry.
+- [x] Pass Frontend lint, production build, bundle gate, focused marker-layout
+  Vitest `3/3`, and diff check.
+
 ## 2026-07-31 Team V2 centered score-only map header
 
 - [x] Remove `.team-v2-team` identity markup and route-local styles from the V2

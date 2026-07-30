@@ -20,6 +20,10 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Nhãn Station trên `/team/v2` luôn giữ code/tên trên đúng một dòng;
+  nội dung dài dùng ellipsis trong khung hiện tại. Điểm tiếp tục nằm ở dòng
+  riêng phía dưới; anchor, gap và label size không đổi.
+
 - 2026-07-31: Supersede Team identity row trong HUD `/team/v2`: bỏ block
   `.team-v2-team` khỏi map header. Total score vẫn dùng dữ liệu hiện tại và luôn
   nằm chính giữa viewport ở mọi responsive mode; brand và Settings giữ nguyên.

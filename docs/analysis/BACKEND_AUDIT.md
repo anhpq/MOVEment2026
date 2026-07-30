@@ -1,3 +1,12 @@
+# 2026-07-31 Team V2 single-line marker labels
+
+- Changed the Team V2 Konva marker name row from word wrapping to one line with
+  ellipsis. The points row remains unchanged beneath it.
+- Marker/label geometry, anchors, Station data, APIs, and other screens are
+  unchanged.
+- Frontend lint, production build, bundle gate, focused marker-layout Vitest
+  (`3/3`), and diff check passed.
+
 # 2026-07-31 Team V2 centered score-only map header
 
 - Removed only the `.team-v2-team` block from the Team V2 map header; Team data,

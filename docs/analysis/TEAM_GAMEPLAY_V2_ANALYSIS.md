@@ -17,6 +17,15 @@
   header grid area in portrait and landscape. Brand and Settings placement are
   unchanged. This section supersedes earlier Team/score-row descriptions.
 
+## 2026-07-31 Single-line marker labels
+
+- Marker code/name text is constrained to one line with ellipsis inside the
+  existing label width. The points value remains on its dedicated second line.
+- Label dimensions, normalized zoom scale/gap, connector geometry, marker
+  anchor, and Station data remain unchanged.
+- Frontend lint, production build, bundle gate, focused marker-layout Vitest
+  (`3/3`), and diff check passed.
+
 ## 2026-07-31 Supplied Konva-native marker
 
 - Replaced the interim SVG-image marker with the supplied Konva-native geometry:

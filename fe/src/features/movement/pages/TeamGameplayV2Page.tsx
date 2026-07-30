@@ -456,7 +456,8 @@ function TeamMarkerLabel({
         fill="#EAFCFF"
         align="center"
         verticalAlign="middle"
-        wrap="word"
+        wrap="none"
+        ellipsis
         listening={false}
       />
       <Text

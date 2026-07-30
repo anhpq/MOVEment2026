@@ -490,6 +490,8 @@ V2 labels derive from each marker's single screen anchor after the map transform
 They remain above their own marker with clamped label scale and marker gap, may
 overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
+Each label keeps Station code/name on one ellipsized line and the points value
+on a dedicated second line.
 The marker uses route-local Konva-native cyan/purple scanner-pin geometry. Its
 inner group has one uniform scale and offsets the supplied lower-tip coordinate
 to the Station screen anchor. Its visual size scales once from `32px` to `64px`
