@@ -8,6 +8,28 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Marker interaction performance
+
+- Root cause: every visible marker redrew its exact 180-`Arc` neon ring on each
+  map frame, while unthrottled pointer events could enqueue React transform
+  updates faster than the display refresh rate. The marker Layer also retained
+  marker groups outside the viewport.
+- Each unchanged normal/silver marker artwork is now cached as a local Konva
+  bitmap at a resolution sized for the existing `32..64px` output. The exact
+  path, 180-segment ring, palette, glow, scale, hit target, anchor, and state
+  behavior remain unchanged; cache cleanup runs on palette change/unmount.
+- Pan, wheel zoom, and touch transforms now coalesce to the latest value and
+  commit at most once per `requestAnimationFrame`. Reset cancels pending work,
+  and unmount cancels the scheduled frame.
+- The marker Layer now applies the same viewport culling already used for
+  labels/connectors, avoiding offscreen marker construction without changing
+  coordinates.
+- Focused Team V2 Vitest passed (`15/15`) and the full Frontend suite passed
+  (`34/34`); i18n parity, Frontend lint, production build, and bundle gate also
+  passed. A Chrome stress preview of 17 real cached marker
+  components verified cyan/silver artwork and glow without cache clipping.
+  Authenticated device-level FPS profiling remains pending.
+
 ## 2026-07-31 Detail sizing and footer readability
 
 - Station Detail now uses intrinsic content height and remains centered by the

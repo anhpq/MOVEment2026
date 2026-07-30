@@ -1141,3 +1141,21 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   i18n parity, focused Vitest (`12/12`), Frontend lint, production build, and
   bundle gate passed; authenticated visual and physical-device verification
   remain pending.
+
+# 2026-07-31 Team V2 marker interaction performance
+
+- Cached each unchanged Team V2 Konva marker artwork after its exact
+  180-segment render, so subsequent map redraws composite the local cache
+  instead of replaying every artwork child. Cache resolution covers the
+  existing `32..64px` marker output and is cleared on palette change/unmount.
+- Coalesced mouse pan, wheel zoom, touch pan, and pinch transform updates to the
+  latest value per animation frame. Pending frames are cancelled by reset and
+  component cleanup.
+- Added marker-Layer viewport culling using the existing authoritative layout
+  flag. Marker coordinates, label anchoring, state colors, APIs, Backend,
+  schema, seed, and non-V2 screens are unchanged.
+- Focused Vitest passed (`15/15`) and full Frontend Vitest passed (`34/34`);
+  i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
+  rendered a 17-marker stress preview with correct normal
+  and silver artwork/glow and no cache clipping. Authenticated physical-device
+  FPS profiling remains pending.

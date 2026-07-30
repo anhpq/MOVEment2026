@@ -40,6 +40,10 @@ import {
   type MarkerScreenLayout,
 } from "./teamV2MarkerLayout";
 import {
+  createLatestFrameScheduler,
+  type LatestFrameScheduler,
+} from "./teamV2FrameScheduler";
+import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
@@ -536,6 +540,14 @@ export function TeamGameplayV2Page() {
   } | null>(null);
   const lastTapAtRef = useRef(0);
   const previousViewportRef = useRef<ViewportSize | null>(null);
+  const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
+  if (mapTransformSchedulerRef.current == null) {
+    mapTransformSchedulerRef.current = createLatestFrameScheduler<MapTransform>({
+      requestFrame: (callback) => requestAnimationFrame(callback),
+      cancelFrame: (frameId) => cancelAnimationFrame(frameId),
+      commit: setMapTransform,
+    });
+  }
   const playingCounts = useStationPlayingCounts(Boolean(session?.role === "user"));
 
   const completedCount = activeTeamStations.filter((station) => station.status === "Finished").length;
@@ -616,6 +628,11 @@ export function TeamGameplayV2Page() {
   }, [viewportSize]);
 
   useEffect(() => {
+    const scheduler = mapTransformSchedulerRef.current;
+    return () => scheduler?.cancel();
+  }, []);
+
+  useEffect(() => {
     if (!viewportSize.width) {
       return;
     }
@@ -639,18 +656,23 @@ export function TeamGameplayV2Page() {
     };
   }, [mapTransform.scale, viewportSize]);
 
+  const scheduleMapTransform = (nextTransform: MapTransform) => {
+    // Pointer events can arrive faster than the display refresh rate. Keep only
+    // the latest transform and commit at most once per animation frame.
+    mapTransformSchedulerRef.current?.schedule(nextTransform);
+  };
+
   const applyScaleAtPoint = (nextScale: number, point: {x: number; y: number}) => {
-    setMapTransform((current) => {
-      const clampedScale = clampScale(nextScale, viewportSize);
-      const worldPoint = {
-        x: (point.x - current.x) / current.scale,
-        y: (point.y - current.y) / current.scale,
-      };
-      return {
-        scale: clampedScale,
-        x: point.x - worldPoint.x * clampedScale,
-        y: point.y - worldPoint.y * clampedScale,
-      };
+    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
+    const clampedScale = clampScale(nextScale, viewportSize);
+    const worldPoint = {
+      x: (point.x - current.x) / current.scale,
+      y: (point.y - current.y) / current.scale,
+    };
+    scheduleMapTransform({
+      scale: clampedScale,
+      x: point.x - worldPoint.x * clampedScale,
+      y: point.y - worldPoint.y * clampedScale,
     });
   };
 
@@ -660,7 +682,8 @@ export function TeamGameplayV2Page() {
     if (!pointer) {
       return;
     }
-    const nextScale = event.evt.deltaY > 0 ? mapTransform.scale / 1.08 : mapTransform.scale * 1.08;
+    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
+    const nextScale = event.evt.deltaY > 0 ? current.scale / 1.08 : current.scale * 1.08;
     applyScaleAtPoint(nextScale, pointer);
   };
 
@@ -682,7 +705,7 @@ export function TeamGameplayV2Page() {
       return;
     }
     panStart.moved = true;
-    setMapTransform({
+    scheduleMapTransform({
       ...panStart.transform,
       x: panStart.transform.x + event.evt.clientX - panStart.clientX,
       y: panStart.transform.y + event.evt.clientY - panStart.clientY,
@@ -723,7 +746,7 @@ export function TeamGameplayV2Page() {
       event.evt.preventDefault();
       const panStart = panRef.current;
       panStart.moved = true;
-      setMapTransform({
+      scheduleMapTransform({
         ...panStart.transform,
         x: panStart.transform.x + touches[0].clientX - panStart.clientX,
         y: panStart.transform.y + touches[0].clientY - panStart.clientY,
@@ -753,6 +776,7 @@ export function TeamGameplayV2Page() {
   };
 
   const resetMap = () => {
+    mapTransformSchedulerRef.current?.cancel();
     setMapTransform(getDefaultMapTransform(viewportSize));
   };
 
@@ -929,17 +953,20 @@ export function TeamGameplayV2Page() {
               y={-mapTransform.y / mapTransform.scale}
               scaleX={1 / mapTransform.scale}
               scaleY={1 / mapTransform.scale}>
-              {markerViewModels.map((marker) => (
-                <TeamMarker
-                  key={`marker-${marker.station.id}`}
-                  marker={marker}
-                  hudAccent={V2_HUD_ACCENT}
-                  size={markerScreenLayouts.get(marker.station.id)?.markerSize ?? 40}
-                  x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
-                  y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
-                  onSelect={() => setSelectedStationId(marker.station.id)}
-                />
-              ))}
+              {markerViewModels.map((marker) => {
+                const layout = markerScreenLayouts.get(marker.station.id);
+                return layout?.isInViewport ? (
+                  <TeamMarker
+                    key={`marker-${marker.station.id}`}
+                    marker={marker}
+                    hudAccent={V2_HUD_ACCENT}
+                    size={layout.markerSize}
+                    x={layout.anchorX}
+                    y={layout.anchorY}
+                    onSelect={() => setSelectedStationId(marker.station.id)}
+                  />
+                ) : null;
+              })}
             </Layer>
           </Stage>
         )}

@@ -1,5 +1,19 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 marker interaction performance
+
+- [x] Cache unchanged normal/silver marker artwork while preserving the exact
+  180-segment design, glow, state palette, and `32..64px` output.
+- [x] Coalesce pan, wheel, and touch transform updates to one latest-value React
+  commit per animation frame with reset/unmount cleanup.
+- [x] Cull marker groups outside the viewport consistently with labels and
+  connectors.
+- [x] Pass focused Vitest `15/15`, full Frontend Vitest `34/34`, i18n parity,
+  Frontend lint, production build, bundle gate, diff check, and a 17-marker
+  Chrome cache/clipping stress preview.
+- [ ] Record authenticated physical-device FPS/frame-time before and after the
+  optimization under representative pan and pinch gestures.
+
 ## 2026-07-31 Team V2 Detail sizing and footer readability
 
 - [x] Size Station Detail to intrinsic content, center it, and retain

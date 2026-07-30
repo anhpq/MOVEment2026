@@ -511,6 +511,12 @@ visual size scales once from `32px` to `64px`
 with normalized zoom; no number renders inside the pin, while Station code
 remains in the anchored label. The state-colored halo remains a canvas overlay,
 and the label connector starts at the pin's upper attachment edge.
+To keep Team V2 pan/zoom responsive with dense markers, unchanged marker
+artwork is cached locally after its exact 180-segment render, map transform
+events are coalesced to at most one React commit per animation frame, and the
+marker Layer skips offscreen groups using the same layout visibility flag as
+labels/connectors. Cache and scheduling must not change coordinates, marker
+state, hit targets, anchoring, or visual geometry.
 
 ## QR Camera
 

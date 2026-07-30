@@ -79,4 +79,10 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(panned.labelY - initial.labelY).toBeCloseTo(-41);
     expect(JSON.stringify(marker)).toBe(before);
   });
+
+  it("flags offscreen marker groups for render culling", () => {
+    expect(getLayout().isInViewport).toBe(true);
+    expect(getLayout(baseScale, -1_000, 0).isInViewport).toBe(false);
+    expect(getLayout(baseScale, 0, 1_000).isInViewport).toBe(false);
+  });
 });

@@ -1,4 +1,5 @@
-import {memo, useMemo} from "react";
+import type Konva from "konva";
+import {memo, useLayoutEffect, useMemo, useRef} from "react";
 import {Arc, Circle, Group, Path} from "react-konva";
 
 export const TEAM_V2_MARKER_DESIGN_WIDTH = 640;
@@ -6,6 +7,9 @@ export const TEAM_V2_MARKER_DESIGN_HEIGHT = 620;
 export const TEAM_V2_MARKER_CENTER_X = 320;
 export const TEAM_V2_MARKER_CENTER_Y = 248;
 export const TEAM_V2_MARKER_TIP_Y = 606;
+// The artwork is rendered at 32..64 CSS px, so this retains high-DPI detail
+// while avoiding 180 Arc draws for every marker on every map frame.
+const TEAM_V2_MARKER_CACHE_PIXEL_RATIO = 0.35;
 
 const COLORS = {
   body: "#29273D",
@@ -194,13 +198,31 @@ export const TeamV2NeonMapMarker = memo(function TeamV2NeonMapMarker({
   opacity = 1,
   silver = false,
 }: TeamV2NeonMapMarkerProps) {
+  const markerRef = useRef<Konva.Group | null>(null);
   const accent = silver ? COLORS.silver : COLORS.cyan;
   const accentLight = silver ? COLORS.silverLight : COLORS.cyanLight;
   const secondary = silver ? COLORS.silverDark : COLORS.purple;
   const tertiary = silver ? COLORS.silverMid : COLORS.pink;
 
+  useLayoutEffect(() => {
+    const marker = markerRef.current;
+    if (!marker) {
+      return;
+    }
+    marker.clearCache();
+    marker.cache({
+      pixelRatio: TEAM_V2_MARKER_CACHE_PIXEL_RATIO,
+      hitCanvasPixelRatio: 0.1,
+    });
+    marker.getLayer()?.batchDraw();
+    return () => {
+      marker.clearCache();
+    };
+  }, [silver]);
+
   return (
     <Group
+      ref={markerRef}
       x={x}
       y={y}
       scaleX={scale}
