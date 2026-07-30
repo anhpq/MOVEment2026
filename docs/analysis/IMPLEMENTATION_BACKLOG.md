@@ -1,5 +1,17 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 Detail sizing and footer readability
+
+- [x] Size Station Detail to intrinsic content, center it, and retain
+  viewport-capped scrolling without mobile full-height stretching.
+- [x] Use compact `BXH`/`RANK` footer copy and increase the QR button from
+  `74px` to `222px` with non-overlapping raised geometry.
+- [x] Keep displayed Leaderboard, QR-caption, and Team/Station-label typography
+  at least `12px` after responsive footer scaling.
+- [x] Pass i18n parity, focused Vitest `12/12`, Frontend lint, production build,
+  and bundle gate.
+- [ ] Complete authenticated responsive visual and physical-device verification.
+
 ## 2026-07-31 Team V2 marker states and disabled media controls
 
 - [x] Keep YouTube and image-gallery controls visible and style unavailable

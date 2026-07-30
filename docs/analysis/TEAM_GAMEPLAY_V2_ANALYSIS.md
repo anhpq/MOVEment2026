@@ -8,6 +8,24 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Detail sizing and footer readability
+
+- Station Detail now uses intrinsic content height and remains centered by the
+  overlay grid. Its maximum height is the available viewport; overflow scrolls
+  only when content actually exceeds that limit. The mobile rule no longer
+  stretches short Detail content to full screen height.
+- The main-map Leaderboard control uses compact localized copy: `BXH` in VI and
+  `RANK` in EN. The full Leaderboard overlay title remains unchanged.
+- The center QR button diameter increases exactly threefold from `74px` to
+  `222px`. The footer composition height and QR action geometry were expanded
+  so the raised button remains above the two side panels.
+- Leaderboard copy, QR caption, and Team/Station footer labels compensate for
+  the responsive footer transform so their displayed font size remains at
+  least `12px`.
+- i18n parity, focused Team V2 Vitest (`12/12`), Frontend lint, production
+  build, and bundle gate passed. Authenticated visual and physical-device
+  verification remain pending.
+
 ## 2026-07-31 Station marker visibility and media affordances
 
 - Team V2 always renders the YouTube and image-gallery controls in Station

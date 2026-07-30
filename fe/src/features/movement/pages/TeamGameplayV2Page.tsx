@@ -850,6 +850,7 @@ export function TeamGameplayV2Page() {
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
   const footerScale = clamp((viewportSize.width - 16) / 600, 0.5, 1);
+  const footerFontCompensation = 1 / footerScale;
 
   return (
     <main className="team-v2-page">
@@ -1000,7 +1001,10 @@ export function TeamGameplayV2Page() {
 
       <footer
         className="team-v2-bottom"
-        style={{"--team-v2-footer-scale": footerScale} as CSSProperties}>
+        style={{
+          "--team-v2-footer-scale": footerScale,
+          "--team-v2-footer-font-compensation": footerFontCompensation,
+        } as CSSProperties}>
         <span className="team-v2-footer-rail is-left" aria-hidden="true" />
         <button
           type="button"

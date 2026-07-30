@@ -8,7 +8,7 @@
 
 .team-v2-detail {
   width: min(960px, 100%);
-  height: min(760px, 100%);
+  height: auto;
   max-height: 100%;
   padding: clamp(16px, 2.8vw, 28px);
   overflow: auto;
@@ -195,7 +195,7 @@
 @media (max-width: 720px) {
   .team-v2-detail {
     width: 100%;
-    height: 100%;
+    height: auto;
   }
 
   .team-v2-detail-stats {

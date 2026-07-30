@@ -20,6 +20,13 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Team V2 Detail dùng intrinsic content height, căn giữa viewport và
+  chỉ giới hạn bằng available height để scroll khi cần; không ép full-height trên
+  điện thoại. Footer dùng copy ngắn `BXH` trong VI (`RANK` trong EN), QR CTA có
+  đường kính gấp ba baseline cũ (`74px` thành `222px`), và chữ QR caption,
+  Leaderboard, Team label có kích thước hiển thị tối thiểu `12px` kể cả khi
+  footer responsive scale.
+
 - 2026-07-31: Team V2 media/marker states: nút YouTube và Xem hình ảnh luôn hiện
   trong Detail; khi không có nội dung vẫn disabled nhưng dùng khung neon-muted
   đọc được. Marker `COMPLETED`/`Finished` không render trên map. Marker có

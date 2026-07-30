@@ -498,6 +498,11 @@ Station remains visible with an authoritative gray/silver-neon marker, halo,
 label, and connector. Station Detail keeps both YouTube and image-gallery
 controls visible; unavailable media renders as a readable disabled
 silver-neon control instead of disappearing.
+Team V2 Station Detail uses centered intrinsic content height, capped by the
+available viewport with overflow scrolling. The footer uses `BXH`/`RANK` for
+its compact Leaderboard control, a `222px` center QR button (three times the
+prior baseline), and responsive font compensation that keeps the displayed QR
+caption, Leaderboard, and Team/Station labels at least `12px`.
 The marker uses the route-local `640×620` Konva Bézier reference with curved
 outer/inner pin paths, a radius-148 outer ring, black/white core, and a seamless
 180-segment green/mint/purple circular neon ring. Its inner group has one

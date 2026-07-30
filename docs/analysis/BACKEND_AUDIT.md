@@ -1126,3 +1126,18 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   Vitest passed (`12/12`); Frontend lint, production build, and bundle gate
   passed. Authenticated visual smoke and physical-device verification remain
   pending.
+
+# 2026-07-31 Team V2 Detail sizing and footer readability
+
+- Replaced fixed/full-height V2 Station Detail sizing with centered intrinsic
+  height plus viewport-capped overflow scrolling.
+- Shortened only the main-map Leaderboard control to localized `BXH`/`RANK`,
+  increased the center QR diameter exactly from `74px` to `222px`, and expanded
+  its transparent footer layout region so the QR remains raised above side
+  panels.
+- Added inverse footer-scale font compensation for displayed `12px` minimum
+  Leaderboard, QR-caption, Team, and Station-label copy.
+- No Backend, API, schema, seed, Station coordinate, or non-V2 screen changed.
+  i18n parity, focused Vitest (`12/12`), Frontend lint, production build, and
+  bundle gate passed; authenticated visual and physical-device verification
+  remain pending.
