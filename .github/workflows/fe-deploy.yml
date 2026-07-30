@@ -102,17 +102,67 @@ jobs:
           echo "OBSUTIL_BIN=${OBSUTIL_BIN}" >> "${GITHUB_ENV}"
 
       - name: Sync dist to OBS bucket
+        env:
+          OBS_REPORT_DIR: ${{ github.workspace }}/obsutil-report
         run: |
+          set -euo pipefail
+
           "${OBSUTIL_BIN}" config -i="${{ secrets.HUAWEI_ACCESS_KEY }}" \
             -k="${{ secrets.HUAWEI_SECRET_KEY }}" \
             -e="https://obs.${{ env.HUAWEI_REGION }}.myhuaweicloud.com"
 
-          "${OBSUTIL_BIN}" sync dist/ "obs://${{ env.OBS_BUCKET }}/" \
-            -acl=public-read
+          mkdir -p "${OBS_REPORT_DIR}"
+
+          # obsutil exits 8 when any single object fails, and the per-object cause
+          # is only written to the result files in -o, never to stdout.
+          dump_failed_report() {
+            echo "obsutil failure details:"
+            find "${OBS_REPORT_DIR}" -type f -name '*failed_report*' -print -exec cat {} \; || true
+          }
+
+          # sync skips objects already present with the same size/mtime, so a retry
+          # only re-uploads what actually failed.
+          run_with_retry() {
+            local label="$1"
+            shift
+
+            local attempt
+            for attempt in 1 2 3; do
+              echo "${label}: attempt ${attempt}/3"
+              if "$@"; then
+                return 0
+              fi
+              if [ "${attempt}" -lt 3 ]; then
+                sleep $((attempt * 10))
+              fi
+            done
+
+            echo "${label}: failed after 3 attempts."
+            return 1
+          }
+
+          # -j=3 instead of the default 5: throughput to this region is low enough
+          # that 5 parallel uploads starve the largest map asset into a timeout.
+          if ! run_with_retry "Sync dist to OBS" \
+            "${OBSUTIL_BIN}" sync dist/ "obs://${{ env.OBS_BUCKET }}/" \
+            -acl=public-read -j=3 -o="${OBS_REPORT_DIR}"; then
+            dump_failed_report
+            exit 1
+          fi
 
           # SPA entry point: always fetch fresh so new JS/CSS hashes are picked up
-          "${OBSUTIL_BIN}" cp dist/index.html "obs://${{ env.OBS_BUCKET }}/index.html" \
+          run_with_retry "Upload index.html" \
+            "${OBSUTIL_BIN}" cp dist/index.html "obs://${{ env.OBS_BUCKET }}/index.html" \
             -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
+
+      - name: Upload obsutil result files
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: obsutil-report
+          path: obsutil-report
+          if-no-files-found: ignore
+          retention-days: 3
 
       - name: Deployment summary
         run: |
