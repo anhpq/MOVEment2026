@@ -1,7 +1,8 @@
 import {describe, expect, it} from "vitest";
 import {
   getStationLabelLayouts,
-  MARKER_LABEL_ATTACHMENT_OFFSET,
+  MAX_MARKER_SIZE,
+  MIN_MARKER_SIZE,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
   type MarkerLabelSource,
@@ -32,9 +33,10 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(layout.anchorY).toBeCloseTo(187.2);
     expect(layout.labelScale).toBe(1);
     expect(layout.labelGap).toBe(6);
+    expect(layout.markerSize).toBe(40);
     expect(layout.labelX).toBeCloseTo(layout.anchorX - STATION_LABEL_WIDTH / 2);
     expect(layout.labelY + STATION_LABEL_HEIGHT).toBeCloseTo(
-      layout.anchorY - MARKER_LABEL_ATTACHMENT_OFFSET - layout.labelGap,
+      layout.anchorY - layout.markerAttachmentOffset - layout.labelGap,
     );
   });
 
@@ -45,10 +47,12 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(minimum.labelScale).toBe(0.85);
     expect(minimum.labelGap).toBeGreaterThanOrEqual(4);
     expect(minimum.labelGap).toBeLessThanOrEqual(8);
+    expect(minimum.markerSize).toBe(MIN_MARKER_SIZE);
     expect(maximum.labelScale).toBe(1.15);
     expect(maximum.labelGap).toBe(8);
+    expect(maximum.markerSize).toBe(MAX_MARKER_SIZE);
     expect(maximum.labelY + STATION_LABEL_HEIGHT * maximum.labelScale).toBeCloseTo(
-      maximum.anchorY - MARKER_LABEL_ATTACHMENT_OFFSET - maximum.labelGap,
+      maximum.anchorY - maximum.markerAttachmentOffset - maximum.labelGap,
     );
   });
 

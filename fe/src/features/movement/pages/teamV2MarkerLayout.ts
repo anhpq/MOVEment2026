@@ -3,7 +3,11 @@ export const STATION_LABEL_HEIGHT = 44;
 
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
-export const MARKER_LABEL_ATTACHMENT_OFFSET = 74;
+export const MARKER_DRAW_REFERENCE_WIDTH = 528;
+const MARKER_REFERENCE_TIP_TO_TOP = 538;
+export const MIN_MARKER_SIZE = 32;
+export const BASE_MARKER_SIZE = 40;
+export const MAX_MARKER_SIZE = 64;
 const BASE_MARKER_LABEL_GAP = 6;
 const MIN_MARKER_LABEL_GAP = 4;
 const MAX_MARKER_LABEL_GAP = 8;
@@ -35,6 +39,8 @@ export type MarkerScreenLayout<T extends MarkerLabelSource = MarkerLabelSource> 
   labelY: number;
   labelScale: number;
   labelGap: number;
+  markerSize: number;
+  markerAttachmentOffset: number;
   isInViewport: boolean;
 };
 
@@ -67,6 +73,13 @@ export function getStationLabelLayouts<T extends MarkerLabelSource>(
     MIN_MARKER_LABEL_GAP,
     MAX_MARKER_LABEL_GAP,
   );
+  const markerSize = clamp(
+    BASE_MARKER_SIZE * zoomRatio,
+    MIN_MARKER_SIZE,
+    MAX_MARKER_SIZE,
+  );
+  const markerAttachmentOffset =
+    markerSize * (MARKER_REFERENCE_TIP_TO_TOP / MARKER_DRAW_REFERENCE_WIDTH);
   const scaledLabelWidth = STATION_LABEL_WIDTH * labelScale;
   const scaledLabelHeight = STATION_LABEL_HEIGHT * labelScale;
   const layouts = new Map<string, MarkerScreenLayout<T>>();
@@ -79,9 +92,11 @@ export function getStationLabelLayouts<T extends MarkerLabelSource>(
       anchorX,
       anchorY,
       labelX: anchorX - scaledLabelWidth / 2,
-      labelY: anchorY - MARKER_LABEL_ATTACHMENT_OFFSET - labelGap - scaledLabelHeight,
+      labelY: anchorY - markerAttachmentOffset - labelGap - scaledLabelHeight,
       labelScale,
       labelGap,
+      markerSize,
+      markerAttachmentOffset,
       isInViewport:
         anchorX >= -24 &&
         anchorX <= viewport.width + 24 &&

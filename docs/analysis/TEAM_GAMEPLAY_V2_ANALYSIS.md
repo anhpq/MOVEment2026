@@ -8,17 +8,20 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
-## 2026-07-31 Supplied SVG marker asset
+## 2026-07-31 Supplied Konva-native marker
 
-- Replaced the hand-built Team V2 Konva pin artwork with the supplied
-  cyan/purple SVG marker while retaining the existing canvas hit target,
-  Station code, and state-colored halo.
-- The SVG lower tip is aligned to the unchanged Station screen anchor. Label,
-  connector, pan/zoom transforms, map data, and every non-V2 screen remain
-  unchanged.
-- Focused marker-layout Vitest (`3/3`), Frontend lint, production build, bundle
-  gate, and a direct Chrome render of the SVG passed. Authenticated in-map and
-  physical-device visual verification remain pending.
+- Replaced the interim SVG-image marker with the supplied Konva-native geometry:
+  gradient pin body, concentric core rings, circuit traces, speed lines, and
+  restrained cyan/purple glow.
+- A single inner-group transform uses `offsetX=320`, `offsetY=590`, and uniform
+  scale `0.15`, so the supplied lower tip remains the unchanged Station screen
+  anchor without an image load or second zoom application.
+- Marker artwork scales from `32px` to `64px` with normalized zoom and no longer
+  contains a number; the Station code remains in the anchored label. The
+  state-colored halo, minimum 44px hit target, labels/connectors, interactions,
+  map data, and non-V2 screens remain unchanged. Focused marker
+  layout Vitest (`3/3`), Frontend lint, production build, and bundle gate passed;
+  authenticated in-map and physical-device visual verification remain pending.
 
 ## 2026-07-29 Runtime Stability Integration
 

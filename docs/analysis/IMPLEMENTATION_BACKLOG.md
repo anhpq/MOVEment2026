@@ -1,6 +1,19 @@
 # MOVEment 2026 - Implementation Backlog
 
-## 2026-07-31 Team V2 supplied SVG marker
+## 2026-07-31 Team V2 supplied Konva-native marker
+
+- [x] Replace the interim SVG-image marker with the supplied native Konva
+  geometry, gradients, rings, circuit traces, speed lines, and glow.
+- [x] Use the supplied `(320, 590)` tip as the single marker offset; clamp its
+  normalized-zoom size to `32..64px` without applying zoom twice.
+- [x] Remove the number inside the marker while keeping Station code in the
+  anchored label; preserve state halo, minimum hit target, and map behavior.
+- [x] Remove the obsolete SVG asset/load lifecycle and pass focused marker
+  layout Vitest `3/3`, Frontend lint, production build, bundle gate, and diff
+  check.
+- [ ] Run authenticated in-map and physical-device visual verification.
+
+## 2026-07-31 Team V2 supplied SVG marker (superseded)
 
 - [x] Replace only the Team V2 hand-built pin artwork with the supplied
   cyan/purple SVG marker.

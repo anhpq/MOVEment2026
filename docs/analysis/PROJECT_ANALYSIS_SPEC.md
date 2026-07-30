@@ -490,10 +490,12 @@ V2 labels derive from each marker's single screen anchor after the map transform
 They remain above their own marker with clamped label scale and marker gap, may
 overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
-The marker uses the route-local cyan/purple SVG scanner-pin asset. Its lower
-tip, rather than its visual center, is the exact Station coordinate; the
-Station code and state-colored halo remain canvas overlays, and its label
-connector starts at the pin's upper attachment edge.
+The marker uses route-local Konva-native cyan/purple scanner-pin geometry. Its
+inner group has one uniform scale and offsets the supplied lower-tip coordinate
+to the Station screen anchor. Its visual size scales once from `32px` to `64px`
+with normalized zoom; no number renders inside the pin, while Station code
+remains in the anchored label. The state-colored halo remains a canvas overlay,
+and the label connector starts at the pin's upper attachment edge.
 
 ## QR Camera
 

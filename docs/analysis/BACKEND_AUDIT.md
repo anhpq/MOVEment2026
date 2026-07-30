@@ -1,4 +1,18 @@
-# 2026-07-31 Team V2 supplied SVG marker
+# 2026-07-31 Team V2 supplied Konva-native marker
+
+- Replaced the interim SVG image/load path with the supplied native Konva
+  geometry: gradient body, concentric rings, circuit traces, speed lines, and
+  glow. The route no longer ships or decodes a separate Station marker asset.
+- The artwork group uses the supplied `(320, 590)` tip as its offset and one
+  normalized-zoom scale that clamps the rendered marker to `32..64px`. The
+  marker has no internal number; Station code remains in its label. The screen
+  anchor, state halo, minimum 44px interaction target, labels/connectors, map
+  transforms, and V1 UI remain preserved.
+- Focused marker-layout Vitest (`3/3`), Frontend lint, production build, bundle
+  gate, and diff check passed. Authenticated in-map and physical-device visual
+  verification were not performed.
+
+# 2026-07-31 Team V2 supplied SVG marker (superseded)
 
 - Replaced only the hand-built Team V2 Konva marker artwork with the supplied
   route-local cyan/purple SVG. The image is decoded once and reused by all

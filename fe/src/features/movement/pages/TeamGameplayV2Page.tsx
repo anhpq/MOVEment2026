@@ -12,7 +12,6 @@ import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type
 import {useTranslation} from "react-i18next";
 import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
-import teamV2StationMarkerUrl from "../assets/team-v2-station-marker.svg";
 import {
   getPlayerLeaderboard,
   ApiError,
@@ -28,7 +27,7 @@ import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
 import {
   getStationLabelLayouts,
-  MARKER_LABEL_ATTACHMENT_OFFSET,
+  MARKER_DRAW_REFERENCE_WIDTH,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
   type MarkerScreenLayout,
@@ -62,10 +61,38 @@ const MAP_WORLD_HEIGHT = 1000;
 const MIN_MAP_ZOOM = 0.8;
 const MAX_MAP_ZOOM = 5;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
-const MARKER_SVG_WIDTH = 76.8;
-const MARKER_SVG_HEIGHT = 96;
-const MARKER_SVG_TIP_Y = 575 / 640;
-const MARKER_CENTER_Y = (222 - 575) * (MARKER_SVG_HEIGHT / 640);
+const MARKER_PIN_POINTS = [
+  320, 52, 280, 52, 235, 62, 196, 85, 151, 112, 116, 168, 116, 246,
+  116, 362, 206, 466, 320, 590, 434, 466, 524, 362, 524, 246, 524, 168,
+  489, 112, 444, 85, 405, 62, 360, 52, 320, 52,
+];
+const MARKER_CIRCUIT_LINES: {points: number[]; color: string}[] = [
+  {points: [407, 133, 407, 162, 389, 180, 389, 200], color: "#60B4CA"},
+  {points: [433, 151, 473, 151, 491, 169, 548, 169], color: "#60B4CA"},
+  {points: [415, 205, 467, 205, 487, 225, 556, 225], color: "#60B4CA"},
+  {points: [426, 242, 478, 242, 498, 262, 566, 262], color: "#60B4CA"},
+  {points: [397, 311, 397, 348, 419, 370, 419, 416], color: "#60B4CA"},
+  {points: [231, 138, 231, 169, 249, 187, 249, 205], color: "#BF6DB3"},
+  {points: [207, 171, 163, 171, 145, 189, 83, 189], color: "#BF6DB3"},
+  {points: [220, 216, 159, 216, 140, 235, 74, 235], color: "#BF6DB3"},
+  {points: [216, 258, 148, 258, 129, 277, 65, 277], color: "#BF6DB3"},
+  {points: [230, 304, 230, 343, 209, 364, 209, 413], color: "#BF6DB3"},
+  {points: [295, 340, 295, 396, 276, 415, 276, 504], color: "#827FB8"},
+  {points: [345, 340, 345, 396, 364, 415, 364, 504], color: "#827FB8"},
+  {points: [320, 342, 320, 516], color: "#827FB8"},
+];
+const MARKER_SPEED_LINES: {points: number[]; color: string; width: number}[] = [
+  {points: [71, 165, 207, 165], color: "#9D6FB4", width: 3},
+  {points: [92, 182, 220, 182], color: "#9D6FB4", width: 2},
+  {points: [62, 261, 213, 261], color: "#9D6FB4", width: 3},
+  {points: [93, 282, 224, 282], color: "#9D6FB4", width: 2},
+  {points: [101, 401, 232, 401], color: "#BF6DB3", width: 4},
+  {points: [431, 158, 555, 158], color: "#60B4CA", width: 3},
+  {points: [419, 178, 531, 178], color: "#60B4CA", width: 2},
+  {points: [432, 218, 590, 218], color: "#60B4CA", width: 3},
+  {points: [414, 239, 557, 239], color: "#60B4CA", width: 2},
+  {points: [427, 324, 573, 324], color: "#60B4CA", width: 3},
+];
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
   PLAYER_QR_INVALID: "teamV2.qrErrors.invalid",
@@ -198,72 +225,47 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   if (marker.isSelected) {
     return {
-      fill: "rgba(32, 5, 29, 0.94)",
       stroke: "#FF3FD8",
-      text: "#EAFCFF",
       glow: "#FF3FD8",
     };
   }
   if (marker.isActive) {
     return {
-      fill: "rgba(3, 26, 32, 0.94)",
       stroke: "#2FE4F0",
-      text: "#EAFCFF",
       glow: "#2FE4F0",
     };
   }
   if (marker.isCompleted) {
     return {
-      fill: "rgba(3, 32, 21, 0.94)",
       stroke: "#4DFF8A",
-      text: "#EAFCFF",
       glow: "#4DFF8A",
     };
   }
   return {
-    fill: "rgba(3, 14, 20, 0.94)",
     stroke: hudAccent,
-    text: "#EAFCFF",
     glow: hudAccent,
   };
-}
-
-function useTeamV2MarkerImage() {
-  const [image, setImage] = useState<HTMLImageElement | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    const nextImage = new window.Image();
-    nextImage.decoding = "async";
-    nextImage.onload = () => {
-      if (!cancelled) setImage(nextImage);
-    };
-    nextImage.src = teamV2StationMarkerUrl;
-    return () => {
-      cancelled = true;
-      nextImage.onload = null;
-    };
-  }, []);
-
-  return image;
 }
 
 function TeamMarker({
   marker,
   hudAccent,
-  markerImage,
+  size,
   x,
   y,
   onSelect,
 }: {
   marker: MarkerViewModel;
   hudAccent: string;
-  markerImage: HTMLImageElement | null;
+  size: number;
   x: number;
   y: number;
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
+  const drawScale = size / MARKER_DRAW_REFERENCE_WIDTH;
+  const markerCenterY = (248 - 590) * drawScale;
+  const hitRadius = Math.max(22, size * 0.51);
 
   return (
     <Group
@@ -291,50 +293,101 @@ function TeamMarker({
         const stage = event.target.getStage();
         if (stage) stage.container().style.cursor = "";
       }}>
-      <Circle y={-42} radius={42} fill="rgba(255,255,255,0.01)" />
-      {markerImage ? (
-        <KonvaImage
-          image={markerImage}
-          x={-MARKER_SVG_WIDTH / 2}
-          y={-MARKER_SVG_HEIGHT * MARKER_SVG_TIP_Y}
-          width={MARKER_SVG_WIDTH}
-          height={MARKER_SVG_HEIGHT}
-          listening={false}
-        />
-      ) : (
+      <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
+      <Group
+        scaleX={drawScale}
+        scaleY={drawScale}
+        offsetX={320}
+        offsetY={590}
+        listening={false}>
         <Line
-          points={[0, 0, -28, -42, -22, -70, 0, -82, 22, -70, 28, -42]}
+          points={MARKER_PIN_POINTS}
           closed
-          fill="rgba(4, 16, 30, 0.96)"
-          stroke={colors.stroke}
-          strokeWidth={2}
+          stroke="#A0D3DF"
+          strokeWidth={34}
+          opacity={0.18}
+          shadowColor="#BF6DB3"
+          shadowBlur={30}
+          shadowOpacity={0.45}
           listening={false}
         />
-      )}
+        <Line
+          points={MARKER_PIN_POINTS}
+          closed
+          fill="#2C2A3F"
+          strokeLinearGradientStartPoint={{x: 130, y: 80}}
+          strokeLinearGradientEndPoint={{x: 500, y: 560}}
+          strokeLinearGradientColorStops={[
+            0, "#A0D3DF", 0.34, "#60B4CA", 0.68, "#9D6FB4", 1, "#BF6DB3",
+          ]}
+          strokeWidth={20}
+          lineJoin="round"
+          shadowColor="#60B4CA"
+          shadowBlur={10}
+          shadowOpacity={0.45}
+        />
+        <Circle x={320} y={248} radius={158} fill="#2C2A3F" stroke="#A0D3DF" strokeWidth={9} />
+        <Circle
+          x={320}
+          y={248}
+          radius={82}
+          strokeLinearGradientStartPoint={{x: 246, y: 176}}
+          strokeLinearGradientEndPoint={{x: 390, y: 320}}
+          strokeLinearGradientColorStops={[0, "#65FFB1", 0.45, "#25E6C8", 1, "#B05CFF"]}
+          strokeWidth={18}
+          shadowColor="#69F7D0"
+          shadowBlur={12}
+          shadowOpacity={0.65}
+        />
+        <Circle x={320} y={248} radius={58} fill="#080A12" stroke="#10131E" strokeWidth={10} />
+        <Circle
+          x={320}
+          y={248}
+          radius={36}
+          fill="#FFFFFF"
+          stroke="#DDFEFF"
+          strokeWidth={4}
+          shadowColor="#DDFEFF"
+          shadowBlur={12}
+          shadowOpacity={0.75}
+        />
+        {MARKER_CIRCUIT_LINES.map((line, index) => (
+          <Line
+            key={`circuit-${index}`}
+            points={line.points}
+            stroke={line.color}
+            strokeWidth={3}
+            opacity={0.86}
+            lineCap="round"
+            lineJoin="round"
+            listening={false}
+          />
+        ))}
+        {MARKER_SPEED_LINES.map((line, index) => (
+          <Line
+            key={`speed-${index}`}
+            points={line.points}
+            stroke={line.color}
+            strokeWidth={line.width}
+            opacity={0.88}
+            lineCap="round"
+            shadowColor={line.color}
+            shadowBlur={7}
+            shadowOpacity={0.5}
+            listening={false}
+          />
+        ))}
+        <Circle x={71} y={165} radius={5.5} fill="#9D6FB4" listening={false} />
+        <Circle x={573} y={324} radius={5.5} fill="#60B4CA" listening={false} />
+      </Group>
       <Circle
-        y={MARKER_CENTER_Y}
-        radius={22.5}
+        y={markerCenterY}
+        radius={158 * drawScale}
         stroke={colors.stroke}
         strokeWidth={1.8}
         shadowColor={colors.glow}
         shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
         shadowOpacity={0.72}
-        listening={false}
-      />
-      <Text
-        text={marker.code}
-        x={-17}
-        y={MARKER_CENTER_Y - 8}
-        fontSize={10.5}
-        fontStyle="700"
-        fill={colors.text}
-        width={34}
-        height={16}
-        align="center"
-        verticalAlign="middle"
-        shadowColor="#030C14"
-        shadowBlur={4}
-        shadowOpacity={0.95}
         listening={false}
       />
     </Group>
@@ -429,15 +482,15 @@ function TeamMarkerConnector({
   layout: MarkerScreenLayout<MarkerViewModel>;
   hudAccent: string;
 }) {
-  const {marker, anchorX, anchorY, labelX, labelY, labelScale} = layout;
+  const {marker, anchorX, anchorY, labelX, labelY, labelScale, markerAttachmentOffset} = layout;
   const colors = getMarkerColors(marker, hudAccent);
   const connectorX = labelX + (STATION_LABEL_WIDTH * labelScale) / 2;
   const connectorY = labelY + STATION_LABEL_HEIGHT * labelScale;
   const deltaX = connectorX - anchorX;
   const deltaY = connectorY - anchorY;
   const distance = Math.hypot(deltaX, deltaY) || 1;
-  const startX = anchorX + (deltaX / distance) * MARKER_LABEL_ATTACHMENT_OFFSET;
-  const startY = anchorY + (deltaY / distance) * MARKER_LABEL_ATTACHMENT_OFFSET;
+  const startX = anchorX + (deltaX / distance) * markerAttachmentOffset;
+  const startY = anchorY + (deltaY / distance) * markerAttachmentOffset;
 
   return (
     <Line
@@ -578,7 +631,6 @@ export function TeamGameplayV2Page() {
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
-  const markerImage = useTeamV2MarkerImage();
   const [viewportSize, setViewportSize] = useState<ViewportSize>({width: 0, height: 0});
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
   const loadedMapWidthRef = useRef(0);
@@ -987,7 +1039,7 @@ export function TeamGameplayV2Page() {
                   key={`marker-${marker.station.id}`}
                   marker={marker}
                   hudAccent={V2_HUD_ACCENT}
-                  markerImage={markerImage}
+                  size={markerScreenLayouts.get(marker.station.id)?.markerSize ?? 40}
                   x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
                   y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
                   onSelect={() => setSelectedStationId(marker.station.id)}
