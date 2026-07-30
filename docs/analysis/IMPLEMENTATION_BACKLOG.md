@@ -1,5 +1,53 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-30 Team V2 score and banner rails refinement
+
+- [x] Render total score in bright green with layered neon and center it below
+  the brand in landscape while preserving portrait-safe placement.
+- [x] Replace the shallow brand/rails styling with a taller angular plate and
+  long symmetric striped cyan rails.
+- [x] Pass i18n parity `395`, lint, full Vitest `29/29`, production build,
+  bundle gate, diff check, authenticated 320x568/390x844/844x390 captures, and
+  browser-console inspection.
+
+## 2026-07-30 Team V2 scanner-pin marker refinement
+
+- [x] Replace the circular V2 map marker with a vector scanner pin whose lower
+  tip remains the exact Station coordinate, preserving state colors and input.
+- [x] Keep labels/connectors attached from the pin top using the shared
+  screen-space anchor, clamped scale/gap, and marker-above-label layer order.
+- [x] Pass focused marker layout `3/3`, full Frontend Vitest `29/29`, i18n
+  parity `395`, lint, production build, bundle gate, and diff check.
+- [x] Capture authenticated marker screenshots at min/default/max map scales
+  `0.3120`, `0.3900`, and `1.9500`; inspect browser console with no new issues.
+
+## 2026-07-30 Canonical Station seed data synchronization
+
+- [x] Apply the supplied 17-record Station dataset to canonical seed fields:
+  content, media URL, points, exact decimal map coordinates, and `ST` type.
+- [x] Make local/test content synchronization upsert Station/Game data in place
+  so canonical content changes do not trigger destructive Station replacement.
+- [x] Validate 17 unique records, four `ST` games, two seed executions, zero
+  database mismatches, 34 active Station QR tokens, 425 progress rows, Backend
+  lint/build, full Jest `162/162`, and `db:verify`.
+- [~] Local data caveat: the initial validation seed used the prior replacement
+  behavior and reset local gameplay state before the in-place guard was added.
+  Production was not accessed; retain this as an operational warning until a
+  fresh non-destructive seed rehearsal starts from non-empty progress data.
+
+## 2026-07-30 Team Gameplay V2 marker anchoring and footer refinement
+
+- [x] Replace V2 viewport-grid marker label placement with a single marker
+  screen anchor, clamped scale/gap, label/connector-under-marker draw order,
+  and no Station-coordinate mutation.
+- [x] Replace the V2 footer pill with independent angular Leaderboard, raised
+  QR pedestal, and Team/completed-Station controls joined only by thin rails.
+- [x] Add VI/EN footer copy and focused marker-layout geometry tests.
+- [x] Pass marker-layout Vitest `3/3`, full Frontend Vitest `29/29`, i18n
+  parity `395`, lint, production build, bundle gate, and diff check.
+- [x] Complete authenticated visual comparison at 390x844, 844x390, and
+  320x568 with no footer overlap/crop after responsive state settled.
+
 ## 2026-07-30 Team Gameplay V2-owned Detail and map HUD
 
 - [x] Replace V2 routing through `?from=team-v2` with a V2-owned Detail overlay

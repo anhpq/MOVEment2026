@@ -1,7 +1,6 @@
 import {
   ArrowLeftOutlined,
   CloseOutlined,
-  CompassOutlined,
   CustomerServiceOutlined,
   LogoutOutlined,
   SettingOutlined,
@@ -9,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
-import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
 import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
@@ -26,6 +25,13 @@ import {
 import {LanguageSwitch} from "../components/LanguageSwitch";
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
+import {
+  getStationLabelLayouts,
+  MARKER_LABEL_ATTACHMENT_OFFSET,
+  STATION_LABEL_HEIGHT,
+  STATION_LABEL_WIDTH,
+  type MarkerScreenLayout,
+} from "./teamV2MarkerLayout";
 import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
@@ -54,10 +60,6 @@ const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MIN_MAP_ZOOM = 0.8;
 const MAX_MAP_ZOOM = 5;
-const STATION_LABEL_WIDTH = 120;
-const STATION_LABEL_HEIGHT = 44;
-const MARKER_EXCLUSION_RADIUS = 32;
-const MARKER_LABEL_GAP = 6;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
@@ -92,12 +94,12 @@ function getQrActionErrorKey(error: unknown) {
   );
 }
 
-type ViewportSize = {
+export type ViewportSize = {
   width: number;
   height: number;
 };
 
-type MarkerViewModel = {
+export type MarkerViewModel = {
   station: StationDefinition;
   teamStation: TeamStation | null;
   x: number;
@@ -108,27 +110,10 @@ type MarkerViewModel = {
   isSelected: boolean;
 };
 
-type MapTransform = {
+export type MapTransform = {
   x: number;
   y: number;
   scale: number;
-};
-
-type MarkerScreenLayout = {
-  marker: MarkerViewModel;
-  anchorX: number;
-  anchorY: number;
-  labelX: number;
-  labelY: number;
-  isInViewport: boolean;
-  hasConnector: boolean;
-};
-
-type Bounds = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
 };
 
 type ScoreFormValues = {
@@ -172,6 +157,10 @@ function clampScale(value: number, viewport: ViewportSize) {
     baseScale * MIN_MAP_ZOOM,
     Math.min(baseScale * MAX_MAP_ZOOM, value),
   );
+}
+
+function clamp(value: number, minimum: number, maximum: number) {
+  return Math.max(minimum, Math.min(maximum, value));
 }
 
 function getDefaultMapTransform(viewport: ViewportSize): MapTransform {
@@ -234,156 +223,6 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   };
 }
 
-function getIntersectionArea(first: Bounds, second: Bounds) {
-  const width = Math.max(
-    0,
-    Math.min(first.x + first.width, second.x + second.width) -
-      Math.max(first.x, second.x),
-  );
-  const height = Math.max(
-    0,
-    Math.min(first.y + first.height, second.y + second.height) -
-      Math.max(first.y, second.y),
-  );
-  return width * height;
-}
-
-function getStationLabelLayouts(
-  markers: MarkerViewModel[],
-  viewport: ViewportSize,
-  transform: MapTransform,
-) {
-  const screenMarkers = markers.map((marker) => ({
-    marker,
-    anchorX: transform.x + marker.x * transform.scale,
-    anchorY: transform.y + marker.y * transform.scale,
-  }));
-  const visibleMarkers = screenMarkers.filter(({anchorX, anchorY}) =>
-      anchorX >= -24 &&
-      anchorX <= viewport.width + 24 &&
-      anchorY >= -24 &&
-      anchorY <= viewport.height + 24,
-    );
-  const isPortrait = viewport.height > viewport.width;
-  const safeTop = isPortrait ? 126 : 116;
-  const safeBottom = isPortrait ? 104 : 96;
-  const safeArea = {
-    x: 8,
-    y: Math.min(safeTop, Math.max(8, viewport.height / 3)),
-    width: Math.max(STATION_LABEL_WIDTH, viewport.width - 16),
-    height: Math.max(
-      STATION_LABEL_HEIGHT,
-      viewport.height - safeTop - safeBottom,
-    ),
-  };
-  const markerBounds = visibleMarkers.map(({anchorX, anchorY}) => ({
-    x: anchorX - MARKER_EXCLUSION_RADIUS - MARKER_LABEL_GAP,
-    y: anchorY - MARKER_EXCLUSION_RADIUS - MARKER_LABEL_GAP,
-    width: (MARKER_EXCLUSION_RADIUS + MARKER_LABEL_GAP) * 2,
-    height: (MARKER_EXCLUSION_RADIUS + MARKER_LABEL_GAP) * 2,
-  }));
-  const hudReservedBounds: Bounds[] = isPortrait ? [] : [
-    {
-      x: viewport.width / 2 - 145,
-      y: viewport.height - 148,
-      width: 290,
-      height: 148,
-    },
-  ];
-  const layouts = new Map<string, MarkerScreenLayout>();
-  const isCandidateValid = (candidate: Bounds) =>
-    candidate.x >= safeArea.x &&
-    candidate.y >= safeArea.y &&
-    candidate.x + candidate.width <= safeArea.x + safeArea.width &&
-    candidate.y + candidate.height <= safeArea.y + safeArea.height &&
-    markerBounds.every((markerBound) => getIntersectionArea(candidate, markerBound) === 0) &&
-    hudReservedBounds.every((reserved) => getIntersectionArea(candidate, reserved) === 0);
-
-  for (const screenMarker of visibleMarkers) {
-    const distanceFromMarker = MARKER_EXCLUSION_RADIUS + MARKER_LABEL_GAP;
-    const directCandidates: Bounds[] = [
-      {
-        x: screenMarker.anchorX - STATION_LABEL_WIDTH / 2,
-        y: screenMarker.anchorY - distanceFromMarker - STATION_LABEL_HEIGHT,
-        width: STATION_LABEL_WIDTH,
-        height: STATION_LABEL_HEIGHT,
-      },
-      {
-        x: screenMarker.anchorX - STATION_LABEL_WIDTH / 2,
-        y: screenMarker.anchorY + distanceFromMarker,
-        width: STATION_LABEL_WIDTH,
-        height: STATION_LABEL_HEIGHT,
-      },
-      {
-        x: screenMarker.anchorX + distanceFromMarker,
-        y: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
-        width: STATION_LABEL_WIDTH,
-        height: STATION_LABEL_HEIGHT,
-      },
-      {
-        x: screenMarker.anchorX - distanceFromMarker - STATION_LABEL_WIDTH,
-        y: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
-        width: STATION_LABEL_WIDTH,
-        height: STATION_LABEL_HEIGHT,
-      },
-    ];
-    const gridCandidates: Bounds[] = [];
-    for (
-      let y = safeArea.y;
-      y <= safeArea.y + safeArea.height - STATION_LABEL_HEIGHT;
-      y += 12
-    ) {
-      for (
-        let x = safeArea.x;
-        x <= safeArea.x + safeArea.width - STATION_LABEL_WIDTH;
-        x += 16
-      ) {
-        gridCandidates.push({
-          x,
-          y,
-          width: STATION_LABEL_WIDTH,
-          height: STATION_LABEL_HEIGHT,
-        });
-      }
-    }
-    gridCandidates.sort((first, second) => {
-      const firstDistance = Math.hypot(
-        first.x + first.width / 2 - screenMarker.anchorX,
-        first.y + first.height / 2 - screenMarker.anchorY,
-      );
-      const secondDistance = Math.hypot(
-        second.x + second.width / 2 - screenMarker.anchorX,
-        second.y + second.height / 2 - screenMarker.anchorY,
-      );
-      return firstDistance - secondDistance;
-    });
-    const candidates = [...directCandidates, ...gridCandidates];
-    const candidateIndex = candidates.findIndex(isCandidateValid);
-    const bestCandidate = candidateIndex >= 0 ? candidates[candidateIndex] : directCandidates[0];
-    layouts.set(screenMarker.marker.station.id, {
-      ...screenMarker,
-      labelX: bestCandidate.x,
-      labelY: bestCandidate.y,
-      isInViewport: true,
-      hasConnector: candidateIndex !== 0,
-    });
-  }
-
-  for (const screenMarker of screenMarkers) {
-    if (!layouts.has(screenMarker.marker.station.id)) {
-      layouts.set(screenMarker.marker.station.id, {
-        ...screenMarker,
-        labelX: screenMarker.anchorX + 34,
-        labelY: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
-        isInViewport: false,
-        hasConnector: false,
-      });
-    }
-  }
-
-  return layouts;
-}
-
 function TeamMarker({
   marker,
   hudAccent,
@@ -425,28 +264,37 @@ function TeamMarker({
         const stage = event.target.getStage();
         if (stage) stage.container().style.cursor = "";
       }}>
-      <Circle radius={24} fill="rgba(255,255,255,0.01)" />
-      {(marker.isActive || marker.isSelected) && (
-        <Circle
-          radius={32}
-          stroke={colors.stroke}
-          strokeWidth={1.5}
-          dash={[5, 5]}
-          opacity={0.65}
-          listening={false}
-        />
-      )}
-      <Circle
-        radius={17}
-        fill={colors.fill}
+      <Circle y={-42} radius={42} fill="rgba(255,255,255,0.01)" />
+      <Line
+        points={[0, 0, -38, -39, -34, -64, -20, -81, 0, -88, 20, -81, 34, -64, 38, -39]}
+        closed
+        fill="rgba(4, 16, 30, 0.96)"
         stroke={colors.stroke}
         strokeWidth={2}
         shadowColor={colors.glow}
-        shadowBlur={18}
-        shadowOpacity={0.9}
+        shadowBlur={16}
+        shadowOpacity={0.56}
+        lineJoin="round"
         perfectDrawEnabled={false}
         shadowForStrokeEnabled={false}
       />
+      <Line
+        points={[0, -6, -29, -42, -26, -62, -14, -76, 0, -82, 14, -76, 26, -62, 29, -42]}
+        closed
+        stroke="rgba(176, 107, 255, 0.86)"
+        strokeWidth={1.5}
+        opacity={0.78}
+        lineJoin="round"
+        listening={false}
+      />
+      <Circle y={-45} radius={31} fill="rgba(3, 14, 27, 0.94)" stroke={colors.stroke} strokeWidth={2} shadowColor={colors.glow} shadowBlur={12} shadowOpacity={0.62} listening={false} />
+      <Circle y={-45} radius={24} stroke="rgba(176, 107, 255, 0.88)" strokeWidth={2} dash={[7, 4]} listening={false} />
+      <Circle y={-45} radius={17} fill="rgba(4, 17, 31, 0.98)" stroke={colors.stroke} strokeWidth={1.8} listening={false} />
+      <Circle y={-45} radius={8} fill="rgba(125, 243, 249, 0.12)" stroke="rgba(234, 252, 255, 0.86)" strokeWidth={1} listening={false} />
+      <Line points={[-28, -56, -19, -56, -14, -51, -8, -51]} stroke={colors.stroke} strokeWidth={1.2} lineCap="round" lineJoin="round" listening={false} />
+      <Line points={[28, -56, 19, -56, 14, -51, 8, -51]} stroke="rgba(176, 107, 255, 0.9)" strokeWidth={1.2} lineCap="round" lineJoin="round" listening={false} />
+      <Line points={[-22, -29, -14, -29, -9, -23, -9, -15, 0, -6, 9, -15, 9, -23, 14, -29, 22, -29]} stroke="rgba(125, 243, 249, 0.72)" strokeWidth={1.15} lineCap="round" lineJoin="round" listening={false} />
+      <Line points={[0, -3, 0, 0]} stroke={colors.stroke} strokeWidth={2.4} lineCap="round" listening={false} />
       <Text
         text={marker.code}
         fontSize={11}
@@ -455,7 +303,7 @@ function TeamMarker({
         width={34}
         height={34}
         offsetX={17}
-        offsetY={17}
+        offsetY={62}
         align="center"
         verticalAlign="middle"
         listening={false}
@@ -470,12 +318,12 @@ function TeamMarkerLabel({
   pointsUnit,
   onSelect,
 }: {
-  layout: MarkerScreenLayout;
+  layout: MarkerScreenLayout<MarkerViewModel>;
   hudAccent: string;
   pointsUnit: string;
   onSelect: () => void;
 }) {
-  const {marker, labelX, labelY} = layout;
+  const {marker, labelX, labelY, labelScale} = layout;
   const colors = getMarkerColors(marker, hudAccent);
   const label = marker.teamStation?.name ?? marker.station.name;
   const points = getStationEffectiveMaxPoints({
@@ -487,6 +335,8 @@ function TeamMarkerLabel({
     <Group
       x={labelX}
       y={labelY}
+      scaleX={labelScale}
+      scaleY={labelScale}
       onClick={(event) => {
         event.cancelBubble = true;
         onSelect();
@@ -547,18 +397,18 @@ function TeamMarkerConnector({
   layout,
   hudAccent,
 }: {
-  layout: MarkerScreenLayout;
+  layout: MarkerScreenLayout<MarkerViewModel>;
   hudAccent: string;
 }) {
-  const {marker, anchorX, anchorY, labelX, labelY} = layout;
+  const {marker, anchorX, anchorY, labelX, labelY, labelScale} = layout;
   const colors = getMarkerColors(marker, hudAccent);
-  const connectorX = Math.max(labelX, Math.min(labelX + STATION_LABEL_WIDTH, anchorX));
-  const connectorY = Math.max(labelY, Math.min(labelY + STATION_LABEL_HEIGHT, anchorY));
+  const connectorX = labelX + (STATION_LABEL_WIDTH * labelScale) / 2;
+  const connectorY = labelY + STATION_LABEL_HEIGHT * labelScale;
   const deltaX = connectorX - anchorX;
   const deltaY = connectorY - anchorY;
   const distance = Math.hypot(deltaX, deltaY) || 1;
-  const startX = anchorX + (deltaX / distance) * MARKER_EXCLUSION_RADIUS;
-  const startY = anchorY + (deltaY / distance) * MARKER_EXCLUSION_RADIUS;
+  const startX = anchorX + (deltaX / distance) * MARKER_LABEL_ATTACHMENT_OFFSET;
+  const startY = anchorY + (deltaY / distance) * MARKER_LABEL_ATTACHMENT_OFFSET;
 
   return (
     <Line
@@ -1023,6 +873,7 @@ export function TeamGameplayV2Page() {
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
+  const footerScale = clamp((viewportSize.width - 16) / 600, 0.5, 1);
 
   return (
     <main className="team-v2-page">
@@ -1075,7 +926,7 @@ export function TeamGameplayV2Page() {
               scaleY={1 / mapTransform.scale}>
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport && layout.hasConnector ? (
+              return layout?.isInViewport ? (
                   <TeamMarkerConnector
                     key={`connector-${marker.station.id}`}
                     layout={layout}
@@ -1181,13 +1032,21 @@ export function TeamGameplayV2Page() {
         />
       )}
 
-      <footer className="team-v2-bottom">
-        <button type="button" className="team-v2-bottom-chip team-v2-progress-chip">
-          <span className="team-v2-bottom-icon"><CompassOutlined /></span>
+      <footer
+        className="team-v2-bottom"
+        style={{"--team-v2-footer-scale": footerScale} as CSSProperties}>
+        <span className="team-v2-footer-rail is-left" aria-hidden="true" />
+        <button
+          type="button"
+          className="team-v2-footer-panel team-v2-leaderboard-chip"
+          onClick={() => {
+            setIsSettingsOpen(false);
+            setIsScannerOpen(false);
+            setIsLeaderboardOpen(true);
+          }}>
+          <span className="team-v2-bottom-icon"><TrophyFilled /></span>
           <span className="team-v2-bottom-copy">
-            <small>{t("teamV2.progress")}</small>
-            <strong>{completedCount}/17</strong>
-            <em>{t("teamV2.stationsCompleted")}</em>
+            <strong>{t("teamV2.leaderboardControl")}</strong>
           </span>
         </button>
         <div className="team-v2-scan-action">
@@ -1207,19 +1066,20 @@ export function TeamGameplayV2Page() {
             : t("teamV2.scanGameHint")}
           </small>
         </div>
-        <button
-          type="button"
-          className="team-v2-bottom-chip team-v2-leaderboard-chip"
-          onClick={() => {
-            setIsSettingsOpen(false);
-            setIsScannerOpen(false);
-            setIsLeaderboardOpen(true);
-          }}>
-          <span className="team-v2-bottom-icon"><TrophyFilled /></span>
-          <span className="team-v2-bottom-copy">
-            <strong>{t("nav.rank")}</strong>
+        <section
+          className="team-v2-footer-panel team-v2-progress-panel"
+          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}>
+          <span className="team-v2-team-count">
+            <small>{t("teamV2.teamLabel")}</small>
+            <strong>{String(activeTeam.id).padStart(2, "0")}</strong>
           </span>
-        </button>
+          <span className="team-v2-progress-divider" aria-hidden="true" />
+          <span className="team-v2-station-count">
+            <small>{t("teamV2.stationCountLabel")}</small>
+            <strong>{completedCount}/17</strong>
+          </span>
+        </section>
+        <span className="team-v2-footer-rail is-right" aria-hidden="true" />
       </footer>
 
       {isSettingsOpen && (

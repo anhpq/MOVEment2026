@@ -447,8 +447,12 @@ buttons, and controls. The supported range is 50-100, with default 85.
 The main V2 screen follows the supplied black/cyan fantasy HUD reference with
 exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
 at the upper right, localized Team identity and green score in the row below,
-plus a centered pill footer containing Leaderboard left, floating QR center,
-and Progress right. Settings, Leaderboard, QR scanner, and score entry are blocking,
+using a tall angular brand plate, symmetric striped cyan rails, and a bright
+green multi-layer neon total score centered below the brand in landscape, plus
+three independent sci-fi footer controls: Leaderboard left, a raised
+floating QR/pedestal center, and Team plus completed Station count right. Thin
+cyan rails may connect visually to the QR pedestal but must not create one
+continuous pill panel. Settings, Leaderboard, QR scanner, and score entry are blocking,
 centered near-fullscreen modal layers in both orientations. V2 Station Detail
 is also a near-fullscreen overlay and must not be rendered as a small corner panel.
 
@@ -481,6 +485,14 @@ V2-owned lazy gallery presentation. It never routes through
 Check-in, completion, and cancel success close Detail back to the preserved map.
 While a Station is active, the center QR caption shows localized `In Progress`
 plus Station code/name; camera startup remains user-triggered.
+
+V2 labels derive from each marker's single screen anchor after the map transform.
+They remain above their own marker with clamped label scale and marker gap, may
+overlap other labels, and render below the marker layer. They must not use
+independent viewport/grid coordinates or alter persisted Station coordinates.
+The marker is a route-local vector scanner pin; its lower tip, rather than its
+visual center, is the exact Station coordinate and its label connector starts
+at the pin's upper attachment edge.
 
 ## QR Camera
 

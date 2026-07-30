@@ -108,7 +108,7 @@ async function main() {
     return canonicalStationSignatureInput(existingStations) === canonicalStationSignature();
   });
 
-  if (!stationInventoryMatches) {
+  if (isProduction && !stationInventoryMatches) {
     await runSeedPhase('canonical Station replacement', async () => {
       if (isProduction && !allowProductionStationReplacement) {
         const currentStationCount = await prisma.station.count();

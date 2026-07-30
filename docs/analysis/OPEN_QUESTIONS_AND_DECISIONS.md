@@ -20,6 +20,17 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-30: Supersede V2 bottom pill HUD: `/team/v2` dùng ba khu vực sci-fi
+  độc lập gồm Bảng xếp hạng bên trái, QR CTA/pedestal nổi ở trung tâm, và Team
+  cùng số Station hoàn thành bên phải. Hai rail cyan mảnh chỉ nối thị giác về
+  QR; không tạo nền hoặc viền pill liên tục. Footer giữ copy VI/EN, state và
+  scanner/Leaderboard behavior hiện có.
+- 2026-07-30: V2 Station label neo duy nhất vào screen anchor của marker sau
+  transform map. Label luôn phía trên marker, scale `0.85..1.15` và gap
+  `4..8px` theo normalized zoom, không dùng viewport grid/collision placement
+  hoặc thay đổi Station coordinates. Layer order là map, connector/label,
+  marker, rồi fixed HUD.
+
 - 2026-07-30: Chốt Station Detail riêng cho `/team/v2`: marker/label mở
   near-fullscreen overlay ngay trong map, không route qua Player Station Detail
   V1 và không dùng `?from=team-v2`. V2 Detail dùng presentation/gallery riêng,

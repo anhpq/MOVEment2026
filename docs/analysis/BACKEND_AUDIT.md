@@ -1,5 +1,64 @@
 # 2026-07-30 Team Gameplay V2-owned Detail overlay
 
+# 2026-07-30 Team V2 score and banner rails refinement
+
+- Strengthened the total-score foreground to bright green with layered neon and
+  centered it below the brand in landscape while preserving the portrait-safe
+  right-side placement.
+- Rebuilt the V2 brand plate and rails as a taller angular cyan HUD with long
+  symmetric striped rails; marker, footer, data, API, and Backend behavior were
+  unchanged.
+- Frontend i18n parity (`395`), lint, full Vitest (`29/29`), production build,
+  bundle gate, and diff check passed. Authenticated Chrome captures passed at
+  320x568, 390x844, and 844x390; computed score was `rgb(77, 255, 88)` with
+  layered neon and the browser console had no errors/warnings.
+
+# 2026-07-30 Team V2 scanner-pin marker refinement
+
+- Replaced only the Team V2 Konva marker drawing with a vector scanner pin:
+  circuit traces, layered cyan/purple rings, a dark surface, modest glow, and
+  a tip anchored to the unchanged Station coordinate.
+- Updated label attachment clearance and connector start to the pin's visual
+  top edge while keeping the existing single screen-space transform and marker
+  layer above labels/connectors.
+- Verification passed: focused marker-layout Vitest (`3/3`), full Frontend
+  Vitest (`29/29`), i18n parity (`395`), lint, production build, bundle gate,
+  diff check, and authenticated Chrome captures at min/default/max map scales.
+
+# 2026-07-30 Canonical Station seed data synchronization
+
+- Updated the canonical 17-Station dataset with supplied Vietnamese/English
+  descriptions, exact decimal map coordinates, max points, and four YouTube
+  media URLs. `ST001` keeps the user-confirmed YouTube Shorts URL rather than
+  the supplied obsolete share.google URL.
+- Changed normal local/test content synchronization to upsert canonical Station
+  and Game records in place. Production inventory mismatch remains guarded by
+  the explicit replacement confirmation path.
+- Verification passed: canonical validation (17 records, 4 `ST`, valid points
+  and coordinates), Backend lint/build, full Backend Jest (`162/162`), two
+  local seed runs, database comparison (`0` mismatches), and `db:verify`.
+- Local validation caveat: the first seed run occurred before the in-place
+  guard and invoked the pre-existing destructive local replacement path. It
+  reset local gameplay data only; no Production database was accessed. The two
+  subsequent seed runs preserved the 34 Station QR token fingerprints and 425
+  progress-row count.
+
+# 2026-07-30 Team Gameplay V2 marker anchoring and footer refinement
+
+- Replaced the V2 label collision/grid placement with a single transformed
+  marker anchor, clamped normalized-zoom label scale/gap, and a connector to
+  the scaled label bottom. Marker coordinates, map assets, APIs, Backend,
+  database, migration, and seed data remain unchanged.
+- Rebuilt only the V2 footer as independent angular Leaderboard, raised QR
+  pedestal, and Team/completed-Station panels with thin cyan rails. The
+  Leaderboard and scanner actions remain unchanged; copy is localized VI/EN.
+- Verification passed: marker-layout Vitest (`3/3`), full Frontend Vitest
+  (`29/29`), i18n parity (`395`), Frontend lint, TypeScript production build,
+  bundle gate, and `git diff --check`.
+- Authenticated Chrome visual comparison passed at 390x844, 844x390, and
+  320x568 with full three-region footer content and no browser-console issues.
+  Physical mobile and Production verification were not performed.
+
 - Replaced V2-to-V1 `?from=team-v2` navigation with a V2-owned near-fullscreen
   Detail overlay; V1 Player/Admin Station Detail behavior remains native.
 - Added V2-owned lazy gallery presentation while reusing the existing image API,

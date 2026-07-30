@@ -37,6 +37,55 @@
 
 ## Objective and Scope
 
+## 2026-07-30 Marker anchor and footer reference refinement
+
+## 2026-07-30 Team V2 scanner-pin marker refinement
+
+- Replaced the circular marker icon with a Konva-drawn scanner pin: dark navy
+  surface, cyan/purple concentric rings, circuit traces, restrained glow, and
+  a lower tip whose exact position is the persisted Station coordinate.
+- Label clearance now measures from the visual top attachment of that pin;
+  connector and label remain in the label layer below marker icons and use the
+  same transformed anchor without a second zoom application.
+- Marker state colors, code, click/tap/hover behavior, coordinates, map, API,
+  footer, and banner remain unchanged. Authenticated Chrome visual smoke passed
+  at map scales `0.3120`, `0.3900`, and `1.9500`; label/pin anchoring remained
+  compact and the marker layer stayed above labels.
+
+## 2026-07-30 Team V2 score and banner rails refinement
+
+- Total score now uses explicit bright green foreground plus layered green neon;
+  landscape centers it below the brand while portrait keeps the safe right-side
+  score placement.
+- Rebuilt the center brand plate and both rails with a taller angular frame,
+  double cyan lines, long diagonal circuit stripes, and restrained glow matching
+  the supplied HUD reference.
+- Authenticated Chrome captures passed at 320x568, 390x844, and 844x390. Computed
+  score color was `rgb(77, 255, 88)`, both rails remained symmetric, and the
+  browser console reported no new errors or warnings.
+
+- Removed the viewport-grid label placement that could place a label far from
+  its marker. Every V2 label now derives from the marker's transformed screen
+  anchor exactly once, stays above that marker, and uses normalized zoom-clamped
+  scale (`0.85..1.15`) plus gap (`4..8px`).
+- Label/connector rendering remains below the marker layer, so labels may
+  overlap each other but never visually cover marker circles. Station marker
+  coordinates, map assets, APIs, and gameplay state remain unchanged.
+- Replaced the continuous footer pill with independent angular Leaderboard,
+  centered raised QR/pedestal, and Team/progress controls joined only by thin
+  cyan rails. Footer copy remains localized and QR/Leaderboard actions are
+  unchanged.
+
+### 2026-07-30 Review Decision Log
+
+1. Label direction: always above the marker.
+2. Label gap: normalized-zoom clamp from 4px to 8px.
+3. Label size: scale the complete label from 0.85 to 1.15.
+4. Footer copy: retain VI/EN localization and current state values.
+5. Footer structure: three independent controls with decorative cyan rails.
+6. Responsive model: uniformly scale the 600px footer composition on narrow viewports.
+7. Visual acceptance: compare primarily at 390x844, with 844x390 and 320x568 regressions.
+
 Add a parallel Team-only gameplay screen at `/team/v2` while preserving the
 current `/stations/map` flow, database schema, seed data, scoring authority, and
 confirmed Business Rules.
