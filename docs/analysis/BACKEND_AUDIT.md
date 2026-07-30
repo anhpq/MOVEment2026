@@ -1,3 +1,14 @@
+# 2026-07-31 Team V2 supplied SVG marker
+
+- Replaced only the hand-built Team V2 Konva marker artwork with the supplied
+  route-local cyan/purple SVG. The image is decoded once and reused by all
+  marker nodes; the lower tip stays on the existing Station screen anchor.
+- Preserved Station code, state-colored halo, 44px interaction target,
+  label/connector geometry, map transforms, coordinates, APIs, and V1 UI.
+- Focused marker-layout Vitest (`3/3`), Frontend lint, production build, bundle
+  gate, diff check, and direct Chrome SVG rendering passed. Authenticated
+  in-map and physical-device verification were not performed.
+
 # 2026-07-30 Team Gameplay V2-owned Detail overlay
 
 # 2026-07-30 Team V2 score and banner rails refinement

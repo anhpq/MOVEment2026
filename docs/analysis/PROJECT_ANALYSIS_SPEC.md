@@ -490,9 +490,10 @@ V2 labels derive from each marker's single screen anchor after the map transform
 They remain above their own marker with clamped label scale and marker gap, may
 overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
-The marker is a route-local vector scanner pin; its lower tip, rather than its
-visual center, is the exact Station coordinate and its label connector starts
-at the pin's upper attachment edge.
+The marker uses the route-local cyan/purple SVG scanner-pin asset. Its lower
+tip, rather than its visual center, is the exact Station coordinate; the
+Station code and state-colored halo remain canvas overlays, and its label
+connector starts at the pin's upper attachment edge.
 
 ## QR Camera
 

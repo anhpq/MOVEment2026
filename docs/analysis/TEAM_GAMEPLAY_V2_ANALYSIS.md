@@ -8,6 +8,18 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-07-31 Supplied SVG marker asset
+
+- Replaced the hand-built Team V2 Konva pin artwork with the supplied
+  cyan/purple SVG marker while retaining the existing canvas hit target,
+  Station code, and state-colored halo.
+- The SVG lower tip is aligned to the unchanged Station screen anchor. Label,
+  connector, pan/zoom transforms, map data, and every non-V2 screen remain
+  unchanged.
+- Focused marker-layout Vitest (`3/3`), Frontend lint, production build, bundle
+  gate, and a direct Chrome render of the SVG passed. Authenticated in-map and
+  physical-device visual verification remain pending.
+
 ## 2026-07-29 Runtime Stability Integration
 
 - V2 state refresh now shares the Team runtime coordinator and polls every 15

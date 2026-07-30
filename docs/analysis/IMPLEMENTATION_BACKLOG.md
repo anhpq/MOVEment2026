@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 supplied SVG marker
+
+- [x] Replace only the Team V2 hand-built pin artwork with the supplied
+  cyan/purple SVG marker.
+- [x] Keep the SVG lower tip on the unchanged Station anchor and preserve the
+  Station code, state halo, hit target, labels, connectors, and map behavior.
+- [x] Pass focused marker-layout Vitest `3/3`, Frontend lint, production build,
+  bundle gate, diff check, and direct Chrome SVG rendering.
+- [ ] Run authenticated in-map and physical-device visual verification.
+
 ## 2026-07-30 Team V2 score and banner rails refinement
 
 - [x] Render total score in bright green with layered neon and center it below

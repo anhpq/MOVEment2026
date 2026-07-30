@@ -12,6 +12,7 @@ import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type
 import {useTranslation} from "react-i18next";
 import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
+import teamV2StationMarkerUrl from "../assets/team-v2-station-marker.svg";
 import {
   getPlayerLeaderboard,
   ApiError,
@@ -61,6 +62,10 @@ const MAP_WORLD_HEIGHT = 1000;
 const MIN_MAP_ZOOM = 0.8;
 const MAX_MAP_ZOOM = 5;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
+const MARKER_SVG_WIDTH = 76.8;
+const MARKER_SVG_HEIGHT = 96;
+const MARKER_SVG_TIP_Y = 575 / 640;
+const MARKER_CENTER_Y = (222 - 575) * (MARKER_SVG_HEIGHT / 640);
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
   PLAYER_QR_INVALID: "teamV2.qrErrors.invalid",
@@ -223,15 +228,37 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   };
 }
 
+function useTeamV2MarkerImage() {
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const nextImage = new window.Image();
+    nextImage.decoding = "async";
+    nextImage.onload = () => {
+      if (!cancelled) setImage(nextImage);
+    };
+    nextImage.src = teamV2StationMarkerUrl;
+    return () => {
+      cancelled = true;
+      nextImage.onload = null;
+    };
+  }, []);
+
+  return image;
+}
+
 function TeamMarker({
   marker,
   hudAccent,
+  markerImage,
   x,
   y,
   onSelect,
 }: {
   marker: MarkerViewModel;
   hudAccent: string;
+  markerImage: HTMLImageElement | null;
   x: number;
   y: number;
   onSelect: () => void;
@@ -265,47 +292,49 @@ function TeamMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-42} radius={42} fill="rgba(255,255,255,0.01)" />
-      <Line
-        points={[0, 0, -38, -39, -34, -64, -20, -81, 0, -88, 20, -81, 34, -64, 38, -39]}
-        closed
-        fill="rgba(4, 16, 30, 0.96)"
+      {markerImage ? (
+        <KonvaImage
+          image={markerImage}
+          x={-MARKER_SVG_WIDTH / 2}
+          y={-MARKER_SVG_HEIGHT * MARKER_SVG_TIP_Y}
+          width={MARKER_SVG_WIDTH}
+          height={MARKER_SVG_HEIGHT}
+          listening={false}
+        />
+      ) : (
+        <Line
+          points={[0, 0, -28, -42, -22, -70, 0, -82, 22, -70, 28, -42]}
+          closed
+          fill="rgba(4, 16, 30, 0.96)"
+          stroke={colors.stroke}
+          strokeWidth={2}
+          listening={false}
+        />
+      )}
+      <Circle
+        y={MARKER_CENTER_Y}
+        radius={22.5}
         stroke={colors.stroke}
-        strokeWidth={2}
+        strokeWidth={1.8}
         shadowColor={colors.glow}
-        shadowBlur={16}
-        shadowOpacity={0.56}
-        lineJoin="round"
-        perfectDrawEnabled={false}
-        shadowForStrokeEnabled={false}
-      />
-      <Line
-        points={[0, -6, -29, -42, -26, -62, -14, -76, 0, -82, 14, -76, 26, -62, 29, -42]}
-        closed
-        stroke="rgba(176, 107, 255, 0.86)"
-        strokeWidth={1.5}
-        opacity={0.78}
-        lineJoin="round"
+        shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
+        shadowOpacity={0.72}
         listening={false}
       />
-      <Circle y={-45} radius={31} fill="rgba(3, 14, 27, 0.94)" stroke={colors.stroke} strokeWidth={2} shadowColor={colors.glow} shadowBlur={12} shadowOpacity={0.62} listening={false} />
-      <Circle y={-45} radius={24} stroke="rgba(176, 107, 255, 0.88)" strokeWidth={2} dash={[7, 4]} listening={false} />
-      <Circle y={-45} radius={17} fill="rgba(4, 17, 31, 0.98)" stroke={colors.stroke} strokeWidth={1.8} listening={false} />
-      <Circle y={-45} radius={8} fill="rgba(125, 243, 249, 0.12)" stroke="rgba(234, 252, 255, 0.86)" strokeWidth={1} listening={false} />
-      <Line points={[-28, -56, -19, -56, -14, -51, -8, -51]} stroke={colors.stroke} strokeWidth={1.2} lineCap="round" lineJoin="round" listening={false} />
-      <Line points={[28, -56, 19, -56, 14, -51, 8, -51]} stroke="rgba(176, 107, 255, 0.9)" strokeWidth={1.2} lineCap="round" lineJoin="round" listening={false} />
-      <Line points={[-22, -29, -14, -29, -9, -23, -9, -15, 0, -6, 9, -15, 9, -23, 14, -29, 22, -29]} stroke="rgba(125, 243, 249, 0.72)" strokeWidth={1.15} lineCap="round" lineJoin="round" listening={false} />
-      <Line points={[0, -3, 0, 0]} stroke={colors.stroke} strokeWidth={2.4} lineCap="round" listening={false} />
       <Text
         text={marker.code}
-        fontSize={11}
+        x={-17}
+        y={MARKER_CENTER_Y - 8}
+        fontSize={10.5}
         fontStyle="700"
         fill={colors.text}
         width={34}
-        height={34}
-        offsetX={17}
-        offsetY={62}
+        height={16}
         align="center"
         verticalAlign="middle"
+        shadowColor="#030C14"
+        shadowBlur={4}
+        shadowOpacity={0.95}
         listening={false}
       />
     </Group>
@@ -549,6 +578,7 @@ export function TeamGameplayV2Page() {
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
+  const markerImage = useTeamV2MarkerImage();
   const [viewportSize, setViewportSize] = useState<ViewportSize>({width: 0, height: 0});
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
   const loadedMapWidthRef = useRef(0);
@@ -957,6 +987,7 @@ export function TeamGameplayV2Page() {
                   key={`marker-${marker.station.id}`}
                   marker={marker}
                   hudAccent={V2_HUD_ACCENT}
+                  markerImage={markerImage}
                   x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
                   y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
                   onSelect={() => setSelectedStationId(marker.station.id)}
