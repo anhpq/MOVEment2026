@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
   getPlayerStationPlayingCounts,
   isAuthFailure,
@@ -6,6 +6,7 @@ import {
 } from "../api";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
+import {useVisibleOnlinePolling} from "./useVisibleOnlinePolling";
 
 function buildFallbackCounts(teamStations: Record<string, TeamStation[]>) {
   const counts: Record<string, number> = {};
@@ -33,7 +34,7 @@ export function useStationPlayingCounts(enabled: boolean) {
   const logout = useMovementStore((state) => state.logout);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [hasLiveCounts, setHasLiveCounts] = useState(false);
-  const isFetchingRef = useRef(false);
+  const mountedRef = useRef(false);
 
   const fallbackCounts = useMemo(
     () => buildFallbackCounts(teamStations),
@@ -41,53 +42,27 @@ export function useStationPlayingCounts(enabled: boolean) {
   );
 
   useEffect(() => {
-    if (!enabled) {
-      return;
-    }
-
-    let cancelled = false;
-
-    const refresh = async () => {
-      if (
-        cancelled ||
-        isFetchingRef.current ||
-        document.visibilityState !== "visible"
-      ) {
-        return;
-      }
-
-      isFetchingRef.current = true;
-      try {
-        const rows = await getPlayerStationPlayingCounts();
-        if (!cancelled) {
-          setCounts(normalizeCounts(rows));
-          setHasLiveCounts(true);
-        }
-      } catch (error: unknown) {
-        if (!cancelled && isAuthFailure(error)) {
-          logout();
-        }
-      } finally {
-        isFetchingRef.current = false;
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        void refresh();
-      }
-    };
-
-    void refresh();
-    const timer = window.setInterval(() => void refresh(), 5000);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
+    mountedRef.current = true;
     return () => {
-      cancelled = true;
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      mountedRef.current = false;
     };
-  }, [enabled, logout]);
+  }, []);
+
+  const refresh = useCallback(async () => {
+    try {
+      const rows = await getPlayerStationPlayingCounts();
+      if (mountedRef.current) {
+        setCounts(normalizeCounts(rows));
+        setHasLiveCounts(true);
+      }
+    } catch (error: unknown) {
+      if (mountedRef.current && isAuthFailure(error)) {
+        logout();
+      }
+    }
+  }, [logout]);
+
+  useVisibleOnlinePolling(refresh, {enabled});
 
   return enabled && hasLiveCounts ? counts : fallbackCounts;
 }

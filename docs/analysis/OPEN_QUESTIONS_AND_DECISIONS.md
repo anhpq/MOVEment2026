@@ -20,6 +20,61 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-07-31: Tất cả overlay trong `/team/v2` dùng default background opacity
+  `95%`. Opacity chỉ áp dụng cho backdrop và nền panel, không áp dụng lên DOM
+  container chứa nội dung; chữ, icon và interactive controls luôn render ở
+  opacity `100%`. Preference opacity cũ được reset một lần về default mới bằng
+  versioned local-storage key; user vẫn có thể điều chỉnh slider và lưu giá trị
+  mới sau đó.
+
+- 2026-07-31: Settings overlay trong `/team/v2` dùng intrinsic content height,
+  căn giữa viewport và chỉ giới hạn bằng available height để scroll khi cần;
+  portrait không ép full-height. Leaderboard overlay chỉ hiển thị năm Team đầu
+  theo response authoritative; nếu Team hiện tại không thuộc năm dòng đó thì
+  append thành dòng thứ sáu và hiển thị rank `6` trong riêng V2 overlay. Không
+  thay đổi Backend ranking hoặc dữ liệu Leaderboard gốc.
+
+- 2026-07-31: Team V2 Detail dùng intrinsic content height, căn giữa viewport và
+  chỉ giới hạn bằng available height để scroll khi cần; không ép full-height trên
+  điện thoại. Footer dùng copy ngắn `BXH` trong VI (`RANK` trong EN), QR CTA có
+  đường kính gấp ba baseline cũ (`74px` thành `222px`), và chữ QR caption,
+  Leaderboard, Team label có kích thước hiển thị tối thiểu `12px` kể cả khi
+  footer responsive scale.
+
+- 2026-07-31: Team V2 media/marker states: nút YouTube và Xem hình ảnh luôn hiện
+  trong Detail; khi không có nội dung vẫn disabled nhưng dùng khung neon-muted
+  đọc được. Marker `COMPLETED`/`Finished` không render trên map. Marker có
+  authoritative `backendStatus === "LOCKED"` dùng silver-neon cho artwork,
+  halo, label và connector.
+
+- 2026-07-31: Marker `/team/v2` dùng reference Konva Bézier mới: design
+  `640×620`, center `(320,248)`, tip anchor `(320,606)`, inner pin, outer ring
+  radius `148`, và vòng neon green/mint/purple 360° không seam. Marker không có
+  số bên trong; size vẫn clamp `32..64px` và Station code nằm trong label.
+
+- 2026-07-31: Nhãn Station trên `/team/v2` luôn giữ code/tên trên đúng một dòng;
+  nội dung dài dùng ellipsis trong khung hiện tại. Điểm tiếp tục nằm ở dòng
+  riêng phía dưới; anchor, gap và label size không đổi.
+
+- 2026-07-31: Supersede Team identity row trong HUD `/team/v2`: bỏ block
+  `.team-v2-team` khỏi map header. Total score vẫn dùng dữ liệu hiện tại và luôn
+  nằm chính giữa viewport ở mọi responsive mode; brand và Settings giữ nguyên.
+
+- 2026-07-30: Supersede V2 bottom pill HUD: `/team/v2` dùng ba khu vực sci-fi
+  độc lập gồm Bảng xếp hạng bên trái, QR CTA/pedestal nổi ở trung tâm, và Team
+  cùng số Station hoàn thành bên phải. Hai rail cyan mảnh chỉ nối thị giác về
+  QR; không tạo nền hoặc viền pill liên tục. Footer giữ copy VI/EN, state và
+  scanner/Leaderboard behavior hiện có.
+- 2026-07-30: V2 Station label neo duy nhất vào screen anchor của marker sau
+  transform map. Label luôn phía trên marker, scale `0.85..1.15` và gap
+  `4..8px` theo normalized zoom, không dùng viewport grid/collision placement
+  hoặc thay đổi Station coordinates. Layer order là map, connector/label,
+  marker, rồi fixed HUD.
+
+- 2026-07-30: Chốt Station Detail riêng cho `/team/v2`: marker/label mở
+  near-fullscreen overlay ngay trong map, không route qua Player Station Detail
+  V1 và không dùng `?from=team-v2`. V2 Detail dùng presentation/gallery riêng,
+  reuse data/mutation helpers, và giữ V2 scanner/score flow.
 - 2026-07-29: Chốt visual reference HTML mới cho `/team/v2`: HUD dùng fixed cyan/green/pink/purple/gold palette, header có centered clipped brand và Team/score row, bottom HUD là pill panel với QR nổi ở giữa. Toàn bộ token vẫn route-local và không được nhận màu từ `Team.color` hoặc global theme.
 - 2026-07-29 (visual badge đã được reference mới supersede): Chốt persistent scanner riêng cho `/team/v2`: camera auto-start, API rejection không tắt camera, manual token input xuất hiện sau lỗi, và duplicate token được re-arm khi rời frame ít nhất 600ms hoặc gặp token khác; V1/Login/shared scanner không đổi.
 - 2026-07-29: Chốt `/team/v2` dùng fixed V2 palette riêng và không nhận màu từ `Team.color`, inherited `--team-*`, body Team theme, hoặc global Ant Design theme; các Team UI ngoài V2 tiếp tục dùng Team Color.
@@ -504,9 +559,13 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Seed repair | Mỗi lần seed được phép repair/overwrite `Team.color` của seed-managed Team 01-25 theo palette cố định; palette thắng custom color Admin đã chỉnh. |
 | Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
 | Team Gameplay V2 palette | `/team/v2` là ngoại lệ có fixed reference palette riêng: accent/active cyan `#2FE4F0`, cyan-soft `#7DF3F9`, score/completed green `#4DFF8A`, selected pink `#FF3FD8`, secondary QR purple `#B06BFF`, leaderboard gold `#FFC94D`, background ink `#030C14`, text `#EAFCFF`, muted text `#9FD4D9`, và panel `rgba(3,14,20,0.82)`. Route này không được derive hoặc ghi đè HUD/marker/control colors từ `Team.color`, `--team-primary`, body Team theme, hoặc global Ant Design theme. Team Color vẫn áp dụng cho các Team UI ngoài V2. |
-| Team Gameplay V2 HUD layout | Header V2 dùng clipped brand tab ở top-center, Settings ở top-right và Team identity/score row bên dưới. Bottom HUD dùng centered pill panel, Leaderboard ở trái, Progress ở phải và QR CTA nổi giữa. Giữ product copy, safe-area, accessibility và gameplay behavior hiện có. |
+| Team Gameplay V2 HUD layout | Header V2 dùng clipped brand tab ở top-center, Settings ở top-right, không hiển thị Team identity block trên map HUD, và luôn đặt total score ở chính giữa viewport. Bottom HUD dùng ba vùng sci-fi độc lập: Leaderboard ở trái, QR CTA/pedestal nổi giữa, Team/progress ở phải, chỉ nối bằng rail cyan mảnh. Giữ product copy, safe-area, accessibility và gameplay behavior hiện có. |
 | Team Gameplay V2 QR badge | QR CTA trung tâm của `/team/v2` dùng inline SVG/CSS theo reference với static conic ring pink `#FF3FD8` → purple `#B06BFF` → cyan `#2FE4F0`, dark core và light QR glyph. Badge 74px mặc định, 64px khi viewport không quá 380px; không có idle animation. |
 | Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
+| Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, media và action theo trạng thái; dùng V2-owned presentation/gallery và reuse shared data/API/mutation helpers. Không dùng `?from=team-v2`. |
+| Team Gameplay V2 Detail actions | `Available` mở V2 scanner để bắt đầu; `In Progress` có Complete và Cancel; `Finished` chỉ xem kết quả/media. Check-in, completion và cancel success đóng Detail về map V2. API rejection giữ V2 scanner mở theo scanner rule hiện hành. |
+| Team Gameplay V2 media/marker states | Detail luôn hiển thị nút YouTube và Xem hình ảnh; nút thiếu nội dung vẫn disabled nhưng phải đọc được bằng neon-muted styling. Map không render marker/label/connector của Station `COMPLETED`/`Finished`. Marker có `backendStatus === "LOCKED"` dùng silver-neon cho artwork, halo, label và connector. |
+| Team Gameplay V2 active QR context | Khi Team có Station `In Progress`, caption dưới QR hiển thị localized active status cùng Station code/name. Camera chỉ mở khi user bấm QR/Detail scan action; QR success/close/unmount cleanup scanner như hiện hành. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
 | Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |
 | Overlays | AntD `Modal`, `Drawer`, và `modal.confirm()` trong Team context được theme primary button bằng Team Color qua runtime scoped/body vars; QR info modal sau create/update Team có thể giữ default/current overlay style. |
@@ -779,7 +838,9 @@ Player action layout:
 - Station List và Map drawer hiển thị `Watch Video | View Images` ở hàng trên.
 - Action full-width ở hàng dưới giữ Team primary style và icon Play.
 - Station `In Progress` hiển thị `In Progress` thay cho `Play` nhưng vẫn mở Station Detail.
-- Station Detail giữ `Complete` để mở QR Check-out; `Cancel` vẫn là action riêng.
+- Player Station Detail V1 giữ `Complete` để mở QR Check-out và `Cancel` là
+  action riêng. Team Gameplay V2 dùng Detail overlay riêng với cùng capability,
+  V2 scanner/score flow và state-aware actions.
 - Admin Team Station action `View & Edit` và các Admin flow ngoài Station Editor không thay đổi.
 
 ---

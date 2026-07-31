@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { RequestMetricsMiddleware } from './common/http/request-metrics.middleware';
 import { validateEnvironment } from './config/validate-environment';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -19,4 +20,8 @@ import { PrismaModule } from './modules/prisma/prisma.module';
     FinalModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestMetricsMiddleware).forRoutes('*');
+  }
+}

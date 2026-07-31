@@ -1,23 +1,21 @@
 import {
   ArrowLeftOutlined,
   CloseOutlined,
-  CompassOutlined,
   CustomerServiceOutlined,
   LogoutOutlined,
   SettingOutlined,
-  StarFilled,
-  TeamOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Tag, Typography} from "antd";
+import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
-import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
 import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {
-  getLeaderboard,
+  getPlayerLeaderboard,
   ApiError,
+  cancelPlayerStation,
   isAuthFailure,
   logout as logoutApi,
   submitPlayerQrAction,
@@ -25,13 +23,39 @@ import {
   type LeaderboardEntryResponse,
 } from "../api";
 import {LanguageSwitch} from "../components/LanguageSwitch";
+import {
+  TEAM_V2_MARKER_CENTER_Y,
+  TEAM_V2_MARKER_DESIGN_WIDTH,
+  TEAM_V2_MARKER_TIP_Y,
+  TeamV2NeonMapMarker,
+} from "../components/TeamV2NeonMapMarker";
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
+import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
+import {
+  DEFAULT_TEAM_V2_OVERLAY_OPACITY,
+  getTeamV2OverlayStyle,
+} from "../components/teamV2OverlayOpacity";
+import {
+  getStationLabelLayouts,
+  isTeamV2MarkerLocked,
+  shouldRenderTeamV2Marker,
+  STATION_LABEL_HEIGHT,
+  STATION_LABEL_WIDTH,
+  type MarkerScreenLayout,
+} from "./teamV2MarkerLayout";
+import {
+  createLatestFrameScheduler,
+  type LatestFrameScheduler,
+} from "./teamV2FrameScheduler";
+import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
 import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
+import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import {
+  executePlayerMutation,
   fetchPlayerDatabase,
   loadPlayerMapImage,
   selectPlayerMapImageVariant,
@@ -45,29 +69,28 @@ import {
 } from "../utils";
 import "./TeamGameplayV2Page.css";
 
-const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity";
-const DEFAULT_PANEL_OPACITY = 85;
+const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MIN_MAP_ZOOM = 0.8;
 const MAX_MAP_ZOOM = 5;
-const STATION_LABEL_WIDTH = 120;
-const STATION_LABEL_HEIGHT = 44;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
-  "Invalid QR token": "teamV2.qrErrors.invalid",
-  "QR token has been revoked": "teamV2.qrErrors.revoked",
-  "QR token has expired": "teamV2.qrErrors.expired",
-  "QR token purpose mismatch": "teamV2.qrErrors.invalid",
-  "Station is inactive": "teamV2.qrErrors.stationInactive",
-  "Stations are closed": "teamV2.qrErrors.stationsClosed",
-  "Station is not available for check-in": "teamV2.qrErrors.notAvailable",
-  "Cancel cooldown is still active": "teamV2.qrErrors.cooldown",
-  "Team is already playing another station": "teamV2.qrErrors.alreadyPlaying",
-  "Station is not currently playing": "teamV2.qrErrors.notPlaying",
-  "Station check-out was already submitted": "teamV2.qrErrors.notPlaying",
+  PLAYER_QR_INVALID: "teamV2.qrErrors.invalid",
+  PLAYER_QR_REVOKED: "teamV2.qrErrors.revoked",
+  PLAYER_QR_EXPIRED: "teamV2.qrErrors.expired",
+  PLAYER_QR_PURPOSE_MISMATCH: "teamV2.qrErrors.invalid",
+  PLAYER_QR_STATION_MISMATCH: "teamV2.qrErrors.invalid",
+  PLAYER_STATION_INACTIVE: "teamV2.qrErrors.stationInactive",
+  PLAYER_STATIONS_CLOSED: "teamV2.qrErrors.stationsClosed",
+  PLAYER_STATION_NOT_AVAILABLE: "teamV2.qrErrors.notAvailable",
+  PLAYER_CANCEL_COOLDOWN_ACTIVE: "teamV2.qrErrors.cooldown",
+  PLAYER_ACTIVE_STATION_CONFLICT: "teamV2.qrErrors.alreadyPlaying",
+  PLAYER_PROGRESS_NOT_FOUND: "teamV2.qrErrors.notPlaying",
+  PLAYER_STATION_NOT_PLAYING: "teamV2.qrErrors.notPlaying",
+  PLAYER_CHECKOUT_CONFLICT: "teamV2.qrErrors.notPlaying",
 };
 
 function getQrActionErrorKey(error: unknown) {
@@ -80,45 +103,32 @@ function getQrActionErrorKey(error: unknown) {
   if (error.status >= 500) {
     return "teamV2.qrErrors.server";
   }
-  return QR_ACTION_ERROR_KEYS[error.message] ?? "teamV2.qrErrors.generic";
+  return (
+    (error.backendCode ? QR_ACTION_ERROR_KEYS[error.backendCode] : undefined) ??
+    "teamV2.qrErrors.generic"
+  );
 }
 
-type ViewportSize = {
+export type ViewportSize = {
   width: number;
   height: number;
 };
 
-type MarkerViewModel = {
+export type MarkerViewModel = {
   station: StationDefinition;
   teamStation: TeamStation | null;
   x: number;
   y: number;
   code: string;
   isActive: boolean;
-  isCompleted: boolean;
+  isLocked: boolean;
   isSelected: boolean;
 };
 
-type MapTransform = {
+export type MapTransform = {
   x: number;
   y: number;
   scale: number;
-};
-
-type MarkerScreenLayout = {
-  marker: MarkerViewModel;
-  anchorX: number;
-  anchorY: number;
-  labelX: number;
-  labelY: number;
-  isInViewport: boolean;
-};
-
-type Bounds = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
 };
 
 type ScoreFormValues = {
@@ -128,12 +138,12 @@ type ScoreFormValues = {
 
 function readStoredPanelOpacity() {
   if (typeof window === "undefined") {
-    return DEFAULT_PANEL_OPACITY;
+    return DEFAULT_TEAM_V2_OVERLAY_OPACITY;
   }
   const value = Number(window.localStorage.getItem(PANEL_OPACITY_STORAGE_KEY));
   return Number.isFinite(value) && value >= 50 && value <= 100 ?
       Math.round(value / 5) * 5
-    : DEFAULT_PANEL_OPACITY;
+    : DEFAULT_TEAM_V2_OVERLAY_OPACITY;
 }
 
 function persistPanelOpacity(value: number) {
@@ -164,6 +174,10 @@ function clampScale(value: number, viewport: ViewportSize) {
   );
 }
 
+function clamp(value: number, minimum: number, maximum: number) {
+  return Math.max(minimum, Math.min(maximum, value));
+}
+
 function getDefaultMapTransform(viewport: ViewportSize): MapTransform {
   const scale = getBaseMapScale(viewport);
   return {
@@ -192,294 +206,49 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 }
 
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
+  if (marker.isLocked) {
+    return {
+      stroke: "#C3CED8",
+      glow: "#F2F7FB",
+    };
+  }
   if (marker.isSelected) {
     return {
-      fill: "rgba(32, 5, 29, 0.94)",
       stroke: "#FF3FD8",
-      text: "#EAFCFF",
       glow: "#FF3FD8",
     };
   }
   if (marker.isActive) {
     return {
-      fill: "rgba(3, 26, 32, 0.94)",
       stroke: "#2FE4F0",
-      text: "#EAFCFF",
       glow: "#2FE4F0",
     };
   }
-  if (marker.isCompleted) {
-    return {
-      fill: "rgba(3, 32, 21, 0.94)",
-      stroke: "#4DFF8A",
-      text: "#EAFCFF",
-      glow: "#4DFF8A",
-    };
-  }
   return {
-    fill: "rgba(3, 14, 20, 0.94)",
     stroke: hudAccent,
-    text: "#EAFCFF",
     glow: hudAccent,
   };
-}
-
-function getIntersectionArea(first: Bounds, second: Bounds) {
-  const width = Math.max(
-    0,
-    Math.min(first.x + first.width, second.x + second.width) -
-      Math.max(first.x, second.x),
-  );
-  const height = Math.max(
-    0,
-    Math.min(first.y + first.height, second.y + second.height) -
-      Math.max(first.y, second.y),
-  );
-  return width * height;
-}
-
-function getStationLabelLayouts(
-  markers: MarkerViewModel[],
-  viewport: ViewportSize,
-  transform: MapTransform,
-) {
-  const screenMarkers = markers.map((marker) => ({
-    marker,
-    anchorX: transform.x + marker.x * transform.scale,
-    anchorY: transform.y + marker.y * transform.scale,
-  }));
-  const visibleMarkers = screenMarkers
-    .filter(({anchorX, anchorY}) =>
-      anchorX >= -24 &&
-      anchorX <= viewport.width + 24 &&
-      anchorY >= -24 &&
-      anchorY <= viewport.height + 24,
-    )
-    .sort((first, second) => {
-      const firstPriority = Number(first.marker.isSelected) * 2 + Number(first.marker.isActive);
-      const secondPriority = Number(second.marker.isSelected) * 2 + Number(second.marker.isActive);
-      return secondPriority - firstPriority || first.anchorY - second.anchorY || first.anchorX - second.anchorX;
-    });
-  const isPortrait = viewport.height > viewport.width;
-  const safeTop = isPortrait ? 126 : 116;
-  const safeBottom = isPortrait ? 104 : 96;
-  const safeArea = {
-    x: 8,
-    y: Math.min(safeTop, Math.max(8, viewport.height / 3)),
-    width: Math.max(STATION_LABEL_WIDTH, viewport.width - 16),
-    height: Math.max(
-      STATION_LABEL_HEIGHT,
-      viewport.height - safeTop - safeBottom,
-    ),
-  };
-  const markerBounds = visibleMarkers.map(({anchorX, anchorY}) => ({
-    x: anchorX - 25,
-    y: anchorY - 25,
-    width: 50,
-    height: 50,
-  }));
-  const hudReservedBounds: Bounds[] = isPortrait ? [] : [
-    {
-      x: viewport.width / 2 - 145,
-      y: viewport.height - 148,
-      width: 290,
-      height: 148,
-    },
-  ];
-  const placed: Bounds[] = [];
-  const layouts = new Map<string, MarkerScreenLayout>();
-  const offsets = [
-    {x: -STATION_LABEL_WIDTH / 2, y: -STATION_LABEL_HEIGHT - 34},
-    {x: 34, y: -STATION_LABEL_HEIGHT / 2},
-    {x: -STATION_LABEL_WIDTH / 2, y: 34},
-    {x: -STATION_LABEL_WIDTH - 34, y: -STATION_LABEL_HEIGHT / 2},
-    {x: 28, y: -STATION_LABEL_HEIGHT - 28},
-    {x: 28, y: 28},
-    {x: -STATION_LABEL_WIDTH - 28, y: 28},
-    {x: -STATION_LABEL_WIDTH - 28, y: -STATION_LABEL_HEIGHT - 28},
-  ];
-
-  if (!isPortrait && visibleMarkers.length >= 12) {
-    const columns = Math.max(
-      1,
-      Math.floor((safeArea.width + 8) / (STATION_LABEL_WIDTH + 8)),
-    );
-    const rows = Math.min(
-      4,
-      Math.max(
-        1,
-        Math.floor((safeArea.height + 4) / (STATION_LABEL_HEIGHT + 4)),
-      ),
-    );
-    const horizontalGap =
-      columns > 1 ?
-        (safeArea.width - columns * STATION_LABEL_WIDTH) / (columns - 1)
-      : 0;
-    const verticalGap =
-      rows > 1 ?
-        (safeArea.height - rows * STATION_LABEL_HEIGHT) / (rows - 1)
-      : 0;
-    const availableSlots: Bounds[] = [];
-    for (let row = 0; row < rows; row += 1) {
-      for (let column = 0; column < columns; column += 1) {
-        const slot = {
-          x: safeArea.x + column * (STATION_LABEL_WIDTH + horizontalGap),
-          y: safeArea.y + row * (STATION_LABEL_HEIGHT + verticalGap),
-          width: STATION_LABEL_WIDTH,
-          height: STATION_LABEL_HEIGHT,
-        };
-        if (
-          hudReservedBounds.every(
-            (reserved) => getIntersectionArea(slot, reserved) === 0,
-          )
-        ) {
-          availableSlots.push(slot);
-        }
-      }
-    }
-    if (availableSlots.length >= visibleMarkers.length) {
-      for (const screenMarker of visibleMarkers) {
-        let bestSlotIndex = 0;
-        let bestDistance = Number.POSITIVE_INFINITY;
-        for (let index = 0; index < availableSlots.length; index += 1) {
-          const slot = availableSlots[index];
-          const distance = Math.hypot(
-            slot.x + slot.width / 2 - screenMarker.anchorX,
-            slot.y + slot.height / 2 - screenMarker.anchorY,
-          );
-          if (distance < bestDistance) {
-            bestDistance = distance;
-            bestSlotIndex = index;
-          }
-        }
-        const [slot] = availableSlots.splice(bestSlotIndex, 1);
-        placed.push(slot);
-        layouts.set(screenMarker.marker.station.id, {
-          ...screenMarker,
-          labelX: slot.x,
-          labelY: slot.y,
-          isInViewport: true,
-        });
-      }
-    }
-  }
-
-  const clampCandidate = (candidate: Bounds): Bounds => ({
-    ...candidate,
-    x: Math.min(
-      safeArea.x + safeArea.width - candidate.width,
-      Math.max(safeArea.x, candidate.x),
-    ),
-    y: Math.min(
-      safeArea.y + safeArea.height - candidate.height,
-      Math.max(safeArea.y, candidate.y),
-    ),
-  });
-
-  for (const screenMarker of visibleMarkers) {
-    if (layouts.has(screenMarker.marker.station.id)) {
-      continue;
-    }
-    const directCandidates = offsets.map((offset) =>
-      clampCandidate({
-        x: screenMarker.anchorX + offset.x,
-        y: screenMarker.anchorY + offset.y,
-        width: STATION_LABEL_WIDTH,
-        height: STATION_LABEL_HEIGHT,
-      }),
-    );
-    const gridCandidates: Bounds[] = [];
-    for (
-      let y = safeArea.y;
-      y <= safeArea.y + safeArea.height - STATION_LABEL_HEIGHT;
-      y += 12
-    ) {
-      for (
-        let x = safeArea.x;
-        x <= safeArea.x + safeArea.width - STATION_LABEL_WIDTH;
-        x += 16
-      ) {
-        gridCandidates.push({
-          x,
-          y,
-          width: STATION_LABEL_WIDTH,
-          height: STATION_LABEL_HEIGHT,
-        });
-      }
-    }
-    const candidates = [...directCandidates, ...gridCandidates];
-    let bestCandidate = candidates[0];
-    let bestScore = Number.POSITIVE_INFINITY;
-    for (const candidate of candidates) {
-      const centerX = candidate.x + candidate.width / 2;
-      const centerY = candidate.y + candidate.height / 2;
-      const distance = Math.hypot(
-        centerX - screenMarker.anchorX,
-        centerY - screenMarker.anchorY,
-      );
-      const labelOverlap = placed.reduce(
-        (total, existing) => total + getIntersectionArea(candidate, existing),
-        0,
-      );
-      const markerOverlap = markerBounds.reduce(
-        (total, markerBoundsItem) =>
-          total + getIntersectionArea(candidate, markerBoundsItem),
-        0,
-      );
-      const hudOverlap = hudReservedBounds.reduce(
-        (total, reserved) => total + getIntersectionArea(candidate, reserved),
-        0,
-      );
-      const score =
-        labelOverlap * 1_000 +
-        hudOverlap * 2_000 +
-        markerOverlap * 8 +
-        distance;
-      if (score < bestScore) {
-        bestScore = score;
-        bestCandidate = candidate;
-      }
-      if (score === distance) {
-        break;
-      }
-    }
-    placed.push(bestCandidate);
-    layouts.set(screenMarker.marker.station.id, {
-      ...screenMarker,
-      labelX: bestCandidate.x,
-      labelY: bestCandidate.y,
-      isInViewport: true,
-    });
-  }
-
-  for (const screenMarker of screenMarkers) {
-    if (!layouts.has(screenMarker.marker.station.id)) {
-      layouts.set(screenMarker.marker.station.id, {
-        ...screenMarker,
-        labelX: screenMarker.anchorX + 34,
-        labelY: screenMarker.anchorY - STATION_LABEL_HEIGHT / 2,
-        isInViewport: false,
-      });
-    }
-  }
-
-  return layouts;
 }
 
 function TeamMarker({
   marker,
   hudAccent,
+  size,
   x,
   y,
   onSelect,
 }: {
   marker: MarkerViewModel;
   hudAccent: string;
+  size: number;
   x: number;
   y: number;
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
+  const drawScale = size / TEAM_V2_MARKER_DESIGN_WIDTH;
+  const markerCenterY = (TEAM_V2_MARKER_CENTER_Y - TEAM_V2_MARKER_TIP_Y) * drawScale;
+  const hitRadius = Math.max(22, size * 0.51);
 
   return (
     <Group
@@ -507,39 +276,16 @@ function TeamMarker({
         const stage = event.target.getStage();
         if (stage) stage.container().style.cursor = "";
       }}>
-      <Circle radius={24} fill="rgba(255,255,255,0.01)" />
-      {(marker.isActive || marker.isSelected) && (
-        <Circle
-          radius={32}
-          stroke={colors.stroke}
-          strokeWidth={1.5}
-          dash={[5, 5]}
-          opacity={0.65}
-          listening={false}
-        />
-      )}
+      <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
+      <TeamV2NeonMapMarker scale={drawScale} silver={marker.isLocked} />
       <Circle
-        radius={17}
-        fill={colors.fill}
+        y={markerCenterY}
+        radius={148 * drawScale}
         stroke={colors.stroke}
-        strokeWidth={2}
+        strokeWidth={1.8}
         shadowColor={colors.glow}
-        shadowBlur={18}
-        shadowOpacity={0.9}
-        perfectDrawEnabled={false}
-        shadowForStrokeEnabled={false}
-      />
-      <Text
-        text={marker.code}
-        fontSize={11}
-        fontStyle="700"
-        fill={colors.text}
-        width={34}
-        height={34}
-        offsetX={17}
-        offsetY={17}
-        align="center"
-        verticalAlign="middle"
+        shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
+        shadowOpacity={0.72}
         listening={false}
       />
     </Group>
@@ -552,12 +298,12 @@ function TeamMarkerLabel({
   pointsUnit,
   onSelect,
 }: {
-  layout: MarkerScreenLayout;
+  layout: MarkerScreenLayout<MarkerViewModel>;
   hudAccent: string;
   pointsUnit: string;
   onSelect: () => void;
 }) {
-  const {marker, labelX, labelY} = layout;
+  const {marker, labelX, labelY, labelScale} = layout;
   const colors = getMarkerColors(marker, hudAccent);
   const label = marker.teamStation?.name ?? marker.station.name;
   const points = getStationEffectiveMaxPoints({
@@ -569,6 +315,8 @@ function TeamMarkerLabel({
     <Group
       x={labelX}
       y={labelY}
+      scaleX={labelScale}
+      scaleY={labelScale}
       onClick={(event) => {
         event.cancelBubble = true;
         onSelect();
@@ -606,7 +354,8 @@ function TeamMarkerLabel({
         fill="#EAFCFF"
         align="center"
         verticalAlign="middle"
-        wrap="word"
+        wrap="none"
+        ellipsis
         listening={false}
       />
       <Text
@@ -629,17 +378,22 @@ function TeamMarkerConnector({
   layout,
   hudAccent,
 }: {
-  layout: MarkerScreenLayout;
+  layout: MarkerScreenLayout<MarkerViewModel>;
   hudAccent: string;
 }) {
-  const {marker, anchorX, anchorY, labelX, labelY} = layout;
+  const {marker, anchorX, anchorY, labelX, labelY, labelScale, markerAttachmentOffset} = layout;
   const colors = getMarkerColors(marker, hudAccent);
-  const connectorX = Math.max(labelX, Math.min(labelX + STATION_LABEL_WIDTH, anchorX));
-  const connectorY = Math.max(labelY, Math.min(labelY + STATION_LABEL_HEIGHT, anchorY));
+  const connectorX = labelX + (STATION_LABEL_WIDTH * labelScale) / 2;
+  const connectorY = labelY + STATION_LABEL_HEIGHT * labelScale;
+  const deltaX = connectorX - anchorX;
+  const deltaY = connectorY - anchorY;
+  const distance = Math.hypot(deltaX, deltaY) || 1;
+  const startX = anchorX + (deltaX / distance) * markerAttachmentOffset;
+  const startY = anchorY + (deltaY / distance) * markerAttachmentOffset;
 
   return (
     <Line
-      points={[anchorX, anchorY, connectorX, connectorY]}
+      points={[startX, startY, connectorX, connectorY]}
       stroke={colors.stroke}
       strokeWidth={1.2}
       opacity={0.72}
@@ -667,55 +421,40 @@ function LeaderboardOverlay({
   const logout = useMovementStore((state) => state.logout);
   const [rows, setRows] = useState<LeaderboardEntryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const isFetchingRef = useRef(false);
+  const mountedRef = useRef(false);
+  const visibleRows = useMemo(
+    () => getTeamV2LeaderboardRows(rows, activeTeam?.id),
+    [activeTeam?.id, rows],
+  );
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    let cancelled = false;
-    const refresh = async () => {
-      if (
-        cancelled ||
-        isFetchingRef.current ||
-        document.visibilityState !== "visible"
-      ) {
-        return;
-      }
-      isFetchingRef.current = true;
-      setIsLoading(true);
-      try {
-        const entries = await getLeaderboard();
-        if (!cancelled) {
-          setRows(entries);
-        }
-      } catch (error) {
-        if (!cancelled && isAuthFailure(error)) {
-          logout();
-        }
-      } finally {
-        isFetchingRef.current = false;
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    };
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        void refresh();
-      }
-    };
-
-    void refresh();
-    const timer = window.setInterval(() => void refresh(), 5000);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    mountedRef.current = true;
     return () => {
-      cancelled = true;
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      mountedRef.current = false;
     };
-  }, [logout, open]);
+  }, []);
+
+  const refresh = useCallback(async () => {
+    if (mountedRef.current) {
+      setIsLoading(true);
+    }
+    try {
+      const entries = await getPlayerLeaderboard();
+      if (mountedRef.current) {
+        setRows(entries);
+      }
+    } catch (error) {
+      if (mountedRef.current && isAuthFailure(error)) {
+        logout();
+      }
+    } finally {
+      if (mountedRef.current) {
+        setIsLoading(false);
+      }
+    }
+  }, [logout]);
+
+  useVisibleOnlinePolling(refresh, {enabled: open});
 
   if (!open) {
     return null;
@@ -724,7 +463,7 @@ function LeaderboardOverlay({
   return (
     <div
       className="team-v2-overlay-layer"
-      style={{opacity: opacity / 100}}
+      style={getTeamV2OverlayStyle(opacity)}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}>
@@ -748,7 +487,7 @@ function LeaderboardOverlay({
           <Empty description={t("leaderboard.empty")} />
         ) : (
           <div className="team-v2-rank-list">
-            {rows.map((row) => {
+            {visibleRows.map((row) => {
               const isCurrent = String(row.teamId) === activeTeam?.id;
               return (
                 <div key={row.teamId} className={`team-v2-rank-row${isCurrent ? " is-current" : ""}`}>
@@ -799,7 +538,6 @@ export function TeamGameplayV2Page() {
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
   const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
-  const isRefreshingRef = useRef(false);
   const isSubmittingQrRef = useRef(false);
   const pinchRef = useRef<{distance: number; scale: number} | null>(null);
   const panRef = useRef<{
@@ -810,30 +548,41 @@ export function TeamGameplayV2Page() {
   } | null>(null);
   const lastTapAtRef = useRef(0);
   const previousViewportRef = useRef<ViewportSize | null>(null);
+  const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
+  if (mapTransformSchedulerRef.current == null) {
+    mapTransformSchedulerRef.current = createLatestFrameScheduler<MapTransform>({
+      requestFrame: (callback) => requestAnimationFrame(callback),
+      cancelFrame: (frameId) => cancelAnimationFrame(frameId),
+      commit: setMapTransform,
+    });
+  }
   const playingCounts = useStationPlayingCounts(Boolean(session?.role === "user"));
 
   const completedCount = activeTeamStations.filter((station) => station.status === "Finished").length;
   const scoreStation = activeTeamStations.find((station) => station.stationId === scoreStationId) ?? null;
   const selectedStation =
-    activeTeamStations.find((station) => station.stationId === selectedStationId) ??
-    activeTeamStations.find((station) => station.status === "In Progress") ??
-    null;
+    activeTeamStations.find((station) => station.stationId === selectedStationId) ?? null;
+  const activeStation =
+    activeTeamStations.find((station) => station.status === "In Progress") ?? null;
 
   const markerViewModels = useMemo<MarkerViewModel[]>(() => {
     const byStationId = new Map(activeTeamStations.map((station) => [station.stationId, station]));
-    return stationDefinitions.map((station, index) => {
+    return stationDefinitions.flatMap((station, index): MarkerViewModel[] => {
       const position = getStationPosition(station, index, stationDefinitions.length);
       const teamStation = byStationId.get(station.id) ?? null;
-      return {
+      if (!shouldRenderTeamV2Marker(teamStation)) {
+        return [];
+      }
+      return [{
         station,
         teamStation,
         x: (position.x / 100) * MAP_WORLD_WIDTH,
         y: (position.y / 100) * MAP_WORLD_HEIGHT,
         code: getStationDisplayCode(station.id),
         isActive: teamStation?.status === "In Progress",
-        isCompleted: teamStation?.status === "Finished",
+        isLocked: isTeamV2MarkerLocked(teamStation),
         isSelected: selectedStationId === station.id,
-      };
+      }];
     });
   }, [activeTeamStations, selectedStationId, stationDefinitions]);
 
@@ -841,23 +590,6 @@ export function TeamGameplayV2Page() {
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
     [mapTransform, markerViewModels, viewportSize],
   );
-
-  const refreshPlayerData = useCallback(async () => {
-    if (isRefreshingRef.current || document.visibilityState !== "visible") {
-      return;
-    }
-    isRefreshingRef.current = true;
-    try {
-      loadDatabase(await fetchPlayerDatabase(language));
-    } catch (error) {
-      if (isAuthFailure(error)) {
-        clearSession();
-        navigate("/login");
-      }
-    } finally {
-      isRefreshingRef.current = false;
-    }
-  }, [clearSession, language, loadDatabase, navigate]);
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
@@ -904,6 +636,11 @@ export function TeamGameplayV2Page() {
   }, [viewportSize]);
 
   useEffect(() => {
+    const scheduler = mapTransformSchedulerRef.current;
+    return () => scheduler?.cancel();
+  }, []);
+
+  useEffect(() => {
     if (!viewportSize.width) {
       return;
     }
@@ -927,33 +664,23 @@ export function TeamGameplayV2Page() {
     };
   }, [mapTransform.scale, viewportSize]);
 
-  useEffect(() => {
-    void refreshPlayerData();
-    const refreshWhenVisible = () => {
-      if (document.visibilityState === "visible") {
-        void refreshPlayerData();
-      }
-    };
-    const timer = window.setInterval(() => void refreshPlayerData(), 5000);
-    document.addEventListener("visibilitychange", refreshWhenVisible);
-    return () => {
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", refreshWhenVisible);
-    };
-  }, [refreshPlayerData]);
+  const scheduleMapTransform = (nextTransform: MapTransform) => {
+    // Pointer events can arrive faster than the display refresh rate. Keep only
+    // the latest transform and commit at most once per animation frame.
+    mapTransformSchedulerRef.current?.schedule(nextTransform);
+  };
 
   const applyScaleAtPoint = (nextScale: number, point: {x: number; y: number}) => {
-    setMapTransform((current) => {
-      const clampedScale = clampScale(nextScale, viewportSize);
-      const worldPoint = {
-        x: (point.x - current.x) / current.scale,
-        y: (point.y - current.y) / current.scale,
-      };
-      return {
-        scale: clampedScale,
-        x: point.x - worldPoint.x * clampedScale,
-        y: point.y - worldPoint.y * clampedScale,
-      };
+    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
+    const clampedScale = clampScale(nextScale, viewportSize);
+    const worldPoint = {
+      x: (point.x - current.x) / current.scale,
+      y: (point.y - current.y) / current.scale,
+    };
+    scheduleMapTransform({
+      scale: clampedScale,
+      x: point.x - worldPoint.x * clampedScale,
+      y: point.y - worldPoint.y * clampedScale,
     });
   };
 
@@ -963,7 +690,8 @@ export function TeamGameplayV2Page() {
     if (!pointer) {
       return;
     }
-    const nextScale = event.evt.deltaY > 0 ? mapTransform.scale / 1.08 : mapTransform.scale * 1.08;
+    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
+    const nextScale = event.evt.deltaY > 0 ? current.scale / 1.08 : current.scale * 1.08;
     applyScaleAtPoint(nextScale, pointer);
   };
 
@@ -985,7 +713,7 @@ export function TeamGameplayV2Page() {
       return;
     }
     panStart.moved = true;
-    setMapTransform({
+    scheduleMapTransform({
       ...panStart.transform,
       x: panStart.transform.x + event.evt.clientX - panStart.clientX,
       y: panStart.transform.y + event.evt.clientY - panStart.clientY,
@@ -1026,7 +754,7 @@ export function TeamGameplayV2Page() {
       event.evt.preventDefault();
       const panStart = panRef.current;
       panStart.moved = true;
-      setMapTransform({
+      scheduleMapTransform({
         ...panStart.transform,
         x: panStart.transform.x + touches[0].clientX - panStart.clientX,
         y: panStart.transform.y + touches[0].clientY - panStart.clientY,
@@ -1056,6 +784,7 @@ export function TeamGameplayV2Page() {
   };
 
   const resetMap = () => {
+    mapTransformSchedulerRef.current?.cancel();
     setMapTransform(getDefaultMapTransform(viewportSize));
   };
 
@@ -1088,21 +817,25 @@ export function TeamGameplayV2Page() {
     }
     isSubmittingQrRef.current = true;
     try {
-      const result = await submitPlayerQrAction(token);
-      await refreshPlayerData();
+      const {result} = await executePlayerMutation(
+        () => submitPlayerQrAction(token),
+        language,
+      );
       setQrToken("");
       setIsScannerOpen(false);
       if (result.action === "CHECK_IN") {
         message.success(t("teamV2.checkInSuccess"));
-        navigate(`/stations/${result.stationId}?from=team-v2`);
+        setSelectedStationId(null);
         return {status: "accepted"};
       }
       if (result.requiresScore) {
         scoreForm.setFieldsValue({score: 0, reason: ""});
         setScoreStationId(result.stationId);
+        setSelectedStationId(null);
         message.success(t("teamV2.checkOutScoreRequired"));
         return {status: "accepted"};
       }
+      setSelectedStationId(null);
       message.success(t("teamV2.checkOutSuccess"));
       return {status: "accepted"};
     } catch (error) {
@@ -1146,9 +879,10 @@ export function TeamGameplayV2Page() {
   }
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
-  const selectedMaxPoints = selectedStation ? getStationEffectiveMaxPoints(selectedStation) : 0;
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
+  const footerScale = clamp((viewportSize.width - 16) / 600, 0.5, 1);
+  const footerFontCompensation = 1 / footerScale;
 
   return (
     <main className="team-v2-page">
@@ -1201,7 +935,7 @@ export function TeamGameplayV2Page() {
               scaleY={1 / mapTransform.scale}>
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport ? (
+              return layout?.isInViewport ? (
                   <TeamMarkerConnector
                     key={`connector-${marker.station.id}`}
                     layout={layout}
@@ -1209,16 +943,6 @@ export function TeamGameplayV2Page() {
                   />
                 ) : null;
               })}
-              {markerViewModels.map((marker) => (
-                <TeamMarker
-                  key={`marker-${marker.station.id}`}
-                  marker={marker}
-                  hudAccent={V2_HUD_ACCENT}
-                  x={markerScreenLayouts.get(marker.station.id)?.anchorX ?? 0}
-                  y={markerScreenLayouts.get(marker.station.id)?.anchorY ?? 0}
-                  onSelect={() => setSelectedStationId(marker.station.id)}
-                />
-              ))}
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport ? (
@@ -1232,24 +956,40 @@ export function TeamGameplayV2Page() {
                 ) : null;
               })}
             </Layer>
+            <Layer
+              x={-mapTransform.x / mapTransform.scale}
+              y={-mapTransform.y / mapTransform.scale}
+              scaleX={1 / mapTransform.scale}
+              scaleY={1 / mapTransform.scale}>
+              {markerViewModels.map((marker) => {
+                const layout = markerScreenLayouts.get(marker.station.id);
+                return layout?.isInViewport ? (
+                  <TeamMarker
+                    key={`marker-${marker.station.id}`}
+                    marker={marker}
+                    hudAccent={V2_HUD_ACCENT}
+                    size={layout.markerSize}
+                    x={layout.anchorX}
+                    y={layout.anchorY}
+                    onSelect={() => setSelectedStationId(marker.station.id)}
+                  />
+                ) : null;
+              })}
+            </Layer>
           </Stage>
         )}
       </div>
 
       <header className="team-v2-header">
-        <div className="team-v2-team">
-          <Typography.Title level={2}>
-            {getLocalizedTeamName(activeTeam.name, language)}
-          </Typography.Title>
-          <div className="team-v2-team-meta">
-            <span>#{activeTeam.id}</span>
-            {activeTeam.captainName && (
-              <span>{t("teamV2.captain")}: {activeTeam.captainName}</span>
-            )}
-          </div>
-        </div>
         <div className="team-v2-center-score">
-          <span className="team-v2-event-brand">MOVEment 2026</span>
+          <div className="team-v2-event-banner" aria-label="MOVEment 2026">
+            <span className="team-v2-event-rail is-left" aria-hidden="true" />
+            <span className="team-v2-event-brand">
+              <span>MOVEment</span>
+              <small>2026</small>
+            </span>
+            <span className="team-v2-event-rail is-right" aria-hidden="true" />
+          </div>
           <div className="team-v2-score" aria-label={`${t("common.totalScore")}: ${activeTeam.score}`}>
             <strong>{activeTeam.score}</strong>
             <span>{t("teamV2.pointsUnit")}</span>
@@ -1269,48 +1009,49 @@ export function TeamGameplayV2Page() {
       </header>
 
       {selectedStation && !isPrimaryOverlayOpen && (
-        <div
-          className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) setSelectedStationId(null);
-          }}>
-          <section
-            className="team-v2-overlay team-v2-preview"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="team-v2-preview-title">
-            <div className="team-v2-preview-title">
-              <span className="team-v2-station-code">{getStationDisplayCode(selectedStation.stationId)}</span>
-              <div>
-                <Typography.Title id="team-v2-preview-title" level={4}>{selectedStation.name}</Typography.Title>
-                <Tag>{t(`status.${selectedStation.status}`)}</Tag>
-              </div>
-              <button type="button" className="team-v2-icon-button" onClick={() => setSelectedStationId(null)} aria-label={t("teamV2.closeOverlay")}>
-                <CloseOutlined />
-              </button>
-            </div>
-            <div className="team-v2-preview-stats">
-              <span><StarFilled /> {selectedStation.score}/{selectedMaxPoints}</span>
-              <span><TeamOutlined /> {selectedPlayingCount}</span>
-            </div>
-            <Button
-              type="primary"
-              block
-              onClick={() => navigate(`/stations/${selectedStation.stationId}?from=team-v2`)}>
-              {t("teamV2.openStationDetail")}
-            </Button>
-          </section>
-        </div>
+        <TeamV2StationDetailOverlay
+          station={selectedStation}
+          playingTeamCount={selectedPlayingCount}
+          opacity={panelOpacity}
+          language={language}
+          onClose={() => setSelectedStationId(null)}
+          onRequestScan={() => {
+            setQrToken("");
+            setIsScannerOpen(true);
+          }}
+          onCancel={async () => {
+            try {
+              await executePlayerMutation(
+                () => cancelPlayerStation(selectedStation.stationId),
+                language,
+              );
+              message.success(t("stationDetail.cancelled"));
+              setSelectedStationId(null);
+            } catch {
+              message.error(t("errors.generic"));
+            }
+          }}
+        />
       )}
 
-      <footer className="team-v2-bottom">
-        <button type="button" className="team-v2-bottom-chip team-v2-progress-chip">
-          <span className="team-v2-bottom-icon"><CompassOutlined /></span>
+      <footer
+        className="team-v2-bottom"
+        style={{
+          "--team-v2-footer-scale": footerScale,
+          "--team-v2-footer-font-compensation": footerFontCompensation,
+        } as CSSProperties}>
+        <span className="team-v2-footer-rail is-left" aria-hidden="true" />
+        <button
+          type="button"
+          className="team-v2-footer-panel team-v2-leaderboard-chip"
+          onClick={() => {
+            setIsSettingsOpen(false);
+            setIsScannerOpen(false);
+            setIsLeaderboardOpen(true);
+          }}>
+          <span className="team-v2-bottom-icon"><TrophyFilled /></span>
           <span className="team-v2-bottom-copy">
-            <small>{t("teamV2.progress")}</small>
-            <strong>{completedCount}/17</strong>
-            <em>{t("teamV2.stationsCompleted")}</em>
+            <strong>{t("teamV2.leaderboardControl")}</strong>
           </span>
         </button>
         <div className="team-v2-scan-action">
@@ -1323,28 +1064,33 @@ export function TeamGameplayV2Page() {
               setIsScannerOpen(true);
             }}
           />
-          <strong>{t("teamV2.scanGameQr")}</strong>
-          <small>{t("teamV2.scanGameHint")}</small>
+          <strong>{activeStation ? t("status.In Progress") : t("teamV2.scanGameQr")}</strong>
+          <small className={activeStation ? "is-active-context" : undefined}>
+            {activeStation ?
+              `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}`
+            : t("teamV2.scanGameHint")}
+          </small>
         </div>
-        <button
-          type="button"
-          className="team-v2-bottom-chip team-v2-leaderboard-chip"
-          onClick={() => {
-            setIsSettingsOpen(false);
-            setIsScannerOpen(false);
-            setIsLeaderboardOpen(true);
-          }}>
-          <span className="team-v2-bottom-icon"><TrophyFilled /></span>
-          <span className="team-v2-bottom-copy">
-            <strong>{t("nav.rank")}</strong>
+        <section
+          className="team-v2-footer-panel team-v2-progress-panel"
+          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}>
+          <span className="team-v2-team-count">
+            <small>{t("teamV2.teamLabel")}</small>
+            <strong>{String(activeTeam.id).padStart(2, "0")}</strong>
           </span>
-        </button>
+          <span className="team-v2-progress-divider" aria-hidden="true" />
+          <span className="team-v2-station-count">
+            <small>{t("teamV2.stationCountLabel")}</small>
+            <strong>{completedCount}/17</strong>
+          </span>
+        </section>
+        <span className="team-v2-footer-rail is-right" aria-hidden="true" />
       </footer>
 
       {isSettingsOpen && (
         <div
           className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
+          style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setIsSettingsOpen(false);
           }}>
@@ -1410,7 +1156,7 @@ export function TeamGameplayV2Page() {
       {isScannerOpen && (
         <div
           className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
+          style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setIsScannerOpen(false);
           }}>
@@ -1441,7 +1187,7 @@ export function TeamGameplayV2Page() {
       {scoreStation && (
         <div
           className="team-v2-overlay-layer"
-          style={{opacity: panelOpacity / 100}}
+          style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setScoreStationId(null);
           }}>
@@ -1472,10 +1218,17 @@ export function TeamGameplayV2Page() {
                   onOk: async () => {
                     setIsSubmittingScore(true);
                     try {
-                      await submitStationScore(scoreStation.stationId, values.score, values.reason);
-                      await refreshPlayerData();
+                      await executePlayerMutation(
+                        () => submitStationScore(
+                          scoreStation.stationId,
+                          values.score,
+                          values.reason,
+                        ),
+                        language,
+                      );
                       message.success(t("stationDetail.completedSuccess"));
                       setScoreStationId(null);
+                      setSelectedStationId(null);
                     } catch {
                       message.error(t("stationDetail.scoreSubmissionFailed"));
                     } finally {

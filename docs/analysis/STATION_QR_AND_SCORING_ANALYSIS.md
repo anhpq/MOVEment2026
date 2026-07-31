@@ -5,8 +5,19 @@
 | Area | Status |
 | --- | --- |
 | Implementation | Completed |
-| Runtime/Production Verification | Pending verification |
+| Runtime/Production Verification | Production-like local QR/scoring smoke completed; Production pending |
 | Browser/Manual Verification | Pending verification |
+
+## 2026-07-29 Runtime Stability Integration
+
+- Check-in, check-out, cancel, unified QR action, and score transitions are
+  conditional/idempotent and protected by the database one-active-Station
+  invariant.
+- Frontend mutations are never automatically replayed and perform at most one
+  fresh state reconciliation after the POST.
+- Production-like local smoke verified wrong-purpose QR, SCORE/TIME/BOTH,
+  idempotent duplicate score completion, active-Station Final blocking, and
+  separate `finalStartsAt` behavior. Production/physical QR remain unverified.
 
 ## Objective and Scope
 
@@ -24,6 +35,8 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
 - Commit `794143e8` aligned QR scan auto-submit, TIME score `10`, SCORE/BOTH
   checkout behavior, and effective max-score UI.
 - Camera decode auto-submits; manual paste/type still requires explicit submit.
+- V2 Detail opens the existing V2 scanner on demand for Start/Complete; rejected
+  tokens keep that scanner open and successful transitions return to the V2 map.
 - Backend resolves Station and purpose from the stored token, not visible payload.
 - TIME completes at checkout with score `10`; SCORE/BOTH wait for validated score
   input and prevent duplicate completion/award.
@@ -47,6 +60,9 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
   recorded in audit/backlog.
 - Remaining: real camera/browser smoke, duplicate interaction smoke, and
   Production migration/runtime verification where backlog remains open.
+- The 2026-07-30 V2 Detail integration passed V2 scanner/Detail targeted tests,
+  the full Frontend suite, i18n parity, lint, build, and bundle gate. No Backend
+  QR/scoring contract changed.
 
 ## Decision Log
 

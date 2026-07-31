@@ -88,8 +88,9 @@ If Source Code conflicts with confirmed Business Rules:
 | `STATION_MAP_ANALYSIS.md` | Station map markers, position persistence, and WebP delivery. |
 | `STATION_MEDIA_GALLERY_ANALYSIS.md` | Ordered Station image URLs, Admin management, Player gallery, and action layout. |
 | `STATION_QR_AND_SCORING_ANALYSIS.md` | Station QR auto-submit, checkout, and scoring. |
-| `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, dedicated persistent scanner, QR badge, overlays, responsive HUD, and V2 navigation. |
+| `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, dedicated persistent scanner, QR badge, V2-owned Station Detail/gallery overlays, responsive HUD, and V2 navigation. |
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
+| `TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md` | Lean Team APIs, adaptive polling, error resilience, concurrency hardening, and Team bundle/data budgets. |
 | `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
 
 ---
@@ -784,7 +785,8 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 - Shared map canvas reuse with existing Suoi Tien WebP variants and Station coordinates.
 - Unified Team Station QR action through the V2-only persistent camera scanner
   and manual fallback, plus the fixed cyan/red inline-SVG QR badge.
-- Station Detail return behavior through fixed `?from=team-v2`.
+- V2-owned near-fullscreen Station Detail and gallery presentation inside the
+  map route; no navigation through Player Station Detail V1.
 - V2-specific VI/EN copy, fixed V2 palette isolated from Team Color, and
   overlay opacity persistence.
 
@@ -825,7 +827,59 @@ Update `OPEN_QUESTIONS_AND_DECISIONS.md` only when a Business Rule changes.
 
 ---
 
-## 17. Git and Delivery Rules
+## 17. Team Runtime Stability and Data Loading
+
+### Scope
+
+- Lean Player catalog/state/images/leaderboard APIs.
+- Team bootstrap, polling, caching, session ownership, and stale-data behavior.
+- Gameplay mutation reconciliation and concurrency protection.
+- Team route/code splitting, lazy media loading, and bundle budgets.
+- Safe localized Team/Login errors and request correlation.
+
+### Required Reading
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md
+docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md
+docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md
+docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md
+docs/analysis/STATION_MAP_ANALYSIS.md
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+### Confirmed Boundaries
+
+- Preserve authentication, QR, scoring, Final, leaderboard, and localization
+  Business Rules.
+- Keep existing Player APIs available during the compatibility window.
+- Backend aggregates remain authoritative; Frontend-derived totals are not a
+  replacement.
+- Do not queue or automatically replay Team gameplay mutations.
+
+### Must Update After Change
+
+```text
+docs/analysis/TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md
+docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md
+docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md
+docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md
+docs/analysis/STATION_MAP_ANALYSIS.md
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+Update `OPEN_QUESTIONS_AND_DECISIONS.md` only if a Business Rule changes.
+
+---
+
+## 18. Git and Delivery Rules
 
 ### Scope
 

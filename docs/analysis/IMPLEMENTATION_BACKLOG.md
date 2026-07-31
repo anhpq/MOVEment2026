@@ -1,5 +1,218 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-07-31 Team V2 background-only overlay opacity
+
+- [x] Set the new Team V2 overlay default to `95%` and reset the old stored
+  preference once through a versioned storage key.
+- [x] Apply opacity only to backdrop/panel background colors through a shared
+  typed CSS-variable helper; keep all overlay content at `100%` opacity.
+- [x] Cover default, invalid-value fallback, clamping, and absence of parent
+  `opacity` with focused tests.
+- [x] Pass focused Vitest `11/11`, full Frontend Vitest `39/39`, i18n parity,
+  Frontend lint, production build, bundle gate, diff check, and Chrome visual
+  verification.
+
+## 2026-07-31 Team V2 inactive language contrast
+
+- [x] Darken and desaturate the unselected Settings language control while
+  preserving a readable hover/focus state and the selected cyan treatment.
+- [x] Scope the override to Team V2 Settings without modifying the shared
+  component or other screens.
+- [x] Pass full Frontend Vitest `37/37`, i18n parity, Frontend lint, production
+  build, bundle gate, diff check, and Chrome visual verification using the real
+  `LanguageSwitch` component.
+
+## 2026-07-31 Team V2 Settings and compact Leaderboard
+
+- [x] Center Settings at intrinsic content height on desktop and portrait while
+  retaining viewport-capped scrolling.
+- [x] Display the first five Leaderboard response rows and append the current
+  Team with V2 display rank `6` only when it is outside those rows.
+- [x] Preserve the authoritative response and all Backend ranking/scoring/API
+  behavior; add focused projection coverage including non-mutation.
+- [x] Pass focused Vitest `10/10`, full Frontend Vitest `37/37`, i18n parity,
+  Frontend lint, production build, bundle gate, diff check, and Settings Chrome
+  visual verification at `390x844`.
+- [ ] Complete authenticated Leaderboard-data and physical-device verification.
+
+## 2026-07-31 Team V2 marker interaction performance
+
+- [x] Cache unchanged normal/silver marker artwork while preserving the exact
+  180-segment design, glow, state palette, and `32..64px` output.
+- [x] Coalesce pan, wheel, and touch transform updates to one latest-value React
+  commit per animation frame with reset/unmount cleanup.
+- [x] Cull marker groups outside the viewport consistently with labels and
+  connectors.
+- [x] Pass focused Vitest `15/15`, full Frontend Vitest `34/34`, i18n parity,
+  Frontend lint, production build, bundle gate, diff check, and a 17-marker
+  Chrome cache/clipping stress preview.
+- [ ] Record authenticated physical-device FPS/frame-time before and after the
+  optimization under representative pan and pinch gestures.
+
+## 2026-07-31 Team V2 Detail sizing and footer readability
+
+- [x] Size Station Detail to intrinsic content, center it, and retain
+  viewport-capped scrolling without mobile full-height stretching.
+- [x] Use compact `BXH`/`RANK` footer copy and increase the QR button from
+  `74px` to `222px` with non-overlapping raised geometry.
+- [x] Keep displayed Leaderboard, QR-caption, and Team/Station-label typography
+  at least `12px` after responsive footer scaling.
+- [x] Pass i18n parity, focused Vitest `12/12`, Frontend lint, production build,
+  and bundle gate.
+- [ ] Complete authenticated responsive visual and physical-device verification.
+
+## 2026-07-31 Team V2 marker states and disabled media controls
+
+- [x] Keep YouTube and image-gallery controls visible and style unavailable
+  actions as readable disabled silver-neon controls.
+- [x] Hide the complete Team V2 marker group for `Finished`/`COMPLETED`
+  Stations without changing Station coordinates or progress data.
+- [x] Render backend `LOCKED` Stations with an authoritative silver-neon
+  marker, halo, label, and connector.
+- [x] Pass focused Vitest `12/12`, Frontend lint, production build, and bundle
+  gate.
+- [ ] Complete authenticated in-map state comparison and physical-device visual
+  verification.
+
+## 2026-07-31 Team V2 exact Bézier Konva marker
+
+- [x] Replace polygon/circuit artwork with the supplied `640×620` curved outer
+  and inner Bézier paths, exact rings/core/highlights, and 180-Arc circular
+  neon gradient.
+- [x] Align tip `(320,606)` to the unchanged Station anchor and preserve the
+  `32..64px` size clamp, state halo, hit target, labels, and map behavior.
+- [x] Pass Frontend lint, production build, bundle gate, focused marker-layout
+  Vitest `3/3`, diff check, and direct Chrome rendering of the repo component.
+
+## 2026-07-31 Team V2 single-line marker labels
+
+- [x] Keep marker code/name on one line and truncate overflow with ellipsis.
+- [x] Preserve the points row beneath the name plus all anchor/scale/gap
+  geometry.
+- [x] Pass Frontend lint, production build, bundle gate, focused marker-layout
+  Vitest `3/3`, and diff check.
+
+## 2026-07-31 Team V2 centered score-only map header
+
+- [x] Remove `.team-v2-team` identity markup and route-local styles from the V2
+  map header without changing Team state or other identity surfaces.
+- [x] Keep `.team-v2-score` in the centered header grid area for portrait and
+  landscape while preserving authoritative score data and green neon styling.
+- [x] Pass Frontend lint, production build, bundle gate, and diff check.
+
+## 2026-07-31 Team V2 supplied Konva-native marker (superseded)
+
+- [x] Replace the interim SVG-image marker with the supplied native Konva
+  geometry, gradients, rings, circuit traces, speed lines, and glow.
+- [x] Use the supplied `(320, 590)` tip as the single marker offset; clamp its
+  normalized-zoom size to `32..64px` without applying zoom twice.
+- [x] Remove the number inside the marker while keeping Station code in the
+  anchored label; preserve state halo, minimum hit target, and map behavior.
+- [x] Remove the obsolete SVG asset/load lifecycle and pass focused marker
+  layout Vitest `3/3`, Frontend lint, production build, bundle gate, and diff
+  check.
+- [ ] Run authenticated in-map and physical-device visual verification.
+
+## 2026-07-31 Team V2 supplied SVG marker (superseded)
+
+- [x] Replace only the Team V2 hand-built pin artwork with the supplied
+  cyan/purple SVG marker.
+- [x] Keep the SVG lower tip on the unchanged Station anchor and preserve the
+  Station code, state halo, hit target, labels, connectors, and map behavior.
+- [x] Pass focused marker-layout Vitest `3/3`, Frontend lint, production build,
+  bundle gate, diff check, and direct Chrome SVG rendering.
+- [ ] Run authenticated in-map and physical-device visual verification.
+
+## 2026-07-30 Team V2 score and banner rails refinement
+
+- [x] Render total score in bright green with layered neon and center it below
+  the brand in landscape while preserving portrait-safe placement.
+- [x] Replace the shallow brand/rails styling with a taller angular plate and
+  long symmetric striped cyan rails.
+- [x] Pass i18n parity `395`, lint, full Vitest `29/29`, production build,
+  bundle gate, diff check, authenticated 320x568/390x844/844x390 captures, and
+  browser-console inspection.
+
+## 2026-07-30 Team V2 scanner-pin marker refinement
+
+- [x] Replace the circular V2 map marker with a vector scanner pin whose lower
+  tip remains the exact Station coordinate, preserving state colors and input.
+- [x] Keep labels/connectors attached from the pin top using the shared
+  screen-space anchor, clamped scale/gap, and marker-above-label layer order.
+- [x] Pass focused marker layout `3/3`, full Frontend Vitest `29/29`, i18n
+  parity `395`, lint, production build, bundle gate, and diff check.
+- [x] Capture authenticated marker screenshots at min/default/max map scales
+  `0.3120`, `0.3900`, and `1.9500`; inspect browser console with no new issues.
+
+## 2026-07-30 Canonical Station seed data synchronization
+
+- [x] Apply the supplied 17-record Station dataset to canonical seed fields:
+  content, media URL, points, exact decimal map coordinates, and `ST` type.
+- [x] Make local/test content synchronization upsert Station/Game data in place
+  so canonical content changes do not trigger destructive Station replacement.
+- [x] Validate 17 unique records, four `ST` games, two seed executions, zero
+  database mismatches, 34 active Station QR tokens, 425 progress rows, Backend
+  lint/build, full Jest `162/162`, and `db:verify`.
+- [~] Local data caveat: the initial validation seed used the prior replacement
+  behavior and reset local gameplay state before the in-place guard was added.
+  Production was not accessed; retain this as an operational warning until a
+  fresh non-destructive seed rehearsal starts from non-empty progress data.
+
+## 2026-07-30 Team Gameplay V2 marker anchoring and footer refinement
+
+- [x] Replace V2 viewport-grid marker label placement with a single marker
+  screen anchor, clamped scale/gap, label/connector-under-marker draw order,
+  and no Station-coordinate mutation.
+- [x] Replace the V2 footer pill with independent angular Leaderboard, raised
+  QR pedestal, and Team/completed-Station controls joined only by thin rails.
+- [x] Add VI/EN footer copy and focused marker-layout geometry tests.
+- [x] Pass marker-layout Vitest `3/3`, full Frontend Vitest `29/29`, i18n
+  parity `395`, lint, production build, bundle gate, and diff check.
+- [x] Complete authenticated visual comparison at 390x844, 844x390, and
+  320x568 with no footer overlap/crop after responsive state settled.
+
+## 2026-07-30 Team Gameplay V2-owned Detail and map HUD
+
+- [x] Replace V2 routing through `?from=team-v2` with a V2-owned Detail overlay
+  that preserves `/team/v2` URL and map state.
+- [x] Add state-aware Start/Complete/Cancel behavior using existing V2 scanner,
+  score, cancel, Player state, and backend-authoritative QR action contracts.
+- [x] Add a V2-owned lazy Station gallery presentation without changing V1.
+- [x] Show localized active Station status/code/name below the on-demand QR CTA.
+- [x] Refine the reference banner, compact label placement/connectors, and
+  label-below-marker draw order without changing Station coordinates.
+- [x] Pass targeted V2 Detail/Gallery/Scanner Vitest `8/8`, full Frontend Vitest `26/26`, i18n parity
+  `391`, Frontend lint, production build, and bundle gate.
+- [~] Authenticated Chrome smoke passed banner/rails at all approved viewports
+  and Detail opening without URL change; active-Station Complete/Cancel remains
+  pending browser verification.
+- [ ] Complete physical iOS/Android camera and Production runtime verification.
+
+## 2026-07-29 Team runtime stability resume completion
+
+- [x] Review mutation reconciliation, session-principal isolation, polling
+  guards, and lean-to-legacy fallback after checkpoint `d952af55`.
+- [x] Restore Frontend dependencies from lockfile and make Vitest Web Storage
+  setup deterministic on Node v26.
+- [x] Add automated hidden/offline/non-overlap polling and one-refresh mutation
+  reconciliation coverage; Frontend Vitest passes `19/19`.
+- [x] Re-run Backend Jest `162/162`, Backend lint/build, Frontend lint, i18n
+  parity `388`, production build, and bundle gate.
+- [x] Pass production-like HTTPS smoke on a disposable database: 18 migrations,
+  seed twice, `db:verify`, auth/QR/scoring/Final/leaderboard, secret scan, and
+  production environment guards.
+- [x] Measure lean canonical payloads: state `3,885` bytes, catalog `5,908`
+  bytes, 17 Stations, and no catalog `imageUrls`.
+- [x] Reconcile production-like fixtures with bilingual Station DTO,
+  idempotent duplicate score behavior, TIME score `10`, and independent
+  `finalStartsAt`.
+- [ ] Manual responsive Team V1/V2 browser smoke and physical iOS/Android remain
+  pending.
+- [ ] Production migration/deploy/runtime verification remains pending and
+  requires explicit authorization.
+- [ ] React Router reports two high-severity advisories limited to unused
+  unstable RSC APIs; a breaking forced upgrade remains deferred.
+
 # 2026-07-28 Team Gameplay V2 parallel implementation
 
 - [x] Create and register `TEAM_GAMEPLAY_V2_ANALYSIS.md`.

@@ -16,6 +16,22 @@ export default defineConfig({
     __APP_BUILD_TIMESTAMP__: JSON.stringify(buildTimestamp),
   },
   plugins: [react()],
+  build: {
+    manifest: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const normalizedId = id.replaceAll('\\', '/')
+
+          if (normalizedId.includes('/node_modules/qrcode/')) {
+            return 'admin-qrcode'
+          }
+
+          return undefined
+        },
+      },
+    },
+  },
   server: {
     proxy: apiProxy,
   },

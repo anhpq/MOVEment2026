@@ -39,9 +39,13 @@ Normal Production seed/deploy must not trigger destructive replacement.
   are superseded.
 - Normal Production seed remains non-destructive. Explicit guarded commands own
   destructive reset/sync behavior.
-- When canonical Station gameplay inventory already matches, normal seed may
-  update only `name_en` and `description_en` for the 17 canonical Stations. This
-  translation-only repair does not reset progress, games, scoring, or QR tokens
+- Normal local/test seed updates canonical Station/Game content in place when
+  the stable Station inventory exists. Content-only changes such as localized
+  descriptions, media URLs, points, and map coordinates must not invoke the
+  destructive replacement helper or rotate Station QR tokens.
+- When the canonical Station inventory exists, normal local/test seed may update
+  canonical Station and active Game content for the 17 Station IDs in place.
+  This content synchronization does not reset progress, scoring, or QR tokens
   and does not require destructive replacement confirmation.
 - Do not print raw token, QR URL, password, or database secret.
 

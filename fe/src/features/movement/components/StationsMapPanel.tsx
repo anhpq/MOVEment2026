@@ -40,7 +40,7 @@ import {useNavigate} from "react-router-dom";
 import {fetchAdminDatabase} from "../adminData";
 import {checkInStation, updateAdminStation} from "../api";
 import {
-  fetchPlayerDatabase,
+  executePlayerMutation,
   loadPlayerMapImage,
   selectPlayerMapImageVariant,
 } from "../playerData";
@@ -803,10 +803,6 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     }
   };
 
-  const refreshPlayerData = async () => {
-    loadDatabase(await fetchPlayerDatabase());
-  };
-
   const submitCheckInQr = async (rawToken: string) => {
     if (!scanTarget || isSubmittingQrRef.current) {
       return;
@@ -827,8 +823,10 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     isSubmittingQrRef.current = true;
     setIsSubmittingQr(true);
     try {
-      await checkInStation(scanTarget.stationId, token);
-      await refreshPlayerData();
+      await executePlayerMutation(
+        () => checkInStation(scanTarget.stationId, token),
+        language,
+      );
       message.success(t("map.checkInAccepted"));
       const stationId = scanTarget.stationId;
       setFocusedStationId(null);
@@ -1040,7 +1038,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 {t("common.watchVideo")}
               </Button>
               {session?.role === "user" && (
-                <StationImageGallery imageUrls={focusedTeamStation.imageUrls} />
+                <StationImageGallery
+                  stationId={focusedTeamStation.stationId}
+                  imageCount={focusedTeamStation.imageCount}
+                  imageUrls={focusedTeamStation.imageUrls}
+                />
               )}
               <Button
                 block

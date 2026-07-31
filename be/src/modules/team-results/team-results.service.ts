@@ -41,6 +41,14 @@ export type RankedTeamResults = {
   rows: TeamResultRow[];
 };
 
+export type TeamRankComparable = {
+  teamId: number;
+  rankTotalScore: number;
+  rankTotalPlaySeconds: number;
+  completedStations: number;
+  finalSubmittedAt: Date | null;
+};
+
 type ProgressWithStation = TeamStationProgress & {
   station: { id: string; name: string; trackingMode: StationTrackingMode; isActive: boolean };
 };
@@ -57,8 +65,8 @@ type TeamForResults = {
 };
 
 export function compareTeamResultRows(
-  left: Omit<TeamResultRow, 'rank'>,
-  right: Omit<TeamResultRow, 'rank'>,
+  left: TeamRankComparable,
+  right: TeamRankComparable,
 ) {
   if (right.rankTotalScore !== left.rankTotalScore) {
     return right.rankTotalScore - left.rankTotalScore;
@@ -153,6 +161,71 @@ export class TeamResultsService {
       lastStationName: row.lastStationName,
       totalPlaySeconds: row.rankTotalPlaySeconds,
     }));
+  }
+
+  async getLeanLeaderboard() {
+    const [teams, activeFinalChallenge] = await Promise.all([
+      this.prisma.team.findMany({
+        select: {
+          id: true,
+          name: true,
+          totalPoints: true,
+          totalPlaySeconds: true,
+          progress: {
+            where: {
+              status: ProgressStatus.COMPLETED,
+              station: { isActive: true },
+            },
+            select: { id: true },
+          },
+        },
+      }),
+      this.prisma.finalChallenge.findFirst({
+        where: { isActive: true },
+        orderBy: { startsAt: 'desc' },
+        select: { id: true },
+      }),
+    ]);
+    const finalSubmissions = activeFinalChallenge
+      ? await this.prisma.finalSubmission.findMany({
+          where: {
+            finalChallengeId: activeFinalChallenge.id,
+            isCorrect: true,
+          },
+          orderBy: [{ submittedAt: 'asc' }, { id: 'asc' }],
+          select: { teamId: true, submittedAt: true },
+        })
+      : [];
+    const firstFinalSubmissionByTeam = new Map<number, Date>();
+    for (const submission of finalSubmissions) {
+      if (!firstFinalSubmissionByTeam.has(submission.teamId)) {
+        firstFinalSubmissionByTeam.set(submission.teamId, submission.submittedAt);
+      }
+    }
+
+    return teams
+      .map((team) => {
+        return {
+          teamId: team.id,
+          teamName: team.name,
+          totalPoints: team.totalPoints,
+          completedStations: team.progress.length,
+          totalPlaySeconds: team.totalPlaySeconds,
+          rankTotalScore: team.totalPoints,
+          rankTotalPlaySeconds: team.totalPlaySeconds,
+          finalSubmittedAt:
+            firstFinalSubmissionByTeam.get(team.id) ?? null,
+        };
+      })
+      .sort(compareTeamResultRows)
+      .map((row, index) => ({
+        rank: index + 1,
+        teamId: row.teamId,
+        teamName: row.teamName,
+        totalPoints: row.totalPoints,
+        completedStations: row.completedStations,
+        totalPlaySeconds: row.totalPlaySeconds,
+      }));
   }
 
   private toStationColumns(

@@ -5,7 +5,9 @@ import {useTranslation} from 'react-i18next'
 import { AppFrame } from './AppFrame'
 import { useMovementStore } from '../store'
 import type { Role } from '../types'
+import {isAuthFailure} from '../api'
 import { fetchPlayerDatabase } from '../playerData'
+import {getSessionPrincipalKey} from '../sessionIdentity'
 
 type ProtectedRouteProps = Readonly<PropsWithChildren<{
   allow?: Role[]
@@ -14,18 +16,21 @@ type ProtectedRouteProps = Readonly<PropsWithChildren<{
 
 export function ProtectedRoute({ children, allow, fullscreen = false }: ProtectedRouteProps) {
   const navigate = useNavigate()
-  const {i18n} = useTranslation()
+  const {i18n, t} = useTranslation()
   const session = useMovementStore((state) => state.session)
+  const dataSessionKey = useMovementStore((state) => state.dataSessionKey)
   const teams = useMovementStore((state) => state.teams)
   const teamStations = useMovementStore((state) => state.teamStations)
   const loadDatabase = useMovementStore((state) => state.loadDatabase)
+  const logout = useMovementStore((state) => state.logout)
   const [retryKey, setRetryKey] = useState(0)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState(false)
 
   const hasPlayerData =
     session?.role !== 'user' ||
     !session.teamId ||
-    (teams.some((team) => team.id === session.teamId) &&
+    (dataSessionKey === getSessionPrincipalKey(session) &&
+      teams.some((team) => team.id === session.teamId) &&
       Object.hasOwn(teamStations, session.teamId))
 
   useEffect(() => {
@@ -45,16 +50,18 @@ export function ProtectedRoute({ children, allow, fullscreen = false }: Protecte
       })
       .catch((error: unknown) => {
         if (!cancelled) {
-          setLoadError(
-            error instanceof Error ? error.message : 'Cannot load player data',
-          )
+          if (isAuthFailure(error)) {
+            logout()
+          } else {
+            setLoadError(true)
+          }
         }
       })
 
     return () => {
       cancelled = true
     }
-  }, [hasPlayerData, i18n.language, loadDatabase, retryKey, session])
+  }, [hasPlayerData, i18n.language, loadDatabase, logout, retryKey, session])
 
   if (!session) {
     return <Navigate to="/login" replace />
@@ -80,25 +87,25 @@ export function ProtectedRoute({ children, allow, fullscreen = false }: Protecte
     const loadingContent = loadError ? (
       <Result
         status="error"
-        title="Cannot load team data"
-        subTitle={loadError}
+        title={t("stationData.loadFailedTitle")}
+        subTitle={t("stationData.loadFailedDescription")}
         extra={
           <Button
             type="primary"
             onClick={() => {
-              setLoadError(null)
+              setLoadError(false)
               setRetryKey((value) => value + 1)
             }}
           >
-            Retry
+            {t("route.retry")}
           </Button>
         }
       />
     ) : (
       <div style={{ minHeight: 320, display: 'grid', placeItems: 'center' }}>
-        <Spin size="large" description="Loading team and station data...">
+        <Spin size="large" description={t("stationData.loading")}>
           <Typography.Text aria-hidden style={{ opacity: 0 }}>
-            Loading
+            {t("route.loading")}
           </Typography.Text>
         </Spin>
       </div>

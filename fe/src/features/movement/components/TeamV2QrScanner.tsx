@@ -191,6 +191,10 @@ export function TeamV2QrScanner({
       setManualVisible(true);
       return;
     }
+    if (token === blockedTokenRef.current) {
+      setManualVisible(true);
+      return;
+    }
     if (submittingRef.current) {
       return;
     }
@@ -418,6 +422,7 @@ export function TeamV2QrScanner({
             type="primary"
             block
             loading={scannerState === "submitting"}
+            disabled={scannerState === "submitting"}
             onClick={() => {
               void submitToken(value, scannerRunRef.current, "manual");
             }}>

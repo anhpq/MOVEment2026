@@ -5,8 +5,19 @@
 | Area | Status |
 | --- | --- |
 | Implementation | Completed |
-| Runtime/Production Verification | Pending verification |
+| Runtime/Production Verification | Production-like local auth/QR smoke completed; Production pending |
 | Browser/Manual Verification | Pending verification |
+
+## 2026-07-29 Runtime Stability Integration
+
+- Team data is isolated by a session-principal fingerprint so late responses
+  from a previous login cannot populate the current session.
+- Transient `/auth/me` failures preserve a valid session; only confirmed
+  `401/403`, expiry, or principal mismatch logs the user out.
+- Player polling is now visible/online-only, non-overlapping, and 15 seconds;
+  last-known data remains available on transient failures.
+- Automated polling/session tests and production-like authenticated smoke pass;
+  physical-device and Production verification remain pending.
 
 ## Objective and Scope
 

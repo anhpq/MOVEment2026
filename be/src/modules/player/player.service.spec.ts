@@ -1,7 +1,8 @@
-import { BadRequestException, ForbiddenException } from '@nestjs/common'
-import { ActorType, ProgressStatus, QrPurpose, StationTrackingMode } from '@prisma/client'
+import { HttpStatus } from '@nestjs/common'
+import { ActorType, Prisma, ProgressStatus, QrPurpose, StationTrackingMode } from '@prisma/client'
 import * as bcrypt from 'bcryptjs'
 import { PlayerService } from './player.service'
+import { PLAYER_ERROR_CODES, PlayerActionException } from './player-error'
 
 const progress = {
   id: 11,
@@ -20,16 +21,18 @@ const progress = {
 }
 
 const mockPrisma = {
-  station: { findMany: jest.fn() },
+  station: { findMany: jest.fn(), findFirst: jest.fn() },
+  finalChallenge: { findFirst: jest.fn() },
+  finalSubmission: { findFirst: jest.fn(), count: jest.fn() },
   qrToken: { findUnique: jest.fn() },
   teamStationProgress: {
     groupBy: jest.fn(),
     findFirst: jest.fn(),
     findUnique: jest.fn(),
-    update: jest.fn(),
+    findUniqueOrThrow: jest.fn(),
     updateMany: jest.fn(),
   },
-  team: { update: jest.fn() },
+  team: { findUniqueOrThrow: jest.fn(), update: jest.fn() },
   scoreEvent: { create: jest.fn() },
   $transaction: jest.fn(),
 }
@@ -37,6 +40,7 @@ const mockPrisma = {
 const mockEventConfig = {
   isPastEventEnd: jest.fn(),
   getConfig: jest.fn(),
+  getPublicConfig: jest.fn(),
 }
 
 const mockActivityLog = {
@@ -45,6 +49,7 @@ const mockActivityLog = {
 
 const mockTeamResults = {
   getRankedTeamResults: jest.fn(),
+  getLeanLeaderboard: jest.fn(),
   toLeaderboardRows: jest.fn(),
 }
 
@@ -60,6 +65,7 @@ describe('PlayerService station flow', () => {
     )
     jest.clearAllMocks()
     mockEventConfig.isPastEventEnd.mockResolvedValue(false)
+    mockPrisma.teamStationProgress.updateMany.mockResolvedValue({ count: 1 })
     mockPrisma.qrToken.findUnique.mockResolvedValue({
       id: 1,
       stationId: 'ST002',
@@ -83,7 +89,7 @@ describe('PlayerService station flow', () => {
     }
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(updated)
 
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
@@ -93,8 +99,13 @@ describe('PlayerService station flow', () => {
       where: { tokenFingerprint: expect.any(String) },
       include: { station: true },
     })
-    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({
+        id: progress.id,
+        teamId: 2,
+        stationId: 'ST002',
+        status: ProgressStatus.AVAILABLE,
+      }),
       data: expect.objectContaining({
         status: ProgressStatus.PLAYING,
         checkedInAt: expect.any(Date),
@@ -120,7 +131,7 @@ describe('PlayerService station flow', () => {
     }
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(updated)
 
     await expect(
       service.qrAction(2, { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
@@ -130,6 +141,7 @@ describe('PlayerService station flow', () => {
       requiresScore: false,
       progress: updated,
     })
+    expect(bcrypt.compare).toHaveBeenCalledTimes(1)
   })
 
   it('does not create a second attempt for duplicate check-in on the same active station', async () => {
@@ -146,7 +158,7 @@ describe('PlayerService station flow', () => {
     ).resolves.toEqual(activeProgress)
 
     expect(mockPrisma.teamStationProgress.findFirst).not.toHaveBeenCalled()
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
   it('returns station playing counts without team identity', async () => {
@@ -238,16 +250,22 @@ describe('PlayerService station flow', () => {
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).rejects.toThrow('Stations are closed')
     expect(mockPrisma.qrToken.findUnique).not.toHaveBeenCalled()
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
   it('rejects check-in when the QR token is invalid', async () => {
     jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false)
 
-    await expect(
-      service.checkIn(2, 'ST002', { qrToken: 'wrong-token' }),
-    ).rejects.toThrow(ForbiddenException)
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    const error = (await service
+      .checkIn(2, 'ST002', { qrToken: 'wrong-token' })
+      .catch((value: unknown) => value)) as PlayerActionException
+
+    expect(error).toBeInstanceOf(PlayerActionException)
+    expect(error.getStatus()).toBe(HttpStatus.FORBIDDEN)
+    expect(error.getResponse()).toEqual(
+      expect.objectContaining({ code: PLAYER_ERROR_CODES.qrInvalid }),
+    )
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
   it('rejects a wrong-purpose token based on the database record', async () => {
@@ -265,8 +283,8 @@ describe('PlayerService station flow', () => {
 
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
-    ).rejects.toThrow(ForbiddenException)
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    ).rejects.toThrow(PlayerActionException)
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
   it('rejects a revoked token even when the hash matches', async () => {
@@ -284,8 +302,8 @@ describe('PlayerService station flow', () => {
 
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
-    ).rejects.toThrow(ForbiddenException)
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    ).rejects.toThrow(PlayerActionException)
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
   it('retains Legacy Station QR compatibility when an active DB record exists', async () => {
@@ -309,7 +327,7 @@ describe('PlayerService station flow', () => {
     })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(updated)
 
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-STATION-ST002-CHECK_IN' }),
@@ -336,7 +354,7 @@ describe('PlayerService station flow', () => {
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).rejects.toThrow('Cancel cooldown is still active')
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
 
     mockPrisma.teamStationProgress.findUnique.mockResolvedValueOnce({
       ...progress,
@@ -344,14 +362,14 @@ describe('PlayerService station flow', () => {
       nextCheckInAllowedAt: pastCooldown,
     })
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(updated)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(updated)
 
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(updated)
 
-    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: progress.id }),
       data: expect.objectContaining({
         status: ProgressStatus.PLAYING,
         nextCheckInAllowedAt: null,
@@ -375,12 +393,12 @@ describe('PlayerService station flow', () => {
 
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
     mockEventConfig.getConfig.mockResolvedValue({ cancelCooldownMinutes: 5 })
-    mockPrisma.teamStationProgress.update.mockResolvedValue(cancelledProgress)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(cancelledProgress)
 
     await expect(service.cancel(2, 'ST002')).resolves.toEqual(cancelledProgress)
 
-    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: progress.id }),
       data: expect.objectContaining({
         status: ProgressStatus.AVAILABLE,
         checkedInAt: null,
@@ -421,14 +439,14 @@ describe('PlayerService station flow', () => {
       station: { isActive: true },
     })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(checkedOut)
 
     await expect(
       service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(checkedOut)
 
-    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: progress.id }),
       data: { checkedOutAt: expect.any(Date) },
     })
   })
@@ -455,7 +473,7 @@ describe('PlayerService station flow', () => {
       station: { isActive: true },
     })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(checkedOut)
 
     await expect(
       service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
@@ -465,8 +483,8 @@ describe('PlayerService station flow', () => {
       where: { tokenFingerprint: expect.any(String) },
       include: { station: true },
     })
-    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: progress.id }),
       data: { checkedOutAt: expect.any(Date) },
     })
     expect(mockActivityLog.log).toHaveBeenCalledWith(
@@ -496,7 +514,7 @@ describe('PlayerService station flow', () => {
       station: { isActive: true },
     })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(checkedOut)
 
     await expect(
       service.qrAction(2, { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
@@ -534,7 +552,7 @@ describe('PlayerService station flow', () => {
       service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(completedProgress)
 
-    expect(mockPrisma.teamStationProgress.update).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
 
@@ -562,17 +580,17 @@ describe('PlayerService station flow', () => {
       station: { isActive: true },
     })
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
-    mockPrisma.teamStationProgress.update.mockResolvedValue(checkedOut)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(checkedOut)
 
     await expect(
       service.checkOut(2, 'ST002', { qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
     ).resolves.toEqual(checkedOut)
 
-    expect(mockPrisma.teamStationProgress.update).toHaveBeenCalledWith({
-      where: { id: progress.id },
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: progress.id }),
       data: { checkedOutAt: expect.any(Date) },
     })
-    expect(mockPrisma.teamStationProgress.update.mock.calls[0][0].data.checkedOutAt).not.toBe(
+    expect(mockPrisma.teamStationProgress.updateMany.mock.calls[0][0].data.checkedOutAt).not.toBe(
       checkedInAt,
     )
   })
@@ -764,7 +782,7 @@ describe('PlayerService station flow', () => {
       service.submitScore(2, 'ST002', {
         score: 51,
       }),
-    ).rejects.toThrow(BadRequestException)
+    ).rejects.toThrow(PlayerActionException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
 
@@ -820,7 +838,7 @@ describe('PlayerService station flow', () => {
       service.submitScore(2, 'ST002', {
         score,
       }),
-    ).rejects.toThrow(BadRequestException)
+    ).rejects.toThrow(PlayerActionException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
 
@@ -836,7 +854,7 @@ describe('PlayerService station flow', () => {
       service.submitScore(2, 'ST002', {
         score: 10,
       }),
-    ).rejects.toThrow(BadRequestException)
+    ).rejects.toThrow(PlayerActionException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
 
@@ -853,11 +871,11 @@ describe('PlayerService station flow', () => {
       service.submitScore(2, 'ST002', {
         score: 10,
       }),
-    ).rejects.toThrow(BadRequestException)
+    ).rejects.toThrow(PlayerActionException)
     expect(mockPrisma.$transaction).not.toHaveBeenCalled()
   })
 
-  it('allows only one concurrent score claim to complete', async () => {
+  it('keeps a concurrent duplicate score idempotent and applies totals once', async () => {
     const scoreProgress = {
       ...progress,
       checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
@@ -891,9 +909,201 @@ describe('PlayerService station flow', () => {
       service.submitScore(2, 'ST002', { score: 10 }),
     ])
 
-    expect(results.filter((item) => item.status === 'fulfilled')).toHaveLength(1)
-    expect(results.filter((item) => item.status === 'rejected')).toHaveLength(1)
+    expect(results.filter((item) => item.status === 'fulfilled')).toHaveLength(2)
+    expect(results.filter((item) => item.status === 'rejected')).toHaveLength(0)
     expect(tx.team.update).toHaveBeenCalledTimes(1)
     expect(tx.scoreEvent.create).toHaveBeenCalledTimes(1)
+    expect(mockActivityLog.log).toHaveBeenCalledTimes(1)
+  })
+
+  it('returns a localized minimal catalog and invalidates its version on image changes', async () => {
+    const stationUpdatedAt = new Date('2026-07-29T01:00:00.000Z')
+    const gameUpdatedAt = new Date('2026-07-29T01:01:00.000Z')
+    const firstImageUpdatedAt = new Date('2026-07-29T01:02:00.000Z')
+    const catalogRow = {
+      id: 'ST001',
+      name: 'Tên VI',
+      nameEn: 'English name',
+      description: 'Mô tả VI',
+      descriptionEn: '',
+      mapX: 10,
+      mapY: 20,
+      trackingMode: StationTrackingMode.BOTH,
+      updatedAt: stationUpdatedAt,
+      images: [{ id: 1, updatedAt: firstImageUpdatedAt }],
+      games: [
+        {
+          id: 7,
+          title: 'Game',
+          type: 'STANDARD',
+          difficulty: 1,
+          maxPoints: 30,
+          clueText: null,
+          mediaUrl: 'https://cdn.example.com/game.webp',
+          updatedAt: gameUpdatedAt,
+        },
+      ],
+    }
+    mockPrisma.station.findMany
+      .mockResolvedValueOnce([catalogRow])
+      .mockResolvedValueOnce([
+        {
+          ...catalogRow,
+          images: [
+            { id: 1, updatedAt: new Date('2026-07-29T01:03:00.000Z') },
+          ],
+        },
+      ])
+
+    const first = await service.getCatalog('en')
+    const second = await service.getCatalog('en')
+
+    expect(first.stations).toEqual([
+      {
+        id: 'ST001',
+        name: 'English name',
+        description: 'Mô tả VI',
+        mapX: 10,
+        mapY: 20,
+        trackingMode: StationTrackingMode.BOTH,
+        imageCount: 1,
+        game: {
+          id: '7',
+          title: 'Game',
+          type: 'STANDARD',
+          difficulty: 1,
+          maxPoints: 30,
+          clueText: null,
+          mediaUrl: 'https://cdn.example.com/game.webp',
+        },
+      },
+    ])
+    expect(first.catalogVersion).toHaveLength(64)
+    expect(second.catalogVersion).not.toBe(first.catalogVersion)
+    expect(JSON.stringify(first)).not.toContain('imageUrls')
+    expect(mockPrisma.station.findMany.mock.calls[0][0].select.images.select).toEqual({
+      id: true,
+      updatedAt: true,
+    })
+  })
+
+  it('returns authoritative Team totals and minimal state without the export projection', async () => {
+    mockPrisma.team.findUniqueOrThrow.mockResolvedValue({
+      id: 2,
+      name: 'Team 2',
+      username: 'team02',
+      captainName: 'Captain',
+      totalPoints: 75,
+      maxPossiblePoints: 510,
+      totalPlaySeconds: 600,
+      status: 'ACTIVE',
+      color: '#123456',
+      progress: [
+        {
+          id: 11,
+          teamId: 2,
+          stationId: 'ST001',
+          status: ProgressStatus.COMPLETED,
+          checkedInAt: new Date('2026-07-29T01:00:00.000Z'),
+          checkedOutAt: new Date('2026-07-29T01:10:00.000Z'),
+          completedAt: new Date('2026-07-29T01:11:00.000Z'),
+          cancelledAt: null,
+          nextCheckInAllowedAt: null,
+          scoreAchieved: 30,
+          attemptNo: 1,
+        },
+      ],
+    })
+    mockEventConfig.getPublicConfig.mockResolvedValue({
+      eventEndTime: '11:30',
+      finalStartsAt: '11:45',
+      isPastEventEnd: false,
+      isPastFinalStart: true,
+    })
+    mockPrisma.station.findMany.mockResolvedValue([])
+    mockTeamResults.getLeanLeaderboard.mockResolvedValue([
+      {
+        rank: 3,
+        teamId: 2,
+        teamName: 'Team 2',
+        totalPoints: 75,
+        completedStations: 1,
+        totalPlaySeconds: 600,
+      },
+    ])
+    mockPrisma.finalChallenge.findFirst.mockResolvedValue({ id: 9 })
+    mockPrisma.finalSubmission.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(null)
+    mockPrisma.finalSubmission.count.mockResolvedValue(0)
+
+    const state = await service.getState(2)
+
+    expect(state.team).toEqual(
+      expect.objectContaining({
+        id: 2,
+        totalPoints: 75,
+        totalPlaySeconds: 600,
+        rank: 3,
+      }),
+    )
+    expect(state.completedStations).toBe(1)
+    expect(state.progress[0]).toEqual(
+      expect.objectContaining({
+        stationId: 'ST001',
+        scoreAchieved: 30,
+      }),
+    )
+    expect(state.final).toEqual(
+      expect.objectContaining({ isOpen: true, canSubmit: true }),
+    )
+    expect(mockTeamResults.getRankedTeamResults).not.toHaveBeenCalled()
+    expect(mockTeamResults.toLeaderboardRows).not.toHaveBeenCalled()
+  })
+
+  it('maps a concurrent different-Station check-in to a stable 409 conflict', async () => {
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
+    mockPrisma.teamStationProgress.updateMany.mockRejectedValueOnce(
+      new Prisma.PrismaClientKnownRequestError('unique conflict', {
+        code: 'P2002',
+        clientVersion: '6.19.0',
+      }),
+    )
+
+    const error = (await service
+      .checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' })
+      .catch((value: unknown) => value)) as PlayerActionException
+
+    expect(error.getStatus()).toBe(HttpStatus.CONFLICT)
+    expect(error.getResponse()).toEqual(
+      expect.objectContaining({ code: PLAYER_ERROR_CODES.activeStationConflict }),
+    )
+    expect(mockActivityLog.log).not.toHaveBeenCalled()
+  })
+
+  it('does not cancel or log when check-out wins the transition race', async () => {
+    const activeProgress = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-07-29T01:00:00.000Z'),
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
+    mockEventConfig.getConfig.mockResolvedValue({ cancelCooldownMinutes: 5 })
+    mockPrisma.teamStationProgress.updateMany.mockResolvedValueOnce({ count: 0 })
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue({
+      ...activeProgress,
+      checkedOutAt: new Date('2026-07-29T01:10:00.000Z'),
+    })
+
+    const error = (await service
+      .cancel(2, 'ST002')
+      .catch((value: unknown) => value)) as PlayerActionException
+
+    expect(error.getStatus()).toBe(HttpStatus.CONFLICT)
+    expect(error.getResponse()).toEqual(
+      expect.objectContaining({ code: PLAYER_ERROR_CODES.cancelConflict }),
+    )
+    expect(mockActivityLog.log).not.toHaveBeenCalled()
   })
 })

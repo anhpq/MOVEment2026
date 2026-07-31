@@ -8,11 +8,20 @@ import {
   SendOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {App, Button, Card, Form, Input, Spin, Typography} from "antd";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {Alert, App, Button, Card, Form, Input, Spin, Typography} from "antd";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {getPlayerFinal, submitFinalAnswer, type FinalResponse} from "../api";
+import {
+  getPlayerFinal,
+  getSafeApiErrorTranslationKey,
+  isAuthFailure,
+  submitFinalAnswer,
+  type FinalResponse,
+} from "../api";
+import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
+import {executePlayerMutation} from "../playerData";
+import {useMovementStore} from "../store";
 import "./FinalPage.css";
 
 type FinalFormValues = {
@@ -38,19 +47,37 @@ export function FinalPage() {
   const [final, setFinal] = useState<FinalResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [clockTick, setClockTick] = useState(() => Date.now());
+  const [hasRefreshError, setHasRefreshError] = useState(false);
+  const mountedRef = useRef(false);
+  const logout = useMovementStore((state) => state.logout);
 
   const refresh = useCallback(async () => {
-    setFinal(await getPlayerFinal());
-  }, []);
+    try {
+      const nextFinal = await getPlayerFinal();
+      if (mountedRef.current) {
+        setFinal(nextFinal);
+        setHasRefreshError(false);
+      }
+      return true;
+    } catch (error) {
+      if (mountedRef.current) {
+        setHasRefreshError(true);
+        if (isAuthFailure(error)) {
+          logout();
+        }
+      }
+      return false;
+    }
+  }, [logout]);
 
   useEffect(() => {
-    const initialTimer = window.setTimeout(() => void refresh(), 0);
-    const timer = window.setInterval(() => void refresh(), 3000);
+    mountedRef.current = true;
     return () => {
-      window.clearTimeout(initialTimer);
-      window.clearInterval(timer);
+      mountedRef.current = false;
     };
-  }, [refresh]);
+  }, []);
+
+  useVisibleOnlinePolling(refresh);
 
   useEffect(() => {
     const timer = window.setInterval(() => setClockTick(Date.now()), 1000);
@@ -77,14 +104,23 @@ export function FinalPage() {
       </header>
 
       <div className="final-cipher-content">
+        {hasRefreshError && (
+          <Alert
+            type="warning"
+            showIcon
+            message={t(final ? "final.staleData" : "final.loadFailed")}
+          />
+        )}
         {!final ? (
-          <section className="final-state-panel final-state-loading">
-            <Spin size="large" />
-            <div>
-              <Typography.Title level={3}>{t("final.loadingTitle")}</Typography.Title>
-              <Typography.Text>{t("final.loadingDescription")}</Typography.Text>
-            </div>
-          </section>
+          hasRefreshError ? null : (
+            <section className="final-state-panel final-state-loading">
+              <Spin size="large" />
+              <div>
+                <Typography.Title level={3}>{t("final.loadingTitle")}</Typography.Title>
+                <Typography.Text>{t("final.loadingDescription")}</Typography.Text>
+              </div>
+            </section>
+          )
         ) : !final.isOpen ? (
           <section className="final-state-panel final-state-closed">
             <span className="final-state-icon" aria-hidden="true">
@@ -196,9 +232,8 @@ export function FinalPage() {
 
                 setIsSubmitting(true);
                 try {
-                  const result = await submitFinalAnswer(
-                    answer.trim().toUpperCase(),
-                  );
+                  const {result} = await executePlayerMutation(() =>
+                    submitFinalAnswer(answer.trim().toUpperCase()));
                   form.resetFields();
                   await refresh();
                   if (result.isCorrect) {
@@ -206,10 +241,10 @@ export function FinalPage() {
                   } else {
                     message.warning(t("final.wrongMessage"));
                   }
-                } catch {
+                } catch (error) {
                   await refresh();
                   message.error(
-                    t("errors.submitFailed"),
+                    t(getSafeApiErrorTranslationKey(error, "errors.submitFailed")),
                   );
                 } finally {
                   setIsSubmitting(false);

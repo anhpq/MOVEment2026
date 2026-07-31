@@ -1,3 +1,134 @@
+# 2026-07-31 Team V2 exact Bézier Konva marker
+
+- Replaced the prior polygon/circuit artwork with the supplied exact component:
+  curved outer/inner `Path` geometry, radius-148 outer ring, black/white core,
+  two highlights, and a seamless 180-`Arc` circular neon gradient.
+- The `640×620` design uses center `(320,248)` and tip offset `(320,606)` while
+  retaining the existing `32..64px` normalized-zoom clamp, state halo, minimum
+  hit target, labels, Station coordinates, and V1 UI.
+- Frontend lint, production build, bundle gate, focused marker-layout Vitest
+  (`3/3`), diff check, and direct Chrome rendering of the repo component passed.
+
+# 2026-07-31 Team V2 single-line marker labels
+
+- Changed the Team V2 Konva marker name row from word wrapping to one line with
+  ellipsis. The points row remains unchanged beneath it.
+- Marker/label geometry, anchors, Station data, APIs, and other screens are
+  unchanged.
+- Frontend lint, production build, bundle gate, focused marker-layout Vitest
+  (`3/3`), and diff check passed.
+
+# 2026-07-31 Team V2 centered score-only map header
+
+- Removed only the `.team-v2-team` block from the Team V2 map header; Team data,
+  authentication, footer progress, Settings, APIs, and other screens remain
+  unchanged.
+- Reworked the header grid so `.team-v2-score` always occupies the centered
+  column in portrait and landscape while retaining its green neon treatment.
+- Frontend lint, production build, bundle gate, and diff check passed.
+
+# 2026-07-31 Team V2 supplied Konva-native marker (superseded)
+
+- Replaced the interim SVG image/load path with the supplied native Konva
+  geometry: gradient body, concentric rings, circuit traces, speed lines, and
+  glow. The route no longer ships or decodes a separate Station marker asset.
+- The artwork group uses the supplied `(320, 590)` tip as its offset and one
+  normalized-zoom scale that clamps the rendered marker to `32..64px`. The
+  marker has no internal number; Station code remains in its label. The screen
+  anchor, state halo, minimum 44px interaction target, labels/connectors, map
+  transforms, and V1 UI remain preserved.
+- Focused marker-layout Vitest (`3/3`), Frontend lint, production build, bundle
+  gate, and diff check passed. Authenticated in-map and physical-device visual
+  verification were not performed.
+
+# 2026-07-31 Team V2 supplied SVG marker (superseded)
+
+- Replaced only the hand-built Team V2 Konva marker artwork with the supplied
+  route-local cyan/purple SVG. The image is decoded once and reused by all
+  marker nodes; the lower tip stays on the existing Station screen anchor.
+- Preserved Station code, state-colored halo, 44px interaction target,
+  label/connector geometry, map transforms, coordinates, APIs, and V1 UI.
+- Focused marker-layout Vitest (`3/3`), Frontend lint, production build, bundle
+  gate, diff check, and direct Chrome SVG rendering passed. Authenticated
+  in-map and physical-device verification were not performed.
+
+# 2026-07-30 Team Gameplay V2-owned Detail overlay
+
+# 2026-07-30 Team V2 score and banner rails refinement
+
+- Strengthened the total-score foreground to bright green with layered neon and
+  centered it below the brand in landscape while preserving the portrait-safe
+  right-side placement.
+- Rebuilt the V2 brand plate and rails as a taller angular cyan HUD with long
+  symmetric striped rails; marker, footer, data, API, and Backend behavior were
+  unchanged.
+- Frontend i18n parity (`395`), lint, full Vitest (`29/29`), production build,
+  bundle gate, and diff check passed. Authenticated Chrome captures passed at
+  320x568, 390x844, and 844x390; computed score was `rgb(77, 255, 88)` with
+  layered neon and the browser console had no errors/warnings.
+
+# 2026-07-30 Team V2 scanner-pin marker refinement
+
+- Replaced only the Team V2 Konva marker drawing with a vector scanner pin:
+  circuit traces, layered cyan/purple rings, a dark surface, modest glow, and
+  a tip anchored to the unchanged Station coordinate.
+- Updated label attachment clearance and connector start to the pin's visual
+  top edge while keeping the existing single screen-space transform and marker
+  layer above labels/connectors.
+- Verification passed: focused marker-layout Vitest (`3/3`), full Frontend
+  Vitest (`29/29`), i18n parity (`395`), lint, production build, bundle gate,
+  diff check, and authenticated Chrome captures at min/default/max map scales.
+
+# 2026-07-30 Canonical Station seed data synchronization
+
+- Updated the canonical 17-Station dataset with supplied Vietnamese/English
+  descriptions, exact decimal map coordinates, max points, and four YouTube
+  media URLs. `ST001` keeps the user-confirmed YouTube Shorts URL rather than
+  the supplied obsolete share.google URL.
+- Changed normal local/test content synchronization to upsert canonical Station
+  and Game records in place. Production inventory mismatch remains guarded by
+  the explicit replacement confirmation path.
+- Verification passed: canonical validation (17 records, 4 `ST`, valid points
+  and coordinates), Backend lint/build, full Backend Jest (`162/162`), two
+  local seed runs, database comparison (`0` mismatches), and `db:verify`.
+- Local validation caveat: the first seed run occurred before the in-place
+  guard and invoked the pre-existing destructive local replacement path. It
+  reset local gameplay data only; no Production database was accessed. The two
+  subsequent seed runs preserved the 34 Station QR token fingerprints and 425
+  progress-row count.
+
+# 2026-07-30 Team Gameplay V2 marker anchoring and footer refinement
+
+- Replaced the V2 label collision/grid placement with a single transformed
+  marker anchor, clamped normalized-zoom label scale/gap, and a connector to
+  the scaled label bottom. Marker coordinates, map assets, APIs, Backend,
+  database, migration, and seed data remain unchanged.
+- Rebuilt only the V2 footer as independent angular Leaderboard, raised QR
+  pedestal, and Team/completed-Station panels with thin cyan rails. The
+  Leaderboard and scanner actions remain unchanged; copy is localized VI/EN.
+- Verification passed: marker-layout Vitest (`3/3`), full Frontend Vitest
+  (`29/29`), i18n parity (`395`), Frontend lint, TypeScript production build,
+  bundle gate, and `git diff --check`.
+- Authenticated Chrome visual comparison passed at 390x844, 844x390, and
+  320x568 with full three-region footer content and no browser-console issues.
+  Physical mobile and Production verification were not performed.
+
+- Replaced V2-to-V1 `?from=team-v2` navigation with a V2-owned near-fullscreen
+  Detail overlay; V1 Player/Admin Station Detail behavior remains native.
+- Added V2-owned lazy gallery presentation while reusing the existing image API,
+  Player state, QR action, cancel, and score mutation helpers.
+- Added state-aware Detail actions and active Station QR caption. Scanner camera
+  remains on-demand; rejection persistence and cleanup behavior are unchanged.
+- Refined the V2 banner rails, compact marker-label placement, connectors, and
+  Konva label/marker draw order without changing Station coordinates or APIs.
+- Verification passed: targeted Detail/gallery/scanner Vitest `8/8`, full Frontend
+  Vitest `26/26`, i18n parity `391`, lint, production build, and bundle gate.
+- Authenticated Chrome smoke passed for banner/rails across the approved seven
+  viewport sizes and opening an Available Detail without URL change. The
+  active-Station Complete/Cancel browser path remains pending; physical mobile
+  camera and Production runtime verification were not performed.
+  Backend/database/migration/seed were unchanged.
+
 # 2026-07-30 Frontend OBS deploy sync reliability
 
 - Root cause of the recurring `Deploy Frontend (OBS)` failure: `obsutil sync`
@@ -26,6 +157,28 @@
   was left unquoted because obsutil separates metadata pairs with `#`, not `,`,
   and the shell does not split on commas. `NODE_VERSION` remains `20`; the Node
   20 deprecation warning is unrelated to this failure. No push or deploy.
+
+# 2026-07-29 Team runtime stability resume completion
+
+- Completed the post-checkpoint review of lean/legacy Player data, mutation
+  reconciliation, session-principal isolation, visible/online polling, and
+  route/heavy-module loading.
+- Added Node v26-safe Vitest Web Storage setup and tests for hidden/offline
+  polling, non-overlap, successful mutation reconciliation, and unknown mutation
+  outcome reconciliation.
+- Updated `scripts/production-like-smoke.ps1` for current bilingual Station DTO,
+  idempotent duplicate score behavior, TIME score `10`, separate
+  `finalStartsAt`, and lean payload assertions.
+- Verification passed: Backend Jest `162/162`, lint, build; Frontend Vitest
+  `19/19`, lint, i18n parity `388`, production build/bundle gate; disposable
+  PostgreSQL all 18 migrations, seed twice, `db:verify`, HTTPS authenticated
+  smoke, secret scan, and production environment guard.
+- Measured `/api/player/state` at `3,885` bytes and VI catalog at `5,908` bytes
+  with 17 Stations and no `imageUrls`. Initial static JavaScript remained
+  `203.27–203.28 KiB` gzip against the `420 KiB` limit.
+- Production deploy/runtime, physical iOS/Android, and manual responsive browser
+  verification were not performed. Two high-severity React Router RSC-only npm
+  advisories remain accepted without a breaking forced upgrade.
 
 # 2026-07-29 Team Gameplay V2 supplied-reference reconciliation
 
@@ -958,3 +1111,88 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Replaced the runtime 6.4 MB PNG map with generated WebP variants at 1280/1920/2950 pixels; the original PNG moved to `fe/source-assets/images/map/`, and the frontend upgrades variants without downgrading or blanking the current map image.
 - Verification passed so far: Prisma Client generation, targeted Backend tests (`76/76`), Backend lint/build, and Frontend lint/build. Frontend build retains the known non-blocking large-chunk warning.
 - Not performed: Production mutation, push, deploy, browser/manual Excel checks, physical QR scan, or destructive reset execute against Production.
+
+# 2026-07-31 Team V2 marker states and disabled media controls
+
+- Added a V2-only render filter that removes marker, label, and connector for
+  Player `Finished` or backend `COMPLETED` Stations without mutating Station
+  coordinates or Backend progress.
+- Added an authoritative silver-neon Konva palette for backend `LOCKED`
+  Stations, including marker artwork, halo, label, and connector.
+- Kept YouTube and gallery controls visible in Team V2 Station Detail and added
+  a readable silver-neon disabled treatment when the required media is absent.
+  The YouTube button now has an explicit localized accessible name.
+- No Backend, API, schema, migration, seed, or non-V2 screen changed. Focused
+  Vitest passed (`12/12`); Frontend lint, production build, and bundle gate
+  passed. Authenticated visual smoke and physical-device verification remain
+  pending.
+
+# 2026-07-31 Team V2 Detail sizing and footer readability
+
+- Replaced fixed/full-height V2 Station Detail sizing with centered intrinsic
+  height plus viewport-capped overflow scrolling.
+- Shortened only the main-map Leaderboard control to localized `BXH`/`RANK`,
+  increased the center QR diameter exactly from `74px` to `222px`, and expanded
+  its transparent footer layout region so the QR remains raised above side
+  panels.
+- Added inverse footer-scale font compensation for displayed `12px` minimum
+  Leaderboard, QR-caption, Team, and Station-label copy.
+- No Backend, API, schema, seed, Station coordinate, or non-V2 screen changed.
+  i18n parity, focused Vitest (`12/12`), Frontend lint, production build, and
+  bundle gate passed; authenticated visual and physical-device verification
+  remain pending.
+
+# 2026-07-31 Team V2 marker interaction performance
+
+- Cached each unchanged Team V2 Konva marker artwork after its exact
+  180-segment render, so subsequent map redraws composite the local cache
+  instead of replaying every artwork child. Cache resolution covers the
+  existing `32..64px` marker output and is cleared on palette change/unmount.
+- Coalesced mouse pan, wheel zoom, touch pan, and pinch transform updates to the
+  latest value per animation frame. Pending frames are cancelled by reset and
+  component cleanup.
+- Added marker-Layer viewport culling using the existing authoritative layout
+  flag. Marker coordinates, label anchoring, state colors, APIs, Backend,
+  schema, seed, and non-V2 screens are unchanged.
+- Focused Vitest passed (`15/15`) and full Frontend Vitest passed (`34/34`);
+  i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
+  rendered a 17-marker stress preview with correct normal
+  and silver artwork/glow and no cache clipping. Authenticated physical-device
+  FPS profiling remains pending.
+
+# 2026-07-31 Team V2 Settings and compact Leaderboard
+
+- Changed only V2 Settings sizing from fixed/full portrait height to centered
+  intrinsic content height with the existing viewport cap and overflow scroll.
+- Added a pure V2 Leaderboard projection: first five API rows, plus the current
+  Team as display rank `6` when it is not in those rows. Team name, completed
+  Stations, and score still come from the authoritative response.
+- The source array is not mutated. Backend ranking, sorting, scoring, APIs,
+  schema, seed, and non-V2 screens are unchanged.
+- Focused Vitest passed (`10/10`) and full Frontend Vitest passed (`37/37`);
+  i18n parity, Frontend lint, production build, and bundle gate passed. Chrome
+  visual verification at `390x844` confirmed centered intrinsic Settings
+  height. Authenticated Leaderboard-data verification remains pending.
+
+# 2026-07-31 Team V2 inactive language contrast
+
+- Added a Team V2 Settings-only inactive language style with near-black
+  background, restrained border/shadow, and lower flag saturation, brightness,
+  and opacity. Hover/focus remains visible without resembling the active state.
+- The active language style and shared `LanguageSwitch` component are unchanged;
+  Login, QR Login, AppFrame, Backend, APIs, schema, and seed are unaffected.
+- Full Frontend Vitest (`37/37`), i18n parity, Frontend lint, production build,
+  bundle gate, and Chrome visual verification using the real component passed.
+
+# 2026-07-31 Team V2 background-only overlay opacity
+
+- Changed Team V2 overlay default opacity from `85%` to `95%` and versioned the
+  local-storage key so existing clients adopt the new default once. Later
+  Settings slider changes continue to persist.
+- Replaced parent-layer CSS `opacity` on Leaderboard, Settings, Station Detail,
+  Scanner, and Score with a typed `--team-v2-overlay-opacity` variable consumed
+  only by backdrop and panel backgrounds. Text, icons, controls, and media now
+  retain full opacity.
+- No Backend, API, schema, seed, gameplay, or non-V2 screen changed. Focused
+  Vitest (`11/11`), full Frontend Vitest (`39/39`), i18n parity, Frontend lint,
+  production build, bundle gate, and Chrome visual verification passed.

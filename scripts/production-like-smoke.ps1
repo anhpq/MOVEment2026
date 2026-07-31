@@ -592,10 +592,25 @@ Step "Verifying Admin, Team QR, sessions, Station QR, scoring, Final, and leader
 $admin = Invoke-Json -Method "Post" -Path "/api/auth/login" -Body @{ username = "admin"; password = "admin123" }
 $adminToken = $admin.accessToken
 
+$runtimeTeam = Invoke-Json -Method "Post" -Path "/api/auth/team-login" -Body @{ username = "team01"; password = "team01"; deviceLabel = "runtime-payload-smoke" }
+$runtimeHeaders = @{ Authorization = "Bearer $($runtimeTeam.accessToken)" }
+$stateResponse = Invoke-SmokeRequest -Method "Get" -Url "$HttpsOrigin/api/player/state" -Headers $runtimeHeaders
+$catalogResponse = Invoke-SmokeRequest -Method "Get" -Url "$HttpsOrigin/api/player/catalog?lang=vi" -Headers $runtimeHeaders
+Assert ($stateResponse.status -eq 200) "Lean Player state endpoint did not return HTTP 200."
+Assert ($catalogResponse.status -eq 200) "Lean Player catalog endpoint did not return HTTP 200."
+$stateBytes = [Text.Encoding]::UTF8.GetByteCount([string]$stateResponse.body)
+$catalogBytes = [Text.Encoding]::UTF8.GetByteCount([string]$catalogResponse.body)
+$catalogPayload = $catalogResponse.body | ConvertFrom-Json
+Assert ($stateBytes -le 8192) "Lean Player state payload exceeded 8 KiB: $stateBytes bytes."
+Assert ($catalogBytes -le 32768) "Lean Player catalog payload exceeded 32 KiB: $catalogBytes bytes."
+Assert (@($catalogPayload.stations).Count -eq 17) "Lean Player catalog did not contain the canonical 17 Stations."
+Assert (!(@($catalogPayload.stations) | Where-Object { $_.PSObject.Properties.Name -contains "imageUrls" })) "Lean Player catalog exposed imageUrls."
+Write-Host "Lean Player payloads: state=$stateBytes bytes, catalog=$catalogBytes bytes." -ForegroundColor Green
+
 $time = Get-Date
 $beforeEnd = $time.AddMinutes(10).ToString("HH':'mm")
 $afterEnd = $time.AddMinutes(-1).ToString("HH':'mm")
-Invoke-DirectJson -Method "Patch" -Path "/api/admin/event-config" -Token $adminToken -Body @{ eventEndTime = $beforeEnd } | Out-Null
+Invoke-DirectJson -Method "Patch" -Path "/api/admin/event-config" -Token $adminToken -Body @{ eventEndTime = $beforeEnd; finalStartsAt = $beforeEnd } | Out-Null
 
 $qrTeam = Invoke-Json -Method "Post" -Path "/api/admin/teams" -Token $adminToken -Body @{
   name = "Smoke QR Team"
@@ -628,6 +643,7 @@ Invoke-Json -Method "Post" -Path "/api/auth/qr-login" -Body @{ token = $rotatedT
 $scoreStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $adminToken -Body @{
   id = "SMKSCORE"
   name = "Smoke Score"
+  nameEn = "Smoke Score"
   trackingMode = "SCORE"
   mapX = 10
   mapY = 10
@@ -647,7 +663,8 @@ Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $s
 Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = -1 } -ExpectedStatus @(400) | Out-Null
 $scoreComplete = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10 }
 Assert ($scoreComplete.completedAt -and $scoreComplete.scoreAchieved -eq 10) "SCORE station did not complete with expected score."
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10 } -ExpectedStatus @(400) | Out-Null
+$scoreDuplicate = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKSCORE/score" -Token $stationQrTeam.accessToken -Body @{ score = 10 }
+Assert ($scoreDuplicate.id -eq $scoreComplete.id -and $scoreDuplicate.scoreAchieved -eq 10) "Duplicate SCORE submission did not return the existing completion."
 
 $oldCheckIn = $scoreIn
 Invoke-Json -Method "Delete" -Path "/api/admin/stations/SMKSCORE/qr-tokens/CHECK_IN" -Token $adminToken | Out-Null
@@ -660,6 +677,7 @@ Assert ($newCheckIn.rawToken -ne $oldCheckIn) "CHECK_IN rotation did not create 
 $timeStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $adminToken -Body @{
   id = "SMKTIME"
   name = "Smoke Time"
+  nameEn = "Smoke Time"
   trackingMode = "TIME"
   mapX = 20
   mapY = 20
@@ -672,13 +690,14 @@ $timeOut = ($timeStation.qrTokens | Where-Object {$_.purpose -eq "CHECK_OUT"}).r
 Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/check-in" -Token $timeTeam.accessToken -Body @{ qrToken = $timeIn } | Out-Null
 Start-Sleep -Seconds 1
 $timeDone = Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/check-out" -Token $timeTeam.accessToken -Body @{ qrToken = $timeOut }
-Assert ($timeDone.completedAt -and $timeDone.scoreAchieved -eq 0) "TIME station did not auto-complete with score 0."
+Assert ($timeDone.completedAt -and $timeDone.scoreAchieved -eq 10) "TIME station did not auto-complete with score 10."
 Assert ([DateTime]$timeDone.checkedOutAt -gt [DateTime]$timeDone.checkedInAt) "TIME station did not record real duration."
-Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/score" -Token $timeTeam.accessToken -Body @{ score = 1 } -ExpectedStatus @(400) | Out-Null
+Invoke-Json -Method "Post" -Path "/api/player/stations/SMKTIME/score" -Token $timeTeam.accessToken -Body @{ score = 1 } -ExpectedStatus @(400, 409) | Out-Null
 
 $bothStation = Invoke-Json -Method "Post" -Path "/api/admin/stations" -Token $adminToken -Body @{
   id = "SMKBOTH"
   name = "Smoke Both"
+  nameEn = "Smoke Both"
   trackingMode = "BOTH"
   mapX = 30
   mapY = 30
@@ -700,7 +719,7 @@ $activeFinalTeam = Invoke-Json -Method "Post" -Path "/api/auth/team-login" -Body
 Invoke-Json -Method "Post" -Path "/api/player/stations/SMKBOTH/check-in" -Token $activeFinalTeam.accessToken -Body @{ qrToken = $bothIn } | Out-Null
 $preFinal = Invoke-Json -Method "Get" -Path "/api/player/final" -Token $bothTeam.accessToken
 Assert (!$preFinal.isOpen) "Final opened before configured Event end."
-Invoke-DirectJson -Method "Patch" -Path "/api/admin/event-config" -Token $adminToken -Body @{ eventEndTime = $afterEnd } | Out-Null
+Invoke-DirectJson -Method "Patch" -Path "/api/admin/event-config" -Token $adminToken -Body @{ eventEndTime = $afterEnd; finalStartsAt = $afterEnd } | Out-Null
 $activeBlocked = Invoke-Json -Method "Get" -Path "/api/player/final" -Token $activeFinalTeam.accessToken
 Assert ($activeBlocked.blockedByActiveStation -and !$activeBlocked.canSubmit) "Active Station Team was not blocked from Final."
 $postFinal = Invoke-Json -Method "Get" -Path "/api/player/final" -Token $bothTeam.accessToken

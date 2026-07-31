@@ -4,79 +4,63 @@ import {
   QrcodeOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {Card, Empty, List, Typography} from "antd";
-import {useEffect, useRef, useState} from "react";
+import {Alert, Card, Empty, List, Typography} from "antd";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
-  getLeaderboard,
+  getPlayerLeaderboard,
   isAuthFailure,
   type LeaderboardEntryResponse,
 } from "../api";
 import {useMovementStore} from "../store";
 import {getLocalizedTeamName} from "../utils";
+import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import "./LeaderboardPage.css";
 
 export function LeaderboardPage() {
   const [rows, setRows] = useState<LeaderboardEntryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const isFetchingRef = useRef(false);
+  const mountedRef = useRef(false);
+  const [hasRefreshError, setHasRefreshError] = useState(false);
   const {i18n, t} = useTranslation();
   const logout = useMovementStore((state) => state.logout);
   const language = i18n.language === "en" ? "en" : "vi";
 
   useEffect(() => {
-    let cancelled = false;
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
-    const refresh = async () => {
-      if (
-        cancelled ||
-        isFetchingRef.current ||
-        document.visibilityState !== "visible"
-      ) {
-        return;
+  const refresh = useCallback(async () => {
+    try {
+      const entries = await getPlayerLeaderboard();
+      if (mountedRef.current) {
+        setRows(entries);
+        setHasRefreshError(false);
       }
-
-      isFetchingRef.current = true;
-      try {
-        const entries = await getLeaderboard();
-        if (!cancelled) {
-          setRows(entries);
-        }
-      } catch (error: unknown) {
-        if (!cancelled && isAuthFailure(error)) {
+    } catch (error: unknown) {
+      if (mountedRef.current) {
+        setHasRefreshError(true);
+        if (isAuthFailure(error)) {
           logout();
         }
-      } finally {
-        isFetchingRef.current = false;
-        if (!cancelled) {
-          setIsLoading(false);
-        }
       }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        void refresh();
+    } finally {
+      if (mountedRef.current) {
+        setIsLoading(false);
       }
-    };
-
-    void refresh();
-    const timer = window.setInterval(() => void refresh(), 5000);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      cancelled = true;
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
+    }
   }, [logout]);
 
-  const playerTeamName = useMovementStore((state) => {
+  useVisibleOnlinePolling(refresh);
+
+  const playerTeamId = useMovementStore((state) => {
     if (state.session?.role !== "user") {
       return undefined;
     }
-    const activeTeamId = state.activeTeamId;
-    return state.teams.find((team) => team.id === activeTeamId)?.name;
+    return state.activeTeamId;
   });
 
   return (
@@ -93,6 +77,10 @@ export function LeaderboardPage() {
         </span>
       </header>
 
+      {hasRefreshError && rows.length > 0 && (
+        <Alert type="warning" showIcon message={t("leaderboard.staleData")} />
+      )}
+
       <List
         className="leaderboard-list"
         loading={isLoading}
@@ -103,7 +91,7 @@ export function LeaderboardPage() {
           return (
           <List.Item
             className={`leaderboard-row rank-${Math.min(row.rank, 4)} ${
-              row.teamName === playerTeamName ? "is-current-team" : ""
+              String(row.teamId) === playerTeamId ? "is-current-team" : ""
             }`}>
             <div className="leaderboard-rank" aria-label={`${t("common.rank")} ${row.rank}`}>
               {row.rank === 1 && <CrownFilled className="rank-crown" />}
@@ -113,7 +101,7 @@ export function LeaderboardPage() {
             <div className="leaderboard-team">
               <div className="leaderboard-team-name">
                 <Typography.Text strong>{displayTeamName}</Typography.Text>
-                {row.teamName === playerTeamName && (
+                {String(row.teamId) === playerTeamId && (
                   <span className="current-team-badge">
                     {t("leaderboard.currentTeam")}
                   </span>

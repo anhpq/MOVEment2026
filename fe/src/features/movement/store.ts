@@ -6,58 +6,17 @@ import {
 } from "./utils";
 import type {
   MovementStore,
-  Session,
   StationFormValues,
   Team,
   TeamStation,
 } from "./types";
+import {
+  getSessionPrincipalKey,
+  persistStoredSession,
+  readStoredSession,
+} from "./sessionIdentity";
 
-const SESSION_STORAGE_KEY = "movement-session";
 const ACTIVE_TEAM_STORAGE_KEY = "movement-active-team";
-
-function readPersistedSession(): Session | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    const value = window.localStorage.getItem(SESSION_STORAGE_KEY);
-
-    if (!value) {
-      return null;
-    }
-
-    const session = JSON.parse(value) as Session;
-    if (!session.expiresAt) {
-      window.localStorage.removeItem(SESSION_STORAGE_KEY);
-      return null;
-    }
-
-    const expiresAt = new Date(session.expiresAt).getTime();
-    if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
-      window.localStorage.removeItem(SESSION_STORAGE_KEY);
-      return null;
-    }
-
-    return session;
-  } catch {
-    window.localStorage.removeItem(SESSION_STORAGE_KEY);
-    return null;
-  }
-}
-
-function persistSession(session: Session | null) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  if (!session) {
-    window.localStorage.removeItem(SESSION_STORAGE_KEY);
-    return;
-  }
-
-  window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-}
 
 function readPersistedActiveTeamId() {
   if (typeof window === "undefined") {
@@ -75,7 +34,7 @@ function persistActiveTeamId(teamId: string) {
   window.localStorage.setItem(ACTIVE_TEAM_STORAGE_KEY, teamId);
 }
 
-const initialSession = readPersistedSession();
+const initialSession = readStoredSession();
 const initialActiveTeamId =
   initialSession?.teamId ??
   readPersistedActiveTeamId() ??
@@ -328,6 +287,12 @@ export const useMovementStore = create<MovementStore>((set) => ({
   loadDatabase: (seed) => {
     set((state) => {
       const normalized = normalizeDatabaseSeed(seed);
+      if (
+        normalized.dataSessionKey &&
+        normalized.dataSessionKey !== getSessionPrincipalKey(state.session)
+      ) {
+        return state;
+      }
       const persistedTeamId =
         state.session?.teamId ?? readPersistedActiveTeamId();
       const activeTeamId =
@@ -345,25 +310,58 @@ export const useMovementStore = create<MovementStore>((set) => ({
     });
   },
   login: (session) => {
-    persistSession(session);
+    persistStoredSession(session);
 
     set((state) => {
+      const sessionChanged =
+        getSessionPrincipalKey(state.session) !== getSessionPrincipalKey(session);
       const activeTeamId = session.teamId ?? state.activeTeamId;
       persistActiveTeamId(activeTeamId);
 
       return {
         session,
         activeTeamId,
+        ...(sessionChanged ? {
+          dataSessionKey: null,
+          teams: [],
+          authAccounts: [],
+          stationDefinitions: [],
+          teamStations: {},
+        } : {}),
+      };
+    });
+  },
+  syncSession: (session) => {
+    set((state) => {
+      const sessionChanged =
+        getSessionPrincipalKey(state.session) !== getSessionPrincipalKey(session);
+      const activeTeamId = session?.teamId ?? "";
+      persistActiveTeamId(activeTeamId);
+
+      return {
+        session,
+        activeTeamId,
+        ...(sessionChanged ? {
+          dataSessionKey: null,
+          teams: [],
+          authAccounts: [],
+          stationDefinitions: [],
+          teamStations: {},
+        } : {}),
       };
     });
   },
   logout: () => {
-    persistSession(null);
-    set((state) => {
-      const activeTeamId = state.teams[0]?.id ?? DEFAULT_DATABASE.activeTeamId;
-      persistActiveTeamId(activeTeamId);
-
-      return {session: null, activeTeamId};
+    persistStoredSession(null);
+    persistActiveTeamId("");
+    set({
+      session: null,
+      dataSessionKey: null,
+      activeTeamId: "",
+      teams: [],
+      authAccounts: [],
+      stationDefinitions: [],
+      teamStations: {},
     });
   },
   setActiveTeam: (teamId) => {
@@ -490,7 +488,7 @@ export const useMovementStore = create<MovementStore>((set) => ({
       const session = state.session?.teamId === teamId ? null : state.session;
 
       persistActiveTeamId(activeTeamId);
-      persistSession(session);
+      persistStoredSession(session);
 
       return {
         teams,
@@ -535,7 +533,7 @@ export const useMovementStore = create<MovementStore>((set) => ({
           : state.session;
 
         persistActiveTeamId(activeTeamId);
-        persistSession(session);
+        persistStoredSession(session);
 
         return {
           activeTeamId,

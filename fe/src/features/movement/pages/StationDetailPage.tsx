@@ -26,7 +26,7 @@ import {
 } from "antd";
 import {useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import {
   formatDateTime,
@@ -46,7 +46,7 @@ import {
 import {QrTokenInput} from "../components/QrTokenInput";
 import {StationImageGallery} from "../components/StationImageGallery";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
-import {fetchPlayerDatabase} from "../playerData";
+import {executePlayerMutation} from "../playerData";
 import {fetchAdminDatabase} from "../adminData";
 import "./StationDetailPage.css";
 
@@ -58,7 +58,6 @@ type ScoreFormValues = {
 export function StationDetailPage() {
   const navigate = useNavigate();
   const params = useParams<{teamId?: string; stationId: string}>();
-  const [searchParams] = useSearchParams();
   const {modal, message} = AntdApp.useApp();
   const {i18n, t} = useTranslation();
   const session = useMovementStore((state) => state.session);
@@ -77,9 +76,6 @@ export function StationDetailPage() {
   const isSubmittingCheckOutRef = useRef(false);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const language = i18n.language === "en" ? "en" : "vi";
-  const isFromTeamV2 =
-    session?.role === "user" && searchParams.get("from") === "team-v2";
-
   const selectedTeamId =
     session?.role === "admin" && params.teamId ? params.teamId : activeTeamId;
   const adminStationListPath = `/teams/${selectedTeamId}/stations`;
@@ -159,20 +155,11 @@ export function StationDetailPage() {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const refreshPlayerData = async () => {
-    loadDatabase(await fetchPlayerDatabase());
-  };
-
   const refreshAdminData = async () => {
     loadDatabase(await fetchAdminDatabase());
   };
 
   const navigateAfterTeamStationFinished = async () => {
-    if (isFromTeamV2) {
-      navigate("/team/v2");
-      return;
-    }
-
     try {
       const final = await getPlayerFinal();
       navigate(
@@ -204,8 +191,10 @@ export function StationDetailPage() {
     isSubmittingCheckOutRef.current = true;
     setIsSubmittingCheckOut(true);
     try {
-      await checkOutStation(station.stationId, token);
-      await refreshPlayerData();
+      await executePlayerMutation(
+        () => checkOutStation(station.stationId, token),
+        language,
+      );
       setCheckOutQrToken("");
       setIsFinishScannerOpen(false);
       if (station.trackingMode === "TIME") {
@@ -321,7 +310,11 @@ export function StationDetailPage() {
                 onClick={() => openLinkInNewTab(station.youtubeUrl ?? undefined)}>
                 {t("common.watchVideo")}
               </Button>
-              <StationImageGallery imageUrls={station.imageUrls} />
+              <StationImageGallery
+                stationId={station.stationId}
+                imageCount={station.imageCount}
+                imageUrls={station.imageUrls}
+              />
               <Button
                 block
                 type="primary"
@@ -337,10 +330,12 @@ export function StationDetailPage() {
               icon={<ReloadOutlined />}
               onClick={async () => {
                 try {
-                  await cancelPlayerStation(station.stationId);
-                  await refreshPlayerData();
+                  await executePlayerMutation(
+                    () => cancelPlayerStation(station.stationId),
+                    language,
+                  );
                   message.success(t("stationDetail.cancelled"));
-                  navigate(isFromTeamV2 ? "/team/v2" : "/stations/map");
+                  navigate("/stations/map");
                 } catch {
                   message.error(
                     t("errors.generic"),
@@ -574,21 +569,19 @@ export function StationDetailPage() {
 
                 setIsSubmittingScore(true);
                 try {
-                  await submitStationScore(
-                    station.stationId,
-                    values.score,
-                    values.reason,
+                  await executePlayerMutation(
+                    () => submitStationScore(
+                      station.stationId,
+                      values.score,
+                      values.reason,
+                    ),
+                    language,
                   );
-                  await refreshPlayerData();
                   message.success(t("stationDetail.completedSuccess"));
                   setIsScoreModalOpen(false);
                   await navigateAfterTeamStationFinished();
-                } catch (error: unknown) {
-                  message.error(
-                    error instanceof Error ?
-                      error.message
-                    : t("stationDetail.scoreSubmissionFailed"),
-                  );
+                } catch {
+                  message.error(t("stationDetail.scoreSubmissionFailed"));
                 } finally {
                   setIsSubmittingScore(false);
                 }

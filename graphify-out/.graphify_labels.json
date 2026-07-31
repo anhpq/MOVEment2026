@@ -193,6 +193,7 @@
   "191": "final.service.spec.ts",
   "192": "Prompt Routing",
   "193": "Q: đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè",
+  "194": "17. Team Runtime Stability and Data Loading",
   "195": "migration.sql",
   "196": "migration.sql",
   "197": "migration.sql",
@@ -211,5 +212,15 @@
   "210": "migration.sql",
   "211": "migration.sql",
   "212": "migration.sql",
-  "213": "migration.sql"
+  "213": "migration.sql",
+  "214": "migration.sql",
+  "215": "migration.sql",
+  "216": "migration.sql",
+  "217": "migration.sql",
+  "218": "migration.sql",
+  "219": "migration.sql",
+  "220": "migration.sql",
+  "221": "typescript-eslint",
+  "222": "migration.sql",
+  "223": "migration.sql"
 }

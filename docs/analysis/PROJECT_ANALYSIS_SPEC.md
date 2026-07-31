@@ -23,6 +23,13 @@ infrastructure, Login/QR/AppFrame and Admin System Config copy,
 Backend-projected Player Station content, and Admin bilingual Station editing.
 Full browser/manual verification remains pending.
 
+Team runtime now uses lean Player catalog/state/image/leaderboard projections,
+session-principal-owned data, visible/online non-overlapping 15-second polling,
+bounded GET retry, and one post-mutation state reconciliation. Existing Player
+APIs remain available for compatibility. A production-like local smoke measured
+the canonical state/catalog at 3,885/5,908 bytes and passed the full auth, QR,
+scoring, Final, leaderboard, migration, seed, and environment-guard flow.
+
 ## Product Scope
 
 MOVEment 2026 is a mobile-first station game web application.
@@ -415,8 +422,8 @@ V2 reuses the existing Suoi Tien WebP map assets, Station coordinates, Team
 Station state, language persistence, shared QR decode helpers, leaderboard API,
 and Team score submission API. Its `TeamV2QrScanner` is route-specific so API
 rejection can keep camera preview active without changing V1/Login scanner
-behavior. Settings, Station
-preview, and the V2 leaderboard use a device-local opacity setting stored in:
+behavior. Settings, V2-owned Station Detail, and the V2 leaderboard use a
+device-local opacity setting stored in:
 
 ```text
 movement-team-v2-panel-opacity
@@ -439,11 +446,15 @@ buttons, and controls. The supported range is 50-100, with default 85.
 
 The main V2 screen follows the supplied black/cyan fantasy HUD reference with
 exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
-at the upper right, localized Team identity and green score in the row below,
-plus a centered pill footer containing Leaderboard left, floating QR center,
-and Progress right. Settings, Leaderboard, QR scanner, and score entry are blocking,
-centered near-fullscreen modal layers in both orientations. Station preview is
-a centered dialog; overlays must not be rendered as a small corner panel.
+at the upper right, no Team identity block on the map HUD, a tall angular brand
+plate with symmetric striped cyan rails, and a bright green multi-layer neon
+total score centered below the brand in every responsive mode, plus
+three independent sci-fi footer controls: Leaderboard left, a raised
+floating QR/pedestal center, and Team plus completed Station count right. Thin
+cyan rails may connect visually to the QR pedestal but must not create one
+continuous pill panel. Settings, Leaderboard, QR scanner, and score entry are blocking,
+centered near-fullscreen modal layers in both orientations. V2 Station Detail
+is also a near-fullscreen overlay and must not be rendered as a small corner panel.
 
 V2 owns a fixed route-local palette: cyan/active `#2FE4F0`, cyan-soft
 `#7DF3F9`, score/completed `#4DFF8A`, selected `#FF3FD8`, QR secondary
@@ -465,14 +476,59 @@ then runs the same domain behavior as the existing check-in/check-out endpoints.
 `requiresScore: true`, after which score entry still uses the Team session on
 the same device.
 
-Station Detail opened from V2 uses:
+Marker/label selection opens a V2-owned Station Detail overlay without changing
+the `/team/v2` URL. It uses state-aware Start/Complete/Cancel actions, the V2
+scanner and score overlay, shared authoritative Player data/mutations, and a
+V2-owned lazy gallery presentation. It never routes through
+`/stations/:stationId` and does not use `?from=team-v2`.
 
-```text
-?from=team-v2
-```
+Check-in, completion, and cancel success close Detail back to the preserved map.
+While a Station is active, the center QR caption shows localized `In Progress`
+plus Station code/name; camera startup remains user-triggered.
 
-Successful Team gameplay actions from that detail page return to `/team/v2`.
-No arbitrary return URL is accepted.
+V2 labels derive from each marker's single screen anchor after the map transform.
+They remain above their own marker with clamped label scale and marker gap, may
+overlap other labels, and render below the marker layer. They must not use
+independent viewport/grid coordinates or alter persisted Station coordinates.
+Each label keeps Station code/name on one ellipsized line and the points value
+on a dedicated second line.
+Team V2 omits the complete marker group (marker, label, and connector) after a
+Station reaches Player `Finished` or backend `COMPLETED`. A backend `LOCKED`
+Station remains visible with an authoritative gray/silver-neon marker, halo,
+label, and connector. Station Detail keeps both YouTube and image-gallery
+controls visible; unavailable media renders as a readable disabled
+silver-neon control instead of disappearing.
+Team V2 Station Detail uses centered intrinsic content height, capped by the
+available viewport with overflow scrolling. The footer uses `BXH`/`RANK` for
+its compact Leaderboard control, a `222px` center QR button (three times the
+prior baseline), and responsive font compensation that keeps the displayed QR
+caption, Leaderboard, and Team/Station labels at least `12px`.
+Team V2 Settings follows the same centered intrinsic-height behavior with
+viewport-capped scrolling. Its Leaderboard overlay displays the first five
+authoritative API rows; when the current Team is outside those rows, it is
+appended as a sixth row with V2 display rank `6`. The projection must not mutate
+the API response or alter Backend ranking, sorting, or scoring.
+Within Team V2 Settings, the unselected language choice uses a visibly darker,
+desaturated treatment than the active cyan choice. This contrast override is
+route-local and must not alter shared `LanguageSwitch` styling elsewhere.
+All Team V2 overlays default to `95%` opacity for backdrop/panel backgrounds.
+The opacity preference must be represented as a background CSS variable rather
+than parent `opacity`, so overlay text, icons, buttons, inputs, and media remain
+fully opaque. The Settings slider may persist later user choices.
+The marker uses the route-local `640×620` Konva Bézier reference with curved
+outer/inner pin paths, a radius-148 outer ring, black/white core, and a seamless
+180-segment green/mint/purple circular neon ring. Its inner group has one
+uniform scale and offsets tip `(320,606)` to the Station screen anchor. Its
+visual size scales once from `32px` to `64px`
+with normalized zoom; no number renders inside the pin, while Station code
+remains in the anchored label. The state-colored halo remains a canvas overlay,
+and the label connector starts at the pin's upper attachment edge.
+To keep Team V2 pan/zoom responsive with dense markers, unchanged marker
+artwork is cached locally after its exact 180-segment render, map transform
+events are coalesced to at most one React commit per animation frame, and the
+marker Layer skips offscreen groups using the same layout visibility flag as
+labels/connectors. Cache and scheduling must not change coordinates, marker
+state, hit targets, anchoring, or visual geometry.
 
 ## QR Camera
 
