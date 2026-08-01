@@ -386,6 +386,21 @@ export type AdminProgressMatrixResponse = {
 export const getAdminProgressMatrix = () =>
   apiGet<AdminProgressMatrixResponse>('/api/admin/progress-matrix')
 
+export type AdminQrStatusSummaryResponse = {
+  teams: Array<{
+    teamId: number
+    status: 'ACTIVE' | 'NONE'
+  }>
+  stations: Array<{
+    stationId: string
+    activeCount: number
+    status: 'ACTIVE' | 'EXPIRED' | 'REVOKED' | 'INACTIVE'
+  }>
+}
+
+export const getAdminQrStatusSummary = () =>
+  apiGet<AdminQrStatusSummaryResponse>('/api/admin/qr-status-summary')
+
 export const createAdminTeam = (values: {
   name: string; username: string; password: string; captainName?: string; teamColor?: string | null
 }) => apiPost<AdminTeamResponse>('/api/admin/teams', values)

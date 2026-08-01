@@ -305,7 +305,9 @@ async function waitForRetry(attempt: number, signal?: AbortSignal | null) {
 async function requestResponse(path: string, options: RequestInit) {
   const method = options.method ?? 'GET'
   const headers = new Headers(options.headers)
-  headers.set('Content-Type', 'application/json')
+  if (options.body != null && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json')
+  }
   const requestId = headers.get('X-Request-ID') || createRequestId()
   headers.set('X-Request-ID', requestId)
 

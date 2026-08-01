@@ -26,7 +26,14 @@ obsutil config -i="${HUAWEI_ACCESS_KEY}" \
 
 obsutil sync "${DIST_PATH}/" "obs://${OBS_BUCKET}/" -acl=public-read
 
+obsutil chattri "obs://${OBS_BUCKET}/" -r -f \
+  -meta=Cache-Control:public,max-age=2592000 -direct=REPLACE_NEW
+
+obsutil chattri "obs://${OBS_BUCKET}/assets/" -r -f \
+  -meta=Cache-Control:public,max-age=31536000,immutable \
+  -direct=REPLACE_NEW
+
 obsutil cp "${DIST_PATH}/index.html" "obs://${OBS_BUCKET}/index.html" \
-  -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
+  -acl=public-read -meta=Cache-Control:no-cache,must-revalidate
 
 echo "Deployed to obs://${OBS_BUCKET}/ (${HUAWEI_REGION})"

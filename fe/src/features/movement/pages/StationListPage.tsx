@@ -20,16 +20,15 @@ import {
   Tag,
   Typography,
 } from "antd";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
-import {checkInStation, getPlayerFinal, isAuthFailure} from "../api";
+import {checkInStation} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {StationImageGallery} from "../components/StationImageGallery";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
-import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import {executePlayerMutation} from "../playerData";
 import {
   compareTeamStations,
@@ -53,12 +52,11 @@ export function StationListPage() {
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
-  const logout = useMovementStore((state) => state.logout);
+  const finalSummary = useMovementStore((state) => state.finalSummary);
   const [scanTarget, setScanTarget] = useState<TeamStation | null>(null);
   const [checkInQrToken, setCheckInQrToken] = useState("");
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
   const isSubmittingCheckInRef = useRef(false);
-  const [isFinalReady, setIsFinalReady] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
 
   const selectedTeamId =
@@ -74,6 +72,9 @@ export function StationListPage() {
   );
   const playingCounts = useStationPlayingCounts(session?.role === "user");
   const playingTeamCount = (stationId: string) => playingCounts[stationId] ?? 0;
+  const isFinalReady = Boolean(
+    finalSummary?.isOpen && !finalSummary.blockedByActiveStation,
+  );
 
   useEffect(() => {
     if (
@@ -91,20 +92,6 @@ export function StationListPage() {
     setActiveTeam,
     teams,
   ]);
-
-  const checkFinal = useCallback(async () => {
-    try {
-      const final = await getPlayerFinal();
-      setIsFinalReady(final.isOpen && !final.blockedByActiveStation);
-    } catch (error) {
-      if (isAuthFailure(error)) {
-        logout();
-      }
-      // Keep the last-known availability on transient failures.
-    }
-  }, [logout]);
-
-  useVisibleOnlinePolling(checkFinal, {enabled: session?.role === "user"});
 
   useEffect(() => {
     const timer = window.setInterval(() => setNowMs(Date.now()), 1000);

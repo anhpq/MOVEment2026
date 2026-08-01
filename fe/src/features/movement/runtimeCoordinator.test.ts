@@ -1,11 +1,50 @@
 import {afterEach, describe, expect, it, vi} from "vitest";
 import {
   clearRuntimeRequestCoordinator,
+  getTeamRuntimePollIntervalMs,
+  isReducedDataMode,
   runSingleFlight,
+  TEAM_RUNTIME_POLL_INTERVAL_MS,
+  TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS,
 } from "./runtimeCoordinator";
+
+function setNetworkConnection(connection?: {
+  saveData?: boolean;
+  effectiveType?: string;
+}) {
+  Object.defineProperty(navigator, "connection", {
+    configurable: true,
+    value: connection,
+  });
+}
 
 afterEach(() => {
   clearRuntimeRequestCoordinator();
+  setNetworkConnection();
+});
+
+describe("reduced data mode", () => {
+  it.each([
+    [{saveData: true, effectiveType: "4g"}],
+    [{saveData: false, effectiveType: "2g"}],
+    [{saveData: false, effectiveType: "slow-2g"}],
+  ])("uses the reduced request cadence for %o", (connection) => {
+    setNetworkConnection(connection);
+
+    expect(isReducedDataMode()).toBe(true);
+    expect(getTeamRuntimePollIntervalMs()).toBe(
+      TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS,
+    );
+  });
+
+  it("keeps the normal request cadence on faster connections", () => {
+    setNetworkConnection({saveData: false, effectiveType: "4g"});
+
+    expect(isReducedDataMode()).toBe(false);
+    expect(getTeamRuntimePollIntervalMs()).toBe(
+      TEAM_RUNTIME_POLL_INTERVAL_MS,
+    );
+  });
 });
 
 describe("runSingleFlight", () => {

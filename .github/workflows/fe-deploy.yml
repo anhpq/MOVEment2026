@@ -150,10 +150,23 @@ jobs:
             exit 1
           fi
 
-          # SPA entry point: always fetch fresh so new JS/CSS hashes are picked up
+          # Stable files keep a release-friendly cache window; Vite-hashed assets
+          # are content-addressed and can remain cached across deployments.
+          run_with_retry "Cache stable frontend files" \
+            "${OBSUTIL_BIN}" chattri "obs://${{ env.OBS_BUCKET }}/" \
+            -r -f -j=3 -o="${OBS_REPORT_DIR}" \
+            -meta=Cache-Control:public,max-age=2592000 -direct=REPLACE_NEW
+          run_with_retry "Cache fingerprinted frontend assets" \
+            "${OBSUTIL_BIN}" chattri "obs://${{ env.OBS_BUCKET }}/assets/" \
+            -r -f -j=3 -o="${OBS_REPORT_DIR}" \
+            -meta=Cache-Control:public,max-age=31536000,immutable \
+            -direct=REPLACE_NEW
+
+          # SPA entry point: revalidate so new JS/CSS hashes are picked up while
+          # unchanged releases can still return a bodyless 304 response.
           run_with_retry "Upload index.html" \
             "${OBSUTIL_BIN}" cp dist/index.html "obs://${{ env.OBS_BUCKET }}/index.html" \
-            -acl=public-read -meta=Cache-Control:no-cache,no-store,must-revalidate
+            -acl=public-read -meta=Cache-Control:no-cache,must-revalidate
 
       - name: Upload obsutil result files
         if: failure()

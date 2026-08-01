@@ -34,6 +34,15 @@ export type Team = {
   teamColor?: string | null;
 };
 
+export type PlayerFinalSummary = {
+  isOpen: boolean;
+  canSubmit: boolean;
+  blockedByActiveStation: boolean;
+  activeStationId: string | null;
+  finalStartsAt: string;
+  eventEndTime: string;
+};
+
 export type StationDefinition = {
   id: string;
   name: string;
@@ -152,6 +161,7 @@ export type SqlTeamStationProgress = {
 
 export type LocalDatabaseSeed = {
   dataSessionKey?: string | null;
+  finalSummary?: PlayerFinalSummary | null;
   activeTeamId?: string;
   teams?: Team[];
   authAccounts?: AuthAccount[];
@@ -164,6 +174,7 @@ export type LocalDatabaseSeed = {
 
 export type LocalDatabase = {
   dataSessionKey: string | null;
+  finalSummary: PlayerFinalSummary | null;
   activeTeamId: string;
   teams: Team[];
   authAccounts: AuthAccount[];
@@ -174,6 +185,7 @@ export type LocalDatabase = {
 export type MovementStore = {
   session: Session | null;
   dataSessionKey: string | null;
+  finalSummary: PlayerFinalSummary | null;
   activeTeamId: string;
   teams: Team[];
   authAccounts: AuthAccount[];

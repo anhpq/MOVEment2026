@@ -4,6 +4,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Header,
   Param,
   ParseIntPipe,
   Patch,
@@ -158,8 +159,15 @@ export class AdminController {
   }
 
   @Get('progress-matrix')
+  @Header('Cache-Control', 'private, no-cache')
   progressMatrix() {
     return this.adminService.progressMatrix();
+  }
+
+  @Get('qr-status-summary')
+  @Header('Cache-Control', 'private, no-cache')
+  qrStatusSummary() {
+    return this.adminService.qrStatusSummary();
   }
 
   @Patch('stations/:stationId')

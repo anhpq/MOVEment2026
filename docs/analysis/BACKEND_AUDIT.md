@@ -9,6 +9,40 @@
 - Frontend lint, production build, bundle gate, focused marker-layout Vitest
   (`3/3`), diff check, and direct Chrome rendering of the repo component passed.
 
+# 2026-08-01 Tối ưu request và dung lượng truyền
+
+- Phân loại `Refactor`; không thay đổi Business Rules về auth, QR, scoring,
+  Final hay leaderboard.
+- Thêm `GET /api/admin/qr-status-summary`, chỉ trả metadata trạng thái/count và
+  không select/trả raw token. System Config giảm từ 42 request QR-token xuống 1
+  request summary; cùng progress matrix, bootstrap canonical giảm từ 43 xuống 2
+  request. Token chi tiết vẫn chỉ tải khi Admin bấm mở QR. Local matrix đo được
+  75,993 bytes thay cho baseline 101,512 bytes (giảm 25.1%); QR summary là
+  1,767 bytes.
+- Lưu `state.final` từ `/api/player/state` vào Zustand và bỏ polling Final riêng
+  trên Station List. Steady state giảm từ khoảng 12 xuống 8 GET/phút; Data Saver
+  hoặc `2g`/`slow-2g` dùng chu kỳ 30 giây, còn khoảng 4 GET/phút.
+- Giới hạn map reduced-data ở WebP 1920px; bỏ `Content-Type: application/json`
+  khỏi GET không có body; cho playing-counts, leaderboard và QR summary dùng
+  `private, no-cache` để tái sử dụng ETag/304; cache CORS preflight 10 phút để
+  giảm OPTIONS lặp lại trên đường OBS/API khác origin.
+- Bật gzip và cache policy trong Nginx; OBS deploy gắn cache 30 ngày cho file
+  ổn định, một năm immutable cho `/assets`, và để HTML `no-cache` nhằm cho phép
+  revalidate/304. `chattri` dùng `REPLACE_NEW` để giữ nguyên metadata không được
+  chỉ định như `Content-Type`. Không deploy hoặc thay đổi Production state.
+- Verification PASS: Backend Jest `164/164`, lint, build; Frontend Vitest
+  `55/55`, i18n parity `395`, lint, production build và bundle gate
+  `203.38 KiB` initial gzip. Targeted Backend QR summary và Frontend
+  QR/data-saver/api-client tests đều PASS. `bash -n fe/deploy/deploy.sh` và YAML
+  parse PASS. Local Backend preflight thật trả `204` cùng
+  `Access-Control-Max-Age: 600`; matrix và QR summary không đổi đều trả `304`
+  với zero body bytes. `nginx -t`, live OBS metadata/gzip, browser Network panel,
+  physical device và Production runtime chưa được verify.
+- `graphify update .` PASS với `2784` nodes, `4714` edges, `209` communities;
+  focused query tìm được `getAdminQrStatusSummary()` và hai detailed-token calls
+  trong System Config. Cảnh báo không chặn vẫn còn: `hooks.json` zero-node, thiếu
+  `tree_sitter_sql` cho 19 SQL files và community labels cần refresh.
+
 # 2026-07-31 Team V2 single-line marker labels
 
 - Changed the Team V2 Konva marker name row from word wrapping to one line with

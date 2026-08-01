@@ -304,6 +304,10 @@ export const useMovementStore = create<MovementStore>((set) => ({
 
       return {
         ...normalized,
+        finalSummary:
+          seed.finalSummary === undefined ?
+            state.finalSummary
+          : normalized.finalSummary,
         activeTeamId,
         session: state.session,
       };
@@ -323,6 +327,7 @@ export const useMovementStore = create<MovementStore>((set) => ({
         activeTeamId,
         ...(sessionChanged ? {
           dataSessionKey: null,
+          finalSummary: null,
           teams: [],
           authAccounts: [],
           stationDefinitions: [],
@@ -343,6 +348,7 @@ export const useMovementStore = create<MovementStore>((set) => ({
         activeTeamId,
         ...(sessionChanged ? {
           dataSessionKey: null,
+          finalSummary: null,
           teams: [],
           authAccounts: [],
           stationDefinitions: [],
@@ -357,6 +363,7 @@ export const useMovementStore = create<MovementStore>((set) => ({
     set({
       session: null,
       dataSessionKey: null,
+      finalSummary: null,
       activeTeamId: "",
       teams: [],
       authAccounts: [],

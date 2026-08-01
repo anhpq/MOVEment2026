@@ -22,10 +22,12 @@ import {fetchAdminDatabase} from "../adminData";
 import {
   deleteAdminStation,
   deleteAdminTeam,
+  getAdminQrStatusSummary,
   getAdminStationQrTokens,
   getAdminTeamQrLoginTokens,
   updateAdminStation,
 } from "../api";
+import {buildAdminQrStatusRecords} from "../adminQrStatus";
 import {StationsMapPanel} from "../components/StationsMapPanel";
 import {
   cacheStationQrTokens,
@@ -96,22 +98,21 @@ export function SystemConfigPage() {
   };
 
   useEffect(() => {
+    if (teams.length === 0 && stationDefinitions.length === 0) {
+      return;
+    }
+
     let cancelled = false;
     const loadQrStatus = async () => {
-      const [teamEntries, stationEntries] = await Promise.all([
-        Promise.all(teams.map(async (team) => {
-          const tokens = await getAdminTeamQrLoginTokens(team.id);
-          return [team.id, tokens.find((token) => token.status === "ACTIVE")?.status ?? "NONE"] as const;
-        })),
-        Promise.all(stationDefinitions.map(async (station) => {
-          const tokens = await getAdminStationQrTokens(station.id);
-          const activeCount = tokens.filter((token) => token.status === "ACTIVE").length;
-          return [station.id, activeCount ? `ACTIVE x${activeCount}` : tokens[0]?.status ?? "NONE"] as const;
-        })),
-      ]);
+      const summary = await getAdminQrStatusSummary();
+      const {teamStatuses, stationStatuses} = buildAdminQrStatusRecords(
+        summary,
+        teams.map((team) => team.id),
+        stationDefinitions.map((station) => station.id),
+      );
       if (!cancelled) {
-        setTeamQrStatus(Object.fromEntries(teamEntries));
-        setStationQrStatus(Object.fromEntries(stationEntries));
+        setTeamQrStatus(teamStatuses);
+        setStationQrStatus(stationStatuses);
       }
     };
     void loadQrStatus().catch(() => undefined);

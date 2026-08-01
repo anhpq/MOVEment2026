@@ -1,6 +1,37 @@
 const inFlightRequests = new Map<string, Promise<unknown>>();
 
 export const TEAM_RUNTIME_POLL_INTERVAL_MS = 15_000;
+export const TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS = 30_000;
+
+type NetworkConnectionLike = {
+  saveData?: boolean;
+  effectiveType?: string;
+};
+
+function getNetworkConnection() {
+  if (typeof navigator === "undefined") {
+    return undefined;
+  }
+
+  return (navigator as Navigator & {connection?: NetworkConnectionLike})
+    .connection;
+}
+
+export function isReducedDataMode() {
+  const connection = getNetworkConnection();
+  const effectiveType = connection?.effectiveType?.toLowerCase();
+  return (
+    connection?.saveData === true ||
+    effectiveType === "2g" ||
+    effectiveType === "slow-2g"
+  );
+}
+
+export function getTeamRuntimePollIntervalMs() {
+  return isReducedDataMode() ?
+      TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS
+    : TEAM_RUNTIME_POLL_INTERVAL_MS;
+}
 
 export class StaleSessionResponseError extends Error {
   constructor() {

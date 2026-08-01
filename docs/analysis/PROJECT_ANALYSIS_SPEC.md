@@ -25,10 +25,14 @@ Full browser/manual verification remains pending.
 
 Team runtime now uses lean Player catalog/state/image/leaderboard projections,
 session-principal-owned data, visible/online non-overlapping 15-second polling,
-bounded GET retry, and one post-mutation state reconciliation. Existing Player
-APIs remain available for compatibility. A production-like local smoke measured
-the canonical state/catalog at 3,885/5,908 bytes and passed the full auth, QR,
-scoring, Final, leaderboard, migration, seed, and environment-guard flow.
+30-second polling for browser-reported reduced-data/2G conditions, bounded GET
+retry, and one post-mutation state reconciliation. Station List consumes Final
+availability from Player state rather than polling Final separately. Existing
+cross-origin preflight responses are cacheable for 10 minutes. Player APIs
+remain available for compatibility. A production-like local smoke
+measured the canonical state/catalog at 3,885/5,908 bytes and passed the full
+auth, QR, scoring, Final, leaderboard, migration, seed, and environment-guard
+flow.
 
 ## Product Scope
 
@@ -201,6 +205,14 @@ falls back per field to canonical `name`/`description`; Vietnamese display uses
 the canonical fields. The locale switch does not refetch Admin data because the
 progress matrix already contains all four fields.
 
+Admin System Config obtains Team and Station QR badge metadata from one
+`GET /api/admin/qr-status-summary` response. This summary contains entity IDs,
+status, and Station active count only; it never contains raw tokens or hashes.
+The detailed Team/Station token endpoints remain the source for an explicit QR
+preview action only. The progress matrix projects only fields consumed by the
+Admin client and excludes a changing server timestamp so unchanged matrix and
+summary responses can revalidate to a bodyless `304`.
+
 Excel export, backend operational consumers, Station IDs, enum/API values,
 `Game.title`, and `clueText` remain outside this localization scope.
 
@@ -367,7 +379,9 @@ Backend is authoritative.
 Player Station list, Station map drawer, and Station detail show live Playing
 Teams counts from `GET /api/player/stations/playing-counts`. The endpoint
 returns only `stationId` and `playingTeamCount`, and the frontend polls it only
-while the tab is visible.
+while the tab is visible. Playing-count and Player leaderboard GET responses use
+private cache revalidation so an unchanged poll may return `304` without a
+response body.
 
 ## Team Results Excel Export
 
@@ -397,7 +411,9 @@ The runtime Station map uses WebP variants at 1280, 1920, and 2950 pixels wide.
 The original PNG source asset is kept outside `public` under `fe/source-assets`.
 Frontend selection is based on rendered width and device pixel ratio, keeps the
 current image while an upgrade loads, and only upgrades to the full-width image
-for high zoom rather than downgrading on resize.
+for high zoom rather than downgrading on resize. When the browser reports Data
+Saver, `2g`, or `slow-2g`, selection is capped at the 1920-pixel variant even at
+high zoom.
 
 The Konva Stage is limited to the visible viewport while the existing logical
 map coordinate space remains unchanged. The static map image is isolated in a

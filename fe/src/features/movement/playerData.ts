@@ -1,6 +1,7 @@
 import {
   getPlayerCatalog,
   getPlayerDashboard,
+  getPlayerFinal,
   getPlayerProgress,
   getPlayerState,
   getPlayerStationImages,
@@ -16,6 +17,7 @@ import {ApiError} from "./apiClient";
 import {readStoredLanguage} from "./i18n";
 import {
   clearSingleFlight,
+  isReducedDataMode,
   runSingleFlight,
   StaleSessionResponseError,
 } from "./runtimeCoordinator";
@@ -23,6 +25,7 @@ import {getSessionPrincipalKey} from "./sessionIdentity";
 import {useMovementStore} from "./store";
 import type {
   LocalDatabaseSeed,
+  PlayerFinalSummary,
   SupportedLanguage,
   TeamStation,
 } from "./types";
@@ -37,6 +40,8 @@ export const PLAYER_MAP_IMAGE_VARIANTS: PlayerMapImageVariant[] = [
   {src: "/images/map/suoitien-map-1920.webp", width: 1920},
   {src: "/images/map/suoitien-map-2950.webp", width: 2950},
 ];
+
+const PLAYER_MAP_REDUCED_DATA_MAX_WIDTH = 1920;
 
 type PlayerDataMode = "lean" | "legacy";
 type SeedProgress = PlayerProgressResponse | PlayerStateProgressResponse;
@@ -77,14 +82,21 @@ export function selectPlayerMapImageVariant(
   devicePixelRatio = globalThis.devicePixelRatio || 1,
   highZoom = false,
 ) {
+  const variants =
+    isReducedDataMode() ?
+      PLAYER_MAP_IMAGE_VARIANTS.filter(
+        (variant) => variant.width <= PLAYER_MAP_REDUCED_DATA_MAX_WIDTH,
+      )
+    : PLAYER_MAP_IMAGE_VARIANTS;
+
   if (highZoom) {
-    return PLAYER_MAP_IMAGE_VARIANTS[PLAYER_MAP_IMAGE_VARIANTS.length - 1];
+    return variants[variants.length - 1];
   }
 
   const targetWidth = Math.max(1, containerWidth) * Math.max(1, devicePixelRatio);
   return (
-    PLAYER_MAP_IMAGE_VARIANTS.find((variant) => variant.width >= targetWidth) ??
-    PLAYER_MAP_IMAGE_VARIANTS[PLAYER_MAP_IMAGE_VARIANTS.length - 1]
+    variants.find((variant) => variant.width >= targetWidth) ??
+    variants[variants.length - 1]
   );
 }
 
@@ -133,11 +145,13 @@ function buildPlayerSeed(
   dashboardTeam: Awaited<ReturnType<typeof getPlayerDashboard>>["team"],
   completedStations: number,
   dataSessionKey: string,
+  finalSummary?: PlayerFinalSummary,
 ): LocalDatabaseSeed {
   const teamId = String(dashboardTeam.id);
 
   return {
     dataSessionKey,
+    ...(finalSummary ? {finalSummary} : {}),
     activeTeamId: teamId,
     teams: [
       {
@@ -198,6 +212,30 @@ function buildPlayerSeed(
   };
 }
 
+function toPlayerFinalSummary(
+  final: PlayerFinalSummary,
+): PlayerFinalSummary {
+  return {
+    isOpen: final.isOpen,
+    canSubmit: final.canSubmit,
+    blockedByActiveStation: final.blockedByActiveStation,
+    activeStationId: final.activeStationId,
+    finalStartsAt: final.finalStartsAt,
+    eventEndTime: final.eventEndTime,
+  };
+}
+
+async function fetchLegacyPlayerFinalSummary() {
+  try {
+    return toPlayerFinalSummary(await getPlayerFinal());
+  } catch (error) {
+    if (isAuthFailure(error)) {
+      throw error;
+    }
+    return undefined;
+  }
+}
+
 function normalizeLegacyStations(
   stations: PlayerStationResponse[],
   progress: PlayerProgressResponse[],
@@ -223,10 +261,11 @@ async function fetchLegacyPlayerDatabase(
   language: SupportedLanguage,
   dataSessionKey: string,
 ) {
-  const [dashboard, stations, progress] = await Promise.all([
+  const [dashboard, stations, progress, finalSummary] = await Promise.all([
     getPlayerDashboard(),
     getPlayerStations(language),
     getPlayerProgress(language),
+    fetchLegacyPlayerFinalSummary(),
   ]);
   assertCurrentDataSession(dataSessionKey);
   return buildPlayerSeed(
@@ -234,6 +273,7 @@ async function fetchLegacyPlayerDatabase(
     dashboard.team,
     dashboard.completedStations,
     dataSessionKey,
+    finalSummary,
   );
 }
 
@@ -279,6 +319,7 @@ async function fetchLeanPlayerDatabase(
     state.team,
     state.completedStations,
     dataSessionKey,
+    toPlayerFinalSummary(state.final),
   );
 }
 

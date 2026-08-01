@@ -1,5 +1,32 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-01 Network request and transfer optimization
+
+- [x] Replace the 42-request Admin QR status fan-out with one metadata-only
+  summary endpoint while keeping raw-token retrieval behind explicit preview.
+- [x] Trim the Admin progress-matrix projection/response from 101,512 to 75,993
+  bytes locally and remove its unused changing `serverNow`, enabling a verified
+  zero-body `304` when matrix data is unchanged.
+- [x] Reuse `/api/player/state.final` on Station List and remove its separate
+  periodic Final request.
+- [x] Use a 30-second default polling interval and cap map selection at 1920px
+  for Data Saver, `2g`, and `slow-2g` clients.
+- [x] Enable conditional revalidation for playing counts, Player leaderboard,
+  and Admin QR summary; remove JSON Content-Type from bodyless GET requests and
+  cache cross-origin preflight permission for 10 minutes.
+- [x] Add Nginx gzip plus fingerprinted/stable/HTML cache policies and matching
+  OBS object metadata behavior.
+- [x] Pass Backend Jest `164/164`, lint/build; Frontend Vitest `55/55`, i18n
+  parity `395`, lint/build/bundle gate; deploy shell syntax and workflow YAML
+  parse; local CORS preflight returned `204` with max-age `600`; Admin matrix
+  and QR summary revalidation returned `304` with zero body bytes.
+- [x] Update Graphify to `2784` nodes / `4714` edges and forward-query the new
+  System Config summary path; retain known zero-node SQL/hooks and label-refresh
+  warnings as non-blocking tooling gaps.
+- [ ] Run `nginx -t` on the target server and verify live gzip, cache headers,
+  ETag/304, OBS metadata, request counts, and reduced-data map selection in a
+  real browser after an authorized deployment.
+
 ## 2026-07-31 Team V2 background-only overlay opacity
 
 - [x] Set the new Team V2 overlay default to `95%` and reset the old stored

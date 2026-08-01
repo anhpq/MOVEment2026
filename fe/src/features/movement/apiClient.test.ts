@@ -48,6 +48,17 @@ describe("apiClient request policy", () => {
     expect(new Set(requestIds).size).toBe(1);
   });
 
+  it("omits JSON content type from bodyless GET requests", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ok: true}));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await apiGet("/api/player/state");
+
+    const headers = new Headers(fetchMock.mock.calls[0]?.[1]?.headers);
+    expect(headers.get("Content-Type")).toBeNull();
+    expect(headers.get("Authorization")).toBe("Bearer test-access-token");
+  });
+
   it("never automatically retries a mutation", async () => {
     const fetchMock = vi.fn().mockRejectedValue(new TypeError("network down"));
     vi.stubGlobal("fetch", fetchMock);
@@ -55,6 +66,8 @@ describe("apiClient request policy", () => {
     await expect(apiPost("/api/player/qr-action", {qrToken: "redacted"}))
       .rejects.toMatchObject({code: "NETWORK", retryable: true});
     expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(new Headers(fetchMock.mock.calls[0]?.[1]?.headers).get("Content-Type"))
+      .toBe("application/json");
   });
 
   it("keeps backend details internal while exposing a safe message and code", async () => {
