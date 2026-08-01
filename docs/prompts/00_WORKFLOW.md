@@ -689,6 +689,17 @@ Graphify không được override:
 6. Báo rõ Graphify không chạy được nếu nó có ý nghĩa với task.
 7. Không tuyên bố đã update graph nếu command chưa chạy thành công.
 
+## Project-local skill admission
+
+Khi thêm hoặc cập nhật `.codex/skills`:
+
+1. Inventory skill local và runtime trước khi copy.
+2. Loại candidate sai stack hoặc trùng skill, script, Prompt, hay workflow hiện có.
+3. Chỉ nhận candidate giảm lỗi hoặc thao tác lặp lại mà không tạo context không cần thiết.
+4. Validate cấu trúc skill và chạy ít nhất một workflow thật trong repository.
+5. Ghi quyết định, project override và bằng chứng vào
+   `docs/analysis/AGENT_SKILLS_ANALYSIS.md`.
+
 ---
 
 # 8. Source Code Editing Rules

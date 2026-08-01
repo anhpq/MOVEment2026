@@ -142,7 +142,32 @@ print(f'[graphify update] Merged extraction written ({len(merged_out[\"nodes\"])
 # root= matches the build_merge call above so the manifest keys stay relative to
 # the scan root — portable across clones/machines, so --update keeps matching
 # cached files instead of missing every one after a move (#1417).
-save_manifest(incremental['files'], root='INPUT_PATH')
+# Only stamp semantic files (docs/papers/images) that produced output in this
+# run. Failed chunks stay unstamped and are retried by the next update (#2015).
+from graphify.cli import _stamped_manifest_files
+_manifest_files = _stamped_manifest_files(
+    incremental['files'],
+    new_extraction,
+    Path('INPUT_PATH'),
+)
+_sem_types = ('document', 'paper', 'image')
+_dispatched = {
+    f
+    for t, fl in incremental.get('new_files', {}).items()
+    if t in _sem_types
+    for f in fl
+}
+_stamped = {f for fl in _manifest_files.values() for f in fl}
+_cleared = _dispatched - _stamped
+# Use the raw full corpus for exclusion/deletion accounting while preserving
+# prior rows for untouched files (#1908, #1948).
+_scan = {f for fl in incremental['files'].values() for f in fl}
+save_manifest(
+    _manifest_files,
+    root='INPUT_PATH',
+    scan_corpus=_scan,
+    clear_semantic=_cleared or None,
+)
 print('[graphify update] Manifest saved.')
 "
 ```

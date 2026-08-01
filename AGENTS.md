@@ -569,6 +569,23 @@ graphify . --code-only
 - Report Graphify unavailability only when Graphify would have been materially useful.
 - Never claim Graphify was updated unless the update command actually succeeded.
 
+## Project-Local Skill Governance
+
+- Keep a skill under `.codex/skills` only when it is project-specific, carries a
+  required project override, or is needed for reproducible execution across
+  Codex environments.
+- Before adding or updating a skill, confirm that it reduces observed errors or
+  repeated work, does not duplicate another active skill or repository workflow,
+  keeps trigger/body context proportional, and passes at least one real
+  repository workflow with an observable result.
+- Use runtime-provided generic skills from the host installation instead of
+  copying them into the repository when no project override is required.
+- Merge upstream skill changes selectively when they conflict with `AGENTS.md`,
+  security requirements, or verified project behavior; do not overwrite a
+  project-local skill blindly.
+- Record accepted, rejected, and deferred candidates plus validation evidence in
+  `docs/analysis/AGENT_SKILLS_ANALYSIS.md`.
+
 After meaningful Source Code changes, run when available:
 
 ```text
