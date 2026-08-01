@@ -3,13 +3,12 @@ import {
   getStationLabelLayouts,
   MAX_MARKER_SIZE,
   MIN_MARKER_SIZE,
-  isTeamV2MarkerLocked,
-  shouldRenderTeamV2Marker,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
   type MarkerLabelSource,
   type MarkerLabelViewport,
 } from "./teamV2MarkerLayout";
+import {getStationMarkerAppearance} from "../markerAppearance";
 
 const viewport: MarkerLabelViewport = {width: 400, height: 800};
 const baseScale = 0.624;
@@ -28,13 +27,13 @@ function getLayout(scale = baseScale, x = 0, y = 0) {
 }
 
 describe("TeamGameplayV2Page marker label layout", () => {
-  it("hides completed markers and identifies authoritative locked markers", () => {
-    expect(shouldRenderTeamV2Marker({status: "Finished", backendStatus: "COMPLETED"})).toBe(false);
-    expect(shouldRenderTeamV2Marker({status: "New", backendStatus: "COMPLETED"})).toBe(false);
-    expect(shouldRenderTeamV2Marker({status: "Finished", backendStatus: "AVAILABLE"})).toBe(false);
-    expect(shouldRenderTeamV2Marker({status: "New", backendStatus: "LOCKED"})).toBe(true);
-    expect(isTeamV2MarkerLocked({status: "New", backendStatus: "LOCKED"})).toBe(true);
-    expect(isTeamV2MarkerLocked({status: "New", backendStatus: "AVAILABLE"})).toBe(false);
+  it("keeps completed and locked markers in the visible appearance model", () => {
+    expect(
+      getStationMarkerAppearance({status: "Finished", backendStatus: "COMPLETED"}),
+    ).toMatchObject({isCompleted: true, isLocked: false, opacity: 0.4});
+    expect(
+      getStationMarkerAppearance({status: "New", backendStatus: "LOCKED"}),
+    ).toMatchObject({isCompleted: false, isLocked: true, opacity: 1});
   });
 
   it("anchors the default label above its marker with one screen-space transform", () => {

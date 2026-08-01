@@ -457,12 +457,14 @@ centered near-fullscreen modal layers in both orientations. V2 Station Detail
 is also a near-fullscreen overlay and must not be rendered as a small corner panel.
 
 V2 owns a fixed route-local palette: cyan/active `#2FE4F0`, cyan-soft
-`#7DF3F9`, score/completed `#4DFF8A`, selected `#FF3FD8`, QR secondary
+`#7DF3F9`, score `#4DFF8A`, selected `#FF3FD8`, QR secondary
 `#B06BFF`, Leaderboard gold `#FFC94D`, ink `#030C14`, text `#EAFCFF`, muted
 text `#9FD4D9`, and panel `rgba(3,14,20,0.82)`. It must not
 inherit or derive its HUD, marker, overlay, or primary-control colors from
 `Team.color`, `--team-*`, body Team theme, or global Ant Design theme. Other
-Team-facing routes continue to use Team Color normally.
+Team-facing routes continue to use Team Color normally. Completed and Locked
+markers are the state-specific exception: their complete visual groups use the
+fixed silver `#C3CED8` to neon-purple `#B05CFF` gradient.
 
 V2 uses unified Station QR action:
 
@@ -492,10 +494,11 @@ overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
 Each label keeps Station code/name on one ellipsized line and the points value
 on a dedicated second line.
-Team V2 omits the complete marker group (marker, label, and connector) after a
-Station reaches Player `Finished` or backend `COMPLETED`. A backend `LOCKED`
-Station remains visible with an authoritative gray/silver-neon marker, halo,
-label, and connector. Station Detail keeps both YouTube and image-gallery
+Team V2 keeps Completed and Locked marker groups visible and tappable. Completed
+uses a check with `40%` opacity, rising to `70%` while selected. Locked uses a
+lower-right lock badge and remains fully opaque. Marker, label, and connector
+share the same state opacity and silver-purple palette. Station Detail keeps
+both YouTube and image-gallery
 controls visible; unavailable media renders as a readable disabled
 silver-neon control instead of disappearing.
 Team V2 Station Detail uses centered intrinsic content height, capped by the

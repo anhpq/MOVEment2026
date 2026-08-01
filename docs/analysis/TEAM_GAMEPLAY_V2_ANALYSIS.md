@@ -8,6 +8,32 @@
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
 | Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
 
+## 2026-08-01 Completed and Locked marker appearance
+
+- Team V2 no longer removes Completed marker groups. Completed and Locked
+  markers remain tappable and use a silver `#C3CED8` to neon-purple `#B05CFF`
+  gradient across pin, halo, connector, and label border.
+- Completed uses a check and shares `40%` opacity across marker, label, and
+  connector, rising to `70%` while selected. Locked uses a lower-right lock
+  badge and remains at `100%`, including while selected.
+- Backend `COMPLETED`/`LOCKED` state is authoritative. `Finished` is a
+  completion fallback only when backend status is absent; gameplay, Station
+  Detail, coordinates, APIs, cache, culling, and pan/zoom behavior are unchanged.
+- Focused marker Vitest passed (`10/10`), full Frontend Vitest passed (`44/44`),
+  and i18n parity, Frontend lint, production build, and bundle gate passed.
+  Authenticated in-map and physical-device visual verification remain pending.
+
+### Review Decision Log
+
+1. Symbols: Completed uses a check; Locked uses a lock badge.
+2. Locked opacity: keep `100%`; only Completed is dimmed.
+3. Selected priority: Locked remains authoritative silver-purple.
+4. Lock placement: lower-right badge outside the marker center.
+5. Interaction: both states remain tappable and open V2 Station Detail.
+6. Palette scope: pin, halo, connector, and label border share the state palette
+   and marker opacity.
+7. Palette token: use neon purple `#B05CFF` with silver `#C3CED8`.
+
 ## 2026-07-31 Background-only overlay opacity
 
 - All Team V2 overlays now default to `95%` background opacity. A versioned
@@ -96,16 +122,13 @@
   Detail. When their required media is unavailable, the control remains
   readable but disabled with a muted silver-neon treatment; no media action is
   invoked.
-- Stations whose Player progress is `Finished` or whose backend status is
-  `COMPLETED` do not render a marker, label, or connector. This is a render-only
-  filter and does not modify Station coordinates, progress, APIs, or gameplay.
-- A backend `LOCKED` Station retains its marker but uses the dedicated
-  gray/silver-neon marker, halo, label, and connector palette. Locked state is
-  evaluated before selected/active presentation so its unavailable state stays
-  visually authoritative.
-- Focused Team V2 tests passed (`12/12`) together with Frontend lint,
-  production build, and bundle gate. Authenticated in-map and physical-device
-  visual verification of these three states remains pending.
+- Completed and Locked Stations retain their marker, label, and connector.
+  Both use the dedicated silver-purple marker palette; Completed is dimmed and
+  uses a check, while Locked stays fully opaque with a lock badge. Locked state
+  is evaluated before selected/active presentation so its unavailable state
+  stays visually authoritative.
+- The prior hide-completed behavior in this dated section is superseded by the
+  2026-08-01 marker-appearance decision and verification above.
 
 ## 2026-07-31 Centered score-only map header
 

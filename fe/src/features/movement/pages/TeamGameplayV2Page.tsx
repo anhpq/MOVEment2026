@@ -10,7 +10,7 @@ import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, T
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
-import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
+import {Arc, Circle, Group, Image as KonvaImage, Layer, Line, Path, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {
   getPlayerLeaderboard,
@@ -37,12 +37,11 @@ import {
 } from "../components/teamV2OverlayOpacity";
 import {
   getStationLabelLayouts,
-  isTeamV2MarkerLocked,
-  shouldRenderTeamV2Marker,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
   type MarkerScreenLayout,
 } from "./teamV2MarkerLayout";
+import {getStationMarkerAppearance} from "../markerAppearance";
 import {
   createLatestFrameScheduler,
   type LatestFrameScheduler,
@@ -121,8 +120,10 @@ export type MarkerViewModel = {
   y: number;
   code: string;
   isActive: boolean;
+  isCompleted: boolean;
   isLocked: boolean;
   isSelected: boolean;
+  opacity: number;
 };
 
 export type MapTransform = {
@@ -206,27 +207,31 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 }
 
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
-  if (marker.isLocked) {
+  if (marker.isLocked || marker.isCompleted) {
     return {
       stroke: "#C3CED8",
-      glow: "#F2F7FB",
+      glow: "#B05CFF",
+      usesSilverPurple: true,
     };
   }
   if (marker.isSelected) {
     return {
       stroke: "#FF3FD8",
       glow: "#FF3FD8",
+      usesSilverPurple: false,
     };
   }
   if (marker.isActive) {
     return {
       stroke: "#2FE4F0",
       glow: "#2FE4F0",
+      usesSilverPurple: false,
     };
   }
   return {
     stroke: hudAccent,
     glow: hudAccent,
+    usesSilverPurple: false,
   };
 }
 
@@ -249,11 +254,14 @@ function TeamMarker({
   const drawScale = size / TEAM_V2_MARKER_DESIGN_WIDTH;
   const markerCenterY = (TEAM_V2_MARKER_CENTER_Y - TEAM_V2_MARKER_TIP_Y) * drawScale;
   const hitRadius = Math.max(22, size * 0.51);
+  const iconScale = size / 40;
+  const lockRadius = Math.max(5, size * 0.16);
 
   return (
     <Group
       x={x}
       y={y}
+      opacity={marker.opacity}
       onClick={(event) => {
         event.cancelBubble = true;
         onSelect();
@@ -277,17 +285,78 @@ function TeamMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
-      <TeamV2NeonMapMarker scale={drawScale} silver={marker.isLocked} />
+      <TeamV2NeonMapMarker
+        scale={drawScale}
+        silver={marker.isLocked || marker.isCompleted}
+      />
       <Circle
         y={markerCenterY}
         radius={148 * drawScale}
-        stroke={colors.stroke}
+        stroke={colors.usesSilverPurple ? undefined : colors.stroke}
+        strokeLinearGradientStartPoint={
+          colors.usesSilverPurple ? {x: -size / 2, y: markerCenterY} : undefined
+        }
+        strokeLinearGradientEndPoint={
+          colors.usesSilverPurple ? {x: size / 2, y: markerCenterY} : undefined
+        }
+        strokeLinearGradientColorStops={
+          colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
+        }
         strokeWidth={1.8}
         shadowColor={colors.glow}
         shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
         shadowOpacity={0.72}
         listening={false}
       />
+      {marker.isCompleted && (
+        <Group
+          y={markerCenterY}
+          scaleX={iconScale}
+          scaleY={iconScale}
+          listening={false}>
+          <Path
+            data="M -6 0 L -1.5 5 L 7 -6"
+            stroke="#F2F7FB"
+            strokeWidth={3}
+            lineCap="round"
+            lineJoin="round"
+            shadowColor="#B05CFF"
+            shadowBlur={5}
+          />
+        </Group>
+      )}
+      {marker.isLocked && (
+        <Group
+          x={size * 0.28}
+          y={-size * 0.32}
+          listening={false}>
+          <Circle
+            radius={lockRadius}
+            fill="#111827"
+            stroke="#B05CFF"
+            strokeWidth={1.4}
+            shadowColor="#B05CFF"
+            shadowBlur={5}
+          />
+          <Arc
+            innerRadius={lockRadius * 0.34}
+            outerRadius={lockRadius * 0.34}
+            angle={180}
+            rotation={180}
+            y={-lockRadius * 0.14}
+            stroke="#C3CED8"
+            strokeWidth={1.3}
+          />
+          <Rect
+            x={-lockRadius * 0.38}
+            y={-lockRadius * 0.04}
+            width={lockRadius * 0.76}
+            height={lockRadius * 0.54}
+            cornerRadius={1}
+            fill="#C3CED8"
+          />
+        </Group>
+      )}
     </Group>
   );
 }
@@ -315,6 +384,7 @@ function TeamMarkerLabel({
     <Group
       x={labelX}
       y={labelY}
+      opacity={marker.opacity}
       scaleX={labelScale}
       scaleY={labelScale}
       onClick={(event) => {
@@ -335,7 +405,16 @@ function TeamMarkerLabel({
         width={STATION_LABEL_WIDTH}
         height={STATION_LABEL_HEIGHT}
         fill="rgba(3, 14, 20, 0.92)"
-        stroke={colors.stroke}
+        stroke={colors.usesSilverPurple ? undefined : colors.stroke}
+        strokeLinearGradientStartPoint={
+          colors.usesSilverPurple ? {x: 0, y: 0} : undefined
+        }
+        strokeLinearGradientEndPoint={
+          colors.usesSilverPurple ? {x: STATION_LABEL_WIDTH, y: 0} : undefined
+        }
+        strokeLinearGradientColorStops={
+          colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
+        }
         strokeWidth={1.2}
         cornerRadius={4}
         shadowColor={colors.glow}
@@ -392,15 +471,25 @@ function TeamMarkerConnector({
   const startY = anchorY + (deltaY / distance) * markerAttachmentOffset;
 
   return (
-    <Line
-      points={[startX, startY, connectorX, connectorY]}
-      stroke={colors.stroke}
-      strokeWidth={1.2}
-      opacity={0.72}
-      shadowColor={colors.glow}
-      shadowBlur={8}
-      listening={false}
-    />
+    <Group opacity={marker.opacity} listening={false}>
+      <Line
+        points={[startX, startY, connectorX, connectorY]}
+        stroke={colors.usesSilverPurple ? undefined : colors.stroke}
+        strokeLinearGradientStartPoint={
+          colors.usesSilverPurple ? {x: startX, y: startY} : undefined
+        }
+        strokeLinearGradientEndPoint={
+          colors.usesSilverPurple ? {x: connectorX, y: connectorY} : undefined
+        }
+        strokeLinearGradientColorStops={
+          colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
+        }
+        strokeWidth={1.2}
+        opacity={0.72}
+        shadowColor={colors.glow}
+        shadowBlur={8}
+      />
+    </Group>
   );
 }
 
@@ -567,22 +656,23 @@ export function TeamGameplayV2Page() {
 
   const markerViewModels = useMemo<MarkerViewModel[]>(() => {
     const byStationId = new Map(activeTeamStations.map((station) => [station.stationId, station]));
-    return stationDefinitions.flatMap((station, index): MarkerViewModel[] => {
+    return stationDefinitions.map((station, index): MarkerViewModel => {
       const position = getStationPosition(station, index, stationDefinitions.length);
       const teamStation = byStationId.get(station.id) ?? null;
-      if (!shouldRenderTeamV2Marker(teamStation)) {
-        return [];
-      }
-      return [{
+      const isSelected = selectedStationId === station.id;
+      const appearance = getStationMarkerAppearance(teamStation, isSelected);
+      return {
         station,
         teamStation,
         x: (position.x / 100) * MAP_WORLD_WIDTH,
         y: (position.y / 100) * MAP_WORLD_HEIGHT,
         code: getStationDisplayCode(station.id),
         isActive: teamStation?.status === "In Progress",
-        isLocked: isTeamV2MarkerLocked(teamStation),
-        isSelected: selectedStationId === station.id,
-      }];
+        isCompleted: appearance.isCompleted,
+        isLocked: appearance.isLocked,
+        isSelected,
+        opacity: appearance.opacity,
+      };
     });
   }, [activeTeamStations, selectedStationId, stationDefinitions]);
 

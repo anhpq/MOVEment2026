@@ -45,6 +45,7 @@ import {
   selectPlayerMapImageVariant,
 } from "../playerData";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
+import {getStationMarkerAppearance} from "../markerAppearance";
 import {useMovementStore} from "../store";
 import type {StationDefinition, TeamStation} from "../types";
 import {
@@ -96,11 +97,11 @@ const MARKER_THEME: Record<
   {from: string; to: string; ring: string; glow: string; text: string; radius: number}
 > = {
   locked: {
-    from: "#f2b155",
-    to: "#c67c1f",
-    ring: "#ffe0a3",
-    glow: "rgba(198,124,31,0.35)",
-    text: "#3a2a12",
+    from: "#C3CED8",
+    to: "#B05CFF",
+    ring: "#F2F7FB",
+    glow: "rgba(176,92,255,0.45)",
+    text: "#F2F7FB",
     radius: 20,
   },
   available: {
@@ -120,11 +121,11 @@ const MARKER_THEME: Record<
     radius: 24,
   },
   completed: {
-    from: "#3ddc7a",
-    to: "#1e8449",
-    ring: "#a8f5c4",
-    glow: "rgba(61,220,122,0.4)",
-    text: "#04321f",
+    from: "#C3CED8",
+    to: "#B05CFF",
+    ring: "#F2F7FB",
+    glow: "rgba(176,92,255,0.45)",
+    text: "#F2F7FB",
     radius: 20,
   },
 };
@@ -133,19 +134,25 @@ function clampMapScale(value: number) {
   return Math.max(MIN_MAP_SCALE, Math.min(MAX_MAP_SCALE, value));
 }
 
-function getMarkerFill(status?: TeamStation["status"]) {
-  return getStationStatusColor(status ?? "New");
+function getMarkerLegendBackground(status?: TeamStation["status"]) {
+  return status === "Finished" ?
+      "linear-gradient(135deg, #C3CED8, #B05CFF)"
+    : getStationStatusColor(status ?? "New");
 }
 
 function getMarkerUiState(teamStation?: TeamStationWithMeta): MarkerUiState {
+  const appearance = getStationMarkerAppearance(teamStation);
+  if (appearance.isLocked) {
+    return "locked";
+  }
+  if (appearance.isCompleted) {
+    return "completed";
+  }
+
   switch (teamStation?.backendStatus) {
     case "CHECKED_IN":
     case "PLAYING":
       return "active";
-    case "COMPLETED":
-      return "completed";
-    case "LOCKED":
-      return "locked";
     case "AVAILABLE":
       return "available";
     default:
@@ -155,8 +162,6 @@ function getMarkerUiState(teamStation?: TeamStationWithMeta): MarkerUiState {
   switch (teamStation?.status) {
     case "In Progress":
       return "active";
-    case "Finished":
-      return "completed";
     case "New":
     default:
       return "available";
@@ -242,6 +247,7 @@ type StationMarkerProps = {
   y: number;
   code: string;
   uiState: MarkerUiState;
+  opacity: number;
   animate: boolean;
   onSelect: () => void;
 };
@@ -285,6 +291,7 @@ function StationMarker({
   y,
   code,
   uiState,
+  opacity,
   animate,
   onSelect,
 }: StationMarkerProps) {
@@ -331,6 +338,7 @@ function StationMarker({
       ref={groupRef}
       x={x}
       y={y}
+      opacity={opacity}
       onClick={(event) => {
         event.cancelBubble = true;
         onSelect();
@@ -851,7 +859,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 <span key={item.label} className="movement-map-legend-item">
                   <span
                     className="movement-map-legend-dot"
-                    style={{backgroundColor: getMarkerFill(item.label)}}
+                    style={{background: getMarkerLegendBackground(item.label)}}
                   />
                   {t(`status.${item.label}`)}
                 </span>
@@ -926,13 +934,17 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
               </Layer>
 
               <Layer>
-                {markerViewModels.map(({station, markerX, markerY, uiState}) => (
+                {markerViewModels.map(({station, markerX, markerY, teamStation, uiState}) => (
                   <StationMarker
                     key={station.id}
                     x={markerX}
                     y={markerY}
                     code={getStationDisplayCode(station.id)}
                     uiState={uiState}
+                    opacity={getStationMarkerAppearance(
+                      teamStation,
+                      focusedStationId === station.id,
+                    ).opacity}
                     animate={!isDraggingMap && !prefersReducedMotion}
                     onSelect={() => {
                       setNowMs(Date.now());
