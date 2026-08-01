@@ -1,5 +1,34 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-02 Team V2 browser fullscreen
+
+- [x] Add an accessible enter/exit fullscreen control next to Team V2 Settings
+  using the standard Fullscreen API and Safari `webkit*` fallback.
+- [x] Keep the icon synchronized with fullscreen events and suppress the
+  redundant control in iOS/Home Screen or standard standalone mode.
+- [x] Add localized unsupported-browser guidance, Apple standalone metadata,
+  theme/status-bar color, and dynamic viewport-height handling.
+- [x] Pass focused Vitest `5/5`, full Frontend Vitest `60/60`, i18n parity
+  `399`, full Frontend lint, production build, bundle gate, and diff check.
+- [ ] Verify enter/exit behavior on desktop Safari and iPadOS Safari, plus Add
+  to Home Screen standalone launch on a physical iPhone.
+
+## 2026-08-02 Request and database hot-path follow-up
+
+- [ ] P0: throttle Team-session `lastSeenAt` writes to a conditional heartbeat
+  no more than once per 60 seconds while preserving revocation validation on
+  every request; compare tuple updates/WAL and auth behavior before/after.
+- [ ] P0: add a 5-15 second single-flight cache for catalog version and lean
+  leaderboard with explicit invalidation after relevant Admin/gameplay/Final
+  mutations; verify freshness and `/api/player/state` query-count reduction.
+- [ ] P0: replace Event Config read-path `upsert` with `findUnique` plus a safe
+  missing-row create fallback; verify concurrent missing-row behavior and no
+  read-path write statements.
+- [ ] P1: capture Production-like Prisma query counts, PostgreSQL statement/WAL
+  metrics, and p95 latency before choosing cache TTLs.
+- [ ] P2: add Final-submission or Activity Log indexes only after table growth
+  plus `EXPLAIN (ANALYZE, BUFFERS)` demonstrates a useful plan change.
+
 ## 2026-08-01 Network request and transfer optimization
 
 - [x] Replace the 42-request Admin QR status fan-out with one metadata-only

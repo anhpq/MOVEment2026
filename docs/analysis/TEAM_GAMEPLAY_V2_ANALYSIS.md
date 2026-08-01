@@ -6,7 +6,27 @@
 | --- | --- |
 | Implementation | Completed for supplied reference HTML palette/layout; V2 route, unified QR endpoint, persistent scanner, i18n, and navigation remain completed |
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
-| Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
+| Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; the new fullscreen control and physical iOS/Android behavior remain pending |
+
+## 2026-08-02 Browser fullscreen control
+
+- The Team V2 header now exposes an accessible enter/exit fullscreen icon next
+  to Settings. It requests the standard Fullscreen API with
+  `navigationUI: "hide"`, falls back to Safari's `webkit*` API, and synchronizes
+  the icon with both standard and prefixed fullscreen change events.
+- Installed iOS/Home Screen and standard standalone display modes are detected
+  so the redundant fullscreen control is hidden. Browsers without element
+  fullscreen, notably iPhone Safari, receive localized Add to Home Screen
+  guidance instead of a false success state.
+- The document advertises standalone-capable Apple metadata and a dark status
+  bar/theme color. Team V2 uses `100dvh` in addition to its existing fixed
+  viewport and safe-area layout so browser chrome changes do not leave a stale
+  viewport height.
+- Focused fullscreen Vitest passed (`5/5`), full Frontend Vitest passed
+  (`60/60`), i18n parity passed (`399` keys), full Frontend lint passed, and the
+  production build/bundle gate passed at `203.63 KiB` initial gzip JavaScript.
+  Automated browser tooling and physical Safari/iOS verification were not
+  available in this workspace and remain pending.
 
 ## 2026-08-01 Completed and Locked marker appearance
 

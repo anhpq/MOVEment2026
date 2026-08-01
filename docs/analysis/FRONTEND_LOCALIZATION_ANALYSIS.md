@@ -8,6 +8,15 @@
 | Runtime/Production Verification | Blocked: 2026-07-28 read-only smoke found stale/broken Production JS asset reference |
 | Browser/Manual Verification | Pending desktop/mobile smoke |
 
+## 2026-08-02 Team V2 fullscreen copy
+
+- Added VI/EN labels for entering and exiting fullscreen, API failure, and the
+  iPhone Safari Add to Home Screen fallback. The icon buttons expose the same
+  localized text through `aria-label` and `title`.
+- i18n parity passed with `399` keys. Full Frontend Vitest, lint, production
+  build, and bundle gate passed; physical Safari/iOS copy verification remains
+  pending.
+
 ## 2026-07-29 Runtime Stability Integration
 
 - Lean Player catalog requests remain language-aware and reload only when the

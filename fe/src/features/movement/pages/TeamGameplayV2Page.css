@@ -1,6 +1,7 @@
 .team-v2-page {
   position: fixed;
   inset: 0;
+  height: 100dvh;
   min-height: 100dvh;
   overflow: hidden;
   background: #030c14;
@@ -65,7 +66,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(180px, auto) minmax(0, 1fr);
   grid-template-areas:
-    ". brand settings"
+    ". brand actions"
     ". score .";
   gap: 12px 16px;
   align-items: start;
@@ -89,6 +90,7 @@
   text-transform: uppercase;
 }
 
+.team-v2-fullscreen-button,
 .team-v2-settings-button,
 .team-v2-icon-button {
   border: 1px solid var(--team-v2-line);
@@ -225,6 +227,7 @@
   letter-spacing: 0.04em;
 }
 
+.team-v2-fullscreen-button,
 .team-v2-settings-button,
 .team-v2-icon-button {
   display: inline-grid;
@@ -237,9 +240,16 @@
   transition: border-color 160ms ease, color 160ms ease, filter 160ms ease, transform 160ms ease;
 }
 
-.team-v2-settings-button {
-  grid-area: settings;
+.team-v2-header-actions {
+  grid-area: actions;
   justify-self: end;
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.team-v2-fullscreen-button,
+.team-v2-settings-button {
   margin: 0;
   border: 1.5px solid var(--team-v2-accent);
   border-radius: 50%;
@@ -251,6 +261,7 @@
   pointer-events: auto;
 }
 
+.team-v2-fullscreen-button:hover,
 .team-v2-settings-button:hover,
 .team-v2-icon-button:hover {
   border-color: var(--team-v2-line-bright);
@@ -259,6 +270,7 @@
   transform: translateY(-1px);
 }
 
+.team-v2-fullscreen-button:focus-visible,
 .team-v2-settings-button:focus-visible,
 .team-v2-icon-button:focus-visible,
 .team-v2-footer-panel:focus-visible,
@@ -857,7 +869,7 @@
   .team-v2-header {
     grid-template-columns: minmax(0, 1fr) minmax(150px, 42vw) minmax(44px, 1fr);
     grid-template-areas:
-      ". brand settings"
+      ". brand actions"
       ". score .";
     gap: 10px 8px;
     padding-top: 12px;
@@ -865,8 +877,8 @@
     padding-left: max(12px, env(safe-area-inset-left, 0));
   }
 
-  .team-v2-settings-button {
-    margin-top: 0;
+  .team-v2-header-actions {
+    flex-direction: column;
   }
 
   .team-v2-event-banner {

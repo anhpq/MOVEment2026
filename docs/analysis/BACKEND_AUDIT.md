@@ -1,3 +1,39 @@
+# 2026-08-02 Team V2 browser fullscreen
+
+- Added an accessible Team V2 enter/exit fullscreen control using the standard
+  Fullscreen API with `navigationUI: "hide"` and Safari `webkit*` fallbacks.
+  Fullscreen events keep the control state synchronized; installed standalone
+  mode hides the redundant control.
+- Unsupported iPhone Safari receives localized Add to Home Screen guidance.
+  Apple standalone/status-bar metadata, theme color, `100dvh`, and existing
+  safe-area handling cover browser-chrome and Home Screen launch behavior.
+- Verification PASS: focused fullscreen Vitest `5/5`, full Frontend Vitest
+  `60/60`, i18n parity `399`, full Frontend lint, production build, and bundle gate
+  at `203.63 KiB` initial gzip JavaScript. Physical Safari/iOS and Production
+  verification were not performed. Backend, database, deploy, migration, and
+  seed behavior were unchanged.
+
+# 2026-08-02 Backend and database hot-path audit
+
+- Confirmed that every authenticated Team request reads a session and writes
+  `lastSeenAt`. Local PostgreSQL statistics show `292` updates and `28` dead
+  tuples for `69` session rows. P0 optimization: keep revocation reads on every
+  request but conditionally write the heartbeat at most once per minute.
+- Confirmed that every `/api/player/state` poll rebuilds the global catalog
+  version and lean leaderboard, in addition to Team progress, Event Config,
+  Final Challenge, and Final submission state. P0 optimization: bounded
+  single-flight caching with explicit invalidation after relevant mutations.
+- Confirmed that `EventConfigService.getConfig()` performs an empty-update
+  `upsert` on read paths. P0 optimization: `findUnique` for normal reads and a
+  missing-row create fallback.
+- The local database is approximately `9.8 MiB` with `25` Teams, `17` Stations,
+  `425` progress rows, `217` activity logs, and zero Final submissions. No
+  general index migration is justified yet. Candidate Activity Log and Final
+  submission indexes remain deferred until Production query plans or growth
+  metrics show a benefit.
+- This pass was read-only for Backend and database. No cache, index, migration,
+  seed, or Production state was changed.
+
 # 2026-07-31 Team V2 exact Bézier Konva marker
 
 - Replaced the prior polygon/circuit artwork with the supplied exact component:

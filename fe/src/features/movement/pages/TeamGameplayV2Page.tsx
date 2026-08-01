@@ -2,6 +2,8 @@ import {
   ArrowLeftOutlined,
   CloseOutlined,
   CustomerServiceOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined,
   LogoutOutlined,
   SettingOutlined,
   TrophyFilled,
@@ -47,6 +49,12 @@ import {
   type LatestFrameScheduler,
 } from "./teamV2FrameScheduler";
 import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
+import {
+  getActiveFullscreenElement,
+  isStandaloneDisplayMode,
+  TEAM_V2_FULLSCREEN_CHANGE_EVENTS,
+  toggleBrowserFullscreen,
+} from "./teamV2Fullscreen";
 import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
@@ -622,6 +630,10 @@ export function TeamGameplayV2Page() {
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
+    () => Boolean(getActiveFullscreenElement()),
+  );
+  const [isStandaloneApp, setIsStandaloneApp] = useState(isStandaloneDisplayMode);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({width: 0, height: 0});
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
@@ -728,6 +740,26 @@ export function TeamGameplayV2Page() {
   useEffect(() => {
     const scheduler = mapTransformSchedulerRef.current;
     return () => scheduler?.cancel();
+  }, []);
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      setIsBrowserFullscreen(Boolean(getActiveFullscreenElement()));
+      setIsStandaloneApp(isStandaloneDisplayMode());
+    };
+
+    TEAM_V2_FULLSCREEN_CHANGE_EVENTS.forEach((eventName) => {
+      document.addEventListener(eventName, syncFullscreenState);
+    });
+    window.addEventListener("pageshow", syncFullscreenState);
+    syncFullscreenState();
+
+    return () => {
+      TEAM_V2_FULLSCREEN_CHANGE_EVENTS.forEach((eventName) => {
+        document.removeEventListener(eventName, syncFullscreenState);
+      });
+      window.removeEventListener("pageshow", syncFullscreenState);
+    };
   }, []);
 
   useEffect(() => {
@@ -960,6 +992,17 @@ export function TeamGameplayV2Page() {
     }
   };
 
+  const handleToggleFullscreen = async () => {
+    try {
+      const result = await toggleBrowserFullscreen();
+      if (result === "unsupported") {
+        message.info(t("teamV2.fullscreenUnavailable"), 7);
+      }
+    } catch {
+      message.warning(t("teamV2.fullscreenFailed"));
+    }
+  };
+
   if (!activeTeam) {
     return (
       <main className="team-v2-page">
@@ -1085,17 +1128,35 @@ export function TeamGameplayV2Page() {
             <span>{t("teamV2.pointsUnit")}</span>
           </div>
         </div>
-        <button
-          type="button"
-          className="team-v2-settings-button"
-          aria-label={t("teamV2.openSettings")}
-          onClick={() => {
-            setIsLeaderboardOpen(false);
-            setIsScannerOpen(false);
-            setIsSettingsOpen(true);
-          }}>
-          <SettingOutlined />
-        </button>
+        <div className="team-v2-header-actions">
+          {!isStandaloneApp && (
+            <button
+              type="button"
+              className="team-v2-fullscreen-button"
+              aria-label={t(
+                isBrowserFullscreen ? "teamV2.exitFullscreen" : "teamV2.enterFullscreen",
+              )}
+              aria-pressed={isBrowserFullscreen}
+              title={t(
+                isBrowserFullscreen ? "teamV2.exitFullscreen" : "teamV2.enterFullscreen",
+              )}
+              onClick={() => void handleToggleFullscreen()}>
+              {isBrowserFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+            </button>
+          )}
+          <button
+            type="button"
+            className="team-v2-settings-button"
+            aria-label={t("teamV2.openSettings")}
+            title={t("teamV2.openSettings")}
+            onClick={() => {
+              setIsLeaderboardOpen(false);
+              setIsScannerOpen(false);
+              setIsSettingsOpen(true);
+            }}>
+            <SettingOutlined />
+          </button>
+        </div>
       </header>
 
       {selectedStation && !isPrimaryOverlayOpen && (

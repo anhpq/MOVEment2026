@@ -34,6 +34,14 @@ measured the canonical state/catalog at 3,885/5,908 bytes and passed the full
 auth, QR, scoring, Final, leaderboard, migration, seed, and environment-guard
 flow.
 
+Team Gameplay V2 provides a header fullscreen control using the standard
+Fullscreen API with Safari `webkit*` fallback. It requests hidden navigation UI,
+tracks enter/exit state, uses dynamic viewport height and safe-area insets, and
+recognizes installed standalone mode. Because iPhone Safari does not reliably
+offer element fullscreen, unsupported devices receive localized Add to Home
+Screen guidance; the page includes the Apple standalone/status-bar metadata
+needed for that launch mode.
+
 ## Product Scope
 
 MOVEment 2026 is a mobile-first station game web application.
@@ -457,12 +465,13 @@ blocks the rejected token until a different token appears or the frame remains
 empty for at least 600ms. Success, close, and unmount stop all tracks and decode
 callbacks.
 
-Opacity applies to the whole overlay, including background, text, icons,
-buttons, and controls. The supported range is 50-100, with default 85.
+Opacity applies only to overlay backdrop and panel backgrounds. Text, icons,
+buttons, controls, and media remain fully opaque. The supported range is
+50-100, with default 95.
 
 The main V2 screen follows the supplied black/cyan fantasy HUD reference with
-exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
-at the upper right, no Team identity block on the map HUD, a tall angular brand
+exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Fullscreen
+and Settings at the upper right, no Team identity block on the map HUD, a tall angular brand
 plate with symmetric striped cyan rails, and a bright green multi-layer neon
 total score centered below the brand in every responsive mode, plus
 three independent sci-fi footer controls: Leaderboard left, a raised

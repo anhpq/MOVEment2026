@@ -8,6 +8,41 @@
 | Runtime/Production Verification | Production-like local smoke completed; Production not performed |
 | Browser/Manual Verification | Pending physical/responsive manual verification |
 
+## Follow-up hot-path audit - 2026-08-02
+
+The current local database is approximately `9.8 MiB` with `25` Teams, `17`
+Stations, `425` progress rows, `69` Team sessions, `217` activity logs, and no
+Final submissions. Current inventory does not justify a general index migration.
+
+Confirmed priorities:
+
+1. `JwtAuthGuard` validates the Team session and updates `lastSeenAt` on every
+   authenticated Team request. Local PostgreSQL statistics show `292` updates
+   and `28` dead tuples across `69` session rows. Preserve per-request revoke
+   validation, but throttle the write with a conditional update when the stored
+   heartbeat is at least 60 seconds old.
+2. Every `/api/player/state` poll recomputes the shared catalog hash and full
+   lean leaderboard. At the normal 15-second interval, 25 continuously visible
+   Teams can produce about 100 state polls per minute. Add a bounded 5-15 second
+   single-flight cache for shared projections and explicitly invalidate it
+   after gameplay, scoring, Final, Station/media, Team, or Event Config changes.
+3. `EventConfigService.getConfig()` uses `upsert({ update: {} })` on a hot read
+   path. Normal reads should use `findUnique`, with creation limited to a
+   missing-row fallback or startup/seed path; cache only if Admin updates
+   invalidate it.
+
+Deferred until growth evidence exists:
+
+- a Final-submission index including `teamId`, because the local table is empty;
+- Activity Log actor/time or created-time indexes, because the local table has
+  only 217 rows;
+- timer micro-optimizations and progress-matrix lookup maps, because they have
+  lower impact than the request/DB hot paths above.
+
+Required evidence before completion: Prisma/PostgreSQL query counts, WAL or
+tuple-update rate, p95 `/api/player/state`, cache hit rate, mutation-to-read
+freshness, and `EXPLAIN (ANALYZE, BUFFERS)` for any proposed index.
+
 ## Network Transfer Optimization - 2026-08-01
 
 - Admin System Config now loads QR metadata through one
