@@ -895,9 +895,11 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
           <Flex gap={8} vertical justify="center" align="center">
             <Button
               icon={<ReloadOutlined />}
+              aria-label={t("map.resetView")}
+              title={t("map.resetView")}
               onClick={handleResetTransform}></Button>
-            <Button icon={<ZoomInOutlined />} onClick={handleZoomIn}></Button>
-            <Button icon={<ZoomOutOutlined />} onClick={handleZoomOut}></Button>
+            <Button icon={<ZoomInOutlined />} aria-label={t("map.zoomIn")} title={t("map.zoomIn")} onClick={handleZoomIn}></Button>
+            <Button icon={<ZoomOutOutlined />} aria-label={t("map.zoomOut")} title={t("map.zoomOut")} onClick={handleZoomOut}></Button>
           </Flex>
         </div>
 

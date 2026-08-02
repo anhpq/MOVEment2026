@@ -872,9 +872,9 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   }
 
   .language-switch__button {
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
   }
 }
 
@@ -919,9 +919,9 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   }
 
   .language-switch__button {
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
   }
 
   .nav-strip {

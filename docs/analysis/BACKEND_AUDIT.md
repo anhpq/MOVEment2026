@@ -1283,3 +1283,17 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - No Backend, API, schema, seed, gameplay, or non-V2 screen changed. Focused
   Vitest (`11/11`), full Frontend Vitest (`39/39`), i18n parity, Frontend lint,
   production build, bundle gate, and Chrome visual verification passed.
+# 2026-08-02 Frontend UI usability and accessibility optimization
+
+- Added an explicit initial-load error with retry action to the shared
+  Leaderboard while preserving stale rows on refresh failures.
+- Made unknown-route redirects session-aware: Admin returns to `/teams`, Team
+  returns to `/stations`, and anonymous users return to `/login`.
+- Added localized accessible labels/tooltips for map zoom/reset controls,
+  primary navigation, application branding, and authorization-denied UI.
+- Improved mobile readability and touch targets for Leaderboard, Admin
+  Operations, Team list, language controls, and map controls; truncated Team
+  and Leaderboard names now expose their full value through a title.
+- Verification PASS: Frontend Vitest `61/61`, i18n parity `409`, full lint,
+  TypeScript production build, and bundle budget (`203.85 KiB` initial gzip).
+- Manual authenticated desktop/mobile visual review remains pending.

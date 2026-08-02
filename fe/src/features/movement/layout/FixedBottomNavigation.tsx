@@ -1,4 +1,5 @@
 import type {ReactNode} from "react";
+import {useTranslation} from "react-i18next";
 
 export type FixedBottomNavigationItem = Readonly<{
   key: string;
@@ -13,8 +14,9 @@ type FixedBottomNavigationProps = Readonly<{
 }>;
 
 export function FixedBottomNavigation({items}: FixedBottomNavigationProps) {
+  const {t} = useTranslation();
   return (
-    <nav className="fixed-bottom-navigation" aria-label="Primary navigation">
+    <nav className="fixed-bottom-navigation" aria-label={t("common.primaryNavigation")}>
       {items.map((item) => (
         <button
           key={item.key}

@@ -74,7 +74,7 @@ export function TeamListPage() {
                   <div className="team-select-identity">
                     <div className="team-select-name-row">
                       <Typography.Title level={3}>
-                        {displayName}
+                        <span title={displayName}>{displayName}</span>
                       </Typography.Title>
                     </div>
                     <Typography.Text>{team.id}</Typography.Text>

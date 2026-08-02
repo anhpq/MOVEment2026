@@ -1,5 +1,15 @@
 # Frontend Localization Analysis
 
+## 2026-08-02 Shared accessibility copy follow-up
+
+- Localized authorization-denied title, description, and role-specific return
+  actions in `ProtectedRoute`.
+- Localized primary-navigation/application-branding accessible names and map
+  reset/zoom labels.
+- Added localized Leaderboard initial-load failure copy with retry behavior.
+- Frontend i18n parity passes with `409` keys.
+
+
 ## Status
 
 | Area | Status |

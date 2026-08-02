@@ -27,6 +27,10 @@ export const translationResources = {
         chunkErrorTitle: "Không thể tải màn hình",
         chunkErrorDescription: "Kết nối có thể bị gián đoạn hoặc ứng dụng vừa được cập nhật. Hãy thử lại.",
         retry: "Thử lại",
+        accessDeniedTitle: "Không có quyền truy cập",
+        accessDeniedDescription: "Tài khoản hiện tại không có quyền mở màn hình này.",
+        backToTeams: "Quay về danh sách đội",
+        backToStations: "Quay về danh sách trạm",
       },
       auth: {
         username: "Tên đăng nhập",
@@ -188,6 +192,8 @@ export const translationResources = {
       },
       common: {
         admin: "Admin",
+        primaryNavigation: "Điều hướng chính",
+        applicationBranding: "Thương hiệu ứng dụng",
         deployUnknown: "Deploy: không rõ",
         deploy: "Deploy: {{value}}",
         close: "Đóng",
@@ -296,6 +302,9 @@ export const translationResources = {
         scoreSubmissionFailed: "Gửi điểm thất bại",
       },
       map: {
+        resetView: "Đặt lại bản đồ",
+        zoomIn: "Phóng to",
+        zoomOut: "Thu nhỏ",
         legendNew: "Mới",
         legendInProgress: "Đang chơi",
         legendFinished: "Hoàn thành",
@@ -385,6 +394,7 @@ export const translationResources = {
       leaderboard: {
         title: "Bảng xếp hạng",
         empty: "Chưa có dữ liệu xếp hạng",
+        loadFailed: "Không thể tải bảng xếp hạng",
         currentTeam: "Đội của bạn",
         staleData: "Không thể cập nhật bảng xếp hạng. Đang hiển thị dữ liệu gần nhất.",
       },
@@ -474,6 +484,10 @@ export const translationResources = {
         chunkErrorTitle: "Unable to load this screen",
         chunkErrorDescription: "Your connection may have been interrupted or the app was just updated. Please try again.",
         retry: "Retry",
+        accessDeniedTitle: "Access denied",
+        accessDeniedDescription: "The current account cannot open this screen.",
+        backToTeams: "Back to teams",
+        backToStations: "Back to stations",
       },
       auth: {
         username: "Username",
@@ -635,6 +649,8 @@ export const translationResources = {
       },
       common: {
         admin: "Admin",
+        primaryNavigation: "Primary navigation",
+        applicationBranding: "Application branding",
         deployUnknown: "Deploy: unknown",
         deploy: "Deploy: {{value}}",
         close: "Close",
@@ -743,6 +759,9 @@ export const translationResources = {
         scoreSubmissionFailed: "Score submission failed",
       },
       map: {
+        resetView: "Reset map",
+        zoomIn: "Zoom in",
+        zoomOut: "Zoom out",
         legendNew: "New",
         legendInProgress: "In Progress",
         legendFinished: "Finished",
@@ -832,6 +851,7 @@ export const translationResources = {
       leaderboard: {
         title: "Leaderboard",
         empty: "No ranking data",
+        loadFailed: "Unable to load the leaderboard",
         currentTeam: "Your team",
         staleData: "Unable to refresh the leaderboard. Showing the latest available data.",
       },

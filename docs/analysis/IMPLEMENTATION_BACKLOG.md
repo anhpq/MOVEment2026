@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-02 Frontend UI usability and accessibility optimization
+
+- [x] Add Leaderboard initial-load error/retry while preserving stale-data UX.
+- [x] Redirect unknown routes according to Admin, Team, or anonymous session.
+- [x] Localize shared authorization and navigation accessibility copy.
+- [x] Label map controls and expose truncated Team/Leaderboard names.
+- [x] Improve representative mobile text sizes and touch targets.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated desktop/mobile visual and keyboard smoke.
+- [ ] Remove confirmed orphaned Legacy CSS in a separate bounded refactor.
+
 ## 2026-08-02 Admin Leaderboard authorization fix
 
 - [x] Route Admin Leaderboard reads through `GET /api/leaderboard` and retain

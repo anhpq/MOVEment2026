@@ -47,6 +47,12 @@
   z-index: 6;
 }
 
+.movement-map-zoom-controls .ant-btn {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+}
+
 .movement-map-legend {
   display: flex;
   align-items: center;

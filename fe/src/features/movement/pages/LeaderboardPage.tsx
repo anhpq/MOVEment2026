@@ -4,7 +4,7 @@ import {
   QrcodeOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {Alert, Card, Empty, List, Typography} from "antd";
+import {Alert, Button, Card, Empty, List, Typography} from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
@@ -81,8 +81,17 @@ export function LeaderboardPage() {
         </span>
       </header>
 
-      {hasRefreshError && rows.length > 0 && (
-        <Alert type="warning" showIcon message={t("leaderboard.staleData")} />
+      {hasRefreshError && (
+        <Alert
+          type={rows.length > 0 ? "warning" : "error"}
+          showIcon
+          message={rows.length > 0 ? t("leaderboard.staleData") : t("leaderboard.loadFailed")}
+          action={rows.length === 0 ? (
+            <Button size="small" onClick={() => void refresh()}>
+              {t("route.retry")}
+            </Button>
+          ) : undefined}
+        />
       )}
 
       <List
@@ -104,7 +113,7 @@ export function LeaderboardPage() {
 
             <div className="leaderboard-team">
               <div className="leaderboard-team-name">
-                <Typography.Text strong>{displayTeamName}</Typography.Text>
+                <Typography.Text strong title={displayTeamName}>{displayTeamName}</Typography.Text>
                 {String(row.teamId) === playerTeamId && (
                   <span className="current-team-badge">
                     {t("leaderboard.currentTeam")}

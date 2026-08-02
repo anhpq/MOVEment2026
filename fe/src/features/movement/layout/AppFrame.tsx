@@ -188,7 +188,7 @@ export function AppFrame({children}: AppFrameProps) {
       <Layout.Header className="shell-header">
         <div className="header-content">
           <div className="header-spacer" />
-          <div className="app-brand" aria-label="Application branding">
+          <div className="app-brand" aria-label={t("common.applicationBranding")}>
             <RunningPersonIcon className="app-runner-mark" />
             <span className="brand-title">MOVEment 2026</span>
           </div>

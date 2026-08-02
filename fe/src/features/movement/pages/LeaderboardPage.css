@@ -356,12 +356,12 @@
 
   .current-team-badge {
     padding-inline: 5px;
-    font-size: 0.52rem;
+    font-size: 0.68rem;
   }
 
   .leaderboard-meta {
     gap: 2px 8px;
-    font-size: 0.66rem;
+    font-size: 0.75rem;
   }
 
   .leaderboard-points {

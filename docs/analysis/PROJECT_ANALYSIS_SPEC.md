@@ -1,5 +1,16 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-02 Shared UI usability baseline
+
+- Initial Leaderboard load failures provide a localized retry action; refresh
+  failures retain and identify stale rows.
+- Unknown routes return Admin to `/teams`, Team to `/stations`, and anonymous
+  users to `/login`.
+- Icon-only map controls provide localized accessible names and tooltips.
+- Shared mobile UI keeps important controls near a 44px touch target and avoids
+  sub-12px text for the optimized Leaderboard/Admin/Team-list metadata paths.
+
+
 ## Authority
 
 Confirmed Business Rules are defined in:
