@@ -1,3 +1,12 @@
+# 2026-08-03 Team score reason removal
+
+- Removed the optional Team reason field from post-Check-out score entry and
+  stopped including it in the Team score request.
+- Preserved the separate mandatory Admin correction reason path and all Backend
+  score validation.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget (`203.98 KiB` initial gzip JS).
+
 # 2026-08-03 QR modal Station identity layout
 
 - Refined the shared Check-in/Check-out Station identity block into a compact

@@ -1,5 +1,14 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-03 Team score entry without reason
+
+- The Team score modal shown after Check-out now contains only the required
+  score input and no longer sends an optional reason.
+- Admin score correction retains its required reason field and validation.
+- Score limits, tracking modes, completion, and Backend authority are unchanged.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget.
+
 ## 2026-08-03 Shared Station identity row
 
 - Check-in and Check-out now present the Station code as a compact badge beside

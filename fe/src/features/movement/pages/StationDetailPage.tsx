@@ -207,7 +207,6 @@ export function StationDetailPage() {
       message.success(t("stationDetail.checkOutAccepted"));
       scoreForm.setFieldsValue({
         score: 0,
-        reason: "",
       });
       setIsScoreModalOpen(true);
     } catch {
@@ -576,11 +575,7 @@ export function StationDetailPage() {
                 setIsSubmittingScore(true);
                 try {
                   await executePlayerMutation(
-                    () => submitStationScore(
-                      station.stationId,
-                      values.score,
-                      values.reason,
-                    ),
+                    () => submitStationScore(station.stationId, values.score),
                     language,
                   );
                   message.success(t("stationDetail.completedSuccess"));
@@ -601,9 +596,11 @@ export function StationDetailPage() {
             rules={[{required: true}]}>
             <InputNumber min={0} max={stationMaxPoints} className="full-width" />
           </Form.Item>
-          <Form.Item label={t("stationDetail.reason")} name="reason">
-            <Input.TextArea rows={2} placeholder={t("stationDetail.optionalNote")} />
-          </Form.Item>
+          {session.role !== "user" && (
+            <Form.Item label={t("stationDetail.reason")} name="reason">
+              <Input.TextArea rows={2} placeholder={t("stationDetail.optionalNote")} />
+            </Form.Item>
+          )}
           <Button
             type="primary"
             htmlType="submit"

@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team score reason removal
+
+- [x] Remove the optional reason field from Team score entry after Check-out.
+- [x] Submit only the Team score while retaining mandatory Admin reasons.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated mobile visual smoke of the simplified score modal.
+
 ## 2026-08-03 QR modal Station identity layout
 
 - [x] Place the Station code badge and name on one responsive row for both

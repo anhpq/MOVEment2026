@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team score entry presentation
+
+- After Check-out, Team score entry asks only for the score. Optional Team
+  reason input is not shown or submitted.
+- Admin score correction continues to require a non-empty reason.
+
 ## 2026-08-03 QR modal Station identity layout
 
 - Check-in and Check-out share a compact horizontal Station identity row with a
