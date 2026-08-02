@@ -810,6 +810,69 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
   object-fit: cover;
 }
 
+.station-qr-modal .ant-modal-content {
+  border-radius: 22px;
+}
+
+.station-qr-modal .ant-modal-header {
+  margin-bottom: 14px;
+}
+
+.station-qr-modal .ant-modal-close {
+  width: 44px;
+  height: 44px;
+}
+
+.station-qr-identity {
+  display: grid;
+  gap: 3px;
+  padding: 12px 14px;
+  border: 1px solid rgba(237, 118, 87, 0.2);
+  border-radius: 14px;
+  background: #fff8f4;
+}
+
+.station-qr-identity span {
+  color: var(--team-primary, #c94f35);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.station-qr-identity strong {
+  color: #17223b;
+  font-size: 1rem;
+}
+
+.qr-token-input.is-camera-first .qr-camera-primary {
+  min-height: 50px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.qr-token-input.is-camera-first > .ant-btn-link {
+  min-height: 44px;
+  color: #667085;
+}
+
+.qr-manual-entry .ant-input {
+  min-height: 46px;
+  border-radius: 12px;
+}
+
+@media (max-width: 480px) {
+  .station-qr-modal {
+    max-width: calc(100vw - 24px);
+    margin: 12px auto;
+  }
+
+  .station-qr-modal .ant-modal-content {
+    padding: 20px 16px 16px;
+  }
+}
+
 @media (max-width: 720px) {
   .header-content {
     min-height: 54px;

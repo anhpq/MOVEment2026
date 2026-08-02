@@ -1305,3 +1305,15 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   layout, and all media behavior.
 - Verification PASS: focused Team V2 detail tests `6/6`, Frontend lint,
   production build, and bundle budget (`203.84 KiB` initial gzip).
+# 2026-08-03 Check-in QR camera-first modal
+
+- Redesigned the Station List Check-in modal around the primary camera action.
+- Manual token entry is collapsed by default and opens explicitly or
+  automatically when camera support is unavailable or camera startup fails.
+- Replaced the large Backend-oriented flow alert with a concise Station
+  identity card and player-facing instruction; scanned QR still auto-submits.
+- Preserved shared `QrTokenInput` compatibility for Check-out, map, and login
+  consumers through optional presentation/submission props.
+- Verification PASS: Frontend Vitest `61/61`, i18n parity `413`, lint,
+  production build, and bundle budget (`203.95 KiB` initial gzip).
+- Manual physical-camera and mobile visual verification remains pending.

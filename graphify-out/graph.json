@@ -942,8 +942,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_schematics",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 233,
+      "community_name": "@nestjs/schematics",
       "norm_label": "@nestjs/schematics"
     },
     {
@@ -953,8 +953,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "nestjs_schematics",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 233,
+      "community_name": "@nestjs/schematics",
       "norm_label": "@nestjs/schematics"
     },
     {
@@ -964,8 +964,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_testing",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -975,8 +975,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "nestjs_testing",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -2196,8 +2196,8 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "be_prisma_reset_gameplay_seed_createuniqueqrlogintoken",
-      "community": 68,
-      "community_name": "reset-gameplay-seed.ts",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": "createuniqueqrlogintoken()"
     },
     {
@@ -2383,8 +2383,8 @@
       "source_location": "L432",
       "_origin": "ast",
       "id": "be_prisma_seed_ensurestationqrtoken",
-      "community": 202,
-      "community_name": "createQrTokenFingerprint",
+      "community": 7,
+      "community_name": "seed.ts",
       "norm_label": "ensurestationqrtoken()"
     },
     {
@@ -2394,8 +2394,8 @@
       "source_location": "L485",
       "_origin": "ast",
       "id": "be_prisma_seed_createuniquestationqrtoken",
-      "community": 202,
-      "community_name": "createQrTokenFingerprint",
+      "community": 7,
+      "community_name": "seed.ts",
       "norm_label": "createuniquestationqrtoken()"
     },
     {
@@ -2405,8 +2405,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_prisma_station_replacement",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "station-replacement.ts"
     },
     {
@@ -2416,8 +2416,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "be_prisma_station_replacement_stationreplacementresult",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "stationreplacementresult"
     },
     {
@@ -2427,8 +2427,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "be_prisma_station_replacement_createuniquestationqrtoken",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "createuniquestationqrtoken()"
     },
     {
@@ -2438,8 +2438,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "be_prisma_station_replacement_deletestationrelatedactivitylogs",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "deletestationrelatedactivitylogs()"
     },
     {
@@ -2449,8 +2449,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_prisma_station_replacement_replaceallstations",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "replaceallstations()"
     },
     {
@@ -2460,8 +2460,8 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "be_prisma_station_replacement_verifycanonicalstationstate",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "verifycanonicalstationstate()"
     },
     {
@@ -2471,8 +2471,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "station-seed-data.ts"
     },
     {
@@ -2482,8 +2482,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_canonicalstationinput",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "canonicalstationinput"
     },
     {
@@ -2493,8 +2493,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_canonicalstation",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "canonicalstation"
     },
     {
@@ -2504,8 +2504,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_canonical_station_input",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "canonical_station_input"
     },
     {
@@ -2515,8 +2515,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_canonical_qr_purposes",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "canonical_qr_purposes"
     },
     {
@@ -2526,8 +2526,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_normalizegametype",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "normalizegametype()"
     },
     {
@@ -2537,8 +2537,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_canonical_stations",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "canonical_stations"
     },
     {
@@ -2548,8 +2548,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_canonical_station_ids",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "canonical_station_ids"
     },
     {
@@ -2559,8 +2559,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_validatecanonicalstations",
-      "community": 68,
-      "community_name": "reset-gameplay-seed.ts",
+      "community": 110,
+      "community_name": "sync-stations.ts",
       "norm_label": "validatecanonicalstations()"
     },
     {
@@ -2592,8 +2592,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_spec",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "team-color-seed.spec.ts"
     },
     {
@@ -2603,8 +2603,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "team-color-seed.ts"
     },
     {
@@ -2614,8 +2614,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_team_color_palette",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "team_color_palette"
     },
     {
@@ -2625,8 +2625,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_teamseedupdateinput",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "teamseedupdateinput"
     },
     {
@@ -2636,8 +2636,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_validateteamcolorpalette",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "validateteamcolorpalette()"
     },
     {
@@ -2647,8 +2647,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_getseedteamcolor",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "getseedteamcolor()"
     },
     {
@@ -2658,8 +2658,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_isseedmanagedteamusername",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "isseedmanagedteamusername()"
     },
     {
@@ -2669,8 +2669,8 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_planteamseedoperation",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "planteamseedoperation()"
     },
     {
@@ -2680,8 +2680,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_buildteamseedupdatedata",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "buildteamseedupdatedata()"
     },
     {
@@ -2691,8 +2691,8 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "be_prisma_team_color_seed_buildseedteams",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "buildseedteams()"
     },
     {
@@ -3021,8 +3021,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "be_src_app_module_appmodule_configure",
-      "community": 155,
-      "community_name": "validate-environment.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": ".configure()"
     },
     {
@@ -3032,8 +3032,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "activity-log.service.ts"
     },
     {
@@ -3043,8 +3043,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "activitylogservice"
     },
     {
@@ -3054,8 +3054,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_ts_injectable",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "injectable"
     },
     {
@@ -3065,8 +3065,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_constructor",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3087,8 +3087,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_tojson",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": ".tojson()"
     },
     {
@@ -3120,8 +3120,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authcontext",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 8,
+      "community_name": "AuthService",
       "norm_label": "authcontext"
     },
     {
@@ -3208,8 +3208,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_spec",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "jwt-auth.guard.spec.ts"
     },
     {
@@ -3219,8 +3219,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "jwt-auth.guard.ts"
     },
     {
@@ -3230,8 +3230,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtpayload",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "jwtpayload"
     },
     {
@@ -3241,8 +3241,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "jwtauthguard"
     },
     {
@@ -3252,8 +3252,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_ts_injectable",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "injectable"
     },
     {
@@ -3263,8 +3263,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_constructor",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".constructor()"
     },
     {
@@ -3274,8 +3274,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "be_src_common_auth_jwt_auth_guard_jwtauthguard_canactivate",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".canactivate()"
     },
     {
@@ -3516,8 +3516,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware",
-      "community": 155,
-      "community_name": "validate-environment.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "request-metrics.middleware.ts"
     },
     {
@@ -3527,8 +3527,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware_requestmetricsmiddleware",
-      "community": 155,
-      "community_name": "validate-environment.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "requestmetricsmiddleware"
     },
     {
@@ -3538,8 +3538,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware_ts_injectable",
-      "community": 155,
-      "community_name": "validate-environment.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "injectable"
     },
     {
@@ -3549,8 +3549,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware_requestmetricsmiddleware_use",
-      "community": 155,
-      "community_name": "validate-environment.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": ".use()"
     },
     {
@@ -3692,8 +3692,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_station_station_scoring",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": "station-scoring.ts"
     },
     {
@@ -3703,8 +3703,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_common_station_station_scoring_geteffectivestationmaxpoints",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": "geteffectivestationmaxpoints()"
     },
     {
@@ -3714,8 +3714,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_station_station_scoring_getstationplayseconds",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": "getstationplayseconds()"
     },
     {
@@ -3835,8 +3835,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "admin.controller.ts"
     },
     {
@@ -3846,8 +3846,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": "admincontroller"
     },
     {
@@ -3857,8 +3857,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_useguards",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": "useguards"
     },
     {
@@ -3868,8 +3868,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_controller",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": "controller"
     },
     {
@@ -3879,8 +3879,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_get",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": "get"
     },
     {
@@ -3945,8 +3945,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_header",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": "header"
     },
     {
@@ -3956,8 +3956,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_res",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": "res"
     },
     {
@@ -3978,8 +3978,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_dashboard",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".dashboard()"
     },
     {
@@ -3989,8 +3989,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teams",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".teams()"
     },
     {
@@ -4033,8 +4033,8 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamprogress",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".teamprogress()"
     },
     {
@@ -4044,8 +4044,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamqrlogintokens",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".teamqrlogintokens()"
     },
     {
@@ -4121,8 +4121,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_scorequeue",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".scorequeue()"
     },
     {
@@ -4132,8 +4132,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_progressmatrix",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".progressmatrix()"
     },
     {
@@ -4143,8 +4143,8 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_qrstatussummary",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".qrstatussummary()"
     },
     {
@@ -4176,8 +4176,8 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_stationqrtokens",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".stationqrtokens()"
     },
     {
@@ -4275,8 +4275,8 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_eventconfig",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".eventconfig()"
     },
     {
@@ -4297,8 +4297,8 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_activitylogs",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".activitylogs()"
     },
     {
@@ -4308,8 +4308,8 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamresultsreport",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".teamresultsreport()"
     },
     {
@@ -4319,8 +4319,8 @@
       "source_location": "L326",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_summaryreport",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 3,
+      "community_name": "LanguageSwitch.tsx",
       "norm_label": ".summaryreport()"
     },
     {
@@ -4484,8 +4484,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_constructor",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -4858,8 +4858,8 @@
       "source_location": "L1392",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_getleaderboardrows",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".getleaderboardrows()"
     },
     {
@@ -5034,8 +5034,8 @@
       "source_location": "L1666",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_toreportcell",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".toreportcell()"
     },
     {
@@ -5067,8 +5067,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_createstationdto",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "createstationdto"
     },
     {
@@ -5078,8 +5078,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isstring",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isstring"
     },
     {
@@ -5089,8 +5089,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_matches",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "matches"
     },
     {
@@ -5100,8 +5100,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_maxlength",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "maxlength"
     },
     {
@@ -5111,8 +5111,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isnotempty",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isnotempty"
     },
     {
@@ -5122,8 +5122,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isoptional",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isoptional"
     },
     {
@@ -5133,8 +5133,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isenum",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isenum"
     },
     {
@@ -5144,8 +5144,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isnumber",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isnumber"
     },
     {
@@ -5155,8 +5155,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_min",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "min"
     },
     {
@@ -5166,8 +5166,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_max",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "max"
     },
     {
@@ -5177,8 +5177,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isin",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isin"
     },
     {
@@ -5188,8 +5188,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isint",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isint"
     },
     {
@@ -5199,8 +5199,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isurl",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isurl"
     },
     {
@@ -5210,8 +5210,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_transform",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "transform"
     },
     {
@@ -5221,8 +5221,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isarray",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "isarray"
     },
     {
@@ -5232,8 +5232,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_arraymaxsize",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "arraymaxsize"
     },
     {
@@ -5243,8 +5243,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_arrayunique",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 185,
+      "community_name": "CreateStationDto",
       "norm_label": "arrayunique"
     },
     {
@@ -5254,8 +5254,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "qr-login-token.dto.ts"
     },
     {
@@ -5265,8 +5265,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_generateqrlogintokendto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "generateqrlogintokendto"
     },
     {
@@ -5276,8 +5276,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_isoptional",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "isoptional"
     },
     {
@@ -5287,8 +5287,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "type",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "type"
     },
     {
@@ -5298,8 +5298,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_isint",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "isint"
     },
     {
@@ -5309,8 +5309,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_min",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "min"
     },
     {
@@ -5320,8 +5320,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_max",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 11,
+      "community_name": "admin.service.ts",
       "norm_label": "max"
     },
     {
@@ -5628,8 +5628,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_xlsx_report_xlsxcell",
-      "community": 80,
-      "community_name": "xlsx-report.ts",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": "xlsxcell"
     },
     {
@@ -5848,8 +5848,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_useguards",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": "useguards"
     },
     {
@@ -5859,8 +5859,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_get",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": "get"
     },
     {
@@ -5925,8 +5925,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_me",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": ".me()"
     },
     {
@@ -5936,8 +5936,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_logout",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": ".logout()"
     },
     {
@@ -6178,8 +6178,8 @@
       "source_location": "L329",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_me",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": ".me()"
     },
     {
@@ -6189,8 +6189,8 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_logout",
-      "community": 67,
-      "community_name": "runtimeCoordinator.ts",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": ".logout()"
     },
     {
@@ -6618,8 +6618,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service",
-      "community": 79,
-      "community_name": "EventConfigService",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "event-config.service.ts"
     },
     {
@@ -6651,8 +6651,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_constructor",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -6750,8 +6750,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 72,
+      "community_name": "FinalService",
       "norm_label": "final.dto.ts"
     },
     {
@@ -6761,8 +6761,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_submitfinaldto",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 72,
+      "community_name": "FinalService",
       "norm_label": "submitfinaldto"
     },
     {
@@ -6772,8 +6772,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_ts_isstring",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 72,
+      "community_name": "FinalService",
       "norm_label": "isstring"
     },
     {
@@ -6783,8 +6783,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_updatefinalconfigdto",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 72,
+      "community_name": "FinalService",
       "norm_label": "updatefinalconfigdto"
     },
     {
@@ -6794,8 +6794,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_ts_isoptional",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 72,
+      "community_name": "FinalService",
       "norm_label": "isoptional"
     },
     {
@@ -6805,8 +6805,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "isboolean",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 72,
+      "community_name": "FinalService",
       "norm_label": "isboolean"
     },
     {
@@ -7069,8 +7069,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service",
-      "community": 210,
-      "community_name": "final.service.spec.ts",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "final.service.ts"
     },
     {
@@ -7102,8 +7102,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service_finalservice_constructor",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -7300,8 +7300,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto",
-      "community": 8,
-      "community_name": "AuthService",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "player-actions.dto.ts"
     },
     {
@@ -7311,8 +7311,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_qractiondto",
-      "community": 8,
-      "community_name": "AuthService",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "qractiondto"
     },
     {
@@ -7322,8 +7322,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_isstring",
-      "community": 8,
-      "community_name": "AuthService",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "isstring"
     },
     {
@@ -7333,8 +7333,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_minlength",
-      "community": 8,
-      "community_name": "AuthService",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "minlength"
     },
     {
@@ -7344,8 +7344,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller",
-      "community": 70,
-      "community_name": "player.service.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "leaderboard.controller.ts"
     },
     {
@@ -7355,8 +7355,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller",
-      "community": 70,
-      "community_name": "player.service.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "leaderboardcontroller"
     },
     {
@@ -7366,8 +7366,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_ts_controller",
-      "community": 70,
-      "community_name": "player.service.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "controller"
     },
     {
@@ -7377,8 +7377,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_ts_get",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": "get"
     },
     {
@@ -7388,8 +7388,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller_constructor",
-      "community": 70,
-      "community_name": "player.service.ts",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -7399,8 +7399,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller_getleaderboard",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".getleaderboard()"
     },
     {
@@ -7465,8 +7465,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_player_controller",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "player.controller.ts"
     },
     {
@@ -7916,8 +7916,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_constructor",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -8015,8 +8015,8 @@
       "source_location": "L370",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getleaderboard",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".getleaderboard()"
     },
     {
@@ -8125,8 +8125,8 @@
       "source_location": "L774",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_submitscore",
-      "community": 1,
-      "community_name": "AuthContext",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": ".submitscore()"
     },
     {
@@ -8224,8 +8224,8 @@
       "source_location": "L1057",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_validatescorevalue",
-      "community": 1,
-      "community_name": "AuthContext",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": ".validatescorevalue()"
     },
     {
@@ -8301,8 +8301,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "prisma.module.ts"
     },
     {
@@ -8312,8 +8312,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module_prismamodule",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "prismamodule"
     },
     {
@@ -8323,8 +8323,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "global",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "global"
     },
     {
@@ -8334,8 +8334,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module_ts_module",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 65,
+      "community_name": "app.module.ts",
       "norm_label": "module"
     },
     {
@@ -8345,8 +8345,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "prisma.service.ts"
     },
     {
@@ -8356,8 +8356,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "prismaservice"
     },
     {
@@ -8367,8 +8367,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_ts_injectable",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": "injectable"
     },
     {
@@ -8378,8 +8378,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduleinit",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": ".onmoduleinit()"
     },
     {
@@ -8389,8 +8389,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduledestroy",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 70,
+      "community_name": "player.service.ts",
       "norm_label": ".onmoduledestroy()"
     },
     {
@@ -8631,8 +8631,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_compareteamresultrows",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": "compareteamresultrows()"
     },
     {
@@ -8642,8 +8642,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": "teamresultsservice"
     },
     {
@@ -8653,8 +8653,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_ts_injectable",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": "injectable"
     },
     {
@@ -8664,8 +8664,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_constructor",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -8675,8 +8675,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_getrankedteamresults",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".getrankedteamresults()"
     },
     {
@@ -8686,8 +8686,8 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_toleaderboardrows",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".toleaderboardrows()"
     },
     {
@@ -8697,8 +8697,8 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_getleanleaderboard",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".getleanleaderboard()"
     },
     {
@@ -8708,8 +8708,8 @@
       "source_location": "L231",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_tostationcolumns",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".tostationcolumns()"
     },
     {
@@ -8719,8 +8719,8 @@
       "source_location": "L247",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_toteamresultrow",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".toteamresultrow()"
     },
     {
@@ -8730,8 +8730,8 @@
       "source_location": "L293",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_tostationresult",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".tostationresult()"
     },
     {
@@ -8741,8 +8741,8 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_iscompleted",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 60,
+      "community_name": "team-results.service.ts",
       "norm_label": ".iscompleted()"
     },
     {
@@ -10465,8 +10465,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "admindata.ts"
     },
     {
@@ -10476,8 +10476,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata_displaystatus",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "displaystatus()"
     },
     {
@@ -10487,8 +10487,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata_fetchadmindatabase",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "fetchadmindatabase()"
     },
     {
@@ -10652,8 +10652,8 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playerstationresponse",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "playerstationresponse"
     },
     {
@@ -10663,8 +10663,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playerprogressresponse",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "playerprogressresponse"
     },
     {
@@ -10674,8 +10674,8 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playercatalogstationresponse",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "playercatalogstationresponse"
     },
     {
@@ -10696,8 +10696,8 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_playerstateprogressresponse",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "playerstateprogressresponse"
     },
     {
@@ -10729,8 +10729,8 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_leaderboardentryresponse",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "leaderboardentryresponse"
     },
     {
@@ -10806,8 +10806,8 @@
       "source_location": "L267",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_stationplayingcountresponse",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "stationplayingcountresponse"
     },
     {
@@ -10817,8 +10817,8 @@
       "source_location": "L272",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerstationplayingcounts",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "getplayerstationplayingcounts()"
     },
     {
@@ -10861,8 +10861,8 @@
       "source_location": "L301",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_checkoutstation",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "checkoutstation()"
     },
     {
@@ -10872,8 +10872,8 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitstationscore",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "submitstationscore()"
     },
     {
@@ -10927,8 +10927,8 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminprogressmatrix",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "getadminprogressmatrix()"
     },
     {
@@ -10993,8 +10993,8 @@
       "source_location": "L417",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminteam",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "deleteadminteam()"
     },
     {
@@ -11092,8 +11092,8 @@
       "source_location": "L481",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_reopenadminprogress",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "reopenadminprogress()"
     },
     {
@@ -11114,8 +11114,8 @@
       "source_location": "L492",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_createadminstation",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "createadminstation()"
     },
     {
@@ -11125,8 +11125,8 @@
       "source_location": "L498",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminstation",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "deleteadminstation()"
     },
     {
@@ -11136,8 +11136,8 @@
       "source_location": "L501",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_adminstationqrtokenresponse",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "adminstationqrtokenresponse"
     },
     {
@@ -11191,8 +11191,8 @@
       "source_location": "L542",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_cancelplayerstation",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "cancelplayerstation()"
     },
     {
@@ -11774,8 +11774,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_languageswitch",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "languageswitch.tsx"
     },
     {
@@ -11785,8 +11785,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_languageswitch_languageswitchprops",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "languageswitchprops"
     },
     {
@@ -11796,8 +11796,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_languageswitch_vietnamflag",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "vietnamflag()"
     },
     {
@@ -11807,8 +11807,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_languageswitch_englishflag",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "englishflag()"
     },
     {
@@ -11818,8 +11818,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_languageswitch_language_flags",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "language_flags"
     },
     {
@@ -11829,8 +11829,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_languageswitch_languageswitch",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "languageswitch()"
     },
     {
@@ -11859,7 +11859,7 @@
       "label": "ScannerState",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L20",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_scannerstate",
       "community": 15,
@@ -11870,7 +11870,7 @@
       "label": "CameraFailureCategory",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L28",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_camerafailurecategory",
       "community": 15,
@@ -11881,7 +11881,7 @@
       "label": "cameraErrorKeys",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L36",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_cameraerrorkeys",
       "community": 15,
@@ -11892,7 +11892,7 @@
       "label": "getCameraFailureCategory()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L45",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_getcamerafailurecategory",
       "community": 15,
@@ -11903,7 +11903,7 @@
       "label": "logCameraDiagnostic()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L72",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_logcameradiagnostic",
       "community": 15,
@@ -11914,7 +11914,7 @@
       "label": "waitForVideoMetadata()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L78",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_waitforvideometadata",
       "community": 15,
@@ -11925,7 +11925,7 @@
       "label": "QrTokenInput()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L120",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
       "community": 15,
@@ -12115,8 +12115,8 @@
       "source_location": "L143",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_stationsmappanel_getmarkeruistate",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "getmarkeruistate()"
     },
     {
@@ -12533,8 +12533,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_teamv2stationdetailoverlay_test",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamv2stationdetailoverlay.test.tsx"
     },
     {
@@ -12544,8 +12544,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_teamv2stationdetailoverlay_test_station",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "station"
     },
     {
@@ -12555,8 +12555,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_teamv2stationdetailoverlay_test_renderdetail",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "renderdetail()"
     },
     {
@@ -12566,8 +12566,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_teamv2stationdetailoverlay",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamv2stationdetailoverlay.tsx"
     },
     {
@@ -12577,8 +12577,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_teamv2stationdetailoverlay_teamv2stationdetailoverlayprops",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamv2stationdetailoverlayprops"
     },
     {
@@ -12588,8 +12588,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "fe_src_features_movement_components_teamv2stationdetailoverlay_teamv2stationdetailoverlay",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamv2stationdetailoverlay()"
     },
     {
@@ -12698,8 +12698,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "constants.ts"
     },
     {
@@ -12709,8 +12709,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_role_labels",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "role_labels"
     },
     {
@@ -12720,8 +12720,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_status_order",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "status_order"
     },
     {
@@ -12731,8 +12731,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_game_types",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "game_types"
     },
     {
@@ -12742,8 +12742,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "fe_src_features_movement_constants_game_type_options",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "game_type_options"
     },
     {
@@ -12819,8 +12819,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usemovementbootstrap",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "usemovementbootstrap.ts"
     },
     {
@@ -12830,8 +12830,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usemovementbootstrap_usemovementbootstrap",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "usemovementbootstrap()"
     },
     {
@@ -12841,8 +12841,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_useplayerstatepolling",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "useplayerstatepolling.ts"
     },
     {
@@ -12852,8 +12852,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_useplayerstatepolling_useplayerstatepolling",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "useplayerstatepolling()"
     },
     {
@@ -12863,8 +12863,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usestationplayingcounts",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "usestationplayingcounts.ts"
     },
     {
@@ -12874,8 +12874,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usestationplayingcounts_buildfallbackcounts",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "buildfallbackcounts()"
     },
     {
@@ -12885,8 +12885,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usestationplayingcounts_normalizecounts",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "normalizecounts()"
     },
     {
@@ -12896,8 +12896,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usestationplayingcounts_usestationplayingcounts",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "usestationplayingcounts()"
     },
     {
@@ -12973,8 +12973,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_i18n",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "i18n.ts"
     },
     {
@@ -12984,8 +12984,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "fe_src_features_movement_i18n_supported_languages",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "supported_languages"
     },
     {
@@ -12995,30 +12995,30 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "fe_src_features_movement_i18n_translationresources",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "translationresources"
     },
     {
       "label": "normalizeLanguage()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/i18n.ts",
-      "source_location": "L925",
+      "source_location": "L933",
       "_origin": "ast",
       "id": "fe_src_features_movement_i18n_normalizelanguage",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "normalizelanguage()"
     },
     {
       "label": "readStoredLanguage()",
       "file_type": "code",
       "source_file": "fe/src/features/movement/i18n.ts",
-      "source_location": "L929",
+      "source_location": "L937",
       "_origin": "ast",
       "id": "fe_src_features_movement_i18n_readstoredlanguage",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "readstoredlanguage()"
     },
     {
@@ -13160,8 +13160,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance_test",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "markerappearance.test.ts"
     },
     {
@@ -13171,8 +13171,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "markerappearance.ts"
     },
     {
@@ -13182,8 +13182,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance_stationmarkerstatesource",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationmarkerstatesource"
     },
     {
@@ -13193,8 +13193,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance_stationmarkerappearance",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationmarkerappearance"
     },
     {
@@ -13204,8 +13204,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance_isstationmarkercompleted",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "isstationmarkercompleted()"
     },
     {
@@ -13215,8 +13215,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance_isstationmarkerlocked",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "isstationmarkerlocked()"
     },
     {
@@ -13226,8 +13226,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "fe_src_features_movement_markerappearance_getstationmarkerappearance",
-      "community": 189,
-      "community_name": "teamV2MarkerLayout.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "getstationmarkerappearance()"
     },
     {
@@ -13490,8 +13490,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationdetailpage",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "stationdetailpage.tsx"
     },
     {
@@ -13501,8 +13501,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationdetailpage_scoreformvalues",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "scoreformvalues"
     },
     {
@@ -13512,8 +13512,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationdetailpage_stationdetailpage",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "stationdetailpage()"
     },
     {
@@ -13523,8 +13523,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationeditorpage",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "stationeditorpage.tsx"
     },
     {
@@ -13897,8 +13897,8 @@
       "source_location": "L504",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamgameplayv2page_leaderboardoverlay",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "leaderboardoverlay()"
     },
     {
@@ -13941,8 +13941,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2framescheduler_test",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "teamv2framescheduler.test.ts"
     },
     {
@@ -13952,8 +13952,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2framescheduler",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "teamv2framescheduler.ts"
     },
     {
@@ -13963,8 +13963,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2framescheduler_latestframescheduler",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "latestframescheduler"
     },
     {
@@ -13974,8 +13974,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2framescheduler_createlatestframescheduler",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "createlatestframescheduler()"
     },
     {
@@ -13985,8 +13985,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_test",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "teamv2fullscreen.test.ts"
     },
     {
@@ -13996,8 +13996,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_test_createfullscreenfixture",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "createfullscreenfixture()"
     },
     {
@@ -14007,8 +14007,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_test_setreadonlyproperty",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "setreadonlyproperty()"
     },
     {
@@ -14018,8 +14018,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "teamv2fullscreen.ts"
     },
     {
@@ -14029,8 +14029,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_webkitfullscreendocument",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "webkitfullscreendocument"
     },
     {
@@ -14040,8 +14040,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_webkitfullscreenelement",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "webkitfullscreenelement"
     },
     {
@@ -14051,8 +14051,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_standalonenavigator",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "standalonenavigator"
     },
     {
@@ -14062,8 +14062,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_team_v2_fullscreen_change_events",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "team_v2_fullscreen_change_events"
     },
     {
@@ -14073,8 +14073,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_fullscreentoggleresult",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "fullscreentoggleresult"
     },
     {
@@ -14095,8 +14095,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_isfullscreensupported",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isfullscreensupported()"
     },
     {
@@ -14106,8 +14106,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2fullscreen_isstandalonedisplaymode",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isstandalonedisplaymode()"
     },
     {
@@ -14128,8 +14128,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard_test",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "teamv2leaderboard.test.ts"
     },
     {
@@ -14139,8 +14139,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard_test_createrows",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "createrows()"
     },
     {
@@ -14150,8 +14150,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "teamv2leaderboard.ts"
     },
     {
@@ -14161,8 +14161,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard_getteamv2leaderboardrows",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "getteamv2leaderboardrows()"
     },
     {
@@ -14535,8 +14535,8 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_fetchlegacyplayerfinalsummary",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "fetchlegacyplayerfinalsummary()"
     },
     {
@@ -14612,8 +14612,8 @@
       "source_location": "L372",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_reconcileplayerdatabase",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "reconcileplayerdatabase()"
     },
     {
@@ -14623,8 +14623,8 @@
       "source_location": "L385",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_ismutationoutcomeunknown",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "ismutationoutcomeunknown()"
     },
     {
@@ -14634,8 +14634,8 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_executeplayermutation",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "executeplayermutation()"
     },
     {
@@ -14975,8 +14975,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "fe_src_features_movement_routes_movementroutes",
-      "community": 176,
-      "community_name": "routes.tsx",
+      "community": 131,
+      "community_name": "App.tsx",
       "norm_label": "movementroutes()"
     },
     {
@@ -15294,8 +15294,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "fe_src_features_movement_runtimecoordinator_clearsingleflight",
-      "community": 184,
-      "community_name": "useMovementStore",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "clearsingleflight()"
     },
     {
@@ -15558,8 +15558,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_createstorestate",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 22,
+      "community_name": "store.ts",
       "norm_label": "createstorestate()"
     },
     {
@@ -15723,8 +15723,8 @@
       "source_location": "L283",
       "_origin": "ast",
       "id": "fe_src_features_movement_store_usemovementstore",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "usemovementstore"
     },
     {
@@ -15899,8 +15899,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_types",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "types.ts"
     },
     {
@@ -15910,8 +15910,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_role",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 131,
+      "community_name": "App.tsx",
       "norm_label": "role"
     },
     {
@@ -15921,8 +15921,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_supportedlanguage",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 15,
+      "community_name": "LoginPage.tsx",
       "norm_label": "supportedlanguage"
     },
     {
@@ -15932,8 +15932,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationstatus",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationstatus"
     },
     {
@@ -15943,8 +15943,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationtrackingmode",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationtrackingmode"
     },
     {
@@ -15954,8 +15954,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_gametype",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "gametype"
     },
     {
@@ -15976,8 +15976,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_authaccount",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "authaccount"
     },
     {
@@ -15987,8 +15987,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_team",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "team"
     },
     {
@@ -15998,8 +15998,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_playerfinalsummary",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "playerfinalsummary"
     },
     {
@@ -16020,8 +16020,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamstation",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamstation"
     },
     {
@@ -16031,8 +16031,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationformvalues",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 22,
+      "community_name": "store.ts",
       "norm_label": "stationformvalues"
     },
     {
@@ -16042,8 +16042,8 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamformvalues",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "teamformvalues"
     },
     {
@@ -16053,8 +16053,8 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_sqluser",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "sqluser"
     },
     {
@@ -16064,8 +16064,8 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_sqlstation",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "sqlstation"
     },
     {
@@ -16075,8 +16075,8 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_sqlteam",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "sqlteam"
     },
     {
@@ -16086,8 +16086,8 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_sqlprogressstatus",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "sqlprogressstatus"
     },
     {
@@ -16097,8 +16097,8 @@
       "source_location": "L152",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_sqlteamstationprogress",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "sqlteamstationprogress"
     },
     {
@@ -16108,8 +16108,8 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_localdatabaseseed",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "localdatabaseseed"
     },
     {
@@ -16119,8 +16119,8 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_localdatabase",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "localdatabase"
     },
     {
@@ -16130,8 +16130,8 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_movementstore",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "movementstore"
     },
     {
@@ -16141,8 +16141,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "utils.ts"
     },
     {
@@ -16152,8 +16152,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_createseededstations",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "createseededstations()"
     },
     {
@@ -16163,8 +16163,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_createinitialteamstations",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "createinitialteamstations()"
     },
     {
@@ -16174,8 +16174,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getstationeffectivemaxpoints",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "getstationeffectivemaxpoints()"
     },
     {
@@ -16229,8 +16229,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_default_database",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 22,
+      "community_name": "store.ts",
       "norm_label": "default_database"
     },
     {
@@ -16240,8 +16240,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_tointernalteamid",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "tointernalteamid()"
     },
     {
@@ -16251,8 +16251,8 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_normalizesqlusers",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "normalizesqlusers()"
     },
     {
@@ -16262,8 +16262,8 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_normalizesqlstations",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "normalizesqlstations()"
     },
     {
@@ -16273,8 +16273,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_normalizesqlteams",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "normalizesqlteams()"
     },
     {
@@ -16284,8 +16284,8 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_mapsqlprogressstatus",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "mapsqlprogressstatus()"
     },
     {
@@ -16295,8 +16295,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_buildteamstationsfromsqlprogress",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "buildteamstationsfromsqlprogress()"
     },
     {
@@ -16306,8 +16306,8 @@
       "source_location": "L215",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_normalizeauthaccounts",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "normalizeauthaccounts()"
     },
     {
@@ -16317,8 +16317,8 @@
       "source_location": "L219",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_computeteamstats",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 22,
+      "community_name": "store.ts",
       "norm_label": "computeteamstats()"
     },
     {
@@ -16328,8 +16328,8 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_syncteamswithstations",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 22,
+      "community_name": "store.ts",
       "norm_label": "syncteamswithstations()"
     },
     {
@@ -16339,8 +16339,8 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_normalizedatabaseseed",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "normalizedatabaseseed()"
     },
     {
@@ -16350,8 +16350,8 @@
       "source_location": "L283",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_formatdatetime",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "formatdatetime()"
     },
     {
@@ -16361,8 +16361,8 @@
       "source_location": "L295",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_formatdurationfromms",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "formatdurationfromms()"
     },
     {
@@ -20766,6 +20766,17 @@
       "norm_label": "2026-08-02 video action color refinement"
     },
     {
+      "label": "2026-08-03 Check-in QR camera-first modal",
+      "file_type": "document",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L1308",
+      "_origin": "ast",
+      "id": "docs_analysis_backend_audit_2026_08_03_check_in_qr_camera_first_modal",
+      "community": 170,
+      "community_name": "BACKEND_AUDIT.md",
+      "norm_label": "2026-08-03 check-in qr camera-first modal"
+    },
+    {
       "label": "EVENT_TIMING_AND_FINAL_ANALYSIS.md",
       "file_type": "document",
       "source_file": "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md",
@@ -22790,10 +22801,21 @@
       "norm_label": "movement 2026 - implementation backlog"
     },
     {
-      "label": "2026-08-02 Video action color refinement",
+      "label": "2026-08-03 Check-in QR camera-first modal",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_analysis_implementation_backlog_2026_08_03_check_in_qr_camera_first_modal",
+      "community": 179,
+      "community_name": "MOVEment 2026 - Implementation Backlog",
+      "norm_label": "2026-08-03 check-in qr camera-first modal"
+    },
+    {
+      "label": "2026-08-02 Video action color refinement",
+      "file_type": "document",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_video_action_color_refinement",
       "community": 179,
@@ -22804,7 +22826,7 @@
       "label": "2026-08-02 Frontend UI usability and accessibility optimization",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L10",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_frontend_ui_usability_and_accessibility_optimization",
       "community": 179,
@@ -22815,7 +22837,7 @@
       "label": "2026-08-02 Admin Leaderboard authorization fix",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L21",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_admin_leaderboard_authorization_fix",
       "community": 179,
@@ -22826,7 +22848,7 @@
       "label": "2026-08-02 Team V2 browser fullscreen",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L30",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_team_v2_browser_fullscreen",
       "community": 179,
@@ -22837,7 +22859,7 @@
       "label": "2026-08-02 Request and database hot-path follow-up",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L43",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_request_and_database_hot_path_follow_up",
       "community": 179,
@@ -22848,7 +22870,7 @@
       "label": "2026-08-01 Network request and transfer optimization",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L59",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_01_network_request_and_transfer_optimization",
       "community": 179,
@@ -22859,7 +22881,7 @@
       "label": "2026-07-31 Team V2 background-only overlay opacity",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L86",
+      "source_location": "L95",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_background_only_overlay_opacity",
       "community": 179,
@@ -22870,7 +22892,7 @@
       "label": "2026-07-31 Team V2 inactive language contrast",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L98",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_inactive_language_contrast",
       "community": 179,
@@ -22881,7 +22903,7 @@
       "label": "2026-07-31 Team V2 Settings and compact Leaderboard",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L108",
+      "source_location": "L117",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_settings_and_compact_leaderboard",
       "community": 179,
@@ -22892,7 +22914,7 @@
       "label": "2026-07-31 Team V2 marker interaction performance",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L121",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_marker_interaction_performance",
       "community": 179,
@@ -22903,7 +22925,7 @@
       "label": "2026-07-31 Team V2 Detail sizing and footer readability",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L135",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_detail_sizing_and_footer_readability",
       "community": 179,
@@ -22914,7 +22936,7 @@
       "label": "2026-07-31 Team V2 marker states and disabled media controls",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L147",
+      "source_location": "L156",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_marker_states_and_disabled_media_controls",
       "community": 179,
@@ -22925,7 +22947,7 @@
       "label": "2026-07-31 Team V2 exact B\u00e9zier Konva marker",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L160",
+      "source_location": "L169",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_exact_b\u00e9zier_konva_marker",
       "community": 179,
@@ -22936,7 +22958,7 @@
       "label": "2026-07-31 Team V2 single-line marker labels",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L170",
+      "source_location": "L179",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_single_line_marker_labels",
       "community": 179,
@@ -22947,7 +22969,7 @@
       "label": "2026-07-31 Team V2 centered score-only map header",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L178",
+      "source_location": "L187",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_centered_score_only_map_header",
       "community": 179,
@@ -22958,7 +22980,7 @@
       "label": "2026-07-31 Team V2 supplied Konva-native marker (superseded)",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L186",
+      "source_location": "L195",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_supplied_konva_native_marker_superseded",
       "community": 179,
@@ -22969,7 +22991,7 @@
       "label": "2026-07-31 Team V2 supplied SVG marker (superseded)",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L199",
+      "source_location": "L208",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_supplied_svg_marker_superseded",
       "community": 179,
@@ -22980,7 +23002,7 @@
       "label": "2026-07-30 Team V2 score and banner rails refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L209",
+      "source_location": "L218",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_v2_score_and_banner_rails_refinement",
       "community": 179,
@@ -22991,7 +23013,7 @@
       "label": "2026-07-30 Team V2 scanner-pin marker refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L219",
+      "source_location": "L228",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_v2_scanner_pin_marker_refinement",
       "community": 179,
@@ -23002,7 +23024,7 @@
       "label": "2026-07-30 Canonical Station seed data synchronization",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L230",
+      "source_location": "L239",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_canonical_station_seed_data_synchronization",
       "community": 179,
@@ -23013,7 +23035,7 @@
       "label": "2026-07-30 Team Gameplay V2 marker anchoring and footer refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L244",
+      "source_location": "L253",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_gameplay_v2_marker_anchoring_and_footer_refinement",
       "community": 179,
@@ -23024,7 +23046,7 @@
       "label": "2026-07-30 Team Gameplay V2-owned Detail and map HUD",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L257",
+      "source_location": "L266",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_gameplay_v2_owned_detail_and_map_hud",
       "community": 179,
@@ -23035,7 +23057,7 @@
       "label": "2026-07-29 Team runtime stability resume completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L274",
+      "source_location": "L283",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_29_team_runtime_stability_resume_completion",
       "community": 179,
@@ -23046,7 +23068,7 @@
       "label": "2026-07-28 Team Gameplay V2 parallel implementation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L299",
+      "source_location": "L308",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
       "community": 207,
@@ -23057,7 +23079,7 @@
       "label": "2026-07-28 Tester auto-stop conflicting local processes",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L367",
+      "source_location": "L376",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_tester_auto_stop_conflicting_local_processes",
       "community": 207,
@@ -23068,7 +23090,7 @@
       "label": "2026-07-28 Production deploy preflight and partial smoke",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L380",
+      "source_location": "L389",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_production_deploy_preflight_and_partial_smoke",
       "community": 207,
@@ -23079,7 +23101,7 @@
       "label": "2026-07-28 Admin System Config Station locale display",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L402",
+      "source_location": "L411",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_admin_system_config_station_locale_display",
       "community": 207,
@@ -23090,7 +23112,7 @@
       "label": "2026-07-28 YouTube-style Player video action",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L415",
+      "source_location": "L424",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_youtube_style_player_video_action",
       "community": 207,
@@ -23101,7 +23123,7 @@
       "label": "2026-07-28 Admin System Config localization fix",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L426",
+      "source_location": "L435",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_admin_system_config_localization_fix",
       "community": 207,
@@ -23112,7 +23134,7 @@
       "label": "2026-07-28 Station Media Gallery and Player action layout",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L439",
+      "source_location": "L448",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
       "community": 36,
@@ -23123,7 +23145,7 @@
       "label": "2026-07-27 Frontend localization follow-up",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L452",
+      "source_location": "L461",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_frontend_localization_follow_up",
       "community": 36,
@@ -23134,7 +23156,7 @@
       "label": "2026-07-27 Station localization and FE language switch",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L474",
+      "source_location": "L483",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_station_localization_and_fe_language_switch",
       "community": 36,
@@ -23145,7 +23167,7 @@
       "label": "2026-07-27 Feature Analysis workflow and localization planning",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L500",
+      "source_location": "L509",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_feature_analysis_workflow_and_localization_planning",
       "community": 36,
@@ -23156,7 +23178,7 @@
       "label": "2026-07-27 Team header identity",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L512",
+      "source_location": "L521",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_team_header_identity",
       "community": 36,
@@ -23167,7 +23189,7 @@
       "label": "2026-07-27 Player cancel cooldown UX",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L524",
+      "source_location": "L533",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_player_cancel_cooldown_ux",
       "community": 36,
@@ -23178,7 +23200,7 @@
       "label": "2026-07-27 Team Results tracking-mode headers",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L535",
+      "source_location": "L544",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_team_results_tracking_mode_headers",
       "community": 36,
@@ -23189,7 +23211,7 @@
       "label": "2026-07-27 Tester backend ExcelJS dependency detection",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L544",
+      "source_location": "L553",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_tester_backend_exceljs_dependency_detection",
       "community": 36,
@@ -23200,7 +23222,7 @@
       "label": "2026-07-27 Station numeric display code UI",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L552",
+      "source_location": "L561",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_station_numeric_display_code_ui",
       "community": 36,
@@ -23211,7 +23233,7 @@
       "label": "2026-07-26 Station QR checkout scoring update",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L564",
+      "source_location": "L573",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_26_station_qr_checkout_scoring_update",
       "community": 36,
@@ -23222,7 +23244,7 @@
       "label": "2026-07-24 Team Color palette and gradient buttons",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L575",
+      "source_location": "L584",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_team_color_palette_and_gradient_buttons",
       "community": 36,
@@ -23233,7 +23255,7 @@
       "label": "2026-07-24 Team Results Excel export and Team Color UI",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L587",
+      "source_location": "L596",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_team_results_excel_export_and_team_color_ui",
       "community": 36,
@@ -23244,7 +23266,7 @@
       "label": "2026-07-24 Compact Admin headers and Team identity cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L606",
+      "source_location": "L615",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_compact_admin_headers_and_team_identity_cleanup",
       "community": 36,
@@ -23255,7 +23277,7 @@
       "label": "2026-07-24 Role-aware Leaderboard current-Team marker",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L615",
+      "source_location": "L624",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_role_aware_leaderboard_current_team_marker",
       "community": 36,
@@ -23266,7 +23288,7 @@
       "label": "2026-07-24 Admin Team-first Station navigation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L621",
+      "source_location": "L630",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_team_first_station_navigation",
       "community": 36,
@@ -23277,7 +23299,7 @@
       "label": "2026-07-24 Canonical 17-Station seed and sync",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L630",
+      "source_location": "L639",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_canonical_17_station_seed_and_sync",
       "community": 36,
@@ -23288,7 +23310,7 @@
       "label": "2026-07-24 Designated ST Station set",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L640",
+      "source_location": "L649",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_designated_st_station_set",
       "community": 36,
@@ -23299,7 +23321,7 @@
       "label": "2026-07-24 Station Game Type constraint and video visibility",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L646",
+      "source_location": "L655",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_station_game_type_constraint_and_video_visibility",
       "community": 36,
@@ -23310,7 +23332,7 @@
       "label": "2026-07-24 Admin Station game configuration edit",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L655",
+      "source_location": "L664",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_station_game_configuration_edit",
       "community": 36,
@@ -23321,7 +23343,7 @@
       "label": "2026-07-24 Admin Operations UI merge recovery",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L661",
+      "source_location": "L670",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_operations_ui_merge_recovery",
       "community": 36,
@@ -23332,7 +23354,7 @@
       "label": "2026-07-24 Admin score-only correction",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L667",
+      "source_location": "L676",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_score_only_correction",
       "community": 36,
@@ -23343,7 +23365,7 @@
       "label": "2026-07-24 Scoring confirmation code removal",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L675",
+      "source_location": "L684",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_scoring_confirmation_code_removal",
       "community": 36,
@@ -23354,7 +23376,7 @@
       "label": "2026-07-24 Tester runner Prisma Studio",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L684",
+      "source_location": "L693",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_tester_runner_prisma_studio",
       "community": 36,
@@ -23365,7 +23387,7 @@
       "label": "2026-07-24 Final start and Event end separation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L693",
+      "source_location": "L702",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_final_start_and_event_end_separation",
       "community": 36,
@@ -23376,7 +23398,7 @@
       "label": "2026-07-23 iOS QR camera lifecycle cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L704",
+      "source_location": "L713",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_23_ios_qr_camera_lifecycle_cleanup",
       "community": 36,
@@ -23387,7 +23409,7 @@
       "label": "2026-07-23 Seed diagnostics and tester runner completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L716",
+      "source_location": "L725",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_23_seed_diagnostics_and_tester_runner_completion",
       "community": 36,
@@ -23398,7 +23420,7 @@
       "label": "2026-07-23 Final Challenge plain answer and Production seed override",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L726",
+      "source_location": "L735",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_23_final_challenge_plain_answer_and_production_seed_override",
       "community": 36,
@@ -23409,7 +23431,7 @@
       "label": "2026-07-22 Conditional backend database deployment completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L737",
+      "source_location": "L746",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_conditional_backend_database_deployment_completion",
       "community": 36,
@@ -23420,7 +23442,7 @@
       "label": "2026-07-22 Staged Production deployment workflow completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L750",
+      "source_location": "L759",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_staged_production_deployment_workflow_completion",
       "community": 36,
@@ -23431,7 +23453,7 @@
       "label": "2026-07-22 Production-like integration verification completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L760",
+      "source_location": "L769",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_production_like_integration_verification_completion",
       "community": 36,
@@ -23442,7 +23464,7 @@
       "label": "2026-07-22 Final Challenge completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L770",
+      "source_location": "L779",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_final_challenge_completion",
       "community": 36,
@@ -23453,7 +23475,7 @@
       "label": "2026-07-22 Station tracking and scoring completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L783",
+      "source_location": "L792",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_station_tracking_and_scoring_completion",
       "community": 36,
@@ -23464,7 +23486,7 @@
       "label": "2026-07-22 Secure Station QR completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L796",
+      "source_location": "L805",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_secure_station_qr_completion",
       "community": 36,
@@ -23475,7 +23497,7 @@
       "label": "2026-07-22 Automatic URL Team QR completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L808",
+      "source_location": "L817",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_automatic_url_team_qr_completion",
       "community": 36,
@@ -23486,7 +23508,7 @@
       "label": "Rules",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L817",
+      "source_location": "L826",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_rules",
       "community": 36,
@@ -23497,7 +23519,7 @@
       "label": "P0 \u2014 QR Security and Provisioning",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L825",
+      "source_location": "L834",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_qr_security_and_provisioning",
       "community": 36,
@@ -23508,7 +23530,7 @@
       "label": "P0 \u2014 Authentication and Session",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L851",
+      "source_location": "L860",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_authentication_and_session",
       "community": 36,
@@ -23519,7 +23541,7 @@
       "label": "P0 \u2014 Station Flow and Scoring",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L866",
+      "source_location": "L875",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_station_flow_and_scoring",
       "community": 36,
@@ -23530,7 +23552,7 @@
       "label": "P0 \u2014 Final Challenge",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L880",
+      "source_location": "L889",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_final_challenge",
       "community": 36,
@@ -23541,7 +23563,7 @@
       "label": "P0 \u2014 Documentation and Prompt Consistency",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L891",
+      "source_location": "L900",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_documentation_and_prompt_consistency",
       "community": 36,
@@ -23552,7 +23574,7 @@
       "label": "P1 \u2014 iOS QR Camera",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L910",
+      "source_location": "L919",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p1_ios_qr_camera",
       "community": 36,
@@ -23563,7 +23585,7 @@
       "label": "P1 \u2014 Production Readiness",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L921",
+      "source_location": "L930",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p1_production_readiness",
       "community": 36,
@@ -23574,7 +23596,7 @@
       "label": "P2 \u2014 Legacy Removal",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L935",
+      "source_location": "L944",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_legacy_removal",
       "community": 36,
@@ -23585,7 +23607,7 @@
       "label": "P2 \u2014 Leaderboard presentation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L946",
+      "source_location": "L955",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_leaderboard_presentation",
       "community": 36,
@@ -23596,7 +23618,7 @@
       "label": "P2 \u2014 Shared header presentation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L951",
+      "source_location": "L960",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_shared_header_presentation",
       "community": 36,
@@ -23607,7 +23629,7 @@
       "label": "P2 \u2014 Team Station list presentation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L959",
+      "source_location": "L968",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_team_station_list_presentation",
       "community": 36,
@@ -23618,7 +23640,7 @@
       "label": "Next Execution Order",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L973",
+      "source_location": "L982",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_next_execution_order",
       "community": 36,
@@ -23629,7 +23651,7 @@
       "label": "2026-07-28 Station map interaction performance",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L980",
+      "source_location": "L989",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_station_map_interaction_performance",
       "community": 36,
@@ -23640,7 +23662,7 @@
       "label": "2026-07-27 Team QR live navigation, reset guard, and map WebP",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L998",
+      "source_location": "L1007",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_team_qr_live_navigation_reset_guard_and_map_webp",
       "community": 36,
@@ -24825,10 +24847,21 @@
       "norm_label": "movement 2026 - current specification"
     },
     {
-      "label": "2026-08-02 Shared UI usability baseline",
+      "label": "2026-08-03 Check-in QR modal presentation",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_analysis_project_analysis_spec_2026_08_03_check_in_qr_modal_presentation",
+      "community": 33,
+      "community_name": "MOVEment 2026 - Current Specification",
+      "norm_label": "2026-08-03 check-in qr modal presentation"
+    },
+    {
+      "label": "2026-08-02 Shared UI usability baseline",
+      "file_type": "document",
+      "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_2026_08_02_shared_ui_usability_baseline",
       "community": 33,
@@ -24839,7 +24872,7 @@
       "label": "Authority",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L14",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_authority",
       "community": 33,
@@ -24850,7 +24883,7 @@
       "label": "Feature Analysis Workflow",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L24",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_feature_analysis_workflow",
       "community": 33,
@@ -24861,7 +24894,7 @@
       "label": "Product Scope",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L56",
+      "source_location": "L65",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_product_scope",
       "community": 33,
@@ -24872,7 +24905,7 @@
       "label": "Actors",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L82",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_actors",
       "community": 33,
@@ -24883,7 +24916,7 @@
       "label": "Admin",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L84",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_admin",
       "community": 33,
@@ -24894,7 +24927,7 @@
       "label": "Team",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L92",
+      "source_location": "L101",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team",
       "community": 33,
@@ -24905,7 +24938,7 @@
       "label": "Authentication and Session",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L100",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_authentication_and_session",
       "community": 33,
@@ -24916,7 +24949,7 @@
       "label": "Team QR Login",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L132",
+      "source_location": "L141",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team_qr_login",
       "community": 33,
@@ -24927,7 +24960,7 @@
       "label": "Station QR",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L147",
+      "source_location": "L156",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_station_qr",
       "community": 33,
@@ -24938,7 +24971,7 @@
       "label": "Station State",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L175",
+      "source_location": "L184",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_station_state",
       "community": 33,
@@ -24949,7 +24982,7 @@
       "label": "Station Localization",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L211",
+      "source_location": "L220",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_station_localization",
       "community": 33,
@@ -24960,7 +24993,7 @@
       "label": "Tracking Modes",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L254",
+      "source_location": "L263",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_tracking_modes",
       "community": 33,
@@ -24971,7 +25004,7 @@
       "label": "Check-in",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L270",
+      "source_location": "L279",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_check_in",
       "community": 33,
@@ -24982,7 +25015,7 @@
       "label": "Check-out",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L283",
+      "source_location": "L292",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_check_out",
       "community": 33,
@@ -24993,7 +25026,7 @@
       "label": "Scoring",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L291",
+      "source_location": "L300",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_scoring",
       "community": 33,
@@ -25004,7 +25037,7 @@
       "label": "Station Game Type",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L311",
+      "source_location": "L320",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_station_game_type",
       "community": 33,
@@ -25015,7 +25048,7 @@
       "label": "Station Media Gallery",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L333",
+      "source_location": "L342",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_station_media_gallery",
       "community": 33,
@@ -25026,7 +25059,7 @@
       "label": "Event Config",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L345",
+      "source_location": "L354",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_event_config",
       "community": 33,
@@ -25037,7 +25070,7 @@
       "label": "Final Challenge",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L360",
+      "source_location": "L369",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_final_challenge",
       "community": 33,
@@ -25048,7 +25081,7 @@
       "label": "Leaderboard",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L389",
+      "source_location": "L398",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_leaderboard",
       "community": 33,
@@ -25059,7 +25092,7 @@
       "label": "Team Results Excel Export",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L412",
+      "source_location": "L421",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team_results_excel_export",
       "community": 33,
@@ -25070,7 +25103,7 @@
       "label": "Team Color UI",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L426",
+      "source_location": "L435",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team_color_ui",
       "community": 33,
@@ -25081,7 +25114,7 @@
       "label": "Map Assets",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L434",
+      "source_location": "L443",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_map_assets",
       "community": 33,
@@ -25092,7 +25125,7 @@
       "label": "Team Gameplay V2",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L451",
+      "source_location": "L460",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_team_gameplay_v2",
       "community": 33,
@@ -25103,7 +25136,7 @@
       "label": "QR Camera",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L579",
+      "source_location": "L588",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_qr_camera",
       "community": 33,
@@ -25114,7 +25147,7 @@
       "label": "Seed",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L602",
+      "source_location": "L611",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_seed",
       "community": 33,
@@ -25125,7 +25158,7 @@
       "label": "Audit and Logging",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L627",
+      "source_location": "L636",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_audit_and_logging",
       "community": 33,
@@ -25136,7 +25169,7 @@
       "label": "Current Known Implementation Gaps",
       "file_type": "document",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L640",
+      "source_location": "L649",
       "_origin": "ast",
       "id": "docs_analysis_project_analysis_spec_current_known_implementation_gaps",
       "community": 33,
@@ -26992,10 +27025,21 @@
       "norm_label": "station qr and scoring analysis"
     },
     {
-      "label": "Status",
+      "label": "2026-08-03 Station List camera-first Check-in",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_analysis_station_qr_and_scoring_analysis_2026_08_03_station_list_camera_first_check_in",
+      "community": 162,
+      "community_name": "Station QR and Scoring Analysis",
+      "norm_label": "2026-08-03 station list camera-first check-in"
+    },
+    {
+      "label": "Status",
+      "file_type": "document",
+      "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_status",
       "community": 162,
@@ -27006,7 +27050,7 @@
       "label": "2026-07-29 Runtime Stability Integration",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L11",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_2026_07_29_runtime_stability_integration",
       "community": 162,
@@ -27017,7 +27061,7 @@
       "label": "Objective and Scope",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L22",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_objective_and_scope",
       "community": 162,
@@ -27028,7 +27072,7 @@
       "label": "Business Rule References",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L27",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_business_rule_references",
       "community": 162,
@@ -27039,7 +27083,7 @@
       "label": "Current Implementation",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L33",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_current_implementation",
       "community": 162,
@@ -27050,7 +27094,7 @@
       "label": "Decisions and Stale Assumptions",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L44",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_decisions_and_stale_assumptions",
       "community": 162,
@@ -27061,7 +27105,7 @@
       "label": "Interfaces and Data",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L51",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_interfaces_and_data",
       "community": 162,
@@ -27072,7 +27116,7 @@
       "label": "Verification and Risks",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L57",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_verification_and_risks",
       "community": 162,
@@ -27083,7 +27127,7 @@
       "label": "Decision Log",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L67",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_decision_log",
       "community": 162,
@@ -27094,7 +27138,7 @@
       "label": "Provenance",
       "file_type": "document",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L77",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "docs_analysis_station_qr_and_scoring_analysis_provenance",
       "community": 162,
@@ -60146,7 +60190,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L36",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60157,7 +60201,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L28",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60168,7 +60212,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L45",
+      "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60179,7 +60223,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L72",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60190,7 +60234,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L120",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60212,7 +60256,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L20",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60223,7 +60267,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L78",
+      "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput",
@@ -60343,7 +60387,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L209",
+      "source_location": "L220",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
@@ -60355,7 +60399,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L192",
+      "source_location": "L203",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
@@ -60367,7 +60411,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L334",
+      "source_location": "L345",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
@@ -60380,7 +60424,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L362",
+      "source_location": "L373",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
@@ -60392,7 +60436,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L295",
+      "source_location": "L306",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
@@ -60404,7 +60448,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "fe/src/features/movement/components/QrTokenInput.tsx",
-      "source_location": "L139",
+      "source_location": "L148",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_components_qrtokeninput_qrtokeninput",
@@ -63592,7 +63636,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/i18n.ts",
-      "source_location": "L925",
+      "source_location": "L933",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_i18n",
@@ -63603,7 +63647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/i18n.ts",
-      "source_location": "L929",
+      "source_location": "L937",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_i18n",
@@ -63673,7 +63717,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "fe/src/features/movement/i18n.ts",
-      "source_location": "L933",
+      "source_location": "L941",
       "weight": 1.0,
       "_origin": "ast",
       "source": "fe_src_features_movement_i18n_readstoredlanguage",
@@ -75010,6 +75054,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L1308",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_backend_audit",
+      "target": "docs_analysis_backend_audit_2026_08_03_check_in_qr_camera_first_modal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
       "source_location": "L946",
       "weight": 1.0,
       "_origin": "ast",
@@ -77738,7 +77793,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L439",
+      "source_location": "L448",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog",
@@ -77749,7 +77804,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L299",
+      "source_location": "L308",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog",
@@ -77771,7 +77826,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L274",
+      "source_location": "L283",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77782,7 +77837,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L230",
+      "source_location": "L239",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77793,7 +77848,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L244",
+      "source_location": "L253",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77804,7 +77859,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L257",
+      "source_location": "L266",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77815,7 +77870,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L219",
+      "source_location": "L228",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77826,7 +77881,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L209",
+      "source_location": "L218",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77837,7 +77892,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L86",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77848,7 +77903,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L178",
+      "source_location": "L187",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77859,7 +77914,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L135",
+      "source_location": "L144",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77870,7 +77925,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L160",
+      "source_location": "L169",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77881,7 +77936,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L98",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77892,7 +77947,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L121",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77903,7 +77958,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L147",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77914,7 +77969,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L108",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77925,7 +77980,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L170",
+      "source_location": "L179",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77936,7 +77991,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L186",
+      "source_location": "L195",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77947,7 +78002,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L199",
+      "source_location": "L208",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77958,7 +78013,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L59",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77969,7 +78024,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L21",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77980,7 +78035,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L10",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77991,7 +78046,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L43",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -78002,7 +78057,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L30",
+      "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -78013,7 +78068,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L3",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -78024,7 +78079,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L426",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
+      "target": "docs_analysis_implementation_backlog_2026_08_03_check_in_qr_camera_first_modal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L435",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78035,7 +78101,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L402",
+      "source_location": "L411",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78046,7 +78112,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L380",
+      "source_location": "L389",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78057,7 +78123,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L367",
+      "source_location": "L376",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78068,7 +78134,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L415",
+      "source_location": "L424",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78079,7 +78145,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L808",
+      "source_location": "L817",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78090,7 +78156,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L737",
+      "source_location": "L746",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78101,7 +78167,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L770",
+      "source_location": "L779",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78112,7 +78178,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L760",
+      "source_location": "L769",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78123,7 +78189,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L796",
+      "source_location": "L805",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78134,7 +78200,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L750",
+      "source_location": "L759",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78145,7 +78211,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L783",
+      "source_location": "L792",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78156,7 +78222,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L726",
+      "source_location": "L735",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78167,7 +78233,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L704",
+      "source_location": "L713",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78178,7 +78244,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L716",
+      "source_location": "L725",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78189,7 +78255,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L661",
+      "source_location": "L670",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78200,7 +78266,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L667",
+      "source_location": "L676",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78211,7 +78277,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L655",
+      "source_location": "L664",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78222,7 +78288,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L621",
+      "source_location": "L630",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78233,7 +78299,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L630",
+      "source_location": "L639",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78244,7 +78310,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L606",
+      "source_location": "L615",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78255,7 +78321,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L640",
+      "source_location": "L649",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78266,7 +78332,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L693",
+      "source_location": "L702",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78277,7 +78343,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L615",
+      "source_location": "L624",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78288,7 +78354,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L675",
+      "source_location": "L684",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78299,7 +78365,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L646",
+      "source_location": "L655",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78310,7 +78376,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L575",
+      "source_location": "L584",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78321,7 +78387,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L587",
+      "source_location": "L596",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78332,7 +78398,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L684",
+      "source_location": "L693",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78343,7 +78409,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L564",
+      "source_location": "L573",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78354,7 +78420,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L500",
+      "source_location": "L509",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78365,7 +78431,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L452",
+      "source_location": "L461",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78376,7 +78442,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L524",
+      "source_location": "L533",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78387,7 +78453,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L474",
+      "source_location": "L483",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78398,7 +78464,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L552",
+      "source_location": "L561",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78409,7 +78475,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L512",
+      "source_location": "L521",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78420,7 +78486,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L998",
+      "source_location": "L1007",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78431,7 +78497,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L535",
+      "source_location": "L544",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78442,7 +78508,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L544",
+      "source_location": "L553",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78453,7 +78519,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L980",
+      "source_location": "L989",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78464,7 +78530,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L973",
+      "source_location": "L982",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78475,7 +78541,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L851",
+      "source_location": "L860",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78486,7 +78552,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L891",
+      "source_location": "L900",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78497,7 +78563,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L880",
+      "source_location": "L889",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78508,7 +78574,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L825",
+      "source_location": "L834",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78519,7 +78585,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L866",
+      "source_location": "L875",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78530,7 +78596,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L910",
+      "source_location": "L919",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78541,7 +78607,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L921",
+      "source_location": "L930",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78552,7 +78618,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L946",
+      "source_location": "L955",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78563,7 +78629,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L935",
+      "source_location": "L944",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78574,7 +78640,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L951",
+      "source_location": "L960",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78585,7 +78651,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L959",
+      "source_location": "L968",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78596,7 +78662,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L817",
+      "source_location": "L826",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -79751,7 +79817,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L3",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79762,7 +79828,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L82",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
+      "target": "docs_analysis_project_analysis_spec_2026_08_03_check_in_qr_modal_presentation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79773,7 +79850,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L627",
+      "source_location": "L636",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79784,7 +79861,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L100",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79795,7 +79872,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L14",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79806,7 +79883,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L270",
+      "source_location": "L279",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79817,7 +79894,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L283",
+      "source_location": "L292",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79828,7 +79905,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L640",
+      "source_location": "L649",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79839,7 +79916,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L345",
+      "source_location": "L354",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79850,7 +79927,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L24",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79861,7 +79938,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L360",
+      "source_location": "L369",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79872,7 +79949,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L389",
+      "source_location": "L398",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79883,7 +79960,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L434",
+      "source_location": "L443",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79894,7 +79971,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L56",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79905,7 +79982,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L579",
+      "source_location": "L588",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79916,7 +79993,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L291",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79927,7 +80004,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L602",
+      "source_location": "L611",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79938,7 +80015,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L311",
+      "source_location": "L320",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79949,7 +80026,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L211",
+      "source_location": "L220",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79960,7 +80037,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L333",
+      "source_location": "L342",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79971,7 +80048,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L147",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79982,7 +80059,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L175",
+      "source_location": "L184",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -79993,7 +80070,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L426",
+      "source_location": "L435",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -80004,7 +80081,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L451",
+      "source_location": "L460",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -80015,7 +80092,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L132",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -80026,7 +80103,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L412",
+      "source_location": "L421",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -80037,7 +80114,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L254",
+      "source_location": "L263",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_movement_2026_current_specification",
@@ -80048,7 +80125,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L84",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_actors",
@@ -80059,7 +80136,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/PROJECT_ANALYSIS_SPEC.md",
-      "source_location": "L92",
+      "source_location": "L101",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_project_analysis_spec_actors",
@@ -81863,7 +81940,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L11",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81874,7 +81951,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L27",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
+      "target": "docs_analysis_station_qr_and_scoring_analysis_2026_08_03_station_list_camera_first_check_in",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81885,7 +81973,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L33",
+      "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81896,7 +81984,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L67",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81907,7 +81995,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L44",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81918,7 +82006,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L51",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81929,7 +82017,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L22",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81940,7 +82028,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L77",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81951,7 +82039,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L3",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -81962,7 +82050,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md",
-      "source_location": "L57",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_station_qr_and_scoring_analysis_station_qr_and_scoring_analysis",
@@ -85865,5 +85953,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "48693c6f2189bc69d2bc105bcdcc15eb1e97baae"
+  "built_at_commit": "315fbee04b4c516bd4c67b0deb43c1ebec32f9b3"
 }

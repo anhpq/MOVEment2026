@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationListPage.tsx": {
-    "mtime": 1785668860.0923412,
-    "ast_hash": "4d8368a63d04480bbe50c8083435c54a",
+    "mtime": 1785690460.8661046,
+    "ast_hash": "8e08ba00ab0405ca685ab926a26c00d8",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationsMapPage.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785689845.442006,
-    "ast_hash": "bb17a66236ab32b698af9913ff32dc11",
+    "mtime": 1785690615.8585105,
+    "ast_hash": "b9b5837c8550f8aafd1eae64f713d507",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1785688485.0569737,
-    "ast_hash": "670b36c2f65cc11707043fcc6e381d08",
+    "mtime": 1785690617.9103248,
+    "ast_hash": "5e86d26f6ef4a115571eeb6bcd6f2a74",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785689844.3030622,
-    "ast_hash": "d7dff8a94d197c04d7f1e4eb5a25de6d",
+    "mtime": 1785690614.8141215,
+    "ast_hash": "7556577136e7089f6e5d6b53af3105b1",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/QrTokenInput.tsx": {
-    "mtime": 1785668459.563516,
-    "ast_hash": "2de45ad72de9b4312482f0b2914e63a8",
+    "mtime": 1785690549.4726682,
+    "ast_hash": "7621ae83440fcd6b5453c304f52f2fd6",
     "semantic_hash": ""
   },
   "be/src/modules/player/player.service.spec.ts": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1785688321.4635177,
-    "ast_hash": "699c447305f1bb85b2736fcb859d4368",
+    "mtime": 1785690497.5197692,
+    "ast_hash": "02568cb27a9241c5c3cb01f01901287c",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -980,8 +980,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md": {
-    "mtime": 1785668459.4359622,
-    "ast_hash": "5f36a5e3895b600f4e0afbc147aeb02e",
+    "mtime": 1785690620.8836374,
+    "ast_hash": "0c1da920bda86cb7674d9bfe015d95a7",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md": {

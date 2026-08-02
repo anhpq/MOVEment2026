@@ -347,41 +347,35 @@ export function StationListPage() {
 
       <Modal
         centered
+        className="station-qr-modal"
+        destroyOnHidden
+        footer={null}
         title={t("stationsPage.scanStartTitle")}
         open={Boolean(scanTarget)}
         onCancel={() => {
           setCheckInQrToken("");
           setScanTarget(null);
         }}
-        onOk={() => void submitCheckInQr(checkInQrToken)}
-        confirmLoading={isSubmittingCheckIn}
-        okText={t("stationsPage.submitCheckIn")}
-        cancelText={t("common.close")}>
+        >
         <Flex vertical gap={12} className="full-width">
-          <Typography.Text>
-            {t("stationsPage.scanStartDescription", {
-              station: scanTarget ?
-                `${getStationDisplayCode(scanTarget.stationId)} - ${scanTarget.name}`
-              : "",
-            })}
+          {scanTarget && (
+            <div className="station-qr-identity">
+              <span>{getStationDisplayCode(scanTarget.stationId)}</span>
+              <strong>{scanTarget.name}</strong>
+            </div>
+          )}
+          <Typography.Text type="secondary">
+            {t("stationsPage.scanStartDescriptionShort")}
           </Typography.Text>
           <QrTokenInput
             value={checkInQrToken}
             placeholder={t("stationsPage.checkInPlaceholder")}
             onChange={setCheckInQrToken}
             onScan={(value) => void submitCheckInQr(value)}
-          />
-          <Alert
-            type="info"
-            showIcon
-            description={
-              <Flex vertical gap={4}>
-                <Typography.Text strong>{t("stationsPage.userFlow")}</Typography.Text>
-                <Typography.Text>
-                  {t("stationsPage.userFlowDescription")}
-                </Typography.Text>
-              </Flex>
-            }
+            cameraFirst
+            onSubmit={() => void submitCheckInQr(checkInQrToken)}
+            submitLabel={t("stationsPage.confirmCode")}
+            submitting={isSubmittingCheckIn}
           />
         </Flex>
       </Modal>

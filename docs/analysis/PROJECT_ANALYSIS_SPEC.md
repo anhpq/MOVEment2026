@@ -1,5 +1,14 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Check-in QR modal presentation
+
+- Station List Check-in is camera-first: a decoded QR auto-submits, while
+  manual entry is an explicit fallback and appears automatically when camera
+  capability/startup fails.
+- The modal presents Station identity and concise player guidance without
+  exposing Backend implementation terminology.
+
+
 ## 2026-08-02 Shared UI usability baseline
 
 - Initial Leaderboard load failures provide a localized retry action; refresh

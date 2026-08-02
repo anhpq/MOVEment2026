@@ -1,5 +1,14 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-03 Station List camera-first Check-in
+
+- The V1 Station List Check-in modal now prioritizes camera scanning and keeps
+  manual token entry as a collapsible fallback.
+- Camera decode continues to invoke the same authoritative Check-in mutation;
+  no QR validation, purpose, session, or scoring Business Rule changed.
+- Full Frontend verification passed; physical camera verification remains open.
+
+
 ## Status
 
 | Area | Status |

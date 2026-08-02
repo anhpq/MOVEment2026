@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Check-in QR camera-first modal
+
+- [x] Make camera scanning the primary Station List Check-in action.
+- [x] Collapse manual token entry and reveal it on request/camera failure.
+- [x] Auto-submit scanned QR and disable empty manual confirmation.
+- [x] Replace Backend-oriented explanatory UI with concise player copy.
+- [x] Pass full Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete physical iOS/Android camera and responsive visual smoke.
+
 ## 2026-08-02 Video action color refinement
 
 - [x] Reduce enabled Watch Video color intensity in Team V1 and Team V2.
