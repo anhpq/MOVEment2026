@@ -1,3 +1,11 @@
+# 2026-08-03 Completed Station gameplay button
+
+- Disabled the Team V1 gameplay button for finished Stations in both Station
+  List and map drawer, using the existing bilingual Finished status label.
+- Backend completion enforcement and V2 completed-state behavior were unchanged.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget (`204.08 KiB` initial gzip JS).
+
 # 2026-08-03 Team score confirmation copy
 
 - Replaced the generic Team score confirmation in V1 and V2 with localized,

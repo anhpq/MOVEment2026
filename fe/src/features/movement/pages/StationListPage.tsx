@@ -221,6 +221,8 @@ export function StationListPage() {
             session.role === "user" &&
             station.status !== "In Progress" &&
             cooldownRemaining > 0;
+          const isCompleted =
+            session.role === "user" && station.status === "Finished";
 
           return (
             <List.Item>
@@ -326,10 +328,12 @@ export function StationListPage() {
                         <PlayCircleOutlined />
                       : <EditFilled />
                     }
-                    disabled={isCooldownActive}
+                    disabled={isCooldownActive || isCompleted}
                     onClick={() => handleStationClick(station)}>
                     {session.role === "user" ?
-                      isCooldownActive ?
+                      isCompleted ?
+                        t("status.Finished")
+                      : isCooldownActive ?
                         t("common.cooldown", {
                           time: formatCooldownRemaining(cooldownRemaining),
                         })

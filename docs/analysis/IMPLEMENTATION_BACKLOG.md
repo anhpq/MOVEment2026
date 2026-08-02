@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Completed Station gameplay button
+
+- [x] Disable the Team V1 Station List gameplay button after completion.
+- [x] Disable the Team V1 map drawer gameplay button after completion.
+- [x] Keep bilingual Finished labels and independent media actions.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated mobile visual smoke for disabled completed actions.
+
 ## 2026-08-03 Team score confirmation copy
 
 - [x] Show the submitted score and Station identity in Team V1/V2 confirmation.

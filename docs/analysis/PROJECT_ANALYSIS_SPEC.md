@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Completed Station action state
+
+- Completed Stations cannot be started again: Team V1 disables and relabels the
+  gameplay button, while Team V2 omits completed gameplay actions.
+- Station media actions remain independent of completion status.
+
 ## 2026-08-03 Team score confirmation
 
 - Before score submission, Team V1 and V2 show the exact score and Station and

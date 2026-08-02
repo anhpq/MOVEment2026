@@ -1,5 +1,14 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-03 Completed Station gameplay action
+
+- Team V1 Station List and map drawer now disable the gameplay button for a
+  finished Station and label it `Hoàn thành` / `Finished`.
+- V2 already omits gameplay actions for completed Stations. Media actions remain
+  independent and available according to their existing rules.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget.
+
 ## 2026-08-03 Team score confirmation copy
 
 - Team V1 and V2 score confirmations now show the exact score and Station

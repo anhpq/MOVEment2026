@@ -616,6 +616,8 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
     session?.role === "user" &&
     focusedTeamStation?.status !== "In Progress" &&
     focusedCooldownRemaining > 0;
+  const isFocusedCompleted =
+    session?.role === "user" && focusedTeamStation?.status === "Finished";
 
   useEffect(() => {
     if (!viewportSize.width) {
@@ -1065,7 +1067,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                   session?.role === "user" ? "station-gameplay-button" : undefined
                 }
                 icon={<PlayCircleOutlined />}
-                disabled={isFocusedCooldownActive}
+                disabled={isFocusedCooldownActive || isFocusedCompleted}
                 onClick={() => {
                   const disabledReason = getDisabledReason(
                     focusedTeamStation,
@@ -1086,7 +1088,9 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
 
                   setScanTarget(focusedTeamStation);
                 }}>
-                {isFocusedCooldownActive ?
+                {isFocusedCompleted ?
+                  t("status.Finished")
+                : isFocusedCooldownActive ?
                   t("common.cooldown", {
                     time: formatCooldownRemaining(focusedCooldownRemaining),
                   })
