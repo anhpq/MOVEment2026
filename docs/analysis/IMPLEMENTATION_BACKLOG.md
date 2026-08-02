@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-02 Admin Leaderboard authorization fix
+
+- [x] Route Admin Leaderboard reads through `GET /api/leaderboard` and retain
+  `GET /api/player/leaderboard` for authenticated Team sessions.
+- [x] Stop treating HTTP `403 Forbidden` as an expired session; automatic local
+  logout remains limited to HTTP `401 Unauthorized`.
+- [ ] Complete a manual browser click-through using an Admin session after the
+  rebuilt Frontend is running.
+
 ## 2026-08-02 Team V2 browser fullscreen
 
 - [x] Add an accessible enter/exit fullscreen control next to Team V2 Settings

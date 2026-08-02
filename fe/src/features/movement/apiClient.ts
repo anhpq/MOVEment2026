@@ -53,7 +53,7 @@ export class ApiError extends Error {
 }
 
 export function isAuthFailure(error: unknown): boolean {
-  return error instanceof ApiError && (error.status === 401 || error.status === 403)
+  return error instanceof ApiError && error.status === 401
 }
 
 export function isCompatibilityFallback(error: unknown): boolean {
@@ -210,7 +210,7 @@ function createRequestId() {
 }
 
 function getApiErrorCode(status: number): ApiErrorCode {
-  if (status === 401 || status === 403) return 'AUTH'
+  if (status === 401) return 'AUTH'
   if (status === 429) return 'RATE_LIMITED'
   if (status >= 500) return 'SERVER'
   if (status === 0) return 'NETWORK'

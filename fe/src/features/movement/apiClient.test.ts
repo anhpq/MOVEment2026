@@ -4,6 +4,7 @@ import {
   apiGet,
   apiPost,
   getSafeApiErrorTranslationKey,
+  isAuthFailure,
 } from "./apiClient";
 import {persistStoredSession} from "./sessionIdentity";
 
@@ -30,6 +31,16 @@ afterEach(() => {
 });
 
 describe("apiClient request policy", () => {
+  it("distinguishes an expired session from a forbidden operation", () => {
+    const unauthorized = new ApiError("unauthorized", 401, "GET", "/api/auth/me");
+    const forbidden = new ApiError("forbidden", 403, "GET", "/api/player/leaderboard");
+
+    expect(isAuthFailure(unauthorized)).toBe(true);
+    expect(isAuthFailure(forbidden)).toBe(false);
+    expect(getSafeApiErrorTranslationKey(unauthorized)).toBe("errors.sessionExpired");
+    expect(getSafeApiErrorTranslationKey(forbidden)).toBe("errors.generic");
+  });
+
   it("retries a retryable GET at most twice and reuses its request id", async () => {
     vi.useFakeTimers();
     const fetchMock = vi.fn()

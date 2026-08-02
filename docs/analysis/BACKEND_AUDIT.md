@@ -1,3 +1,20 @@
+# 2026-08-02 Admin Leaderboard authorization fix
+
+- Fixed the shared Leaderboard page to select the public Leaderboard endpoint
+  for Admin sessions while Team sessions continue using the lean authenticated
+  Player endpoint.
+- Corrected Frontend authorization classification: HTTP `401` invalidates the
+  local session, while HTTP `403` is treated as a forbidden operation and no
+  longer logs out an otherwise valid Admin or Team session.
+- Runtime root-cause verification reproduced Admin `GET /api/player/leaderboard`
+  as `403` and public `GET /api/leaderboard` as `200` before the fix.
+- Verification PASS: focused Frontend Vitest `5/5`, full Frontend Vitest
+  `61/61`, full Frontend lint, production build, and bundle budget (`203.64
+  KiB` initial gzip JavaScript).
+  Host-side Vitest was unavailable because dependencies are installed in the
+  Docker volume; the same validation passed inside the running Frontend
+  container. Manual browser click-through remains pending.
+
 # 2026-08-02 Team V2 browser fullscreen
 
 - Added an accessible Team V2 enter/exit fullscreen control using the standard

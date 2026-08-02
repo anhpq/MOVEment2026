@@ -8,6 +8,7 @@ import {Alert, Card, Empty, List, Typography} from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
+  getLeaderboard,
   getPlayerLeaderboard,
   isAuthFailure,
   type LeaderboardEntryResponse,
@@ -24,6 +25,7 @@ export function LeaderboardPage() {
   const [hasRefreshError, setHasRefreshError] = useState(false);
   const {i18n, t} = useTranslation();
   const logout = useMovementStore((state) => state.logout);
+  const sessionRole = useMovementStore((state) => state.session?.role);
   const language = i18n.language === "en" ? "en" : "vi";
 
   useEffect(() => {
@@ -35,7 +37,9 @@ export function LeaderboardPage() {
 
   const refresh = useCallback(async () => {
     try {
-      const entries = await getPlayerLeaderboard();
+      const entries = sessionRole === "admin"
+        ? await getLeaderboard()
+        : await getPlayerLeaderboard();
       if (mountedRef.current) {
         setRows(entries);
         setHasRefreshError(false);
@@ -52,7 +56,7 @@ export function LeaderboardPage() {
         setIsLoading(false);
       }
     }
-  }, [logout]);
+  }, [logout, sessionRole]);
 
   useVisibleOnlinePolling(refresh);
 

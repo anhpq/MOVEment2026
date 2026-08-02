@@ -112,6 +112,9 @@ Rules:
 - backend signs the JWT and returns `expiresAt` for that same cutoff; frontend persists that value without calculating a separate TTL and clears local auth state when the cutoff is reached;
 - session activity and `lastSeenAt` do not extend the absolute cutoff;
 - backend enforces session validity;
+- frontend clears local authentication for HTTP `401 Unauthorized`; HTTP `403
+  Forbidden` represents an authorization denial and does not invalidate an
+  otherwise active session;
 - Team QR token and Team session are separate objects.
 - Team user header identifies the current Team by name in the logout button instead of the generic `User` label. The Team logout button remains visible in every environment until a separate release task hides it. Admin header logout remains unchanged.
 
@@ -383,6 +386,10 @@ Leaderboard ranks all non-deleted Teams and uses the same centralized comparator
 5. `Team Code` ascending, currently numeric `Team.id`.
 
 Backend is authoritative.
+
+The shared Leaderboard screen is available to both roles. Admin sessions read
+the public `GET /api/leaderboard` projection, while Team sessions use the lean
+authenticated `GET /api/player/leaderboard` projection.
 
 Player Station list, Station map drawer, and Station detail show live Playing
 Teams counts from `GET /api/player/stations/playing-counts`. The endpoint
