@@ -1,5 +1,16 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-03 Station Detail camera-first Check-out
+
+- The V1 Station Detail Check-out modal now matches the Check-in camera-first
+  pattern, with Station identity and concise guidance.
+- Manual token entry remains available as a collapsible fallback; camera decode
+  continues to auto-submit through the existing authoritative Check-out mutation.
+- The informational scoring panel and default modal footer were removed from
+  this scan step without changing tracking-mode or scoring behavior.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget. Physical mobile smoke remains open.
+
 ## 2026-08-03 Station List camera-first Check-in
 
 - The V1 Station List Check-in modal now prioritizes camera scanning and keeps

@@ -31,6 +31,7 @@ import {useMovementStore} from "../store";
 import {
   formatDateTime,
   formatDurationFromMs,
+  getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
@@ -499,27 +500,32 @@ export function StationDetailPage() {
 
       <Modal
         centered
+        className="station-qr-modal"
         title={t("stationDetail.scanCompleteTitle")}
         open={isFinishScannerOpen}
+        destroyOnHidden
         onCancel={() => {
           setCheckOutQrToken("");
           setIsFinishScannerOpen(false);
         }}
-        onOk={() => void submitCheckOutQr(checkOutQrToken)}
-        confirmLoading={isSubmittingCheckOut}
-        okText={t("stationDetail.submitCheckOut")}
-        cancelText={t("common.close")}>
-        <Flex vertical gap={12}>
+        footer={null}>
+        <Flex vertical gap={12} className="full-width">
+          <div className="station-qr-identity">
+            <span>{getStationDisplayCode(station.stationId)}</span>
+            <strong>{station.name}</strong>
+          </div>
+          <Typography.Text type="secondary">
+            {t("stationDetail.checkOutDescriptionShort")}
+          </Typography.Text>
           <QrTokenInput
             value={checkOutQrToken}
             placeholder={t("stationDetail.checkOutPlaceholder")}
             onChange={setCheckOutQrToken}
             onScan={(value) => void submitCheckOutQr(value)}
-          />
-          <Alert
-            type="info"
-            showIcon
-            description={t("stationDetail.checkOutHelp")}
+            cameraFirst
+            onSubmit={() => void submitCheckOutQr(checkOutQrToken)}
+            submitLabel={t("stationsPage.confirmCode")}
+            submitting={isSubmittingCheckOut}
           />
         </Flex>
       </Modal>

@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Check-out QR modal presentation
+
+- Station Detail Check-out follows the same camera-first interaction as
+  Check-in: decoded QR values auto-submit and manual entry is a fallback.
+- The scan modal shows Station identity and concise instructions; accepted
+  Check-out and subsequent scoring continue to follow tracking-mode rules.
+
 ## 2026-08-03 Check-in QR modal presentation
 
 - Station List Check-in is camera-first: a decoded QR auto-submits, while

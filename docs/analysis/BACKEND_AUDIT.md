@@ -1,3 +1,15 @@
+# 2026-08-03 Check-out QR camera-first modal
+
+- Aligned the V1 Station Detail Check-out modal with the camera-first Check-in
+  experience while preserving the existing Check-out API and scoring flow.
+- Camera scans still auto-submit; manual entry is a collapsible fallback with
+  an explicit confirmation action.
+- No Backend, database, authentication, QR-purpose, tracking-mode, or scoring
+  behavior changed.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget (`203.98 KiB` initial gzip JS).
+  Physical mobile camera and responsive visual smoke remain pending.
+
 # 2026-08-02 Admin Leaderboard authorization fix
 
 - Fixed the shared Leaderboard page to select the public Leaderboard endpoint

@@ -275,8 +275,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
-    "mtime": 1785668459.595488,
-    "ast_hash": "e2725c116994b68a7e13e21bfe03dfe4",
+    "mtime": 1785691046.933559,
+    "ast_hash": "40fd31ac19662e72e75cbb5c750d13b7",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationEditorPage.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785690615.8585105,
-    "ast_hash": "b9b5837c8550f8aafd1eae64f713d507",
+    "mtime": 1785691209.754447,
+    "ast_hash": "4274e3a6f93c2b3dd28a48f397c8a000",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1785690617.9103248,
-    "ast_hash": "5e86d26f6ef4a115571eeb6bcd6f2a74",
+    "mtime": 1785691082.436692,
+    "ast_hash": "5683000af61fdfabf346b9da9ff71d43",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785690614.8141215,
-    "ast_hash": "7556577136e7089f6e5d6b53af3105b1",
+    "mtime": 1785691208.7342753,
+    "ast_hash": "aa8aa0f59b06d09095d01c7ccad78b2f",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1785690497.5197692,
-    "ast_hash": "02568cb27a9241c5c3cb01f01901287c",
+    "mtime": 1785691048.1736383,
+    "ast_hash": "f93d0a0e79359d541861c500677cf701",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -980,8 +980,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md": {
-    "mtime": 1785690620.8836374,
-    "ast_hash": "0c1da920bda86cb7674d9bfe015d95a7",
+    "mtime": 1785691211.0950549,
+    "ast_hash": "b08a2f4513759ed73ef6161d2adbf81a",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md": {

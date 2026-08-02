@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Check-out QR camera-first modal
+
+- [x] Match the Station Detail Check-out modal to the camera-first Check-in UI.
+- [x] Keep scan auto-submit and collapsible manual token entry.
+- [x] Show Station identity and concise player-facing guidance.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete physical iOS/Android camera and responsive visual smoke.
+
 ## 2026-08-03 Check-in QR camera-first modal
 
 - [x] Make camera scanning the primary Station List Check-in action.
