@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Default Team interface trial
+
+- Team login and Team home/fallback navigation now default to `/team/v2`.
+- V1 remains available at `/stations` and `/stations/map`, including the V2
+  Settings return action.
+
 ## 2026-08-03 Completed Station action state
 
 - Completed Stations cannot be started again: Team V1 disables and relabels the

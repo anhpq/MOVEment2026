@@ -34,6 +34,11 @@ Whenever a Business Rule changes:
   append thành dòng thứ sáu và hiển thị rank `6` trong riêng V2 overlay. Không
   thay đổi Backend ranking hoặc dữ liệu Leaderboard gốc.
 
+- 2026-08-03: Team Gameplay V2 trở thành giao diện mặc định sau Team username,
+  Team QR và automatic URL QR Login. Team home/fallback redirect dùng
+  `/team/v2`; V1 vẫn được giữ tại `/stations` và `/stations/map` và V2 Settings
+  tiếp tục cung cấp lối quay lại V1 trong giai đoạn thử nghiệm.
+
 - 2026-07-31: Team V2 Detail dùng intrinsic content height, căn giữa viewport và
   chỉ giới hạn bằng available height để scroll khi cần; không ép full-height trên
   điện thoại. Footer dùng copy ngắn `BXH` trong VI (`RANK` trong EN), QR CTA có

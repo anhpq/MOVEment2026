@@ -1,5 +1,18 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Default Team experience trial
+
+- `/team/v2` is now the default destination for Team username login, Team QR
+  login, automatic URL QR login, authenticated login-page recovery, forbidden
+  route recovery, and unknown-route fallback.
+- V1 remains available at `/stations` and `/stations/map`; V2 Settings retains
+  the explicit return-to-V1 action during the trial.
+- Admin redirects and all authentication, QR, Station, scoring, and Final
+  Business Rules remain unchanged.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `417`,
+  lint, production build, and bundle budget (`204.10 KiB` initial gzip JS).
+  Authenticated browser redirect smoke remains pending.
+
 ## Status
 
 | Area | Status |

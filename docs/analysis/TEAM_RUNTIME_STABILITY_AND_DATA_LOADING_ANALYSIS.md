@@ -271,3 +271,10 @@ After implementation and verification update:
 
 `OPEN_QUESTIONS_AND_DECISIONS.md` is not changed because this work preserves all
 confirmed Business Rules.
+## 2026-08-03 V2 default Team bootstrap destination
+
+- Team authentication and authenticated recovery now land on `/team/v2`, which
+  continues using the shared runtime coordinator, lean state loading, polling,
+  and mutation reconciliation.
+- Frontend tests, lint, build, and bundle budget passed. Authenticated browser
+  redirect/data bootstrap smoke remains pending.

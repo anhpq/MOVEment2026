@@ -31,6 +31,7 @@ export const translationResources = {
         accessDeniedDescription: "Tài khoản hiện tại không có quyền mở màn hình này.",
         backToTeams: "Quay về danh sách đội",
         backToStations: "Quay về danh sách trạm",
+        backToGame: "Quay về trò chơi",
       },
       auth: {
         username: "Tên đăng nhập",
@@ -495,6 +496,7 @@ export const translationResources = {
         accessDeniedDescription: "The current account cannot open this screen.",
         backToTeams: "Back to teams",
         backToStations: "Back to stations",
+        backToGame: "Back to game",
       },
       auth: {
         username: "Username",

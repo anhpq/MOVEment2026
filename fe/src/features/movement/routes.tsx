@@ -5,7 +5,7 @@ import {useMovementStore} from "./store";
 
 function RoleAwareFallback() {
   const role = useMovementStore((state) => state.session?.role);
-  return <Navigate to={role === "admin" ? "/teams" : role === "user" ? "/stations" : "/login"} replace />;
+  return <Navigate to={role === "admin" ? "/teams" : role === "user" ? "/team/v2" : "/login"} replace />;
 }
 
 const ProtectedRoute = lazyRoute(() =>

@@ -1,3 +1,11 @@
+# 2026-08-03 Team V2 default route trial
+
+- Switched every Team authentication and home/fallback redirect to `/team/v2`.
+- Preserved Admin redirects and V1 routes; no Backend, session, database, QR,
+  scoring, or Final behavior changed.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `417`,
+  lint, production build, and bundle budget (`204.10 KiB` initial gzip JS).
+
 # 2026-08-03 Completed Station gameplay button
 
 - Disabled the Team V1 gameplay button for finished Stations in both Station

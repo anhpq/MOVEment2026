@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 default route trial
+
+- [x] Route Team username and QR login success to `/team/v2`.
+- [x] Route authenticated login recovery and Team fallback/home to `/team/v2`.
+- [x] Preserve V1 routes and the V2 return-to-V1 action.
+- [x] Add synchronized VI/EN Team home recovery copy.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated browser smoke for every login and fallback entry.
+
 ## 2026-08-03 Completed Station gameplay button
 
 - [x] Disable the Team V1 Station List gameplay button after completion.

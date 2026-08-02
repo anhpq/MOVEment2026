@@ -68,9 +68,9 @@ export function ProtectedRoute({ children, allow, fullscreen = false }: Protecte
   }
 
   if (allow && !allow.includes(session.role)) {
-    const homePath = session.role === 'admin' ? '/teams' : '/stations'
+    const homePath = session.role === 'admin' ? '/teams' : '/team/v2'
     const homeLabel =
-      session.role === 'admin' ? t('route.backToTeams') : t('route.backToStations')
+      session.role === 'admin' ? t('route.backToTeams') : t('route.backToGame')
     return (
       <AppFrame>
         <Result

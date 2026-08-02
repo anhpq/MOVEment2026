@@ -200,3 +200,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Approved Plan 2 execution request: `FE song ngữ VI/EN và Station localization từ Backend`.
 - Seven-round Plan Mode decisions were completed before implementation; round 7
   used the recommended default after no response.
+## 2026-08-03 V2 default navigation localization
+
+- Team protected-route recovery now uses bilingual `Quay về trò chơi` / `Back
+  to game` copy for the `/team/v2` default destination.
+- i18n parity passed with `417` Vietnamese/English keys.

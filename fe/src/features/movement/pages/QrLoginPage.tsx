@@ -135,7 +135,7 @@ export function QrLoginPage() {
       } catch {
         // ProtectedRoute will retry player data on the authenticated screen.
       }
-      navigate("/stations/map", {replace: true});
+      navigate("/team/v2", {replace: true});
     } catch (error) {
       inFlightRef.current = false;
       setState(getQrLoginError(error, t));
@@ -156,7 +156,7 @@ export function QrLoginPage() {
           status="warning"
           title={t("qrLogin.conflictTitle")}
           subTitle={t("qrLogin.conflictDescription")}
-          extra={<Button onClick={() => navigate("/stations/map")}>{t("qrLogin.back")}</Button>}
+          extra={<Button onClick={() => navigate("/team/v2")}>{t("qrLogin.back")}</Button>}
         />
       </div>
     );
