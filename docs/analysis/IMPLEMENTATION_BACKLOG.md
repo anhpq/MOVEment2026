@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-02 Video action color refinement
+
+- [x] Reduce enabled Watch Video color intensity in Team V1 and Team V2.
+- [x] Preserve disabled state, interaction behavior, and media rules.
+- [x] Pass focused tests, Frontend lint, build, and bundle budget.
+- [ ] Complete manual mobile/desktop visual review.
+
 ## 2026-08-02 Frontend UI usability and accessibility optimization
 
 - [x] Add Leaderboard initial-load error/retry while preserving stale-data UX.

@@ -153,9 +153,9 @@
 }
 
 .team-v2-detail-youtube-button:not(:disabled) {
-  border-color: rgba(255, 70, 70, 0.72);
-  background: rgba(93, 12, 19, 0.82);
-  color: #ffffff;
+  border-color: rgba(255, 111, 128, 0.46);
+  background: rgba(55, 16, 22, 0.72);
+  color: #ffd7dc;
 }
 
 .team-v2-detail-gallery-button:not(:disabled) {

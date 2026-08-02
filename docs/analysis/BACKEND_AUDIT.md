@@ -1297,3 +1297,11 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Verification PASS: Frontend Vitest `61/61`, i18n parity `409`, full lint,
   TypeScript production build, and bundle budget (`203.85 KiB` initial gzip).
 - Manual authenticated desktop/mobile visual review remains pending.
+# 2026-08-02 Video action color refinement
+
+- Softened enabled `Watch Video` actions from saturated red to a light rose
+  treatment in Team V1 and a muted dark-rose treatment in Team V2.
+- Preserved YouTube recognition, hover/active feedback, disabled appearance,
+  layout, and all media behavior.
+- Verification PASS: focused Team V2 detail tests `6/6`, Frontend lint,
+  production build, and bundle budget (`203.84 KiB` initial gzip).

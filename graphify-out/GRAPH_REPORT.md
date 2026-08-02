@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-08-02)
 
 ## Corpus Check
-- 245 files · ~429,766 words
+- 245 files · ~429,879 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2837 nodes · 4752 edges · 233 communities (193 shown, 40 thin omitted)
+- 2839 nodes · 4754 edges · 233 communities (193 shown, 40 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.68)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4062afa2`
+- Built from commit: `48693c6f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -273,17 +273,13 @@
 Cohesion: 0.06
 Nodes (31): 10. Conditional Database Deployment, 11. Expected Migration Review, 12. Backend Stop Conditions, 13. Backend Post-Deploy Verification, 14. Frontend Deployment Path, 15. Frontend Post-Deploy Verification, 16. Non-Destructive Production Smoke, 17. QR Reissue Plan (+23 more)
 
-### Community 1 - "AuthContext"
-Cohesion: 0.13
-Nodes (3): getStationPlaySeconds(), PlayerService, Injectable
-
 ### Community 2 - "dependencies"
 Cohesion: 0.07
 Nodes (29): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator, exceljs, helmet, @nestjs/common (+21 more)
 
 ### Community 3 - "LanguageSwitch.tsx"
-Cohesion: 0.17
-Nodes (13): loginWithQrToken(), LANGUAGE_FLAGS, LanguageSwitch(), LanguageSwitchProps, normalizeLanguage(), readStoredLanguage(), SUPPORTED_LANGUAGES, translationResources (+5 more)
+Cohesion: 0.24
+Nodes (8): LANGUAGE_FLAGS, LanguageSwitch(), LanguageSwitchProps, normalizeLanguage(), readStoredLanguage(), SUPPORTED_LANGUAGES, translationResources, SupportedLanguage
 
 ### Community 4 - "dependencies"
 Cohesion: 0.09
@@ -291,19 +287,19 @@ Nodes (23): @ant-design/icons, antd, dependencies, @ant-design/icons, antd, i18n
 
 ### Community 5 - "devDependencies"
 Cohesion: 0.07
-Nodes (27): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/testing, prisma, ts-jest (+19 more)
+Nodes (27): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schematics, prisma, ts-jest (+19 more)
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.09
 Nodes (23): eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, jsdom (+15 more)
 
 ### Community 7 - "seed.ts"
-Cohesion: 0.18
-Nodes (22): createUniqueStationQrToken(), devQrArtifactPath, devStationQrArtifactPath, ensureStationQrToken(), formatDuration(), logSeed(), main(), prisma (+14 more)
+Cohesion: 0.19
+Nodes (20): devQrArtifactPath, devStationQrArtifactPath, formatDuration(), logSeed(), main(), prisma, runSeedPhase(), seedStartedAt (+12 more)
 
 ### Community 8 - "AuthService"
-Cohesion: 0.22
-Nodes (12): AuthContext, PlayerController, Body, Controller, Get, Header, Param, Post (+4 more)
+Cohesion: 0.16
+Nodes (14): QrActionDto, IsString, MinLength, PlayerController, Body, Controller, Get, Header (+6 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.08
@@ -314,7 +310,7 @@ Cohesion: 0.17
 Nodes (11): name, private, scripts, db:reset, db:verify, tester, tester:docker, tester:no-seed (+3 more)
 
 ### Community 11 - "admin.service.ts"
-Cohesion: 0.26
+Cohesion: 0.29
 Nodes (11): AdminScoreDto, ForceProgressStatusDto, ReopenProgressDto, SubmitScoreDto, IsEnum, IsInt, IsNotEmpty, IsOptional (+3 more)
 
 ### Community 12 - "IOS_SAFARI_QR_CAMERA_FIX.md"
@@ -322,8 +318,8 @@ Cohesion: 0.14
 Nodes (13): 10. Cleanup Contract, 12. Development Diagnostics, 14. Manual Fallback, 17. Automated Verification Checklist, 18. Acceptance Criteria, 19. Known Remaining Risk, 1. Mục tiêu, 20. Documentation Update Rules (+5 more)
 
 ### Community 13 - "TeamGameplayV2Page.tsx"
-Cohesion: 0.08
-Nodes (35): LeaderboardEntryResponse, submitPlayerQrAction(), TeamV2QrBadge(), TeamV2QrBadgeProps, clamp(), clampPercent(), clampScale(), getBaseMapScale() (+27 more)
+Cohesion: 0.09
+Nodes (34): submitPlayerQrAction(), TeamV2QrBadge(), TeamV2QrBadgeProps, clamp(), clampPercent(), clampScale(), getBaseMapScale(), getDefaultMapTransform() (+26 more)
 
 ### Community 14 - "compilerOptions"
 Cohesion: 0.10
@@ -343,7 +339,7 @@ Nodes (42): 2026-07-22 Conditional Backend Database Deployment, 2026-07-22 Final
 
 ### Community 18 - "api.ts"
 Cohesion: 0.08
-Nodes (46): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, AuthMeResponse, deleteAdminStation() (+38 more)
+Nodes (46): AdminCreatedStationResponse, AdminOneTimeTeamQrResponse, AdminProgressMatrixResponse, AdminQrLoginTokenResponse, AdminStationUpdateInput, AdminTeamResponse, createAdminStation(), downloadAdminSummary() (+38 more)
 
 ### Community 19 - "What You Must Do When Invoked"
 Cohesion: 0.08
@@ -354,8 +350,8 @@ Cohesion: 0.14
 Nodes (12): Auth Smoke Test, Main APIs, MOVEment 2026 Backend, Production Deploy Notes, Report Export and Database Recovery Rehearsal, Seed Accounts, Setup, Two-Team Smoke Test (+4 more)
 
 ### Community 22 - "store.ts"
-Cohesion: 0.13
-Nodes (20): buildFinishedTeamStations(), buildPatchedTeamStations(), buildResetTeamStations(), buildStartedTeamStations(), buildTeamStationsWithoutStation(), buildTeamStationsWithUpdatedStation(), createFinishedStation(), createNewTeamStation() (+12 more)
+Cohesion: 0.16
+Nodes (17): buildFinishedTeamStations(), buildPatchedTeamStations(), buildResetTeamStations(), buildStartedTeamStations(), buildTeamStationsWithoutStation(), buildTeamStationsWithUpdatedStation(), createFinishedStation(), createNewTeamStation() (+9 more)
 
 ### Community 23 - "exclude"
 Cohesion: 0.22
@@ -382,8 +378,8 @@ Cohesion: 0.33
 Nodes (5): For /graphify explain, For /graphify path, graphify reference: query, path, explain, Step 0 — Constrained query expansion (REQUIRED before traversal), Step 1 — Traversal
 
 ### Community 35 - "utils.ts"
-Cohesion: 0.10
-Nodes (33): GAME_TYPE_OPTIONS, GAME_TYPES, ROLE_LABELS, STATUS_ORDER, createStoreState(), AuthAccount, GameType, LocalDatabase (+25 more)
+Cohesion: 0.09
+Nodes (36): displayStatus(), fetchAdminDatabase(), getAdminProgressMatrix(), GAME_TYPE_OPTIONS, GAME_TYPES, ROLE_LABELS, STATUS_ORDER, createStoreState() (+28 more)
 
 ### Community 36 - "2026-07-28 Station Media Gallery and Player action layout"
 Cohesion: 0.04
@@ -462,8 +458,8 @@ Cohesion: 0.13
 Nodes (26): checkInStation(), buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent(), getMarkerLegendBackground(), isValidMapCoordinate(), MARKER_THEME (+18 more)
 
 ### Community 60 - "team-results.service.ts"
-Cohesion: 0.09
-Nodes (19): Get, buildTeamResultsWorkbook(), dateToHcmcExcelSerial(), formatHcmcTimestampForFileName(), getColumnWidth(), getHcmcDateParts(), pad(), secondsToExcelDuration() (+11 more)
+Cohesion: 0.17
+Nodes (15): buildTeamResultsWorkbook(), dateToHcmcExcelSerial(), formatHcmcTimestampForFileName(), getColumnWidth(), getHcmcDateParts(), pad(), secondsToExcelDuration(), ProgressWithStation (+7 more)
 
 ### Community 61 - "Nginx Frontend Deploy"
 Cohesion: 0.33
@@ -475,27 +471,27 @@ Nodes (27): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Mark
 
 ### Community 64 - "SystemConfigPage.tsx"
 Cohesion: 0.13
-Nodes (32): qrcode, displayStatus(), fetchAdminDatabase(), buildAdminQrStatusRecords(), AdminQrStatusSummaryResponse, AdminStationQrTokenResponse, createAdminStation(), createAdminTeam() (+24 more)
+Nodes (31): qrcode, buildAdminQrStatusRecords(), AdminQrStatusSummaryResponse, AdminStationQrTokenResponse, createAdminTeam(), deleteAdminStation(), deleteAdminTeam(), getAdminQrStatusSummary() (+23 more)
 
 ### Community 65 - "app.module.ts"
-Cohesion: 0.12
-Nodes (19): ActivityLogService, Injectable, RequestMetricsMiddleware, Injectable, AdminModule, Module, AuthModule, Module (+11 more)
+Cohesion: 0.21
+Nodes (14): ActivityLogService, Injectable, AdminModule, Module, AuthModule, Module, EventConfigModule, Module (+6 more)
 
 ### Community 66 - "QR_PAYLOADS.md"
 Cohesion: 0.20
 Nodes (9): 15. Seed Rules, 19. Known Implementation Gaps, 1. QR Payload Families, 20. Acceptance Criteria, 21. Documentation Update Rules, 5. Station QR Pair, 9. Camera và Manual Input, MOVEment 2026 - QR Payloads (+1 more)
 
 ### Community 67 - "runtimeCoordinator.ts"
-Cohesion: 0.24
-Nodes (6): CurrentAuth, Body, Param, Patch, Post, Delete
+Cohesion: 0.19
+Nodes (13): AuthContext, CurrentAuth, AdminController, Body, Controller, Param, Patch, Post (+5 more)
 
 ### Community 68 - "reset-gameplay-seed.ts"
-Cohesion: 0.21
-Nodes (16): assertResetGuards(), buildResetGameplayPlan(), createUniqueQrLoginToken(), executeResetGameplay(), ExecuteResetGameplayOptions, executeResetGameplayWithGuards(), getResetTarget(), main() (+8 more)
+Cohesion: 0.20
+Nodes (17): assertResetGuards(), buildResetGameplayPlan(), createUniqueQrLoginToken(), executeResetGameplay(), ExecuteResetGameplayOptions, executeResetGameplayWithGuards(), getResetTarget(), main() (+9 more)
 
 ### Community 70 - "player.service.ts"
-Cohesion: 0.16
-Nodes (11): getEffectiveStationMaxPoints(), LeaderboardController, Controller, PLAYER_ERROR_CODES, PlayerActionException, PlayerErrorCode, mockActivityLog, mockEventConfig (+3 more)
+Cohesion: 0.17
+Nodes (10): LeaderboardController, Controller, PLAYER_ERROR_CODES, PlayerActionException, PlayerErrorCode, mockActivityLog, mockEventConfig, mockPrisma (+2 more)
 
 ### Community 71 - "scripts"
 Cohesion: 0.20
@@ -503,7 +499,7 @@ Nodes (10): scripts, build, build:prod, bundle:check, dev, i18n:check, lint, pre
 
 ### Community 73 - "admin.controller.ts"
 Cohesion: 0.08
-Nodes (26): AdminAuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, Roles(), JwtAuthGuard, JwtPayload (+18 more)
+Nodes (24): AdminAuthContext, AuthType, isAdmin(), isTeam(), TeamAuthContext, Roles(), JwtAuthGuard, JwtPayload (+16 more)
 
 ### Community 74 - "QR_LOGIN.md"
 Cohesion: 0.12
@@ -522,8 +518,8 @@ Cohesion: 0.25
 Nodes (7): Phase 0 - Preflight, Phase 1 - Backend, Phase 2 - Frontend, Post-Deploy Checks, Production Staged Deployment, Rollback, Stop Conditions
 
 ### Community 78 - "AdminService"
-Cohesion: 0.07
-Nodes (5): isSupportedYoutubeUrl(), AdminService, Injectable, PrismaService, Injectable
+Cohesion: 0.06
+Nodes (7): isSupportedYoutubeUrl(), getEffectiveStationMaxPoints(), getStationPlaySeconds(), Get, Header, AdminService, Injectable
 
 ### Community 79 - "EventConfigService"
 Cohesion: 0.13
@@ -574,8 +570,8 @@ Cohesion: 0.25
 Nodes (8): 3.1 QR Format, 3.2 Token Security, 3.3 Reusable Controlled Token, 3.4 One Active Session per Team, 3.5 Automatic Provisioning, 3.6 Seed Repair, 3.7 Production Safety, 3. Confirmed Business Rules
 
 ### Community 91 - "playerData.ts"
-Cohesion: 0.09
-Nodes (39): getPlayerCatalog(), getPlayerDashboard(), getPlayerProgress(), getPlayerState(), getPlayerStationImages(), getPlayerStations(), PlayerCatalogStationResponse, PlayerProgressResponse (+31 more)
+Cohesion: 0.07
+Nodes (43): getPlayerCatalog(), getPlayerDashboard(), getPlayerProgress(), getPlayerState(), getPlayerStationImages(), getPlayerStations(), PlayerCatalogStationResponse, PlayerProgressResponse (+35 more)
 
 ### Community 92 - "Event Timing and Final Analysis"
 Cohesion: 0.18
@@ -650,8 +646,8 @@ Cohesion: 0.33
 Nodes (6): 7.1 Target Token Model, 7.2 Remove One-Time Consumption as the Default Policy, 7.3 Constraints, 7.4 Atomic Operations, 7.5 Migration Safety, 7. Database and Migration Requirements
 
 ### Community 110 - "sync-stations.ts"
-Cohesion: 0.12
-Nodes (26): @prisma/client, createUniqueStationQrToken(), deleteStationRelatedActivityLogs(), replaceAllStations(), StationReplacementResult, verifyCanonicalStationState(), CANONICAL_QR_PURPOSES, CANONICAL_STATION_IDS (+18 more)
+Cohesion: 0.13
+Nodes (25): @prisma/client, createUniqueStationQrToken(), deleteStationRelatedActivityLogs(), replaceAllStations(), StationReplacementResult, verifyCanonicalStationState(), CANONICAL_QR_PURPOSES, CANONICAL_STATION_IDS (+17 more)
 
 ### Community 111 - "scripts"
 Cohesion: 0.12
@@ -734,8 +730,8 @@ Cohesion: 0.40
 Nodes (5): 16. Team Gameplay V2, Confirmed Boundaries, Must Update After Change, Required Reading, Scope
 
 ### Community 131 - "App.tsx"
-Cohesion: 0.13
-Nodes (32): App(), authMatchesSession(), FinalResponse, getLeaderboard(), getMe(), getPlayerFinal(), getPlayerLeaderboard(), logout() (+24 more)
+Cohesion: 0.17
+Nodes (19): App(), authMatchesSession(), AuthMeResponse, getMe(), useMovementBootstrap(), usePlayerStatePolling(), ProtectedRoute(), ProtectedRouteProps (+11 more)
 
 ### Community 132 - "Prompt 03 - Phân tích flow trạm, QR và timer"
 Cohesion: 0.40
@@ -825,9 +821,13 @@ Nodes (3): 6.1 Khi tạo Team, 6.2 Khi tạo Station, 6. Automatic Provisioning
 Cohesion: 0.67
 Nodes (3): 9. Generated Data và Seed Workflow, Khi tạo Station mới, Khi tạo Team mới
 
+### Community 154 - "@nestjs/schematics"
+Cohesion: 0.18
+Nodes (4): Get, compareTeamResultRows(), TeamResultsService, Injectable
+
 ### Community 155 - "validate-environment.ts"
-Cohesion: 0.30
-Nodes (9): AppModule, Module, buildCorsOrigin(), Environment, parseCorsOrigin(), requiredProductionValue(), productionEnvironment, validateEnvironment() (+1 more)
+Cohesion: 0.18
+Nodes (11): AppModule, Module, RequestMetricsMiddleware, Injectable, buildCorsOrigin(), Environment, parseCorsOrigin(), requiredProductionValue() (+3 more)
 
 ### Community 156 - "Backend work still required"
 Cohesion: 0.67
@@ -838,8 +838,8 @@ Cohesion: 0.18
 Nodes (10): Business Rule References, Current Implementation, Decision Log, Decisions and Stale Assumptions, Gameplay Reset and Station Seed Analysis, Interfaces and Data, Objective and Scope, Provenance (+2 more)
 
 ### Community 158 - "LeaderboardEntryResponse"
-Cohesion: 0.20
-Nodes (6): AdminController, Controller, Get, Header, Res, UseGuards
+Cohesion: 0.12
+Nodes (17): CreateStationDto, ArrayMaxSize, ArrayUnique, IsArray, IsEnum, IsIn, IsInt, IsNotEmpty (+9 more)
 
 ### Community 160 - "be/package.json"
 Cohesion: 0.33
@@ -858,8 +858,8 @@ Cohesion: 0.15
 Nodes (12): 2026-07-29 Runtime Stability Integration, 2026-08-01 Completed and Locked marker appearance, Current Implementation, Decision Log, Decisions and Stale Assumptions, Interfaces and Data, Objective and Scope, Provenance (+4 more)
 
 ### Community 167 - "TeamEditorPage.tsx"
-Cohesion: 0.15
-Nodes (19): appliedProperties, applyActiveTheme(), ThemeOwner, themeOwners, useBodyTeamTheme(), AppFrame(), AppFrameProps, formatBuildTimestamp() (+11 more)
+Cohesion: 0.14
+Nodes (21): logout(), appliedProperties, applyActiveTheme(), ThemeOwner, themeOwners, useBodyTeamTheme(), AppFrame(), AppFrameProps (+13 more)
 
 ### Community 168 - "check-i18n-parity.mjs"
 Cohesion: 0.20
@@ -871,7 +871,7 @@ Nodes (9): ExistingFinalChallenge, FINAL_CHALLENGE_SEED_POINTS_BY_RANK, FinalCha
 
 ### Community 170 - "BACKEND_AUDIT.md"
 Cohesion: 0.06
-Nodes (33): 2026-07-28 Admin System Config localization fix, 2026-07-28 Admin System Config Station locale display, 2026-07-28 Production deploy preflight and partial smoke, 2026-07-28 Team Gameplay V2 parallel implementation, 2026-07-28 Tester auto-stop conflicting local processes, 2026-07-28 YouTube-style Player video action, 2026-07-29 Team Gameplay V2 fixed-palette isolation, 2026-07-29 Team Gameplay V2 HUD and Team Color reconciliation (+25 more)
+Nodes (34): 2026-07-28 Admin System Config localization fix, 2026-07-28 Admin System Config Station locale display, 2026-07-28 Production deploy preflight and partial smoke, 2026-07-28 Team Gameplay V2 parallel implementation, 2026-07-28 Tester auto-stop conflicting local processes, 2026-07-28 YouTube-style Player video action, 2026-07-29 Team Gameplay V2 fixed-palette isolation, 2026-07-29 Team Gameplay V2 HUD and Team Color reconciliation (+26 more)
 
 ### Community 171 - "Prompt 05 - Phân tích database và API"
 Cohesion: 0.40
@@ -902,8 +902,8 @@ Cohesion: 0.07
 Nodes (23): adminQrFiles, adminQrLeaksIntoTeam, DEFERRED_CHUNK_MARKERS, deferredChunksInInitial, DIST_DIR, distPath, entryKey, failures (+15 more)
 
 ### Community 179 - "MOVEment 2026 - Implementation Backlog"
-Cohesion: 0.09
-Nodes (23): 2026-07-29 Team runtime stability resume completion, 2026-07-30 Canonical Station seed data synchronization, 2026-07-30 Team Gameplay V2 marker anchoring and footer refinement, 2026-07-30 Team Gameplay V2-owned Detail and map HUD, 2026-07-30 Team V2 scanner-pin marker refinement, 2026-07-30 Team V2 score and banner rails refinement, 2026-07-31 Team V2 background-only overlay opacity, 2026-07-31 Team V2 centered score-only map header (+15 more)
+Cohesion: 0.08
+Nodes (24): 2026-07-29 Team runtime stability resume completion, 2026-07-30 Canonical Station seed data synchronization, 2026-07-30 Team Gameplay V2 marker anchoring and footer refinement, 2026-07-30 Team Gameplay V2-owned Detail and map HUD, 2026-07-30 Team V2 scanner-pin marker refinement, 2026-07-30 Team V2 score and banner rails refinement, 2026-07-31 Team V2 background-only overlay opacity, 2026-07-31 Team V2 centered score-only map header (+16 more)
 
 ### Community 180 - "Prompt 07 - Tạo backlog và tiêu chí nghiệm thu"
 Cohesion: 0.40
@@ -922,12 +922,12 @@ Cohesion: 0.40
 Nodes (4): Answer, Outcome, Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?, Source Nodes
 
 ### Community 184 - "useMovementStore"
-Cohesion: 0.17
-Nodes (10): VisibleOnlinePollingOptions, clearRuntimeRequestCoordinator(), getNetworkConnection(), getTeamRuntimePollIntervalMs(), inFlightRequests, isReducedDataMode(), isTeamRuntimeActive(), NetworkConnectionLike (+2 more)
+Cohesion: 0.09
+Nodes (27): FinalResponse, getLeaderboard(), getPlayerFinal(), getPlayerLeaderboard(), LeaderboardEntryResponse, runPlayerRead(), submitFinalAnswer(), isAuthFailure() (+19 more)
 
 ### Community 185 - "CreateStationDto"
-Cohesion: 0.06
-Nodes (35): GAME_TYPES, GameType, CreateStationDto, ArrayMaxSize, ArrayUnique, IsArray, IsEnum, IsIn (+27 more)
+Cohesion: 0.12
+Nodes (18): GAME_TYPES, GameType, ArrayMaxSize, ArrayUnique, IsArray, IsEnum, IsIn, IsInt (+10 more)
 
 ### Community 186 - "15. Station Media Gallery"
 Cohesion: 0.40
@@ -938,8 +938,8 @@ Cohesion: 0.16
 Nodes (16): getMarkerUiState(), getStationMarkerAppearance(), isStationMarkerCompleted(), isStationMarkerLocked(), StationMarkerAppearance, StationMarkerStateSource, createMarker(), getLayout() (+8 more)
 
 ### Community 191 - "FinalController"
-Cohesion: 0.16
-Nodes (17): cancelPlayerStation(), checkOutStation(), editAdminProgressScore(), forceAdminProgressStatus(), reopenAdminProgress(), submitStationScore(), getTeamV2OverlayStyle(), TeamV2OverlayStyle (+9 more)
+Cohesion: 0.24
+Nodes (8): getTeamV2OverlayStyle(), TeamV2OverlayStyle, TeamV2StationDetailOverlay(), TeamV2StationDetailOverlayProps, station, TeamStation, formatDateTime(), formatDurationFromMs()
 
 ### Community 192 - "MOVEment 2026 - Agent Skills Analysis"
 Cohesion: 0.13
@@ -958,8 +958,8 @@ Cohesion: 0.30
 Nodes (13): "activity_logs", "event_config", "final_challenges", "final_submissions", "games", "qr_tokens", "score_events", "station_images" (+5 more)
 
 ### Community 202 - "createQrTokenFingerprint"
-Cohesion: 0.27
-Nodes (9): buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), createSecureStationQrToken(), isOfficialQrLoginToken(), isOfficialStationQrToken(), isOfficialStationQrTokenForPurpose(), normalizeQrToken() (+1 more)
+Cohesion: 0.24
+Nodes (11): createUniqueStationQrToken(), ensureStationQrToken(), buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), createSecureStationQrToken(), isOfficialQrLoginToken(), isOfficialStationQrToken() (+3 more)
 
 ### Community 203 - "Q: be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
 Cohesion: 0.40
@@ -975,7 +975,7 @@ Nodes (5): 19. Agent Skills and Tooling, Admission Rule, Must Update After Chang
 
 ### Community 206 - "fetchLegacyPlayerDatabase"
 Cohesion: 0.18
-Nodes (6): loadPlayerMapImage(), loadPlayerMapImageOnce(), resetPlayerRuntimeCachesForTests(), selectPlayerMapImageVariant(), apiMocks, FakeImage
+Nodes (5): PrismaModule, Module, PrismaService, Injectable, Global
 
 ### Community 207 - "2026-07-28 Team Gameplay V2 parallel implementation"
 Cohesion: 0.29
@@ -985,28 +985,28 @@ Nodes (6): 2026-07-28 Admin System Config localization fix, 2026-07-28 Admin Sys
 Cohesion: 0.32
 Nodes (12): "activity_logs", "event_config", "final_challenges", "final_submissions", "games", "qr_tokens", "score_events", "stations" (+4 more)
 
+### Community 209 - "AuthController"
+Cohesion: 0.53
+Nodes (5): loginWithQrToken(), extractQrToken(), getQrLoginError(), QrLoginPage(), QrLoginState
+
 ### Community 210 - "final.service.spec.ts"
-Cohesion: 0.33
-Nodes (5): challenge, mockActivityLog, mockEventConfig, mockPrisma, mockTx
+Cohesion: 0.19
+Nodes (10): SubmitFinalDto, IsOptional, IsString, UpdateFinalConfigDto, challenge, mockActivityLog, mockEventConfig, mockPrisma (+2 more)
 
 ### Community 211 - "CreateTeamDto"
 Cohesion: 0.39
 Nodes (8): CreateTeamDto, IsOptional, IsString, Matches, MaxLength, MinLength, UpdateTeamDto, ValidateIf
-
-### Community 212 - "GenerateQrLoginTokenDto"
-Cohesion: 0.29
-Nodes (6): GenerateQrLoginTokenDto, IsInt, IsOptional, Max, Min, Type
 
 ### Community 213 - "admin.service.spec.ts"
 Cohesion: 0.33
 Nodes (5): mockActivityLog, mockConfig, mockPrisma, mockTeamResults, team
 
 ### Community 232 - "useStationPlayingCounts.ts"
-Cohesion: 0.53
-Nodes (5): getPlayerStationPlayingCounts(), StationPlayingCountResponse, buildFallbackCounts(), normalizeCounts(), useStationPlayingCounts()
+Cohesion: 0.26
+Nodes (12): cancelPlayerStation(), checkOutStation(), getPlayerStationPlayingCounts(), reopenAdminProgress(), submitStationScore(), buildFallbackCounts(), normalizeCounts(), useStationPlayingCounts() (+4 more)
 
 ## Knowledge Gaps
-- **1425 isolated node(s):** `deploy.sh script`, `fs`, `input`, `changedFiles`, `detectedMigrationChanges` (+1420 more)
+- **1427 isolated node(s):** `deploy.sh script`, `fs`, `input`, `changedFiles`, `detectedMigrationChanges` (+1422 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **40 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1021,15 +1021,15 @@ Nodes (5): getPlayerStationPlayingCounts(), StationPlayingCountResponse, buildFa
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `assertSchemaReady()` connect `sync-stations.ts` to `api.ts`?**
-  _High betweenness centrality (0.123) - this node is a cross-community bridge._
+  _High betweenness centrality (0.122) - this node is a cross-community bridge._
 - **Why does `createQrTokenFingerprint()` connect `createQrTokenFingerprint` to `AuthContext`, `reset-gameplay-seed.ts`, `player.service.ts`, `seed.ts`, `sync-stations.ts`, `auth.service.ts`?**
   _High betweenness centrality (0.050) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `fs`, `input` to the rest of the system?**
-  _1425 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1427 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AGENT_PRODUCTION_DEPLOYMENT_HANDOFF.md` be split into smaller, more focused modules?**
   _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
 - **Should `AuthContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.12762762762762764 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12912912912912913 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**

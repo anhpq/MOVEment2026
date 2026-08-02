@@ -681,25 +681,25 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
 }
 
 .station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled) {
-  border-color: #ff0033;
-  background: #ff0033;
-  color: #fff;
-  box-shadow: 0 8px 18px -10px rgba(255, 0, 51, 0.72);
+  border-color: rgba(196, 44, 72, 0.34);
+  background: #fff1f3;
+  color: #a61b35;
+  box-shadow: 0 6px 16px -12px rgba(166, 27, 53, 0.48);
 }
 
 .station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled):hover,
 .station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled):focus-visible {
-  border-color: #d9002b;
-  background: #d9002b;
-  color: #fff;
-  box-shadow: 0 10px 22px -10px rgba(217, 0, 43, 0.78);
+  border-color: rgba(196, 44, 72, 0.5);
+  background: #ffe4e8;
+  color: #8f1830;
+  box-shadow: 0 8px 18px -12px rgba(166, 27, 53, 0.52);
   transform: translateY(-1px);
 }
 
 .station-showcase-actions .station-youtube-button:not(:disabled):not(.ant-btn-disabled):active {
-  border-color: #b80025;
-  background: #b80025;
-  color: #fff;
+  border-color: rgba(166, 27, 53, 0.58);
+  background: #ffd7de;
+  color: #781329;
   transform: translateY(0);
 }
 

@@ -942,8 +942,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_schematics",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/schematics"
     },
     {
@@ -953,8 +953,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "nestjs_schematics",
-      "community": 154,
-      "community_name": "@nestjs/schematics",
+      "community": 5,
+      "community_name": "devDependencies",
       "norm_label": "@nestjs/schematics"
     },
     {
@@ -964,8 +964,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "be_package_devdependencies_nestjs_testing",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -975,8 +975,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "nestjs_testing",
-      "community": 5,
-      "community_name": "devDependencies",
+      "community": 212,
+      "community_name": "GenerateQrLoginTokenDto",
       "norm_label": "@nestjs/testing"
     },
     {
@@ -2383,8 +2383,8 @@
       "source_location": "L432",
       "_origin": "ast",
       "id": "be_prisma_seed_ensurestationqrtoken",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": "ensurestationqrtoken()"
     },
     {
@@ -2394,8 +2394,8 @@
       "source_location": "L485",
       "_origin": "ast",
       "id": "be_prisma_seed_createuniquestationqrtoken",
-      "community": 7,
-      "community_name": "seed.ts",
+      "community": 202,
+      "community_name": "createQrTokenFingerprint",
       "norm_label": "createuniquestationqrtoken()"
     },
     {
@@ -2559,8 +2559,8 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "be_prisma_station_seed_data_validatecanonicalstations",
-      "community": 110,
-      "community_name": "sync-stations.ts",
+      "community": 68,
+      "community_name": "reset-gameplay-seed.ts",
       "norm_label": "validatecanonicalstations()"
     },
     {
@@ -3021,8 +3021,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "be_src_app_module_appmodule_configure",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 155,
+      "community_name": "validate-environment.ts",
       "norm_label": ".configure()"
     },
     {
@@ -3065,8 +3065,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_common_activity_activity_log_service_activitylogservice_constructor",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": ".constructor()"
     },
     {
@@ -3120,8 +3120,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_common_auth_auth_context_authcontext",
-      "community": 8,
-      "community_name": "AuthService",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "authcontext"
     },
     {
@@ -3516,8 +3516,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 155,
+      "community_name": "validate-environment.ts",
       "norm_label": "request-metrics.middleware.ts"
     },
     {
@@ -3527,8 +3527,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware_requestmetricsmiddleware",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 155,
+      "community_name": "validate-environment.ts",
       "norm_label": "requestmetricsmiddleware"
     },
     {
@@ -3538,8 +3538,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware_ts_injectable",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 155,
+      "community_name": "validate-environment.ts",
       "norm_label": "injectable"
     },
     {
@@ -3549,8 +3549,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_http_request_metrics_middleware_requestmetricsmiddleware_use",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 155,
+      "community_name": "validate-environment.ts",
       "norm_label": ".use()"
     },
     {
@@ -3692,8 +3692,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_common_station_station_scoring",
-      "community": 70,
-      "community_name": "player.service.ts",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": "station-scoring.ts"
     },
     {
@@ -3703,8 +3703,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_common_station_station_scoring_geteffectivestationmaxpoints",
-      "community": 70,
-      "community_name": "player.service.ts",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": "geteffectivestationmaxpoints()"
     },
     {
@@ -3714,8 +3714,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_common_station_station_scoring_getstationplayseconds",
-      "community": 1,
-      "community_name": "AuthContext",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": "getstationplayseconds()"
     },
     {
@@ -3846,8 +3846,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "admincontroller"
     },
     {
@@ -3857,8 +3857,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_useguards",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "useguards"
     },
     {
@@ -3868,8 +3868,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_controller",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "controller"
     },
     {
@@ -3879,8 +3879,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_get",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": "get"
     },
     {
@@ -3945,8 +3945,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_header",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": "header"
     },
     {
@@ -3956,8 +3956,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_ts_res",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "res"
     },
     {
@@ -3978,8 +3978,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_dashboard",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".dashboard()"
     },
     {
@@ -3989,8 +3989,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teams",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".teams()"
     },
     {
@@ -4033,8 +4033,8 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamprogress",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".teamprogress()"
     },
     {
@@ -4044,8 +4044,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamqrlogintokens",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".teamqrlogintokens()"
     },
     {
@@ -4121,8 +4121,8 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_scorequeue",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".scorequeue()"
     },
     {
@@ -4132,8 +4132,8 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_progressmatrix",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".progressmatrix()"
     },
     {
@@ -4143,8 +4143,8 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_qrstatussummary",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".qrstatussummary()"
     },
     {
@@ -4176,8 +4176,8 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_stationqrtokens",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".stationqrtokens()"
     },
     {
@@ -4275,8 +4275,8 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_eventconfig",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".eventconfig()"
     },
     {
@@ -4297,8 +4297,8 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_activitylogs",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".activitylogs()"
     },
     {
@@ -4308,8 +4308,8 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_teamresultsreport",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": ".teamresultsreport()"
     },
     {
@@ -4319,8 +4319,8 @@
       "source_location": "L326",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_controller_admincontroller_summaryreport",
-      "community": 158,
-      "community_name": "LeaderboardEntryResponse",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": ".summaryreport()"
     },
     {
@@ -4484,8 +4484,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_constructor",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".constructor()"
     },
     {
@@ -4737,8 +4737,8 @@
       "source_location": "L891",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_reopen",
-      "community": 11,
-      "community_name": "admin.service.ts",
+      "community": 78,
+      "community_name": "AdminService",
       "norm_label": ".reopen()"
     },
     {
@@ -4858,8 +4858,8 @@
       "source_location": "L1392",
       "_origin": "ast",
       "id": "be_src_modules_admin_admin_service_adminservice_getleaderboardrows",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".getleaderboardrows()"
     },
     {
@@ -5067,8 +5067,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_createstationdto",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "createstationdto"
     },
     {
@@ -5078,8 +5078,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isstring",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isstring"
     },
     {
@@ -5089,8 +5089,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_matches",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "matches"
     },
     {
@@ -5100,8 +5100,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_maxlength",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "maxlength"
     },
     {
@@ -5111,8 +5111,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isnotempty",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isnotempty"
     },
     {
@@ -5122,8 +5122,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isoptional",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isoptional"
     },
     {
@@ -5133,8 +5133,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isenum",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isenum"
     },
     {
@@ -5144,8 +5144,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isnumber",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isnumber"
     },
     {
@@ -5155,8 +5155,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_min",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "min"
     },
     {
@@ -5166,8 +5166,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_max",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "max"
     },
     {
@@ -5177,8 +5177,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isin",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isin"
     },
     {
@@ -5188,8 +5188,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isint",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isint"
     },
     {
@@ -5199,8 +5199,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isurl",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isurl"
     },
     {
@@ -5210,8 +5210,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_transform",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "transform"
     },
     {
@@ -5221,8 +5221,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_isarray",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "isarray"
     },
     {
@@ -5232,8 +5232,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_arraymaxsize",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "arraymaxsize"
     },
     {
@@ -5243,8 +5243,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_create_station_dto_ts_arrayunique",
-      "community": 185,
-      "community_name": "CreateStationDto",
+      "community": 158,
+      "community_name": "LeaderboardEntryResponse",
       "norm_label": "arrayunique"
     },
     {
@@ -5254,8 +5254,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "qr-login-token.dto.ts"
     },
     {
@@ -5265,8 +5265,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_generateqrlogintokendto",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "generateqrlogintokendto"
     },
     {
@@ -5276,8 +5276,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_isoptional",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "isoptional"
     },
     {
@@ -5287,8 +5287,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "type",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "type"
     },
     {
@@ -5298,8 +5298,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_isint",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "isint"
     },
     {
@@ -5309,8 +5309,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_min",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "min"
     },
     {
@@ -5320,8 +5320,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_admin_dto_qr_login_token_dto_ts_max",
-      "community": 212,
-      "community_name": "GenerateQrLoginTokenDto",
+      "community": 73,
+      "community_name": "admin.controller.ts",
       "norm_label": "max"
     },
     {
@@ -5848,8 +5848,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_useguards",
-      "community": 209,
-      "community_name": "AuthController",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "useguards"
     },
     {
@@ -5859,8 +5859,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_ts_get",
-      "community": 209,
-      "community_name": "AuthController",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": "get"
     },
     {
@@ -5925,8 +5925,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_me",
-      "community": 209,
-      "community_name": "AuthController",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": ".me()"
     },
     {
@@ -5936,8 +5936,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_controller_authcontroller_logout",
-      "community": 209,
-      "community_name": "AuthController",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": ".logout()"
     },
     {
@@ -6178,8 +6178,8 @@
       "source_location": "L329",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_me",
-      "community": 209,
-      "community_name": "AuthController",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": ".me()"
     },
     {
@@ -6189,8 +6189,8 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "be_src_modules_auth_auth_service_authservice_logout",
-      "community": 209,
-      "community_name": "AuthController",
+      "community": 67,
+      "community_name": "runtimeCoordinator.ts",
       "norm_label": ".logout()"
     },
     {
@@ -6519,8 +6519,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_controller",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 79,
+      "community_name": "EventConfigService",
       "norm_label": "event-config.controller.ts"
     },
     {
@@ -6618,8 +6618,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 79,
+      "community_name": "EventConfigService",
       "norm_label": "event-config.service.ts"
     },
     {
@@ -6651,8 +6651,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_constructor",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": ".constructor()"
     },
     {
@@ -6695,8 +6695,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "be_src_modules_event_config_event_config_service_eventconfigservice_ispasteventend",
-      "community": 79,
-      "community_name": "EventConfigService",
+      "community": 1,
+      "community_name": "AuthContext",
       "norm_label": ".ispasteventend()"
     },
     {
@@ -6750,8 +6750,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "final.dto.ts"
     },
     {
@@ -6761,8 +6761,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_submitfinaldto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "submitfinaldto"
     },
     {
@@ -6772,8 +6772,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_ts_isstring",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "isstring"
     },
     {
@@ -6783,8 +6783,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_updatefinalconfigdto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "updatefinalconfigdto"
     },
     {
@@ -6794,8 +6794,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_final_dto_final_dto_ts_isoptional",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "isoptional"
     },
     {
@@ -6805,8 +6805,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "isboolean",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "isboolean"
     },
     {
@@ -7069,8 +7069,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 210,
+      "community_name": "final.service.spec.ts",
       "norm_label": "final.service.ts"
     },
     {
@@ -7102,8 +7102,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_final_final_service_finalservice_constructor",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": ".constructor()"
     },
     {
@@ -7300,8 +7300,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 8,
+      "community_name": "AuthService",
       "norm_label": "player-actions.dto.ts"
     },
     {
@@ -7311,8 +7311,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_qractiondto",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 8,
+      "community_name": "AuthService",
       "norm_label": "qractiondto"
     },
     {
@@ -7322,8 +7322,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_isstring",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 8,
+      "community_name": "AuthService",
       "norm_label": "isstring"
     },
     {
@@ -7333,8 +7333,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_dto_player_actions_dto_ts_minlength",
-      "community": 73,
-      "community_name": "admin.controller.ts",
+      "community": 8,
+      "community_name": "AuthService",
       "norm_label": "minlength"
     },
     {
@@ -7377,8 +7377,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_ts_get",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "get"
     },
     {
@@ -7399,8 +7399,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_player_leaderboard_controller_leaderboardcontroller_getleaderboard",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".getleaderboard()"
     },
     {
@@ -7916,8 +7916,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_constructor",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".constructor()"
     },
     {
@@ -8015,8 +8015,8 @@
       "source_location": "L370",
       "_origin": "ast",
       "id": "be_src_modules_player_player_service_playerservice_getleaderboard",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".getleaderboard()"
     },
     {
@@ -8301,8 +8301,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "prisma.module.ts"
     },
     {
@@ -8312,8 +8312,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module_prismamodule",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "prismamodule"
     },
     {
@@ -8323,8 +8323,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "global",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "global"
     },
     {
@@ -8334,8 +8334,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_module_ts_module",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "module"
     },
     {
@@ -8345,8 +8345,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service",
-      "community": 65,
-      "community_name": "app.module.ts",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "prisma.service.ts"
     },
     {
@@ -8356,8 +8356,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "prismaservice"
     },
     {
@@ -8367,8 +8367,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_ts_injectable",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": "injectable"
     },
     {
@@ -8378,8 +8378,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduleinit",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": ".onmoduleinit()"
     },
     {
@@ -8389,8 +8389,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "be_src_modules_prisma_prisma_service_prismaservice_onmoduledestroy",
-      "community": 78,
-      "community_name": "AdminService",
+      "community": 206,
+      "community_name": "fetchLegacyPlayerDatabase",
       "norm_label": ".onmoduledestroy()"
     },
     {
@@ -8631,8 +8631,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_compareteamresultrows",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "compareteamresultrows()"
     },
     {
@@ -8642,8 +8642,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "teamresultsservice"
     },
     {
@@ -8653,8 +8653,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_ts_injectable",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": "injectable"
     },
     {
@@ -8664,8 +8664,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_constructor",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".constructor()"
     },
     {
@@ -8675,8 +8675,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_getrankedteamresults",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".getrankedteamresults()"
     },
     {
@@ -8686,8 +8686,8 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_toleaderboardrows",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".toleaderboardrows()"
     },
     {
@@ -8697,8 +8697,8 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_getleanleaderboard",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".getleanleaderboard()"
     },
     {
@@ -8708,8 +8708,8 @@
       "source_location": "L231",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_tostationcolumns",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".tostationcolumns()"
     },
     {
@@ -8719,8 +8719,8 @@
       "source_location": "L247",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_toteamresultrow",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".toteamresultrow()"
     },
     {
@@ -8730,8 +8730,8 @@
       "source_location": "L293",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_tostationresult",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".tostationresult()"
     },
     {
@@ -8741,8 +8741,8 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "be_src_modules_team_results_team_results_service_teamresultsservice_iscompleted",
-      "community": 60,
-      "community_name": "team-results.service.ts",
+      "community": 154,
+      "community_name": "@nestjs/schematics",
       "norm_label": ".iscompleted()"
     },
     {
@@ -10465,8 +10465,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "admindata.ts"
     },
     {
@@ -10476,8 +10476,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata_displaystatus",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "displaystatus()"
     },
     {
@@ -10487,8 +10487,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "fe_src_features_movement_admindata_fetchadmindatabase",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "fetchadmindatabase()"
     },
     {
@@ -10564,8 +10564,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_authmeresponse",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 131,
+      "community_name": "App.tsx",
       "norm_label": "authmeresponse"
     },
     {
@@ -10608,8 +10608,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_loginwithqrtoken",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 209,
+      "community_name": "AuthController",
       "norm_label": "loginwithqrtoken()"
     },
     {
@@ -10630,8 +10630,8 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_logout",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 167,
+      "community_name": "TeamEditorPage.tsx",
       "norm_label": "logout()"
     },
     {
@@ -10729,8 +10729,8 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_leaderboardentryresponse",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "leaderboardentryresponse"
     },
     {
@@ -10806,8 +10806,8 @@
       "source_location": "L267",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_stationplayingcountresponse",
-      "community": 232,
-      "community_name": "useStationPlayingCounts.ts",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "stationplayingcountresponse"
     },
     {
@@ -10861,8 +10861,8 @@
       "source_location": "L301",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_checkoutstation",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "checkoutstation()"
     },
     {
@@ -10872,8 +10872,8 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitstationscore",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "submitstationscore()"
     },
     {
@@ -10927,8 +10927,8 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getadminprogressmatrix",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "getadminprogressmatrix()"
     },
     {
@@ -10982,8 +10982,8 @@
       "source_location": "L413",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_updateadminteam",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "updateadminteam()"
     },
     {
@@ -10993,8 +10993,8 @@
       "source_location": "L417",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminteam",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "deleteadminteam()"
     },
     {
@@ -11059,8 +11059,8 @@
       "source_location": "L463",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_forceadminprogressstatus",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "forceadminprogressstatus()"
     },
     {
@@ -11070,8 +11070,8 @@
       "source_location": "L469",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_editadminprogressscore",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "editadminprogressscore()"
     },
     {
@@ -11092,8 +11092,8 @@
       "source_location": "L481",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_reopenadminprogress",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "reopenadminprogress()"
     },
     {
@@ -11114,8 +11114,8 @@
       "source_location": "L492",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_createadminstation",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 18,
+      "community_name": "api.ts",
       "norm_label": "createadminstation()"
     },
     {
@@ -11125,8 +11125,8 @@
       "source_location": "L498",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_deleteadminstation",
-      "community": 18,
-      "community_name": "api.ts",
+      "community": 64,
+      "community_name": "SystemConfigPage.tsx",
       "norm_label": "deleteadminstation()"
     },
     {
@@ -11191,8 +11191,8 @@
       "source_location": "L542",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_cancelplayerstation",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "cancelplayerstation()"
     },
     {
@@ -11202,8 +11202,8 @@
       "source_location": "L545",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getleaderboard",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "getleaderboard()"
     },
     {
@@ -11213,8 +11213,8 @@
       "source_location": "L548",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_runplayerread",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "runplayerread()"
     },
     {
@@ -11224,8 +11224,8 @@
       "source_location": "L559",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerleaderboard",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "getplayerleaderboard()"
     },
     {
@@ -11235,8 +11235,8 @@
       "source_location": "L571",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_finalresponse",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "finalresponse"
     },
     {
@@ -11257,8 +11257,8 @@
       "source_location": "L582",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_getplayerfinal",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "getplayerfinal()"
     },
     {
@@ -11268,8 +11268,8 @@
       "source_location": "L584",
       "_origin": "ast",
       "id": "fe_src_features_movement_api_submitfinalanswer",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "submitfinalanswer()"
     },
     {
@@ -11466,8 +11466,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "fe_src_features_movement_apiclient_isauthfailure",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "isauthfailure()"
     },
     {
@@ -12962,8 +12962,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "fe_src_features_movement_hooks_usevisibleonlinepolling_usevisibleonlinepolling",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "usevisibleonlinepolling()"
     },
     {
@@ -13303,8 +13303,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_finalpage",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "finalpage.tsx"
     },
     {
@@ -13314,8 +13314,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_finalpage_finalformvalues",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "finalformvalues"
     },
     {
@@ -13325,8 +13325,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_finalpage_getremainingseconds",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "getremainingseconds()"
     },
     {
@@ -13336,8 +13336,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_finalpage_finalpage",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "finalpage()"
     },
     {
@@ -13347,8 +13347,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_leaderboardpage",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "leaderboardpage.tsx"
     },
     {
@@ -13358,8 +13358,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_leaderboardpage_leaderboardpage",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "leaderboardpage()"
     },
     {
@@ -13435,8 +13435,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_qrloginpage",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 209,
+      "community_name": "AuthController",
       "norm_label": "qrloginpage.tsx"
     },
     {
@@ -13446,8 +13446,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_qrloginpage_qrloginstate",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 209,
+      "community_name": "AuthController",
       "norm_label": "qrloginstate"
     },
     {
@@ -13457,8 +13457,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_qrloginpage_extractqrtoken",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 209,
+      "community_name": "AuthController",
       "norm_label": "extractqrtoken()"
     },
     {
@@ -13468,8 +13468,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_qrloginpage_getqrloginerror",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 209,
+      "community_name": "AuthController",
       "norm_label": "getqrloginerror()"
     },
     {
@@ -13479,8 +13479,8 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_qrloginpage_qrloginpage",
-      "community": 3,
-      "community_name": "LanguageSwitch.tsx",
+      "community": 209,
+      "community_name": "AuthController",
       "norm_label": "qrloginpage()"
     },
     {
@@ -13490,8 +13490,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationdetailpage",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "stationdetailpage.tsx"
     },
     {
@@ -13501,8 +13501,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationdetailpage_scoreformvalues",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "scoreformvalues"
     },
     {
@@ -13512,8 +13512,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationdetailpage_stationdetailpage",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "stationdetailpage()"
     },
     {
@@ -13523,8 +13523,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_stationeditorpage",
-      "community": 64,
-      "community_name": "SystemConfigPage.tsx",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "stationeditorpage.tsx"
     },
     {
@@ -13897,8 +13897,8 @@
       "source_location": "L504",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamgameplayv2page_leaderboardoverlay",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "leaderboardoverlay()"
     },
     {
@@ -14128,8 +14128,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard_test",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "teamv2leaderboard.test.ts"
     },
     {
@@ -14139,8 +14139,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard_test_createrows",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "createrows()"
     },
     {
@@ -14150,8 +14150,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "teamv2leaderboard.ts"
     },
     {
@@ -14161,8 +14161,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "fe_src_features_movement_pages_teamv2leaderboard_getteamv2leaderboardrows",
-      "community": 13,
-      "community_name": "TeamGameplayV2Page.tsx",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "getteamv2leaderboardrows()"
     },
     {
@@ -14260,8 +14260,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "playerdata.test.ts"
     },
     {
@@ -14271,8 +14271,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test_apimocks",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "apimocks"
     },
     {
@@ -14282,8 +14282,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test_loginteam",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "loginteam()"
     },
     {
@@ -14293,8 +14293,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test_setnetworkconnection",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "setnetworkconnection()"
     },
     {
@@ -14304,8 +14304,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test_mockleanresponses",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "mockleanresponses()"
     },
     {
@@ -14315,8 +14315,8 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test_fakeimage",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "fakeimage"
     },
     {
@@ -14326,8 +14326,8 @@
       "source_location": "L256",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_test_fakeimage_src",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": ".src()"
     },
     {
@@ -14458,8 +14458,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_selectplayermapimagevariant",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 13,
+      "community_name": "TeamGameplayV2Page.tsx",
       "norm_label": "selectplayermapimagevariant()"
     },
     {
@@ -14469,8 +14469,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_loadplayermapimageonce",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "loadplayermapimageonce()"
     },
     {
@@ -14480,8 +14480,8 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_loadplayermapimage",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "loadplayermapimage()"
     },
     {
@@ -14535,8 +14535,8 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_fetchlegacyplayerfinalsummary",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "fetchlegacyplayerfinalsummary()"
     },
     {
@@ -14612,8 +14612,8 @@
       "source_location": "L372",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_reconcileplayerdatabase",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 131,
+      "community_name": "App.tsx",
       "norm_label": "reconcileplayerdatabase()"
     },
     {
@@ -14623,8 +14623,8 @@
       "source_location": "L385",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_ismutationoutcomeunknown",
-      "community": 59,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "ismutationoutcomeunknown()"
     },
     {
@@ -14634,8 +14634,8 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_executeplayermutation",
-      "community": 59,
-      "community_name": "StationsMapPanel.tsx",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "executeplayermutation()"
     },
     {
@@ -14656,8 +14656,8 @@
       "source_location": "L472",
       "_origin": "ast",
       "id": "fe_src_features_movement_playerdata_resetplayerruntimecachesfortests",
-      "community": 206,
-      "community_name": "fetchLegacyPlayerDatabase",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "resetplayerruntimecachesfortests()"
     },
     {
@@ -15294,8 +15294,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "fe_src_features_movement_runtimecoordinator_clearsingleflight",
-      "community": 91,
-      "community_name": "playerData.ts",
+      "community": 184,
+      "community_name": "useMovementStore",
       "norm_label": "clearsingleflight()"
     },
     {
@@ -15998,8 +15998,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_playerfinalsummary",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 91,
+      "community_name": "playerData.ts",
       "norm_label": "playerfinalsummary"
     },
     {
@@ -16009,8 +16009,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationdefinition",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "stationdefinition"
     },
     {
@@ -16020,8 +16020,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_teamstation",
-      "community": 35,
-      "community_name": "utils.ts",
+      "community": 191,
+      "community_name": "FinalController",
       "norm_label": "teamstation"
     },
     {
@@ -16031,8 +16031,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_stationformvalues",
-      "community": 22,
-      "community_name": "store.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "stationformvalues"
     },
     {
@@ -16130,8 +16130,8 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "fe_src_features_movement_types_movementstore",
-      "community": 22,
-      "community_name": "store.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "movementstore"
     },
     {
@@ -16174,8 +16174,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getstationeffectivemaxpoints",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 232,
+      "community_name": "useStationPlayingCounts.ts",
       "norm_label": "getstationeffectivemaxpoints()"
     },
     {
@@ -16185,8 +16185,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getstationdisplaycode",
-      "community": 191,
-      "community_name": "FinalController",
+      "community": 59,
+      "community_name": "StationsMapPanel.tsx",
       "norm_label": "getstationdisplaycode()"
     },
     {
@@ -16218,8 +16218,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_getlocalizedteamname",
-      "community": 131,
-      "community_name": "App.tsx",
+      "community": 167,
+      "community_name": "TeamEditorPage.tsx",
       "norm_label": "getlocalizedteamname()"
     },
     {
@@ -16229,8 +16229,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "fe_src_features_movement_utils_default_database",
-      "community": 22,
-      "community_name": "store.ts",
+      "community": 35,
+      "community_name": "utils.ts",
       "norm_label": "default_database"
     },
     {
@@ -20755,6 +20755,17 @@
       "norm_label": "2026-08-02 frontend ui usability and accessibility optimization"
     },
     {
+      "label": "2026-08-02 Video action color refinement",
+      "file_type": "document",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L1300",
+      "_origin": "ast",
+      "id": "docs_analysis_backend_audit_2026_08_02_video_action_color_refinement",
+      "community": 170,
+      "community_name": "BACKEND_AUDIT.md",
+      "norm_label": "2026-08-02 video action color refinement"
+    },
+    {
       "label": "EVENT_TIMING_AND_FINAL_ANALYSIS.md",
       "file_type": "document",
       "source_file": "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md",
@@ -22779,10 +22790,21 @@
       "norm_label": "movement 2026 - implementation backlog"
     },
     {
-      "label": "2026-08-02 Frontend UI usability and accessibility optimization",
+      "label": "2026-08-02 Video action color refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_analysis_implementation_backlog_2026_08_02_video_action_color_refinement",
+      "community": 179,
+      "community_name": "MOVEment 2026 - Implementation Backlog",
+      "norm_label": "2026-08-02 video action color refinement"
+    },
+    {
+      "label": "2026-08-02 Frontend UI usability and accessibility optimization",
+      "file_type": "document",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_frontend_ui_usability_and_accessibility_optimization",
       "community": 179,
@@ -22793,7 +22815,7 @@
       "label": "2026-08-02 Admin Leaderboard authorization fix",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L14",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_admin_leaderboard_authorization_fix",
       "community": 179,
@@ -22804,7 +22826,7 @@
       "label": "2026-08-02 Team V2 browser fullscreen",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L23",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_team_v2_browser_fullscreen",
       "community": 179,
@@ -22815,7 +22837,7 @@
       "label": "2026-08-02 Request and database hot-path follow-up",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L36",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_02_request_and_database_hot_path_follow_up",
       "community": 179,
@@ -22826,7 +22848,7 @@
       "label": "2026-08-01 Network request and transfer optimization",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L52",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_08_01_network_request_and_transfer_optimization",
       "community": 179,
@@ -22837,7 +22859,7 @@
       "label": "2026-07-31 Team V2 background-only overlay opacity",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L79",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_background_only_overlay_opacity",
       "community": 179,
@@ -22848,7 +22870,7 @@
       "label": "2026-07-31 Team V2 inactive language contrast",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L91",
+      "source_location": "L98",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_inactive_language_contrast",
       "community": 179,
@@ -22859,7 +22881,7 @@
       "label": "2026-07-31 Team V2 Settings and compact Leaderboard",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L101",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_settings_and_compact_leaderboard",
       "community": 179,
@@ -22870,7 +22892,7 @@
       "label": "2026-07-31 Team V2 marker interaction performance",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L114",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_marker_interaction_performance",
       "community": 179,
@@ -22881,7 +22903,7 @@
       "label": "2026-07-31 Team V2 Detail sizing and footer readability",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L128",
+      "source_location": "L135",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_detail_sizing_and_footer_readability",
       "community": 179,
@@ -22892,7 +22914,7 @@
       "label": "2026-07-31 Team V2 marker states and disabled media controls",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L140",
+      "source_location": "L147",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_marker_states_and_disabled_media_controls",
       "community": 179,
@@ -22903,7 +22925,7 @@
       "label": "2026-07-31 Team V2 exact B\u00e9zier Konva marker",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L153",
+      "source_location": "L160",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_exact_b\u00e9zier_konva_marker",
       "community": 179,
@@ -22914,7 +22936,7 @@
       "label": "2026-07-31 Team V2 single-line marker labels",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L163",
+      "source_location": "L170",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_single_line_marker_labels",
       "community": 179,
@@ -22925,7 +22947,7 @@
       "label": "2026-07-31 Team V2 centered score-only map header",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L171",
+      "source_location": "L178",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_centered_score_only_map_header",
       "community": 179,
@@ -22936,7 +22958,7 @@
       "label": "2026-07-31 Team V2 supplied Konva-native marker (superseded)",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L179",
+      "source_location": "L186",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_supplied_konva_native_marker_superseded",
       "community": 179,
@@ -22947,7 +22969,7 @@
       "label": "2026-07-31 Team V2 supplied SVG marker (superseded)",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L192",
+      "source_location": "L199",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_31_team_v2_supplied_svg_marker_superseded",
       "community": 179,
@@ -22958,7 +22980,7 @@
       "label": "2026-07-30 Team V2 score and banner rails refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L202",
+      "source_location": "L209",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_v2_score_and_banner_rails_refinement",
       "community": 179,
@@ -22969,7 +22991,7 @@
       "label": "2026-07-30 Team V2 scanner-pin marker refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L212",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_v2_scanner_pin_marker_refinement",
       "community": 179,
@@ -22980,7 +23002,7 @@
       "label": "2026-07-30 Canonical Station seed data synchronization",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L223",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_canonical_station_seed_data_synchronization",
       "community": 179,
@@ -22991,7 +23013,7 @@
       "label": "2026-07-30 Team Gameplay V2 marker anchoring and footer refinement",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L237",
+      "source_location": "L244",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_gameplay_v2_marker_anchoring_and_footer_refinement",
       "community": 179,
@@ -23002,7 +23024,7 @@
       "label": "2026-07-30 Team Gameplay V2-owned Detail and map HUD",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L250",
+      "source_location": "L257",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_30_team_gameplay_v2_owned_detail_and_map_hud",
       "community": 179,
@@ -23013,7 +23035,7 @@
       "label": "2026-07-29 Team runtime stability resume completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L267",
+      "source_location": "L274",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_29_team_runtime_stability_resume_completion",
       "community": 179,
@@ -23024,7 +23046,7 @@
       "label": "2026-07-28 Team Gameplay V2 parallel implementation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L292",
+      "source_location": "L299",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
       "community": 207,
@@ -23035,7 +23057,7 @@
       "label": "2026-07-28 Tester auto-stop conflicting local processes",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L360",
+      "source_location": "L367",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_tester_auto_stop_conflicting_local_processes",
       "community": 207,
@@ -23046,7 +23068,7 @@
       "label": "2026-07-28 Production deploy preflight and partial smoke",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L373",
+      "source_location": "L380",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_production_deploy_preflight_and_partial_smoke",
       "community": 207,
@@ -23057,7 +23079,7 @@
       "label": "2026-07-28 Admin System Config Station locale display",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L395",
+      "source_location": "L402",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_admin_system_config_station_locale_display",
       "community": 207,
@@ -23068,7 +23090,7 @@
       "label": "2026-07-28 YouTube-style Player video action",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L408",
+      "source_location": "L415",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_youtube_style_player_video_action",
       "community": 207,
@@ -23079,7 +23101,7 @@
       "label": "2026-07-28 Admin System Config localization fix",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L419",
+      "source_location": "L426",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_admin_system_config_localization_fix",
       "community": 207,
@@ -23090,7 +23112,7 @@
       "label": "2026-07-28 Station Media Gallery and Player action layout",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L432",
+      "source_location": "L439",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
       "community": 36,
@@ -23101,7 +23123,7 @@
       "label": "2026-07-27 Frontend localization follow-up",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L445",
+      "source_location": "L452",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_frontend_localization_follow_up",
       "community": 36,
@@ -23112,7 +23134,7 @@
       "label": "2026-07-27 Station localization and FE language switch",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L467",
+      "source_location": "L474",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_station_localization_and_fe_language_switch",
       "community": 36,
@@ -23123,7 +23145,7 @@
       "label": "2026-07-27 Feature Analysis workflow and localization planning",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L493",
+      "source_location": "L500",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_feature_analysis_workflow_and_localization_planning",
       "community": 36,
@@ -23134,7 +23156,7 @@
       "label": "2026-07-27 Team header identity",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L505",
+      "source_location": "L512",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_team_header_identity",
       "community": 36,
@@ -23145,7 +23167,7 @@
       "label": "2026-07-27 Player cancel cooldown UX",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L517",
+      "source_location": "L524",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_player_cancel_cooldown_ux",
       "community": 36,
@@ -23156,7 +23178,7 @@
       "label": "2026-07-27 Team Results tracking-mode headers",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L528",
+      "source_location": "L535",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_team_results_tracking_mode_headers",
       "community": 36,
@@ -23167,7 +23189,7 @@
       "label": "2026-07-27 Tester backend ExcelJS dependency detection",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L537",
+      "source_location": "L544",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_tester_backend_exceljs_dependency_detection",
       "community": 36,
@@ -23178,7 +23200,7 @@
       "label": "2026-07-27 Station numeric display code UI",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L545",
+      "source_location": "L552",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_station_numeric_display_code_ui",
       "community": 36,
@@ -23189,7 +23211,7 @@
       "label": "2026-07-26 Station QR checkout scoring update",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L557",
+      "source_location": "L564",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_26_station_qr_checkout_scoring_update",
       "community": 36,
@@ -23200,7 +23222,7 @@
       "label": "2026-07-24 Team Color palette and gradient buttons",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L568",
+      "source_location": "L575",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_team_color_palette_and_gradient_buttons",
       "community": 36,
@@ -23211,7 +23233,7 @@
       "label": "2026-07-24 Team Results Excel export and Team Color UI",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L580",
+      "source_location": "L587",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_team_results_excel_export_and_team_color_ui",
       "community": 36,
@@ -23222,7 +23244,7 @@
       "label": "2026-07-24 Compact Admin headers and Team identity cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L599",
+      "source_location": "L606",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_compact_admin_headers_and_team_identity_cleanup",
       "community": 36,
@@ -23233,7 +23255,7 @@
       "label": "2026-07-24 Role-aware Leaderboard current-Team marker",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L608",
+      "source_location": "L615",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_role_aware_leaderboard_current_team_marker",
       "community": 36,
@@ -23244,7 +23266,7 @@
       "label": "2026-07-24 Admin Team-first Station navigation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L614",
+      "source_location": "L621",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_team_first_station_navigation",
       "community": 36,
@@ -23255,7 +23277,7 @@
       "label": "2026-07-24 Canonical 17-Station seed and sync",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L623",
+      "source_location": "L630",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_canonical_17_station_seed_and_sync",
       "community": 36,
@@ -23266,7 +23288,7 @@
       "label": "2026-07-24 Designated ST Station set",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L633",
+      "source_location": "L640",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_designated_st_station_set",
       "community": 36,
@@ -23277,7 +23299,7 @@
       "label": "2026-07-24 Station Game Type constraint and video visibility",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L639",
+      "source_location": "L646",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_station_game_type_constraint_and_video_visibility",
       "community": 36,
@@ -23288,7 +23310,7 @@
       "label": "2026-07-24 Admin Station game configuration edit",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L648",
+      "source_location": "L655",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_station_game_configuration_edit",
       "community": 36,
@@ -23299,7 +23321,7 @@
       "label": "2026-07-24 Admin Operations UI merge recovery",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L654",
+      "source_location": "L661",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_operations_ui_merge_recovery",
       "community": 36,
@@ -23310,7 +23332,7 @@
       "label": "2026-07-24 Admin score-only correction",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L660",
+      "source_location": "L667",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_admin_score_only_correction",
       "community": 36,
@@ -23321,7 +23343,7 @@
       "label": "2026-07-24 Scoring confirmation code removal",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L668",
+      "source_location": "L675",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_scoring_confirmation_code_removal",
       "community": 36,
@@ -23332,7 +23354,7 @@
       "label": "2026-07-24 Tester runner Prisma Studio",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L677",
+      "source_location": "L684",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_tester_runner_prisma_studio",
       "community": 36,
@@ -23343,7 +23365,7 @@
       "label": "2026-07-24 Final start and Event end separation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L686",
+      "source_location": "L693",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_24_final_start_and_event_end_separation",
       "community": 36,
@@ -23354,7 +23376,7 @@
       "label": "2026-07-23 iOS QR camera lifecycle cleanup",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L697",
+      "source_location": "L704",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_23_ios_qr_camera_lifecycle_cleanup",
       "community": 36,
@@ -23365,7 +23387,7 @@
       "label": "2026-07-23 Seed diagnostics and tester runner completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L709",
+      "source_location": "L716",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_23_seed_diagnostics_and_tester_runner_completion",
       "community": 36,
@@ -23376,7 +23398,7 @@
       "label": "2026-07-23 Final Challenge plain answer and Production seed override",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L719",
+      "source_location": "L726",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_23_final_challenge_plain_answer_and_production_seed_override",
       "community": 36,
@@ -23387,7 +23409,7 @@
       "label": "2026-07-22 Conditional backend database deployment completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L730",
+      "source_location": "L737",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_conditional_backend_database_deployment_completion",
       "community": 36,
@@ -23398,7 +23420,7 @@
       "label": "2026-07-22 Staged Production deployment workflow completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L743",
+      "source_location": "L750",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_staged_production_deployment_workflow_completion",
       "community": 36,
@@ -23409,7 +23431,7 @@
       "label": "2026-07-22 Production-like integration verification completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L753",
+      "source_location": "L760",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_production_like_integration_verification_completion",
       "community": 36,
@@ -23420,7 +23442,7 @@
       "label": "2026-07-22 Final Challenge completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L763",
+      "source_location": "L770",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_final_challenge_completion",
       "community": 36,
@@ -23431,7 +23453,7 @@
       "label": "2026-07-22 Station tracking and scoring completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L776",
+      "source_location": "L783",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_station_tracking_and_scoring_completion",
       "community": 36,
@@ -23442,7 +23464,7 @@
       "label": "2026-07-22 Secure Station QR completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L789",
+      "source_location": "L796",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_secure_station_qr_completion",
       "community": 36,
@@ -23453,7 +23475,7 @@
       "label": "2026-07-22 Automatic URL Team QR completion",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L801",
+      "source_location": "L808",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_22_automatic_url_team_qr_completion",
       "community": 36,
@@ -23464,7 +23486,7 @@
       "label": "Rules",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L810",
+      "source_location": "L817",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_rules",
       "community": 36,
@@ -23475,7 +23497,7 @@
       "label": "P0 \u2014 QR Security and Provisioning",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L818",
+      "source_location": "L825",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_qr_security_and_provisioning",
       "community": 36,
@@ -23486,7 +23508,7 @@
       "label": "P0 \u2014 Authentication and Session",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L844",
+      "source_location": "L851",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_authentication_and_session",
       "community": 36,
@@ -23497,7 +23519,7 @@
       "label": "P0 \u2014 Station Flow and Scoring",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L859",
+      "source_location": "L866",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_station_flow_and_scoring",
       "community": 36,
@@ -23508,7 +23530,7 @@
       "label": "P0 \u2014 Final Challenge",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L873",
+      "source_location": "L880",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_final_challenge",
       "community": 36,
@@ -23519,7 +23541,7 @@
       "label": "P0 \u2014 Documentation and Prompt Consistency",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L884",
+      "source_location": "L891",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p0_documentation_and_prompt_consistency",
       "community": 36,
@@ -23530,7 +23552,7 @@
       "label": "P1 \u2014 iOS QR Camera",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L903",
+      "source_location": "L910",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p1_ios_qr_camera",
       "community": 36,
@@ -23541,7 +23563,7 @@
       "label": "P1 \u2014 Production Readiness",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L914",
+      "source_location": "L921",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p1_production_readiness",
       "community": 36,
@@ -23552,7 +23574,7 @@
       "label": "P2 \u2014 Legacy Removal",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L928",
+      "source_location": "L935",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_legacy_removal",
       "community": 36,
@@ -23563,7 +23585,7 @@
       "label": "P2 \u2014 Leaderboard presentation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L939",
+      "source_location": "L946",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_leaderboard_presentation",
       "community": 36,
@@ -23574,7 +23596,7 @@
       "label": "P2 \u2014 Shared header presentation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L944",
+      "source_location": "L951",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_shared_header_presentation",
       "community": 36,
@@ -23585,7 +23607,7 @@
       "label": "P2 \u2014 Team Station list presentation",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L952",
+      "source_location": "L959",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_p2_team_station_list_presentation",
       "community": 36,
@@ -23596,7 +23618,7 @@
       "label": "Next Execution Order",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L966",
+      "source_location": "L973",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_next_execution_order",
       "community": 36,
@@ -23607,7 +23629,7 @@
       "label": "2026-07-28 Station map interaction performance",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L973",
+      "source_location": "L980",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_28_station_map_interaction_performance",
       "community": 36,
@@ -23618,7 +23640,7 @@
       "label": "2026-07-27 Team QR live navigation, reset guard, and map WebP",
       "file_type": "document",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L991",
+      "source_location": "L998",
       "_origin": "ast",
       "id": "docs_analysis_implementation_backlog_2026_07_27_team_qr_live_navigation_reset_guard_and_map_webp",
       "community": 36,
@@ -74977,6 +74999,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/BACKEND_AUDIT.md",
+      "source_location": "L1300",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_backend_audit",
+      "target": "docs_analysis_backend_audit_2026_08_02_video_action_color_refinement",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/BACKEND_AUDIT.md",
       "source_location": "L946",
       "weight": 1.0,
       "_origin": "ast",
@@ -77705,7 +77738,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L432",
+      "source_location": "L439",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog",
@@ -77716,7 +77749,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L292",
+      "source_location": "L299",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog",
@@ -77738,7 +77771,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L267",
+      "source_location": "L274",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77749,7 +77782,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L223",
+      "source_location": "L230",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77760,7 +77793,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L237",
+      "source_location": "L244",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77771,7 +77804,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L250",
+      "source_location": "L257",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77782,7 +77815,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L212",
+      "source_location": "L219",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77793,7 +77826,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L202",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77804,7 +77837,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L79",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77815,7 +77848,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L171",
+      "source_location": "L178",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77826,7 +77859,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L128",
+      "source_location": "L135",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77837,7 +77870,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L153",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77848,7 +77881,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L91",
+      "source_location": "L98",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77859,7 +77892,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L114",
+      "source_location": "L121",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77870,7 +77903,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L140",
+      "source_location": "L147",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77881,7 +77914,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L101",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77892,7 +77925,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L163",
+      "source_location": "L170",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77903,7 +77936,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L179",
+      "source_location": "L186",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77914,7 +77947,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L192",
+      "source_location": "L199",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77925,7 +77958,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L52",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77936,7 +77969,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L14",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77947,7 +77980,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L3",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77958,7 +77991,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L36",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77969,7 +78002,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L23",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
@@ -77980,7 +78013,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L419",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_analysis_implementation_backlog_movement_2026_implementation_backlog",
+      "target": "docs_analysis_implementation_backlog_2026_08_02_video_action_color_refinement",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
+      "source_location": "L426",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -77991,7 +78035,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L395",
+      "source_location": "L402",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78002,7 +78046,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L373",
+      "source_location": "L380",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78013,7 +78057,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L360",
+      "source_location": "L367",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78024,7 +78068,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L408",
+      "source_location": "L415",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_team_gameplay_v2_parallel_implementation",
@@ -78035,7 +78079,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L801",
+      "source_location": "L808",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78046,7 +78090,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L730",
+      "source_location": "L737",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78057,7 +78101,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L763",
+      "source_location": "L770",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78068,7 +78112,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L753",
+      "source_location": "L760",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78079,7 +78123,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L789",
+      "source_location": "L796",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78090,7 +78134,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L743",
+      "source_location": "L750",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78101,7 +78145,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L776",
+      "source_location": "L783",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78112,7 +78156,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L719",
+      "source_location": "L726",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78123,7 +78167,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L697",
+      "source_location": "L704",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78134,7 +78178,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L709",
+      "source_location": "L716",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78145,7 +78189,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L654",
+      "source_location": "L661",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78156,7 +78200,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L660",
+      "source_location": "L667",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78167,7 +78211,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L648",
+      "source_location": "L655",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78178,7 +78222,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L614",
+      "source_location": "L621",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78189,7 +78233,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L623",
+      "source_location": "L630",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78200,7 +78244,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L599",
+      "source_location": "L606",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78211,7 +78255,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L633",
+      "source_location": "L640",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78222,7 +78266,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L686",
+      "source_location": "L693",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78233,7 +78277,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L608",
+      "source_location": "L615",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78244,7 +78288,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L668",
+      "source_location": "L675",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78255,7 +78299,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L639",
+      "source_location": "L646",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78266,7 +78310,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L568",
+      "source_location": "L575",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78277,7 +78321,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L580",
+      "source_location": "L587",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78288,7 +78332,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L677",
+      "source_location": "L684",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78299,7 +78343,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L557",
+      "source_location": "L564",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78310,7 +78354,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L493",
+      "source_location": "L500",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78321,7 +78365,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L445",
+      "source_location": "L452",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78332,7 +78376,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L517",
+      "source_location": "L524",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78343,7 +78387,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L467",
+      "source_location": "L474",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78354,7 +78398,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L545",
+      "source_location": "L552",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78365,7 +78409,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L505",
+      "source_location": "L512",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78376,7 +78420,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L991",
+      "source_location": "L998",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78387,7 +78431,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L528",
+      "source_location": "L535",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78398,7 +78442,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L537",
+      "source_location": "L544",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78409,7 +78453,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L973",
+      "source_location": "L980",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78420,7 +78464,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L966",
+      "source_location": "L973",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78431,7 +78475,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L844",
+      "source_location": "L851",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78442,7 +78486,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L884",
+      "source_location": "L891",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78453,7 +78497,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L873",
+      "source_location": "L880",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78464,7 +78508,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L818",
+      "source_location": "L825",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78475,7 +78519,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L859",
+      "source_location": "L866",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78486,7 +78530,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L903",
+      "source_location": "L910",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78497,7 +78541,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L914",
+      "source_location": "L921",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78508,7 +78552,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L939",
+      "source_location": "L946",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78519,7 +78563,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L928",
+      "source_location": "L935",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78530,7 +78574,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L944",
+      "source_location": "L951",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78541,7 +78585,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L952",
+      "source_location": "L959",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -78552,7 +78596,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/analysis/IMPLEMENTATION_BACKLOG.md",
-      "source_location": "L810",
+      "source_location": "L817",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_analysis_implementation_backlog_2026_07_28_station_media_gallery_and_player_action_layout",
@@ -85821,5 +85865,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4062afa26e4a50830847e5f6b71e9a5ebb5aab60"
+  "built_at_commit": "48693c6f2189bc69d2bc105bcdcc15eb1e97baae"
 }
