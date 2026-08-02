@@ -1,3 +1,11 @@
+# 2026-08-03 QR modal Station identity layout
+
+- Refined the shared Check-in/Check-out Station identity block into a compact
+  horizontal code badge and wrapping Station name. No behavior or Backend
+  contract changed.
+- Frontend container verification PASS: Vitest `61/61`, lint, production build,
+  and bundle budget (`203.98 KiB` initial gzip JS).
+
 # 2026-08-03 Check-out QR camera-first modal
 
 - Aligned the V1 Station Detail Check-out modal with the camera-first Check-in

@@ -824,25 +824,38 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
 }
 
 .station-qr-identity {
-  display: grid;
-  gap: 3px;
-  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
   border: 1px solid rgba(237, 118, 87, 0.2);
   border-radius: 14px;
   background: #fff8f4;
 }
 
 .station-qr-identity span {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 40px;
+  padding-inline: 9px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--team-primary, #c94f35) 12%, white);
   color: var(--team-primary, #c94f35);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .station-qr-identity strong {
+  min-width: 0;
   color: #17223b;
   font-size: 1rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .qr-token-input.is-camera-first .qr-camera-primary {

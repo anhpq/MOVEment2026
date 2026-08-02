@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 QR modal Station identity layout
+
+- [x] Place the Station code badge and name on one responsive row for both
+  Check-in and Check-out.
+- [x] Pass Frontend tests, lint, production build, and bundle budget.
+- [ ] Complete mobile visual smoke with representative long Station names.
+
 ## 2026-08-03 Check-out QR camera-first modal
 
 - [x] Match the Station Detail Check-out modal to the camera-first Check-in UI.

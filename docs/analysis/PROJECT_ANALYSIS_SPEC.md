@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 QR modal Station identity layout
+
+- Check-in and Check-out share a compact horizontal Station identity row with a
+  code badge and a safely wrapping Station name.
+
 ## 2026-08-03 Check-out QR modal presentation
 
 - Station Detail Check-out follows the same camera-first interaction as

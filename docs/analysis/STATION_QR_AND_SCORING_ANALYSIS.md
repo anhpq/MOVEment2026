@@ -1,5 +1,11 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-03 Shared Station identity row
+
+- Check-in and Check-out now present the Station code as a compact badge beside
+  the Station name instead of stacking the two values vertically.
+- Long Station names wrap safely without changing QR or gameplay behavior.
+
 ## 2026-08-03 Station Detail camera-first Check-out
 
 - The V1 Station Detail Check-out modal now matches the Check-in camera-first
