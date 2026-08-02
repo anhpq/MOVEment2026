@@ -4,10 +4,12 @@
 
 - Team V1 and V2 score confirmations now show the exact score and Station
   identity before submission.
+- Vietnamese and English copy explicitly asks whether the user is sure about
+  the entered score before it is recorded.
 - The confirmation warns that the Team cannot change its own score afterward;
   Admin correction behavior remains unchanged.
 - Frontend container verification passed: Vitest `61/61`, i18n parity `416`,
-  lint, production build, and bundle budget.
+  lint, production build, and bundle budget (`204.07 KiB` initial gzip JS).
 
 ## 2026-08-03 Team score entry without reason
 

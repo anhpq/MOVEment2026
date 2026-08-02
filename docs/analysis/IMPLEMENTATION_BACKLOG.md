@@ -4,6 +4,7 @@
 
 - [x] Show the submitted score and Station identity in Team V1/V2 confirmation.
 - [x] Warn that Team score cannot be self-edited after confirmation.
+- [x] Keep Vietnamese and English confirmation wording synchronized.
 - [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
 - [ ] Complete authenticated mobile visual smoke for long Station names.
 

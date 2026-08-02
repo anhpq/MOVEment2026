@@ -1,7 +1,7 @@
 # Graph Report - MOVEment2026  (2026-08-03)
 
 ## Corpus Check
-- 245 files · ~431,264 words
+- 245 files · ~431,349 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `260164b9`
+- Built from commit: `cbfdab0c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -170,6 +170,7 @@
 - Gameplay Reset and Station Seed Analysis
 - LeaderboardEntryResponse
 - be/package.json
+- source-map-support
 - Station QR and Scoring Analysis
 - MOVEment 2026 - Automatic URL QR Login
 - CODEX QR AUTO LOGIN AND SEED TOKENS
@@ -216,7 +217,6 @@
 - AuthController
 - final.service.spec.ts
 - CreateTeamDto
-- runtimeCoordinator.ts
 - migration.sql
 - migration.sql
 - migration.sql
@@ -278,7 +278,7 @@ Nodes (29): bcryptjs, dependencies, bcryptjs, class-transformer, class-validator
 
 ### Community 3 - "LanguageSwitch.tsx"
 Cohesion: 0.06
-Nodes (65): checkInStation(), buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent(), getMarkerLegendBackground(), getMarkerUiState(), isValidMapCoordinate() (+57 more)
+Nodes (60): checkInStation(), buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent(), getMarkerLegendBackground(), getMarkerUiState(), isValidMapCoordinate() (+52 more)
 
 ### Community 4 - "dependencies"
 Cohesion: 0.09
@@ -286,7 +286,7 @@ Nodes (23): @ant-design/icons, antd, dependencies, @ant-design/icons, antd, i18n
 
 ### Community 5 - "devDependencies"
 Cohesion: 0.07
-Nodes (27): devDependencies, eslint, globals, jest, @nestjs/testing, prisma, source-map-support, ts-jest (+19 more)
+Nodes (27): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/testing, prisma, ts-jest (+19 more)
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.09
@@ -452,6 +452,10 @@ Nodes (23): 10. Reusable Token Rule, 11. Legacy Login Data, 12. Current Implemen
 Cohesion: 0.24
 Nodes (7): Assert-PortAvailable(), Ensure-Dependencies(), Invoke-Checked(), Prepare-RunnerPort(), Step(), Stop-ConflictingPortProcesses(), Test-LocalBin()
 
+### Community 59 - "StationsMapPanel.tsx"
+Cohesion: 0.15
+Nodes (19): appliedProperties, applyActiveTheme(), ThemeOwner, themeOwners, useBodyTeamTheme(), AppFrame(), AppFrameProps, formatBuildTimestamp() (+11 more)
+
 ### Community 60 - "team-results.service.ts"
 Cohesion: 0.09
 Nodes (19): Get, buildTeamResultsWorkbook(), dateToHcmcExcelSerial(), formatHcmcTimestampForFileName(), getColumnWidth(), getHcmcDateParts(), pad(), secondsToExcelDuration() (+11 more)
@@ -465,8 +469,8 @@ Cohesion: 0.07
 Nodes (27): 2026-07-20 Admin integration verification, 2026-07-20 Agent and Markdown docs refresh, 2026-07-20 Backend production CI/CD, 2026-07-20 BE host bootstrap (production ECS host), 2026-07-20 Docker frontend API proxy fix, 2026-07-20 heroes.nalth.top SPA routing fallback, 2026-07-20 Login 405 object-storage investigation, 2026-07-20 Remaining feature integration (+19 more)
 
 ### Community 64 - "SystemConfigPage.tsx"
-Cohesion: 0.08
-Nodes (49): qrcode, displayStatus(), fetchAdminDatabase(), buildAdminQrStatusRecords(), AdminQrStatusSummaryResponse, AdminStationQrTokenResponse, createAdminStation(), createAdminTeam() (+41 more)
+Cohesion: 0.09
+Nodes (43): qrcode, displayStatus(), fetchAdminDatabase(), buildAdminQrStatusRecords(), AdminQrStatusSummaryResponse, AdminStationQrTokenResponse, createAdminStation(), createAdminTeam() (+35 more)
 
 ### Community 65 - "app.module.ts"
 Cohesion: 0.11
@@ -570,7 +574,7 @@ Nodes (8): 3.1 QR Format, 3.2 Token Security, 3.3 Reusable Controlled Token, 3.4
 
 ### Community 91 - "playerData.ts"
 Cohesion: 0.06
-Nodes (52): FinalResponse, getPlayerCatalog(), getPlayerDashboard(), getPlayerFinal(), getPlayerProgress(), getPlayerState(), getPlayerStationImages(), getPlayerStations() (+44 more)
+Nodes (52): getPlayerCatalog(), getPlayerDashboard(), getPlayerProgress(), getPlayerState(), getPlayerStationImages(), getPlayerStations(), PlayerCatalogStationResponse, PlayerProgressResponse (+44 more)
 
 ### Community 92 - "Event Timing and Final Analysis"
 Cohesion: 0.18
@@ -730,7 +734,7 @@ Nodes (5): 16. Team Gameplay V2, Confirmed Boundaries, Must Update After Change,
 
 ### Community 131 - "App.tsx"
 Cohesion: 0.09
-Nodes (41): App(), authMatchesSession(), getLeaderboard(), getMe(), getPlayerLeaderboard(), getPlayerStationPlayingCounts(), logout(), runPlayerRead() (+33 more)
+Nodes (41): App(), authMatchesSession(), FinalResponse, getLeaderboard(), getMe(), getPlayerFinal(), getPlayerLeaderboard(), getPlayerStationPlayingCounts() (+33 more)
 
 ### Community 132 - "Prompt 03 - Phân tích flow trạm, QR và timer"
 Cohesion: 0.40
@@ -984,10 +988,6 @@ Nodes (18): GAME_TYPES, GameType, ArrayMaxSize, ArrayUnique, IsArray, IsEnum, Is
 Cohesion: 0.39
 Nodes (8): CreateTeamDto, IsOptional, IsString, Matches, MaxLength, MinLength, UpdateTeamDto, ValidateIf
 
-### Community 213 - "runtimeCoordinator.ts"
-Cohesion: 0.19
-Nodes (8): clearRuntimeRequestCoordinator(), getNetworkConnection(), getTeamRuntimePollIntervalMs(), inFlightRequests, isReducedDataMode(), NetworkConnectionLike, runSingleFlight(), StaleSessionResponseError
-
 ## Knowledge Gaps
 - **1447 isolated node(s):** `deploy.sh script`, `fs`, `input`, `changedFiles`, `detectedMigrationChanges` (+1442 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -1016,4 +1016,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
 - **Should `LanguageSwitch.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.057942057942057944 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0649452269170579 - nodes in this community are weakly interconnected._
