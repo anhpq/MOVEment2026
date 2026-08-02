@@ -837,7 +837,7 @@ body.team-themed-overlay .ant-drawer .ant-btn-primary:not(:disabled):not(.ant-bt
     min-width: 0;
   }
 
-  .account-actions .deploy-stamp,
+  .account-cluster > .deploy-stamp,
   .account-actions .brand-subtitle {
     display: none;
   }
