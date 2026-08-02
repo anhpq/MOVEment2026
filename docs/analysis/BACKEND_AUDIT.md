@@ -3,9 +3,9 @@
 - Replaced the generic Team score confirmation in V1 and V2 with localized,
   interpolated score and Station details plus a no-self-edit warning.
 - Refined both Vietnamese and English wording to ask whether the user is sure
-  about the entered score.
+  they want to enter the displayed score for the Station.
 - Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
-  lint, production build, and bundle budget (`204.07 KiB` initial gzip JS).
+  lint, production build, and bundle budget (`204.08 KiB` initial gzip JS).
 - Admin correction messaging and all score submission behavior remain unchanged.
 - Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
   lint, production build, and bundle budget (`204.05 KiB` initial gzip JS).
