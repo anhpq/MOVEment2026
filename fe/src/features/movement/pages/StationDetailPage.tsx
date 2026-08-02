@@ -541,8 +541,14 @@ export function StationDetailPage() {
           onFinish={(values) => {
             modal.confirm({
               centered: true,
-              title: t("stationDetail.confirmCompletion"),
-              content: t("stationDetail.confirmCompletionContent"),
+              title: session.role === "user" ?
+                t("stationDetail.confirmScoreTitle", {score: values.score})
+              : t("stationDetail.confirmCompletion"),
+              content: session.role === "user" ?
+                t("stationDetail.confirmScoreContent", {
+                  station: `${getStationDisplayCode(station.stationId)} - ${station.name}`,
+                })
+              : t("stationDetail.confirmCompletionContent"),
               okText: t("common.confirm"),
               cancelText: t("common.cancel"),
               onOk: async () => {

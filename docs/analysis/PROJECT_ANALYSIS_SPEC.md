@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team score confirmation
+
+- Before score submission, Team V1 and V2 show the exact score and Station and
+  warn that the Team cannot change the score after confirmation.
+
 ## 2026-08-03 Team score entry presentation
 
 - After Check-out, Team score entry asks only for the score. Optional Team

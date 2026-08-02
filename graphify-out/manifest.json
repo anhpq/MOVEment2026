@@ -275,8 +275,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationDetailPage.tsx": {
-    "mtime": 1785691595.371003,
-    "ast_hash": "453481dccd4f8b0d8407afd45137edad",
+    "mtime": 1785691813.2332747,
+    "ast_hash": "2b5501d1b48345f9d307fd4d5c77e3b5",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/StationEditorPage.tsx": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785691659.910962,
-    "ast_hash": "9a228bb7d13f75aa2196469a08e6e034",
+    "mtime": 1785691886.8297164,
+    "ast_hash": "33c235389ac0e2b60aa33402043a613c",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1785691597.6820638,
-    "ast_hash": "42f75bc6fa479cd5c1ff35c44d4af11e",
+    "mtime": 1785691819.2099485,
+    "ast_hash": "3b8324c4146762776d609644562845e5",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785691658.8540304,
-    "ast_hash": "4920e64caa35c01e987a8952bde341d5",
+    "mtime": 1785691885.4779153,
+    "ast_hash": "83b1de96ef25f23ad482a7dc161da7e8",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1785691048.1736383,
-    "ast_hash": "f93d0a0e79359d541861c500677cf701",
+    "mtime": 1785691815.6053247,
+    "ast_hash": "5557037532a08364460d7ba9562a5048",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -980,8 +980,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md": {
-    "mtime": 1785691661.149408,
-    "ast_hash": "401471ccba09f1a374bc7322869d16f3",
+    "mtime": 1785691888.0081055,
+    "ast_hash": "372c2d04ee6dbcad2f998fe00b69d905",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md": {
@@ -1030,8 +1030,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.tsx": {
-    "mtime": 1785668860.0953705,
-    "ast_hash": "9e34db6fdae1d8da844c4a1dfabf9141",
+    "mtime": 1785691814.5580041,
+    "ast_hash": "0b104ce3162081c42bc19bd69855b3c2",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {

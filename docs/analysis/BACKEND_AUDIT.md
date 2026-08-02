@@ -1,3 +1,11 @@
+# 2026-08-03 Team score confirmation copy
+
+- Replaced the generic Team score confirmation in V1 and V2 with localized,
+  interpolated score and Station details plus a no-self-edit warning.
+- Admin correction messaging and all score submission behavior remain unchanged.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget (`204.05 KiB` initial gzip JS).
+
 # 2026-08-03 Team score reason removal
 
 - Removed the optional Team reason field from post-Check-out score entry and

@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team score confirmation copy
+
+- [x] Show the submitted score and Station identity in Team V1/V2 confirmation.
+- [x] Warn that Team score cannot be self-edited after confirmation.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated mobile visual smoke for long Station names.
+
 ## 2026-08-03 Team score reason removal
 
 - [x] Remove the optional reason field from Team score entry after Check-out.

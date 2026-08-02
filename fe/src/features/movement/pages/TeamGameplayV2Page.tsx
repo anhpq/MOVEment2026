@@ -1362,8 +1362,10 @@ export function TeamGameplayV2Page() {
               onFinish={(values) => {
                 modal.confirm({
                   centered: true,
-                  title: t("stationDetail.confirmCompletion"),
-                  content: t("stationDetail.confirmCompletionContent"),
+                  title: t("stationDetail.confirmScoreTitle", {score: values.score}),
+                  content: t("stationDetail.confirmScoreContent", {
+                    station: `${getStationDisplayCode(scoreStation.stationId)} - ${scoreStation.name}`,
+                  }),
                   okText: t("common.confirm"),
                   cancelText: t("common.cancel"),
                   onOk: async () => {
