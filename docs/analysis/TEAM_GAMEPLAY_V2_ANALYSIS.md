@@ -1,5 +1,19 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Three-state map legend
+
+- Added a localized V2 `LegendCard` above the footer at the map's lower-left.
+  It explains Available with cyan pin/points, In Progress with gold pin/points,
+  and Completed with blue-gray pin/trophy, matching the supplied mockup.
+- Renamed the internal canvas marker components to `StationMarker` and
+  `StationMarkerLabel` for clearer V2 ownership. Real markers continue to use
+  Backend Station IDs, status, points, and coordinates; visual-reference sample
+  Station IDs are intentionally not hard-coded into gameplay.
+- The legend is non-interactive, responsive, and yields visually to Station
+  preview and blocking overlays through its lower z-index.
+- Focused Vitest passed (`14/14`), i18n parity passed (`426` keys), Frontend
+  lint, production build, and bundle budget passed (`204.25 KiB` initial gzip).
+
 ## 2026-08-03 Spec-locked 336px bottom navigation
 
 - Replaced the prior estimated footer geometry with the supplied annotated spec:

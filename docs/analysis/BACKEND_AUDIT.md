@@ -1,3 +1,9 @@
+# 2026-08-03 Team V2 marker legend
+
+- Added a frontend-only localized three-state legend without hard-coding sample
+  Station records or changing Backend state authority.
+- Focused Vitest (`14/14`), i18n (`426`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 spec-locked bottom navigation
 
 - Frontend-only footer geometry now follows the supplied `336x96px` annotated

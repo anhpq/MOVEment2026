@@ -240,7 +240,7 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   };
 }
 
-function TeamMarker({
+function StationMarker({
   marker,
   hudAccent,
   size,
@@ -442,7 +442,7 @@ function TeamMarker({
   );
 }
 
-function TeamMarkerLabel({
+function StationMarkerLabel({
   layout,
   hudAccent,
   pointsUnit,
@@ -560,6 +560,32 @@ function TeamMarkerLabel({
         />
       )}
     </Group>
+  );
+}
+
+function LegendCard({pointsUnit}: {pointsUnit: string}) {
+  const {t} = useTranslation();
+  const items = [
+    {status: "default", label: t("teamV2.legendNotPlayed")},
+    {status: "active", label: t("teamV2.legendPlaying")},
+    {status: "completed", label: t("teamV2.legendCompleted")},
+  ] as const;
+
+  return (
+    <aside className="team-v2-legend" aria-label={t("teamV2.legendTitle")}>
+      <strong className="team-v2-legend__title">{t("teamV2.legendTitle")}</strong>
+      <div className="team-v2-legend__list">
+        {items.map((item) => (
+          <div key={item.status} className={`team-v2-legend__item is-${item.status}`}>
+            <span className="team-v2-legend__pin" aria-hidden="true"><i /></span>
+            <span className="team-v2-legend__label">{item.label}</span>
+            <span className="team-v2-legend__pill">
+              {item.status === "completed" ? <TrophyFilled /> : `10 ${pointsUnit}`}
+            </span>
+          </div>
+        ))}
+      </div>
+    </aside>
   );
 }
 
@@ -1143,7 +1169,7 @@ export function TeamGameplayV2Page() {
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (
-                  <TeamMarkerLabel
+                  <StationMarkerLabel
                     key={`label-${marker.station.id}`}
                     layout={layout}
                     hudAccent={V2_HUD_ACCENT}
@@ -1164,7 +1190,7 @@ export function TeamGameplayV2Page() {
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport ? (
-                  <TeamMarker
+                  <StationMarker
                     key={`marker-${marker.station.id}`}
                     marker={marker}
                     hudAccent={V2_HUD_ACCENT}
@@ -1182,6 +1208,8 @@ export function TeamGameplayV2Page() {
           </Stage>
         )}
       </div>
+
+      <LegendCard pointsUnit={t("teamV2.pointsUnit")} />
 
       <header className="team-v2-header">
         <div className="team-v2-center-score">

@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 marker legend
+
+- [x] Add responsive lower-left Available/In Progress/Completed legend.
+- [x] Match cyan points, gold points, and blue-gray trophy treatments.
+- [x] Preserve Backend-driven marker IDs, states, points, and coordinates.
+- [x] Verify focused Vitest `14/14`, i18n `426`, lint, build, and bundle.
+- [ ] Confirm legend clearance against real marker density on target devices.
+
 ## 2026-08-03 Team V2 spec-locked bottom navigation
 
 - [x] Implement `336x96px` coordinates with `120 + 96 + 120` widths.

@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 marker legend
+
+- Team V2 includes a localized lower-left legend for Available, In Progress,
+  and Completed marker appearance. The legend is explanatory only; real marker
+  identity, state, points, and coordinates remain Backend-driven.
+
 ## 2026-08-03 Team V2 framed viewport composition
 
 - Team V2 reserves independent top HUD, map, and bottom HUD regions. Brand and
