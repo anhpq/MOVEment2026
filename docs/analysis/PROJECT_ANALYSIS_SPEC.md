@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 teardrop marker states
+
+- V2 markers use a compact teardrop outline with a dark inner ring and numeric
+  identity; selected state uses purple and Locked uses silver-purple.
+- Locked markers show a lock symbol in the lower pill instead of points.
+
 ## 2026-08-03 Team V2 simplified marker/footer geometry
 
 - Team V2 uses a simple numeric circular pin with a small fully rounded points

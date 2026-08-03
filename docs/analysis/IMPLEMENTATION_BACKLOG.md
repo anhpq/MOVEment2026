@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 teardrop marker states
+
+- [x] Match the supplied compact teardrop and inner-ring marker silhouette.
+- [x] Keep Station numbers dominant and readable.
+- [x] Apply cyan Available/active and purple selected presentation.
+- [x] Replace Locked points text with a lock symbol while preserving state.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke across default, selected, Completed,
+  and Locked states at representative phone/tablet sizes.
+
 ## 2026-08-03 Team V2 simplified pins and footer
 
 - [x] Replace dense pin artwork with a simple high-contrast numeric pin.

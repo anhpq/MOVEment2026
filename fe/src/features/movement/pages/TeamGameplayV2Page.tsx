@@ -288,20 +288,25 @@ function TeamMarker({
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
       <Path
-        data={`M ${-size * 0.28} ${-size * 0.36} L 0 0 L ${size * 0.28} ${-size * 0.36} Z`}
+        x={-size / 2}
+        y={-size * 1.12}
+        scaleX={size / 100}
+        scaleY={size / 100}
+        data="M50 0 C22 0 0 22 0 50 C0 72 18 88 50 112 C82 88 100 72 100 50 C100 22 78 0 50 0 Z"
         fill="rgba(3, 14, 20, 0.96)"
         stroke={colors.stroke}
-        strokeWidth={2}
+        strokeWidth={5}
         shadowColor={colors.glow}
-        shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
+        shadowBlur={marker.isSelected || marker.isActive ? 26 : 16}
+        shadowOpacity={0.82}
         listening={false}
       />
       <Circle
         y={markerCenterY}
-        radius={size * 0.44}
-        fill="rgba(3, 14, 20, 0.98)"
+        radius={size * 0.34}
+        fill="rgba(4, 16, 24, 0.98)"
         stroke={colors.stroke}
-        strokeWidth={2.2}
+        strokeWidth={1.4}
         shadowColor={colors.glow}
         shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
         shadowOpacity={0.72}
@@ -419,7 +424,7 @@ function TeamMarkerLabel({
       <Rect
         width={STATION_LABEL_WIDTH}
         height={STATION_LABEL_HEIGHT}
-        fill="rgba(3, 14, 20, 0.92)"
+        fill={marker.isSelected ? "rgba(42, 8, 57, 0.96)" : "rgba(3, 14, 20, 0.94)"}
         stroke={colors.usesSilverPurple ? undefined : colors.stroke}
         strokeLinearGradientStartPoint={
           colors.usesSilverPurple ? {x: 0, y: 0} : undefined
@@ -436,20 +441,35 @@ function TeamMarkerLabel({
         shadowBlur={12}
         shadowOpacity={0.72}
       />
-      <Text
-        text={`${points} ${pointsUnit}`}
-        x={4}
-        y={0}
-        width={STATION_LABEL_WIDTH - 8}
-        height={STATION_LABEL_HEIGHT}
-        fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={10}
-        fontStyle="bold"
-        fill={marker.isSelected ? "#F0B8FF" : "#4DFF8A"}
-        align="center"
-        verticalAlign="middle"
-        listening={false}
-      />
+      {marker.isLocked ? (
+        <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2} listening={false}>
+          <Arc
+            innerRadius={4}
+            outerRadius={4}
+            angle={180}
+            rotation={180}
+            y={-2}
+            stroke="#E7EDF2"
+            strokeWidth={1.8}
+          />
+          <Rect x={-5} y={-1} width={10} height={8} cornerRadius={2} fill="#E7EDF2" />
+        </Group>
+      ) : (
+        <Text
+          text={`${points} ${pointsUnit}`}
+          x={4}
+          y={0}
+          width={STATION_LABEL_WIDTH - 8}
+          height={STATION_LABEL_HEIGHT}
+          fontFamily="Aptos, Segoe UI, sans-serif"
+          fontSize={10}
+          fontStyle="bold"
+          fill={marker.isSelected ? "#F0B8FF" : "#4DFF8A"}
+          align="center"
+          verticalAlign="middle"
+          listening={false}
+        />
+      )}
     </Group>
   );
 }

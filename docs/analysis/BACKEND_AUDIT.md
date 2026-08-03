@@ -1,3 +1,13 @@
+# 2026-08-03 Team V2 teardrop marker states
+
+- Refined V2 pins to the supplied teardrop/inner-ring reference and replaced
+  Locked points text with a lock symbol in the lower pill.
+- Preserved authoritative Backend state, Completed opacity/check, coordinates,
+  hit targets, QR, scoring, and all gameplay behavior.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
 # 2026-08-03 Team V2 simplified pins and footer
 
 - Replaced complex marker artwork with a smaller simple numeric pin, reduced

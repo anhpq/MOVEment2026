@@ -1,5 +1,19 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Teardrop marker state treatment
+
+- Refined the simplified marker into a single proportional teardrop outline
+  with a dark inner circle and high-contrast Station number, matching the
+  supplied close-up reference without restoring the prior dense artwork.
+- Available/active pins use cyan, selected pins and pills use purple, and
+  Locked pins retain the confirmed silver-purple treatment.
+- Locked markers replace the points text in the lower pill with a centered lock
+  symbol. Backend marker state, Completed behavior, hit targets, coordinates,
+  preview, and gameplay remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
 ## 2026-08-03 Simplified pins and separated footer geometry
 
 - Replaced the dense 640x620 Bézier neon marker artwork with a simple dark
