@@ -1,5 +1,11 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-04 Absolute-centered scanner caption refinement
+
+- The Scan CTA is now anchored at `top: 50%` with a two-axis `-50%` transform,
+  guaranteeing equal visual protrusion above and below the footer rail at every scale.
+- Raised the Scan caption by `4px`. Lint, build, and bundle budget passed.
+
 ## 2026-08-04 Centered scanner over compact rails
 
 - Footer side rails and enclosing border now use a centered `72px` band inside

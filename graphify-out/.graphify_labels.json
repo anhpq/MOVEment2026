@@ -157,7 +157,6 @@
   "155": "validate-environment.ts",
   "156": "Backend work still required",
   "157": "Gameplay Reset and Station Seed Analysis",
-  "158": "LeaderboardEntryResponse",
   "159": "vite-env.d.ts",
   "160": "be/package.json",
   "161": "source-map-support",
@@ -184,11 +183,9 @@
   "182": "Team Runtime Stability and Data Loading Analysis",
   "183": "Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?",
   "184": "TeamResultsService",
-  "185": "CreateStationDto",
   "186": "15. Station Media Gallery",
   "187": "ts-node",
   "188": "GenerateQrLoginTokenDto",
-  "189": "CreateTeamDto",
   "190": "Decision Log",
   "191": "admin.service.spec.ts",
   "192": "MOVEment 2026 - Agent Skills Analysis",
@@ -234,9 +231,7 @@
   "232": "FinalController",
   "233": "@nestjs/schematics",
   "234": "LanguageSwitch.tsx",
-  "235": "apiGet",
   "236": "vite",
   "237": "@eslint/js",
-  "238": "GenerateQrLoginTokenDto",
-  "240": "GenerateQrLoginTokenDto"
+  "238": "GenerateQrLoginTokenDto"
 }

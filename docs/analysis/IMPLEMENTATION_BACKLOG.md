@@ -1,5 +1,11 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 absolute-centered scanner
+
+- [x] Center-anchor the Scan CTA for equal top/bottom protrusion at every scale.
+- [x] Raise the Scan caption by `4px`.
+- [x] Verify lint, production build, and bundle budget.
+
 ## 2026-08-04 Team V2 centered footer scanner
 
 - [x] Center the `72px` side rails and enclosing border inside the `96px` footer.

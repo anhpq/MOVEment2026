@@ -1,3 +1,8 @@
+# 2026-08-04 Team V2 absolute-centered scanner
+
+- Frontend CSS now center-anchors the Scan CTA and raises its caption by `4px`.
+- Lint, build, and bundle budget passed. Backend unchanged.
+
 # 2026-08-04 Team V2 centered footer scanner
 
 - Frontend-only CSS geometry centered the `96px` Scan CTA over `72px` rails.

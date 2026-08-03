@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 absolute-centered scanner
+
+- The footer Scan CTA is center-anchored rather than bottom-anchored, and its
+  caption is raised for improved spacing.
+
 ## 2026-08-04 Team V2 centered footer scanner
 
 - The `96px` Scan CTA is centered over a `72px` side-rail/footer border band,
