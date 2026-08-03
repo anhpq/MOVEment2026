@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 premium map state hierarchy
+
+- [x] Style Available markers cyan and the active marker gold at `118%` scale.
+- [x] Add active Playing chip, lightning badge, stronger halo, and ground rings.
+- [x] Replace Completed points pill with a trophy and subdued blue-gray palette.
+- [x] Recompose footer hierarchy as Leaderboard, Scan, and My team.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated rendering and physical-device performance.
+
 ## 2026-08-03 Team V2 compact variable-length markers
 
 - [x] Reduce pins to `44px` default (`38..58px`) and pills to `68x22px`.

@@ -177,7 +177,6 @@
   "175": "fe/package.json",
   "176": "routes.tsx",
   "177": "check-bundle-budget.mjs",
-  "178": "GenerateQrLoginTokenDto",
   "179": "MOVEment 2026 - Implementation Backlog",
   "180": "Prompt 07 - Tạo backlog và tiêu chí nghiệm thu",
   "181": "Prompt 01 - Phân tích phạm vi sản phẩm",
@@ -235,8 +234,6 @@
   "233": "@nestjs/schematics",
   "234": "LanguageSwitch.tsx",
   "235": "apiGet",
-  "236": "markerAppearance.ts",
-  "237": "lazyRoute.ts",
   "238": "GenerateQrLoginTokenDto",
   "239": ".logout"
 }

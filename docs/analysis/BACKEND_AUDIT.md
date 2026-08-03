@@ -1,3 +1,12 @@
+# 2026-08-03 Team V2 premium map state hierarchy
+
+- Frontend-only visual update introduced cyan/gold/blue-gray Station state
+  hierarchy and a Leaderboard/Scan/My-team footer using existing authoritative
+  Team and Station data.
+- No Backend API, persistence, QR, authentication, scoring, coordinates, or
+  state derivation changed. Focused Vitest (`14/14`), i18n (`422` keys), lint,
+  production build, and bundle budget passed.
+
 # 2026-08-03 Team V2 compact variable-length markers
 
 - Frontend-only marker refinement reduced pin and points-pill geometry and

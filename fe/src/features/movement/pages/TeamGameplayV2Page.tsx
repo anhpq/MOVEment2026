@@ -6,6 +6,7 @@ import {
   FullscreenOutlined,
   LogoutOutlined,
   SettingOutlined,
+  TeamOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
 import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Typography} from "antd";
@@ -211,25 +212,25 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 }
 
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
-  if (marker.isLocked || marker.isCompleted) {
+  if (marker.isActive) {
     return {
-      stroke: "#C3CED8",
-      glow: "#B05CFF",
+      stroke: "#FFD447",
+      glow: "#FFB800",
+      usesSilverPurple: false,
+    };
+  }
+  if (marker.isCompleted) {
+    return {
+      stroke: "#8FA4B8",
+      glow: "#58738C",
       usesSilverPurple: true,
     };
   }
-  if (marker.isSelected) {
+  if (marker.isLocked) {
     return {
-      stroke: "#FF3FD8",
-      glow: "#FF3FD8",
-      usesSilverPurple: false,
-    };
-  }
-  if (marker.isActive) {
-    return {
-      stroke: "#2FE4F0",
-      glow: "#2FE4F0",
-      usesSilverPurple: false,
+      stroke: "#778698",
+      glow: "#526276",
+      usesSilverPurple: true,
     };
   }
   return {
@@ -254,10 +255,10 @@ function TeamMarker({
   y: number;
   onSelect: () => void;
 }) {
+  const {t} = useTranslation();
   const colors = getMarkerColors(marker, hudAccent);
   const markerCenterY = -size * 0.9;
   const hitRadius = Math.max(22, size * 0.51);
-  const iconScale = size / 40;
   const lockRadius = Math.max(5, size * 0.16);
 
   return (
@@ -288,6 +289,71 @@ function TeamMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
+      {marker.isActive && (
+        <>
+          <Circle
+            y={-1}
+            radius={size * 0.52}
+            scaleY={0.2}
+            stroke="#FFD447"
+            strokeWidth={2}
+            shadowColor="#FFB800"
+            shadowBlur={18}
+            opacity={0.95}
+            listening={false}
+          />
+          <Circle
+            y={-1}
+            radius={size * 0.72}
+            scaleY={0.2}
+            stroke="#FFB800"
+            strokeWidth={1.2}
+            opacity={0.48}
+            listening={false}
+          />
+          <Group y={-size * 1.78} listening={false}>
+            <Rect
+              x={-size * 0.48}
+              width={size * 0.96}
+              height={Math.max(14, size * 0.25)}
+              cornerRadius={9}
+              fill="rgba(25, 20, 3, 0.94)"
+              stroke="#FFD447"
+              strokeWidth={1}
+              shadowColor="#FFB800"
+              shadowBlur={10}
+            />
+            <Text
+              width={size * 0.96}
+              x={-size * 0.48}
+              height={Math.max(14, size * 0.25)}
+              text={`⚡ ${t("teamV2.activeStation")}`}
+              align="center"
+              verticalAlign="middle"
+              fontFamily="Aptos, Segoe UI, sans-serif"
+              fontSize={Math.max(7, size * 0.115)}
+              fontStyle="bold"
+              fill="#FFF2A8"
+            />
+          </Group>
+          <Group x={size * 0.38} y={-size * 1.18} listening={false}>
+            <Circle
+              radius={Math.max(6, size * 0.13)}
+              fill="#241A00"
+              stroke="#FFD447"
+              strokeWidth={1.4}
+              shadowColor="#FFB800"
+              shadowBlur={9}
+            />
+            <Path
+              x={-3.5}
+              y={-5}
+              data="M5 0 L1 6 H4 L2 11 L8 4 H5 Z"
+              fill="#FFE36E"
+            />
+          </Group>
+        </>
+      )}
       <Path
         x={-size / 2}
         y={-size * 1.52}
@@ -340,24 +406,6 @@ function TeamMarker({
         shadowBlur={3}
         listening={false}
       />
-      {marker.isCompleted && (
-        <Group
-          x={size * 0.34}
-          y={-size * 1.16}
-          scaleX={iconScale * 0.58}
-          scaleY={iconScale * 0.58}
-          listening={false}>
-          <Path
-            data="M -6 0 L -1.5 5 L 7 -6"
-            stroke="#F2F7FB"
-            strokeWidth={3}
-            lineCap="round"
-            lineJoin="round"
-            shadowColor="#B05CFF"
-            shadowBlur={5}
-          />
-        </Group>
-      )}
       {marker.isLocked && (
         <Group
           x={size * 0.35}
@@ -433,7 +481,7 @@ function TeamMarkerLabel({
       onTouchStart={(event) => {
         event.cancelBubble = true;
       }}>
-      {marker.isSelected && (
+      {(marker.isSelected || marker.isActive) && (
         <>
           <Rect
             x={5}
@@ -443,7 +491,7 @@ function TeamMarkerLabel({
             stroke={colors.stroke}
             strokeWidth={1}
             cornerRadius={STATION_LABEL_HEIGHT / 2}
-            opacity={0.34}
+            opacity={marker.isActive ? 0.52 : 0.34}
             listening={false}
           />
           <Rect
@@ -462,17 +510,8 @@ function TeamMarkerLabel({
       <Rect
         width={STATION_LABEL_WIDTH}
         height={STATION_LABEL_HEIGHT}
-        fill={marker.isSelected ? "rgba(42, 8, 57, 0.96)" : "rgba(3, 14, 20, 0.94)"}
-        stroke={colors.usesSilverPurple ? undefined : colors.stroke}
-        strokeLinearGradientStartPoint={
-          colors.usesSilverPurple ? {x: 0, y: 0} : undefined
-        }
-        strokeLinearGradientEndPoint={
-          colors.usesSilverPurple ? {x: STATION_LABEL_WIDTH, y: 0} : undefined
-        }
-        strokeLinearGradientColorStops={
-          colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
-        }
+        fill={marker.isActive ? "rgba(28, 21, 2, 0.96)" : "rgba(3, 14, 20, 0.94)"}
+        stroke={colors.stroke}
         strokeWidth={1.2}
         cornerRadius={STATION_LABEL_HEIGHT / 2}
         shadowColor={colors.glow}
@@ -492,6 +531,18 @@ function TeamMarkerLabel({
           />
           <Rect x={-5} y={-1} width={10} height={8} cornerRadius={2} fill="#E7EDF2" />
         </Group>
+      ) : marker.isCompleted ? (
+        <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2} listening={false}>
+          <Path
+            x={-7}
+            y={-7}
+            data="M2 1 H12 V5 C12 8 10 10 7 11 C4 10 2 8 2 5 Z M2 3 H0 V5 C0 7 2 8 4 8 M12 3 H14 V5 C14 7 12 8 10 8 M7 11 V14 M3 14 H11"
+            stroke="#D5E0E9"
+            strokeWidth={1.5}
+            lineCap="round"
+            lineJoin="round"
+          />
+        </Group>
       ) : (
         <Text
           text={`${points} ${pointsUnit}`}
@@ -502,7 +553,7 @@ function TeamMarkerLabel({
           fontFamily="Aptos, Segoe UI, sans-serif"
           fontSize={10.5}
           fontStyle="bold"
-          fill={marker.isSelected ? "#F0B8FF" : "#4DFF8A"}
+          fill={marker.isActive ? "#FFE36E" : "#4DFF8A"}
           align="center"
           verticalAlign="middle"
           listening={false}
@@ -1117,7 +1168,7 @@ export function TeamGameplayV2Page() {
                     key={`marker-${marker.station.id}`}
                     marker={marker}
                     hudAccent={V2_HUD_ACCENT}
-                    size={layout.markerSize}
+                    size={layout.markerSize * (marker.isActive ? 1.18 : 1)}
                     x={layout.anchorX}
                     y={layout.anchorY}
                     onSelect={() => {
@@ -1251,6 +1302,7 @@ export function TeamGameplayV2Page() {
           }}>
           <span className="team-v2-bottom-icon"><TrophyFilled /></span>
           <span className="team-v2-bottom-copy">
+            <small>{t("leaderboard.title")}</small>
             <strong>{t("teamV2.leaderboardControl")}</strong>
           </span>
         </button>
@@ -1274,14 +1326,10 @@ export function TeamGameplayV2Page() {
         <section
           className="team-v2-footer-panel team-v2-progress-panel"
           aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}>
-          <span className="team-v2-team-count">
-            <small>{t("teamV2.teamLabel")}</small>
-            <strong>{String(activeTeam.id).padStart(2, "0")}</strong>
-          </span>
-          <span className="team-v2-progress-divider" aria-hidden="true" />
-          <span className="team-v2-station-count">
-            <small>{t("teamV2.stationCountLabel")}</small>
-            <strong>{completedCount}/17</strong>
+          <span className="team-v2-bottom-icon"><TeamOutlined /></span>
+          <span className="team-v2-bottom-copy team-v2-my-team-copy">
+            <small>{t("teamV2.myTeam")}</small>
+            <strong>{activeTeam.score} {t("teamV2.pointsUnit")} · {completedCount}/17</strong>
           </span>
         </section>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />

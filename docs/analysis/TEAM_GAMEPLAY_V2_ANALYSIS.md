@@ -1,5 +1,22 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Premium three-state event-map markers
+
+- Reconciled the V2 map with the supplied premium cyberpunk reference while
+  keeping the compact variable-length marker geometry and real Backend data.
+- Available markers remain cyan. The authoritative In Progress marker is gold,
+  scales to `118%`, adds a strong halo, two ground rings, a localized Playing
+  chip, and a lightning badge so it is the dominant map element.
+- Completed markers use subdued blue-gray light and replace the points pill
+  content with a trophy. Locked markers retain a distinct gray treatment and
+  lock glyph. Long `ST` display codes continue using adaptive font sizing.
+- Footer hierarchy is now Leaderboard, central Scan, and My team. The Team
+  panel shows authoritative total points and completed-Station progress.
+- No Station IDs are hard-coded from the visual reference. Station identity,
+  status, points, coordinates, QR, scoring, and Backend authority are unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
 ## 2026-08-03 Compact variable-length markers
 
 - Reduced V2 marker width from `58px` to `44px` by default, with a responsive

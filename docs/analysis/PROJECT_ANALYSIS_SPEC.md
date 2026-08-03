@@ -1,5 +1,13 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 premium map state hierarchy
+
+- Team V2 uses cyan Available markers, a `118%` gold In Progress marker with
+  Playing/lightning/ring emphasis, and subdued blue-gray Completed markers with
+  a trophy in place of points. Footer hierarchy is Leaderboard, Scan, My team.
+- All displayed Station codes, points, progress, and state remain Backend-driven;
+  reference-image example IDs are not hard-coded.
+
 ## 2026-08-03 Team V2 compact variable-length markers
 
 - Team V2 pins use a compact `44px` default size (`38..58px`) and `68x22px`

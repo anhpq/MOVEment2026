@@ -519,14 +519,39 @@
   text-transform: uppercase;
 }
 
+.team-v2-bottom-copy small {
+  display: block;
+  margin-bottom: 3px;
+  overflow: hidden;
+  color: var(--team-v2-muted);
+  font-size: calc(8px * var(--team-v2-footer-font-compensation, 1));
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .team-v2-progress-panel {
   right: 0;
   bottom: 0;
   width: 222px;
-  justify-content: center;
-  gap: 14px;
+  justify-content: flex-start;
+  gap: 10px;
   padding: 8px 14px;
   text-align: center;
+}
+
+.team-v2-progress-panel .team-v2-bottom-icon {
+  border-color: color-mix(in srgb, var(--team-v2-accent) 70%, transparent);
+  color: var(--team-v2-accent);
+}
+
+.team-v2-my-team-copy strong {
+  color: var(--team-v2-accent-soft);
+  font-size: calc(10px * var(--team-v2-footer-font-compensation, 1));
+  white-space: nowrap;
 }
 
 .team-v2-scan-action {
