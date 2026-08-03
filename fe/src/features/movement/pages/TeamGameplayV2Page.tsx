@@ -1083,13 +1083,13 @@ export function TeamGameplayV2Page() {
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
     Math.min(
-      (viewportSize.width - 16) / 600,
-      viewportSize.height > viewportSize.width ? viewportSize.height / 1_450 : 1,
+      (viewportSize.width - 24) / 336,
+      viewportSize.height > viewportSize.width ? viewportSize.height / 900 : 1.5,
     ),
-    0.45,
-    1,
+    0.82,
+    1.5,
   );
-  const footerFontCompensation = 1 / footerScale;
+  const footerFontCompensation = 1;
 
   return (
     <main className="team-v2-page">

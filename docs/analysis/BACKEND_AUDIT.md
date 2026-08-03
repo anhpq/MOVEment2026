@@ -1,3 +1,9 @@
+# 2026-08-03 Team V2 spec-locked bottom navigation
+
+- Frontend-only footer geometry now follows the supplied `336x96px` annotated
+  design and scales uniformly per viewport. No Backend behavior changed.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 overlapped footer geometry
 
 - Frontend-only footer geometry now layers the center scanner over continuous

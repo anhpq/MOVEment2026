@@ -1,5 +1,19 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Spec-locked 336px bottom navigation
+
+- Replaced the prior estimated footer geometry with the supplied annotated spec:
+  `336x96px` design coordinates split into `120px + 96px + 120px`, `72px`
+  side-tab height, `96px` center CTA, `2px` borders, and `16px` outer corners.
+- The complete component scales uniformly from `0.82x` to `1.5x` based on both
+  viewport width and portrait height. Typography now scales with the component
+  rather than using inverse font compensation.
+- Removed the extra base frame and wide underlapping wings. Scan copy stays
+  inside the lower CTA, with single-line localized side labels.
+- QR behavior, map clearance, gameplay state, points, and Backend are unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
 ## 2026-08-03 Overlapped footer geometry
 
 - Matched the supplied footer geometry as a layered composition rather than

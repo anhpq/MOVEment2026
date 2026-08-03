@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 spec-locked bottom navigation
+
+- [x] Implement `336x96px` coordinates with `120 + 96 + 120` widths.
+- [x] Use `72px` tabs, `96px` CTA, `2px` border, and `16px` outer corners.
+- [x] Scale the complete component uniformly between `0.82x` and `1.5x`.
+- [x] Remove the extra base frame and wide underlapping geometry.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated pixel alignment against the annotated reference.
+
 ## 2026-08-03 Team V2 overlapped footer geometry
 
 - [x] Add a continuous `82px` footer base frame.

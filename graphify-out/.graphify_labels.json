@@ -235,5 +235,6 @@
   "233": "@nestjs/schematics",
   "234": "LanguageSwitch.tsx",
   "235": "apiGet",
+  "236": "vite",
   "238": "GenerateQrLoginTokenDto"
 }
