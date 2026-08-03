@@ -1,5 +1,13 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 selected-Station preview
+
+- Selecting a Team V2 marker preserves the map and opens a compact Station
+  preview above the QR/footer area.
+- Full Station Detail opens only from the preview's explicit View mission
+  action; closing Detail returns to the preview.
+- Existing gameplay, QR, scoring, media, and Backend behavior is unchanged.
+
 ## 2026-08-03 Team V2 portrait HUD readability
 
 - Team V2 scales its raised QR/footer composition by both width and available

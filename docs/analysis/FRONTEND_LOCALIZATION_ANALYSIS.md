@@ -1,5 +1,11 @@
 # Frontend Localization Analysis
 
+## 2026-08-03 Team V2 Station preview copy
+
+- Added synchronized VI/EN accessible copy for the compact Station preview,
+  View mission action, and preview close control.
+- i18n parity passed with `420` keys.
+
 ## 2026-08-02 Shared accessibility copy follow-up
 
 - Localized authorization-denied title, description, and role-specific return

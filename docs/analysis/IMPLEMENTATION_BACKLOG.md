@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 selected-Station preview
+
+- [x] Keep the map visible after marker selection.
+- [x] Show a compact image/code, name, score, and description preview.
+- [x] Open the existing full Detail only from an explicit View mission action.
+- [x] Add synchronized VI/EN visible and accessible copy.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke at phone, tablet portrait, and
+  low-height landscape sizes with long Station names and missing images.
+
 ## 2026-08-03 Team V2 portrait HUD readability
 
 - [x] Scale the raised QR/footer composition by portrait height as well as width.

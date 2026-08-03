@@ -625,6 +625,7 @@ export function TeamGameplayV2Page() {
   const language = i18n.language === "en" ? "en" : "vi";
   const [panelOpacity, setPanelOpacity] = useState(readStoredPanelOpacity);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
+  const [isStationDetailOpen, setIsStationDetailOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
@@ -1018,7 +1019,7 @@ export function TeamGameplayV2Page() {
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
   const isPrimaryOverlayOpen =
-    isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
+    isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
     Math.min(
       (viewportSize.width - 16) / 600,
@@ -1096,7 +1097,10 @@ export function TeamGameplayV2Page() {
                     layout={layout}
                     hudAccent={V2_HUD_ACCENT}
                     pointsUnit={t("teamV2.pointsUnit")}
-                    onSelect={() => setSelectedStationId(marker.station.id)}
+                    onSelect={() => {
+                      setSelectedStationId(marker.station.id);
+                      setIsStationDetailOpen(false);
+                    }}
                   />
                 ) : null;
               })}
@@ -1116,7 +1120,10 @@ export function TeamGameplayV2Page() {
                     size={layout.markerSize}
                     x={layout.anchorX}
                     y={layout.anchorY}
-                    onSelect={() => setSelectedStationId(marker.station.id)}
+                    onSelect={() => {
+                      setSelectedStationId(marker.station.id);
+                      setIsStationDetailOpen(false);
+                    }}
                   />
                 ) : null;
               })}
@@ -1172,12 +1179,40 @@ export function TeamGameplayV2Page() {
       </header>
 
       {selectedStation && !isPrimaryOverlayOpen && (
+        <section className="team-v2-station-preview" aria-label={t("teamV2.stationPreview")}>
+          <div className="team-v2-station-preview__visual">
+            {selectedStation.imageUrls?.[0] ? (
+              <img src={selectedStation.imageUrls[0]} alt="" loading="lazy" decoding="async" />
+            ) : (
+              <strong>{getStationDisplayCode(selectedStation.stationId)}</strong>
+            )}
+          </div>
+          <div className="team-v2-station-preview__content">
+            <span>{getStationDisplayCode(selectedStation.stationId)}</span>
+            <h2>{selectedStation.name}</h2>
+            <strong>{getStationEffectiveMaxPoints(selectedStation)} {t("teamV2.pointsUnit")}</strong>
+            {selectedStation.description && <p>{selectedStation.description}</p>}
+            <button type="button" onClick={() => setIsStationDetailOpen(true)}>
+              {t("teamV2.viewMission")}
+            </button>
+          </div>
+          <button
+            type="button"
+            className="team-v2-station-preview__close"
+            aria-label={t("teamV2.closeStationPreview")}
+            onClick={() => setSelectedStationId(null)}>
+            <CloseOutlined />
+          </button>
+        </section>
+      )}
+
+      {selectedStation && isStationDetailOpen && (
         <TeamV2StationDetailOverlay
           station={selectedStation}
           playingTeamCount={selectedPlayingCount}
           opacity={panelOpacity}
           language={language}
-          onClose={() => setSelectedStationId(null)}
+          onClose={() => setIsStationDetailOpen(false)}
           onRequestScan={() => {
             setQrToken("");
             setIsScannerOpen(true);
@@ -1190,6 +1225,7 @@ export function TeamGameplayV2Page() {
               );
               message.success(t("stationDetail.cancelled"));
               setSelectedStationId(null);
+              setIsStationDetailOpen(false);
             } catch {
               message.error(t("errors.generic"));
             }

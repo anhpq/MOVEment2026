@@ -1,3 +1,13 @@
+# 2026-08-03 Team V2 selected-Station preview
+
+- Changed marker selection from immediate full Detail to a compact map-level
+  preview with an explicit transition to the existing V2 Detail overlay.
+- Reused existing Station state and media fields; no new request, Backend,
+  database, QR, scoring, or coordinate behavior was introduced.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated responsive browser and physical-device visual smoke remain pending.
+
 # 2026-08-03 Team V2 portrait HUD readability
 
 - Added height-aware portrait scaling for the Team V2 footer/QR composition and

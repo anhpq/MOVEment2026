@@ -1,5 +1,21 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Readable selected-Station preview
+
+- Selecting a map marker now opens a compact bottom preview instead of
+  immediately covering the map with the full Station Detail overlay.
+- The preview shows the first already-loaded Station image when available,
+  otherwise a Station-code fallback, plus name, maximum points, a short
+  description, and an explicit View mission action.
+- View mission opens the existing full V2-owned Detail. Closing Detail returns
+  to the selected preview, while closing the preview clears the selection.
+- QR, Station actions, scoring, map coordinates, marker state, Backend
+  contracts, and the fixed V2 palette remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain
+  pending.
+
 ## 2026-08-03 Portrait HUD and marker readability refinement
 
 - Portrait Fullscreen and Settings controls now remain on one horizontal row.
