@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 premium map HUD refinement
+
+- [x] Enclose both footer tabs and the `112px` center Scan CTA in one full-width frame.
+- [x] Default the legend to a compact button and add an accessible open panel.
+- [x] Remove the active text chip; retain lightning and three gold ground rings.
+- [x] Improve Completed-marker legibility and reduce the map vignette.
+- [x] Verify focused Vitest `8/8`, i18n `428`, lint, build, and bundle budget.
+- [ ] Confirm pixel alignment and touch ergonomics on physical 360–430px devices.
+
 ## 2026-08-03 Team V2 dense-map readability and footer
 
 - [x] Reduce markers to `34px` default and points pills to `58x19px`.

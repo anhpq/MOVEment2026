@@ -237,5 +237,7 @@
   "235": "apiGet",
   "236": "vite",
   "237": "@eslint/js",
-  "238": "GenerateQrLoginTokenDto"
+  "238": "GenerateQrLoginTokenDto",
+  "239": "LeaderboardEntryResponse",
+  "240": "vite"
 }

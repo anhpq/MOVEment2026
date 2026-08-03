@@ -1,5 +1,15 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 premium map HUD refinement
+
+- Team V2 uses a full-width `360x112px` footer design with a `112px` central
+  Scan action enclosed by the same outer frame as both navigation tabs.
+- The localized map legend defaults to a compact button and expands on demand.
+  Active marker emphasis is lightning plus three gold rings; Completed stays
+  readable and uses a trophy instead of points.
+- Gameplay data, map coordinates/interactions, QR, scoring, and Backend
+  contracts are unchanged.
+
 ## 2026-08-03 Team V2 dense-map readability
 
 - Team V2 uses compact `34px` default markers (`30..46px`), `58x19px` points

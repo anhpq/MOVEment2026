@@ -255,7 +255,6 @@ function StationMarker({
   y: number;
   onSelect: () => void;
 }) {
-  const {t} = useTranslation();
   const colors = getMarkerColors(marker, hudAccent);
   const markerCenterY = -size * 0.9;
   const hitRadius = Math.max(22, size * 0.51);
@@ -311,31 +310,15 @@ function StationMarker({
             opacity={0.48}
             listening={false}
           />
-          <Group y={-size * 1.78} listening={false}>
-            <Rect
-              x={-size * 0.48}
-              width={size * 0.96}
-              height={Math.max(14, size * 0.25)}
-              cornerRadius={9}
-              fill="rgba(25, 20, 3, 0.94)"
-              stroke="#FFD447"
-              strokeWidth={1}
-              shadowColor="#FFB800"
-              shadowBlur={10}
-            />
-            <Text
-              width={size * 0.96}
-              x={-size * 0.48}
-              height={Math.max(14, size * 0.25)}
-              text={`⚡ ${t("teamV2.activeStation")}`}
-              align="center"
-              verticalAlign="middle"
-              fontFamily="Aptos, Segoe UI, sans-serif"
-              fontSize={Math.max(7, size * 0.115)}
-              fontStyle="bold"
-              fill="#FFF2A8"
-            />
-          </Group>
+          <Circle
+            y={-1}
+            radius={size * 0.9}
+            scaleY={0.2}
+            stroke="#FFD21A"
+            strokeWidth={0.9}
+            opacity={0.24}
+            listening={false}
+          />
           <Group x={size * 0.38} y={-size * 1.18} listening={false}>
             <Circle
               radius={Math.max(6, size * 0.13)}
@@ -563,7 +546,7 @@ function StationMarkerLabel({
   );
 }
 
-function LegendCard({pointsUnit}: {pointsUnit: string}) {
+function LegendPanel({pointsUnit, onClose}: {pointsUnit: string; onClose: () => void}) {
   const {t} = useTranslation();
   const items = [
     {status: "default", label: t("teamV2.legendNotPlayed")},
@@ -573,7 +556,12 @@ function LegendCard({pointsUnit}: {pointsUnit: string}) {
 
   return (
     <aside className="team-v2-legend" aria-label={t("teamV2.legendTitle")}>
-      <strong className="team-v2-legend__title">{t("teamV2.legendTitle")}</strong>
+      <div className="team-v2-legend__header">
+        <strong className="team-v2-legend__title">{t("teamV2.legendTitle")}</strong>
+        <button type="button" onClick={onClose} aria-label={t("teamV2.closeLegend")}>
+          <CloseOutlined />
+        </button>
+      </div>
       <div className="team-v2-legend__list">
         {items.map((item) => (
           <div key={item.status} className={`team-v2-legend__item is-${item.status}`}>
@@ -586,6 +574,20 @@ function LegendCard({pointsUnit}: {pointsUnit: string}) {
         ))}
       </div>
     </aside>
+  );
+}
+
+function LegendButton({onOpen}: {onOpen: () => void}) {
+  const {t} = useTranslation();
+  return (
+    <button
+      type="button"
+      className="team-v2-legend-button"
+      onClick={onOpen}
+      aria-label={t("teamV2.openLegend")}>
+      <span aria-hidden="true">i</span>
+      <strong>{t("teamV2.legendTitle")}</strong>
+    </button>
   );
 }
 
@@ -719,6 +721,7 @@ export function TeamGameplayV2Page() {
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
     () => Boolean(getActiveFullscreenElement()),
   );
@@ -772,7 +775,8 @@ export function TeamGameplayV2Page() {
         isCompleted: appearance.isCompleted,
         isLocked: appearance.isLocked,
         isSelected,
-        opacity: appearance.opacity,
+        opacity:
+          appearance.isCompleted ? (isSelected ? 0.86 : 0.74) : appearance.opacity,
       };
     });
   }, [activeTeamStations, selectedStationId, stationDefinitions]);
@@ -1108,9 +1112,9 @@ export function TeamGameplayV2Page() {
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
-    (viewportSize.width - 24) / 336,
+    (viewportSize.width - 24) / 360,
     0.82,
-    2.4,
+    2.25,
   );
   const footerFontCompensation = 1 / Math.sqrt(footerScale);
 
@@ -1163,7 +1167,7 @@ export function TeamGameplayV2Page() {
               y={-mapTransform.y / mapTransform.scale}
               scaleX={1 / mapTransform.scale}
               scaleY={1 / mapTransform.scale}>
-              {markerViewModels.map((marker) => {
+              {[...markerViewModels].sort((a, b) => Number(a.isActive) - Number(b.isActive)).map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (
                   <StationMarkerLabel
@@ -1184,7 +1188,7 @@ export function TeamGameplayV2Page() {
               y={-mapTransform.y / mapTransform.scale}
               scaleX={1 / mapTransform.scale}
               scaleY={1 / mapTransform.scale}>
-              {markerViewModels.map((marker) => {
+              {[...markerViewModels].sort((a, b) => Number(a.isActive) - Number(b.isActive)).map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport ? (
                   <StationMarker
@@ -1206,7 +1210,12 @@ export function TeamGameplayV2Page() {
         )}
       </div>
 
-      <LegendCard pointsUnit={t("teamV2.pointsUnit")} />
+      {!selectedStation && !isPrimaryOverlayOpen && (isLegendOpen ?
+          <LegendPanel
+            pointsUnit={t("teamV2.pointsUnit")}
+            onClose={() => setIsLegendOpen(false)}
+          />
+        : <LegendButton onOpen={() => setIsLegendOpen(true)} />)}
 
       <header className="team-v2-header">
         <div className="team-v2-center-score">
@@ -1347,14 +1356,16 @@ export function TeamGameplayV2Page() {
             : t("teamV2.scanGameHint")}
           </small>
         </div>
-        <section
+        <button
+          type="button"
           className="team-v2-footer-panel team-v2-progress-panel"
-          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}>
+          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}
+          onClick={() => navigate("/stations")}>
           <span className="team-v2-bottom-icon"><TeamOutlined /></span>
           <span className="team-v2-bottom-copy team-v2-my-team-copy">
             <strong>{t("teamV2.myTeam")}</strong>
           </span>
-        </section>
+        </button>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />
       </footer>
 

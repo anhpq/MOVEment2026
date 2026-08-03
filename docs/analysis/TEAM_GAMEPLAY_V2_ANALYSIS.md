@@ -1,5 +1,22 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Premium map HUD final refinement
+
+- Rebuilt the bottom navigation on a `360x112px` design grid with `124px`
+  side tabs and a `112px` center Scan CTA. The shared outer frame now encloses
+  all three actions and scales to the available mobile width.
+- The legend is now a compact closed button by default. Opening it reveals a
+  readable localized three-state panel with an accessible close action; it is
+  hidden while Station previews or blocking overlays are active.
+- Removed the active marker text chip, kept only its lightning badge, raised it
+  above other markers, and added a third gold ground ring. Completed markers
+  remain legible at `74%` opacity and continue to use a trophy pill.
+- Reduced the map vignette so the authoritative Suoi Tien image is clearer.
+  Station data, coordinates, pan/zoom, QR, scoring, and Backend behavior remain
+  unchanged.
+- Focused Vitest passed (`8/8`), i18n parity passed (`428` keys), Frontend lint,
+  production build, and bundle budget passed (`204.28 KiB` initial gzip).
+
 ## 2026-08-03 Dense-map readability and full-width footer
 
 - Reduced default marker width from `44px` to `34px` (`30..46px`) and points

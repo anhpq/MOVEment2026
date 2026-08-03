@@ -1,3 +1,11 @@
+# 2026-08-03 Team V2 premium map HUD refinement
+
+- Frontend-only refinement enlarged and enclosed the bottom navigation, added
+  an accessible closed/open legend, clarified the map, and tightened marker
+  state emphasis. No Backend, QR, scoring, or Station-state behavior changed.
+- Focused Vitest (`8/8`), i18n (`428`), lint, production build, and bundle
+  budget passed (`204.28 KiB` initial gzip).
+
 # 2026-08-03 Team V2 dense-map readability and footer
 
 - Frontend-only sizing refinement reduced markers/legend, enlarged portrait map
