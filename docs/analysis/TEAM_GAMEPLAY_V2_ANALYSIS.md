@@ -1,5 +1,21 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Framed header, map, and footer composition
+
+- Rebuilt the V2 vertical composition into three non-overlapping regions: a
+  dedicated top HUD, an inset middle map canvas, and a compact bottom HUD.
+- `MOVEment 2026` now uses a wider clipped neon banner matching the supplied
+  casing/proportions. The authoritative total score card sits in the top HUD
+  outside the map canvas rather than floating over map content.
+- Reduced the footer design height from `204px` to `112px`, with a `92px`
+  central scanner and symmetrical Leaderboard/My-team wings cut around it.
+  Removed the secondary active-Station caption that previously crowded the
+  footer; active context remains visible through the gold map marker/detail.
+- Selected-Station preview clearance follows the compact footer. QR behavior,
+  score/state authority, coordinates, map interactions, and Backend remain unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
 ## 2026-08-03 Premium three-state event-map markers
 
 - Reconciled the V2 map with the supplied premium cyberpunk reference while

@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 framed viewport composition
+
+- Team V2 reserves independent top HUD, map, and bottom HUD regions. Brand and
+  authoritative total score render above/outside the map. The compact `112px`
+  footer uses two symmetric wings and a `92px` central scanner.
+- Gameplay data, map coordinates/interactions, QR, and Backend contracts are unchanged.
+
 ## 2026-08-03 Team V2 premium map state hierarchy
 
 - Team V2 uses cyan Available markers, a `118%` gold In Progress marker with

@@ -1130,3 +1130,195 @@
     transition: none;
   }
 }
+
+/* Premium framed composition: header and footer stay outside the map canvas. */
+.team-v2-map-backdrop {
+  top: clamp(126px, 18dvh, 164px);
+  bottom: clamp(88px, 14dvh, 118px);
+  overflow: hidden;
+  border-block: 1px solid color-mix(in srgb, var(--team-v2-accent) 22%, transparent);
+}
+
+.team-v2-station-preview {
+  bottom: calc(124px + env(safe-area-inset-bottom, 0));
+}
+
+.team-v2-header {
+  min-height: clamp(126px, 18dvh, 164px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 760px) minmax(96px, 1fr);
+  grid-template-areas:
+    ". brand actions"
+    ". score .";
+  gap: 8px 14px;
+  padding: max(10px, env(safe-area-inset-top, 0)) max(16px, env(safe-area-inset-right, 0)) 10px max(16px, env(safe-area-inset-left, 0));
+  border-bottom: 1px solid color-mix(in srgb, var(--team-v2-accent) 30%, transparent);
+  background:
+    radial-gradient(circle at 50% 110%, rgba(47, 228, 240, 0.09), transparent 44%),
+    linear-gradient(180deg, rgba(2, 8, 14, 0.99), rgba(2, 10, 17, 0.96));
+}
+
+.team-v2-event-banner {
+  width: min(92vw, 820px, calc(100vw - 118px));
+}
+
+.team-v2-event-brand {
+  width: clamp(270px, 43vw, 470px);
+  height: 54px;
+  padding: 7px 42px 9px;
+  font-size: clamp(20px, 3vw, 32px);
+  letter-spacing: 0.1em;
+}
+
+.team-v2-event-brand small {
+  font-size: 0.66em;
+  letter-spacing: 0.14em;
+}
+
+.team-v2-event-rail {
+  height: 34px;
+}
+
+.team-v2-score {
+  min-width: 208px;
+  margin-top: 0;
+  padding: 7px 24px 8px;
+  border-color: rgba(77, 255, 88, 0.72);
+  border-radius: 13px;
+  box-shadow:
+    inset 0 0 20px rgba(77, 255, 88, 0.08),
+    0 0 15px rgba(77, 255, 88, 0.28);
+}
+
+.team-v2-score strong {
+  font-size: clamp(30px, 4vw, 44px);
+}
+
+.team-v2-score small {
+  font-size: 10px;
+  color: #d9f7f4;
+}
+
+.team-v2-bottom {
+  --team-v2-footer-height: 112px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0));
+  height: var(--team-v2-footer-height);
+}
+
+.team-v2-footer-panel {
+  bottom: 0;
+  height: 64px;
+  border-color: color-mix(in srgb, var(--team-v2-accent) 72%, transparent);
+  background:
+    linear-gradient(180deg, rgba(5, 27, 36, 0.97), rgba(2, 10, 17, 0.99)),
+    var(--team-v2-panel-strong);
+  box-shadow:
+    inset 0 0 20px rgba(47, 228, 240, 0.08),
+    0 0 15px rgba(47, 228, 240, 0.26);
+}
+
+.team-v2-leaderboard-chip {
+  left: 0;
+  width: 252px;
+  padding: 9px 50px 9px 18px;
+  clip-path: polygon(12px 0, 100% 0, 88% 50%, 100% 100%, 10px 100%, 0 calc(100% - 12px), 0 12px);
+}
+
+.team-v2-progress-panel {
+  right: 0;
+  width: 252px;
+  padding: 9px 18px 9px 50px;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 10px) 100%, 0 100%, 12% 50%);
+}
+
+.team-v2-bottom-copy strong {
+  font-size: calc(14px * var(--team-v2-footer-font-compensation, 1));
+}
+
+.team-v2-bottom-copy small {
+  margin-bottom: 4px;
+  font-size: calc(7.5px * var(--team-v2-footer-font-compensation, 1));
+}
+
+.team-v2-my-team-copy strong {
+  font-size: calc(10px * var(--team-v2-footer-font-compensation, 1));
+}
+
+.team-v2-scan-action {
+  bottom: -2px;
+  width: 142px;
+  min-height: 112px;
+}
+
+.team-v2-scan-action::before {
+  right: -3px;
+  bottom: 0;
+  left: -3px;
+  height: 68px;
+  clip-path: polygon(16% 0, 84% 0, 100% 42%, 86% 100%, 14% 100%, 0 42%);
+}
+
+.team-v2-scan-button {
+  width: 92px;
+  height: 92px;
+}
+
+.team-v2-scan-action > strong {
+  bottom: 5px;
+  font-size: calc(11px * var(--team-v2-footer-font-compensation, 1));
+}
+
+.team-v2-scan-action > small,
+.team-v2-scan-action > small.is-active-context,
+.team-v2-footer-rail {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .team-v2-map-backdrop {
+    top: clamp(116px, 16dvh, 146px);
+    bottom: clamp(82px, 12dvh, 102px);
+  }
+
+  .team-v2-header {
+    min-height: clamp(116px, 16dvh, 146px);
+    grid-template-columns: minmax(0, 1fr) minmax(152px, 56vw) minmax(76px, 1fr);
+    gap: 6px;
+    padding-top: max(8px, env(safe-area-inset-top, 0));
+  }
+
+  .team-v2-event-banner {
+    width: min(84vw, calc(100vw - 76px));
+  }
+
+  .team-v2-event-brand {
+    width: clamp(180px, 55vw, 270px);
+    height: 42px;
+    padding-inline: 20px;
+    font-size: clamp(14px, 4.2vw, 19px);
+  }
+
+  .team-v2-event-rail {
+    height: 24px;
+  }
+
+  .team-v2-score {
+    min-width: 148px;
+    padding: 5px 16px 6px;
+  }
+
+  .team-v2-score strong {
+    font-size: clamp(25px, 7vw, 32px);
+  }
+
+  .team-v2-score small {
+    font-size: 8px;
+  }
+
+  .team-v2-bottom {
+    bottom: calc(5px + env(safe-area-inset-bottom, 0));
+  }
+
+  .team-v2-station-preview {
+    bottom: calc(108px + env(safe-area-inset-bottom, 0));
+  }
+}

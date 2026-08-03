@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 framed viewport composition
+
+- [x] Move brand and total score into a dedicated HUD above the map canvas.
+- [x] Inset the map between header and footer without changing coordinates.
+- [x] Replace the `204px` footer with symmetric wings and a `92px` center scan.
+- [x] Reposition selected-Station preview above the compact footer.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated appearance at target kiosk/device resolutions.
+
 ## 2026-08-03 Team V2 premium map state hierarchy
 
 - [x] Style Available markers cyan and the active marker gold at `118%` scale.

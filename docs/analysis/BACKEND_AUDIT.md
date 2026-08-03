@@ -1,3 +1,10 @@
+# 2026-08-03 Team V2 framed viewport composition
+
+- Frontend-only CSS refinement separated the brand/score HUD, map canvas, and
+  compact footer into non-overlapping viewport regions.
+- No Backend API, data, QR, scoring, Station state, or coordinate behavior
+  changed. Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 premium map state hierarchy
 
 - Frontend-only visual update introduced cyan/gold/blue-gray Station state
