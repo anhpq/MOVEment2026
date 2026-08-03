@@ -254,7 +254,7 @@ function TeamMarker({
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
-  const markerCenterY = -size * 0.86;
+  const markerCenterY = -size * 0.9;
   const hitRadius = Math.max(22, size * 0.51);
   const iconScale = size / 40;
   const lockRadius = Math.max(5, size * 0.16);
@@ -289,16 +289,38 @@ function TeamMarker({
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
       <Path
         x={-size / 2}
-        y={-size * 1.45}
+        y={-size * 1.52}
         scaleX={size / 80}
         scaleY={size / 80}
-        data="M40 0 C18 0 0 18 0 42 C0 70 15 91 40 116 C65 91 80 70 80 42 C80 18 62 0 40 0 Z"
+        data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
+        fill="rgba(3, 14, 20, 0.98)"
+        stroke={colors.glow}
+        strokeWidth={10}
+        opacity={0.28}
+        shadowColor={colors.glow}
+        shadowBlur={marker.isSelected || marker.isActive ? 30 : 18}
+        listening={false}
+      />
+      <Path
+        x={-size / 2}
+        y={-size * 1.52}
+        scaleX={size / 80}
+        scaleY={size / 80}
+        data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
         fill="rgba(3, 14, 20, 0.96)"
         stroke={colors.stroke}
-        strokeWidth={5}
+        strokeWidth={3.6}
         shadowColor={colors.glow}
-        shadowBlur={marker.isSelected || marker.isActive ? 26 : 16}
+        shadowBlur={marker.isSelected || marker.isActive ? 18 : 10}
         shadowOpacity={0.82}
+        listening={false}
+      />
+      <Circle
+        y={markerCenterY}
+        radius={size * 0.34}
+        fill="rgba(2, 9, 15, 0.86)"
+        shadowColor="#000000"
+        shadowBlur={8}
         listening={false}
       />
       <Text
@@ -310,7 +332,7 @@ function TeamMarker({
         align="center"
         verticalAlign="middle"
         fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={Math.max(12, size * 0.42)}
+        fontSize={Math.max(15, size * 0.43)}
         fontStyle="bold"
         fill="#FFFFFF"
         shadowColor={colors.glow}
@@ -410,6 +432,32 @@ function TeamMarkerLabel({
       onTouchStart={(event) => {
         event.cancelBubble = true;
       }}>
+      {marker.isSelected && (
+        <>
+          <Rect
+            x={5}
+            y={6}
+            width={STATION_LABEL_WIDTH - 10}
+            height={STATION_LABEL_HEIGHT}
+            stroke={colors.stroke}
+            strokeWidth={1}
+            cornerRadius={STATION_LABEL_HEIGHT / 2}
+            opacity={0.34}
+            listening={false}
+          />
+          <Rect
+            x={10}
+            y={11}
+            width={STATION_LABEL_WIDTH - 20}
+            height={STATION_LABEL_HEIGHT}
+            stroke={colors.stroke}
+            strokeWidth={1}
+            cornerRadius={STATION_LABEL_HEIGHT / 2}
+            opacity={0.18}
+            listening={false}
+          />
+        </>
+      )}
       <Rect
         width={STATION_LABEL_WIDTH}
         height={STATION_LABEL_HEIGHT}
@@ -451,7 +499,7 @@ function TeamMarkerLabel({
           width={STATION_LABEL_WIDTH - 8}
           height={STATION_LABEL_HEIGHT}
           fontFamily="Aptos, Segoe UI, sans-serif"
-          fontSize={10}
+          fontSize={12}
           fontStyle="bold"
           fill={marker.isSelected ? "#F0B8FF" : "#4DFF8A"}
           align="center"

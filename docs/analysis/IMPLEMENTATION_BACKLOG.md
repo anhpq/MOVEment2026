@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 reference-proportioned markers
+
+- [x] Increase pin and pill proportions to match the supplied close-up reference.
+- [x] Add restrained double-outline glow and dark number depth surface.
+- [x] Keep the pin interior free of decorative icons/illustrations.
+- [x] Add selected-state purple pill echoes.
+- [x] Preserve state/data/anchor/hit-target and gameplay behavior.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke across dense clusters and all marker states.
+
 ## 2026-08-03 Team V2 total-score clarity and taller pins
 
 - [x] Identify the green HUD value explicitly as authoritative Team total score.

@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 reference-proportioned markers
+
+- V2 map pins use a large teardrop silhouette, double-outline glow, dark depth
+  surface, high-contrast number, and a proportionate rounded lower pill.
+- Selected pins use purple plus fading pill echoes; marker data/state is unchanged.
+
 ## 2026-08-03 Team V2 total-score clarity and taller pins
 
 - The Team total score is explicitly labelled in its own HUD panel.

@@ -1,3 +1,13 @@
+# 2026-08-03 Team V2 reference-proportioned markers
+
+- Enlarged V2 pin/pill geometry and added reference-matched double outlines,
+  depth surface, number hierarchy, and selected purple pill echoes.
+- Preserved Backend marker state, coordinates, hit targets, points, Locked
+  treatment, QR, scoring, database, and gameplay behavior.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
 # 2026-08-03 Team V2 total-score clarity and taller pins
 
 - Labelled `activeTeam.score` as Total score in a dedicated HUD panel and

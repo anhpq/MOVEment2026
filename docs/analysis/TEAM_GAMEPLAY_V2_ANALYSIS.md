@@ -1,5 +1,20 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Reference-proportioned hero markers
+
+- Increased V2 markers to reference-like hero proportions: `58px` default
+  width (`50..76px` responsive), approximately `1.52x` silhouette height, and
+  an `82x26px` points/Locked pill.
+- Added a restrained double-outline glow and dark depth surface behind the
+  Station number without adding an icon or illustration inside the pin.
+- Selected markers retain purple and add two fading pill echoes beneath the
+  primary pill, matching the supplied reference hierarchy.
+- State authority, number/points content, Locked symbol, hit targets,
+  coordinates, QR, scoring, preview, and Backend behavior remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
 ## 2026-08-03 Explicit total score and taller pins
 
 - The green HUD score is the authoritative Team total from `activeTeam.score`.

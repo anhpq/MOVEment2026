@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785724196.870319,
-    "ast_hash": "89eae0e33509dded02cb958426cfe9c6",
+    "mtime": 1785724452.3058734,
+    "ast_hash": "5d8e41eb214b3cc4e6835445b3dc0315",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1785724194.831009,
-    "ast_hash": "0242d9ae6a0588525fa46a2948eeb836",
+    "mtime": 1785724450.0717065,
+    "ast_hash": "dde3f511fdb52e1c9d8aef4a4d1e861b",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785724195.8395648,
-    "ast_hash": "a9a1e4063465ab1cbdfe449517db0d3e",
+    "mtime": 1785724451.2862873,
+    "ast_hash": "be013dd9ea3a221adb466f2f903b083e",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -1030,13 +1030,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.tsx": {
-    "mtime": 1785724122.31453,
-    "ast_hash": "cbc4ed7c8dc1ff05d1f32c4beed23091",
+    "mtime": 1785724379.752455,
+    "ast_hash": "0742da335775cb5b271650f12434cd89",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {
-    "mtime": 1785724193.1171055,
-    "ast_hash": "f56de7edcbf53ab77e1ffcfe879f490f",
+    "mtime": 1785724449.0036628,
+    "ast_hash": "680925370d64a77530a5049f9b47fbd2",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {
@@ -1260,8 +1260,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2MarkerLayout.ts": {
-    "mtime": 1785724121.2243545,
-    "ast_hash": "b2a078f4d2f8fd40b69abdde0d2f7fab",
+    "mtime": 1785724378.466695,
+    "ast_hash": "d97c521209b261fd46bef3d0739c7b75",
     "semantic_hash": ""
   },
   "docs/analysis/AGENT_SKILLS_ANALYSIS.md": {
