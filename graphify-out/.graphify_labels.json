@@ -212,6 +212,7 @@
   "210": "final.service.spec.ts",
   "211": "final.service.spec.ts",
   "212": "2026-08-01 Completed and Locked marker appearance",
+  "213": "AdminController",
   "214": "migration.sql",
   "215": "migration.sql",
   "216": "migration.sql",
@@ -230,10 +231,15 @@
   "229": "migration.sql",
   "230": "migration.sql",
   "231": "migration.sql",
+  "232": "FinalController",
   "233": "@nestjs/schematics",
   "234": "LanguageSwitch.tsx",
   "235": "apiGet",
   "236": "vite",
   "237": "@eslint/js",
-  "238": "GenerateQrLoginTokenDto"
+  "238": "GenerateQrLoginTokenDto",
+  "239": "TeamGameplayV2Page",
+  "240": "GenerateQrLoginTokenDto",
+  "241": ".logout",
+  "242": "LeaderboardEntryResponse"
 }

@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 attached marker points and scanner framing
+
+- [x] Render points/trophy/lock pills inside the same group as each pin.
+- [x] Remove the separate collision-filtered points layer.
+- [x] Reduce center Scan CTA to `104px` and prevent frame lines crossing it.
+- [x] Verify focused Vitest `8/8`, lint, build, and bundle budget.
+- [ ] Confirm footer contour on a physical target device.
+
 ## 2026-08-03 Team V2 compact navy marker refinement
 
 - [x] Reduce pins to `30px` default and points pills to `52x18px`.

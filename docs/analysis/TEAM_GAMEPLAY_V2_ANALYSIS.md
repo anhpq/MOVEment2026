@@ -1,5 +1,16 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Attached marker points and smaller scanner
+
+- Moved each points/trophy/lock pill into the same Konva group as its pin. The
+  pill now has a fixed `6px` offset from the pin anchor and cannot be moved,
+  hidden, or separated by the former label collision layer.
+- Reduced the center Scan CTA from `112px` to `104px`. The footer enclosing
+  frame now renders below the opaque circular CTA so no horizontal frame line
+  crosses the button.
+- Focused Vitest passed (`8/8`), Frontend lint, production build, and bundle
+  budget passed (`204.28 KiB` initial gzip).
+
 ## 2026-08-03 Compact navy markers and simplified footer
 
 - Reduced marker width to `30px` by default (`26..40px`) and points pills to

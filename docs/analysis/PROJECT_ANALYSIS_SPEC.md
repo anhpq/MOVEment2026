@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 attached marker points
+
+- Each Station points/state pill is part of the pin render group with a fixed
+  offset. The footer uses a `104px` center Scan CTA above its enclosing frame.
+
 ## 2026-08-03 Team V2 compact navy marker refinement
 
 - Team V2 uses compact `30px` navy-gradient pins (`26..40px`) with a subtle

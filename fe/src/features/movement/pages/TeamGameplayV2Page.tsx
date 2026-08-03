@@ -33,12 +33,10 @@ import {
   getTeamV2OverlayStyle,
 } from "../components/teamV2OverlayOpacity";
 import {
-  getNonOverlappingStationLabelIds,
   getStationMarkerFontSize,
   getStationLabelLayouts,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
-  type MarkerScreenLayout,
 } from "./teamV2MarkerLayout";
 import {getStationMarkerAppearance} from "../markerAppearance";
 import {
@@ -246,6 +244,7 @@ function StationMarker({
   size,
   x,
   y,
+  pointsUnit,
   onSelect,
 }: {
   marker: MarkerViewModel;
@@ -253,12 +252,17 @@ function StationMarker({
   size: number;
   x: number;
   y: number;
+  pointsUnit: string;
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
   const markerCenterY = -size * 0.9;
   const hitRadius = Math.max(22, size * 0.51);
   const lockRadius = Math.max(5, size * 0.16);
+  const points = getStationEffectiveMaxPoints({
+    trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
+    maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
+  });
 
   return (
     <Group
@@ -425,127 +429,74 @@ function StationMarker({
           />
         </Group>
       )}
-    </Group>
-  );
-}
-
-function StationMarkerLabel({
-  layout,
-  hudAccent,
-  pointsUnit,
-  onSelect,
-}: {
-  layout: MarkerScreenLayout<MarkerViewModel>;
-  hudAccent: string;
-  pointsUnit: string;
-  onSelect: () => void;
-}) {
-  const {marker, labelX, labelY, labelScale} = layout;
-  const colors = getMarkerColors(marker, hudAccent);
-  const points = getStationEffectiveMaxPoints({
-    trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
-    maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
-  });
-
-  return (
-    <Group
-      x={labelX}
-      y={labelY}
-      opacity={marker.opacity}
-      scaleX={labelScale}
-      scaleY={labelScale}
-      onClick={(event) => {
-        event.cancelBubble = true;
-        onSelect();
-      }}
-      onTap={(event) => {
-        event.cancelBubble = true;
-        onSelect();
-      }}
-      onMouseDown={(event) => {
-        event.cancelBubble = true;
-      }}
-      onTouchStart={(event) => {
-        event.cancelBubble = true;
-      }}>
-      {(marker.isSelected || marker.isActive) && (
-        <>
-          <Rect
-            x={5}
-            y={6}
-            width={STATION_LABEL_WIDTH - 10}
-            height={STATION_LABEL_HEIGHT}
-            stroke={colors.stroke}
-            strokeWidth={1}
-            cornerRadius={STATION_LABEL_HEIGHT / 2}
-            opacity={marker.isActive ? 0.52 : 0.34}
-            listening={false}
-          />
-          <Rect
-            x={10}
-            y={11}
-            width={STATION_LABEL_WIDTH - 20}
-            height={STATION_LABEL_HEIGHT}
-            stroke={colors.stroke}
-            strokeWidth={1}
-            cornerRadius={STATION_LABEL_HEIGHT / 2}
-            opacity={0.18}
-            listening={false}
-          />
-        </>
-      )}
-      <Rect
-        width={STATION_LABEL_WIDTH}
-        height={STATION_LABEL_HEIGHT}
-        fill={marker.isActive ? "rgba(28, 21, 2, 0.96)" : "rgba(3, 14, 20, 0.94)"}
-        stroke={colors.stroke}
-        strokeWidth={1.2}
-        cornerRadius={STATION_LABEL_HEIGHT / 2}
-        shadowColor={colors.glow}
-        shadowBlur={12}
-        shadowOpacity={0.72}
-      />
-      {marker.isLocked ? (
-        <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2} listening={false}>
-          <Arc
-            innerRadius={4}
-            outerRadius={4}
-            angle={180}
-            rotation={180}
-            y={-2}
-            stroke="#E7EDF2"
-            strokeWidth={1.8}
-          />
-          <Rect x={-5} y={-1} width={10} height={8} cornerRadius={2} fill="#E7EDF2" />
-        </Group>
-      ) : marker.isCompleted ? (
-        <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2} listening={false}>
-          <Path
-            x={-7}
-            y={-7}
-            data="M2 1 H12 V5 C12 8 10 10 7 11 C4 10 2 8 2 5 Z M2 3 H0 V5 C0 7 2 8 4 8 M12 3 H14 V5 C14 7 12 8 10 8 M7 11 V14 M3 14 H11"
-            stroke="#D5E0E9"
-            strokeWidth={1.5}
-            lineCap="round"
-            lineJoin="round"
-          />
-        </Group>
-      ) : (
-        <Text
-          text={`${points} ${pointsUnit}`}
-          x={4}
-          y={0}
-          width={STATION_LABEL_WIDTH - 8}
+      <Group x={-STATION_LABEL_WIDTH / 2} y={6} listening={false}>
+        {(marker.isSelected || marker.isActive) && (
+          <>
+            <Rect
+              x={5}
+              y={5}
+              width={STATION_LABEL_WIDTH - 10}
+              height={STATION_LABEL_HEIGHT}
+              stroke={colors.stroke}
+              strokeWidth={1}
+              cornerRadius={STATION_LABEL_HEIGHT / 2}
+              opacity={marker.isActive ? 0.5 : 0.3}
+            />
+            <Rect
+              x={10}
+              y={10}
+              width={STATION_LABEL_WIDTH - 20}
+              height={STATION_LABEL_HEIGHT}
+              stroke={colors.stroke}
+              strokeWidth={1}
+              cornerRadius={STATION_LABEL_HEIGHT / 2}
+              opacity={0.16}
+            />
+          </>
+        )}
+        <Rect
+          width={STATION_LABEL_WIDTH}
           height={STATION_LABEL_HEIGHT}
-          fontFamily="Aptos, Segoe UI, sans-serif"
-          fontSize={10.5}
-          fontStyle="bold"
-          fill={marker.isActive ? "#FFE36E" : "#4DFF8A"}
-          align="center"
-          verticalAlign="middle"
-          listening={false}
+          fill={marker.isActive ? "rgba(32, 26, 5, 0.97)" : "rgba(5, 31, 45, 0.96)"}
+          stroke={colors.stroke}
+          strokeWidth={1.2}
+          cornerRadius={STATION_LABEL_HEIGHT / 2}
+          shadowColor={colors.glow}
+          shadowBlur={9}
+          shadowOpacity={0.64}
         />
-      )}
+        {marker.isLocked ? (
+          <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2}>
+            <Arc innerRadius={4} outerRadius={4} angle={180} rotation={180} y={-2} stroke="#E7EDF2" strokeWidth={1.8} />
+            <Rect x={-5} y={-1} width={10} height={8} cornerRadius={2} fill="#E7EDF2" />
+          </Group>
+        ) : marker.isCompleted ? (
+          <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2}>
+            <Path
+              x={-7}
+              y={-7}
+              data="M2 1 H12 V5 C12 8 10 10 7 11 C4 10 2 8 2 5 Z M2 3 H0 V5 C0 7 2 8 4 8 M12 3 H14 V5 C14 7 12 8 10 8 M7 11 V14 M3 14 H11"
+              stroke="#D5E0E9"
+              strokeWidth={1.5}
+              lineCap="round"
+              lineJoin="round"
+            />
+          </Group>
+        ) : (
+          <Text
+            text={`${points} ${pointsUnit}`}
+            x={4}
+            width={STATION_LABEL_WIDTH - 8}
+            height={STATION_LABEL_HEIGHT}
+            fontFamily="Aptos, Segoe UI, sans-serif"
+            fontSize={9.5}
+            fontStyle="bold"
+            fill={marker.isActive ? "#FFE36E" : "#4DFF8A"}
+            align="center"
+            verticalAlign="middle"
+          />
+        )}
+      </Group>
     </Group>
   );
 }
@@ -788,10 +739,6 @@ export function TeamGameplayV2Page() {
   const markerScreenLayouts = useMemo(
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
     [mapTransform, markerViewModels, viewportSize],
-  );
-  const visibleMarkerLabelIds = useMemo(
-    () => getNonOverlappingStationLabelIds(markerScreenLayouts, viewportSize),
-    [markerScreenLayouts, viewportSize],
   );
 
   useLayoutEffect(() => {
@@ -1116,7 +1063,7 @@ export function TeamGameplayV2Page() {
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
-    (viewportSize.width - 24) / 360,
+    (viewportSize.width - 24) / 352,
     0.82,
     2.25,
   );
@@ -1173,27 +1120,6 @@ export function TeamGameplayV2Page() {
               scaleY={1 / mapTransform.scale}>
               {[...markerViewModels].sort((a, b) => Number(a.isActive) - Number(b.isActive)).map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (
-                  <StationMarkerLabel
-                    key={`label-${marker.station.id}`}
-                    layout={layout}
-                    hudAccent={V2_HUD_ACCENT}
-                    pointsUnit={t("teamV2.pointsUnit")}
-                    onSelect={() => {
-                      setSelectedStationId(marker.station.id);
-                      setIsStationDetailOpen(false);
-                    }}
-                  />
-                ) : null;
-              })}
-            </Layer>
-            <Layer
-              x={-mapTransform.x / mapTransform.scale}
-              y={-mapTransform.y / mapTransform.scale}
-              scaleX={1 / mapTransform.scale}
-              scaleY={1 / mapTransform.scale}>
-              {[...markerViewModels].sort((a, b) => Number(a.isActive) - Number(b.isActive)).map((marker) => {
-                const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport ? (
                   <StationMarker
                     key={`marker-${marker.station.id}`}
@@ -1202,6 +1128,7 @@ export function TeamGameplayV2Page() {
                     size={layout.markerSize * (marker.isActive ? 1.18 : 1)}
                     x={layout.anchorX}
                     y={layout.anchorY}
+                    pointsUnit={t("teamV2.pointsUnit")}
                     onSelect={() => {
                       setSelectedStationId(marker.station.id);
                       setIsStationDetailOpen(false);
