@@ -14,7 +14,7 @@ import {
 import {getStationMarkerAppearance} from "../markerAppearance";
 
 const viewport: MarkerLabelViewport = {width: 400, height: 800};
-const baseScale = 0.624;
+const baseScale = 0.752;
 
 function createMarker(): MarkerLabelSource {
   return {
@@ -42,8 +42,8 @@ describe("TeamGameplayV2Page marker label layout", () => {
   it("anchors the compact points pill below its marker", () => {
     const layout = getLayout();
 
-    expect(layout.anchorX).toBeCloseTo(249.6);
-    expect(layout.anchorY).toBeCloseTo(187.2);
+    expect(layout.anchorX).toBeCloseTo(300.8);
+    expect(layout.anchorY).toBeCloseTo(225.6);
     expect(layout.labelScale).toBe(1);
     expect(layout.labelGap).toBe(6);
     expect(layout.markerSize).toBe(BASE_MARKER_SIZE);
@@ -71,11 +71,11 @@ describe("TeamGameplayV2Page marker label layout", () => {
     const marker = createMarker();
     const before = JSON.stringify(marker);
     const initial = getStationLabelLayouts([marker], viewport, {x: 0, y: 0, scale: baseScale}).get("ST001")!;
-    const panned = getStationLabelLayouts([marker], viewport, {x: 73, y: -41, scale: baseScale}).get("ST001")!;
+    const panned = getStationLabelLayouts([marker], viewport, {x: 40, y: -41, scale: baseScale}).get("ST001")!;
 
-    expect(panned.anchorX - initial.anchorX).toBeCloseTo(73);
+    expect(panned.anchorX - initial.anchorX).toBeCloseTo(40);
     expect(panned.anchorY - initial.anchorY).toBeCloseTo(-41);
-    expect(panned.labelX - initial.labelX).toBeCloseTo(73);
+    expect(panned.labelX - initial.labelX).toBeCloseTo(40);
     expect(panned.labelY - initial.labelY).toBeCloseTo(-41);
     expect(JSON.stringify(marker)).toBe(before);
   });
@@ -87,9 +87,9 @@ describe("TeamGameplayV2Page marker label layout", () => {
   });
 
   it("shrinks marker text for station codes with up to four characters", () => {
-    expect(getStationMarkerFontSize("02", BASE_MARKER_SIZE)).toBeCloseTo(17.6);
-    expect(getStationMarkerFontSize("047", BASE_MARKER_SIZE)).toBeCloseTo(14.08);
-    expect(getStationMarkerFontSize("ST04", BASE_MARKER_SIZE)).toBeCloseTo(11.44);
+    expect(getStationMarkerFontSize("02", BASE_MARKER_SIZE)).toBeCloseTo(13.6);
+    expect(getStationMarkerFontSize("047", BASE_MARKER_SIZE)).toBeCloseTo(10.88);
+    expect(getStationMarkerFontSize("ST04", BASE_MARKER_SIZE)).toBe(10);
   });
 
   it("keeps the selected label visible while suppressing overlapping labels", () => {

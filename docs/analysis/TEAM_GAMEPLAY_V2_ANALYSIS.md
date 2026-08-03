@@ -1,5 +1,20 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Dense-map readability and full-width footer
+
+- Reduced default marker width from `44px` to `34px` (`30..46px`) and points
+  pills from `68x22px` to `58x19px` to reduce overlap in dense Station clusters.
+- Increased portrait default map coverage from `78%` to `94%` of the available
+  map viewport height, producing a larger map while preserving coordinates,
+  pan/zoom, screen-space marker sizing, and viewport clamping.
+- Reduced the legend to `142..184px` (`136px` on narrow phones) with compact
+  typography and pills.
+- Footer now scales from `0.82x` through `2.4x` based on viewport width, uses
+  square-root font compensation, and adds a `2px` outer frame around both tabs
+  and the center QR CTA. Map/preview/legend clearance follows `28vw` with caps.
+- Focused Vitest passed (`14/14`), i18n parity passed (`426` keys), Frontend
+  lint, production build, and bundle budget passed (`204.25 KiB` initial gzip).
+
 ## 2026-08-03 Three-state map legend
 
 - Added a localized V2 `LegendCard` above the footer at the map's lower-left.

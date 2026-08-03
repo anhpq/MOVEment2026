@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 dense-map readability
+
+- Team V2 uses compact `34px` default markers (`30..46px`), `58x19px` points
+  pills, `94%` portrait map coverage, a compact responsive legend, and a
+  viewport-wide scaled footer enclosed around both tabs and the QR CTA.
+- Station coordinates/state/points and QR/Backend behavior are unchanged.
+
 ## 2026-08-03 Team V2 marker legend
 
 - Team V2 includes a localized lower-left legend for Available, In Progress,

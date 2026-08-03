@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 dense-map readability and footer
+
+- [x] Reduce markers to `34px` default and points pills to `58x19px`.
+- [x] Increase portrait map coverage from `78%` to `94%`.
+- [x] Reduce legend width and typography by approximately 20%.
+- [x] Scale footer through `2.4x` and enclose tabs plus QR in one outer frame.
+- [x] Verify focused Vitest `14/14`, i18n `426`, lint, build, and bundle.
+- [ ] Confirm dense-cluster readability and footer clearance on target devices.
+
 ## 2026-08-03 Team V2 marker legend
 
 - [x] Add responsive lower-left Available/In Progress/Completed legend.

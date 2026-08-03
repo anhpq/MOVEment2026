@@ -1,13 +1,13 @@
-export const STATION_LABEL_WIDTH = 68;
-export const STATION_LABEL_HEIGHT = 22;
+export const STATION_LABEL_WIDTH = 58;
+export const STATION_LABEL_HEIGHT = 19;
 
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MARKER_DRAW_REFERENCE_WIDTH = 640;
 const MARKER_REFERENCE_TIP_TO_TOP = 554;
-export const MIN_MARKER_SIZE = 38;
-export const BASE_MARKER_SIZE = 44;
-export const MAX_MARKER_SIZE = 58;
+export const MIN_MARKER_SIZE = 30;
+export const BASE_MARKER_SIZE = 34;
+export const MAX_MARKER_SIZE = 46;
 const BASE_MARKER_LABEL_GAP = 6;
 const MIN_MARKER_LABEL_GAP = 4;
 const MAX_MARKER_LABEL_GAP = 8;
@@ -100,7 +100,7 @@ function getBaseMapScale(viewport: MarkerLabelViewport) {
     return 1;
   }
   if (viewport.height > viewport.width) {
-    return (viewport.height * 0.78) / MAP_WORLD_HEIGHT;
+    return (viewport.height * 0.94) / MAP_WORLD_HEIGHT;
   }
   return Math.min(
     viewport.width / MAP_WORLD_WIDTH,

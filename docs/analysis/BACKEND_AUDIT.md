@@ -1,3 +1,10 @@
+# 2026-08-03 Team V2 dense-map readability and footer
+
+- Frontend-only sizing refinement reduced markers/legend, enlarged portrait map
+  coverage, and allowed the enclosed footer to fill wider viewports.
+- No Backend, QR, scoring, Station state, or coordinate behavior changed.
+- Focused Vitest (`14/14`), i18n (`426`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 marker legend
 
 - Added a frontend-only localized three-state legend without hard-coding sample

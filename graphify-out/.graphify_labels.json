@@ -236,5 +236,6 @@
   "234": "LanguageSwitch.tsx",
   "235": "apiGet",
   "236": "vite",
+  "237": "@eslint/js",
   "238": "GenerateQrLoginTokenDto"
 }

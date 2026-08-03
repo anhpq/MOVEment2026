@@ -1376,7 +1376,19 @@
 }
 
 .team-v2-bottom::after {
-  content: none;
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border: 2px solid color-mix(in srgb, var(--team-v2-accent) 82%, transparent);
+  border-right-color: color-mix(in srgb, var(--team-v2-selected) 48%, var(--team-v2-accent));
+  border-left-color: color-mix(in srgb, var(--team-v2-selected) 48%, var(--team-v2-accent));
+  border-radius: 16px;
+  background: transparent;
+  box-shadow:
+    inset 0 0 14px rgba(47, 228, 240, 0.05),
+    0 0 12px rgba(47, 228, 240, 0.26);
+  pointer-events: none;
 }
 
 .team-v2-footer-panel {
@@ -1467,20 +1479,20 @@
 }
 
 .team-v2-map-backdrop {
-  bottom: clamp(112px, 17dvh, 154px);
+  bottom: clamp(112px, 28vw, 236px);
 }
 
 .team-v2-station-preview {
-  bottom: calc(clamp(118px, 18dvh, 160px) + env(safe-area-inset-bottom, 0));
+  bottom: calc(clamp(118px, 28vw, 242px) + env(safe-area-inset-bottom, 0));
 }
 
 .team-v2-legend {
   position: absolute;
   z-index: calc(var(--team-v2-layer-fixed-ui) - 1);
   left: max(14px, env(safe-area-inset-left, 0));
-  bottom: calc(clamp(118px, 18dvh, 160px) + env(safe-area-inset-bottom, 0));
-  width: clamp(180px, 25vw, 230px);
-  padding: 12px 14px 13px;
+  bottom: calc(clamp(118px, 28vw, 242px) + env(safe-area-inset-bottom, 0));
+  width: clamp(142px, 20vw, 184px);
+  padding: 9px 10px 10px;
   border: 1px solid color-mix(in srgb, var(--team-v2-accent) 78%, transparent);
   border-radius: 14px 3px 14px 3px;
   background:
@@ -1494,9 +1506,9 @@
 
 .team-v2-legend__title {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 7px;
   color: #dffcff;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-align: center;
@@ -1505,22 +1517,22 @@
 
 .team-v2-legend__list {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .team-v2-legend__item {
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr) 56px;
+  grid-template-columns: 20px minmax(0, 1fr) 48px;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   color: var(--team-v2-accent-soft);
 }
 
 .team-v2-legend__pin {
   position: relative;
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   margin: 0 0 5px 2px;
   border: 1.5px solid var(--team-v2-accent);
   border-radius: 50% 50% 50% 0;
@@ -1538,7 +1550,7 @@
 
 .team-v2-legend__label {
   overflow: hidden;
-  font-size: 9px;
+  font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.025em;
   text-overflow: ellipsis;
@@ -1548,13 +1560,13 @@
 
 .team-v2-legend__pill {
   display: inline-grid;
-  min-height: 24px;
+  min-height: 20px;
   place-items: center;
-  padding: 4px 7px;
+  padding: 3px 5px;
   border: 1px solid currentColor;
   border-radius: 999px;
   background: rgba(2, 10, 16, 0.9);
-  font-size: 9px;
+  font-size: 7px;
   font-weight: 900;
   white-space: nowrap;
   box-shadow: 0 0 8px currentColor;
@@ -1580,13 +1592,13 @@
 
 @media (max-width: 520px) {
   .team-v2-legend {
-    width: 164px;
-    padding: 9px 10px 10px;
+    width: 136px;
+    padding: 7px 8px 8px;
   }
 
   .team-v2-legend__title {
     margin-bottom: 7px;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   .team-v2-legend__list {
@@ -1594,22 +1606,22 @@
   }
 
   .team-v2-legend__item {
-    grid-template-columns: 20px minmax(0, 1fr) 48px;
-    gap: 5px;
+    grid-template-columns: 18px minmax(0, 1fr) 42px;
+    gap: 4px;
   }
 
   .team-v2-legend__pin {
-    width: 15px;
-    height: 15px;
+    width: 13px;
+    height: 13px;
   }
 
   .team-v2-legend__label,
   .team-v2-legend__pill {
-    font-size: 7px;
+    font-size: 6px;
   }
 
   .team-v2-legend__pill {
-    min-height: 20px;
-    padding-inline: 5px;
+    min-height: 18px;
+    padding-inline: 4px;
   }
 }

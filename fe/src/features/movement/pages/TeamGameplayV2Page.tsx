@@ -164,7 +164,7 @@ function getBaseMapScale(viewport: ViewportSize) {
     return 1;
   }
   if (viewport.height > viewport.width) {
-    return (viewport.height * 0.78) / MAP_WORLD_HEIGHT;
+    return (viewport.height * 0.94) / MAP_WORLD_HEIGHT;
   }
   return Math.min(
     viewport.width / MAP_WORLD_WIDTH,
@@ -1108,14 +1108,11 @@ export function TeamGameplayV2Page() {
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
-    Math.min(
-      (viewportSize.width - 24) / 336,
-      viewportSize.height > viewportSize.width ? viewportSize.height / 900 : 1.5,
-    ),
+    (viewportSize.width - 24) / 336,
     0.82,
-    1.5,
+    2.4,
   );
-  const footerFontCompensation = 1;
+  const footerFontCompensation = 1 / Math.sqrt(footerScale);
 
   return (
     <main className="team-v2-page">
