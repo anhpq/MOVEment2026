@@ -1,3 +1,9 @@
+# 2026-08-03 Team V2 overlapped footer geometry
+
+- Frontend-only footer geometry now layers the center scanner over continuous
+  side wings and base frame. No Backend behavior changed.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 large simplified footer
 
 - Frontend-only footer sizing/content refinement enlarged the scan target and

@@ -1,5 +1,16 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Overlapped footer geometry
+
+- Matched the supplied footer geometry as a layered composition rather than
+  three adjacent controls: an `82px` continuous base frame, `284px` wings that
+  extend beneath the center, and a `128px` scanner layered above both wings.
+- Moved the Scan label inside the lower portion of the scanner ring and retained
+  single-line icon/action labels on each wing.
+- QR behavior, map clearance, state, scoring, and Backend remain unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.20 KiB` initial gzip).
+
 ## 2026-08-03 Large simplified footer
 
 - Enlarged the compact V2 footer to match the supplied right-side reference:

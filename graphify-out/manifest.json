@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785728750.1993685,
-    "ast_hash": "edfd5deb5cbbb5504c9a7c5d7ced88f4",
+    "mtime": 1785729056.9427352,
+    "ast_hash": "96cc7271991c9cf0309e06b5ee102b9e",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785728748.8612182,
-    "ast_hash": "ffd2ea55efc0647a4730cf1ef29f2c51",
+    "mtime": 1785729054.985232,
+    "ast_hash": "91ac3575fa788fa04f13ea3b709f1fa4",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -1035,8 +1035,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {
-    "mtime": 1785728747.824927,
-    "ast_hash": "edeb9852e79f007ba483f60f04692684",
+    "mtime": 1785729053.0387733,
+    "ast_hash": "55d7e9a4ee2f26390e4c712ea2898bdc",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {

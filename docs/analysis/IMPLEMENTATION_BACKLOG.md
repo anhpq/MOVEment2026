@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 overlapped footer geometry
+
+- [x] Add a continuous `82px` footer base frame.
+- [x] Extend both `284px` wings beneath the center scanner.
+- [x] Place the Scan label inside the `128px` scanner ring.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated pixel alignment on the reported viewport.
+
 ## 2026-08-03 Team V2 large simplified footer
 
 - [x] Increase center scanner to `128px` and footer composition to `154px`.

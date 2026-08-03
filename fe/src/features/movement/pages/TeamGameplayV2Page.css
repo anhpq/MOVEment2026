@@ -1226,6 +1226,25 @@
   height: var(--team-v2-footer-height);
 }
 
+.team-v2-bottom::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 82px;
+  border: 1px solid color-mix(in srgb, var(--team-v2-accent) 72%, transparent);
+  border-right-color: color-mix(in srgb, var(--team-v2-selected) 58%, var(--team-v2-accent));
+  border-left-color: color-mix(in srgb, var(--team-v2-selected) 58%, var(--team-v2-accent));
+  border-radius: 18px 18px 22px 22px;
+  background: linear-gradient(180deg, rgba(4, 22, 30, 0.7), rgba(1, 8, 14, 0.94));
+  box-shadow:
+    inset 0 0 22px rgba(47, 228, 240, 0.06),
+    0 0 16px rgba(47, 228, 240, 0.2);
+  pointer-events: none;
+}
+
 .team-v2-footer-panel {
   bottom: 0;
   height: 78px;
@@ -1240,15 +1259,15 @@
 
 .team-v2-leaderboard-chip {
   left: 0;
-  width: 254px;
-  padding: 12px 58px 12px 22px;
+  width: 284px;
+  padding: 12px 72px 12px 24px;
   clip-path: polygon(12px 0, 100% 0, 88% 50%, 100% 100%, 10px 100%, 0 calc(100% - 12px), 0 12px);
 }
 
 .team-v2-progress-panel {
   right: 0;
-  width: 254px;
-  padding: 12px 22px 12px 58px;
+  width: 284px;
+  padding: 12px 24px 12px 72px;
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 10px) 100%, 0 100%, 12% 50%);
 }
 
@@ -1267,14 +1286,14 @@
 
 .team-v2-scan-action {
   bottom: -2px;
-  width: 174px;
+  width: 164px;
   min-height: 154px;
 }
 
 .team-v2-scan-action::before {
-  right: -3px;
+  right: -6px;
   bottom: 0;
-  left: -3px;
+  left: -6px;
   height: 82px;
   clip-path: polygon(16% 0, 84% 0, 100% 42%, 86% 100%, 14% 100%, 0 42%);
 }
@@ -1285,8 +1304,10 @@
 }
 
 .team-v2-scan-action > strong {
-  bottom: 7px;
+  z-index: 3;
+  bottom: 27px;
   font-size: calc(13px * var(--team-v2-footer-font-compensation, 1));
+  line-height: 1;
 }
 
 .team-v2-scan-action > small,
