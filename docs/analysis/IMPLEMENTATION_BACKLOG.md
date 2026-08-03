@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 direct marker-to-game flow
+
+- [x] Remove the intermediate selected-Station preview card.
+- [x] Open V2 Station/Game Detail directly from marker clicks.
+- [x] Apply the same direct behavior to Team overview Station actions.
+- [x] Clear selection when Detail closes.
+- [x] Verify focused Vitest `8/8`, lint, build, and bundle budget.
+
 ## 2026-08-04 Team V2 overview overlay
 
 - [x] Open a V2-owned Team overview from the right footer tab.

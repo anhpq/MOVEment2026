@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 direct Station detail
+
+- Clicking a map marker or Team overview Station opens V2 Station/Game Detail
+  directly; no intermediate Station preview card is rendered.
+
 ## 2026-08-04 Team V2 overview overlay
 
 - The right footer tab opens an in-map Team overview with authoritative Team

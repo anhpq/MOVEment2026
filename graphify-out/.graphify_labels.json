@@ -238,5 +238,6 @@
   "236": "vite",
   "237": "@eslint/js",
   "238": "GenerateQrLoginTokenDto",
-  "239": "vite"
+  "239": "vite",
+  "240": "@testing-library/jest-dom"
 }

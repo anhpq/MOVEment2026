@@ -1,3 +1,9 @@
+# 2026-08-04 Team V2 direct marker-to-game flow
+
+- Frontend-only interaction removed the intermediate preview and opens V2
+  Station Detail directly from markers/Team overview. Backend unchanged.
+- Focused Vitest (`8/8`), lint, build, and bundle budget passed.
+
 # 2026-08-04 Team V2 overview overlay
 
 - Frontend-only Team overlay projects existing Team/Station data and replaces

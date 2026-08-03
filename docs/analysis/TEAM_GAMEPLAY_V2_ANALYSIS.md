@@ -1,5 +1,12 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-04 Direct marker-to-game flow
+
+- Removed the selected-Station preview card and its View mission step.
+- Marker clicks and Team overview Station actions now open the V2 Station/Game
+  Detail directly. Closing Detail clears selection and returns to the map.
+- Focused Vitest passed (`8/8`), lint, build, and bundle budget passed.
+
 ## 2026-08-04 Team overview overlay
 
 - The right footer action now opens a V2-owned Team overview overlay instead of
