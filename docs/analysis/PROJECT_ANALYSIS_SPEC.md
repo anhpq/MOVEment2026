@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 compact map markers
+
+- Each Team V2 map pin shows only its Station display number, with effective
+  maximum points in a compact pill below the pin.
+- Station names are intentionally reserved for the selected preview and Detail,
+  reducing map clutter without changing marker interaction or Station state.
+
 ## 2026-08-03 Team V2 selected-Station preview
 
 - Selecting a Team V2 marker preserves the map and opens a compact Station

@@ -1,5 +1,20 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Numeric marker and points pill
+
+- Team V2 map markers now place the compact Station display number inside the
+  pin and show only the effective maximum points in a small pill below it.
+- Station names and connector lines are no longer rendered on the map; names
+  remain available in the selected-Station preview and full Detail.
+- Selected, active, Completed, and Locked palettes remain authoritative.
+  Completed keeps its check as a small badge so the numeric identity stays
+  readable; Locked keeps its existing lock badge.
+- This supersedes the earlier exact-marker decision that intentionally omitted
+  the number from the pin and kept Station code/name in a separate label.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.17 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
 ## 2026-08-03 Readable selected-Station preview
 
 - Selecting a map marker now opens a compact bottom preview instead of

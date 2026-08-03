@@ -12,7 +12,7 @@ import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, T
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
-import {Arc, Circle, Group, Image as KonvaImage, Layer, Line, Path, Rect, Stage, Text} from "react-konva";
+import {Arc, Circle, Group, Image as KonvaImage, Layer, Path, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {
   getPlayerLeaderboard,
@@ -317,11 +317,28 @@ function TeamMarker({
         shadowOpacity={0.72}
         listening={false}
       />
+      <Text
+        x={-size / 2}
+        y={markerCenterY - size * 0.22}
+        width={size}
+        height={size * 0.44}
+        text={marker.code}
+        align="center"
+        verticalAlign="middle"
+        fontFamily="Aptos, Segoe UI, sans-serif"
+        fontSize={Math.max(11, size * 0.38)}
+        fontStyle="bold"
+        fill="#FFFFFF"
+        shadowColor={colors.glow}
+        shadowBlur={5}
+        listening={false}
+      />
       {marker.isCompleted && (
         <Group
-          y={markerCenterY}
-          scaleX={iconScale}
-          scaleY={iconScale}
+          x={size * 0.27}
+          y={-size * 0.32}
+          scaleX={iconScale * 0.58}
+          scaleY={iconScale * 0.58}
           listening={false}>
           <Path
             data="M -6 0 L -1.5 5 L 7 -6"
@@ -383,7 +400,6 @@ function TeamMarkerLabel({
 }) {
   const {marker, labelX, labelY, labelScale} = layout;
   const colors = getMarkerColors(marker, hudAccent);
-  const label = marker.teamStation?.name ?? marker.station.name;
   const points = getStationEffectiveMaxPoints({
     trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
     maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
@@ -431,72 +447,18 @@ function TeamMarkerLabel({
         shadowOpacity={0.72}
       />
       <Text
-        text={`${marker.code} · ${label.toLocaleUpperCase()}`}
-        x={6}
-        y={4}
-        width={STATION_LABEL_WIDTH - 12}
-        height={24}
+        text={`${points} ${pointsUnit}`}
+        x={4}
+        y={0}
+        width={STATION_LABEL_WIDTH - 8}
+        height={STATION_LABEL_HEIGHT}
         fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={8.5}
+        fontSize={10}
         fontStyle="bold"
-        fill="#EAFCFF"
+        fill={marker.isSelected ? "#F0B8FF" : "#4DFF8A"}
         align="center"
         verticalAlign="middle"
-        wrap="none"
-        ellipsis
         listening={false}
-      />
-      <Text
-        text={`${points} ${pointsUnit}`}
-        x={6}
-        y={29}
-        width={STATION_LABEL_WIDTH - 12}
-        fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={9.5}
-        fontStyle="bold"
-        fill="#4DFF8A"
-        align="center"
-        listening={false}
-      />
-    </Group>
-  );
-}
-
-function TeamMarkerConnector({
-  layout,
-  hudAccent,
-}: {
-  layout: MarkerScreenLayout<MarkerViewModel>;
-  hudAccent: string;
-}) {
-  const {marker, anchorX, anchorY, labelX, labelY, labelScale, markerAttachmentOffset} = layout;
-  const colors = getMarkerColors(marker, hudAccent);
-  const connectorX = labelX + (STATION_LABEL_WIDTH * labelScale) / 2;
-  const connectorY = labelY + STATION_LABEL_HEIGHT * labelScale;
-  const deltaX = connectorX - anchorX;
-  const deltaY = connectorY - anchorY;
-  const distance = Math.hypot(deltaX, deltaY) || 1;
-  const startX = anchorX + (deltaX / distance) * markerAttachmentOffset;
-  const startY = anchorY + (deltaY / distance) * markerAttachmentOffset;
-
-  return (
-    <Group opacity={marker.opacity} listening={false}>
-      <Line
-        points={[startX, startY, connectorX, connectorY]}
-        stroke={colors.usesSilverPurple ? undefined : colors.stroke}
-        strokeLinearGradientStartPoint={
-          colors.usesSilverPurple ? {x: startX, y: startY} : undefined
-        }
-        strokeLinearGradientEndPoint={
-          colors.usesSilverPurple ? {x: connectorX, y: connectorY} : undefined
-        }
-        strokeLinearGradientColorStops={
-          colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
-        }
-        strokeWidth={1.2}
-        opacity={0.72}
-        shadowColor={colors.glow}
-        shadowBlur={8}
       />
     </Group>
   );
@@ -1079,16 +1041,6 @@ export function TeamGameplayV2Page() {
               y={-mapTransform.y / mapTransform.scale}
               scaleX={1 / mapTransform.scale}
               scaleY={1 / mapTransform.scale}>
-              {markerViewModels.map((marker) => {
-                const layout = markerScreenLayouts.get(marker.station.id);
-              return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (
-                  <TeamMarkerConnector
-                    key={`connector-${marker.station.id}`}
-                    layout={layout}
-                    hudAccent={V2_HUD_ACCENT}
-                  />
-                ) : null;
-              })}
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (

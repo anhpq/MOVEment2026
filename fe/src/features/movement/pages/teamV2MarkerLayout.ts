@@ -1,5 +1,5 @@
-export const STATION_LABEL_WIDTH = 120;
-export const STATION_LABEL_HEIGHT = 44;
+export const STATION_LABEL_WIDTH = 78;
+export const STATION_LABEL_HEIGHT = 24;
 
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
@@ -137,7 +137,7 @@ export function getStationLabelLayouts<T extends MarkerLabelSource>(
       anchorX,
       anchorY,
       labelX: clamp(anchorX - scaledLabelWidth / 2, 4, Math.max(4, viewport.width - scaledLabelWidth - 4)),
-      labelY: clamp(anchorY - markerAttachmentOffset - labelGap - scaledLabelHeight, 4, Math.max(4, viewport.height - scaledLabelHeight - 4)),
+      labelY: clamp(anchorY + labelGap, 4, Math.max(4, viewport.height - scaledLabelHeight - 4)),
       labelScale,
       labelGap,
       markerSize,

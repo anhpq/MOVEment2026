@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 compact numeric markers
+
+- [x] Render the Station display number inside every visible V2 pin.
+- [x] Render only effective maximum points in a compact pill below each pin.
+- [x] Remove Station names and connector lines from the map surface.
+- [x] Preserve state palettes, badges, interactions, and preview/Detail names.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke for dense marker clusters, selected,
+  Completed, and Locked states at phone/tablet portrait and landscape sizes.
+
 ## 2026-08-03 Team V2 selected-Station preview
 
 - [x] Keep the map visible after marker selection.

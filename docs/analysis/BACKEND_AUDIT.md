@@ -1,3 +1,13 @@
+# 2026-08-03 Team V2 compact numeric markers
+
+- Removed Station names and connector lines from V2 map labels, moved Station
+  display numbers into pins, and retained maximum points in compact lower pills.
+- Preserved selected/active/Completed/Locked state appearance and all marker
+  hit targets; no Backend, database, QR, scoring, or coordinate change.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.17 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
 # 2026-08-03 Team V2 selected-Station preview
 
 - Changed marker selection from immediate full Detail to a compact map-level

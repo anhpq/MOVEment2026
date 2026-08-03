@@ -37,7 +37,7 @@ describe("TeamGameplayV2Page marker label layout", () => {
     ).toMatchObject({isCompleted: false, isLocked: true, opacity: 1});
   });
 
-  it("anchors the default label above its marker with one screen-space transform", () => {
+  it("anchors the compact points pill below its marker", () => {
     const layout = getLayout();
 
     expect(layout.anchorX).toBeCloseTo(249.6);
@@ -46,9 +46,7 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(layout.labelGap).toBe(6);
     expect(layout.markerSize).toBe(40);
     expect(layout.labelX).toBeCloseTo(layout.anchorX - STATION_LABEL_WIDTH / 2);
-    expect(layout.labelY + STATION_LABEL_HEIGHT).toBeCloseTo(
-      layout.anchorY - layout.markerAttachmentOffset - layout.labelGap,
-    );
+    expect(layout.labelY).toBeCloseTo(layout.anchorY + layout.labelGap);
   });
 
   it("clamps label scale and gap at minimum and maximum zoom", () => {
