@@ -1,5 +1,16 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Compact variable-length markers
+
+- Reduced V2 marker width from `58px` to `44px` by default, with a responsive
+  `38..58px` range, and reduced the points/Locked pill to `68x22px`.
+- Marker number typography now scales by display-code length: two-character
+  codes remain prominent while longer codes such as `ST04` shrink to fit.
+- Marker states, points authority, hit targets, coordinates, QR, scoring, and
+  Backend behavior remain unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip).
+
 ## 2026-08-03 Reference-proportioned hero markers
 
 - Increased V2 markers to reference-like hero proportions: `58px` default

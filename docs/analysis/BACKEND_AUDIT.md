@@ -1,3 +1,10 @@
+# 2026-08-03 Team V2 compact variable-length markers
+
+- Frontend-only marker refinement reduced pin and points-pill geometry and
+  added display-code-length-aware font sizing for four-character Station codes.
+- No Backend API, persistence, authentication, QR, state, or scoring behavior
+  changed. Focused Vitest (`14/14`), i18n (`420` keys), lint, and build passed.
+
 # 2026-08-03 Team V2 reference-proportioned markers
 
 - Enlarged V2 pin/pill geometry and added reference-matched double outlines,

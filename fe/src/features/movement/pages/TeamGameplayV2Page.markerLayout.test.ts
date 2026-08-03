@@ -1,6 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {
   getNonOverlappingStationLabelIds,
+  getStationMarkerFontSize,
   getStationLabelLayouts,
   BASE_MARKER_SIZE,
   MAX_MARKER_SIZE,
@@ -83,6 +84,12 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(getLayout().isInViewport).toBe(true);
     expect(getLayout(baseScale, -1_000, 0).isInViewport).toBe(false);
     expect(getLayout(baseScale, 0, 1_000).isInViewport).toBe(false);
+  });
+
+  it("shrinks marker text for station codes with up to four characters", () => {
+    expect(getStationMarkerFontSize("02", BASE_MARKER_SIZE)).toBeCloseTo(17.6);
+    expect(getStationMarkerFontSize("047", BASE_MARKER_SIZE)).toBeCloseTo(14.08);
+    expect(getStationMarkerFontSize("ST04", BASE_MARKER_SIZE)).toBeCloseTo(11.44);
   });
 
   it("keeps the selected label visible while suppressing overlapping labels", () => {

@@ -33,6 +33,7 @@ import {
 } from "../components/teamV2OverlayOpacity";
 import {
   getNonOverlappingStationLabelIds,
+  getStationMarkerFontSize,
   getStationLabelLayouts,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
@@ -332,7 +333,7 @@ function TeamMarker({
         align="center"
         verticalAlign="middle"
         fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={Math.max(15, size * 0.43)}
+        fontSize={getStationMarkerFontSize(marker.code, size)}
         fontStyle="bold"
         fill="#FFFFFF"
         shadowColor={colors.glow}
@@ -499,7 +500,7 @@ function TeamMarkerLabel({
           width={STATION_LABEL_WIDTH - 8}
           height={STATION_LABEL_HEIGHT}
           fontFamily="Aptos, Segoe UI, sans-serif"
-          fontSize={12}
+          fontSize={10.5}
           fontStyle="bold"
           fill={marker.isSelected ? "#F0B8FF" : "#4DFF8A"}
           align="center"

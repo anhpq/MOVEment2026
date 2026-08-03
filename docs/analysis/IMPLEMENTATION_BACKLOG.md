@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 compact variable-length markers
+
+- [x] Reduce pins to `44px` default (`38..58px`) and pills to `68x22px`.
+- [x] Scale marker typography for two-, three-, and four-or-more-character codes.
+- [x] Verify focused Vitest `14/14`, i18n `420` keys, lint, build, and bundle.
+- [ ] Confirm authenticated in-map rendering on the physical target device.
+
 ## 2026-08-03 Team V2 reference-proportioned markers
 
 - [x] Increase pin and pill proportions to match the supplied close-up reference.

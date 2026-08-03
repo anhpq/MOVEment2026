@@ -188,6 +188,7 @@
   "186": "15. Station Media Gallery",
   "187": "ts-node",
   "188": "GenerateQrLoginTokenDto",
+  "189": "CreateTeamDto",
   "190": "Decision Log",
   "191": "admin.service.spec.ts",
   "192": "MOVEment 2026 - Agent Skills Analysis",
@@ -233,5 +234,9 @@
   "232": "vite",
   "233": "@nestjs/schematics",
   "234": "LanguageSwitch.tsx",
-  "235": "apiGet"
+  "235": "apiGet",
+  "236": "markerAppearance.ts",
+  "237": "lazyRoute.ts",
+  "238": "GenerateQrLoginTokenDto",
+  "239": ".logout"
 }

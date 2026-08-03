@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 compact variable-length markers
+
+- Team V2 pins use a compact `44px` default size (`38..58px`) and `68x22px`
+  points pill. Typography scales down for longer display codes such as `ST04`.
+- Station state, coordinates, scoring, QR, and Backend contracts are unchanged.
+
 ## 2026-08-03 Team V2 reference-proportioned markers
 
 - V2 map pins use a large teardrop silhouette, double-outline glow, dark depth
