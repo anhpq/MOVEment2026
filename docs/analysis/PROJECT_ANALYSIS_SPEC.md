@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 cyberpunk wing footer
+
+- Footer navigation uses two clipped neon wings with angled center notches,
+  technical rails, and a polygon pedestal behind the centered Scan CTA.
+
 ## 2026-08-04 Team V2 absolute-centered scanner
 
 - The footer Scan CTA is center-anchored rather than bottom-anchored, and its

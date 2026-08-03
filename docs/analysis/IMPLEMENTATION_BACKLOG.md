@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 cyberpunk wing footer
+
+- [x] Replace the rounded frame with clipped left/right neon wings.
+- [x] Add angled center notches, technical rails, and a Scan CTA pedestal.
+- [x] Preserve BXH, scanner, and Team navigation behavior.
+- [x] Verify lint, production build, and bundle budget.
+- [ ] Confirm pixel similarity against the supplied footer reference on-device.
+
 ## 2026-08-04 Team V2 absolute-centered scanner
 
 - [x] Center-anchor the Scan CTA for equal top/bottom protrusion at every scale.

@@ -1,5 +1,13 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-04 Cyberpunk wing footer
+
+- Replaced the rounded enclosing rectangle with two independently clipped
+  cyberpunk wings using cyan-to-purple gradient borders, angled center notches,
+  neon depth, and technical rail details.
+- Added a clipped pedestal behind the centered `96px` Scan CTA while preserving
+  existing navigation behavior. Lint, build, and bundle budget passed.
+
 ## 2026-08-04 Absolute-centered scanner caption refinement
 
 - The Scan CTA is now anchored at `top: 50%` with a two-axis `-50%` transform,

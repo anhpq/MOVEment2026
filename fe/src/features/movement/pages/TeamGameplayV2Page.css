@@ -1376,19 +1376,7 @@
 }
 
 .team-v2-bottom::after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 12px 0;
-  border: 2px solid color-mix(in srgb, var(--team-v2-accent) 82%, transparent);
-  border-right-color: color-mix(in srgb, var(--team-v2-selected) 48%, var(--team-v2-accent));
-  border-left-color: color-mix(in srgb, var(--team-v2-selected) 48%, var(--team-v2-accent));
-  border-radius: 16px;
-  background: transparent;
-  box-shadow:
-    inset 0 0 14px rgba(47, 228, 240, 0.05),
-    0 0 12px rgba(47, 228, 240, 0.26);
-  pointer-events: none;
+  content: none;
 }
 
 .team-v2-footer-panel {
@@ -1396,25 +1384,51 @@
   width: 124px;
   height: 72px;
   min-height: 72px;
-  border: 0;
-  border-radius: 16px;
-  clip-path: none;
+  border: 2px solid transparent;
+  border-radius: 0;
   gap: 9px;
-  box-shadow: none;
+  background:
+    linear-gradient(105deg, rgba(3, 18, 27, 0.98), rgba(2, 12, 20, 0.96)) padding-box,
+    linear-gradient(100deg, var(--team-v2-selected), var(--team-v2-accent-soft) 24%, var(--team-v2-accent) 76%, var(--team-v2-purple)) border-box;
+  box-shadow:
+    inset 0 0 18px rgba(0, 231, 255, 0.08),
+    0 0 12px rgba(0, 231, 255, 0.3);
 }
 
 .team-v2-leaderboard-chip {
   left: 0;
   width: 124px;
-  padding: 16px 8px 16px 12px;
-  border-radius: 16px 0 0 16px;
+  padding: 14px 12px 14px 14px;
+  clip-path: polygon(9px 0, 100% 0, 100% 20%, 91% 34%, 91% 66%, 100% 80%, 100% 100%, 9px 100%, 0 calc(100% - 9px), 0 9px);
 }
 
 .team-v2-progress-panel {
   right: 0;
   width: 124px;
-  padding: 16px 12px 16px 8px;
-  border-radius: 0 16px 16px 0;
+  padding: 14px 14px 14px 12px;
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 80%, 9% 66%, 9% 34%, 0 20%);
+}
+
+.team-v2-footer-rail {
+  position: absolute;
+  z-index: 2;
+  top: 7px;
+  display: block;
+  width: 70px;
+  height: 5px;
+  border-top: 1px solid var(--team-v2-accent);
+  background: repeating-linear-gradient(115deg, transparent 0 5px, rgba(0, 231, 255, 0.8) 5px 7px);
+  filter: drop-shadow(0 0 4px rgba(0, 231, 255, 0.65));
+  opacity: 0.78;
+}
+
+.team-v2-footer-rail.is-left {
+  left: 62px;
+}
+
+.team-v2-footer-rail.is-right {
+  right: 62px;
+  transform: scaleX(-1);
 }
 
 .team-v2-footer-panel .team-v2-bottom-icon {
@@ -1449,7 +1463,14 @@
 }
 
 .team-v2-scan-action::before {
-  content: none;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 12px -13px;
+  border: 1px solid color-mix(in srgb, var(--team-v2-accent) 76%, transparent);
+  background: rgba(2, 12, 20, 0.96);
+  clip-path: polygon(12% 0, 88% 0, 100% 28%, 91% 50%, 100% 72%, 88% 100%, 12% 100%, 0 72%, 9% 50%, 0 28%);
+  box-shadow: 0 0 12px rgba(0, 231, 255, 0.28);
 }
 
 .team-v2-scan-button {

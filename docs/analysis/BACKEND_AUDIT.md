@@ -1,3 +1,9 @@
+# 2026-08-04 Team V2 cyberpunk wing footer
+
+- Frontend-only CSS replaced the rounded footer frame with clipped neon wings,
+  technical rails, and a center CTA pedestal. Backend unchanged.
+- Lint, production build, and bundle budget passed.
+
 # 2026-08-04 Team V2 absolute-centered scanner
 
 - Frontend CSS now center-anchors the Scan CTA and raises its caption by `4px`.
