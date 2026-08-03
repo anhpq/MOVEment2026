@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 total-score clarity and taller pins
+
+- The Team total score is explicitly labelled in its own HUD panel.
+- Map pins use a larger, taller teardrop silhouette without an inner circle;
+  Station numbers remain centered directly inside the dark pin body.
+
 ## 2026-08-03 Team V2 teardrop marker states
 
 - V2 markers use a compact teardrop outline with a dark inner ring and numeric

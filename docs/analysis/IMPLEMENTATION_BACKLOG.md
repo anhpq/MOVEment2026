@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 total-score clarity and taller pins
+
+- [x] Identify the green HUD value explicitly as authoritative Team total score.
+- [x] Add localized Total score copy and a dedicated background panel.
+- [x] Remove the inner pin circle and increase pin width/height.
+- [x] Preserve Station number, state, pill, anchor, and hit-target behavior.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke for HUD/marker separation at the
+  reported viewport and representative phone/tablet orientations.
+
 ## 2026-08-03 Team V2 teardrop marker states
 
 - [x] Match the supplied compact teardrop and inner-ring marker silhouette.

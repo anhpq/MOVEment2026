@@ -1,5 +1,19 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Explicit total score and taller pins
+
+- The green HUD score is the authoritative Team total from `activeTeam.score`.
+  It now renders in a dedicated dark panel with localized Total score copy so
+  it cannot be mistaken for a Station marker.
+- Removed the inner circle from map pins and changed the silhouette to a larger,
+  taller teardrop. Default width is `44px` (`38..64px` responsive) and the
+  outline height is approximately `1.45x` its width.
+- Station number, points/Locked pill, state colors, hit target, coordinate
+  anchor, preview, QR, scoring, and Backend behavior remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
 ## 2026-08-03 Teardrop marker state treatment
 
 - Refined the simplified marker into a single proportional teardrop outline

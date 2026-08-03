@@ -1,3 +1,13 @@
+# 2026-08-03 Team V2 total-score clarity and taller pins
+
+- Labelled `activeTeam.score` as Total score in a dedicated HUD panel and
+  replaced inner-ring pins with larger, taller, unsegmented teardrops.
+- Preserved aggregate authority, marker coordinates/state/hit targets, QR,
+  scoring, database, and Backend behavior.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
 # 2026-08-03 Team V2 teardrop marker states
 
 - Refined V2 pins to the supplied teardrop/inner-ring reference and replaced

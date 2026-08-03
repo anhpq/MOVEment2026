@@ -340,11 +340,18 @@
 .team-v2-score {
   grid-area: score;
   justify-self: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   align-items: baseline;
   justify-content: center;
   gap: 8px;
+  min-width: 132px;
   margin: -3px 0 0;
+  padding: 5px 16px 6px;
+  border: 1px solid rgba(77, 255, 88, 0.3);
+  border-radius: 12px;
+  background: rgba(2, 12, 17, 0.86);
+  box-shadow: inset 0 0 14px rgba(77, 255, 88, 0.05), 0 0 12px rgba(3, 10, 14, 0.36);
   color: #4dff58;
   text-shadow:
     0 0 3px #eaffec,
@@ -366,6 +373,18 @@
   font-size: clamp(15px, 2.1vw, 24px);
   font-weight: 1000;
   letter-spacing: 0.04em;
+}
+
+.team-v2-score small {
+  grid-column: 1 / -1;
+  color: var(--team-v2-muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-align: center;
+  text-shadow: none;
+  text-transform: uppercase;
 }
 
 .team-v2-fullscreen-button,

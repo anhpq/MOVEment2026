@@ -254,7 +254,7 @@ function TeamMarker({
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
-  const markerCenterY = -size * 0.58;
+  const markerCenterY = -size * 0.86;
   const hitRadius = Math.max(22, size * 0.51);
   const iconScale = size / 40;
   const lockRadius = Math.max(5, size * 0.16);
@@ -289,27 +289,16 @@ function TeamMarker({
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
       <Path
         x={-size / 2}
-        y={-size * 1.12}
-        scaleX={size / 100}
-        scaleY={size / 100}
-        data="M50 0 C22 0 0 22 0 50 C0 72 18 88 50 112 C82 88 100 72 100 50 C100 22 78 0 50 0 Z"
+        y={-size * 1.45}
+        scaleX={size / 80}
+        scaleY={size / 80}
+        data="M40 0 C18 0 0 18 0 42 C0 70 15 91 40 116 C65 91 80 70 80 42 C80 18 62 0 40 0 Z"
         fill="rgba(3, 14, 20, 0.96)"
         stroke={colors.stroke}
         strokeWidth={5}
         shadowColor={colors.glow}
         shadowBlur={marker.isSelected || marker.isActive ? 26 : 16}
         shadowOpacity={0.82}
-        listening={false}
-      />
-      <Circle
-        y={markerCenterY}
-        radius={size * 0.34}
-        fill="rgba(4, 16, 24, 0.98)"
-        stroke={colors.stroke}
-        strokeWidth={1.4}
-        shadowColor={colors.glow}
-        shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
-        shadowOpacity={0.72}
         listening={false}
       />
       <Text
@@ -330,8 +319,8 @@ function TeamMarker({
       />
       {marker.isCompleted && (
         <Group
-          x={size * 0.32}
-          y={-size * 0.76}
+          x={size * 0.34}
+          y={-size * 1.16}
           scaleX={iconScale * 0.58}
           scaleY={iconScale * 0.58}
           listening={false}>
@@ -348,8 +337,8 @@ function TeamMarker({
       )}
       {marker.isLocked && (
         <Group
-          x={size * 0.33}
-          y={-size * 0.76}
+          x={size * 0.35}
+          y={-size * 1.16}
           listening={false}>
           <Circle
             radius={lockRadius}
@@ -1107,6 +1096,7 @@ export function TeamGameplayV2Page() {
           <div className="team-v2-score" aria-label={`${t("common.totalScore")}: ${activeTeam.score}`}>
             <strong>{activeTeam.score}</strong>
             <span>{t("teamV2.pointsUnit")}</span>
+            <small>{t("common.totalScore")}</small>
           </div>
         </div>
         <div className="team-v2-header-actions">
