@@ -1302,7 +1302,6 @@ export function TeamGameplayV2Page() {
           }}>
           <span className="team-v2-bottom-icon"><TrophyFilled /></span>
           <span className="team-v2-bottom-copy">
-            <small>{t("leaderboard.title")}</small>
             <strong>{t("teamV2.leaderboardControl")}</strong>
           </span>
         </button>
@@ -1328,8 +1327,7 @@ export function TeamGameplayV2Page() {
           aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}>
           <span className="team-v2-bottom-icon"><TeamOutlined /></span>
           <span className="team-v2-bottom-copy team-v2-my-team-copy">
-            <small>{t("teamV2.myTeam")}</small>
-            <strong>{activeTeam.score} {t("teamV2.pointsUnit")} · {completedCount}/17</strong>
+            <strong>{t("teamV2.myTeam")}</strong>
           </span>
         </section>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />

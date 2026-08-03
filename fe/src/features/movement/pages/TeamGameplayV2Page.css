@@ -519,6 +519,12 @@
   text-transform: uppercase;
 }
 
+.team-v2-footer-panel .team-v2-bottom-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 17px;
+}
+
 .team-v2-bottom-copy small {
   display: block;
   margin-bottom: 3px;
@@ -1134,13 +1140,13 @@
 /* Premium framed composition: header and footer stay outside the map canvas. */
 .team-v2-map-backdrop {
   top: clamp(126px, 18dvh, 164px);
-  bottom: clamp(88px, 14dvh, 118px);
+  bottom: clamp(126px, 18dvh, 158px);
   overflow: hidden;
   border-block: 1px solid color-mix(in srgb, var(--team-v2-accent) 22%, transparent);
 }
 
 .team-v2-station-preview {
-  bottom: calc(124px + env(safe-area-inset-bottom, 0));
+  bottom: calc(166px + env(safe-area-inset-bottom, 0));
 }
 
 .team-v2-header {
@@ -1207,7 +1213,7 @@
 }
 
 .team-v2-bottom {
-  --team-v2-footer-height: 112px;
+  --team-v2-footer-height: 154px;
   top: auto;
   min-height: 0;
   margin: 0;
@@ -1222,7 +1228,7 @@
 
 .team-v2-footer-panel {
   bottom: 0;
-  height: 64px;
+  height: 78px;
   border-color: color-mix(in srgb, var(--team-v2-accent) 72%, transparent);
   background:
     linear-gradient(180deg, rgba(5, 27, 36, 0.97), rgba(2, 10, 17, 0.99)),
@@ -1234,20 +1240,20 @@
 
 .team-v2-leaderboard-chip {
   left: 0;
-  width: 252px;
-  padding: 9px 50px 9px 18px;
+  width: 254px;
+  padding: 12px 58px 12px 22px;
   clip-path: polygon(12px 0, 100% 0, 88% 50%, 100% 100%, 10px 100%, 0 calc(100% - 12px), 0 12px);
 }
 
 .team-v2-progress-panel {
   right: 0;
-  width: 252px;
-  padding: 9px 18px 9px 50px;
+  width: 254px;
+  padding: 12px 22px 12px 58px;
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 10px) 100%, 0 100%, 12% 50%);
 }
 
 .team-v2-bottom-copy strong {
-  font-size: calc(14px * var(--team-v2-footer-font-compensation, 1));
+  font-size: calc(17px * var(--team-v2-footer-font-compensation, 1));
 }
 
 .team-v2-bottom-copy small {
@@ -1256,31 +1262,31 @@
 }
 
 .team-v2-my-team-copy strong {
-  font-size: calc(10px * var(--team-v2-footer-font-compensation, 1));
+  font-size: calc(14px * var(--team-v2-footer-font-compensation, 1));
 }
 
 .team-v2-scan-action {
   bottom: -2px;
-  width: 142px;
-  min-height: 112px;
+  width: 174px;
+  min-height: 154px;
 }
 
 .team-v2-scan-action::before {
   right: -3px;
   bottom: 0;
   left: -3px;
-  height: 68px;
+  height: 82px;
   clip-path: polygon(16% 0, 84% 0, 100% 42%, 86% 100%, 14% 100%, 0 42%);
 }
 
 .team-v2-scan-button {
-  width: 92px;
-  height: 92px;
+  width: 128px;
+  height: 128px;
 }
 
 .team-v2-scan-action > strong {
-  bottom: 5px;
-  font-size: calc(11px * var(--team-v2-footer-font-compensation, 1));
+  bottom: 7px;
+  font-size: calc(13px * var(--team-v2-footer-font-compensation, 1));
 }
 
 .team-v2-scan-action > small,
@@ -1292,7 +1298,7 @@
 @media (orientation: portrait) {
   .team-v2-map-backdrop {
     top: clamp(116px, 16dvh, 146px);
-    bottom: clamp(82px, 12dvh, 102px);
+    bottom: clamp(116px, 17dvh, 146px);
   }
 
   .team-v2-header {
@@ -1335,6 +1341,6 @@
   }
 
   .team-v2-station-preview {
-    bottom: calc(108px + env(safe-area-inset-bottom, 0));
+    bottom: calc(154px + env(safe-area-inset-bottom, 0));
   }
 }

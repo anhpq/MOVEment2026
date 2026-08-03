@@ -1,3 +1,9 @@
+# 2026-08-03 Team V2 large simplified footer
+
+- Frontend-only footer sizing/content refinement enlarged the scan target and
+  side wings while removing secondary visible metrics. No Backend change.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 framed HUD regression fix
 
 - Corrected frontend CSS inheritance that stretched the header over the map and

@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 large simplified footer
+
+- [x] Increase center scanner to `128px` and footer composition to `154px`.
+- [x] Increase wing height to `78px` and enlarge action icons/labels.
+- [x] Remove secondary visible headings and score/progress copy from the wings.
+- [x] Increase map/preview clearance for the enlarged footer.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated rendering on the reported viewport.
+
 ## 2026-08-03 Team V2 framed HUD regression fix
 
 - [x] Reset inherited header bottom/width/border geometry that covered the map.

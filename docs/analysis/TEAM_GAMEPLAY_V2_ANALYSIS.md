@@ -1,5 +1,17 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Large simplified footer
+
+- Enlarged the compact V2 footer to match the supplied right-side reference:
+  `154px` composition height, `128px` center scanner, and `78px` side wings.
+- Side wings now show only large Leaderboard and My team labels with larger
+  icons. Removed secondary headings and score/progress copy from the visible
+  footer to keep the mobile HUD clean; authoritative score remains in the top HUD.
+- Increased map and selected-preview bottom clearance for the larger footer.
+- QR behavior, Team/Station state, points, coordinates, and Backend are unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
 ## 2026-08-03 Framed HUD regression fix
 
 - Fixed a CSS cascade regression where the legacy shared header/footer/preview
