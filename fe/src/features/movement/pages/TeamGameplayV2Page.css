@@ -878,7 +878,15 @@
   }
 
   .team-v2-header-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 6px;
+    transform: translateY(1px);
+  }
+
+  .team-v2-fullscreen-button,
+  .team-v2-settings-button {
+    width: clamp(38px, 10vw, 44px);
+    height: clamp(38px, 10vw, 44px);
   }
 
   .team-v2-event-banner {
@@ -911,7 +919,7 @@
   }
 
   .team-v2-bottom {
-    bottom: calc(12px + env(safe-area-inset-bottom, 0));
+    bottom: calc(8px + env(safe-area-inset-bottom, 0));
   }
 
   .team-v2-bottom-icon {

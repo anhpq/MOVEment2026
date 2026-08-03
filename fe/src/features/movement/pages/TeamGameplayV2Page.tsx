@@ -38,6 +38,7 @@ import {
   getTeamV2OverlayStyle,
 } from "../components/teamV2OverlayOpacity";
 import {
+  getNonOverlappingStationLabelIds,
   getStationLabelLayouts,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
@@ -692,6 +693,10 @@ export function TeamGameplayV2Page() {
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
     [mapTransform, markerViewModels, viewportSize],
   );
+  const visibleMarkerLabelIds = useMemo(
+    () => getNonOverlappingStationLabelIds(markerScreenLayouts, viewportSize),
+    [markerScreenLayouts, viewportSize],
+  );
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
@@ -1014,7 +1019,14 @@ export function TeamGameplayV2Page() {
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
-  const footerScale = clamp((viewportSize.width - 16) / 600, 0.5, 1);
+  const footerScale = clamp(
+    Math.min(
+      (viewportSize.width - 16) / 600,
+      viewportSize.height > viewportSize.width ? viewportSize.height / 1_450 : 1,
+    ),
+    0.45,
+    1,
+  );
   const footerFontCompensation = 1 / footerScale;
 
   return (
@@ -1068,7 +1080,7 @@ export function TeamGameplayV2Page() {
               scaleY={1 / mapTransform.scale}>
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
-              return layout?.isInViewport ? (
+              return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (
                   <TeamMarkerConnector
                     key={`connector-${marker.station.id}`}
                     layout={layout}
@@ -1078,7 +1090,7 @@ export function TeamGameplayV2Page() {
               })}
               {markerViewModels.map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport ? (
+                return layout?.isInViewport && visibleMarkerLabelIds.has(marker.station.id) ? (
                   <TeamMarkerLabel
                     key={`label-${marker.station.id}`}
                     layout={layout}

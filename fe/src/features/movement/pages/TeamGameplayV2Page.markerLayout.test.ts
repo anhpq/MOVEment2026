@@ -1,5 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {
+  getNonOverlappingStationLabelIds,
   getStationLabelLayouts,
   MAX_MARKER_SIZE,
   MIN_MARKER_SIZE,
@@ -61,8 +62,8 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(maximum.labelScale).toBe(1.15);
     expect(maximum.labelGap).toBe(8);
     expect(maximum.markerSize).toBe(MAX_MARKER_SIZE);
-    expect(maximum.labelY + STATION_LABEL_HEIGHT * maximum.labelScale).toBeCloseTo(
-      maximum.anchorY - maximum.markerAttachmentOffset - maximum.labelGap,
+    expect(maximum.labelY + STATION_LABEL_HEIGHT * maximum.labelScale).toBeLessThanOrEqual(
+      viewport.height - 4,
     );
   });
 
@@ -83,5 +84,25 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(getLayout().isInViewport).toBe(true);
     expect(getLayout(baseScale, -1_000, 0).isInViewport).toBe(false);
     expect(getLayout(baseScale, 0, 1_000).isInViewport).toBe(false);
+  });
+
+  it("keeps the selected label visible while suppressing overlapping labels", () => {
+    const markers = [
+      {...createMarker(), station: {id: "ST001"}},
+      {...createMarker(), station: {id: "ST002"}},
+      {...createMarker(), station: {id: "ST003"}, isSelected: true},
+    ];
+    const layouts = getStationLabelLayouts(markers, viewport, {x: 0, y: 0, scale: baseScale});
+    const visible = getNonOverlappingStationLabelIds(layouts, viewport);
+
+    expect(visible.has("ST003")).toBe(true);
+    expect(visible.size).toBe(1);
+  });
+
+  it("clamps labels inside the visible viewport", () => {
+    const layout = getLayout(baseScale, -240, -120);
+
+    expect(layout.labelX).toBeGreaterThanOrEqual(4);
+    expect(layout.labelY).toBeGreaterThanOrEqual(4);
   });
 });

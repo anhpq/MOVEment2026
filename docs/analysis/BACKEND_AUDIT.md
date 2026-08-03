@@ -1,3 +1,14 @@
+# 2026-08-03 Team V2 portrait HUD readability
+
+- Added height-aware portrait scaling for the Team V2 footer/QR composition and
+  compact horizontal header actions.
+- Added viewport clamping and deterministic collision filtering for Station
+  labels while preserving every marker and selected/active label priority.
+- No Backend, database, QR, scoring, Station-state, or coordinate change.
+- Verification PASS: focused Vitest `7/7`, i18n parity `417`, Frontend lint,
+  production build, and bundle budget (`204.11 KiB` initial gzip JavaScript).
+- Authenticated browser and physical-device visual smoke remain pending.
+
 # 2026-08-03 Team V2 default route trial
 
 - Switched every Team authentication and home/fallback redirect to `/team/v2`.

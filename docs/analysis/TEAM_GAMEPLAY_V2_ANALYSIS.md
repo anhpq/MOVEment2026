@@ -1,5 +1,22 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Portrait HUD and marker readability refinement
+
+- Portrait Fullscreen and Settings controls now remain on one horizontal row.
+- The raised QR/footer composition scales against both viewport width and
+  portrait height, preventing short portrait screens from receiving the
+  width-only maximum size while preserving the existing action hierarchy.
+- Station labels are clamped inside the viewport and collision-filtered in
+  screen space. Selected labels have first priority, followed by the active
+  Station; markers remain visible and tappable when their overlapping label is
+  suppressed.
+- QR behavior, Station state, map coordinates, scoring, fixed V2 palette, and
+  Backend contracts are unchanged.
+- Focused marker layout Vitest passed (`7/7`), i18n parity passed (`417` keys),
+  Frontend lint, production build, and bundle budget passed (`204.11 KiB`
+  initial gzip JavaScript). Authenticated browser and physical-device visual
+  verification remain pending.
+
 ## 2026-08-03 Default Team experience trial
 
 - `/team/v2` is now the default destination for Team username login, Team QR

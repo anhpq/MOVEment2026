@@ -211,6 +211,8 @@
   "209": "AuthController",
   "210": "final.service.spec.ts",
   "211": "CreateTeamDto",
+  "212": "admin.service.spec.ts",
+  "213": "QrLoginPage.tsx",
   "214": "migration.sql",
   "215": "migration.sql",
   "216": "migration.sql",
@@ -229,5 +231,6 @@
   "229": "migration.sql",
   "230": "migration.sql",
   "231": "migration.sql",
+  "232": "vite",
   "233": "@nestjs/schematics"
 }

@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 portrait HUD readability
+
+- [x] Scale the raised QR/footer composition by portrait height as well as width.
+- [x] Keep portrait Fullscreen and Settings actions on one compact row.
+- [x] Clamp Station labels to the viewport and suppress screen-space collisions.
+- [x] Prioritize selected and active Station labels without hiding markers.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke at `390x844`, `824x1312`, and
+  `844x390`, plus physical-device safe-area verification.
+
 ## 2026-08-03 Team V2 default route trial
 
 - [x] Route Team username and QR login success to `/team/v2`.

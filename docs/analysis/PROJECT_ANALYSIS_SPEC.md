@@ -1,5 +1,13 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 portrait HUD readability
+
+- Team V2 scales its raised QR/footer composition by both width and available
+  portrait height and keeps header utility controls in a compact row.
+- Map labels stay within the viewport and overlapping labels are suppressed
+  with selected and active Stations prioritized; all markers remain tappable.
+- Gameplay, QR, scoring, map coordinates, and Backend behavior are unchanged.
+
 ## 2026-08-03 Default Team interface trial
 
 - Team login and Team home/fallback navigation now default to `/team/v2`.
