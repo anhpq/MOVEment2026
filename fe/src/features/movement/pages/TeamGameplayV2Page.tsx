@@ -1316,7 +1316,7 @@ export function TeamGameplayV2Page() {
               setIsScannerOpen(true);
             }}
           />
-          <strong>{activeStation ? t("status.In Progress") : t("teamV2.scanGameQr")}</strong>
+          <strong>{t("teamV2.scan")}</strong>
           <small className={activeStation ? "is-active-context" : undefined}>
             {activeStation ?
               `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}`

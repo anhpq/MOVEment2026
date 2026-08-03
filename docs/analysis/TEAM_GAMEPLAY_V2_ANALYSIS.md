@@ -1,5 +1,18 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Framed HUD regression fix
+
+- Fixed a CSS cascade regression where the legacy shared header/footer/preview
+  selector left both `top` and `bottom` on the header, stretching its dark panel
+  across most of the viewport. Header geometry now explicitly resets bottom,
+  width, margin, border, radius, and shadow before applying the top HUD style.
+- Reset inherited footer container padding, border, background, shadow, and
+  minimum height so only the two wings and center scan control are visible.
+- Center footer copy is now consistently localized as Scan instead of switching
+  to In Progress. Active Station emphasis remains on the gold map marker.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
 ## 2026-08-03 Framed header, map, and footer composition
 
 - Rebuilt the V2 vertical composition into three non-overlapping regions: a

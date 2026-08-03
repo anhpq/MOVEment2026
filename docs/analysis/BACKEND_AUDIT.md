@@ -1,3 +1,9 @@
+# 2026-08-03 Team V2 framed HUD regression fix
+
+- Corrected frontend CSS inheritance that stretched the header over the map and
+  rendered an empty footer container frame. No Backend behavior changed.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
 # 2026-08-03 Team V2 framed viewport composition
 
 - Frontend-only CSS refinement separated the brand/score HUD, map canvas, and

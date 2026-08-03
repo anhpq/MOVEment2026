@@ -63,6 +63,7 @@
   "61": "Nginx Frontend Deploy",
   "62": "Backend Audit Status",
   "63": "export-summary-report.ps1",
+  "64": "PrismaService",
   "65": "app.module.ts",
   "66": "QR_PAYLOADS.md",
   "67": "runtimeCoordinator.ts",
@@ -126,6 +127,7 @@
   "125": "8. Payload Classification",
   "126": "13. Seed Requirements",
   "127": "20. Required Tests",
+  "128": "verify-seed.ts",
   "129": "Prompt 02 - Phân tích màn hình Player",
   "130": "16. Team Gameplay V2",
   "131": "App.tsx",
@@ -206,7 +208,6 @@
   "208": "migration.sql",
   "209": "AuthController",
   "210": "final.service.spec.ts",
-  "211": "CreateTeamDto",
   "212": "2026-08-01 Completed and Locked marker appearance",
   "213": "@eslint/js",
   "214": "migration.sql",
@@ -231,6 +232,5 @@
   "233": "@nestjs/schematics",
   "234": "LanguageSwitch.tsx",
   "235": "apiGet",
-  "238": "GenerateQrLoginTokenDto",
-  "239": ".logout"
+  "238": "GenerateQrLoginTokenDto"
 }

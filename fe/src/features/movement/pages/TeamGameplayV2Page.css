@@ -1144,14 +1144,22 @@
 }
 
 .team-v2-header {
+  right: 0;
+  bottom: auto;
+  left: 0;
+  width: 100%;
   min-height: clamp(126px, 18dvh, 164px);
+  margin: 0;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 760px) minmax(96px, 1fr);
   grid-template-areas:
     ". brand actions"
     ". score .";
   gap: 8px 14px;
   padding: max(10px, env(safe-area-inset-top, 0)) max(16px, env(safe-area-inset-right, 0)) 10px max(16px, env(safe-area-inset-left, 0));
+  border: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--team-v2-accent) 30%, transparent);
+  border-radius: 0;
+  box-shadow: none;
   background:
     radial-gradient(circle at 50% 110%, rgba(47, 228, 240, 0.09), transparent 44%),
     linear-gradient(180deg, rgba(2, 8, 14, 0.99), rgba(2, 10, 17, 0.96));
@@ -1200,6 +1208,14 @@
 
 .team-v2-bottom {
   --team-v2-footer-height: 112px;
+  top: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
   bottom: calc(8px + env(safe-area-inset-bottom, 0));
   height: var(--team-v2-footer-height);
 }

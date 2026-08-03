@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 framed HUD regression fix
+
+- [x] Reset inherited header bottom/width/border geometry that covered the map.
+- [x] Remove inherited footer container frame and minimum height.
+- [x] Keep central footer action labeled Scan in every Station state.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated rendering on the reported viewport.
+
 ## 2026-08-03 Team V2 framed viewport composition
 
 - [x] Move brand and total score into a dedicated HUD above the map canvas.
