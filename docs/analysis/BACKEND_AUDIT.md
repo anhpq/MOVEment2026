@@ -1,3 +1,9 @@
+# 2026-08-04 Team V2 compact footer baseline
+
+- Frontend-only change removed the legend and aligned the smaller `96px` Scan
+  CTA with the footer frame baseline. Backend behavior unchanged.
+- Focused Vitest (`8/8`), lint, build, and bundle budget passed.
+
 # 2026-08-03 Team V2 attached marker points and scanner framing
 
 - Frontend-only rendering change attached points pills directly to markers and

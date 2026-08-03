@@ -238,8 +238,6 @@
   "236": "vite",
   "237": "@eslint/js",
   "238": "GenerateQrLoginTokenDto",
-  "239": "TeamGameplayV2Page",
   "240": "GenerateQrLoginTokenDto",
-  "241": ".logout",
-  "242": "LeaderboardEntryResponse"
+  "241": ".logout"
 }

@@ -501,51 +501,6 @@ function StationMarker({
   );
 }
 
-function LegendPanel({pointsUnit, onClose}: {pointsUnit: string; onClose: () => void}) {
-  const {t} = useTranslation();
-  const items = [
-    {status: "default", label: t("teamV2.legendNotPlayed")},
-    {status: "active", label: t("teamV2.legendPlaying")},
-    {status: "completed", label: t("teamV2.legendCompleted")},
-  ] as const;
-
-  return (
-    <aside className="team-v2-legend" aria-label={t("teamV2.legendTitle")}>
-      <div className="team-v2-legend__header">
-        <strong className="team-v2-legend__title">{t("teamV2.legendTitle")}</strong>
-        <button type="button" onClick={onClose} aria-label={t("teamV2.closeLegend")}>
-          <CloseOutlined />
-        </button>
-      </div>
-      <div className="team-v2-legend__list">
-        {items.map((item) => (
-          <div key={item.status} className={`team-v2-legend__item is-${item.status}`}>
-            <span className="team-v2-legend__pin" aria-hidden="true"><i /></span>
-            <span className="team-v2-legend__label">{item.label}</span>
-            <span className="team-v2-legend__pill">
-              {item.status === "completed" ? <TrophyFilled /> : `10 ${pointsUnit}`}
-            </span>
-          </div>
-        ))}
-      </div>
-    </aside>
-  );
-}
-
-function LegendButton({onOpen}: {onOpen: () => void}) {
-  const {t} = useTranslation();
-  return (
-    <button
-      type="button"
-      className="team-v2-legend-button"
-      onClick={onOpen}
-      aria-label={t("teamV2.openLegend")}>
-      <span aria-hidden="true">i</span>
-      <strong>{t("teamV2.legendTitle")}</strong>
-    </button>
-  );
-}
-
 function LeaderboardOverlay({
   open,
   opacity,
@@ -676,7 +631,6 @@ export function TeamGameplayV2Page() {
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
-  const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
     () => Boolean(getActiveFullscreenElement()),
   );
@@ -1063,7 +1017,7 @@ export function TeamGameplayV2Page() {
   const isPrimaryOverlayOpen =
     isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
-    (viewportSize.width - 24) / 352,
+    (viewportSize.width - 24) / 344,
     0.82,
     2.25,
   );
@@ -1140,13 +1094,6 @@ export function TeamGameplayV2Page() {
           </Stage>
         )}
       </div>
-
-      {!selectedStation && !isPrimaryOverlayOpen && (isLegendOpen ?
-          <LegendPanel
-            pointsUnit={t("teamV2.pointsUnit")}
-            onClose={() => setIsLegendOpen(false)}
-          />
-        : <LegendButton onOpen={() => setIsLegendOpen(true)} />)}
 
       <header className="team-v2-header">
         <div className="team-v2-center-score">

@@ -1,5 +1,13 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-04 Baseline-aligned compact scanner
+
+- Removed the legend control/panel from Team V2 rendering and state.
+- Reduced the center Scan CTA from `104px` to `96px`. The footer frame and CTA
+  now share the same `96px` design height and bottom baseline.
+- Focused Vitest passed (`8/8`), Frontend lint, production build, and bundle
+  budget passed (`204.27 KiB` initial gzip).
+
 ## 2026-08-03 Attached marker points and smaller scanner
 
 - Moved each points/trophy/lock pill into the same Konva group as its pin. The

@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 compact footer baseline
+
+- Team V2 no longer renders a map legend. Its `96px` Scan CTA shares the same
+  bottom baseline and design height as the enclosing footer frame.
+
 ## 2026-08-03 Team V2 attached marker points
 
 - Each Station points/state pill is part of the pin render group with a fixed

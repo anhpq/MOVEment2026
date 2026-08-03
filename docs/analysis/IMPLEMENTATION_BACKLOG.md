@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 compact footer baseline
+
+- [x] Remove the Team V2 map legend from rendering and state.
+- [x] Reduce the Scan CTA to `96px`.
+- [x] Align the Scan CTA and enclosing footer frame on one bottom baseline.
+- [x] Verify focused Vitest `8/8`, lint, build, and bundle budget.
+- [ ] Confirm final footer alignment on a physical target device.
+
 ## 2026-08-03 Team V2 attached marker points and scanner framing
 
 - [x] Render points/trophy/lock pills inside the same group as each pin.
