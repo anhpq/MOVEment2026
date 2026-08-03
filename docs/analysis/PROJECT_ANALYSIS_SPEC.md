@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 overview overlay
+
+- The right footer tab opens an in-map Team overview with authoritative Team
+  score/rank/progress and grouped Station rows containing code, name, and points.
+- Station actions return to the selected Station on the V2 map; Backend data
+  and gameplay authority are unchanged.
+
 ## 2026-08-04 Team V2 cyberpunk wing footer
 
 - Footer navigation uses two clipped neon wings with angled center notches,

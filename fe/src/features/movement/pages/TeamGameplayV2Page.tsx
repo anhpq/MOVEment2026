@@ -501,6 +501,107 @@ function StationMarker({
   );
 }
 
+function TeamOverviewOverlay({
+  open,
+  opacity,
+  team,
+  stations,
+  language,
+  onClose,
+  onContinue,
+}: {
+  open: boolean;
+  opacity: number;
+  team: Team;
+  stations: MarkerViewModel[];
+  language: SupportedLanguage;
+  onClose: () => void;
+  onContinue: (stationId: string) => void;
+}) {
+  const {t} = useTranslation();
+  if (!open) return null;
+
+  const groups = [
+    {key: "completed", title: t("teamV2.teamPanelCompleted"), items: stations.filter((item) => item.isCompleted)},
+    {key: "active", title: t("teamV2.teamPanelActive"), items: stations.filter((item) => item.isActive)},
+    {key: "available", title: t("teamV2.teamPanelAvailable"), items: stations.filter((item) => !item.isCompleted && !item.isActive)},
+  ];
+  const completed = groups[0].items.length;
+  const progress = stations.length > 0 ? Math.round((completed / stations.length) * 100) : 0;
+  const active = groups[1].items[0];
+
+  return (
+    <div
+      className="team-v2-overlay-layer"
+      style={getTeamV2OverlayStyle(opacity)}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}>
+      <section className="team-v2-team-panel" role="dialog" aria-modal="true" aria-labelledby="team-v2-team-panel-title">
+        <header className="team-v2-team-panel__header">
+          <strong id="team-v2-team-panel-title">{t("teamV2.myTeam")}</strong>
+          <button type="button" onClick={onClose} aria-label={t("teamV2.closeOverlay")}><CloseOutlined /></button>
+        </header>
+
+        <div className="team-v2-team-panel__identity">
+          <span className="team-v2-team-panel__emblem" aria-hidden="true"><TeamOutlined /></span>
+          <div>
+            <h2>{getLocalizedTeamName(team.name, language)}</h2>
+            <span>{t("teamV2.teamPanelRank", {rank: team.rank ?? "—"})}</span>
+          </div>
+          <div className="team-v2-team-panel__metrics">
+            <strong>{team.score} {t("teamV2.pointsUnit")}</strong>
+            <small>{t("common.totalScore")}</small>
+            <strong>{completed}/{stations.length}</strong>
+            <small>{t("teamV2.teamPanelCompletedShort")}</small>
+          </div>
+        </div>
+
+        <div className="team-v2-team-panel__progress">
+          <div><span>{t("teamV2.teamPanelJourney")}</span><strong>{progress}%</strong></div>
+          <i><b style={{width: `${progress}%`}} /></i>
+        </div>
+
+        {active && (
+          <div className="team-v2-team-panel__active">
+            <span aria-hidden="true">ϟ</span>
+            <div><small>{t("teamV2.teamPanelActive")}</small><strong>{active.code}</strong><em>{active.station.name}</em></div>
+            <button type="button" onClick={() => onContinue(active.station.id)}>{t("teamV2.teamPanelContinue")} ›</button>
+          </div>
+        )}
+
+        <div className="team-v2-team-panel__stations">
+          <strong>{t("teamV2.teamPanelStationList")}</strong>
+          {groups.map((group) => (
+            <section key={group.key} className={`is-${group.key}`}>
+              <h3>{group.title} ({group.items.length})</h3>
+              {group.items.map((item) => {
+                const maxPoints = getStationEffectiveMaxPoints({
+                  trackingMode: item.teamStation?.trackingMode ?? item.station.trackingMode ?? "BOTH",
+                  maxPoints: item.teamStation?.maxPoints ?? item.station.maxPoints,
+                });
+                const points = item.isCompleted && (item.teamStation?.score ?? 0) > 0 ? item.teamStation!.score : maxPoints;
+                return (
+                  <button
+                    type="button"
+                    key={item.station.id}
+                    onClick={() => onContinue(item.station.id)}>
+                    <span>{item.isCompleted ? "♜" : item.isActive ? "ϟ" : "○"}</span>
+                    <b>{item.code}</b>
+                    <em>{item.station.name}</em>
+                    <strong>{points} {t("teamV2.pointsUnit")}</strong>
+                    <i>›</i>
+                  </button>
+                );
+              })}
+            </section>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function LeaderboardOverlay({
   open,
   opacity,
@@ -627,6 +728,7 @@ export function TeamGameplayV2Page() {
   const [isStationDetailOpen, setIsStationDetailOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isTeamPanelOpen, setIsTeamPanelOpen] = useState(false);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
@@ -1015,7 +1117,7 @@ export function TeamGameplayV2Page() {
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
   const isPrimaryOverlayOpen =
-    isSettingsOpen || isLeaderboardOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
+    isSettingsOpen || isLeaderboardOpen || isTeamPanelOpen || isScannerOpen || isStationDetailOpen || Boolean(scoreStation);
   const footerScale = clamp(
     (viewportSize.width - 24) / 344,
     0.82,
@@ -1238,7 +1340,12 @@ export function TeamGameplayV2Page() {
           type="button"
           className="team-v2-footer-panel team-v2-progress-panel"
           aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}
-          onClick={() => navigate("/stations")}>
+          onClick={() => {
+            setIsSettingsOpen(false);
+            setIsLeaderboardOpen(false);
+            setIsScannerOpen(false);
+            setIsTeamPanelOpen(true);
+          }}>
           <span className="team-v2-bottom-icon"><TeamOutlined /></span>
           <span className="team-v2-bottom-copy team-v2-my-team-copy">
             <strong>{getLocalizedTeamName(activeTeam.name, language)}</strong>
@@ -1246,6 +1353,20 @@ export function TeamGameplayV2Page() {
         </button>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />
       </footer>
+
+      <TeamOverviewOverlay
+        open={isTeamPanelOpen}
+        opacity={panelOpacity}
+        team={activeTeam}
+        stations={markerViewModels}
+        language={language}
+        onClose={() => setIsTeamPanelOpen(false)}
+        onContinue={(stationId) => {
+          setIsTeamPanelOpen(false);
+          setSelectedStationId(stationId);
+          setIsStationDetailOpen(false);
+        }}
+      />
 
       {isSettingsOpen && (
         <div

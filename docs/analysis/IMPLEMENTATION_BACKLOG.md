@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 overview overlay
+
+- [x] Open a V2-owned Team overview from the right footer tab.
+- [x] Show Team score, rank, progress, and current Station from live data.
+- [x] Group Stations by Completed/Playing/Not played.
+- [x] Show Station code, name, and points on every row.
+- [x] Return to the selected Station from Continue/row actions.
+- [x] Verify i18n `436`, lint, production build, and bundle budget.
+- [ ] Confirm authenticated visual hierarchy and long-name truncation on-device.
+
 ## 2026-08-04 Team V2 cyberpunk wing footer
 
 - [x] Replace the rounded frame with clipped left/right neon wings.

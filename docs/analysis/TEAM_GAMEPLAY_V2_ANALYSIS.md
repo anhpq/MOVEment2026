@@ -1,5 +1,16 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-04 Team overview overlay
+
+- The right footer action now opens a V2-owned Team overview overlay instead of
+  navigating to V1. It shows the localized Team identity, authoritative score,
+  rank, completed progress, current Station, and grouped Station inventory.
+- Station rows display code, localized name, and points. Completed rows prefer
+  the recorded score; active/available rows use effective maximum points.
+- Continue/row actions close the overlay and select the Station on the V2 map.
+- i18n parity passed (`436` keys), lint, build, and bundle budget passed
+  (`204.41 KiB` initial gzip).
+
 ## 2026-08-04 Cyberpunk wing footer
 
 - Replaced the rounded enclosing rectangle with two independently clipped

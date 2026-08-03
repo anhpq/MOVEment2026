@@ -1,3 +1,9 @@
+# 2026-08-04 Team V2 overview overlay
+
+- Frontend-only Team overlay projects existing Team/Station data and replaces
+  the right footer navigation to V1. Backend contracts and state authority remain unchanged.
+- i18n (`436`), lint, production build, and bundle budget passed.
+
 # 2026-08-04 Team V2 cyberpunk wing footer
 
 - Frontend-only CSS replaced the rounded footer frame with clipped neon wings,
