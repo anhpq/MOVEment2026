@@ -1,3 +1,10 @@
+# 2026-08-03 Team V2 compact navy marker refinement
+
+- Frontend-only sizing/palette refinement reduced markers and legend, removed
+  duplicate footer tab borders, and projected the existing Team name in the
+  right footer action. No Backend or gameplay contract changed.
+- Focused Vitest (`8/8`), i18n (`428`), lint, build, and bundle budget passed.
+
 # 2026-08-03 Team V2 premium map HUD refinement
 
 - Frontend-only refinement enlarged and enclosed the bottom navigation, added

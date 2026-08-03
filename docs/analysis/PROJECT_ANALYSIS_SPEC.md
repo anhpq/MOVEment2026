@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 compact navy marker refinement
+
+- Team V2 uses compact `30px` navy-gradient pins (`26..40px`) with a subtle
+  circular code outline and `52x18px` points pills.
+- The legend is compact, the footer retains only its enclosing frame, and the
+  right tab displays the localized authoritative Team name.
+
 ## 2026-08-03 Team V2 premium map HUD refinement
 
 - Team V2 uses a full-width `360x112px` footer design with a `112px` central

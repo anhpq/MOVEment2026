@@ -343,7 +343,7 @@ function StationMarker({
         scaleX={size / 80}
         scaleY={size / 80}
         data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
-        fill="rgba(3, 14, 20, 0.98)"
+        fill="#08283A"
         stroke={colors.glow}
         strokeWidth={10}
         opacity={0.28}
@@ -357,7 +357,9 @@ function StationMarker({
         scaleX={size / 80}
         scaleY={size / 80}
         data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
-        fill="rgba(3, 14, 20, 0.96)"
+        fillLinearGradientStartPoint={{x: 12, y: 4}}
+        fillLinearGradientEndPoint={{x: 68, y: 118}}
+        fillLinearGradientColorStops={[0, "#0B3A52", 0.48, "#072A3D", 1, "#041A29"]}
         stroke={colors.stroke}
         strokeWidth={3.6}
         shadowColor={colors.glow}
@@ -368,7 +370,9 @@ function StationMarker({
       <Circle
         y={markerCenterY}
         radius={size * 0.34}
-        fill="rgba(2, 9, 15, 0.86)"
+        fill="rgba(13, 55, 74, 0.64)"
+        stroke="rgba(170, 235, 244, 0.32)"
+        strokeWidth={1}
         shadowColor="#000000"
         shadowBlur={8}
         listening={false}
@@ -1363,7 +1367,7 @@ export function TeamGameplayV2Page() {
           onClick={() => navigate("/stations")}>
           <span className="team-v2-bottom-icon"><TeamOutlined /></span>
           <span className="team-v2-bottom-copy team-v2-my-team-copy">
-            <strong>{t("teamV2.myTeam")}</strong>
+            <strong>{getLocalizedTeamName(activeTeam.name, language)}</strong>
           </span>
         </button>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />

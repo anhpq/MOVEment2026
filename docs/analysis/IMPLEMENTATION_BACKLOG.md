@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 compact navy marker refinement
+
+- [x] Reduce pins to `30px` default and points pills to `52x18px`.
+- [x] Use navy pin interiors and a subtle circular code outline.
+- [x] Reduce closed/open legend dimensions.
+- [x] Remove duplicate inner footer borders and show the live localized Team name.
+- [x] Verify focused Vitest `8/8`, i18n `428`, lint, build, and bundle budget.
+- [ ] Confirm dense-marker readability on a physical target device.
+
 ## 2026-08-03 Team V2 premium map HUD refinement
 
 - [x] Enclose both footer tabs and the `112px` center Scan CTA in one full-width frame.

@@ -1,5 +1,17 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Compact navy markers and simplified footer
+
+- Reduced marker width to `30px` by default (`26..40px`) and points pills to
+  `52x18px`. Marker interiors now use a dark navy gradient with a subtle inner
+  circular outline around the Station code instead of a near-black fill.
+- Reduced both the closed legend control and expanded legend panel. Removed
+  per-tab borders/shadows from the footer so only its enclosing neon frame remains.
+- The right footer tab now displays the localized current Team name from live
+  Team data (for example `Đội 1`) instead of the generic My team label.
+- Focused Vitest passed (`8/8`), i18n parity passed (`428` keys), Frontend lint,
+  production build, and bundle budget passed (`204.27 KiB` initial gzip).
+
 ## 2026-08-03 Premium map HUD final refinement
 
 - Rebuilt the bottom navigation on a `360x112px` design grid with `124px`

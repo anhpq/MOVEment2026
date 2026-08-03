@@ -1,13 +1,13 @@
-export const STATION_LABEL_WIDTH = 58;
-export const STATION_LABEL_HEIGHT = 19;
+export const STATION_LABEL_WIDTH = 52;
+export const STATION_LABEL_HEIGHT = 18;
 
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MARKER_DRAW_REFERENCE_WIDTH = 640;
 const MARKER_REFERENCE_TIP_TO_TOP = 554;
-export const MIN_MARKER_SIZE = 30;
-export const BASE_MARKER_SIZE = 34;
-export const MAX_MARKER_SIZE = 46;
+export const MIN_MARKER_SIZE = 26;
+export const BASE_MARKER_SIZE = 30;
+export const MAX_MARKER_SIZE = 40;
 const BASE_MARKER_LABEL_GAP = 6;
 const MIN_MARKER_LABEL_GAP = 4;
 const MAX_MARKER_LABEL_GAP = 8;
@@ -47,7 +47,7 @@ export type MarkerScreenLayout<T extends MarkerLabelSource = MarkerLabelSource> 
 export function getStationMarkerFontSize(code: string, markerSize: number) {
   const characterCount = Array.from(code.trim()).length;
   const scale = characterCount >= 4 ? 0.26 : characterCount === 3 ? 0.32 : 0.4;
-  return Math.max(10, markerSize * scale);
+  return Math.max(8, markerSize * scale);
 }
 
 type PrioritizedMarker = MarkerLabelSource & {
