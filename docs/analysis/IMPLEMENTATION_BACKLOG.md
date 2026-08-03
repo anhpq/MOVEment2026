@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 centered footer scanner
+
+- [x] Center the `72px` side rails and enclosing border inside the `96px` footer.
+- [x] Make the `96px` Scan CTA protrude equally by `12px` above and below.
+- [x] Verify lint, production build, and bundle budget.
+- [ ] Confirm final geometry on a physical target device.
+
 ## 2026-08-04 Team V2 compact footer baseline
 
 - [x] Remove the Team V2 map legend from rendering and state.

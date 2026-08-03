@@ -1,3 +1,8 @@
+# 2026-08-04 Team V2 centered footer scanner
+
+- Frontend-only CSS geometry centered the `96px` Scan CTA over `72px` rails.
+- Lint, production build, and bundle budget passed. Backend unchanged.
+
 # 2026-08-04 Team V2 compact footer baseline
 
 - Frontend-only change removed the legend and aligned the smaller `96px` Scan

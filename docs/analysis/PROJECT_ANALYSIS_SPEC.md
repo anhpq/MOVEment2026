@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 centered footer scanner
+
+- The `96px` Scan CTA is centered over a `72px` side-rail/footer border band,
+  protruding equally by `12px` above and below.
+
 ## 2026-08-04 Team V2 compact footer baseline
 
 - Team V2 no longer renders a map legend. Its `96px` Scan CTA shares the same

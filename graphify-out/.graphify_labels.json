@@ -238,6 +238,5 @@
   "236": "vite",
   "237": "@eslint/js",
   "238": "GenerateQrLoginTokenDto",
-  "240": "GenerateQrLoginTokenDto",
-  "241": ".logout"
+  "240": "GenerateQrLoginTokenDto"
 }

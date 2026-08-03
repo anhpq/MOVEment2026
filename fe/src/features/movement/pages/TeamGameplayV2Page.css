@@ -1379,7 +1379,7 @@
   content: "";
   position: absolute;
   z-index: 1;
-  inset: 0;
+  inset: 12px 0;
   border: 2px solid color-mix(in srgb, var(--team-v2-accent) 82%, transparent);
   border-right-color: color-mix(in srgb, var(--team-v2-selected) 48%, var(--team-v2-accent));
   border-left-color: color-mix(in srgb, var(--team-v2-selected) 48%, var(--team-v2-accent));
@@ -1392,10 +1392,10 @@
 }
 
 .team-v2-footer-panel {
-  bottom: 0;
+  bottom: 12px;
   width: 124px;
-  height: 82px;
-  min-height: 82px;
+  height: 72px;
+  min-height: 72px;
   border: 0;
   border-radius: 16px;
   clip-path: none;

@@ -1,5 +1,12 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-04 Centered scanner over compact rails
+
+- Footer side rails and enclosing border now use a centered `72px` band inside
+  the `96px` footer. The `96px` Scan CTA protrudes exactly `12px` above and
+  below that band.
+- Frontend lint, production build, and bundle budget passed (`204.28 KiB`).
+
 ## 2026-08-04 Baseline-aligned compact scanner
 
 - Removed the legend control/panel from Team V2 rendering and state.
