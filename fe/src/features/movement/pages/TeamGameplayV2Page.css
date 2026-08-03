@@ -54,7 +54,7 @@
   position: absolute;
   z-index: var(--team-v2-layer-fixed-ui);
   right: max(16px, env(safe-area-inset-right, 0));
-  bottom: calc(clamp(164px, 24dvh, 224px) + env(safe-area-inset-bottom, 0));
+  bottom: calc(clamp(190px, 25dvh, 230px) + env(safe-area-inset-bottom, 0));
   left: max(16px, env(safe-area-inset-left, 0));
   display: grid;
   grid-template-columns: clamp(96px, 22vw, 170px) minmax(0, 1fr) 36px;
@@ -422,7 +422,7 @@
 
 .team-v2-bottom {
   --team-v2-footer-design-width: 600px;
-  --team-v2-footer-height: 286px;
+  --team-v2-footer-height: 204px;
   left: 50%;
   right: auto;
   bottom: calc(18px + env(safe-area-inset-bottom, 0));
@@ -437,7 +437,7 @@
   position: absolute;
   z-index: 1;
   display: flex;
-  height: 58px;
+  height: 54px;
   align-items: center;
   border: 1px solid var(--team-v2-line);
   background:
@@ -458,7 +458,7 @@
 
 .team-v2-leaderboard-chip {
   left: 0;
-  bottom: 8px;
+  bottom: 0;
   width: 188px;
   gap: 10px;
   padding: 8px 15px;
@@ -502,7 +502,7 @@
 
 .team-v2-progress-panel {
   right: 0;
-  bottom: 8px;
+  bottom: 0;
   width: 222px;
   justify-content: center;
   gap: 14px;
@@ -514,11 +514,11 @@
   position: absolute;
   z-index: 2;
   left: 50%;
-  bottom: 8px;
+  bottom: 0;
   display: grid;
   justify-items: center;
-  width: 244px;
-  min-height: 278px;
+  width: 176px;
+  min-height: 200px;
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -527,10 +527,10 @@
   content: "";
   position: absolute;
   z-index: -1;
-  right: -18px;
-  bottom: -7px;
-  left: -18px;
-  height: 28px;
+  right: -12px;
+  bottom: 0;
+  left: -12px;
+  height: 22px;
   border: 1px solid color-mix(in srgb, var(--team-v2-accent) 58%, transparent);
   background: linear-gradient(180deg, rgba(3, 14, 20, 0.18), rgba(3, 14, 20, 0.9));
   clip-path: polygon(12% 0, 88% 0, 100% 56%, 89% 100%, 11% 100%, 0 56%);
@@ -542,8 +542,8 @@
   position: relative;
   z-index: 1;
   display: grid;
-  width: 222px;
-  height: 222px;
+  width: 116px;
+  height: 116px;
   place-items: center;
   padding: 0;
   border: 2px solid transparent;
@@ -555,7 +555,7 @@
   filter:
     drop-shadow(0 0 10px rgba(255, 63, 216, 0.42))
     drop-shadow(0 0 14px rgba(47, 228, 240, 0.34));
-  transform: translateY(-14px);
+  transform: translateY(0);
   transition: filter 160ms ease, transform 120ms ease;
 }
 
@@ -590,11 +590,11 @@
     brightness(1.16)
     drop-shadow(0 0 13px rgba(47, 228, 240, 0.72))
     drop-shadow(0 0 15px rgba(255, 63, 216, 0.5));
-  transform: translateY(-16px) scale(1.035);
+  transform: translateY(-2px) scale(1.035);
 }
 
 .team-v2-scan-button:active {
-  transform: translateY(-12px) scale(0.965);
+  transform: scale(0.965);
 }
 
 .team-v2-qr-badge {
@@ -623,7 +623,7 @@
 
 .team-v2-scan-action > strong {
   position: absolute;
-  bottom: 34px;
+  bottom: 62px;
   color: #eafcff;
   font-size: calc(12px * var(--team-v2-footer-font-compensation, 1));
   font-weight: 900;
@@ -693,7 +693,7 @@
 .team-v2-footer-rail {
   position: absolute;
   z-index: 0;
-  bottom: 25px;
+  bottom: 19px;
   width: 124px;
   height: 16px;
   border-top: 1px solid color-mix(in srgb, var(--team-v2-accent) 54%, transparent);

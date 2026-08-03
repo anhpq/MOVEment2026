@@ -1,3 +1,14 @@
+# 2026-08-03 Team V2 simplified pins and footer
+
+- Replaced complex marker artwork with a smaller simple numeric pin, reduced
+  and fully rounded points pills, and rebuilt the QR/footer geometry to prevent
+  caption and panel overlap.
+- Removed the V2 page dependency on the complex marker component without
+  changing marker coordinates, hit targets, state, QR, scoring, or Backend.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
 # 2026-08-03 Team V2 compact numeric markers
 
 - Removed Station names and connector lines from V2 map labels, moved Station

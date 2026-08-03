@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-03 Team V2 simplified pins and footer
+
+- [x] Replace dense pin artwork with a simple high-contrast numeric pin.
+- [x] Reduce and fully round the points pill.
+- [x] Reduce the QR action and footer composition heights.
+- [x] Separate QR, caption, and lower footer panels to prevent overlap.
+- [x] Preserve responsive hit targets and gameplay behavior.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke at the reported viewport plus phone,
+  tablet portrait, and low-height landscape sizes.
+
 ## 2026-08-03 Team V2 compact numeric markers
 
 - [x] Render the Station display number inside every visible V2 pin.

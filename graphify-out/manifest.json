@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1785723120.2686453,
-    "ast_hash": "5ebba37a35cad74d7652435a793d8ba2",
+    "mtime": 1785723547.7601979,
+    "ast_hash": "594f4e5b7dcad002b7b761080a741aea",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1785723118.2379122,
-    "ast_hash": "1600829b3b800d4f83c2a426c5010c6e",
+    "mtime": 1785723545.5220308,
+    "ast_hash": "e8e0bcf6ebd47cf088a8e68f13e8d3b8",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1785723119.2299707,
-    "ast_hash": "656610f899dc56aaf7c6524020fd28a1",
+    "mtime": 1785723546.7449749,
+    "ast_hash": "45d5e2bec5faf6ffd85be596cc92a5de",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -1030,13 +1030,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.tsx": {
-    "mtime": 1785723046.9951649,
-    "ast_hash": "39b2220ecd160740d6b849d6103d3a11",
+    "mtime": 1785723416.718985,
+    "ast_hash": "049b2f2e2d64df54fdf59745e7aa700e",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {
-    "mtime": 1785723117.2824368,
-    "ast_hash": "6b92a0fb5678c286fb1fab406adb5a0f",
+    "mtime": 1785723544.422375,
+    "ast_hash": "5456c3ea498b38ac940a0b736378c794",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {
@@ -1235,8 +1235,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.markerLayout.test.ts": {
-    "mtime": 1785723048.1437023,
-    "ast_hash": "0173d367705c72b3442ea5fc087f79d1",
+    "mtime": 1785723468.65442,
+    "ast_hash": "afe30daf9ce9199308124e8b6e55de5c",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2FrameScheduler.test.ts": {
@@ -1260,8 +1260,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2MarkerLayout.ts": {
-    "mtime": 1785723045.9771564,
-    "ast_hash": "b058765e769fc95d09b03ead1af475e1",
+    "mtime": 1785723418.8756418,
+    "ast_hash": "8af24c1b76b9349cd7564c6d0d5dfb5f",
     "semantic_hash": ""
   },
   "docs/analysis/AGENT_SKILLS_ANALYSIS.md": {

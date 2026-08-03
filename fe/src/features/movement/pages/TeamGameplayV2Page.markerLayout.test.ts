@@ -2,6 +2,7 @@ import {describe, expect, it} from "vitest";
 import {
   getNonOverlappingStationLabelIds,
   getStationLabelLayouts,
+  BASE_MARKER_SIZE,
   MAX_MARKER_SIZE,
   MIN_MARKER_SIZE,
   STATION_LABEL_HEIGHT,
@@ -44,7 +45,7 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(layout.anchorY).toBeCloseTo(187.2);
     expect(layout.labelScale).toBe(1);
     expect(layout.labelGap).toBe(6);
-    expect(layout.markerSize).toBe(40);
+    expect(layout.markerSize).toBe(BASE_MARKER_SIZE);
     expect(layout.labelX).toBeCloseTo(layout.anchorX - STATION_LABEL_WIDTH / 2);
     expect(layout.labelY).toBeCloseTo(layout.anchorY + layout.labelGap);
   });

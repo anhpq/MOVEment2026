@@ -1,5 +1,20 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-03 Simplified pins and separated footer geometry
+
+- Replaced the dense 640x620 Bézier neon marker artwork with a simple dark
+  circular pin and short tip so the Station number remains the dominant mark.
+- Default marker size is now `36px` (`30..52px` responsive), while the points
+  pill is `64x20px` with a fully rounded shape.
+- Reduced the QR action from `222px` to `116px` and the footer composition from
+  `286px` to `204px`. QR, caption, and the two lower panels now occupy separate
+  vertical bands, with a dedicated center gap between the side panels.
+- Preview clearance was adjusted for the rebuilt footer. QR/scanner behavior,
+  Station state, scoring, map coordinates, and Backend contracts are unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
 ## 2026-08-03 Numeric marker and points pill
 
 - Team V2 map markers now place the compact Station display number inside the

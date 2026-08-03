@@ -25,12 +25,6 @@ import {
   type LeaderboardEntryResponse,
 } from "../api";
 import {LanguageSwitch} from "../components/LanguageSwitch";
-import {
-  TEAM_V2_MARKER_CENTER_Y,
-  TEAM_V2_MARKER_DESIGN_WIDTH,
-  TEAM_V2_MARKER_TIP_Y,
-  TeamV2NeonMapMarker,
-} from "../components/TeamV2NeonMapMarker";
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
 import {
@@ -260,8 +254,7 @@ function TeamMarker({
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
-  const drawScale = size / TEAM_V2_MARKER_DESIGN_WIDTH;
-  const markerCenterY = (TEAM_V2_MARKER_CENTER_Y - TEAM_V2_MARKER_TIP_Y) * drawScale;
+  const markerCenterY = -size * 0.58;
   const hitRadius = Math.max(22, size * 0.51);
   const iconScale = size / 40;
   const lockRadius = Math.max(5, size * 0.16);
@@ -294,24 +287,21 @@ function TeamMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
-      <TeamV2NeonMapMarker
-        scale={drawScale}
-        silver={marker.isLocked || marker.isCompleted}
+      <Path
+        data={`M ${-size * 0.28} ${-size * 0.36} L 0 0 L ${size * 0.28} ${-size * 0.36} Z`}
+        fill="rgba(3, 14, 20, 0.96)"
+        stroke={colors.stroke}
+        strokeWidth={2}
+        shadowColor={colors.glow}
+        shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
+        listening={false}
       />
       <Circle
         y={markerCenterY}
-        radius={148 * drawScale}
-        stroke={colors.usesSilverPurple ? undefined : colors.stroke}
-        strokeLinearGradientStartPoint={
-          colors.usesSilverPurple ? {x: -size / 2, y: markerCenterY} : undefined
-        }
-        strokeLinearGradientEndPoint={
-          colors.usesSilverPurple ? {x: size / 2, y: markerCenterY} : undefined
-        }
-        strokeLinearGradientColorStops={
-          colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
-        }
-        strokeWidth={1.8}
+        radius={size * 0.44}
+        fill="rgba(3, 14, 20, 0.98)"
+        stroke={colors.stroke}
+        strokeWidth={2.2}
         shadowColor={colors.glow}
         shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
         shadowOpacity={0.72}
@@ -319,24 +309,24 @@ function TeamMarker({
       />
       <Text
         x={-size / 2}
-        y={markerCenterY - size * 0.22}
+        y={markerCenterY - size * 0.25}
         width={size}
-        height={size * 0.44}
+        height={size * 0.5}
         text={marker.code}
         align="center"
         verticalAlign="middle"
         fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={Math.max(11, size * 0.38)}
+        fontSize={Math.max(12, size * 0.42)}
         fontStyle="bold"
         fill="#FFFFFF"
         shadowColor={colors.glow}
-        shadowBlur={5}
+        shadowBlur={3}
         listening={false}
       />
       {marker.isCompleted && (
         <Group
-          x={size * 0.27}
-          y={-size * 0.32}
+          x={size * 0.32}
+          y={-size * 0.76}
           scaleX={iconScale * 0.58}
           scaleY={iconScale * 0.58}
           listening={false}>
@@ -353,8 +343,8 @@ function TeamMarker({
       )}
       {marker.isLocked && (
         <Group
-          x={size * 0.28}
-          y={-size * 0.32}
+          x={size * 0.33}
+          y={-size * 0.76}
           listening={false}>
           <Circle
             radius={lockRadius}
@@ -441,7 +431,7 @@ function TeamMarkerLabel({
           colors.usesSilverPurple ? [0, "#C3CED8", 1, "#B05CFF"] : undefined
         }
         strokeWidth={1.2}
-        cornerRadius={4}
+        cornerRadius={STATION_LABEL_HEIGHT / 2}
         shadowColor={colors.glow}
         shadowBlur={12}
         shadowOpacity={0.72}

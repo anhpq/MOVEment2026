@@ -1,13 +1,13 @@
-export const STATION_LABEL_WIDTH = 78;
-export const STATION_LABEL_HEIGHT = 24;
+export const STATION_LABEL_WIDTH = 64;
+export const STATION_LABEL_HEIGHT = 20;
 
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MARKER_DRAW_REFERENCE_WIDTH = 640;
 const MARKER_REFERENCE_TIP_TO_TOP = 554;
-export const MIN_MARKER_SIZE = 32;
-export const BASE_MARKER_SIZE = 40;
-export const MAX_MARKER_SIZE = 64;
+export const MIN_MARKER_SIZE = 30;
+export const BASE_MARKER_SIZE = 36;
+export const MAX_MARKER_SIZE = 52;
 const BASE_MARKER_LABEL_GAP = 6;
 const MIN_MARKER_LABEL_GAP = 4;
 const MAX_MARKER_LABEL_GAP = 8;

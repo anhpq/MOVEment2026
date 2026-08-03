@@ -1,5 +1,12 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-03 Team V2 simplified marker/footer geometry
+
+- Team V2 uses a simple numeric circular pin with a small fully rounded points
+  pill, prioritizing readability over decorative marker detail.
+- The QR action, caption, and lower footer panels use separate layout bands so
+  controls do not overlap at responsive scales.
+
 ## 2026-08-03 Team V2 compact map markers
 
 - Each Team V2 map pin shows only its Station display number, with effective
