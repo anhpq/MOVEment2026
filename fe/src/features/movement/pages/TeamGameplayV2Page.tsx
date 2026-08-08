@@ -2,15 +2,12 @@ import {
   ArrowLeftOutlined,
   CloseOutlined,
   CustomerServiceOutlined,
-  FullscreenExitOutlined,
-  FullscreenOutlined,
-  RotateRightOutlined,
   LogoutOutlined,
   SettingOutlined,
   TeamOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Typography} from "antd";
+import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Switch, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
@@ -1374,19 +1371,15 @@ export function TeamGameplayV2Page() {
             <div className="team-v2-settings-body">
               <div className="team-v2-display-controls">
                 {!isStandaloneApp && (
-                  <Button
-                    icon={isBrowserFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-                    aria-pressed={isBrowserFullscreen}
-                    onClick={() => void handleToggleFullscreen()}>
-                    {t(isBrowserFullscreen ? "teamV2.exitFullscreen" : "teamV2.enterFullscreen")}
-                  </Button>
+                  <div className="team-v2-setting-row">
+                    <span>{t("teamV2.enterFullscreen")}</span>
+                    <Switch checked={isBrowserFullscreen} onChange={() => void handleToggleFullscreen()} />
+                  </div>
                 )}
-                <Button
-                  icon={<RotateRightOutlined />}
-                  aria-pressed={isLandscapeLocked}
-                  onClick={() => void handleToggleLandscape()}>
-                  {t(isLandscapeLocked ? "teamV2.unlockLandscape" : "teamV2.lockLandscape")}
-                </Button>
+                <div className="team-v2-setting-row">
+                  <span>{t("teamV2.lockLandscape")}</span>
+                  <Switch checked={isLandscapeLocked} onChange={() => void handleToggleLandscape()} />
+                </div>
               </div>
               <div className="team-v2-setting-row">
                 <span>{t("language.switch")}</span>
