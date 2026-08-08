@@ -861,6 +861,10 @@
   grid-column: 1 / -1;
 }
 
+.team-v2-display-switch.ant-switch:not(.ant-switch-checked) {
+  border: 1px solid #ffffff;
+}
+
 .team-v2-scanner,
 .team-v2-score-entry {
   align-content: start;

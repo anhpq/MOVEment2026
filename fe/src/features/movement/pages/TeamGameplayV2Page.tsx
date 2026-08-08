@@ -1116,9 +1116,6 @@ export function TeamGameplayV2Page() {
 
   const handleToggleLandscape = async () => {
     try {
-      if (!isLandscapeLocked && !isStandaloneApp && !isBrowserFullscreen) {
-        await toggleBrowserFullscreen();
-      }
       const result = await toggleLandscapeOrientation(isLandscapeLocked);
       if (result === "locked") setIsLandscapeLocked(true);
       if (result === "unlocked") setIsLandscapeLocked(false);
@@ -1373,12 +1370,12 @@ export function TeamGameplayV2Page() {
                 {!isStandaloneApp && (
                   <div className="team-v2-setting-row">
                     <span>{t("teamV2.enterFullscreen")}</span>
-                    <Switch checked={isBrowserFullscreen} onChange={() => void handleToggleFullscreen()} />
+                    <Switch className="team-v2-display-switch" checked={isBrowserFullscreen} onChange={() => void handleToggleFullscreen()} />
                   </div>
                 )}
                 <div className="team-v2-setting-row">
                   <span>{t("teamV2.lockLandscape")}</span>
-                  <Switch checked={isLandscapeLocked} onChange={() => void handleToggleLandscape()} />
+                  <Switch className="team-v2-display-switch" checked={isLandscapeLocked} onChange={() => void handleToggleLandscape()} />
                 </div>
               </div>
               <div className="team-v2-setting-row">
