@@ -75,8 +75,7 @@ export function isStandaloneDisplayMode(
   }
 
   return Boolean(
-    targetWindow?.matchMedia?.("(display-mode: fullscreen)").matches ||
-      targetWindow?.matchMedia?.("(display-mode: standalone)").matches,
+    targetWindow?.matchMedia?.("(display-mode: standalone)").matches,
   );
 }
 

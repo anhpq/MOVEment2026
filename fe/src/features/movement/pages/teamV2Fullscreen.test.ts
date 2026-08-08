@@ -86,4 +86,17 @@ describe("Team V2 fullscreen", () => {
       ),
     ).toBe(true);
   });
+
+  it("does not treat browser fullscreen display mode as an installed standalone app", () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === "(display-mode: fullscreen)",
+    })) as unknown as Window["matchMedia"];
+
+    expect(
+      isStandaloneDisplayMode(
+        {matchMedia},
+        {standalone: false} as unknown as Navigator,
+      ),
+    ).toBe(false);
+  });
 });
