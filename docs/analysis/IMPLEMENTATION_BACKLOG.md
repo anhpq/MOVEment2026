@@ -303,6 +303,13 @@
 - [ ] Complete a manual browser click-through using an Admin session after the
   rebuilt Frontend is running.
 
+## 2026-08-08 Team V2 Settings display controls
+
+- [x] Move Fullscreen from the header into Settings and add progressive landscape lock with localized fallback.
+- [x] Apply the supplied QR badge sizing/offset at every breakpoint.
+- [x] Pass focused Frontend Vitest, i18n parity, production build, and bundle gate.
+- [ ] Verify fullscreen/landscape behavior in Chrome and Safari, including iPhone Safari manual-rotation guidance.
+
 ## 2026-08-02 Team V2 browser fullscreen
 
 - [x] Add an accessible enter/exit fullscreen control next to Team V2 Settings

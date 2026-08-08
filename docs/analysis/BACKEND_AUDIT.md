@@ -1,3 +1,8 @@
+# 2026-08-08 Team V2 Settings display controls
+
+- Moved Fullscreen into Team V2 Settings, added progressive landscape lock with localized Safari/manual fallback, and standardized the QR badge layout.
+- Verification PASS: focused Frontend Vitest `5/5`, i18n parity `439`, and production build/bundle gate. Manual Chrome/Safari verification remains pending; no Backend, migration, seed, API, or Production behavior changed.
+
 # 2026-08-08 Plan Mode workflow reconciliation
 
 - Removed the mandatory seven-round Plan Mode workflow and `Rà X/7` format from

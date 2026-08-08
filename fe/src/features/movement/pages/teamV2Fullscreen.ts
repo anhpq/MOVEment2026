@@ -18,6 +18,30 @@ export const TEAM_V2_FULLSCREEN_CHANGE_EVENTS = [
 ] as const;
 
 export type FullscreenToggleResult = "entered" | "exited" | "unsupported";
+export type LandscapeToggleResult = "locked" | "unlocked" | "unsupported";
+
+type ScreenOrientationWithLock = ScreenOrientation & {
+  lock?: (orientation: OrientationLockType) => Promise<void>;
+  unlock?: () => void;
+};
+
+export async function toggleLandscapeOrientation(
+  locked: boolean,
+  targetScreen: Screen = screen,
+): Promise<LandscapeToggleResult> {
+  const orientation = targetScreen.orientation as ScreenOrientationWithLock | undefined;
+  if (!orientation || typeof orientation.lock !== "function") return "unsupported";
+  if (locked) {
+    orientation.unlock?.();
+    return "unlocked";
+  }
+  await orientation.lock("landscape");
+  return "locked";
+}
+
+export function unlockLandscapeOrientation(targetScreen: Screen = screen) {
+  (targetScreen.orientation as ScreenOrientationWithLock | undefined)?.unlock?.();
+}
 
 export function getActiveFullscreenElement(targetDocument: Document = document) {
   const webkitDocument = targetDocument as WebkitFullscreenDocument;

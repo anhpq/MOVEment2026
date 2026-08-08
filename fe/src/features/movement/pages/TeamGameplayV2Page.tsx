@@ -4,6 +4,7 @@ import {
   CustomerServiceOutlined,
   FullscreenExitOutlined,
   FullscreenOutlined,
+  RotateRightOutlined,
   LogoutOutlined,
   SettingOutlined,
   TeamOutlined,
@@ -48,7 +49,9 @@ import {
   getActiveFullscreenElement,
   isStandaloneDisplayMode,
   TEAM_V2_FULLSCREEN_CHANGE_EVENTS,
+  toggleLandscapeOrientation,
   toggleBrowserFullscreen,
+  unlockLandscapeOrientation,
 } from "./teamV2Fullscreen";
 import {
   TeamV2QrScanner,
@@ -632,6 +635,8 @@ function LeaderboardOverlay({
     };
   }, []);
 
+  useEffect(() => () => unlockLandscapeOrientation(), []);
+
   const refresh = useCallback(async () => {
     if (mountedRef.current) {
       setIsLoading(true);
@@ -737,6 +742,7 @@ export function TeamGameplayV2Page() {
     () => Boolean(getActiveFullscreenElement()),
   );
   const [isStandaloneApp, setIsStandaloneApp] = useState(isStandaloneDisplayMode);
+  const [isLandscapeLocked, setIsLandscapeLocked] = useState(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({width: 0, height: 0});
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
@@ -1099,11 +1105,29 @@ export function TeamGameplayV2Page() {
   const handleToggleFullscreen = async () => {
     try {
       const result = await toggleBrowserFullscreen();
+      if (result === "exited" && isLandscapeLocked) {
+        unlockLandscapeOrientation();
+        setIsLandscapeLocked(false);
+      }
       if (result === "unsupported") {
         message.info(t("teamV2.fullscreenUnavailable"), 7);
       }
     } catch {
       message.warning(t("teamV2.fullscreenFailed"));
+    }
+  };
+
+  const handleToggleLandscape = async () => {
+    try {
+      if (!isLandscapeLocked && !isStandaloneApp && !isBrowserFullscreen) {
+        await toggleBrowserFullscreen();
+      }
+      const result = await toggleLandscapeOrientation(isLandscapeLocked);
+      if (result === "locked") setIsLandscapeLocked(true);
+      if (result === "unlocked") setIsLandscapeLocked(false);
+      if (result === "unsupported") message.info(t("teamV2.landscapeUnavailable"), 7);
+    } catch {
+      message.info(t("teamV2.landscapeUnavailable"), 7);
     }
   };
 
@@ -1212,21 +1236,6 @@ export function TeamGameplayV2Page() {
           </div>
         </div>
         <div className="team-v2-header-actions">
-          {!isStandaloneApp && (
-            <button
-              type="button"
-              className="team-v2-fullscreen-button"
-              aria-label={t(
-                isBrowserFullscreen ? "teamV2.exitFullscreen" : "teamV2.enterFullscreen",
-              )}
-              aria-pressed={isBrowserFullscreen}
-              title={t(
-                isBrowserFullscreen ? "teamV2.exitFullscreen" : "teamV2.enterFullscreen",
-              )}
-              onClick={() => void handleToggleFullscreen()}>
-              {isBrowserFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-            </button>
-          )}
           <button
             type="button"
             className="team-v2-settings-button"
@@ -1363,6 +1372,22 @@ export function TeamGameplayV2Page() {
               </button>
             </div>
             <div className="team-v2-settings-body">
+              <div className="team-v2-display-controls">
+                {!isStandaloneApp && (
+                  <Button
+                    icon={isBrowserFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+                    aria-pressed={isBrowserFullscreen}
+                    onClick={() => void handleToggleFullscreen()}>
+                    {t(isBrowserFullscreen ? "teamV2.exitFullscreen" : "teamV2.enterFullscreen")}
+                  </Button>
+                )}
+                <Button
+                  icon={<RotateRightOutlined />}
+                  aria-pressed={isLandscapeLocked}
+                  onClick={() => void handleToggleLandscape()}>
+                  {t(isLandscapeLocked ? "teamV2.unlockLandscape" : "teamV2.lockLandscape")}
+                </Button>
+              </div>
               <div className="team-v2-setting-row">
                 <span>{t("language.switch")}</span>
                 <LanguageSwitch onChange={(nextLanguage) => void fetchPlayerDatabase(nextLanguage).then(loadDatabase).catch(() => message.warning(t("stationData.refreshFailed")))} />

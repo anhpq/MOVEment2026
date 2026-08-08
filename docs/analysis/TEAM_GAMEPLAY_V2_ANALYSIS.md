@@ -1,5 +1,12 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-08 Settings display controls and QR badge
+
+- Moved the browser fullscreen control from the V2 header into Settings; the header retains only Settings.
+- Settings adds a landscape toggle that attempts fullscreen then `screen.orientation.lock("landscape")` when supported. Unsupported/rejected browser paths, including Safari limitations, show localized manual-rotation guidance without a false success state.
+- The QR badge SVG now fills its control and uses `translateY(-5px)` at every breakpoint.
+- Verification passed: focused fullscreen Vitest `5/5`, i18n parity `439`, and Frontend production build/bundle gate. Manual Chrome/Safari and physical-device verification remain pending.
+
 ## 2026-08-04 Direct marker-to-game flow
 
 - Removed the selected-Station preview card and its View mission step.
