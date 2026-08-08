@@ -1,3 +1,12 @@
+# 2026-08-08 Plan Mode workflow reconciliation
+
+- Removed the mandatory seven-round Plan Mode workflow and `Rà X/7` format from
+  active agent instructions. Plan Mode now asks only material questions and
+  publishes when the specification is decision-complete.
+- Retained concise Feature Analysis decision logs and all historical workflow
+  records. This is documentation-only; no Backend, Frontend, migration, seed,
+  API, or Production behavior changed.
+
 # 2026-08-04 Team V2 direct marker-to-game flow
 
 - Frontend-only interaction removed the intermediate preview and opens V2

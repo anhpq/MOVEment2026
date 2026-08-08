@@ -65,7 +65,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `QR_LOGIN.md` | Feature analysis for Automatic URL QR Login. |
 | `QR_PAYLOADS.md` | QR payload formats, Legacy formats, and migration references. |
 | `IOS_SAFARI_QR_CAMERA_FIX.md` | Browser and camera compatibility analysis for iOS QR scanning. |
-| `*_ANALYSIS.md` | Feature implementation analysis, status, verification, provenance, and seven-round decision log. |
+| `*_ANALYSIS.md` | Feature implementation analysis, status, verification, provenance, and decision log. |
 | `docs/prompts/*.md` | Task execution instructions. Prompt files are not Business Rule sources. |
 
 ---
@@ -78,8 +78,8 @@ If Source Code conflicts with confirmed Business Rules:
   browser/manual verification statuses separately.
 - A Feature Analysis is not a Business Rule authority. When it conflicts with
   `OPEN_QUESTIONS_AND_DECISIONS.md`, the confirmed Business Rule wins.
-- Every new or materially revised plan follows the seven-round Plan Mode workflow
-  defined in `AGENTS.md` and `docs/prompts/00_WORKFLOW.md`.
+- Every new or materially revised plan follows the Plan Mode workflow defined in
+  `AGENTS.md`.
 
 | Analysis | Feature coverage |
 | --- | --- |
