@@ -261,6 +261,79 @@ describe('AdminService Team QR login lifecycle', () => {
     expect(result[0]).not.toHaveProperty('tokenHash');
   });
 
+  it('summarizes QR status without returning raw tokens', async () => {
+    mockPrisma.qrLoginToken.findMany.mockResolvedValue([
+      {
+        teamId: 7,
+        isActive: false,
+        consumedAt: null,
+        revokedAt: new Date(),
+      },
+      {
+        teamId: 7,
+        isActive: true,
+        consumedAt: null,
+        revokedAt: null,
+      },
+      {
+        teamId: 8,
+        isActive: false,
+        consumedAt: new Date(),
+        revokedAt: null,
+      },
+    ]);
+    mockPrisma.qrToken.findMany.mockResolvedValue([
+      {
+        stationId: 'ST001',
+        isActive: false,
+        expiresAt: null,
+        revokedAt: new Date(),
+      },
+      {
+        stationId: 'ST001',
+        isActive: true,
+        expiresAt: null,
+        revokedAt: null,
+      },
+      {
+        stationId: 'ST001',
+        isActive: true,
+        expiresAt: null,
+        revokedAt: null,
+      },
+      {
+        stationId: 'ST002',
+        isActive: true,
+        expiresAt: new Date(0),
+        revokedAt: null,
+      },
+    ]);
+
+    const result = await service.qrStatusSummary();
+
+    expect(result).toEqual({
+      teams: [
+        {teamId: 7, status: 'ACTIVE'},
+        {teamId: 8, status: 'NONE'},
+      ],
+      stations: [
+        {stationId: 'ST001', activeCount: 2, status: 'ACTIVE'},
+        {stationId: 'ST002', activeCount: 0, status: 'EXPIRED'},
+      ],
+    });
+    expect(JSON.stringify(result)).not.toContain('rawToken');
+    expect(mockPrisma.qrLoginToken.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.not.objectContaining({rawToken: expect.anything()}),
+      }),
+    );
+    expect(mockPrisma.qrToken.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.not.objectContaining({rawToken: expect.anything()}),
+      }),
+    );
+  });
+
   it('rotates by revoking the active token before creating a replacement', async () => {
     await service.generateTeamQrLoginToken(1, 7, {}, true);
 
@@ -785,6 +858,80 @@ describe('AdminService Team QR login lifecycle', () => {
       }),
     ]);
     expect(result.stations[0]).not.toHaveProperty('images');
+    expect(mockPrisma.station.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.objectContaining({
+          id: true,
+          name: true,
+          images: expect.any(Object),
+          games: expect.any(Object),
+        }),
+      }),
+    );
+  });
+
+  it('returns only fields consumed by the Admin progress matrix client', async () => {
+    const checkedInAt = new Date('2026-08-01T02:00:00.000Z');
+    mockPrisma.station.findMany.mockResolvedValue([
+      {id: 'ST999', name: 'Station Lean', images: [], games: []},
+    ]);
+    mockPrisma.team.findMany.mockResolvedValue([
+      {
+        id: 7,
+        name: 'Team Seven',
+        username: 'team07',
+        captainName: 'Captain Seven',
+        totalPoints: 20,
+        totalPlaySeconds: 300,
+        color: '#123456',
+        progress: [
+          {
+            id: 71,
+            stationId: 'ST999',
+            status: ProgressStatus.PLAYING,
+            scoreAchieved: 0,
+            checkedInAt,
+            checkedOutAt: null,
+            completedAt: null,
+            game: {maxPoints: 30},
+            gameId: 99,
+            cancelledAt: null,
+            reopenedAt: null,
+          },
+        ],
+      },
+    ]);
+
+    const result = await service.progressMatrix();
+
+    expect(result.rows[0]).toEqual({
+      team: {
+        id: 7,
+        name: 'Team Seven',
+        username: 'team07',
+        captainName: 'Captain Seven',
+        totalPoints: 20,
+        totalPlaySeconds: 300,
+        teamColor: '#123456',
+        color: '#123456',
+      },
+      cells: [
+        {
+          progressId: 71,
+          stationId: 'ST999',
+          status: ProgressStatus.PLAYING,
+          scoreAchieved: 0,
+          maxPoints: 30,
+          checkedInAt,
+          checkedOutAt: null,
+          completedAt: null,
+        },
+      ],
+    });
+    expect(result.rows[0].cells[0]).not.toHaveProperty('gameId');
+    expect(result.rows[0].cells[0]).not.toHaveProperty('cancelledAt');
+    expect(result.rows[0].cells[0]).not.toHaveProperty('reopenedAt');
+    expect(result).not.toHaveProperty('serverNow');
   });
 
   it('replaces, reorders, clears, and preserves Station galleries explicitly', async () => {

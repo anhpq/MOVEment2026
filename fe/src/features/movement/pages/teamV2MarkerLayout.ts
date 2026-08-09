@@ -1,13 +1,13 @@
-export const STATION_LABEL_WIDTH = 120;
-export const STATION_LABEL_HEIGHT = 44;
+export const STATION_LABEL_WIDTH = 52;
+export const STATION_LABEL_HEIGHT = 18;
 
 const MAP_WORLD_WIDTH = 2048;
 const MAP_WORLD_HEIGHT = 1000;
 const MARKER_DRAW_REFERENCE_WIDTH = 640;
 const MARKER_REFERENCE_TIP_TO_TOP = 554;
-export const MIN_MARKER_SIZE = 32;
-export const BASE_MARKER_SIZE = 40;
-export const MAX_MARKER_SIZE = 64;
+export const MIN_MARKER_SIZE = 26;
+export const BASE_MARKER_SIZE = 30;
+export const MAX_MARKER_SIZE = 40;
 const BASE_MARKER_LABEL_GAP = 6;
 const MIN_MARKER_LABEL_GAP = 4;
 const MAX_MARKER_LABEL_GAP = 8;
@@ -31,19 +31,6 @@ export type MarkerLabelSource = {
   y: number;
 };
 
-export type TeamV2MarkerStateSource = {
-  status: string;
-  backendStatus?: string;
-};
-
-export function shouldRenderTeamV2Marker(station: TeamV2MarkerStateSource | null) {
-  return station?.status !== "Finished" && station?.backendStatus !== "COMPLETED";
-}
-
-export function isTeamV2MarkerLocked(station: TeamV2MarkerStateSource | null) {
-  return station?.backendStatus === "LOCKED";
-}
-
 export type MarkerScreenLayout<T extends MarkerLabelSource = MarkerLabelSource> = {
   marker: T;
   anchorX: number;
@@ -57,12 +44,63 @@ export type MarkerScreenLayout<T extends MarkerLabelSource = MarkerLabelSource> 
   isInViewport: boolean;
 };
 
+export function getStationMarkerFontSize(code: string, markerSize: number) {
+  const characterCount = Array.from(code.trim()).length;
+  const scale = characterCount >= 4 ? 0.26 : characterCount === 3 ? 0.32 : 0.4;
+  return Math.max(8, markerSize * scale);
+}
+
+type PrioritizedMarker = MarkerLabelSource & {
+  isActive?: boolean;
+  isSelected?: boolean;
+};
+
+export function getNonOverlappingStationLabelIds<T extends PrioritizedMarker>(
+  layouts: ReadonlyMap<string, MarkerScreenLayout<T>>,
+  viewport: MarkerLabelViewport,
+) {
+  const padding = viewport.width < 600 ? 5 : 8;
+  const candidates = [...layouts.values()]
+    .filter((layout) => layout.isInViewport)
+    .sort((left, right) =>
+      Number(Boolean(right.marker.isSelected)) - Number(Boolean(left.marker.isSelected)) ||
+      Number(Boolean(right.marker.isActive)) - Number(Boolean(left.marker.isActive)),
+    );
+  const occupied: Array<{left: number; right: number; top: number; bottom: number}> = [];
+  const visible = new Set<string>();
+
+  for (const layout of candidates) {
+    const width = STATION_LABEL_WIDTH * layout.labelScale;
+    const height = STATION_LABEL_HEIGHT * layout.labelScale;
+    const box = {
+      left: clamp(layout.labelX, padding, Math.max(padding, viewport.width - width - padding)),
+      right: 0,
+      top: clamp(layout.labelY, padding, Math.max(padding, viewport.height - height - padding)),
+      bottom: 0,
+    };
+    box.right = box.left + width;
+    box.bottom = box.top + height;
+    const overlaps = occupied.some((other) =>
+      box.left < other.right + padding &&
+      box.right + padding > other.left &&
+      box.top < other.bottom + padding &&
+      box.bottom + padding > other.top,
+    );
+    if (!overlaps || layout.marker.isSelected) {
+      visible.add(layout.marker.station.id);
+      occupied.push(box);
+    }
+  }
+
+  return visible;
+}
+
 function getBaseMapScale(viewport: MarkerLabelViewport) {
   if (viewport.width <= 0 || viewport.height <= 0) {
     return 1;
   }
   if (viewport.height > viewport.width) {
-    return (viewport.height * 0.78) / MAP_WORLD_HEIGHT;
+    return (viewport.height * 0.94) / MAP_WORLD_HEIGHT;
   }
   return Math.min(
     viewport.width / MAP_WORLD_WIDTH,
@@ -104,8 +142,8 @@ export function getStationLabelLayouts<T extends MarkerLabelSource>(
       marker,
       anchorX,
       anchorY,
-      labelX: anchorX - scaledLabelWidth / 2,
-      labelY: anchorY - markerAttachmentOffset - labelGap - scaledLabelHeight,
+      labelX: clamp(anchorX - scaledLabelWidth / 2, 4, Math.max(4, viewport.width - scaledLabelWidth - 4)),
+      labelY: clamp(anchorY + labelGap, 4, Math.max(4, viewport.height - scaledLabelHeight - 4)),
       labelScale,
       labelGap,
       markerSize,

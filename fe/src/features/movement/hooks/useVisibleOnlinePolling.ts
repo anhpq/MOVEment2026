@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
 import {
+  getTeamRuntimePollIntervalMs,
   isTeamRuntimeActive,
-  TEAM_RUNTIME_POLL_INTERVAL_MS,
 } from "../runtimeCoordinator";
 
 type VisibleOnlinePollingOptions = {
@@ -14,12 +14,13 @@ export function useVisibleOnlinePolling(
   callback: () => unknown | Promise<unknown>,
   {
     enabled = true,
-    intervalMs = TEAM_RUNTIME_POLL_INTERVAL_MS,
+    intervalMs,
     runImmediately = true,
   }: VisibleOnlinePollingOptions = {},
 ) {
   const callbackRef = useRef(callback);
   const inFlightRef = useRef(false);
+  const resolvedIntervalMs = intervalMs ?? getTeamRuntimePollIntervalMs();
 
   useEffect(() => {
     callbackRef.current = callback;
@@ -52,7 +53,7 @@ export function useVisibleOnlinePolling(
     if (runImmediately) {
       void refresh();
     }
-    const timer = window.setInterval(() => void refresh(), intervalMs);
+    const timer = window.setInterval(() => void refresh(), resolvedIntervalMs);
     document.addEventListener("visibilitychange", refreshWhenActive);
     window.addEventListener("online", refreshWhenActive);
 
@@ -62,5 +63,5 @@ export function useVisibleOnlinePolling(
       document.removeEventListener("visibilitychange", refreshWhenActive);
       window.removeEventListener("online", refreshWhenActive);
     };
-  }, [enabled, intervalMs, runImmediately]);
+  }, [enabled, resolvedIntervalMs, runImmediately]);
 }

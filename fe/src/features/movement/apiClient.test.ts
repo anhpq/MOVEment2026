@@ -4,6 +4,7 @@ import {
   apiGet,
   apiPost,
   getSafeApiErrorTranslationKey,
+  isAuthFailure,
 } from "./apiClient";
 import {persistStoredSession} from "./sessionIdentity";
 
@@ -30,6 +31,16 @@ afterEach(() => {
 });
 
 describe("apiClient request policy", () => {
+  it("distinguishes an expired session from a forbidden operation", () => {
+    const unauthorized = new ApiError("unauthorized", 401, "GET", "/api/auth/me");
+    const forbidden = new ApiError("forbidden", 403, "GET", "/api/player/leaderboard");
+
+    expect(isAuthFailure(unauthorized)).toBe(true);
+    expect(isAuthFailure(forbidden)).toBe(false);
+    expect(getSafeApiErrorTranslationKey(unauthorized)).toBe("errors.sessionExpired");
+    expect(getSafeApiErrorTranslationKey(forbidden)).toBe("errors.generic");
+  });
+
   it("retries a retryable GET at most twice and reuses its request id", async () => {
     vi.useFakeTimers();
     const fetchMock = vi.fn()
@@ -48,6 +59,17 @@ describe("apiClient request policy", () => {
     expect(new Set(requestIds).size).toBe(1);
   });
 
+  it("omits JSON content type from bodyless GET requests", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ok: true}));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await apiGet("/api/player/state");
+
+    const headers = new Headers(fetchMock.mock.calls[0]?.[1]?.headers);
+    expect(headers.get("Content-Type")).toBeNull();
+    expect(headers.get("Authorization")).toBe("Bearer test-access-token");
+  });
+
   it("never automatically retries a mutation", async () => {
     const fetchMock = vi.fn().mockRejectedValue(new TypeError("network down"));
     vi.stubGlobal("fetch", fetchMock);
@@ -55,6 +77,8 @@ describe("apiClient request policy", () => {
     await expect(apiPost("/api/player/qr-action", {qrToken: "redacted"}))
       .rejects.toMatchObject({code: "NETWORK", retryable: true});
     expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(new Headers(fetchMock.mock.calls[0]?.[1]?.headers).get("Content-Type"))
+      .toBe("application/json");
   });
 
   it("keeps backend details internal while exposing a safe message and code", async () => {

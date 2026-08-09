@@ -8,6 +8,75 @@
 | Runtime/Production Verification | Production-like local smoke completed; Production not performed |
 | Browser/Manual Verification | Pending physical/responsive manual verification |
 
+## Follow-up hot-path audit - 2026-08-02
+
+The current local database is approximately `9.8 MiB` with `25` Teams, `17`
+Stations, `425` progress rows, `69` Team sessions, `217` activity logs, and no
+Final submissions. Current inventory does not justify a general index migration.
+
+Confirmed priorities:
+
+1. `JwtAuthGuard` validates the Team session and updates `lastSeenAt` on every
+   authenticated Team request. Local PostgreSQL statistics show `292` updates
+   and `28` dead tuples across `69` session rows. Preserve per-request revoke
+   validation, but throttle the write with a conditional update when the stored
+   heartbeat is at least 60 seconds old.
+2. Every `/api/player/state` poll recomputes the shared catalog hash and full
+   lean leaderboard. At the normal 15-second interval, 25 continuously visible
+   Teams can produce about 100 state polls per minute. Add a bounded 5-15 second
+   single-flight cache for shared projections and explicitly invalidate it
+   after gameplay, scoring, Final, Station/media, Team, or Event Config changes.
+3. `EventConfigService.getConfig()` uses `upsert({ update: {} })` on a hot read
+   path. Normal reads should use `findUnique`, with creation limited to a
+   missing-row fallback or startup/seed path; cache only if Admin updates
+   invalidate it.
+
+Deferred until growth evidence exists:
+
+- a Final-submission index including `teamId`, because the local table is empty;
+- Activity Log actor/time or created-time indexes, because the local table has
+  only 217 rows;
+- timer micro-optimizations and progress-matrix lookup maps, because they have
+  lower impact than the request/DB hot paths above.
+
+Required evidence before completion: Prisma/PostgreSQL query counts, WAL or
+tuple-update rate, p95 `/api/player/state`, cache hit rate, mutation-to-read
+freshness, and `EXPLAIN (ANALYZE, BUFFERS)` for any proposed index.
+
+## Network Transfer Optimization - 2026-08-01
+
+- Admin System Config now loads QR metadata through one
+  `GET /api/admin/qr-status-summary` request instead of issuing one Team-token
+  request per Team and one Station-token request per Station. With the canonical
+  25-Team/17-Station inventory, initial page loading drops from 43 requests to
+  2 requests including the progress matrix. Raw QR tokens are still fetched
+  only after the Admin explicitly opens a QR preview. The live local matrix
+  dropped from the 101,512-byte baseline to 75,993 bytes (25.1% smaller), and
+  the new summary measured 1,767 bytes.
+- Station List now consumes the Final availability already returned by
+  `/api/player/state` and no longer polls `/api/player/final` separately. Its
+  closed-overlay steady state drops from about 12 to 8 periodic GET requests
+  per minute.
+- Browsers reporting `saveData`, `2g`, or `slow-2g` use a 30-second default
+  polling interval instead of 15 seconds, reducing the same Station List steady
+  state to about 4 periodic GET requests per minute. Reduced-data map selection
+  is capped at the 1920-pixel WebP variant instead of downloading the
+  419,146-byte 2950-pixel variant.
+- Player playing-count and leaderboard responses, plus Admin QR summary, use
+  private revalidation so unchanged responses can return `304` without a body.
+  Bodyless GET requests no longer send an unnecessary JSON `Content-Type`
+  header. Cross-origin CORS preflight results are reusable for 10 minutes,
+  avoiding repeated OPTIONS requests on the OBS/API split-origin path.
+- Nginx enables gzip for text, JavaScript, CSS, SVG, and proxied JSON; Vite
+  fingerprinted assets cache for one year, stable media for 30 days, and SPA
+  HTML revalidates. The OBS deploy path applies the equivalent cache metadata.
+- Verification passed: Backend Jest `164/164`, lint, and build; Frontend Vitest
+  `55/55`, i18n parity `395`, lint, production build, and bundle gate at
+  `203.38 KiB` initial gzip JavaScript. A local real OPTIONS request returned
+  `204` with `Access-Control-Max-Age: 600`; unchanged Admin matrix and QR
+  summary requests each returned `304` with zero body bytes. Deployment and
+  live cache/gzip header verification were not performed.
+
 ## Resume Completion — 2026-07-29
 
 - Reviewed mutation reconciliation, session-principal isolation, polling guards,
@@ -125,7 +194,8 @@ Business Rules. Admin behavior and the existing Player APIs remain compatible.
 ## Implementation Decisions
 
 - Dynamic Team state uses visible/online-only, non-overlapping 15-second
-  polling. Catalog reloads only when locale or catalog version changes.
+  polling, or 30 seconds when the browser reports reduced-data/2G conditions.
+  Catalog reloads only when locale or catalog version changes.
 - Playing counts and leaderboard poll only while their consumer is visible.
 - Last-known data remains visible on transient failure; mutations are never
   automatically replayed.
@@ -143,8 +213,11 @@ Business Rules. Admin behavior and the existing Player APIs remain compatible.
 
 - Canonical 17-Station `/player/state` is at most 8 kB uncompressed; catalog is
   at most 32 kB and contains no `imageUrls`.
-- Visible Team V2 steady state emits at most eight periodic GET requests per
-  minute with closed overlays; hidden tabs emit none.
+- Visible Team V2 and Station List steady state emits at most eight periodic GET
+  requests per minute with closed overlays, or four in reduced-data mode;
+  hidden tabs emit none.
+- Canonical Admin System Config bootstrap emits two GET requests, and QR status
+  summary responses contain no raw token or token hash.
 - Each gameplay mutation emits one POST and at most one state reconciliation
   GET.
 - Team UI preserves Backend total points, including Final bonus, and Backend
@@ -165,7 +238,8 @@ Business Rules. Admin behavior and the existing Player APIs remain compatible.
   retry, and safe localized errors.
 - Full Backend Jest/lint/build and Frontend test/i18n/lint/build.
 - Production-like API/browser smoke, response-size/request-count checks,
-  responsive Team V1/V2 review, and bundle-budget verification.
+  conditional `304`, gzip/cache-header checks, responsive Team V1/V2 review,
+  and bundle-budget verification.
 - Production and physical-device verification remain explicitly unverified
   unless separately authorized and actually performed.
 
@@ -197,3 +271,10 @@ After implementation and verification update:
 
 `OPEN_QUESTIONS_AND_DECISIONS.md` is not changed because this work preserves all
 confirmed Business Rules.
+## 2026-08-03 V2 default Team bootstrap destination
+
+- Team authentication and authenticated recovery now land on `/team/v2`, which
+  continues using the shared runtime coordinator, lean state loading, polling,
+  and mutation reconciliation.
+- Frontend tests, lint, build, and bundle budget passed. Authenticated browser
+  redirect/data bootstrap smoke remains pending.

@@ -1,5 +1,60 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-03 Completed Station gameplay action
+
+- Team V1 Station List and map drawer now disable the gameplay button for a
+  finished Station and label it `Hoàn thành` / `Finished`.
+- V2 already omits gameplay actions for completed Stations. Media actions remain
+  independent and available according to their existing rules.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget.
+
+## 2026-08-03 Team score confirmation copy
+
+- Team V1 and V2 score confirmations now show the exact score and Station
+  identity before submission.
+- Vietnamese and English copy explicitly asks whether the user is sure about
+  entering the displayed score for the Station before it is recorded.
+- The confirmation warns that the Team cannot change its own score afterward;
+  Admin correction behavior remains unchanged.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget (`204.08 KiB` initial gzip JS).
+
+## 2026-08-03 Team score entry without reason
+
+- The Team score modal shown after Check-out now contains only the required
+  score input and no longer sends an optional reason.
+- Admin score correction retains its required reason field and validation.
+- Score limits, tracking modes, completion, and Backend authority are unchanged.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget.
+
+## 2026-08-03 Shared Station identity row
+
+- Check-in and Check-out now present the Station code as a compact badge beside
+  the Station name instead of stacking the two values vertically.
+- Long Station names wrap safely without changing QR or gameplay behavior.
+
+## 2026-08-03 Station Detail camera-first Check-out
+
+- The V1 Station Detail Check-out modal now matches the Check-in camera-first
+  pattern, with Station identity and concise guidance.
+- Manual token entry remains available as a collapsible fallback; camera decode
+  continues to auto-submit through the existing authoritative Check-out mutation.
+- The informational scoring panel and default modal footer were removed from
+  this scan step without changing tracking-mode or scoring behavior.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget. Physical mobile smoke remains open.
+
+## 2026-08-03 Station List camera-first Check-in
+
+- The V1 Station List Check-in modal now prioritizes camera scanning and keeps
+  manual token entry as a collapsible fallback.
+- Camera decode continues to invoke the same authoritative Check-in mutation;
+  no QR validation, purpose, session, or scoring Business Rule changed.
+- Full Frontend verification passed; physical camera verification remains open.
+
+
 ## Status
 
 | Area | Status |

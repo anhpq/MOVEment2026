@@ -60,11 +60,12 @@ If Source Code conflicts with confirmed Business Rules:
 | `PROJECT_ANALYSIS_SPEC.md` | Project-wide functional analysis and shared flow. |
 | `BACKEND_AUDIT.md` | Technical implementation history and audit notes. |
 | `IMPLEMENTATION_BACKLOG.md` | Remaining work, gaps, risks, and implementation priorities. |
+| `AGENT_SKILLS_ANALYSIS.md` | Project-local skill inventory, admission decisions, overrides, and validation evidence. |
 | `TEAM_LOGIN_DATA.md` | Team login and local/test account data reference. |
 | `QR_LOGIN.md` | Feature analysis for Automatic URL QR Login. |
 | `QR_PAYLOADS.md` | QR payload formats, Legacy formats, and migration references. |
 | `IOS_SAFARI_QR_CAMERA_FIX.md` | Browser and camera compatibility analysis for iOS QR scanning. |
-| `*_ANALYSIS.md` | Feature implementation analysis, status, verification, provenance, and seven-round decision log. |
+| `*_ANALYSIS.md` | Feature implementation analysis, status, verification, provenance, and decision log. |
 | `docs/prompts/*.md` | Task execution instructions. Prompt files are not Business Rule sources. |
 
 ---
@@ -77,8 +78,8 @@ If Source Code conflicts with confirmed Business Rules:
   browser/manual verification statuses separately.
 - A Feature Analysis is not a Business Rule authority. When it conflicts with
   `OPEN_QUESTIONS_AND_DECISIONS.md`, the confirmed Business Rule wins.
-- Every new or materially revised plan follows the seven-round Plan Mode workflow
-  defined in `AGENTS.md` and `docs/prompts/00_WORKFLOW.md`.
+- Every new or materially revised plan follows the Plan Mode workflow defined in
+  `AGENTS.md`.
 
 | Analysis | Feature coverage |
 | --- | --- |
@@ -92,6 +93,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
 | `TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md` | Lean Team APIs, adaptive polling, error resilience, concurrency hardening, and Team bundle/data budgets. |
 | `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
+| `AGENT_SKILLS_ANALYSIS.md` | Codex project-local skills, runtime-skill boundaries, admission gate, and workflow validation. |
 
 ---
 
@@ -905,6 +907,40 @@ docs/prompts/00_WORKFLOW.md
 - Do not push automatically.
 - Do not deploy automatically.
 - Do not force-push, reset, or rewrite history without explicit user approval.
+
+---
+
+## 19. Agent Skills and Tooling
+
+### Scope
+
+- Skills stored under `.codex/skills`.
+- Skills supplied by the host runtime on `D:`.
+- Skill overlap, trigger/context cost, project overrides, and validation.
+
+### Required Reading
+
+```text
+AGENTS.md
+docs/analysis/AGENT_SKILLS_ANALYSIS.md
+docs/prompts/00_WORKFLOW.md
+```
+
+### Admission Rule
+
+A project-local skill must reduce an observed error or repeated workflow, avoid
+functional overlap, keep context proportional, and pass at least one real
+repository workflow. Generic runtime skills are not copied without a documented
+project override or reproducibility need.
+
+### Must Update After Change
+
+```text
+docs/analysis/AGENT_SKILLS_ANALYSIS.md
+```
+
+Update `AGENTS.md` or `docs/prompts/00_WORKFLOW.md` only when the repeatable
+agent workflow changes.
 
 ---
 

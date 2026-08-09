@@ -8,6 +8,31 @@
 | Runtime/Production Verification | Local automated build/cache/polling verification completed; Production pending |
 | Browser/Manual Verification | Pending verification |
 
+## 2026-08-01 Completed and Locked marker appearance
+
+- Completed and Locked markers remain visible and tappable on the Station map.
+  Both use the shared silver `#C3CED8` to neon-purple `#B05CFF` gradient;
+  Completed retains its check and Locked retains a lower-right lock badge.
+- Backend status is authoritative. Display status `Finished` is used only when
+  `backendStatus` is absent. Locked appearance takes precedence over all other
+  presentation states.
+- Completed markers render at `40%` opacity and rise to `70%` while their detail
+  drawer is open. Locked markers remain at `100%`, including while selected.
+  Team and Admin/editable maps use the same presentation.
+- Focused marker Vitest passed (`10/10`), full Frontend Vitest passed (`44/44`),
+  and i18n parity, Frontend lint, production build, and bundle gate passed.
+  Authenticated browser and physical-device visual verification remain pending.
+
+### Review Decision Log
+
+1. Symbols: Completed uses a check; Locked uses a lock badge.
+2. Locked opacity: keep `100%`; only Completed is dimmed.
+3. Selected priority: Locked remains authoritative silver-purple.
+4. Lock placement: lower-right badge so the Station code remains readable.
+5. Interaction: both states remain tappable; gameplay guards remain unchanged.
+6. Palette scope: apply the gradient to the complete visual marker group.
+7. Palette token: use neon purple `#B05CFF` with silver `#C3CED8`.
+
 ## 2026-07-29 Runtime Stability Integration
 
 - Team map data now comes from the lean catalog/state split; image URLs and map
@@ -26,7 +51,8 @@ responsive WebP map delivery without changing Station coordinates or APIs.
 ## Current Implementation
 
 - Marker UI derives state from authoritative backend status with a display-status
-  fallback and keeps accessible labels/reduced-motion behavior.
+  fallback only when backend status is absent, and keeps accessible labels/
+  reduced-motion behavior.
 - The Konva Stage matches the visible viewport instead of allocating the full
   off-screen map width; the existing logical `2.5:1` map space still owns image
   and marker coordinates so persisted positions and transforms remain unchanged.

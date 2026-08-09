@@ -1,5 +1,21 @@
 # Frontend Localization Analysis
 
+## 2026-08-03 Team V2 Station preview copy
+
+- Added synchronized VI/EN accessible copy for the compact Station preview,
+  View mission action, and preview close control.
+- i18n parity passed with `420` keys.
+
+## 2026-08-02 Shared accessibility copy follow-up
+
+- Localized authorization-denied title, description, and role-specific return
+  actions in `ProtectedRoute`.
+- Localized primary-navigation/application-branding accessible names and map
+  reset/zoom labels.
+- Added localized Leaderboard initial-load failure copy with retry behavior.
+- Frontend i18n parity passes with `409` keys.
+
+
 ## Status
 
 | Area | Status |
@@ -7,6 +23,15 @@
 | Implementation | Completed for i18n infrastructure, language switch, Player Station Backend localization, Admin bilingual Station editor, core Login/QR/AppFrame copy, Station list/detail/map, Team list, Leaderboard, Final, Admin Operations, and Admin System Config copy |
 | Runtime/Production Verification | Blocked: 2026-07-28 read-only smoke found stale/broken Production JS asset reference |
 | Browser/Manual Verification | Pending desktop/mobile smoke |
+
+## 2026-08-02 Team V2 fullscreen copy
+
+- Added VI/EN labels for entering and exiting fullscreen, API failure, and the
+  iPhone Safari Add to Home Screen fallback. The icon buttons expose the same
+  localized text through `aria-label` and `title`.
+- i18n parity passed with `399` keys. Full Frontend Vitest, lint, production
+  build, and bundle gate passed; physical Safari/iOS copy verification remains
+  pending.
 
 ## 2026-07-29 Runtime Stability Integration
 
@@ -181,3 +206,8 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Approved Plan 2 execution request: `FE song ngữ VI/EN và Station localization từ Backend`.
 - Seven-round Plan Mode decisions were completed before implementation; round 7
   used the recommended default after no response.
+## 2026-08-03 V2 default navigation localization
+
+- Team protected-route recovery now uses bilingual `Quay về trò chơi` / `Back
+  to game` copy for the `/team/v2` default destination.
+- i18n parity passed with `417` Vietnamese/English keys.

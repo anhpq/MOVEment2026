@@ -202,19 +202,10 @@ Không cần đọc toàn bộ repository hoặc toàn bộ thư mục `docs/` c
 - Không dùng `.kilo/plans` để đọc hoặc lưu plan.
 - Plan của Feature được lưu tại `docs/analysis/<FEATURE>_ANALYSIS.md` và đăng ký
   trong `FEATURE_INDEX.md`.
-- Mọi task trong Plan Mode phải có ít nhất bảy vòng rà khác nhau, kể cả task nhỏ
-  hoặc gấp; không được bỏ qua.
-- Trước mỗi vòng, ghi `Rà X/7` và nêu góc đang kiểm tra.
-- Mỗi vòng hỏi ít nhất một câu có thể khóa hoặc thay đổi plan. Không giới hạn số
-  câu, nhưng câu lặp hoặc câu hỏi lấp chỗ không được tính.
-- Phải chờ user trả lời rồi mới sang vòng tiếp theo. Nếu cơ chế user input hết
-  thời gian chờ tối đa 240 giây, dùng recommended default, ghi assumption và
-  tính vòng đó hoàn tất.
-- Agent tự chọn bảy chủ đề theo rủi ro task; bảy chủ đề phải khác nhau.
-- Chỉ phát hành proposed plan sau đủ bảy vòng hợp lệ.
-- Khi sửa plan, thay đổi lớn phải chạy lại bảy vòng. Thay đổi cục bộ có thể kế
-  thừa vòng cũ còn hợp lệ, nhưng phải nêu rõ và bảo đảm plan thay thế vẫn có ít
-  nhất bảy vòng.
+- Quy tắc Plan Mode chi tiết do `AGENTS.md` làm Source of Truth. Agent chỉ hỏi
+  khi unknown hoặc trade-off trọng yếu còn lại sau khi khám phá repository.
+- Chỉ phát hành proposed plan khi specification đã decision-complete; revision
+  chỉ rà lại các quyết định bị ảnh hưởng.
 - Feature Analysis lưu decision log tóm tắt chủ đề, quyết định hoặc assumption
   và ảnh hưởng; không chép nguyên chat.
 - Plan Mode chỉ đọc. Nếu chưa có analysis, ghi plan đã duyệt xuống repository
@@ -688,6 +679,17 @@ Graphify không được override:
    code trực tiếp hoặc dùng read-only NetworkX fallback.
 6. Báo rõ Graphify không chạy được nếu nó có ý nghĩa với task.
 7. Không tuyên bố đã update graph nếu command chưa chạy thành công.
+
+## Project-local skill admission
+
+Khi thêm hoặc cập nhật `.codex/skills`:
+
+1. Inventory skill local và runtime trước khi copy.
+2. Loại candidate sai stack hoặc trùng skill, script, Prompt, hay workflow hiện có.
+3. Chỉ nhận candidate giảm lỗi hoặc thao tác lặp lại mà không tạo context không cần thiết.
+4. Validate cấu trúc skill và chạy ít nhất một workflow thật trong repository.
+5. Ghi quyết định, project override và bằng chứng vào
+   `docs/analysis/AGENT_SKILLS_ANALYSIS.md`.
 
 ---
 

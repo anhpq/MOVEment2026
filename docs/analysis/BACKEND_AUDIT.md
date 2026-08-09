@@ -1,3 +1,314 @@
+# 2026-08-08 Team V2 Settings display controls
+
+- Moved Fullscreen into Team V2 Settings, added progressive landscape lock with localized Safari/manual fallback, and standardized the QR badge layout.
+- Verification PASS: focused Frontend Vitest `5/5`, i18n parity `439`, and production build/bundle gate. Manual Chrome/Safari verification remains pending; no Backend, migration, seed, API, or Production behavior changed.
+
+# 2026-08-08 Plan Mode workflow reconciliation
+
+- Removed the mandatory seven-round Plan Mode workflow and `Rà X/7` format from
+  active agent instructions. Plan Mode now asks only material questions and
+  publishes when the specification is decision-complete.
+- Retained concise Feature Analysis decision logs and all historical workflow
+  records. This is documentation-only; no Backend, Frontend, migration, seed,
+  API, or Production behavior changed.
+
+# 2026-08-04 Team V2 direct marker-to-game flow
+
+- Frontend-only interaction removed the intermediate preview and opens V2
+  Station Detail directly from markers/Team overview. Backend unchanged.
+- Focused Vitest (`8/8`), lint, build, and bundle budget passed.
+
+# 2026-08-04 Team V2 overview overlay
+
+- Frontend-only Team overlay projects existing Team/Station data and replaces
+  the right footer navigation to V1. Backend contracts and state authority remain unchanged.
+- i18n (`436`), lint, production build, and bundle budget passed.
+
+# 2026-08-04 Team V2 cyberpunk wing footer
+
+- Frontend-only CSS replaced the rounded footer frame with clipped neon wings,
+  technical rails, and a center CTA pedestal. Backend unchanged.
+- Lint, production build, and bundle budget passed.
+
+# 2026-08-04 Team V2 absolute-centered scanner
+
+- Frontend CSS now center-anchors the Scan CTA and raises its caption by `4px`.
+- Lint, build, and bundle budget passed. Backend unchanged.
+
+# 2026-08-04 Team V2 centered footer scanner
+
+- Frontend-only CSS geometry centered the `96px` Scan CTA over `72px` rails.
+- Lint, production build, and bundle budget passed. Backend unchanged.
+
+# 2026-08-04 Team V2 compact footer baseline
+
+- Frontend-only change removed the legend and aligned the smaller `96px` Scan
+  CTA with the footer frame baseline. Backend behavior unchanged.
+- Focused Vitest (`8/8`), lint, build, and bundle budget passed.
+
+# 2026-08-03 Team V2 attached marker points and scanner framing
+
+- Frontend-only rendering change attached points pills directly to markers and
+  placed the smaller Scan CTA above the footer frame. Backend behavior unchanged.
+- Focused Vitest (`8/8`), lint, build, and bundle budget passed.
+
+# 2026-08-03 Team V2 compact navy marker refinement
+
+- Frontend-only sizing/palette refinement reduced markers and legend, removed
+  duplicate footer tab borders, and projected the existing Team name in the
+  right footer action. No Backend or gameplay contract changed.
+- Focused Vitest (`8/8`), i18n (`428`), lint, build, and bundle budget passed.
+
+# 2026-08-03 Team V2 premium map HUD refinement
+
+- Frontend-only refinement enlarged and enclosed the bottom navigation, added
+  an accessible closed/open legend, clarified the map, and tightened marker
+  state emphasis. No Backend, QR, scoring, or Station-state behavior changed.
+- Focused Vitest (`8/8`), i18n (`428`), lint, production build, and bundle
+  budget passed (`204.28 KiB` initial gzip).
+
+# 2026-08-03 Team V2 dense-map readability and footer
+
+- Frontend-only sizing refinement reduced markers/legend, enlarged portrait map
+  coverage, and allowed the enclosed footer to fill wider viewports.
+- No Backend, QR, scoring, Station state, or coordinate behavior changed.
+- Focused Vitest (`14/14`), i18n (`426`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 marker legend
+
+- Added a frontend-only localized three-state legend without hard-coding sample
+  Station records or changing Backend state authority.
+- Focused Vitest (`14/14`), i18n (`426`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 spec-locked bottom navigation
+
+- Frontend-only footer geometry now follows the supplied `336x96px` annotated
+  design and scales uniformly per viewport. No Backend behavior changed.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 overlapped footer geometry
+
+- Frontend-only footer geometry now layers the center scanner over continuous
+  side wings and base frame. No Backend behavior changed.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 large simplified footer
+
+- Frontend-only footer sizing/content refinement enlarged the scan target and
+  side wings while removing secondary visible metrics. No Backend change.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 framed HUD regression fix
+
+- Corrected frontend CSS inheritance that stretched the header over the map and
+  rendered an empty footer container frame. No Backend behavior changed.
+- Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 framed viewport composition
+
+- Frontend-only CSS refinement separated the brand/score HUD, map canvas, and
+  compact footer into non-overlapping viewport regions.
+- No Backend API, data, QR, scoring, Station state, or coordinate behavior
+  changed. Focused Vitest (`14/14`), i18n (`422`), lint, build, and bundle passed.
+
+# 2026-08-03 Team V2 premium map state hierarchy
+
+- Frontend-only visual update introduced cyan/gold/blue-gray Station state
+  hierarchy and a Leaderboard/Scan/My-team footer using existing authoritative
+  Team and Station data.
+- No Backend API, persistence, QR, authentication, scoring, coordinates, or
+  state derivation changed. Focused Vitest (`14/14`), i18n (`422` keys), lint,
+  production build, and bundle budget passed.
+
+# 2026-08-03 Team V2 compact variable-length markers
+
+- Frontend-only marker refinement reduced pin and points-pill geometry and
+  added display-code-length-aware font sizing for four-character Station codes.
+- No Backend API, persistence, authentication, QR, state, or scoring behavior
+  changed. Focused Vitest (`14/14`), i18n (`420` keys), lint, and build passed.
+
+# 2026-08-03 Team V2 reference-proportioned markers
+
+- Enlarged V2 pin/pill geometry and added reference-matched double outlines,
+  depth surface, number hierarchy, and selected purple pill echoes.
+- Preserved Backend marker state, coordinates, hit targets, points, Locked
+  treatment, QR, scoring, database, and gameplay behavior.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
+# 2026-08-03 Team V2 total-score clarity and taller pins
+
+- Labelled `activeTeam.score` as Total score in a dedicated HUD panel and
+  replaced inner-ring pins with larger, taller, unsegmented teardrops.
+- Preserved aggregate authority, marker coordinates/state/hit targets, QR,
+  scoring, database, and Backend behavior.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
+# 2026-08-03 Team V2 teardrop marker states
+
+- Refined V2 pins to the supplied teardrop/inner-ring reference and replaced
+  Locked points text with a lock symbol in the lower pill.
+- Preserved authoritative Backend state, Completed opacity/check, coordinates,
+  hit targets, QR, scoring, and all gameplay behavior.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
+# 2026-08-03 Team V2 simplified pins and footer
+
+- Replaced complex marker artwork with a smaller simple numeric pin, reduced
+  and fully rounded points pills, and rebuilt the QR/footer geometry to prevent
+  caption and panel overlap.
+- Removed the V2 page dependency on the complex marker component without
+  changing marker coordinates, hit targets, state, QR, scoring, or Backend.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
+# 2026-08-03 Team V2 compact numeric markers
+
+- Removed Station names and connector lines from V2 map labels, moved Station
+  display numbers into pins, and retained maximum points in compact lower pills.
+- Preserved selected/active/Completed/Locked state appearance and all marker
+  hit targets; no Backend, database, QR, scoring, or coordinate change.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.17 KiB` initial gzip JavaScript).
+- Authenticated visual and physical-device smoke remain pending.
+
+# 2026-08-03 Team V2 selected-Station preview
+
+- Changed marker selection from immediate full Detail to a compact map-level
+  preview with an explicit transition to the existing V2 Detail overlay.
+- Reused existing Station state and media fields; no new request, Backend,
+  database, QR, scoring, or coordinate behavior was introduced.
+- Verification PASS: focused Vitest `13/13`, i18n parity `420`, Frontend lint,
+  production build, and bundle budget (`204.16 KiB` initial gzip JavaScript).
+- Authenticated responsive browser and physical-device visual smoke remain pending.
+
+# 2026-08-03 Team V2 portrait HUD readability
+
+- Added height-aware portrait scaling for the Team V2 footer/QR composition and
+  compact horizontal header actions.
+- Added viewport clamping and deterministic collision filtering for Station
+  labels while preserving every marker and selected/active label priority.
+- No Backend, database, QR, scoring, Station-state, or coordinate change.
+- Verification PASS: focused Vitest `7/7`, i18n parity `417`, Frontend lint,
+  production build, and bundle budget (`204.11 KiB` initial gzip JavaScript).
+- Authenticated browser and physical-device visual smoke remain pending.
+
+# 2026-08-03 Team V2 default route trial
+
+- Switched every Team authentication and home/fallback redirect to `/team/v2`.
+- Preserved Admin redirects and V1 routes; no Backend, session, database, QR,
+  scoring, or Final behavior changed.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `417`,
+  lint, production build, and bundle budget (`204.10 KiB` initial gzip JS).
+
+# 2026-08-03 Completed Station gameplay button
+
+- Disabled the Team V1 gameplay button for finished Stations in both Station
+  List and map drawer, using the existing bilingual Finished status label.
+- Backend completion enforcement and V2 completed-state behavior were unchanged.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget (`204.08 KiB` initial gzip JS).
+
+# 2026-08-03 Team score confirmation copy
+
+- Replaced the generic Team score confirmation in V1 and V2 with localized,
+  interpolated score and Station details plus a no-self-edit warning.
+- Refined both Vietnamese and English wording to ask whether the user is sure
+  they want to enter the displayed score for the Station.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget (`204.08 KiB` initial gzip JS).
+- Admin correction messaging and all score submission behavior remain unchanged.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `416`,
+  lint, production build, and bundle budget (`204.05 KiB` initial gzip JS).
+
+# 2026-08-03 Team score reason removal
+
+- Removed the optional Team reason field from post-Check-out score entry and
+  stopped including it in the Team score request.
+- Preserved the separate mandatory Admin correction reason path and all Backend
+  score validation.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget (`203.98 KiB` initial gzip JS).
+
+# 2026-08-03 QR modal Station identity layout
+
+- Refined the shared Check-in/Check-out Station identity block into a compact
+  horizontal code badge and wrapping Station name. No behavior or Backend
+  contract changed.
+- Frontend container verification PASS: Vitest `61/61`, lint, production build,
+  and bundle budget (`203.98 KiB` initial gzip JS).
+
+# 2026-08-03 Check-out QR camera-first modal
+
+- Aligned the V1 Station Detail Check-out modal with the camera-first Check-in
+  experience while preserving the existing Check-out API and scoring flow.
+- Camera scans still auto-submit; manual entry is a collapsible fallback with
+  an explicit confirmation action.
+- No Backend, database, authentication, QR-purpose, tracking-mode, or scoring
+  behavior changed.
+- Frontend container verification PASS: Vitest `61/61`, i18n parity `414`,
+  lint, production build, and bundle budget (`203.98 KiB` initial gzip JS).
+  Physical mobile camera and responsive visual smoke remain pending.
+
+# 2026-08-02 Admin Leaderboard authorization fix
+
+- Fixed the shared Leaderboard page to select the public Leaderboard endpoint
+  for Admin sessions while Team sessions continue using the lean authenticated
+  Player endpoint.
+- Corrected Frontend authorization classification: HTTP `401` invalidates the
+  local session, while HTTP `403` is treated as a forbidden operation and no
+  longer logs out an otherwise valid Admin or Team session.
+- Runtime root-cause verification reproduced Admin `GET /api/player/leaderboard`
+  as `403` and public `GET /api/leaderboard` as `200` before the fix.
+- Verification PASS: focused Frontend Vitest `5/5`, full Frontend Vitest
+  `61/61`, full Frontend lint, production build, and bundle budget (`203.64
+  KiB` initial gzip JavaScript).
+  Host-side Vitest was unavailable because dependencies are installed in the
+  Docker volume; the same validation passed inside the running Frontend
+  container. Manual browser click-through remains pending.
+
+# 2026-08-02 Team V2 browser fullscreen
+
+- Added an accessible Team V2 enter/exit fullscreen control using the standard
+  Fullscreen API with `navigationUI: "hide"` and Safari `webkit*` fallbacks.
+  Fullscreen events keep the control state synchronized; installed standalone
+  mode hides the redundant control.
+- Unsupported iPhone Safari receives localized Add to Home Screen guidance.
+  Apple standalone/status-bar metadata, theme color, `100dvh`, and existing
+  safe-area handling cover browser-chrome and Home Screen launch behavior.
+- Verification PASS: focused fullscreen Vitest `5/5`, full Frontend Vitest
+  `60/60`, i18n parity `399`, full Frontend lint, production build, and bundle gate
+  at `203.63 KiB` initial gzip JavaScript. Physical Safari/iOS and Production
+  verification were not performed. Backend, database, deploy, migration, and
+  seed behavior were unchanged.
+
+# 2026-08-02 Backend and database hot-path audit
+
+- Confirmed that every authenticated Team request reads a session and writes
+  `lastSeenAt`. Local PostgreSQL statistics show `292` updates and `28` dead
+  tuples for `69` session rows. P0 optimization: keep revocation reads on every
+  request but conditionally write the heartbeat at most once per minute.
+- Confirmed that every `/api/player/state` poll rebuilds the global catalog
+  version and lean leaderboard, in addition to Team progress, Event Config,
+  Final Challenge, and Final submission state. P0 optimization: bounded
+  single-flight caching with explicit invalidation after relevant mutations.
+- Confirmed that `EventConfigService.getConfig()` performs an empty-update
+  `upsert` on read paths. P0 optimization: `findUnique` for normal reads and a
+  missing-row create fallback.
+- The local database is approximately `9.8 MiB` with `25` Teams, `17` Stations,
+  `425` progress rows, `217` activity logs, and zero Final submissions. No
+  general index migration is justified yet. Candidate Activity Log and Final
+  submission indexes remain deferred until Production query plans or growth
+  metrics show a benefit.
+- This pass was read-only for Backend and database. No cache, index, migration,
+  seed, or Production state was changed.
+
 # 2026-07-31 Team V2 exact Bézier Konva marker
 
 - Replaced the prior polygon/circuit artwork with the supplied exact component:
@@ -8,6 +319,40 @@
   hit target, labels, Station coordinates, and V1 UI.
 - Frontend lint, production build, bundle gate, focused marker-layout Vitest
   (`3/3`), diff check, and direct Chrome rendering of the repo component passed.
+
+# 2026-08-01 Tối ưu request và dung lượng truyền
+
+- Phân loại `Refactor`; không thay đổi Business Rules về auth, QR, scoring,
+  Final hay leaderboard.
+- Thêm `GET /api/admin/qr-status-summary`, chỉ trả metadata trạng thái/count và
+  không select/trả raw token. System Config giảm từ 42 request QR-token xuống 1
+  request summary; cùng progress matrix, bootstrap canonical giảm từ 43 xuống 2
+  request. Token chi tiết vẫn chỉ tải khi Admin bấm mở QR. Local matrix đo được
+  75,993 bytes thay cho baseline 101,512 bytes (giảm 25.1%); QR summary là
+  1,767 bytes.
+- Lưu `state.final` từ `/api/player/state` vào Zustand và bỏ polling Final riêng
+  trên Station List. Steady state giảm từ khoảng 12 xuống 8 GET/phút; Data Saver
+  hoặc `2g`/`slow-2g` dùng chu kỳ 30 giây, còn khoảng 4 GET/phút.
+- Giới hạn map reduced-data ở WebP 1920px; bỏ `Content-Type: application/json`
+  khỏi GET không có body; cho playing-counts, leaderboard và QR summary dùng
+  `private, no-cache` để tái sử dụng ETag/304; cache CORS preflight 10 phút để
+  giảm OPTIONS lặp lại trên đường OBS/API khác origin.
+- Bật gzip và cache policy trong Nginx; OBS deploy gắn cache 30 ngày cho file
+  ổn định, một năm immutable cho `/assets`, và để HTML `no-cache` nhằm cho phép
+  revalidate/304. `chattri` dùng `REPLACE_NEW` để giữ nguyên metadata không được
+  chỉ định như `Content-Type`. Không deploy hoặc thay đổi Production state.
+- Verification PASS: Backend Jest `164/164`, lint, build; Frontend Vitest
+  `55/55`, i18n parity `395`, lint, production build và bundle gate
+  `203.38 KiB` initial gzip. Targeted Backend QR summary và Frontend
+  QR/data-saver/api-client tests đều PASS. `bash -n fe/deploy/deploy.sh` và YAML
+  parse PASS. Local Backend preflight thật trả `204` cùng
+  `Access-Control-Max-Age: 600`; matrix và QR summary không đổi đều trả `304`
+  với zero body bytes. `nginx -t`, live OBS metadata/gzip, browser Network panel,
+  physical device và Production runtime chưa được verify.
+- `graphify update .` PASS với `2784` nodes, `4714` edges, `209` communities;
+  focused query tìm được `getAdminQrStatusSummary()` và hai detailed-token calls
+  trong System Config. Cảnh báo không chặn vẫn còn: `hooks.json` zero-node, thiếu
+  `tree_sitter_sql` cho 19 SQL files và community labels cần refresh.
 
 # 2026-07-31 Team V2 single-line marker labels
 
@@ -1196,3 +1541,37 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - No Backend, API, schema, seed, gameplay, or non-V2 screen changed. Focused
   Vitest (`11/11`), full Frontend Vitest (`39/39`), i18n parity, Frontend lint,
   production build, bundle gate, and Chrome visual verification passed.
+# 2026-08-02 Frontend UI usability and accessibility optimization
+
+- Added an explicit initial-load error with retry action to the shared
+  Leaderboard while preserving stale rows on refresh failures.
+- Made unknown-route redirects session-aware: Admin returns to `/teams`, Team
+  returns to `/stations`, and anonymous users return to `/login`.
+- Added localized accessible labels/tooltips for map zoom/reset controls,
+  primary navigation, application branding, and authorization-denied UI.
+- Improved mobile readability and touch targets for Leaderboard, Admin
+  Operations, Team list, language controls, and map controls; truncated Team
+  and Leaderboard names now expose their full value through a title.
+- Verification PASS: Frontend Vitest `61/61`, i18n parity `409`, full lint,
+  TypeScript production build, and bundle budget (`203.85 KiB` initial gzip).
+- Manual authenticated desktop/mobile visual review remains pending.
+# 2026-08-02 Video action color refinement
+
+- Softened enabled `Watch Video` actions from saturated red to a light rose
+  treatment in Team V1 and a muted dark-rose treatment in Team V2.
+- Preserved YouTube recognition, hover/active feedback, disabled appearance,
+  layout, and all media behavior.
+- Verification PASS: focused Team V2 detail tests `6/6`, Frontend lint,
+  production build, and bundle budget (`203.84 KiB` initial gzip).
+# 2026-08-03 Check-in QR camera-first modal
+
+- Redesigned the Station List Check-in modal around the primary camera action.
+- Manual token entry is collapsed by default and opens explicitly or
+  automatically when camera support is unavailable or camera startup fails.
+- Replaced the large Backend-oriented flow alert with a concise Station
+  identity card and player-facing instruction; scanned QR still auto-submits.
+- Preserved shared `QrTokenInput` compatibility for Check-out, map, and login
+  consumers through optional presentation/submission props.
+- Verification PASS: Frontend Vitest `61/61`, i18n parity `413`, lint,
+  production build, and bundle budget (`203.95 KiB` initial gzip).
+- Manual physical-camera and mobile visual verification remains pending.

@@ -20,16 +20,15 @@ import {
   Tag,
   Typography,
 } from "antd";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMovementStore} from "../store";
 import type {TeamStation} from "../types";
-import {checkInStation, getPlayerFinal, isAuthFailure} from "../api";
+import {checkInStation} from "../api";
 import {QrTokenInput} from "../components/QrTokenInput";
 import {StationImageGallery} from "../components/StationImageGallery";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
-import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import {executePlayerMutation} from "../playerData";
 import {
   compareTeamStations,
@@ -53,12 +52,11 @@ export function StationListPage() {
   const setActiveTeam = useMovementStore((state) => state.setActiveTeam);
   const teams = useMovementStore((state) => state.teams);
   const teamStations = useMovementStore((state) => state.teamStations);
-  const logout = useMovementStore((state) => state.logout);
+  const finalSummary = useMovementStore((state) => state.finalSummary);
   const [scanTarget, setScanTarget] = useState<TeamStation | null>(null);
   const [checkInQrToken, setCheckInQrToken] = useState("");
   const [isSubmittingCheckIn, setIsSubmittingCheckIn] = useState(false);
   const isSubmittingCheckInRef = useRef(false);
-  const [isFinalReady, setIsFinalReady] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
 
   const selectedTeamId =
@@ -74,6 +72,9 @@ export function StationListPage() {
   );
   const playingCounts = useStationPlayingCounts(session?.role === "user");
   const playingTeamCount = (stationId: string) => playingCounts[stationId] ?? 0;
+  const isFinalReady = Boolean(
+    finalSummary?.isOpen && !finalSummary.blockedByActiveStation,
+  );
 
   useEffect(() => {
     if (
@@ -91,20 +92,6 @@ export function StationListPage() {
     setActiveTeam,
     teams,
   ]);
-
-  const checkFinal = useCallback(async () => {
-    try {
-      const final = await getPlayerFinal();
-      setIsFinalReady(final.isOpen && !final.blockedByActiveStation);
-    } catch (error) {
-      if (isAuthFailure(error)) {
-        logout();
-      }
-      // Keep the last-known availability on transient failures.
-    }
-  }, [logout]);
-
-  useVisibleOnlinePolling(checkFinal, {enabled: session?.role === "user"});
 
   useEffect(() => {
     const timer = window.setInterval(() => setNowMs(Date.now()), 1000);
@@ -234,6 +221,8 @@ export function StationListPage() {
             session.role === "user" &&
             station.status !== "In Progress" &&
             cooldownRemaining > 0;
+          const isCompleted =
+            session.role === "user" && station.status === "Finished";
 
           return (
             <List.Item>
@@ -339,10 +328,12 @@ export function StationListPage() {
                         <PlayCircleOutlined />
                       : <EditFilled />
                     }
-                    disabled={isCooldownActive}
+                    disabled={isCooldownActive || isCompleted}
                     onClick={() => handleStationClick(station)}>
                     {session.role === "user" ?
-                      isCooldownActive ?
+                      isCompleted ?
+                        t("status.Finished")
+                      : isCooldownActive ?
                         t("common.cooldown", {
                           time: formatCooldownRemaining(cooldownRemaining),
                         })
@@ -360,41 +351,35 @@ export function StationListPage() {
 
       <Modal
         centered
+        className="station-qr-modal"
+        destroyOnHidden
+        footer={null}
         title={t("stationsPage.scanStartTitle")}
         open={Boolean(scanTarget)}
         onCancel={() => {
           setCheckInQrToken("");
           setScanTarget(null);
         }}
-        onOk={() => void submitCheckInQr(checkInQrToken)}
-        confirmLoading={isSubmittingCheckIn}
-        okText={t("stationsPage.submitCheckIn")}
-        cancelText={t("common.close")}>
+        >
         <Flex vertical gap={12} className="full-width">
-          <Typography.Text>
-            {t("stationsPage.scanStartDescription", {
-              station: scanTarget ?
-                `${getStationDisplayCode(scanTarget.stationId)} - ${scanTarget.name}`
-              : "",
-            })}
+          {scanTarget && (
+            <div className="station-qr-identity">
+              <span>{getStationDisplayCode(scanTarget.stationId)}</span>
+              <strong>{scanTarget.name}</strong>
+            </div>
+          )}
+          <Typography.Text type="secondary">
+            {t("stationsPage.scanStartDescriptionShort")}
           </Typography.Text>
           <QrTokenInput
             value={checkInQrToken}
             placeholder={t("stationsPage.checkInPlaceholder")}
             onChange={setCheckInQrToken}
             onScan={(value) => void submitCheckInQr(value)}
-          />
-          <Alert
-            type="info"
-            showIcon
-            description={
-              <Flex vertical gap={4}>
-                <Typography.Text strong>{t("stationsPage.userFlow")}</Typography.Text>
-                <Typography.Text>
-                  {t("stationsPage.userFlowDescription")}
-                </Typography.Text>
-              </Flex>
-            }
+            cameraFirst
+            onSubmit={() => void submitCheckInQr(checkInQrToken)}
+            submitLabel={t("stationsPage.confirmCode")}
+            submitting={isSubmittingCheckIn}
           />
         </Flex>
       </Modal>

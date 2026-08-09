@@ -86,6 +86,7 @@ export function getLocalizedTeamName(teamName: string, language: "vi" | "en") {
 
 export const DEFAULT_DATABASE: LocalDatabase = {
   dataSessionKey: null,
+  finalSummary: null,
   activeTeamId: "",
   teams: [],
   authAccounts: [],
@@ -270,6 +271,7 @@ export function normalizeDatabaseSeed(seed?: LocalDatabaseSeed): LocalDatabase {
 
   return {
     dataSessionKey: seed?.dataSessionKey ?? null,
+    finalSummary: seed?.finalSummary ?? DEFAULT_DATABASE.finalSummary,
     activeTeamId,
     stationDefinitions,
     teams,

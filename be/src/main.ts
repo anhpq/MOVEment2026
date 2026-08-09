@@ -16,6 +16,7 @@ async function bootstrap() {
   app.enableCors({
     origin: buildCorsOrigin(config.get<string>('CORS_ORIGIN')),
     credentials: true,
+    maxAge: 600,
     exposedHeaders: ['Content-Disposition', 'ETag', 'X-Request-Id'],
   });
   app.useGlobalPipes(

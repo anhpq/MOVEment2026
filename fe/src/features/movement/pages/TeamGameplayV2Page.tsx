@@ -4,13 +4,14 @@ import {
   CustomerServiceOutlined,
   LogoutOutlined,
   SettingOutlined,
+  TeamOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Typography} from "antd";
+import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Switch, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
-import {Circle, Group, Image as KonvaImage, Layer, Line, Rect, Stage, Text} from "react-konva";
+import {Arc, Circle, Group, Image as KonvaImage, Layer, Path, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {
   getPlayerLeaderboard,
@@ -23,12 +24,6 @@ import {
   type LeaderboardEntryResponse,
 } from "../api";
 import {LanguageSwitch} from "../components/LanguageSwitch";
-import {
-  TEAM_V2_MARKER_CENTER_Y,
-  TEAM_V2_MARKER_DESIGN_WIDTH,
-  TEAM_V2_MARKER_TIP_Y,
-  TeamV2NeonMapMarker,
-} from "../components/TeamV2NeonMapMarker";
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
 import {
@@ -36,18 +31,25 @@ import {
   getTeamV2OverlayStyle,
 } from "../components/teamV2OverlayOpacity";
 import {
+  getStationMarkerFontSize,
   getStationLabelLayouts,
-  isTeamV2MarkerLocked,
-  shouldRenderTeamV2Marker,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
-  type MarkerScreenLayout,
 } from "./teamV2MarkerLayout";
+import {getStationMarkerAppearance} from "../markerAppearance";
 import {
   createLatestFrameScheduler,
   type LatestFrameScheduler,
 } from "./teamV2FrameScheduler";
 import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
+import {
+  getActiveFullscreenElement,
+  isStandaloneDisplayMode,
+  TEAM_V2_FULLSCREEN_CHANGE_EVENTS,
+  toggleLandscapeOrientation,
+  toggleBrowserFullscreen,
+  unlockLandscapeOrientation,
+} from "./teamV2Fullscreen";
 import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
@@ -121,8 +123,10 @@ export type MarkerViewModel = {
   y: number;
   code: string;
   isActive: boolean;
+  isCompleted: boolean;
   isLocked: boolean;
   isSelected: boolean;
+  opacity: number;
 };
 
 export type MapTransform = {
@@ -158,7 +162,7 @@ function getBaseMapScale(viewport: ViewportSize) {
     return 1;
   }
   if (viewport.height > viewport.width) {
-    return (viewport.height * 0.78) / MAP_WORLD_HEIGHT;
+    return (viewport.height * 0.94) / MAP_WORLD_HEIGHT;
   }
   return Math.min(
     viewport.width / MAP_WORLD_WIDTH,
@@ -206,36 +210,41 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 }
 
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
-  if (marker.isLocked) {
-    return {
-      stroke: "#C3CED8",
-      glow: "#F2F7FB",
-    };
-  }
-  if (marker.isSelected) {
-    return {
-      stroke: "#FF3FD8",
-      glow: "#FF3FD8",
-    };
-  }
   if (marker.isActive) {
     return {
-      stroke: "#2FE4F0",
-      glow: "#2FE4F0",
+      stroke: "#FFD447",
+      glow: "#FFB800",
+      usesSilverPurple: false,
+    };
+  }
+  if (marker.isCompleted) {
+    return {
+      stroke: "#8FA4B8",
+      glow: "#58738C",
+      usesSilverPurple: true,
+    };
+  }
+  if (marker.isLocked) {
+    return {
+      stroke: "#778698",
+      glow: "#526276",
+      usesSilverPurple: true,
     };
   }
   return {
     stroke: hudAccent,
     glow: hudAccent,
+    usesSilverPurple: false,
   };
 }
 
-function TeamMarker({
+function StationMarker({
   marker,
   hudAccent,
   size,
   x,
   y,
+  pointsUnit,
   onSelect,
 }: {
   marker: MarkerViewModel;
@@ -243,17 +252,23 @@ function TeamMarker({
   size: number;
   x: number;
   y: number;
+  pointsUnit: string;
   onSelect: () => void;
 }) {
   const colors = getMarkerColors(marker, hudAccent);
-  const drawScale = size / TEAM_V2_MARKER_DESIGN_WIDTH;
-  const markerCenterY = (TEAM_V2_MARKER_CENTER_Y - TEAM_V2_MARKER_TIP_Y) * drawScale;
+  const markerCenterY = -size * 0.9;
   const hitRadius = Math.max(22, size * 0.51);
+  const lockRadius = Math.max(5, size * 0.16);
+  const points = getStationEffectiveMaxPoints({
+    trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
+    maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
+  });
 
   return (
     <Group
       x={x}
       y={y}
+      opacity={marker.opacity}
       onClick={(event) => {
         event.cancelBubble = true;
         onSelect();
@@ -277,130 +292,313 @@ function TeamMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
-      <TeamV2NeonMapMarker scale={drawScale} silver={marker.isLocked} />
+      {marker.isActive && (
+        <>
+          <Circle
+            y={-1}
+            radius={size * 0.52}
+            scaleY={0.2}
+            stroke="#FFD447"
+            strokeWidth={2}
+            shadowColor="#FFB800"
+            shadowBlur={18}
+            opacity={0.95}
+            listening={false}
+          />
+          <Circle
+            y={-1}
+            radius={size * 0.72}
+            scaleY={0.2}
+            stroke="#FFB800"
+            strokeWidth={1.2}
+            opacity={0.48}
+            listening={false}
+          />
+          <Circle
+            y={-1}
+            radius={size * 0.9}
+            scaleY={0.2}
+            stroke="#FFD21A"
+            strokeWidth={0.9}
+            opacity={0.24}
+            listening={false}
+          />
+          <Group x={size * 0.38} y={-size * 1.18} listening={false}>
+            <Circle
+              radius={Math.max(6, size * 0.13)}
+              fill="#241A00"
+              stroke="#FFD447"
+              strokeWidth={1.4}
+              shadowColor="#FFB800"
+              shadowBlur={9}
+            />
+            <Path
+              x={-3.5}
+              y={-5}
+              data="M5 0 L1 6 H4 L2 11 L8 4 H5 Z"
+              fill="#FFE36E"
+            />
+          </Group>
+        </>
+      )}
+      <Path
+        x={-size / 2}
+        y={-size * 1.52}
+        scaleX={size / 80}
+        scaleY={size / 80}
+        data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
+        fill="#08283A"
+        stroke={colors.glow}
+        strokeWidth={10}
+        opacity={0.28}
+        shadowColor={colors.glow}
+        shadowBlur={marker.isSelected || marker.isActive ? 30 : 18}
+        listening={false}
+      />
+      <Path
+        x={-size / 2}
+        y={-size * 1.52}
+        scaleX={size / 80}
+        scaleY={size / 80}
+        data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
+        fillLinearGradientStartPoint={{x: 12, y: 4}}
+        fillLinearGradientEndPoint={{x: 68, y: 118}}
+        fillLinearGradientColorStops={[0, "#0B3A52", 0.48, "#072A3D", 1, "#041A29"]}
+        stroke={colors.stroke}
+        strokeWidth={3.6}
+        shadowColor={colors.glow}
+        shadowBlur={marker.isSelected || marker.isActive ? 18 : 10}
+        shadowOpacity={0.82}
+        listening={false}
+      />
       <Circle
         y={markerCenterY}
-        radius={148 * drawScale}
-        stroke={colors.stroke}
-        strokeWidth={1.8}
-        shadowColor={colors.glow}
-        shadowBlur={marker.isSelected || marker.isActive ? 14 : 8}
-        shadowOpacity={0.72}
+        radius={size * 0.34}
+        fill="rgba(13, 55, 74, 0.64)"
+        stroke="rgba(170, 235, 244, 0.32)"
+        strokeWidth={1}
+        shadowColor="#000000"
+        shadowBlur={8}
         listening={false}
       />
-    </Group>
-  );
-}
-
-function TeamMarkerLabel({
-  layout,
-  hudAccent,
-  pointsUnit,
-  onSelect,
-}: {
-  layout: MarkerScreenLayout<MarkerViewModel>;
-  hudAccent: string;
-  pointsUnit: string;
-  onSelect: () => void;
-}) {
-  const {marker, labelX, labelY, labelScale} = layout;
-  const colors = getMarkerColors(marker, hudAccent);
-  const label = marker.teamStation?.name ?? marker.station.name;
-  const points = getStationEffectiveMaxPoints({
-    trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
-    maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
-  });
-
-  return (
-    <Group
-      x={labelX}
-      y={labelY}
-      scaleX={labelScale}
-      scaleY={labelScale}
-      onClick={(event) => {
-        event.cancelBubble = true;
-        onSelect();
-      }}
-      onTap={(event) => {
-        event.cancelBubble = true;
-        onSelect();
-      }}
-      onMouseDown={(event) => {
-        event.cancelBubble = true;
-      }}
-      onTouchStart={(event) => {
-        event.cancelBubble = true;
-      }}>
-      <Rect
-        width={STATION_LABEL_WIDTH}
-        height={STATION_LABEL_HEIGHT}
-        fill="rgba(3, 14, 20, 0.92)"
-        stroke={colors.stroke}
-        strokeWidth={1.2}
-        cornerRadius={4}
-        shadowColor={colors.glow}
-        shadowBlur={12}
-        shadowOpacity={0.72}
-      />
       <Text
-        text={`${marker.code} · ${label.toLocaleUpperCase()}`}
-        x={6}
-        y={4}
-        width={STATION_LABEL_WIDTH - 12}
-        height={24}
-        fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={8.5}
-        fontStyle="bold"
-        fill="#EAFCFF"
+        x={-size / 2}
+        y={markerCenterY - size * 0.25}
+        width={size}
+        height={size * 0.5}
+        text={marker.code}
         align="center"
         verticalAlign="middle"
-        wrap="none"
-        ellipsis
-        listening={false}
-      />
-      <Text
-        text={`${points} ${pointsUnit}`}
-        x={6}
-        y={29}
-        width={STATION_LABEL_WIDTH - 12}
         fontFamily="Aptos, Segoe UI, sans-serif"
-        fontSize={9.5}
+        fontSize={getStationMarkerFontSize(marker.code, size)}
         fontStyle="bold"
-        fill="#4DFF8A"
-        align="center"
+        fill="#FFFFFF"
+        shadowColor={colors.glow}
+        shadowBlur={3}
         listening={false}
       />
+      {marker.isLocked && (
+        <Group
+          x={size * 0.35}
+          y={-size * 1.16}
+          listening={false}>
+          <Circle
+            radius={lockRadius}
+            fill="#111827"
+            stroke="#B05CFF"
+            strokeWidth={1.4}
+            shadowColor="#B05CFF"
+            shadowBlur={5}
+          />
+          <Arc
+            innerRadius={lockRadius * 0.34}
+            outerRadius={lockRadius * 0.34}
+            angle={180}
+            rotation={180}
+            y={-lockRadius * 0.14}
+            stroke="#C3CED8"
+            strokeWidth={1.3}
+          />
+          <Rect
+            x={-lockRadius * 0.38}
+            y={-lockRadius * 0.04}
+            width={lockRadius * 0.76}
+            height={lockRadius * 0.54}
+            cornerRadius={1}
+            fill="#C3CED8"
+          />
+        </Group>
+      )}
+      <Group x={-STATION_LABEL_WIDTH / 2} y={6} listening={false}>
+        {(marker.isSelected || marker.isActive) && (
+          <>
+            <Rect
+              x={5}
+              y={5}
+              width={STATION_LABEL_WIDTH - 10}
+              height={STATION_LABEL_HEIGHT}
+              stroke={colors.stroke}
+              strokeWidth={1}
+              cornerRadius={STATION_LABEL_HEIGHT / 2}
+              opacity={marker.isActive ? 0.5 : 0.3}
+            />
+            <Rect
+              x={10}
+              y={10}
+              width={STATION_LABEL_WIDTH - 20}
+              height={STATION_LABEL_HEIGHT}
+              stroke={colors.stroke}
+              strokeWidth={1}
+              cornerRadius={STATION_LABEL_HEIGHT / 2}
+              opacity={0.16}
+            />
+          </>
+        )}
+        <Rect
+          width={STATION_LABEL_WIDTH}
+          height={STATION_LABEL_HEIGHT}
+          fill={marker.isActive ? "rgba(32, 26, 5, 0.97)" : "rgba(5, 31, 45, 0.96)"}
+          stroke={colors.stroke}
+          strokeWidth={1.2}
+          cornerRadius={STATION_LABEL_HEIGHT / 2}
+          shadowColor={colors.glow}
+          shadowBlur={9}
+          shadowOpacity={0.64}
+        />
+        {marker.isLocked ? (
+          <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2}>
+            <Arc innerRadius={4} outerRadius={4} angle={180} rotation={180} y={-2} stroke="#E7EDF2" strokeWidth={1.8} />
+            <Rect x={-5} y={-1} width={10} height={8} cornerRadius={2} fill="#E7EDF2" />
+          </Group>
+        ) : marker.isCompleted ? (
+          <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2}>
+            <Path
+              x={-7}
+              y={-7}
+              data="M2 1 H12 V5 C12 8 10 10 7 11 C4 10 2 8 2 5 Z M2 3 H0 V5 C0 7 2 8 4 8 M12 3 H14 V5 C14 7 12 8 10 8 M7 11 V14 M3 14 H11"
+              stroke="#D5E0E9"
+              strokeWidth={1.5}
+              lineCap="round"
+              lineJoin="round"
+            />
+          </Group>
+        ) : (
+          <Text
+            text={`${points} ${pointsUnit}`}
+            x={4}
+            width={STATION_LABEL_WIDTH - 8}
+            height={STATION_LABEL_HEIGHT}
+            fontFamily="Aptos, Segoe UI, sans-serif"
+            fontSize={9.5}
+            fontStyle="bold"
+            fill={marker.isActive ? "#FFE36E" : "#4DFF8A"}
+            align="center"
+            verticalAlign="middle"
+          />
+        )}
+      </Group>
     </Group>
   );
 }
 
-function TeamMarkerConnector({
-  layout,
-  hudAccent,
+function TeamOverviewOverlay({
+  open,
+  opacity,
+  team,
+  stations,
+  language,
+  onClose,
+  onContinue,
 }: {
-  layout: MarkerScreenLayout<MarkerViewModel>;
-  hudAccent: string;
+  open: boolean;
+  opacity: number;
+  team: Team;
+  stations: MarkerViewModel[];
+  language: SupportedLanguage;
+  onClose: () => void;
+  onContinue: (stationId: string) => void;
 }) {
-  const {marker, anchorX, anchorY, labelX, labelY, labelScale, markerAttachmentOffset} = layout;
-  const colors = getMarkerColors(marker, hudAccent);
-  const connectorX = labelX + (STATION_LABEL_WIDTH * labelScale) / 2;
-  const connectorY = labelY + STATION_LABEL_HEIGHT * labelScale;
-  const deltaX = connectorX - anchorX;
-  const deltaY = connectorY - anchorY;
-  const distance = Math.hypot(deltaX, deltaY) || 1;
-  const startX = anchorX + (deltaX / distance) * markerAttachmentOffset;
-  const startY = anchorY + (deltaY / distance) * markerAttachmentOffset;
+  const {t} = useTranslation();
+  if (!open) return null;
+
+  const groups = [
+    {key: "completed", title: t("teamV2.teamPanelCompleted"), items: stations.filter((item) => item.isCompleted)},
+    {key: "active", title: t("teamV2.teamPanelActive"), items: stations.filter((item) => item.isActive)},
+    {key: "available", title: t("teamV2.teamPanelAvailable"), items: stations.filter((item) => !item.isCompleted && !item.isActive)},
+  ];
+  const completed = groups[0].items.length;
+  const progress = stations.length > 0 ? Math.round((completed / stations.length) * 100) : 0;
+  const active = groups[1].items[0];
 
   return (
-    <Line
-      points={[startX, startY, connectorX, connectorY]}
-      stroke={colors.stroke}
-      strokeWidth={1.2}
-      opacity={0.72}
-      shadowColor={colors.glow}
-      shadowBlur={8}
-      listening={false}
-    />
+    <div
+      className="team-v2-overlay-layer"
+      style={getTeamV2OverlayStyle(opacity)}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}>
+      <section className="team-v2-team-panel" role="dialog" aria-modal="true" aria-labelledby="team-v2-team-panel-title">
+        <header className="team-v2-team-panel__header">
+          <strong id="team-v2-team-panel-title">{t("teamV2.myTeam")}</strong>
+          <button type="button" onClick={onClose} aria-label={t("teamV2.closeOverlay")}><CloseOutlined /></button>
+        </header>
+
+        <div className="team-v2-team-panel__identity">
+          <span className="team-v2-team-panel__emblem" aria-hidden="true"><TeamOutlined /></span>
+          <div>
+            <h2>{getLocalizedTeamName(team.name, language)}</h2>
+            <span>{t("teamV2.teamPanelRank", {rank: team.rank ?? "—"})}</span>
+          </div>
+          <div className="team-v2-team-panel__metrics">
+            <strong>{team.score} {t("teamV2.pointsUnit")}</strong>
+            <small>{t("common.totalScore")}</small>
+            <strong>{completed}/{stations.length}</strong>
+            <small>{t("teamV2.teamPanelCompletedShort")}</small>
+          </div>
+        </div>
+
+        <div className="team-v2-team-panel__progress">
+          <div><span>{t("teamV2.teamPanelJourney")}</span><strong>{progress}%</strong></div>
+          <i><b style={{width: `${progress}%`}} /></i>
+        </div>
+
+        {active && (
+          <div className="team-v2-team-panel__active">
+            <span aria-hidden="true">ϟ</span>
+            <div><small>{t("teamV2.teamPanelActive")}</small><strong>{active.code}</strong><em>{active.station.name}</em></div>
+            <button type="button" onClick={() => onContinue(active.station.id)}>{t("teamV2.teamPanelContinue")} ›</button>
+          </div>
+        )}
+
+        <div className="team-v2-team-panel__stations">
+          <strong>{t("teamV2.teamPanelStationList")}</strong>
+          {groups.map((group) => (
+            <section key={group.key} className={`is-${group.key}`}>
+              <h3>{group.title} ({group.items.length})</h3>
+              {group.items.map((item) => {
+                const maxPoints = getStationEffectiveMaxPoints({
+                  trackingMode: item.teamStation?.trackingMode ?? item.station.trackingMode ?? "BOTH",
+                  maxPoints: item.teamStation?.maxPoints ?? item.station.maxPoints,
+                });
+                const points = item.isCompleted && (item.teamStation?.score ?? 0) > 0 ? item.teamStation!.score : maxPoints;
+                return (
+                  <button
+                    type="button"
+                    key={item.station.id}
+                    onClick={() => onContinue(item.station.id)}>
+                    <span>{item.isCompleted ? "♜" : item.isActive ? "ϟ" : "○"}</span>
+                    <b>{item.code}</b>
+                    <em>{item.station.name}</em>
+                    <strong>{points} {t("teamV2.pointsUnit")}</strong>
+                    <i>›</i>
+                  </button>
+                );
+              })}
+            </section>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -433,6 +631,8 @@ function LeaderboardOverlay({
       mountedRef.current = false;
     };
   }, []);
+
+  useEffect(() => () => unlockLandscapeOrientation(), []);
 
   const refresh = useCallback(async () => {
     if (mountedRef.current) {
@@ -527,12 +727,19 @@ export function TeamGameplayV2Page() {
   const language = i18n.language === "en" ? "en" : "vi";
   const [panelOpacity, setPanelOpacity] = useState(readStoredPanelOpacity);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
+  const [isStationDetailOpen, setIsStationDetailOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isTeamPanelOpen, setIsTeamPanelOpen] = useState(false);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
+    () => Boolean(getActiveFullscreenElement()),
+  );
+  const [isStandaloneApp, setIsStandaloneApp] = useState(isStandaloneDisplayMode);
+  const [isLandscapeLocked, setIsLandscapeLocked] = useState(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({width: 0, height: 0});
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
@@ -567,22 +774,24 @@ export function TeamGameplayV2Page() {
 
   const markerViewModels = useMemo<MarkerViewModel[]>(() => {
     const byStationId = new Map(activeTeamStations.map((station) => [station.stationId, station]));
-    return stationDefinitions.flatMap((station, index): MarkerViewModel[] => {
+    return stationDefinitions.map((station, index): MarkerViewModel => {
       const position = getStationPosition(station, index, stationDefinitions.length);
       const teamStation = byStationId.get(station.id) ?? null;
-      if (!shouldRenderTeamV2Marker(teamStation)) {
-        return [];
-      }
-      return [{
+      const isSelected = selectedStationId === station.id;
+      const appearance = getStationMarkerAppearance(teamStation, isSelected);
+      return {
         station,
         teamStation,
         x: (position.x / 100) * MAP_WORLD_WIDTH,
         y: (position.y / 100) * MAP_WORLD_HEIGHT,
         code: getStationDisplayCode(station.id),
         isActive: teamStation?.status === "In Progress",
-        isLocked: isTeamV2MarkerLocked(teamStation),
-        isSelected: selectedStationId === station.id,
-      }];
+        isCompleted: appearance.isCompleted,
+        isLocked: appearance.isLocked,
+        isSelected,
+        opacity:
+          appearance.isCompleted ? (isSelected ? 0.86 : 0.74) : appearance.opacity,
+      };
     });
   }, [activeTeamStations, selectedStationId, stationDefinitions]);
 
@@ -638,6 +847,26 @@ export function TeamGameplayV2Page() {
   useEffect(() => {
     const scheduler = mapTransformSchedulerRef.current;
     return () => scheduler?.cancel();
+  }, []);
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      setIsBrowserFullscreen(Boolean(getActiveFullscreenElement()));
+      setIsStandaloneApp(isStandaloneDisplayMode());
+    };
+
+    TEAM_V2_FULLSCREEN_CHANGE_EVENTS.forEach((eventName) => {
+      document.addEventListener(eventName, syncFullscreenState);
+    });
+    window.addEventListener("pageshow", syncFullscreenState);
+    syncFullscreenState();
+
+    return () => {
+      TEAM_V2_FULLSCREEN_CHANGE_EVENTS.forEach((eventName) => {
+        document.removeEventListener(eventName, syncFullscreenState);
+      });
+      window.removeEventListener("pageshow", syncFullscreenState);
+    };
   }, []);
 
   useEffect(() => {
@@ -870,6 +1099,32 @@ export function TeamGameplayV2Page() {
     }
   };
 
+  const handleToggleFullscreen = async () => {
+    try {
+      const result = await toggleBrowserFullscreen();
+      if (result === "exited" && isLandscapeLocked) {
+        unlockLandscapeOrientation();
+        setIsLandscapeLocked(false);
+      }
+      if (result === "unsupported") {
+        message.info(t("teamV2.fullscreenUnavailable"), 7);
+      }
+    } catch {
+      message.warning(t("teamV2.fullscreenFailed"));
+    }
+  };
+
+  const handleToggleLandscape = async () => {
+    try {
+      const result = await toggleLandscapeOrientation(isLandscapeLocked);
+      if (result === "locked") setIsLandscapeLocked(true);
+      if (result === "unlocked") setIsLandscapeLocked(false);
+      if (result === "unsupported") message.info(t("teamV2.landscapeUnavailable"), 7);
+    } catch {
+      message.info(t("teamV2.landscapeUnavailable"), 7);
+    }
+  };
+
   if (!activeTeam) {
     return (
       <main className="team-v2-page">
@@ -879,10 +1134,12 @@ export function TeamGameplayV2Page() {
   }
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
-  const isPrimaryOverlayOpen =
-    isSettingsOpen || isLeaderboardOpen || isScannerOpen || Boolean(scoreStation);
-  const footerScale = clamp((viewportSize.width - 16) / 600, 0.5, 1);
-  const footerFontCompensation = 1 / footerScale;
+  const footerScale = clamp(
+    (viewportSize.width - 24) / 344,
+    0.82,
+    2.25,
+  );
+  const footerFontCompensation = 1 / Math.sqrt(footerScale);
 
   return (
     <main className="team-v2-page">
@@ -933,45 +1190,21 @@ export function TeamGameplayV2Page() {
               y={-mapTransform.y / mapTransform.scale}
               scaleX={1 / mapTransform.scale}
               scaleY={1 / mapTransform.scale}>
-              {markerViewModels.map((marker) => {
-                const layout = markerScreenLayouts.get(marker.station.id);
-              return layout?.isInViewport ? (
-                  <TeamMarkerConnector
-                    key={`connector-${marker.station.id}`}
-                    layout={layout}
-                    hudAccent={V2_HUD_ACCENT}
-                  />
-                ) : null;
-              })}
-              {markerViewModels.map((marker) => {
+              {[...markerViewModels].sort((a, b) => Number(a.isActive) - Number(b.isActive)).map((marker) => {
                 const layout = markerScreenLayouts.get(marker.station.id);
                 return layout?.isInViewport ? (
-                  <TeamMarkerLabel
-                    key={`label-${marker.station.id}`}
-                    layout={layout}
-                    hudAccent={V2_HUD_ACCENT}
-                    pointsUnit={t("teamV2.pointsUnit")}
-                    onSelect={() => setSelectedStationId(marker.station.id)}
-                  />
-                ) : null;
-              })}
-            </Layer>
-            <Layer
-              x={-mapTransform.x / mapTransform.scale}
-              y={-mapTransform.y / mapTransform.scale}
-              scaleX={1 / mapTransform.scale}
-              scaleY={1 / mapTransform.scale}>
-              {markerViewModels.map((marker) => {
-                const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport ? (
-                  <TeamMarker
+                  <StationMarker
                     key={`marker-${marker.station.id}`}
                     marker={marker}
                     hudAccent={V2_HUD_ACCENT}
-                    size={layout.markerSize}
+                    size={layout.markerSize * (marker.isActive ? 1.18 : 1)}
                     x={layout.anchorX}
                     y={layout.anchorY}
-                    onSelect={() => setSelectedStationId(marker.station.id)}
+                    pointsUnit={t("teamV2.pointsUnit")}
+                    onSelect={() => {
+                      setSelectedStationId(marker.station.id);
+                      setIsStationDetailOpen(true);
+                    }}
                   />
                 ) : null;
               })}
@@ -993,28 +1226,35 @@ export function TeamGameplayV2Page() {
           <div className="team-v2-score" aria-label={`${t("common.totalScore")}: ${activeTeam.score}`}>
             <strong>{activeTeam.score}</strong>
             <span>{t("teamV2.pointsUnit")}</span>
+            <small>{t("common.totalScore")}</small>
           </div>
         </div>
-        <button
-          type="button"
-          className="team-v2-settings-button"
-          aria-label={t("teamV2.openSettings")}
-          onClick={() => {
-            setIsLeaderboardOpen(false);
-            setIsScannerOpen(false);
-            setIsSettingsOpen(true);
-          }}>
-          <SettingOutlined />
-        </button>
+        <div className="team-v2-header-actions">
+          <button
+            type="button"
+            className="team-v2-settings-button"
+            aria-label={t("teamV2.openSettings")}
+            title={t("teamV2.openSettings")}
+            onClick={() => {
+              setIsLeaderboardOpen(false);
+              setIsScannerOpen(false);
+              setIsSettingsOpen(true);
+            }}>
+            <SettingOutlined />
+          </button>
+        </div>
       </header>
 
-      {selectedStation && !isPrimaryOverlayOpen && (
+      {selectedStation && isStationDetailOpen && (
         <TeamV2StationDetailOverlay
           station={selectedStation}
           playingTeamCount={selectedPlayingCount}
           opacity={panelOpacity}
           language={language}
-          onClose={() => setSelectedStationId(null)}
+          onClose={() => {
+            setIsStationDetailOpen(false);
+            setSelectedStationId(null);
+          }}
           onRequestScan={() => {
             setQrToken("");
             setIsScannerOpen(true);
@@ -1027,6 +1267,7 @@ export function TeamGameplayV2Page() {
               );
               message.success(t("stationDetail.cancelled"));
               setSelectedStationId(null);
+              setIsStationDetailOpen(false);
             } catch {
               message.error(t("errors.generic"));
             }
@@ -1064,28 +1305,44 @@ export function TeamGameplayV2Page() {
               setIsScannerOpen(true);
             }}
           />
-          <strong>{activeStation ? t("status.In Progress") : t("teamV2.scanGameQr")}</strong>
+          <strong>{t("teamV2.scan")}</strong>
           <small className={activeStation ? "is-active-context" : undefined}>
             {activeStation ?
               `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}`
             : t("teamV2.scanGameHint")}
           </small>
         </div>
-        <section
+        <button
+          type="button"
           className="team-v2-footer-panel team-v2-progress-panel"
-          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}>
-          <span className="team-v2-team-count">
-            <small>{t("teamV2.teamLabel")}</small>
-            <strong>{String(activeTeam.id).padStart(2, "0")}</strong>
+          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}
+          onClick={() => {
+            setIsSettingsOpen(false);
+            setIsLeaderboardOpen(false);
+            setIsScannerOpen(false);
+            setIsTeamPanelOpen(true);
+          }}>
+          <span className="team-v2-bottom-icon"><TeamOutlined /></span>
+          <span className="team-v2-bottom-copy team-v2-my-team-copy">
+            <strong>{getLocalizedTeamName(activeTeam.name, language)}</strong>
           </span>
-          <span className="team-v2-progress-divider" aria-hidden="true" />
-          <span className="team-v2-station-count">
-            <small>{t("teamV2.stationCountLabel")}</small>
-            <strong>{completedCount}/17</strong>
-          </span>
-        </section>
+        </button>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />
       </footer>
+
+      <TeamOverviewOverlay
+        open={isTeamPanelOpen}
+        opacity={panelOpacity}
+        team={activeTeam}
+        stations={markerViewModels}
+        language={language}
+        onClose={() => setIsTeamPanelOpen(false)}
+        onContinue={(stationId) => {
+          setIsTeamPanelOpen(false);
+          setSelectedStationId(stationId);
+          setIsStationDetailOpen(true);
+        }}
+      />
 
       {isSettingsOpen && (
         <div
@@ -1109,6 +1366,18 @@ export function TeamGameplayV2Page() {
               </button>
             </div>
             <div className="team-v2-settings-body">
+              <div className="team-v2-display-controls">
+                {!isStandaloneApp && (
+                  <div className="team-v2-setting-row">
+                    <span>{t("teamV2.enterFullscreen")}</span>
+                    <Switch className="team-v2-display-switch" checked={isBrowserFullscreen} onChange={() => void handleToggleFullscreen()} />
+                  </div>
+                )}
+                <div className="team-v2-setting-row">
+                  <span>{t("teamV2.lockLandscape")}</span>
+                  <Switch className="team-v2-display-switch" checked={isLandscapeLocked} onChange={() => void handleToggleLandscape()} />
+                </div>
+              </div>
               <div className="team-v2-setting-row">
                 <span>{t("language.switch")}</span>
                 <LanguageSwitch onChange={(nextLanguage) => void fetchPlayerDatabase(nextLanguage).then(loadDatabase).catch(() => message.warning(t("stationData.refreshFailed")))} />
@@ -1211,8 +1480,10 @@ export function TeamGameplayV2Page() {
               onFinish={(values) => {
                 modal.confirm({
                   centered: true,
-                  title: t("stationDetail.confirmCompletion"),
-                  content: t("stationDetail.confirmCompletionContent"),
+                  title: t("stationDetail.confirmScoreTitle", {score: values.score}),
+                  content: t("stationDetail.confirmScoreContent", {
+                    station: `${getStationDisplayCode(scoreStation.stationId)} - ${scoreStation.name}`,
+                  }),
                   okText: t("common.confirm"),
                   cancelText: t("common.cancel"),
                   onOk: async () => {

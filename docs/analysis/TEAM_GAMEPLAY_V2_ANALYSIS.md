@@ -1,12 +1,394 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-08 Settings display controls and QR badge
+
+- Moved the browser fullscreen control from the V2 header into Settings; the header retains only Settings.
+- Settings adds a landscape toggle that attempts fullscreen then `screen.orientation.lock("landscape")` when supported. Unsupported/rejected browser paths, including Safari limitations, show localized manual-rotation guidance without a false success state.
+- The QR badge SVG now fills its control and uses `translateY(-5px)` at every breakpoint.
+- Verification passed: focused fullscreen Vitest `5/5`, i18n parity `439`, and Frontend production build/bundle gate. Manual Chrome/Safari and physical-device verification remain pending.
+
+## 2026-08-04 Direct marker-to-game flow
+
+- Removed the selected-Station preview card and its View mission step.
+- Marker clicks and Team overview Station actions now open the V2 Station/Game
+  Detail directly. Closing Detail clears selection and returns to the map.
+- Focused Vitest passed (`8/8`), lint, build, and bundle budget passed.
+
+## 2026-08-04 Team overview overlay
+
+- The right footer action now opens a V2-owned Team overview overlay instead of
+  navigating to V1. It shows the localized Team identity, authoritative score,
+  rank, completed progress, current Station, and grouped Station inventory.
+- Station rows display code, localized name, and points. Completed rows prefer
+  the recorded score; active/available rows use effective maximum points.
+- Continue/row actions close the overlay and select the Station on the V2 map.
+- i18n parity passed (`436` keys), lint, build, and bundle budget passed
+  (`204.41 KiB` initial gzip).
+
+## 2026-08-04 Cyberpunk wing footer
+
+- Replaced the rounded enclosing rectangle with two independently clipped
+  cyberpunk wings using cyan-to-purple gradient borders, angled center notches,
+  neon depth, and technical rail details.
+- Added a clipped pedestal behind the centered `96px` Scan CTA while preserving
+  existing navigation behavior. Lint, build, and bundle budget passed.
+
+## 2026-08-04 Absolute-centered scanner caption refinement
+
+- The Scan CTA is now anchored at `top: 50%` with a two-axis `-50%` transform,
+  guaranteeing equal visual protrusion above and below the footer rail at every scale.
+- Raised the Scan caption by `4px`. Lint, build, and bundle budget passed.
+
+## 2026-08-04 Centered scanner over compact rails
+
+- Footer side rails and enclosing border now use a centered `72px` band inside
+  the `96px` footer. The `96px` Scan CTA protrudes exactly `12px` above and
+  below that band.
+- Frontend lint, production build, and bundle budget passed (`204.28 KiB`).
+
+## 2026-08-04 Baseline-aligned compact scanner
+
+- Removed the legend control/panel from Team V2 rendering and state.
+- Reduced the center Scan CTA from `104px` to `96px`. The footer frame and CTA
+  now share the same `96px` design height and bottom baseline.
+- Focused Vitest passed (`8/8`), Frontend lint, production build, and bundle
+  budget passed (`204.27 KiB` initial gzip).
+
+## 2026-08-03 Attached marker points and smaller scanner
+
+- Moved each points/trophy/lock pill into the same Konva group as its pin. The
+  pill now has a fixed `6px` offset from the pin anchor and cannot be moved,
+  hidden, or separated by the former label collision layer.
+- Reduced the center Scan CTA from `112px` to `104px`. The footer enclosing
+  frame now renders below the opaque circular CTA so no horizontal frame line
+  crosses the button.
+- Focused Vitest passed (`8/8`), Frontend lint, production build, and bundle
+  budget passed (`204.28 KiB` initial gzip).
+
+## 2026-08-03 Compact navy markers and simplified footer
+
+- Reduced marker width to `30px` by default (`26..40px`) and points pills to
+  `52x18px`. Marker interiors now use a dark navy gradient with a subtle inner
+  circular outline around the Station code instead of a near-black fill.
+- Reduced both the closed legend control and expanded legend panel. Removed
+  per-tab borders/shadows from the footer so only its enclosing neon frame remains.
+- The right footer tab now displays the localized current Team name from live
+  Team data (for example `Đội 1`) instead of the generic My team label.
+- Focused Vitest passed (`8/8`), i18n parity passed (`428` keys), Frontend lint,
+  production build, and bundle budget passed (`204.27 KiB` initial gzip).
+
+## 2026-08-03 Premium map HUD final refinement
+
+- Rebuilt the bottom navigation on a `360x112px` design grid with `124px`
+  side tabs and a `112px` center Scan CTA. The shared outer frame now encloses
+  all three actions and scales to the available mobile width.
+- The legend is now a compact closed button by default. Opening it reveals a
+  readable localized three-state panel with an accessible close action; it is
+  hidden while Station previews or blocking overlays are active.
+- Removed the active marker text chip, kept only its lightning badge, raised it
+  above other markers, and added a third gold ground ring. Completed markers
+  remain legible at `74%` opacity and continue to use a trophy pill.
+- Reduced the map vignette so the authoritative Suoi Tien image is clearer.
+  Station data, coordinates, pan/zoom, QR, scoring, and Backend behavior remain
+  unchanged.
+- Focused Vitest passed (`8/8`), i18n parity passed (`428` keys), Frontend lint,
+  production build, and bundle budget passed (`204.28 KiB` initial gzip).
+
+## 2026-08-03 Dense-map readability and full-width footer
+
+- Reduced default marker width from `44px` to `34px` (`30..46px`) and points
+  pills from `68x22px` to `58x19px` to reduce overlap in dense Station clusters.
+- Increased portrait default map coverage from `78%` to `94%` of the available
+  map viewport height, producing a larger map while preserving coordinates,
+  pan/zoom, screen-space marker sizing, and viewport clamping.
+- Reduced the legend to `142..184px` (`136px` on narrow phones) with compact
+  typography and pills.
+- Footer now scales from `0.82x` through `2.4x` based on viewport width, uses
+  square-root font compensation, and adds a `2px` outer frame around both tabs
+  and the center QR CTA. Map/preview/legend clearance follows `28vw` with caps.
+- Focused Vitest passed (`14/14`), i18n parity passed (`426` keys), Frontend
+  lint, production build, and bundle budget passed (`204.25 KiB` initial gzip).
+
+## 2026-08-03 Three-state map legend
+
+- Added a localized V2 `LegendCard` above the footer at the map's lower-left.
+  It explains Available with cyan pin/points, In Progress with gold pin/points,
+  and Completed with blue-gray pin/trophy, matching the supplied mockup.
+- Renamed the internal canvas marker components to `StationMarker` and
+  `StationMarkerLabel` for clearer V2 ownership. Real markers continue to use
+  Backend Station IDs, status, points, and coordinates; visual-reference sample
+  Station IDs are intentionally not hard-coded into gameplay.
+- The legend is non-interactive, responsive, and yields visually to Station
+  preview and blocking overlays through its lower z-index.
+- Focused Vitest passed (`14/14`), i18n parity passed (`426` keys), Frontend
+  lint, production build, and bundle budget passed (`204.25 KiB` initial gzip).
+
+## 2026-08-03 Spec-locked 336px bottom navigation
+
+- Replaced the prior estimated footer geometry with the supplied annotated spec:
+  `336x96px` design coordinates split into `120px + 96px + 120px`, `72px`
+  side-tab height, `96px` center CTA, `2px` borders, and `16px` outer corners.
+- The complete component scales uniformly from `0.82x` to `1.5x` based on both
+  viewport width and portrait height. Typography now scales with the component
+  rather than using inverse font compensation.
+- Removed the extra base frame and wide underlapping wings. Scan copy stays
+  inside the lower CTA, with single-line localized side labels.
+- QR behavior, map clearance, gameplay state, points, and Backend are unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
+## 2026-08-03 Overlapped footer geometry
+
+- Matched the supplied footer geometry as a layered composition rather than
+  three adjacent controls: an `82px` continuous base frame, `284px` wings that
+  extend beneath the center, and a `128px` scanner layered above both wings.
+- Moved the Scan label inside the lower portion of the scanner ring and retained
+  single-line icon/action labels on each wing.
+- QR behavior, map clearance, state, scoring, and Backend remain unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.20 KiB` initial gzip).
+
+## 2026-08-03 Large simplified footer
+
+- Enlarged the compact V2 footer to match the supplied right-side reference:
+  `154px` composition height, `128px` center scanner, and `78px` side wings.
+- Side wings now show only large Leaderboard and My team labels with larger
+  icons. Removed secondary headings and score/progress copy from the visible
+  footer to keep the mobile HUD clean; authoritative score remains in the top HUD.
+- Increased map and selected-preview bottom clearance for the larger footer.
+- QR behavior, Team/Station state, points, coordinates, and Backend are unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
+## 2026-08-03 Framed HUD regression fix
+
+- Fixed a CSS cascade regression where the legacy shared header/footer/preview
+  selector left both `top` and `bottom` on the header, stretching its dark panel
+  across most of the viewport. Header geometry now explicitly resets bottom,
+  width, margin, border, radius, and shadow before applying the top HUD style.
+- Reset inherited footer container padding, border, background, shadow, and
+  minimum height so only the two wings and center scan control are visible.
+- Center footer copy is now consistently localized as Scan instead of switching
+  to In Progress. Active Station emphasis remains on the gold map marker.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
+## 2026-08-03 Framed header, map, and footer composition
+
+- Rebuilt the V2 vertical composition into three non-overlapping regions: a
+  dedicated top HUD, an inset middle map canvas, and a compact bottom HUD.
+- `MOVEment 2026` now uses a wider clipped neon banner matching the supplied
+  casing/proportions. The authoritative total score card sits in the top HUD
+  outside the map canvas rather than floating over map content.
+- Reduced the footer design height from `204px` to `112px`, with a `92px`
+  central scanner and symmetrical Leaderboard/My-team wings cut around it.
+  Removed the secondary active-Station caption that previously crowded the
+  footer; active context remains visible through the gold map marker/detail.
+- Selected-Station preview clearance follows the compact footer. QR behavior,
+  score/state authority, coordinates, map interactions, and Backend remain unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
+## 2026-08-03 Premium three-state event-map markers
+
+- Reconciled the V2 map with the supplied premium cyberpunk reference while
+  keeping the compact variable-length marker geometry and real Backend data.
+- Available markers remain cyan. The authoritative In Progress marker is gold,
+  scales to `118%`, adds a strong halo, two ground rings, a localized Playing
+  chip, and a lightning badge so it is the dominant map element.
+- Completed markers use subdued blue-gray light and replace the points pill
+  content with a trophy. Locked markers retain a distinct gray treatment and
+  lock glyph. Long `ST` display codes continue using adaptive font sizing.
+- Footer hierarchy is now Leaderboard, central Scan, and My team. The Team
+  panel shows authoritative total points and completed-Station progress.
+- No Station IDs are hard-coded from the visual reference. Station identity,
+  status, points, coordinates, QR, scoring, and Backend authority are unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`422` keys), Frontend
+  lint, production build, and bundle budget passed (`204.19 KiB` initial gzip).
+
+## 2026-08-03 Compact variable-length markers
+
+- Reduced V2 marker width from `58px` to `44px` by default, with a responsive
+  `38..58px` range, and reduced the points/Locked pill to `68x22px`.
+- Marker number typography now scales by display-code length: two-character
+  codes remain prominent while longer codes such as `ST04` shrink to fit.
+- Marker states, points authority, hit targets, coordinates, QR, scoring, and
+  Backend behavior remain unchanged.
+- Focused Vitest passed (`14/14`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip).
+
+## 2026-08-03 Reference-proportioned hero markers
+
+- Increased V2 markers to reference-like hero proportions: `58px` default
+  width (`50..76px` responsive), approximately `1.52x` silhouette height, and
+  an `82x26px` points/Locked pill.
+- Added a restrained double-outline glow and dark depth surface behind the
+  Station number without adding an icon or illustration inside the pin.
+- Selected markers retain purple and add two fading pill echoes beneath the
+  primary pill, matching the supplied reference hierarchy.
+- State authority, number/points content, Locked symbol, hit targets,
+  coordinates, QR, scoring, preview, and Backend behavior remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
+## 2026-08-03 Explicit total score and taller pins
+
+- The green HUD score is the authoritative Team total from `activeTeam.score`.
+  It now renders in a dedicated dark panel with localized Total score copy so
+  it cannot be mistaken for a Station marker.
+- Removed the inner circle from map pins and changed the silhouette to a larger,
+  taller teardrop. Default width is `44px` (`38..64px` responsive) and the
+  outline height is approximately `1.45x` its width.
+- Station number, points/Locked pill, state colors, hit target, coordinate
+  anchor, preview, QR, scoring, and Backend behavior remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
+## 2026-08-03 Teardrop marker state treatment
+
+- Refined the simplified marker into a single proportional teardrop outline
+  with a dark inner circle and high-contrast Station number, matching the
+  supplied close-up reference without restoring the prior dense artwork.
+- Available/active pins use cyan, selected pins and pills use purple, and
+  Locked pins retain the confirmed silver-purple treatment.
+- Locked markers replace the points text in the lower pill with a centered lock
+  symbol. Backend marker state, Completed behavior, hit targets, coordinates,
+  preview, and gameplay remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
+## 2026-08-03 Simplified pins and separated footer geometry
+
+- Replaced the dense 640x620 Bézier neon marker artwork with a simple dark
+  circular pin and short tip so the Station number remains the dominant mark.
+- Default marker size is now `36px` (`30..52px` responsive), while the points
+  pill is `64x20px` with a fully rounded shape.
+- Reduced the QR action from `222px` to `116px` and the footer composition from
+  `286px` to `204px`. QR, caption, and the two lower panels now occupy separate
+  vertical bands, with a dedicated center gap between the side panels.
+- Preview clearance was adjusted for the rebuilt footer. QR/scanner behavior,
+  Station state, scoring, map coordinates, and Backend contracts are unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
+## 2026-08-03 Numeric marker and points pill
+
+- Team V2 map markers now place the compact Station display number inside the
+  pin and show only the effective maximum points in a small pill below it.
+- Station names and connector lines are no longer rendered on the map; names
+  remain available in the selected-Station preview and full Detail.
+- Selected, active, Completed, and Locked palettes remain authoritative.
+  Completed keeps its check as a small badge so the numeric identity stays
+  readable; Locked keeps its existing lock badge.
+- This supersedes the earlier exact-marker decision that intentionally omitted
+  the number from the pin and kept Station code/name in a separate label.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.17 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain pending.
+
+## 2026-08-03 Readable selected-Station preview
+
+- Selecting a map marker now opens a compact bottom preview instead of
+  immediately covering the map with the full Station Detail overlay.
+- The preview shows the first already-loaded Station image when available,
+  otherwise a Station-code fallback, plus name, maximum points, a short
+  description, and an explicit View mission action.
+- View mission opens the existing full V2-owned Detail. Closing Detail returns
+  to the selected preview, while closing the preview clears the selection.
+- QR, Station actions, scoring, map coordinates, marker state, Backend
+  contracts, and the fixed V2 palette remain unchanged.
+- Focused Vitest passed (`13/13`), i18n parity passed (`420` keys), Frontend
+  lint, production build, and bundle budget passed (`204.16 KiB` initial gzip
+  JavaScript). Authenticated visual and physical-device verification remain
+  pending.
+
+## 2026-08-03 Portrait HUD and marker readability refinement
+
+- Portrait Fullscreen and Settings controls now remain on one horizontal row.
+- The raised QR/footer composition scales against both viewport width and
+  portrait height, preventing short portrait screens from receiving the
+  width-only maximum size while preserving the existing action hierarchy.
+- Station labels are clamped inside the viewport and collision-filtered in
+  screen space. Selected labels have first priority, followed by the active
+  Station; markers remain visible and tappable when their overlapping label is
+  suppressed.
+- QR behavior, Station state, map coordinates, scoring, fixed V2 palette, and
+  Backend contracts are unchanged.
+- Focused marker layout Vitest passed (`7/7`), i18n parity passed (`417` keys),
+  Frontend lint, production build, and bundle budget passed (`204.11 KiB`
+  initial gzip JavaScript). Authenticated browser and physical-device visual
+  verification remain pending.
+
+## 2026-08-03 Default Team experience trial
+
+- `/team/v2` is now the default destination for Team username login, Team QR
+  login, automatic URL QR login, authenticated login-page recovery, forbidden
+  route recovery, and unknown-route fallback.
+- V1 remains available at `/stations` and `/stations/map`; V2 Settings retains
+  the explicit return-to-V1 action during the trial.
+- Admin redirects and all authentication, QR, Station, scoring, and Final
+  Business Rules remain unchanged.
+- Frontend container verification passed: Vitest `61/61`, i18n parity `417`,
+  lint, production build, and bundle budget (`204.10 KiB` initial gzip JS).
+  Authenticated browser redirect smoke remains pending.
+
 ## Status
 
 | Area | Status |
 | --- | --- |
 | Implementation | Completed for supplied reference HTML palette/layout; V2 route, unified QR endpoint, persistent scanner, i18n, and navigation remain completed |
 | Runtime/Production Verification | Local build and authenticated browser verification completed; Production verification not performed |
-| Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; physical iOS/Android verification pending |
+| Browser/Manual Verification | Team 01/05 cross-Team visual smoke completed at 320x568, 390x844, and 844x390; the new fullscreen control and physical iOS/Android behavior remain pending |
+
+## 2026-08-02 Browser fullscreen control
+
+- The Team V2 header now exposes an accessible enter/exit fullscreen icon next
+  to Settings. It requests the standard Fullscreen API with
+  `navigationUI: "hide"`, falls back to Safari's `webkit*` API, and synchronizes
+  the icon with both standard and prefixed fullscreen change events.
+- Installed iOS/Home Screen and standard standalone display modes are detected
+  so the redundant fullscreen control is hidden. Browsers without element
+  fullscreen, notably iPhone Safari, receive localized Add to Home Screen
+  guidance instead of a false success state.
+- The document advertises standalone-capable Apple metadata and a dark status
+  bar/theme color. Team V2 uses `100dvh` in addition to its existing fixed
+  viewport and safe-area layout so browser chrome changes do not leave a stale
+  viewport height.
+- Focused fullscreen Vitest passed (`5/5`), full Frontend Vitest passed
+  (`60/60`), i18n parity passed (`399` keys), full Frontend lint passed, and the
+  production build/bundle gate passed at `203.63 KiB` initial gzip JavaScript.
+  Automated browser tooling and physical Safari/iOS verification were not
+  available in this workspace and remain pending.
+
+## 2026-08-01 Completed and Locked marker appearance
+
+- Team V2 no longer removes Completed marker groups. Completed and Locked
+  markers remain tappable and use a silver `#C3CED8` to neon-purple `#B05CFF`
+  gradient across pin, halo, connector, and label border.
+- Completed uses a check and shares `40%` opacity across marker, label, and
+  connector, rising to `70%` while selected. Locked uses a lower-right lock
+  badge and remains at `100%`, including while selected.
+- Backend `COMPLETED`/`LOCKED` state is authoritative. `Finished` is a
+  completion fallback only when backend status is absent; gameplay, Station
+  Detail, coordinates, APIs, cache, culling, and pan/zoom behavior are unchanged.
+- Focused marker Vitest passed (`10/10`), full Frontend Vitest passed (`44/44`),
+  and i18n parity, Frontend lint, production build, and bundle gate passed.
+  Authenticated in-map and physical-device visual verification remain pending.
+
+### Review Decision Log
+
+1. Symbols: Completed uses a check; Locked uses a lock badge.
+2. Locked opacity: keep `100%`; only Completed is dimmed.
+3. Selected priority: Locked remains authoritative silver-purple.
+4. Lock placement: lower-right badge outside the marker center.
+5. Interaction: both states remain tappable and open V2 Station Detail.
+6. Palette scope: pin, halo, connector, and label border share the state palette
+   and marker opacity.
+7. Palette token: use neon purple `#B05CFF` with silver `#C3CED8`.
 
 ## 2026-07-31 Background-only overlay opacity
 
@@ -96,16 +478,13 @@
   Detail. When their required media is unavailable, the control remains
   readable but disabled with a muted silver-neon treatment; no media action is
   invoked.
-- Stations whose Player progress is `Finished` or whose backend status is
-  `COMPLETED` do not render a marker, label, or connector. This is a render-only
-  filter and does not modify Station coordinates, progress, APIs, or gameplay.
-- A backend `LOCKED` Station retains its marker but uses the dedicated
-  gray/silver-neon marker, halo, label, and connector palette. Locked state is
-  evaluated before selected/active presentation so its unavailable state stays
-  visually authoritative.
-- Focused Team V2 tests passed (`12/12`) together with Frontend lint,
-  production build, and bundle gate. Authenticated in-map and physical-device
-  visual verification of these three states remains pending.
+- Completed and Locked Stations retain their marker, label, and connector.
+  Both use the dedicated silver-purple marker palette; Completed is dimmed and
+  uses a check, while Locked stays fully opaque with a lock badge. Locked state
+  is evaluated before selected/active presentation so its unavailable state
+  stays visually authoritative.
+- The prior hide-completed behavior in this dated section is superseded by the
+  2026-08-01 marker-appearance decision and verification above.
 
 ## 2026-07-31 Centered score-only map header
 

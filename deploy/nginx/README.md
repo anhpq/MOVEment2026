@@ -2,30 +2,16 @@
 
 Use this when `heroes.nalth.top` is served by Nginx on the ECS host.
 
-Production frontend deployment is intentionally staged separately from the
-backend deployment. The GitHub workflow `.github/workflows/fe-deploy.yml` is
-manual-only and should be run only after the backend Phase 1 workflow has
-completed, migrations and seed verification have passed, and backend health has
-been checked.
+The current GitHub workflow `.github/workflows/fe-deploy.yml` publishes to OBS.
+This document describes the separate manual Nginx alternative and is not wired
+to that workflow. Use it only after backend migrations, seed verification, and
+health checks have completed.
 
 See `deploy/PRODUCTION_STAGED_DEPLOY.md` for the full two-phase Production
 runbook, backup gate, stop conditions, and rollback notes.
 
-Do not deploy the frontend from an automatic `push` trigger. The app should be
-built without `VITE_API_BASE_URL` so browser requests use same-origin `/api/...`
-through this Nginx reverse proxy.
-
-## Manual GitHub Workflow
-
-Run **Deploy Frontend (Nginx)** with:
-
-```text
-target_branch: master
-deploy_frontend: deploy-frontend
-```
-
-If the repository environment `production-frontend` has required reviewers, the
-workflow waits for that approval before executing the ECS/Nginx deploy.
+The app should be built without `VITE_API_BASE_URL` so browser requests use
+same-origin `/api/...` through this Nginx reverse proxy.
 
 ## Build Frontend
 
@@ -66,6 +52,7 @@ curl -i https://heroes.nalth.top/teams | head
 curl -i https://heroes.nalth.top/favicon.svg | head
 curl -i https://heroes.nalth.top/assets/missing.js | head
 curl -i https://heroes.nalth.top/api/docs | head
+curl --compressed -i https://heroes.nalth.top/api/docs -o /dev/null
 ```
 
 Expected behavior:
@@ -74,3 +61,8 @@ Expected behavior:
 - Existing JS/CSS/image assets return the physical files.
 - Missing JS/CSS/image assets return `404`.
 - `/api/*` is proxied to the Nest backend and is not rewritten to `index.html`.
+- `index.html` and SPA fallbacks return `Cache-Control: no-cache`.
+- `/assets/*` returns a one-year immutable cache policy; stable media returns a
+  30-day cache policy.
+- Compressible frontend files and proxied JSON responses use gzip when the
+  client sends `Accept-Encoding: gzip`.

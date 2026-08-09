@@ -1,5 +1,196 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-04 Team V2 direct Station detail
+
+- Clicking a map marker or Team overview Station opens V2 Station/Game Detail
+  directly; no intermediate Station preview card is rendered.
+
+## 2026-08-04 Team V2 overview overlay
+
+- The right footer tab opens an in-map Team overview with authoritative Team
+  score/rank/progress and grouped Station rows containing code, name, and points.
+- Station actions return to the selected Station on the V2 map; Backend data
+  and gameplay authority are unchanged.
+
+## 2026-08-04 Team V2 cyberpunk wing footer
+
+- Footer navigation uses two clipped neon wings with angled center notches,
+  technical rails, and a polygon pedestal behind the centered Scan CTA.
+
+## 2026-08-04 Team V2 absolute-centered scanner
+
+- The footer Scan CTA is center-anchored rather than bottom-anchored, and its
+  caption is raised for improved spacing.
+
+## 2026-08-04 Team V2 centered footer scanner
+
+- The `96px` Scan CTA is centered over a `72px` side-rail/footer border band,
+  protruding equally by `12px` above and below.
+
+## 2026-08-04 Team V2 compact footer baseline
+
+- Team V2 no longer renders a map legend. Its `96px` Scan CTA shares the same
+  bottom baseline and design height as the enclosing footer frame.
+
+## 2026-08-03 Team V2 attached marker points
+
+- Each Station points/state pill is part of the pin render group with a fixed
+  offset. The footer uses a `104px` center Scan CTA above its enclosing frame.
+
+## 2026-08-03 Team V2 compact navy marker refinement
+
+- Team V2 uses compact `30px` navy-gradient pins (`26..40px`) with a subtle
+  circular code outline and `52x18px` points pills.
+- The legend is compact, the footer retains only its enclosing frame, and the
+  right tab displays the localized authoritative Team name.
+
+## 2026-08-03 Team V2 premium map HUD refinement
+
+- Team V2 uses a full-width `360x112px` footer design with a `112px` central
+  Scan action enclosed by the same outer frame as both navigation tabs.
+- The localized map legend defaults to a compact button and expands on demand.
+  Active marker emphasis is lightning plus three gold rings; Completed stays
+  readable and uses a trophy instead of points.
+- Gameplay data, map coordinates/interactions, QR, scoring, and Backend
+  contracts are unchanged.
+
+## 2026-08-03 Team V2 dense-map readability
+
+- Team V2 uses compact `34px` default markers (`30..46px`), `58x19px` points
+  pills, `94%` portrait map coverage, a compact responsive legend, and a
+  viewport-wide scaled footer enclosed around both tabs and the QR CTA.
+- Station coordinates/state/points and QR/Backend behavior are unchanged.
+
+## 2026-08-03 Team V2 marker legend
+
+- Team V2 includes a localized lower-left legend for Available, In Progress,
+  and Completed marker appearance. The legend is explanatory only; real marker
+  identity, state, points, and coordinates remain Backend-driven.
+
+## 2026-08-03 Team V2 framed viewport composition
+
+- Team V2 reserves independent top HUD, map, and bottom HUD regions. Brand and
+  authoritative total score render above/outside the map. The compact `112px`
+  footer uses two symmetric wings and a `92px` central scanner.
+- Gameplay data, map coordinates/interactions, QR, and Backend contracts are unchanged.
+
+## 2026-08-03 Team V2 premium map state hierarchy
+
+- Team V2 uses cyan Available markers, a `118%` gold In Progress marker with
+  Playing/lightning/ring emphasis, and subdued blue-gray Completed markers with
+  a trophy in place of points. Footer hierarchy is Leaderboard, Scan, My team.
+- All displayed Station codes, points, progress, and state remain Backend-driven;
+  reference-image example IDs are not hard-coded.
+
+## 2026-08-03 Team V2 compact variable-length markers
+
+- Team V2 pins use a compact `44px` default size (`38..58px`) and `68x22px`
+  points pill. Typography scales down for longer display codes such as `ST04`.
+- Station state, coordinates, scoring, QR, and Backend contracts are unchanged.
+
+## 2026-08-03 Team V2 reference-proportioned markers
+
+- V2 map pins use a large teardrop silhouette, double-outline glow, dark depth
+  surface, high-contrast number, and a proportionate rounded lower pill.
+- Selected pins use purple plus fading pill echoes; marker data/state is unchanged.
+
+## 2026-08-03 Team V2 total-score clarity and taller pins
+
+- The Team total score is explicitly labelled in its own HUD panel.
+- Map pins use a larger, taller teardrop silhouette without an inner circle;
+  Station numbers remain centered directly inside the dark pin body.
+
+## 2026-08-03 Team V2 teardrop marker states
+
+- V2 markers use a compact teardrop outline with a dark inner ring and numeric
+  identity; selected state uses purple and Locked uses silver-purple.
+- Locked markers show a lock symbol in the lower pill instead of points.
+
+## 2026-08-03 Team V2 simplified marker/footer geometry
+
+- Team V2 uses a simple numeric circular pin with a small fully rounded points
+  pill, prioritizing readability over decorative marker detail.
+- The QR action, caption, and lower footer panels use separate layout bands so
+  controls do not overlap at responsive scales.
+
+## 2026-08-03 Team V2 compact map markers
+
+- Each Team V2 map pin shows only its Station display number, with effective
+  maximum points in a compact pill below the pin.
+- Station names are intentionally reserved for the selected preview and Detail,
+  reducing map clutter without changing marker interaction or Station state.
+
+## 2026-08-03 Team V2 selected-Station preview
+
+- Selecting a Team V2 marker preserves the map and opens a compact Station
+  preview above the QR/footer area.
+- Full Station Detail opens only from the preview's explicit View mission
+  action; closing Detail returns to the preview.
+- Existing gameplay, QR, scoring, media, and Backend behavior is unchanged.
+
+## 2026-08-03 Team V2 portrait HUD readability
+
+- Team V2 scales its raised QR/footer composition by both width and available
+  portrait height and keeps header utility controls in a compact row.
+- Map labels stay within the viewport and overlapping labels are suppressed
+  with selected and active Stations prioritized; all markers remain tappable.
+- Gameplay, QR, scoring, map coordinates, and Backend behavior are unchanged.
+
+## 2026-08-03 Default Team interface trial
+
+- Team login and Team home/fallback navigation now default to `/team/v2`.
+- V1 remains available at `/stations` and `/stations/map`, including the V2
+  Settings return action.
+
+## 2026-08-03 Completed Station action state
+
+- Completed Stations cannot be started again: Team V1 disables and relabels the
+  gameplay button, while Team V2 omits completed gameplay actions.
+- Station media actions remain independent of completion status.
+
+## 2026-08-03 Team score confirmation
+
+- Before score submission, Team V1 and V2 show the exact score and Station and
+  warn that the Team cannot change the score after confirmation.
+
+## 2026-08-03 Team score entry presentation
+
+- After Check-out, Team score entry asks only for the score. Optional Team
+  reason input is not shown or submitted.
+- Admin score correction continues to require a non-empty reason.
+
+## 2026-08-03 QR modal Station identity layout
+
+- Check-in and Check-out share a compact horizontal Station identity row with a
+  code badge and a safely wrapping Station name.
+
+## 2026-08-03 Check-out QR modal presentation
+
+- Station Detail Check-out follows the same camera-first interaction as
+  Check-in: decoded QR values auto-submit and manual entry is a fallback.
+- The scan modal shows Station identity and concise instructions; accepted
+  Check-out and subsequent scoring continue to follow tracking-mode rules.
+
+## 2026-08-03 Check-in QR modal presentation
+
+- Station List Check-in is camera-first: a decoded QR auto-submits, while
+  manual entry is an explicit fallback and appears automatically when camera
+  capability/startup fails.
+- The modal presents Station identity and concise player guidance without
+  exposing Backend implementation terminology.
+
+
+## 2026-08-02 Shared UI usability baseline
+
+- Initial Leaderboard load failures provide a localized retry action; refresh
+  failures retain and identify stale rows.
+- Unknown routes return Admin to `/teams`, Team to `/stations`, and anonymous
+  users to `/login`.
+- Icon-only map controls provide localized accessible names and tooltips.
+- Shared mobile UI keeps important controls near a 44px touch target and avoids
+  sub-12px text for the optimized Leaderboard/Admin/Team-list metadata paths.
+
+
 ## Authority
 
 Confirmed Business Rules are defined in:
@@ -25,10 +216,22 @@ Full browser/manual verification remains pending.
 
 Team runtime now uses lean Player catalog/state/image/leaderboard projections,
 session-principal-owned data, visible/online non-overlapping 15-second polling,
-bounded GET retry, and one post-mutation state reconciliation. Existing Player
-APIs remain available for compatibility. A production-like local smoke measured
-the canonical state/catalog at 3,885/5,908 bytes and passed the full auth, QR,
-scoring, Final, leaderboard, migration, seed, and environment-guard flow.
+30-second polling for browser-reported reduced-data/2G conditions, bounded GET
+retry, and one post-mutation state reconciliation. Station List consumes Final
+availability from Player state rather than polling Final separately. Existing
+cross-origin preflight responses are cacheable for 10 minutes. Player APIs
+remain available for compatibility. A production-like local smoke
+measured the canonical state/catalog at 3,885/5,908 bytes and passed the full
+auth, QR, scoring, Final, leaderboard, migration, seed, and environment-guard
+flow.
+
+Team Gameplay V2 provides a header fullscreen control using the standard
+Fullscreen API with Safari `webkit*` fallback. It requests hidden navigation UI,
+tracks enter/exit state, uses dynamic viewport height and safe-area insets, and
+recognizes installed standalone mode. Because iPhone Safari does not reliably
+offer element fullscreen, unsupported devices receive localized Add to Home
+Screen guidance; the page includes the Apple standalone/status-bar metadata
+needed for that launch mode.
 
 ## Product Scope
 
@@ -100,6 +303,9 @@ Rules:
 - backend signs the JWT and returns `expiresAt` for that same cutoff; frontend persists that value without calculating a separate TTL and clears local auth state when the cutoff is reached;
 - session activity and `lastSeenAt` do not extend the absolute cutoff;
 - backend enforces session validity;
+- frontend clears local authentication for HTTP `401 Unauthorized`; HTTP `403
+  Forbidden` represents an authorization denial and does not invalidate an
+  otherwise active session;
 - Team QR token and Team session are separate objects.
 - Team user header identifies the current Team by name in the logout button instead of the generic `User` label. The Team logout button remains visible in every environment until a separate release task hides it. Admin header logout remains unchanged.
 
@@ -200,6 +406,14 @@ Admin System Config selects `nameEn`/`descriptionEn` for English display and
 falls back per field to canonical `name`/`description`; Vietnamese display uses
 the canonical fields. The locale switch does not refetch Admin data because the
 progress matrix already contains all four fields.
+
+Admin System Config obtains Team and Station QR badge metadata from one
+`GET /api/admin/qr-status-summary` response. This summary contains entity IDs,
+status, and Station active count only; it never contains raw tokens or hashes.
+The detailed Team/Station token endpoints remain the source for an explicit QR
+preview action only. The progress matrix projects only fields consumed by the
+Admin client and excludes a changing server timestamp so unchanged matrix and
+summary responses can revalidate to a bodyless `304`.
 
 Excel export, backend operational consumers, Station IDs, enum/API values,
 `Game.title`, and `clueText` remain outside this localization scope.
@@ -364,10 +578,16 @@ Leaderboard ranks all non-deleted Teams and uses the same centralized comparator
 
 Backend is authoritative.
 
+The shared Leaderboard screen is available to both roles. Admin sessions read
+the public `GET /api/leaderboard` projection, while Team sessions use the lean
+authenticated `GET /api/player/leaderboard` projection.
+
 Player Station list, Station map drawer, and Station detail show live Playing
 Teams counts from `GET /api/player/stations/playing-counts`. The endpoint
 returns only `stationId` and `playingTeamCount`, and the frontend polls it only
-while the tab is visible.
+while the tab is visible. Playing-count and Player leaderboard GET responses use
+private cache revalidation so an unchanged poll may return `304` without a
+response body.
 
 ## Team Results Excel Export
 
@@ -397,7 +617,9 @@ The runtime Station map uses WebP variants at 1280, 1920, and 2950 pixels wide.
 The original PNG source asset is kept outside `public` under `fe/source-assets`.
 Frontend selection is based on rendered width and device pixel ratio, keeps the
 current image while an upgrade loads, and only upgrades to the full-width image
-for high zoom rather than downgrading on resize.
+for high zoom rather than downgrading on resize. When the browser reports Data
+Saver, `2g`, or `slow-2g`, selection is capped at the 1920-pixel variant even at
+high zoom.
 
 The Konva Stage is limited to the visible viewport while the existing logical
 map coordinate space remains unchanged. The static map image is isolated in a
@@ -441,12 +663,13 @@ blocks the rejected token until a different token appears or the frame remains
 empty for at least 600ms. Success, close, and unmount stop all tracks and decode
 callbacks.
 
-Opacity applies to the whole overlay, including background, text, icons,
-buttons, and controls. The supported range is 50-100, with default 85.
+Opacity applies only to overlay backdrop and panel backgrounds. Text, icons,
+buttons, controls, and media remain fully opaque. The supported range is
+50-100, with default 95.
 
 The main V2 screen follows the supplied black/cyan fantasy HUD reference with
-exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Settings
-at the upper right, no Team identity block on the map HUD, a tall angular brand
+exact invariant brand copy `MOVEment 2026` in a centered clipped tab, Fullscreen
+and Settings at the upper right, no Team identity block on the map HUD, a tall angular brand
 plate with symmetric striped cyan rails, and a bright green multi-layer neon
 total score centered below the brand in every responsive mode, plus
 three independent sci-fi footer controls: Leaderboard left, a raised
@@ -457,12 +680,14 @@ centered near-fullscreen modal layers in both orientations. V2 Station Detail
 is also a near-fullscreen overlay and must not be rendered as a small corner panel.
 
 V2 owns a fixed route-local palette: cyan/active `#2FE4F0`, cyan-soft
-`#7DF3F9`, score/completed `#4DFF8A`, selected `#FF3FD8`, QR secondary
+`#7DF3F9`, score `#4DFF8A`, selected `#FF3FD8`, QR secondary
 `#B06BFF`, Leaderboard gold `#FFC94D`, ink `#030C14`, text `#EAFCFF`, muted
 text `#9FD4D9`, and panel `rgba(3,14,20,0.82)`. It must not
 inherit or derive its HUD, marker, overlay, or primary-control colors from
 `Team.color`, `--team-*`, body Team theme, or global Ant Design theme. Other
-Team-facing routes continue to use Team Color normally.
+Team-facing routes continue to use Team Color normally. Completed and Locked
+markers are the state-specific exception: their complete visual groups use the
+fixed silver `#C3CED8` to neon-purple `#B05CFF` gradient.
 
 V2 uses unified Station QR action:
 
@@ -492,10 +717,11 @@ overlap other labels, and render below the marker layer. They must not use
 independent viewport/grid coordinates or alter persisted Station coordinates.
 Each label keeps Station code/name on one ellipsized line and the points value
 on a dedicated second line.
-Team V2 omits the complete marker group (marker, label, and connector) after a
-Station reaches Player `Finished` or backend `COMPLETED`. A backend `LOCKED`
-Station remains visible with an authoritative gray/silver-neon marker, halo,
-label, and connector. Station Detail keeps both YouTube and image-gallery
+Team V2 keeps Completed and Locked marker groups visible and tappable. Completed
+uses a check with `40%` opacity, rising to `70%` while selected. Locked uses a
+lower-right lock badge and remains fully opaque. Marker, label, and connector
+share the same state opacity and silver-purple palette. Station Detail keeps
+both YouTube and image-gallery
 controls visible; unavailable media renders as a readable disabled
 silver-neon control instead of disappearing.
 Team V2 Station Detail uses centered intrinsic content height, capped by the

@@ -82,3 +82,11 @@ visible-only polling, and fixed bottom navigation themed by Team Color.
 
 - `.kilo/plans/1785080746001-team-qr-no-expire-fixed-bottom-navigation.md`
 
+## 2026-08-03 V2 default Team destination
+
+- Successful Team username, Team QR, and automatic URL QR login now navigate to
+  `/team/v2`.
+- Existing authenticated Team and route fallback recovery also use `/team/v2`;
+  Admin destinations are unchanged and V1 remains directly accessible.
+- Frontend tests, i18n parity, lint, production build, and bundle budget passed;
+  authenticated browser redirect smoke remains pending.

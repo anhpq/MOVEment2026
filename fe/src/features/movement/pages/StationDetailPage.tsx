@@ -31,6 +31,7 @@ import {useMovementStore} from "../store";
 import {
   formatDateTime,
   formatDurationFromMs,
+  getStationDisplayCode,
   getStationEffectiveMaxPoints,
   getStationStatusColor,
 } from "../utils";
@@ -206,7 +207,6 @@ export function StationDetailPage() {
       message.success(t("stationDetail.checkOutAccepted"));
       scoreForm.setFieldsValue({
         score: 0,
-        reason: "",
       });
       setIsScoreModalOpen(true);
     } catch {
@@ -499,27 +499,32 @@ export function StationDetailPage() {
 
       <Modal
         centered
+        className="station-qr-modal"
         title={t("stationDetail.scanCompleteTitle")}
         open={isFinishScannerOpen}
+        destroyOnHidden
         onCancel={() => {
           setCheckOutQrToken("");
           setIsFinishScannerOpen(false);
         }}
-        onOk={() => void submitCheckOutQr(checkOutQrToken)}
-        confirmLoading={isSubmittingCheckOut}
-        okText={t("stationDetail.submitCheckOut")}
-        cancelText={t("common.close")}>
-        <Flex vertical gap={12}>
+        footer={null}>
+        <Flex vertical gap={12} className="full-width">
+          <div className="station-qr-identity">
+            <span>{getStationDisplayCode(station.stationId)}</span>
+            <strong>{station.name}</strong>
+          </div>
+          <Typography.Text type="secondary">
+            {t("stationDetail.checkOutDescriptionShort")}
+          </Typography.Text>
           <QrTokenInput
             value={checkOutQrToken}
             placeholder={t("stationDetail.checkOutPlaceholder")}
             onChange={setCheckOutQrToken}
             onScan={(value) => void submitCheckOutQr(value)}
-          />
-          <Alert
-            type="info"
-            showIcon
-            description={t("stationDetail.checkOutHelp")}
+            cameraFirst
+            onSubmit={() => void submitCheckOutQr(checkOutQrToken)}
+            submitLabel={t("stationsPage.confirmCode")}
+            submitting={isSubmittingCheckOut}
           />
         </Flex>
       </Modal>
@@ -536,8 +541,14 @@ export function StationDetailPage() {
           onFinish={(values) => {
             modal.confirm({
               centered: true,
-              title: t("stationDetail.confirmCompletion"),
-              content: t("stationDetail.confirmCompletionContent"),
+              title: session.role === "user" ?
+                t("stationDetail.confirmScoreTitle", {score: values.score})
+              : t("stationDetail.confirmCompletion"),
+              content: session.role === "user" ?
+                t("stationDetail.confirmScoreContent", {
+                  station: `${getStationDisplayCode(station.stationId)} - ${station.name}`,
+                })
+              : t("stationDetail.confirmCompletionContent"),
               okText: t("common.confirm"),
               cancelText: t("common.cancel"),
               onOk: async () => {
@@ -570,11 +581,7 @@ export function StationDetailPage() {
                 setIsSubmittingScore(true);
                 try {
                   await executePlayerMutation(
-                    () => submitStationScore(
-                      station.stationId,
-                      values.score,
-                      values.reason,
-                    ),
+                    () => submitStationScore(station.stationId, values.score),
                     language,
                   );
                   message.success(t("stationDetail.completedSuccess"));
@@ -595,9 +602,11 @@ export function StationDetailPage() {
             rules={[{required: true}]}>
             <InputNumber min={0} max={stationMaxPoints} className="full-width" />
           </Form.Item>
-          <Form.Item label={t("stationDetail.reason")} name="reason">
-            <Input.TextArea rows={2} placeholder={t("stationDetail.optionalNote")} />
-          </Form.Item>
+          {session.role !== "user" && (
+            <Form.Item label={t("stationDetail.reason")} name="reason">
+              <Input.TextArea rows={2} placeholder={t("stationDetail.optionalNote")} />
+            </Form.Item>
+          )}
           <Button
             type="primary"
             htmlType="submit"

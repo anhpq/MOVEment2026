@@ -366,11 +366,21 @@
 
   .admin-ops-tabs .ant-tabs-tab {
     padding: 8px 5px;
-    font-size: 0.68rem;
+    font-size: 0.75rem;
   }
 
   .admin-ops-tabs .ant-tabs-tab .anticon {
     margin-inline-end: 4px;
+    font-size: 0.75rem;
+  }
+
+  .ops-record-field span {
+    font-size: 0.68rem;
+  }
+
+  .ops-record-field strong,
+  .ops-section-heading .ant-typography,
+  .ops-info-note {
     font-size: 0.75rem;
   }
 

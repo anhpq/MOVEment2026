@@ -1,6 +1,12 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 import {LazyRouteBoundary} from "./routing/LazyRouteBoundary";
 import {lazyRoute} from "./routing/lazyRoute";
+import {useMovementStore} from "./store";
+
+function RoleAwareFallback() {
+  const role = useMovementStore((state) => state.session?.role);
+  return <Navigate to={role === "admin" ? "/teams" : role === "user" ? "/team/v2" : "/login"} replace />;
+}
 
 const ProtectedRoute = lazyRoute(() =>
   import("./layout/ProtectedRoute").then(({ProtectedRoute: component}) => ({
@@ -222,7 +228,7 @@ export function MovementRoutes() {
           </LazyRouteBoundary>
         }
       />
-      <Route path="*" element={<Navigate to="/stations" replace />} />
+      <Route path="*" element={<RoleAwareFallback />} />
     </Routes>
   );
 }

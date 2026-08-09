@@ -428,24 +428,22 @@ Use the actual configured domain if different.
 
 ---
 
-# 14. Frontend Manual Workflow
+# 14. Frontend Deployment Path
 
 Run only after Backend verification passes.
 
-Expected workflow:
+The currently tracked `.github/workflows/fe-deploy.yml` publishes to OBS and
+requires an HTTPS `VITE_API_BASE_URL`. `deploy/nginx/movement.conf` remains a
+separate manual same-origin alternative; do not report an Nginx workflow unless
+that path has actually been restored and run.
+
+Current tracked workflow:
 
 ```text
-Deploy Frontend (Nginx)
+Deploy Frontend (OBS)
 ```
 
-Use exact current inputs, typically equivalent to:
-
-```text
-target_branch=master
-deploy_frontend=deploy-frontend
-```
-
-Frontend must build with same-origin API behavior:
+For the manual Nginx alternative, build with same-origin API behavior:
 
 ```text
 VITE_API_BASE_URL unset
@@ -475,6 +473,13 @@ Required behavior:
 - No mixed content.
 - CORS does not block same-origin requests.
 - Frontend bundle contains no retired scoring-code value or raw QR secret.
+- `index.html` revalidates; fingerprinted `/assets/*` have a one-year immutable
+  cache policy; stable media has a 30-day cache policy.
+- Nginx responses use gzip for eligible frontend/API content when requested.
+- Unchanged playing-count, leaderboard, and QR-summary requests can return
+  `304` without a response body.
+- Cross-origin OPTIONS responses expose `Access-Control-Max-Age: 600` so the
+  OBS/API split-origin path can reuse preflight permission.
 
 ---
 
@@ -691,8 +696,8 @@ Server owner must:
 4. Run Deploy Backend (ECS) manually.
 5. Verify migration/seed decisions, db:verify, process health, and logs.
 6. Confirm Backend is healthy.
-7. Run Deploy Frontend (Nginx) manually.
-8. Verify HTTPS, /api, /qr-login, CORS, and SPA refresh.
+7. Run the currently approved Frontend deployment path.
+8. Verify HTTPS, /api, /qr-login, CORS, SPA refresh, gzip, cache headers, and 304.
 9. Run approved non-destructive smoke tests.
 10. Prepare and test new SQ1 Station QR artifacts.
 11. Keep Legacy compatibility until physical QR replacement is complete.

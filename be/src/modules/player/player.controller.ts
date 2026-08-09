@@ -64,6 +64,7 @@ export class PlayerController {
   }
 
   @Get('stations/playing-counts')
+  @Header('Cache-Control', 'private, no-cache')
   getStationPlayingCounts(@CurrentAuth() auth: AuthContext) {
     this.requireTeam(auth);
     return this.playerService.getStationPlayingCounts();
@@ -94,7 +95,7 @@ export class PlayerController {
   }
 
   @Get('leaderboard')
-  @Header('Cache-Control', 'no-store')
+  @Header('Cache-Control', 'private, no-cache')
   getPlayerLeaderboard(@CurrentAuth() auth: AuthContext) {
     this.requireTeam(auth);
     return this.playerService.getPlayerLeaderboard();

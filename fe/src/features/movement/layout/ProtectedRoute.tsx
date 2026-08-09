@@ -68,15 +68,15 @@ export function ProtectedRoute({ children, allow, fullscreen = false }: Protecte
   }
 
   if (allow && !allow.includes(session.role)) {
-    const homePath = session.role === 'admin' ? '/teams' : '/stations'
+    const homePath = session.role === 'admin' ? '/teams' : '/team/v2'
     const homeLabel =
-      session.role === 'admin' ? 'Quay về danh sách đội' : 'Quay về danh sách trạm'
+      session.role === 'admin' ? t('route.backToTeams') : t('route.backToGame')
     return (
       <AppFrame>
         <Result
           status="403"
-          title="Không có quyền truy cập"
-          subTitle="Màn hình này chỉ hiển thị cho đúng nhóm quyền được mô tả trong yêu cầu."
+          title={t('route.accessDeniedTitle')}
+          subTitle={t('route.accessDeniedDescription')}
           extra={<Button onClick={() => navigate(homePath)}>{homeLabel}</Button>}
         />
       </AppFrame>

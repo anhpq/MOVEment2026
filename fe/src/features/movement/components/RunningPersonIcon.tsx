@@ -1,14 +1,16 @@
 type RunningPersonIconProps = Readonly<{
   className?: string;
+  label?: string;
 }>;
 
-export function RunningPersonIcon({className}: RunningPersonIconProps) {
+export function RunningPersonIcon({className, label}: RunningPersonIconProps) {
   return (
     <svg
-      aria-label="Running person"
+      aria-hidden={label ? undefined : true}
+      aria-label={label}
       className={className}
       fill="none"
-      role="img"
+      role={label ? "img" : undefined}
       viewBox="0 0 280 201"
       xmlns="http://www.w3.org/2000/svg"
     >

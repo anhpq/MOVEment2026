@@ -1,5 +1,371 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-04 Team V2 direct marker-to-game flow
+
+- [x] Remove the intermediate selected-Station preview card.
+- [x] Open V2 Station/Game Detail directly from marker clicks.
+- [x] Apply the same direct behavior to Team overview Station actions.
+- [x] Clear selection when Detail closes.
+- [x] Verify focused Vitest `8/8`, lint, build, and bundle budget.
+
+## 2026-08-04 Team V2 overview overlay
+
+- [x] Open a V2-owned Team overview from the right footer tab.
+- [x] Show Team score, rank, progress, and current Station from live data.
+- [x] Group Stations by Completed/Playing/Not played.
+- [x] Show Station code, name, and points on every row.
+- [x] Return to the selected Station from Continue/row actions.
+- [x] Verify i18n `436`, lint, production build, and bundle budget.
+- [ ] Confirm authenticated visual hierarchy and long-name truncation on-device.
+
+## 2026-08-04 Team V2 cyberpunk wing footer
+
+- [x] Replace the rounded frame with clipped left/right neon wings.
+- [x] Add angled center notches, technical rails, and a Scan CTA pedestal.
+- [x] Preserve BXH, scanner, and Team navigation behavior.
+- [x] Verify lint, production build, and bundle budget.
+- [ ] Confirm pixel similarity against the supplied footer reference on-device.
+
+## 2026-08-04 Team V2 absolute-centered scanner
+
+- [x] Center-anchor the Scan CTA for equal top/bottom protrusion at every scale.
+- [x] Raise the Scan caption by `4px`.
+- [x] Verify lint, production build, and bundle budget.
+
+## 2026-08-04 Team V2 centered footer scanner
+
+- [x] Center the `72px` side rails and enclosing border inside the `96px` footer.
+- [x] Make the `96px` Scan CTA protrude equally by `12px` above and below.
+- [x] Verify lint, production build, and bundle budget.
+- [ ] Confirm final geometry on a physical target device.
+
+## 2026-08-04 Team V2 compact footer baseline
+
+- [x] Remove the Team V2 map legend from rendering and state.
+- [x] Reduce the Scan CTA to `96px`.
+- [x] Align the Scan CTA and enclosing footer frame on one bottom baseline.
+- [x] Verify focused Vitest `8/8`, lint, build, and bundle budget.
+- [ ] Confirm final footer alignment on a physical target device.
+
+## 2026-08-03 Team V2 attached marker points and scanner framing
+
+- [x] Render points/trophy/lock pills inside the same group as each pin.
+- [x] Remove the separate collision-filtered points layer.
+- [x] Reduce center Scan CTA to `104px` and prevent frame lines crossing it.
+- [x] Verify focused Vitest `8/8`, lint, build, and bundle budget.
+- [ ] Confirm footer contour on a physical target device.
+
+## 2026-08-03 Team V2 compact navy marker refinement
+
+- [x] Reduce pins to `30px` default and points pills to `52x18px`.
+- [x] Use navy pin interiors and a subtle circular code outline.
+- [x] Reduce closed/open legend dimensions.
+- [x] Remove duplicate inner footer borders and show the live localized Team name.
+- [x] Verify focused Vitest `8/8`, i18n `428`, lint, build, and bundle budget.
+- [ ] Confirm dense-marker readability on a physical target device.
+
+## 2026-08-03 Team V2 premium map HUD refinement
+
+- [x] Enclose both footer tabs and the `112px` center Scan CTA in one full-width frame.
+- [x] Default the legend to a compact button and add an accessible open panel.
+- [x] Remove the active text chip; retain lightning and three gold ground rings.
+- [x] Improve Completed-marker legibility and reduce the map vignette.
+- [x] Verify focused Vitest `8/8`, i18n `428`, lint, build, and bundle budget.
+- [ ] Confirm pixel alignment and touch ergonomics on physical 360–430px devices.
+
+## 2026-08-03 Team V2 dense-map readability and footer
+
+- [x] Reduce markers to `34px` default and points pills to `58x19px`.
+- [x] Increase portrait map coverage from `78%` to `94%`.
+- [x] Reduce legend width and typography by approximately 20%.
+- [x] Scale footer through `2.4x` and enclose tabs plus QR in one outer frame.
+- [x] Verify focused Vitest `14/14`, i18n `426`, lint, build, and bundle.
+- [ ] Confirm dense-cluster readability and footer clearance on target devices.
+
+## 2026-08-03 Team V2 marker legend
+
+- [x] Add responsive lower-left Available/In Progress/Completed legend.
+- [x] Match cyan points, gold points, and blue-gray trophy treatments.
+- [x] Preserve Backend-driven marker IDs, states, points, and coordinates.
+- [x] Verify focused Vitest `14/14`, i18n `426`, lint, build, and bundle.
+- [ ] Confirm legend clearance against real marker density on target devices.
+
+## 2026-08-03 Team V2 spec-locked bottom navigation
+
+- [x] Implement `336x96px` coordinates with `120 + 96 + 120` widths.
+- [x] Use `72px` tabs, `96px` CTA, `2px` border, and `16px` outer corners.
+- [x] Scale the complete component uniformly between `0.82x` and `1.5x`.
+- [x] Remove the extra base frame and wide underlapping geometry.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated pixel alignment against the annotated reference.
+
+## 2026-08-03 Team V2 overlapped footer geometry
+
+- [x] Add a continuous `82px` footer base frame.
+- [x] Extend both `284px` wings beneath the center scanner.
+- [x] Place the Scan label inside the `128px` scanner ring.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated pixel alignment on the reported viewport.
+
+## 2026-08-03 Team V2 large simplified footer
+
+- [x] Increase center scanner to `128px` and footer composition to `154px`.
+- [x] Increase wing height to `78px` and enlarge action icons/labels.
+- [x] Remove secondary visible headings and score/progress copy from the wings.
+- [x] Increase map/preview clearance for the enlarged footer.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated rendering on the reported viewport.
+
+## 2026-08-03 Team V2 framed HUD regression fix
+
+- [x] Reset inherited header bottom/width/border geometry that covered the map.
+- [x] Remove inherited footer container frame and minimum height.
+- [x] Keep central footer action labeled Scan in every Station state.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated rendering on the reported viewport.
+
+## 2026-08-03 Team V2 framed viewport composition
+
+- [x] Move brand and total score into a dedicated HUD above the map canvas.
+- [x] Inset the map between header and footer without changing coordinates.
+- [x] Replace the `204px` footer with symmetric wings and a `92px` center scan.
+- [x] Reposition selected-Station preview above the compact footer.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated appearance at target kiosk/device resolutions.
+
+## 2026-08-03 Team V2 premium map state hierarchy
+
+- [x] Style Available markers cyan and the active marker gold at `118%` scale.
+- [x] Add active Playing chip, lightning badge, stronger halo, and ground rings.
+- [x] Replace Completed points pill with a trophy and subdued blue-gray palette.
+- [x] Recompose footer hierarchy as Leaderboard, Scan, and My team.
+- [x] Verify focused Vitest `14/14`, i18n `422`, lint, build, and bundle.
+- [ ] Confirm authenticated rendering and physical-device performance.
+
+## 2026-08-03 Team V2 compact variable-length markers
+
+- [x] Reduce pins to `44px` default (`38..58px`) and pills to `68x22px`.
+- [x] Scale marker typography for two-, three-, and four-or-more-character codes.
+- [x] Verify focused Vitest `14/14`, i18n `420` keys, lint, build, and bundle.
+- [ ] Confirm authenticated in-map rendering on the physical target device.
+
+## 2026-08-03 Team V2 reference-proportioned markers
+
+- [x] Increase pin and pill proportions to match the supplied close-up reference.
+- [x] Add restrained double-outline glow and dark number depth surface.
+- [x] Keep the pin interior free of decorative icons/illustrations.
+- [x] Add selected-state purple pill echoes.
+- [x] Preserve state/data/anchor/hit-target and gameplay behavior.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke across dense clusters and all marker states.
+
+## 2026-08-03 Team V2 total-score clarity and taller pins
+
+- [x] Identify the green HUD value explicitly as authoritative Team total score.
+- [x] Add localized Total score copy and a dedicated background panel.
+- [x] Remove the inner pin circle and increase pin width/height.
+- [x] Preserve Station number, state, pill, anchor, and hit-target behavior.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke for HUD/marker separation at the
+  reported viewport and representative phone/tablet orientations.
+
+## 2026-08-03 Team V2 teardrop marker states
+
+- [x] Match the supplied compact teardrop and inner-ring marker silhouette.
+- [x] Keep Station numbers dominant and readable.
+- [x] Apply cyan Available/active and purple selected presentation.
+- [x] Replace Locked points text with a lock symbol while preserving state.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke across default, selected, Completed,
+  and Locked states at representative phone/tablet sizes.
+
+## 2026-08-03 Team V2 simplified pins and footer
+
+- [x] Replace dense pin artwork with a simple high-contrast numeric pin.
+- [x] Reduce and fully round the points pill.
+- [x] Reduce the QR action and footer composition heights.
+- [x] Separate QR, caption, and lower footer panels to prevent overlap.
+- [x] Preserve responsive hit targets and gameplay behavior.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke at the reported viewport plus phone,
+  tablet portrait, and low-height landscape sizes.
+
+## 2026-08-03 Team V2 compact numeric markers
+
+- [x] Render the Station display number inside every visible V2 pin.
+- [x] Render only effective maximum points in a compact pill below each pin.
+- [x] Remove Station names and connector lines from the map surface.
+- [x] Preserve state palettes, badges, interactions, and preview/Detail names.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke for dense marker clusters, selected,
+  Completed, and Locked states at phone/tablet portrait and landscape sizes.
+
+## 2026-08-03 Team V2 selected-Station preview
+
+- [x] Keep the map visible after marker selection.
+- [x] Show a compact image/code, name, score, and description preview.
+- [x] Open the existing full Detail only from an explicit View mission action.
+- [x] Add synchronized VI/EN visible and accessible copy.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke at phone, tablet portrait, and
+  low-height landscape sizes with long Station names and missing images.
+
+## 2026-08-03 Team V2 portrait HUD readability
+
+- [x] Scale the raised QR/footer composition by portrait height as well as width.
+- [x] Keep portrait Fullscreen and Settings actions on one compact row.
+- [x] Clamp Station labels to the viewport and suppress screen-space collisions.
+- [x] Prioritize selected and active Station labels without hiding markers.
+- [x] Pass focused tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated visual smoke at `390x844`, `824x1312`, and
+  `844x390`, plus physical-device safe-area verification.
+
+## 2026-08-03 Team V2 default route trial
+
+- [x] Route Team username and QR login success to `/team/v2`.
+- [x] Route authenticated login recovery and Team fallback/home to `/team/v2`.
+- [x] Preserve V1 routes and the V2 return-to-V1 action.
+- [x] Add synchronized VI/EN Team home recovery copy.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated browser smoke for every login and fallback entry.
+
+## 2026-08-03 Completed Station gameplay button
+
+- [x] Disable the Team V1 Station List gameplay button after completion.
+- [x] Disable the Team V1 map drawer gameplay button after completion.
+- [x] Keep bilingual Finished labels and independent media actions.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated mobile visual smoke for disabled completed actions.
+
+## 2026-08-03 Team score confirmation copy
+
+- [x] Show the submitted score and Station identity in Team V1/V2 confirmation.
+- [x] Warn that Team score cannot be self-edited after confirmation.
+- [x] Keep Vietnamese and English confirmation wording synchronized.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated mobile visual smoke for long Station names.
+
+## 2026-08-03 Team score reason removal
+
+- [x] Remove the optional reason field from Team score entry after Check-out.
+- [x] Submit only the Team score while retaining mandatory Admin reasons.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated mobile visual smoke of the simplified score modal.
+
+## 2026-08-03 QR modal Station identity layout
+
+- [x] Place the Station code badge and name on one responsive row for both
+  Check-in and Check-out.
+- [x] Pass Frontend tests, lint, production build, and bundle budget.
+- [ ] Complete mobile visual smoke with representative long Station names.
+
+## 2026-08-03 Check-out QR camera-first modal
+
+- [x] Match the Station Detail Check-out modal to the camera-first Check-in UI.
+- [x] Keep scan auto-submit and collapsible manual token entry.
+- [x] Show Station identity and concise player-facing guidance.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete physical iOS/Android camera and responsive visual smoke.
+
+## 2026-08-03 Check-in QR camera-first modal
+
+- [x] Make camera scanning the primary Station List Check-in action.
+- [x] Collapse manual token entry and reveal it on request/camera failure.
+- [x] Auto-submit scanned QR and disable empty manual confirmation.
+- [x] Replace Backend-oriented explanatory UI with concise player copy.
+- [x] Pass full Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete physical iOS/Android camera and responsive visual smoke.
+
+## 2026-08-02 Video action color refinement
+
+- [x] Reduce enabled Watch Video color intensity in Team V1 and Team V2.
+- [x] Preserve disabled state, interaction behavior, and media rules.
+- [x] Pass focused tests, Frontend lint, build, and bundle budget.
+- [ ] Complete manual mobile/desktop visual review.
+
+## 2026-08-02 Frontend UI usability and accessibility optimization
+
+- [x] Add Leaderboard initial-load error/retry while preserving stale-data UX.
+- [x] Redirect unknown routes according to Admin, Team, or anonymous session.
+- [x] Localize shared authorization and navigation accessibility copy.
+- [x] Label map controls and expose truncated Team/Leaderboard names.
+- [x] Improve representative mobile text sizes and touch targets.
+- [x] Pass Frontend tests, i18n parity, lint, build, and bundle budget.
+- [ ] Complete authenticated desktop/mobile visual and keyboard smoke.
+- [ ] Remove confirmed orphaned Legacy CSS in a separate bounded refactor.
+
+## 2026-08-02 Admin Leaderboard authorization fix
+
+- [x] Route Admin Leaderboard reads through `GET /api/leaderboard` and retain
+  `GET /api/player/leaderboard` for authenticated Team sessions.
+- [x] Stop treating HTTP `403 Forbidden` as an expired session; automatic local
+  logout remains limited to HTTP `401 Unauthorized`.
+- [ ] Complete a manual browser click-through using an Admin session after the
+  rebuilt Frontend is running.
+
+## 2026-08-08 Team V2 Settings display controls
+
+- [x] Move Fullscreen from the header into Settings and add progressive landscape lock with localized fallback.
+- [x] Apply the supplied QR badge sizing/offset at every breakpoint.
+- [x] Pass focused Frontend Vitest, i18n parity, production build, and bundle gate.
+- [ ] Verify fullscreen/landscape behavior in Chrome and Safari, including iPhone Safari manual-rotation guidance.
+
+## 2026-08-02 Team V2 browser fullscreen
+
+- [x] Add an accessible enter/exit fullscreen control next to Team V2 Settings
+  using the standard Fullscreen API and Safari `webkit*` fallback.
+- [x] Keep the icon synchronized with fullscreen events and suppress the
+  redundant control in iOS/Home Screen or standard standalone mode.
+- [x] Add localized unsupported-browser guidance, Apple standalone metadata,
+  theme/status-bar color, and dynamic viewport-height handling.
+- [x] Pass focused Vitest `5/5`, full Frontend Vitest `60/60`, i18n parity
+  `399`, full Frontend lint, production build, bundle gate, and diff check.
+- [ ] Verify enter/exit behavior on desktop Safari and iPadOS Safari, plus Add
+  to Home Screen standalone launch on a physical iPhone.
+
+## 2026-08-02 Request and database hot-path follow-up
+
+- [ ] P0: throttle Team-session `lastSeenAt` writes to a conditional heartbeat
+  no more than once per 60 seconds while preserving revocation validation on
+  every request; compare tuple updates/WAL and auth behavior before/after.
+- [ ] P0: add a 5-15 second single-flight cache for catalog version and lean
+  leaderboard with explicit invalidation after relevant Admin/gameplay/Final
+  mutations; verify freshness and `/api/player/state` query-count reduction.
+- [ ] P0: replace Event Config read-path `upsert` with `findUnique` plus a safe
+  missing-row create fallback; verify concurrent missing-row behavior and no
+  read-path write statements.
+- [ ] P1: capture Production-like Prisma query counts, PostgreSQL statement/WAL
+  metrics, and p95 latency before choosing cache TTLs.
+- [ ] P2: add Final-submission or Activity Log indexes only after table growth
+  plus `EXPLAIN (ANALYZE, BUFFERS)` demonstrates a useful plan change.
+
+## 2026-08-01 Network request and transfer optimization
+
+- [x] Replace the 42-request Admin QR status fan-out with one metadata-only
+  summary endpoint while keeping raw-token retrieval behind explicit preview.
+- [x] Trim the Admin progress-matrix projection/response from 101,512 to 75,993
+  bytes locally and remove its unused changing `serverNow`, enabling a verified
+  zero-body `304` when matrix data is unchanged.
+- [x] Reuse `/api/player/state.final` on Station List and remove its separate
+  periodic Final request.
+- [x] Use a 30-second default polling interval and cap map selection at 1920px
+  for Data Saver, `2g`, and `slow-2g` clients.
+- [x] Enable conditional revalidation for playing counts, Player leaderboard,
+  and Admin QR summary; remove JSON Content-Type from bodyless GET requests and
+  cache cross-origin preflight permission for 10 minutes.
+- [x] Add Nginx gzip plus fingerprinted/stable/HTML cache policies and matching
+  OBS object metadata behavior.
+- [x] Pass Backend Jest `164/164`, lint/build; Frontend Vitest `55/55`, i18n
+  parity `395`, lint/build/bundle gate; deploy shell syntax and workflow YAML
+  parse; local CORS preflight returned `204` with max-age `600`; Admin matrix
+  and QR summary revalidation returned `304` with zero body bytes.
+- [x] Update Graphify to `2784` nodes / `4714` edges and forward-query the new
+  System Config summary path; retain known zero-node SQL/hooks and label-refresh
+  warnings as non-blocking tooling gaps.
+- [ ] Run `nginx -t` on the target server and verify live gzip, cache headers,
+  ETag/304, OBS metadata, request counts, and reduced-data map selection in a
+  real browser after an authorized deployment.
+
 ## 2026-07-31 Team V2 background-only overlay opacity
 
 - [x] Set the new Team V2 overlay default to `95%` and reset the old stored

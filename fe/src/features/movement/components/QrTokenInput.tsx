@@ -15,6 +15,10 @@ type QrTokenInputProps = Readonly<{
   onChange: (value: string) => void;
   onScan?: (value: string) => void;
   placeholder: string;
+  cameraFirst?: boolean;
+  onSubmit?: () => void;
+  submitLabel?: string;
+  submitting?: boolean;
 }>;
 
 type ScannerState =
@@ -122,6 +126,10 @@ export function QrTokenInput({
   onChange,
   onScan,
   placeholder,
+  cameraFirst = false,
+  onSubmit,
+  submitLabel,
+  submitting = false,
 }: QrTokenInputProps) {
   const {t} = useTranslation();
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -135,12 +143,15 @@ export function QrTokenInput({
   const onChangeRef = useRef(onChange);
   const onScanRef = useRef(onScan);
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
+  const [isManualEntryVisible, setIsManualEntryVisible] = useState(!cameraFirst);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const canUseCamera = supportsCameraQrScan();
   const isCameraRunning =
     scannerState === "requestingPermission" ||
     scannerState === "active" ||
     scannerState === "decoding";
+  const showManualEntry =
+    isManualEntryVisible || (cameraFirst && (!canUseCamera || Boolean(cameraError)));
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -388,7 +399,7 @@ export function QrTokenInput({
   }, [stopScanner]);
 
   return (
-    <Flex vertical gap={12}>
+    <Flex vertical gap={12} className={cameraFirst ? "qr-token-input is-camera-first" : "qr-token-input"}>
       {isCameraRunning && (
         <Flex vertical gap={8}>
           <video
@@ -410,13 +421,11 @@ export function QrTokenInput({
           </Typography.Text>
         </Flex>
       )}
-      <Input
-        autoFocus
-        value={value}
-        placeholder={placeholder}
-        onChange={(event) => onChange(event.target.value)}
-      />
       <Button
+        block={cameraFirst}
+        type={cameraFirst ? "primary" : "default"}
+        size={cameraFirst ? "large" : "middle"}
+        className={cameraFirst ? "qr-camera-primary" : undefined}
         icon={<CameraOutlined />}
         disabled={!canUseCamera && scannerState !== "error"}
         loading={scannerState === "requestingPermission"}
@@ -429,8 +438,36 @@ export function QrTokenInput({
 
           startCamera();
         }}>
-        {isCameraRunning ? t("qrScanner.stopCamera") : t("qrScanner.scanWithCamera")}
+        {isCameraRunning ? t("qrScanner.stopCamera") : t(cameraFirst ? "qrScanner.openCamera" : "qrScanner.scanWithCamera")}
       </Button>
+      {cameraFirst && !showManualEntry && (
+        <Button type="link" onClick={() => setIsManualEntryVisible(true)}>
+          {t("qrScanner.manualEntry")}
+        </Button>
+      )}
+      {showManualEntry && (
+        <Flex vertical gap={10} className="qr-manual-entry">
+          <Input
+            autoFocus={!cameraFirst}
+            value={value}
+            placeholder={placeholder}
+            onChange={(event) => onChange(event.target.value)}
+            onPressEnter={() => {
+              if (value.trim() && onSubmit) onSubmit();
+            }}
+          />
+          {onSubmit && submitLabel && (
+            <Button
+              block
+              type="primary"
+              disabled={!value.trim()}
+              loading={submitting}
+              onClick={onSubmit}>
+              {submitLabel}
+            </Button>
+          )}
+        </Flex>
+      )}
       {!canUseCamera && (
         <Alert
           type="warning"

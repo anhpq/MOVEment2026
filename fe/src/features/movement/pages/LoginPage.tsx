@@ -216,7 +216,7 @@ export function LoginPage() {
           );
         }
         message.success(t("auth.loginSuccess"));
-        navigate("/stations/map");
+        navigate("/team/v2");
         return;
       } catch (error) {
         if (!isAuthFailure(error)) {
@@ -237,7 +237,7 @@ export function LoginPage() {
       navigate(
         mapBackendRole(userResponse.user.role) === "admin" ?
           "/teams"
-        : "/stations",
+        : "/team/v2",
       );
     } catch (error) {
       message.error(t(getSafeApiErrorTranslationKey(
@@ -284,7 +284,7 @@ export function LoginPage() {
         );
       }
       message.success(t("auth.qrLoginSuccess"));
-      navigate("/stations/map");
+      navigate("/team/v2");
     } catch (error) {
       message.error(t(getSafeApiErrorTranslationKey(
         error,
@@ -391,7 +391,7 @@ export function LoginPage() {
 
   useEffect(() => {
     if (session && !isSubmitting) {
-      navigate(session.role === "user" ? "/stations/map" : "/teams", {
+      navigate(session.role === "user" ? "/team/v2" : "/teams", {
         replace: true,
       });
     }

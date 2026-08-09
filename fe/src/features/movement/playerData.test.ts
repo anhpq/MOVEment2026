@@ -5,12 +5,14 @@ import {
   fetchPlayerDatabase,
   loadPlayerMapImage,
   resetPlayerRuntimeCachesForTests,
+  selectPlayerMapImageVariant,
 } from "./playerData";
 import {useMovementStore} from "./store";
 
 const apiMocks = vi.hoisted(() => ({
   getPlayerCatalog: vi.fn(),
   getPlayerDashboard: vi.fn(),
+  getPlayerFinal: vi.fn(),
   getPlayerProgress: vi.fn(),
   getPlayerState: vi.fn(),
   getPlayerStationImages: vi.fn(),
@@ -29,6 +31,16 @@ function loginTeam() {
     teamId: "1",
     accessToken: "player-data-test-token",
     expiresAt: new Date(Date.now() + 60_000).toISOString(),
+  });
+}
+
+function setNetworkConnection(connection?: {
+  saveData?: boolean;
+  effectiveType?: string;
+}) {
+  Object.defineProperty(navigator, "connection", {
+    configurable: true,
+    value: connection,
   });
 }
 
@@ -104,6 +116,7 @@ beforeEach(() => {
 afterEach(() => {
   useMovementStore.getState().logout();
   resetPlayerRuntimeCachesForTests();
+  setNetworkConnection();
   vi.unstubAllGlobals();
 });
 
@@ -124,6 +137,14 @@ describe("lean player projection", () => {
       score: 30,
       imageCount: 2,
       imageUrls: [],
+    });
+    expect(state.finalSummary).toEqual({
+      isOpen: true,
+      canSubmit: true,
+      blockedByActiveStation: false,
+      activeStationId: null,
+      finalStartsAt: "2026-07-29T03:00:00.000Z",
+      eventEndTime: "2026-07-29T04:00:00.000Z",
     });
     expect(apiMocks.getPlayerDashboard).not.toHaveBeenCalled();
   });
@@ -146,6 +167,14 @@ describe("lean player projection", () => {
     });
     apiMocks.getPlayerStations.mockResolvedValue([]);
     apiMocks.getPlayerProgress.mockResolvedValue([]);
+    apiMocks.getPlayerFinal.mockResolvedValue({
+      isOpen: true,
+      canSubmit: true,
+      blockedByActiveStation: false,
+      activeStationId: null,
+      finalStartsAt: "2026-07-29T03:00:00.000Z",
+      eventEndTime: "2026-07-29T04:00:00.000Z",
+    });
 
     await expect(fetchPlayerDatabase("vi")).resolves.toMatchObject({
       activeTeamId: "1",
@@ -153,6 +182,7 @@ describe("lean player projection", () => {
     expect(apiMocks.getPlayerDashboard).toHaveBeenCalledTimes(1);
     expect(apiMocks.getPlayerStations).toHaveBeenCalledTimes(1);
     expect(apiMocks.getPlayerProgress).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getPlayerFinal).toHaveBeenCalledTimes(1);
   });
 
   it("does not hide a lean 5xx failure behind legacy endpoints", async () => {
@@ -198,6 +228,25 @@ describe("player mutation reconciliation", () => {
 });
 
 describe("map image cache", () => {
+  it.each([
+    [{saveData: true, effectiveType: "4g"}],
+    [{saveData: false, effectiveType: "2g"}],
+  ])("caps the selected map asset at 1920px for %o", (connection) => {
+    setNetworkConnection(connection);
+
+    expect(selectPlayerMapImageVariant(2_000, 2, true)).toMatchObject({
+      width: 1920,
+    });
+  });
+
+  it("keeps the 2950px high-zoom asset on a normal connection", () => {
+    setNetworkConnection({saveData: false, effectiveType: "4g"});
+
+    expect(selectPlayerMapImageVariant(2_000, 2, true)).toMatchObject({
+      width: 2950,
+    });
+  });
+
   it("evicts a rejected image promise and retries once", async () => {
     let createdImages = 0;
     class FakeImage {

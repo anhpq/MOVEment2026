@@ -351,7 +351,15 @@ export class AdminService {
       this.prisma.station.findMany({
         where: { isActive: true },
         orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
-        include: {
+        select: {
+          id: true,
+          name: true,
+          nameEn: true,
+          description: true,
+          descriptionEn: true,
+          mapX: true,
+          mapY: true,
+          trackingMode: true,
           images: {
             orderBy: { sortOrder: 'asc' },
             select: { url: true },
@@ -366,10 +374,26 @@ export class AdminService {
       }),
       this.prisma.team.findMany({
         orderBy: [{ totalPoints: 'desc' }, { totalPlaySeconds: 'asc' }, { id: 'asc' }],
-        include: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          captainName: true,
+          totalPoints: true,
+          totalPlaySeconds: true,
+          color: true,
           progress: {
-            include: { game: true },
             orderBy: [{ station: { sortOrder: 'asc' } }, { stationId: 'asc' }],
+            select: {
+              id: true,
+              stationId: true,
+              status: true,
+              scoreAchieved: true,
+              checkedInAt: true,
+              checkedOutAt: true,
+              completedAt: true,
+              game: { select: { maxPoints: true } },
+            },
           },
         },
       }),
@@ -381,27 +405,94 @@ export class AdminService {
         imageUrls: images.map(({ url }) => url),
       })),
       rows: teams.map(({ progress, ...team }) => ({
-        team: this.toPublicTeam(team),
+        team: {
+          id: team.id,
+          name: team.name,
+          username: team.username,
+          captainName: team.captainName,
+          totalPoints: team.totalPoints,
+          totalPlaySeconds: team.totalPlaySeconds,
+          teamColor: team.color,
+          color: team.color,
+        },
         cells: stations.map((station) => {
           const item = progress.find((entry) => entry.stationId === station.id);
           return item
             ? {
                 progressId: item.id,
                 stationId: item.stationId,
-                gameId: item.gameId,
                 status: item.status,
                 scoreAchieved: item.scoreAchieved,
                 maxPoints: item.game.maxPoints,
                 checkedInAt: item.checkedInAt,
                 checkedOutAt: item.checkedOutAt,
                 completedAt: item.completedAt,
-                cancelledAt: item.cancelledAt,
-                reopenedAt: item.reopenedAt,
               }
             : null;
         }),
       })),
-      serverNow: new Date().toISOString(),
+    };
+  }
+
+  async qrStatusSummary() {
+    const now = new Date();
+    const [teamTokens, stationTokens] = await Promise.all([
+      this.prisma.qrLoginToken.findMany({
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        select: {
+          teamId: true,
+          isActive: true,
+          consumedAt: true,
+          revokedAt: true,
+        },
+      }),
+      this.prisma.qrToken.findMany({
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        select: {
+          stationId: true,
+          isActive: true,
+          expiresAt: true,
+          revokedAt: true,
+        },
+      }),
+    ]);
+
+    const teamStatuses = new Map<number, 'ACTIVE' | 'NONE'>();
+    for (const token of teamTokens) {
+      if (!teamStatuses.has(token.teamId)) {
+        teamStatuses.set(token.teamId, 'NONE');
+      }
+      if (this.getQrLoginTokenStatus(token) === 'ACTIVE') {
+        teamStatuses.set(token.teamId, 'ACTIVE');
+      }
+    }
+
+    const stationStatuses = new Map<
+      string,
+      { activeCount: number; latestStatus: string }
+    >();
+    for (const token of stationTokens) {
+      const status = this.getStationQrTokenStatus(token, now);
+      const current = stationStatuses.get(token.stationId);
+      if (!current) {
+        stationStatuses.set(token.stationId, {
+          activeCount: status === 'ACTIVE' ? 1 : 0,
+          latestStatus: status,
+        });
+      } else if (status === 'ACTIVE') {
+        current.activeCount += 1;
+      }
+    }
+
+    return {
+      teams: [...teamStatuses].map(([teamId, status]) => ({ teamId, status })),
+      stations: [...stationStatuses].map(
+        ([stationId, { activeCount, latestStatus }]) => ({
+          stationId,
+          activeCount,
+          status: activeCount > 0 ? 'ACTIVE' : latestStatus,
+        }),
+      ),
     };
   }
 

@@ -1,18 +1,20 @@
 import {describe, expect, it} from "vitest";
 import {
+  getNonOverlappingStationLabelIds,
+  getStationMarkerFontSize,
   getStationLabelLayouts,
+  BASE_MARKER_SIZE,
   MAX_MARKER_SIZE,
   MIN_MARKER_SIZE,
-  isTeamV2MarkerLocked,
-  shouldRenderTeamV2Marker,
   STATION_LABEL_HEIGHT,
   STATION_LABEL_WIDTH,
   type MarkerLabelSource,
   type MarkerLabelViewport,
 } from "./teamV2MarkerLayout";
+import {getStationMarkerAppearance} from "../markerAppearance";
 
 const viewport: MarkerLabelViewport = {width: 400, height: 800};
-const baseScale = 0.624;
+const baseScale = 0.752;
 
 function createMarker(): MarkerLabelSource {
   return {
@@ -28,27 +30,25 @@ function getLayout(scale = baseScale, x = 0, y = 0) {
 }
 
 describe("TeamGameplayV2Page marker label layout", () => {
-  it("hides completed markers and identifies authoritative locked markers", () => {
-    expect(shouldRenderTeamV2Marker({status: "Finished", backendStatus: "COMPLETED"})).toBe(false);
-    expect(shouldRenderTeamV2Marker({status: "New", backendStatus: "COMPLETED"})).toBe(false);
-    expect(shouldRenderTeamV2Marker({status: "Finished", backendStatus: "AVAILABLE"})).toBe(false);
-    expect(shouldRenderTeamV2Marker({status: "New", backendStatus: "LOCKED"})).toBe(true);
-    expect(isTeamV2MarkerLocked({status: "New", backendStatus: "LOCKED"})).toBe(true);
-    expect(isTeamV2MarkerLocked({status: "New", backendStatus: "AVAILABLE"})).toBe(false);
+  it("keeps completed and locked markers in the visible appearance model", () => {
+    expect(
+      getStationMarkerAppearance({status: "Finished", backendStatus: "COMPLETED"}),
+    ).toMatchObject({isCompleted: true, isLocked: false, opacity: 0.4});
+    expect(
+      getStationMarkerAppearance({status: "New", backendStatus: "LOCKED"}),
+    ).toMatchObject({isCompleted: false, isLocked: true, opacity: 1});
   });
 
-  it("anchors the default label above its marker with one screen-space transform", () => {
+  it("anchors the compact points pill below its marker", () => {
     const layout = getLayout();
 
-    expect(layout.anchorX).toBeCloseTo(249.6);
-    expect(layout.anchorY).toBeCloseTo(187.2);
+    expect(layout.anchorX).toBeCloseTo(300.8);
+    expect(layout.anchorY).toBeCloseTo(225.6);
     expect(layout.labelScale).toBe(1);
     expect(layout.labelGap).toBe(6);
-    expect(layout.markerSize).toBe(40);
+    expect(layout.markerSize).toBe(BASE_MARKER_SIZE);
     expect(layout.labelX).toBeCloseTo(layout.anchorX - STATION_LABEL_WIDTH / 2);
-    expect(layout.labelY + STATION_LABEL_HEIGHT).toBeCloseTo(
-      layout.anchorY - layout.markerAttachmentOffset - layout.labelGap,
-    );
+    expect(layout.labelY).toBeCloseTo(layout.anchorY + layout.labelGap);
   });
 
   it("clamps label scale and gap at minimum and maximum zoom", () => {
@@ -62,8 +62,8 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(maximum.labelScale).toBe(1.15);
     expect(maximum.labelGap).toBe(8);
     expect(maximum.markerSize).toBe(MAX_MARKER_SIZE);
-    expect(maximum.labelY + STATION_LABEL_HEIGHT * maximum.labelScale).toBeCloseTo(
-      maximum.anchorY - maximum.markerAttachmentOffset - maximum.labelGap,
+    expect(maximum.labelY + STATION_LABEL_HEIGHT * maximum.labelScale).toBeLessThanOrEqual(
+      viewport.height - 4,
     );
   });
 
@@ -71,11 +71,11 @@ describe("TeamGameplayV2Page marker label layout", () => {
     const marker = createMarker();
     const before = JSON.stringify(marker);
     const initial = getStationLabelLayouts([marker], viewport, {x: 0, y: 0, scale: baseScale}).get("ST001")!;
-    const panned = getStationLabelLayouts([marker], viewport, {x: 73, y: -41, scale: baseScale}).get("ST001")!;
+    const panned = getStationLabelLayouts([marker], viewport, {x: 40, y: -41, scale: baseScale}).get("ST001")!;
 
-    expect(panned.anchorX - initial.anchorX).toBeCloseTo(73);
+    expect(panned.anchorX - initial.anchorX).toBeCloseTo(40);
     expect(panned.anchorY - initial.anchorY).toBeCloseTo(-41);
-    expect(panned.labelX - initial.labelX).toBeCloseTo(73);
+    expect(panned.labelX - initial.labelX).toBeCloseTo(40);
     expect(panned.labelY - initial.labelY).toBeCloseTo(-41);
     expect(JSON.stringify(marker)).toBe(before);
   });
@@ -84,5 +84,31 @@ describe("TeamGameplayV2Page marker label layout", () => {
     expect(getLayout().isInViewport).toBe(true);
     expect(getLayout(baseScale, -1_000, 0).isInViewport).toBe(false);
     expect(getLayout(baseScale, 0, 1_000).isInViewport).toBe(false);
+  });
+
+  it("shrinks marker text for station codes with up to four characters", () => {
+    expect(getStationMarkerFontSize("02", BASE_MARKER_SIZE)).toBeCloseTo(12);
+    expect(getStationMarkerFontSize("047", BASE_MARKER_SIZE)).toBeCloseTo(9.6);
+    expect(getStationMarkerFontSize("ST04", BASE_MARKER_SIZE)).toBe(8);
+  });
+
+  it("keeps the selected label visible while suppressing overlapping labels", () => {
+    const markers = [
+      {...createMarker(), station: {id: "ST001"}},
+      {...createMarker(), station: {id: "ST002"}},
+      {...createMarker(), station: {id: "ST003"}, isSelected: true},
+    ];
+    const layouts = getStationLabelLayouts(markers, viewport, {x: 0, y: 0, scale: baseScale});
+    const visible = getNonOverlappingStationLabelIds(layouts, viewport);
+
+    expect(visible.has("ST003")).toBe(true);
+    expect(visible.size).toBe(1);
+  });
+
+  it("clamps labels inside the visible viewport", () => {
+    const layout = getLayout(baseScale, -240, -120);
+
+    expect(layout.labelX).toBeGreaterThanOrEqual(4);
+    expect(layout.labelY).toBeGreaterThanOrEqual(4);
   });
 });
