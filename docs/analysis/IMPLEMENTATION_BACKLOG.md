@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-12 Team V2 demo visual port
+
+- [x] Port demo v4 HUD, footer, expandable legend, semantic marker appearance, and local font assets to Team V2 while retaining the production map and behavior.
+- [ ] Re-run BrowserStack Safari macOS/iPhone smoke after network permits outbound `hub-aps.browserstack.com`.
+
+## 2026-08-12 Final, Station switching, and Team V2 mobile
+
+- [x] Persist Final Top 10 table and strict internal-whitespace normalization rule.
+- [x] Remove Station cancel cooldown and handle A→B transition atomically.
+- [x] Reduce Team V2 map React work during gestures and size the low-height landscape footer by viewport height.
+
 ## 2026-08-04 Team V2 direct marker-to-game flow
 
 - [x] Remove the intermediate selected-Station preview card.

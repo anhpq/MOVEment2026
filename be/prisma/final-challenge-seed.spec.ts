@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   FINAL_CHALLENGE_SEED_KEY,
+  normalizeFinalAnswer,
   planFinalChallengeSeed,
 } from './final-challenge-seed';
 
@@ -15,6 +16,12 @@ const existingFinalChallenge = {
 };
 
 describe('Final Challenge seed policy', () => {
+  it('trims outer whitespace and preserves internal whitespace exactly', () => {
+    expect(normalizeFinalAnswer(' every move counts ')).toBe('EVERY MOVE COUNTS');
+    expect(normalizeFinalAnswer('every  move counts')).toBe('EVERY  MOVE COUNTS');
+    expect(normalizeFinalAnswer('every\tmove counts')).toBe('EVERY\tMOVE COUNTS');
+    expect(normalizeFinalAnswer('every\nmove counts')).toBe('EVERY\nMOVE COUNTS');
+  });
   it('overwrites seed-managed production fields before the cutoff', () => {
     const action = planFinalChallengeSeed({
       existing: existingFinalChallenge,
@@ -28,9 +35,9 @@ describe('Final Challenge seed policy', () => {
       data: {
         title: FINAL_CHALLENGE_SEED_KEY,
         clueText: 'Giai mat thu cuoi cung',
-        answerHash: 'DISANVANHOA2026',
+        answerHash: 'EVERY MOVE COUNTS',
         maxWinners: 10,
-        pointsByRank: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+        pointsByRank: [40, 30, 25, 22, 20, 18, 16, 14, 12, 10],
       },
     });
   });
@@ -76,7 +83,7 @@ describe('Final Challenge seed policy', () => {
       operation: 'create',
       data: {
         title: FINAL_CHALLENGE_SEED_KEY,
-        answerHash: 'DISANVANHOA2026',
+        answerHash: 'EVERY MOVE COUNTS',
       },
     });
   });

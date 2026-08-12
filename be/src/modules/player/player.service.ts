@@ -446,61 +446,71 @@ export class PlayerService {
         'Station is not available for check-in',
       );
     }
-    if (
-      progress.nextCheckInAllowedAt &&
-      progress.nextCheckInAllowedAt > new Date()
-    ) {
-      throw this.playerError(
-        HttpStatus.CONFLICT,
-        PLAYER_ERROR_CODES.cancelCooldownActive,
-        'Cancel cooldown is still active',
-      );
-    }
-
     const activeProgress = await this.prisma.teamStationProgress.findFirst({
       where: {
         teamId,
         stationId: { not: stationId },
         status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
       },
-      select: { id: true, stationId: true },
+      select: { id: true, stationId: true, checkedOutAt: true, completedAt: true },
     });
-    if (activeProgress) {
+    if (activeProgress?.checkedOutAt || activeProgress?.completedAt) {
       throw this.playerError(
         HttpStatus.CONFLICT,
         PLAYER_ERROR_CODES.activeStationConflict,
-        'Team is already playing another station',
+        'Complete the pending station score before starting another station',
       );
     }
 
     let updated;
     try {
-      const claimed = await this.prisma.teamStationProgress.updateMany({
-        where: {
-          id: progress.id,
-          teamId,
-          stationId,
-          status: ProgressStatus.AVAILABLE,
-          OR: [
-            { nextCheckInAllowedAt: null },
-            { nextCheckInAllowedAt: { lte: new Date() } },
-          ],
-        },
-        data: {
-          status: ProgressStatus.PLAYING,
-          checkedInAt: new Date(),
-          checkedOutAt: null,
-          completedAt: null,
-          cancelledAt: null,
-          nextCheckInAllowedAt: null,
-          scoreAchieved: 0,
-          attemptNo: { increment: 1 },
-        },
-      });
-      const current =
-        await this.prisma.teamStationProgress.findUniqueOrThrow({
-          where: { id: progress.id },
+      const result = await this.prisma.$transaction(async (tx) => {
+        if (activeProgress) {
+          const abandoned = await tx.teamStationProgress.updateMany({
+            where: {
+              id: activeProgress.id,
+              teamId,
+              checkedOutAt: null,
+              completedAt: null,
+              status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
+            },
+            data: {
+              status: ProgressStatus.AVAILABLE,
+              checkedInAt: null,
+              checkedOutAt: null,
+              completedAt: null,
+              cancelledAt: new Date(),
+              nextCheckInAllowedAt: null,
+              scoreAchieved: 0,
+              scoreEnteredByUserId: null,
+            },
+          });
+          if (abandoned.count !== 1) {
+            throw this.playerError(
+              HttpStatus.CONFLICT,
+              PLAYER_ERROR_CODES.activeStationConflict,
+              'Team is already playing another station',
+            );
+          }
+        }
+        const claimed = await tx.teamStationProgress.updateMany({
+          where: { id: progress.id, teamId, stationId, status: ProgressStatus.AVAILABLE },
+          data: {
+            status: ProgressStatus.PLAYING,
+            checkedInAt: new Date(),
+            checkedOutAt: null,
+            completedAt: null,
+            cancelledAt: null,
+            nextCheckInAllowedAt: null,
+            scoreAchieved: 0,
+            scoreEnteredByUserId: null,
+            attemptNo: { increment: 1 },
+          },
         });
+        const current = await tx.teamStationProgress.findUniqueOrThrow({ where: { id: progress.id } });
+        return {claimed, current};
+      }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+      const {claimed, current} = result;
       if (claimed.count !== 1) {
         if (
           (current.status === ProgressStatus.PLAYING ||
@@ -526,6 +536,16 @@ export class PlayerService {
         );
       }
       throw error;
+    }
+    if (activeProgress) {
+      await this.activityLog.log({
+        actorType: ActorType.TEAM,
+        actorId: teamId,
+        action: 'ABANDON_STATION',
+        entityType: 'TEAM_STATION_PROGRESS',
+        entityId: activeProgress.id,
+        metadata: { stationId: activeProgress.stationId, nextStationId: stationId },
+      });
     }
     await this.activityLog.log({
       actorType: ActorType.TEAM,
@@ -724,11 +744,7 @@ export class PlayerService {
       );
     }
 
-    const config = await this.eventConfig.getConfig();
     const now = new Date();
-    const nextCheckInAllowedAt = new Date(
-      now.getTime() + config.cancelCooldownMinutes * 60_000,
-    );
     const claimed = await this.prisma.teamStationProgress.updateMany({
       where: {
         id: progress.id,
@@ -741,7 +757,7 @@ export class PlayerService {
         checkedInAt: null,
         checkedOutAt: null,
         cancelledAt: now,
-        nextCheckInAllowedAt,
+        nextCheckInAllowedAt: null,
       },
     });
     const updated = await this.prisma.teamStationProgress.findUniqueOrThrow({
@@ -766,7 +782,7 @@ export class PlayerService {
       action: 'CANCEL_STATION',
       entityType: 'TEAM_STATION_PROGRESS',
       entityId: updated.id,
-      metadata: { stationId, nextCheckInAllowedAt: nextCheckInAllowedAt.toISOString() },
+      metadata: { stationId },
     });
     return updated;
   }

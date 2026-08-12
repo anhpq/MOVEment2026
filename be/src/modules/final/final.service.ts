@@ -8,7 +8,6 @@ import { SubmitFinalDto, UpdateFinalConfigDto } from './dto/final.dto';
 @Injectable()
 export class FinalService {
   private readonly finalSubmitMaxAttempts = 3;
-  private readonly maxFinalBonusRank = 10;
 
   constructor(
     private readonly prisma: PrismaService,
@@ -40,11 +39,8 @@ export class FinalService {
       startsAt: challenge.startsAt,
       eventEndTime: eventConfig.eventEndTime,
       finalStartsAt: eventConfig.finalStartsAt,
-      maxWinners: this.maxFinalBonusRank,
-      pointsByRank: Array.from(
-        { length: this.maxFinalBonusRank },
-        (_, index) => this.calculateFinalBonus(index + 1),
-      ),
+      maxWinners: challenge.maxWinners,
+      pointsByRank: this.getPointsByRank(challenge),
       isOpen,
       canSubmit: isOpen && !submission && !cooldown.isCoolingDown,
       blockedByActiveStation: Boolean(activeProgress),
@@ -136,7 +132,7 @@ export class FinalService {
                 where: { finalChallengeId: challenge.id, isCorrect: true },
               });
               winnerRank = correctCount + 1;
-              pointsAwarded = this.calculateFinalBonus(winnerRank);
+              pointsAwarded = this.calculateFinalBonus(challenge, winnerRank);
 
               if (pointsAwarded > 0) {
                 const team = await tx.team.findUniqueOrThrow({ where: { id: teamId } });
@@ -247,7 +243,7 @@ export class FinalService {
   }
 
   private normalizeAnswer(answer: string) {
-    return answer.trim().toUpperCase().replace(/\s+/g, ' ');
+    return answer.trim().toUpperCase();
   }
 
   private getStoredFinalKeyword(challenge: FinalChallenge) {
@@ -293,8 +289,16 @@ export class FinalService {
     };
   }
 
-  private calculateFinalBonus(rank: number) {
-    return Math.max(11 - rank, 0);
+  private getPointsByRank(challenge: FinalChallenge) {
+    return Array.isArray(challenge.pointsByRank)
+      ? challenge.pointsByRank.filter((points): points is number =>
+          typeof points === 'number' && Number.isFinite(points),
+        )
+      : [];
+  }
+
+  private calculateFinalBonus(challenge: FinalChallenge, rank: number) {
+    return this.getPointsByRank(challenge)[rank - 1] ?? 0;
   }
 
   private toPublicChallenge(challenge: FinalChallenge, includeClue: boolean) {

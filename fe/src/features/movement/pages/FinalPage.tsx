@@ -253,9 +253,6 @@ export function FinalPage() {
               <Form.Item
                 label={t("final.yourAnswer")}
                 name="answer"
-                normalize={(value: string | undefined) =>
-                  value ? value.toUpperCase() : value
-                }
                 rules={[{required: true, message: t("final.answerRequired")}]} >
                 <Input
                   size="large"

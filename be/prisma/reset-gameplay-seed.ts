@@ -241,7 +241,7 @@ export async function executeResetGameplayWithGuards(
         eventEndTime: '11:30',
         finalStartsAt: '11:45',
         notifyBeforeMinutes: 15,
-        cancelCooldownMinutes: 5,
+        cancelCooldownMinutes: 0,
         timezone: 'Asia/Ho_Chi_Minh',
       },
     });

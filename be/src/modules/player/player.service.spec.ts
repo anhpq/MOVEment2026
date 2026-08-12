@@ -64,6 +64,9 @@ describe('PlayerService station flow', () => {
       mockTeamResults as never,
     )
     jest.clearAllMocks()
+    mockPrisma.$transaction.mockImplementation((callback: (tx: typeof mockPrisma) => unknown) =>
+      callback(mockPrisma),
+    )
     mockEventConfig.isPastEventEnd.mockResolvedValue(false)
     mockPrisma.teamStationProgress.updateMany.mockResolvedValue({ count: 1 })
     mockPrisma.qrToken.findUnique.mockResolvedValue({
@@ -158,6 +161,66 @@ describe('PlayerService station flow', () => {
     ).resolves.toEqual(activeProgress)
 
     expect(mockPrisma.teamStationProgress.findFirst).not.toHaveBeenCalled()
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
+  })
+
+  it('atomically abandons an active Station before checking in to another Station', async () => {
+    const activeElsewhere = {
+      ...progress,
+      id: 12,
+      stationId: 'ST001',
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+    }
+    const updated = {
+      ...progress,
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date(),
+      attemptNo: 1,
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue(activeElsewhere)
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(updated)
+
+    await expect(
+      service.checkIn(2, 'ST002', {qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2'}),
+    ).resolves.toEqual(updated)
+
+    expect(mockPrisma.teamStationProgress.updateMany).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        where: expect.objectContaining({id: activeElsewhere.id}),
+        data: expect.objectContaining({
+          status: ProgressStatus.AVAILABLE,
+          checkedInAt: null,
+          scoreAchieved: 0,
+          nextCheckInAllowedAt: null,
+        }),
+      }),
+    )
+    expect(mockActivityLog.log).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({action: 'ABANDON_STATION', entityId: activeElsewhere.id}),
+    )
+    expect(mockActivityLog.log).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({action: 'CHECK_IN'}),
+    )
+  })
+
+  it('blocks Station switching after check-out until the score is submitted', async () => {
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
+    mockPrisma.teamStationProgress.findFirst.mockResolvedValue({
+      ...progress,
+      id: 12,
+      stationId: 'ST001',
+      status: ProgressStatus.PLAYING,
+      checkedOutAt: new Date(),
+    })
+
+    await expect(
+      service.checkIn(2, 'ST002', {qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2'}),
+    ).rejects.toThrow('Complete the pending station score before starting another station')
     expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
@@ -334,9 +397,8 @@ describe('PlayerService station flow', () => {
     ).resolves.toEqual(updated)
   })
 
-  it('rejects restart during cancel cooldown and allows restart after the deadline', async () => {
+  it('allows immediate restart after Station cancellation', async () => {
     const futureCooldown = new Date(Date.now() + 5 * 60_000)
-    const pastCooldown = new Date(Date.now() - 1_000)
     const updated = {
       ...progress,
       status: ProgressStatus.PLAYING,
@@ -349,17 +411,6 @@ describe('PlayerService station flow', () => {
       ...progress,
       cancelledAt: new Date(),
       nextCheckInAllowedAt: futureCooldown,
-    })
-
-    await expect(
-      service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),
-    ).rejects.toThrow('Cancel cooldown is still active')
-    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
-
-    mockPrisma.teamStationProgress.findUnique.mockResolvedValueOnce({
-      ...progress,
-      cancelledAt: new Date(),
-      nextCheckInAllowedAt: pastCooldown,
     })
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
     mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(updated)
@@ -377,7 +428,7 @@ describe('PlayerService station flow', () => {
     })
   })
 
-  it('cancels an active station back to available with a cooldown deadline', async () => {
+  it('cancels an active station back to available without a cooldown deadline', async () => {
     const activeProgress = {
       ...progress,
       status: ProgressStatus.PLAYING,
@@ -388,11 +439,10 @@ describe('PlayerService station flow', () => {
       status: ProgressStatus.AVAILABLE,
       checkedInAt: null,
       cancelledAt: new Date(),
-      nextCheckInAllowedAt: new Date(Date.now() + 5 * 60_000),
+      nextCheckInAllowedAt: null,
     }
 
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(activeProgress)
-    mockEventConfig.getConfig.mockResolvedValue({ cancelCooldownMinutes: 5 })
     mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(cancelledProgress)
 
     await expect(service.cancel(2, 'ST002')).resolves.toEqual(cancelledProgress)
@@ -404,7 +454,7 @@ describe('PlayerService station flow', () => {
         checkedInAt: null,
         checkedOutAt: null,
         cancelledAt: expect.any(Date),
-        nextCheckInAllowedAt: expect.any(Date),
+        nextCheckInAllowedAt: null,
       }),
     })
     expect(mockActivityLog.log).toHaveBeenCalledWith(

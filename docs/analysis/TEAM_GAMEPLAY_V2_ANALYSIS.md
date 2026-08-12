@@ -1,5 +1,18 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-12 Demo v4 visual port
+
+- `/team/v2` keeps the real Suoi Tien map, Konva pan/pinch/zoom, Station data, scanner, settings, and overlays while adopting the supplied demo HUD: clipped cyan-to-magenta brand, green score card, framed three-control footer, and expandable marker legend.
+- Marker semantics are visual only: unplayed cyan/blue/purple, completed silver, active gold double-heartbeat/radar without a lightning glyph, and locked muted purple/gray with a lock badge. Active animation uses imperative Konva frames and is reduced during map interaction and reduced-motion preference.
+- Oxanium and Space Grotesk are bundled local WOFF2 assets with attribution; the route does not request Google Fonts at runtime.
+- Portrait uses a compact legend/2×2 legend grid; landscape low-height uses height-capped header, legend, map inset, QR, and footer controls. `100dvh` retains its existing `100vh` minimum fallback and safe-area insets apply to both orientations.
+
+## 2026-08-12 Mobile map interaction and short landscape footer
+
+- Map pan/pinch now applies Stage transforms imperatively at most once per animation frame; React transform/culling layout commits once at gesture end.
+- Marker glow is reduced while interacting and restored after release.
+- At landscape height <= 500px, footer sizing is capped by viewport height: QR is 78px, side panels 58px, and map/preview/legend share a 92–98px bottom inset.
+
 ## 2026-08-08 Settings display controls and QR badge
 
 - Moved the browser fullscreen control from the V2 header into Settings; the header retains only Settings.

@@ -1,3 +1,13 @@
+# 2026-08-12 Team V2 demo visual port
+
+- Frontend-only port of the supplied Team V2 demo visual. It preserves API, Backend, QR, scoring, map data, and Business Rules; local fonts replace runtime web-font loading.
+- Frontend verification passed: focused map/layout tests, i18n parity, lint, production build, and authenticated Chromium portrait/landscape E2E. Safari real-device BrowserStack remains blocked by outbound access to `hub-aps.browserstack.com`.
+
+# 2026-08-12 Final / Station transition reconciliation
+
+- Final seed and runtime use `EVERY MOVE COUNTS`, outer trim + case-insensitive comparison, preserved internal whitespace, and persisted Top 10 rewards `40, 30, 25, 22, 20, 18, 16, 14, 12, 10`.
+- Station cancel cooldown is removed while preserving Final wrong-answer cooldown. A→B check-in is serializable and abandons only an un-checked-out active A; pending-score A is rejected safely.
+
 # 2026-08-08 Team V2 Settings display controls
 
 - Moved Fullscreen into Team V2 Settings, added progressive landscape lock with localized Safari/manual fallback, and standardized the QR badge layout.

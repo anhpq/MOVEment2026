@@ -231,11 +231,6 @@ export function AdminOperationsPage() {
                 label={t("ops.notifyBefore")}>
                 <InputNumber min={1} className="full-width" />
               </Form.Item>
-              <Form.Item
-                name="cancelCooldownMinutes"
-                label={t("ops.cancelCooldown")}>
-                <InputNumber min={0} className="full-width" />
-              </Form.Item>
             </div>
             <Form.Item name="timezone" label={t("ops.timezone")}>
               <Input />

@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 
 export const FINAL_CHALLENGE_SEED_KEY = 'Final Cipher';
-export const FINAL_CHALLENGE_CANONICAL_ANSWER = 'DISANVANHOA2026';
-export const FINAL_CHALLENGE_SEED_POINTS_BY_RANK = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+export const FINAL_CHALLENGE_CANONICAL_ANSWER = 'EVERY MOVE COUNTS';
+export const FINAL_CHALLENGE_SEED_POINTS_BY_RANK = [40, 30, 25, 22, 20, 18, 16, 14, 12, 10];
 
 // Temporary production override: force seed-managed Final Challenge fields through 2026-08-21 23:59:59 Asia/Ho_Chi_Minh.
 export const FINAL_CHALLENGE_PRODUCTION_OVERRIDE_CUTOFF_HCM = '2026-08-21T23:59:59+07:00';
@@ -33,7 +33,7 @@ export type FinalChallengeSeedAction =
     };
 
 export function normalizeFinalAnswer(answer: string) {
-  return answer.trim().toUpperCase().replace(/\s+/g, ' ');
+  return answer.trim().toUpperCase();
 }
 
 export function isFinalChallengeProductionOverrideEnabled(now: Date) {

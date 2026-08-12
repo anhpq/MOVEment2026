@@ -542,10 +542,10 @@ Team with an active Station must finish it before Final.
 Keyword:
 
 ```text
-DISANVANHOA2026
+EVERY MOVE COUNTS
 ```
 
-Frontend and backend trim and uppercase input.
+Frontend and backend trim outer whitespace and uppercase input. Internal whitespace is preserved exactly.
 
 Backend stores the normalized Final keyword directly in the compatibility column `answerHash` and compares normalized submitted text directly against that stored value. Public APIs and logs must not expose the configured answer.
 
@@ -558,9 +558,16 @@ Rank is assigned by database-confirmed first correct submission.
 Bonus:
 
 ```text
-Rank 1 = 10
-...
-Rank 10 = 1
+Rank 1 = 40
+Rank 2 = 30
+Rank 3 = 25
+Rank 4 = 22
+Rank 5 = 20
+Rank 6 = 18
+Rank 7 = 16
+Rank 8 = 14
+Rank 9 = 12
+Rank 10 = 10
 Rank 11+ = 0
 ```
 

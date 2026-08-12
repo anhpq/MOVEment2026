@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Switch, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
+import Konva from "konva";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
 import {Arc, Circle, Group, Image as KonvaImage, Layer, Path, Rect, Stage, Text} from "react-konva";
@@ -245,6 +246,7 @@ function StationMarker({
   x,
   y,
   pointsUnit,
+  isInteracting,
   onSelect,
 }: {
   marker: MarkerViewModel;
@@ -253,8 +255,10 @@ function StationMarker({
   x: number;
   y: number;
   pointsUnit: string;
+  isInteracting: boolean;
   onSelect: () => void;
 }) {
+  const activeMarkerRef = useRef<Konva.Group>(null);
   const colors = getMarkerColors(marker, hudAccent);
   const markerCenterY = -size * 0.9;
   const hitRadius = Math.max(22, size * 0.51);
@@ -263,6 +267,28 @@ function StationMarker({
     trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
     maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
   });
+
+  useEffect(() => {
+    const node = activeMarkerRef.current;
+    if (!node || !marker.isActive || isInteracting || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    let frameId = 0;
+    const animate = (time: number) => {
+      const beat = Math.max(0, Math.sin((time / 1450) * Math.PI * 4));
+      const scale = 1 + beat * 0.08;
+      node.scale({x: scale, y: scale});
+      node.opacity(0.84 + beat * 0.16);
+      node.getLayer()?.batchDraw();
+      frameId = requestAnimationFrame(animate);
+    };
+    frameId = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(frameId);
+      node.scale({x: 1, y: 1});
+      node.opacity(1);
+    };
+  }, [isInteracting, marker.isActive]);
 
   return (
     <Group
@@ -293,7 +319,7 @@ function StationMarker({
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
       {marker.isActive && (
-        <>
+        <Group ref={activeMarkerRef} listening={false}>
           <Circle
             y={-1}
             radius={size * 0.52}
@@ -301,8 +327,8 @@ function StationMarker({
             stroke="#FFD447"
             strokeWidth={2}
             shadowColor="#FFB800"
-            shadowBlur={18}
-            opacity={0.95}
+            shadowBlur={isInteracting ? 0 : 18}
+            opacity={0.82}
             listening={false}
           />
           <Circle
@@ -323,23 +349,7 @@ function StationMarker({
             opacity={0.24}
             listening={false}
           />
-          <Group x={size * 0.38} y={-size * 1.18} listening={false}>
-            <Circle
-              radius={Math.max(6, size * 0.13)}
-              fill="#241A00"
-              stroke="#FFD447"
-              strokeWidth={1.4}
-              shadowColor="#FFB800"
-              shadowBlur={9}
-            />
-            <Path
-              x={-3.5}
-              y={-5}
-              data="M5 0 L1 6 H4 L2 11 L8 4 H5 Z"
-              fill="#FFE36E"
-            />
-          </Group>
-        </>
+        </Group>
       )}
       <Path
         x={-size / 2}
@@ -389,7 +399,7 @@ function StationMarker({
         text={marker.code}
         align="center"
         verticalAlign="middle"
-        fontFamily="Aptos, Segoe UI, sans-serif"
+        fontFamily="Oxanium, Aptos, Segoe UI, sans-serif"
         fontSize={getStationMarkerFontSize(marker.code, size)}
         fontStyle="bold"
         fill="#FFFFFF"
@@ -488,7 +498,7 @@ function StationMarker({
             x={4}
             width={STATION_LABEL_WIDTH - 8}
             height={STATION_LABEL_HEIGHT}
-            fontFamily="Aptos, Segoe UI, sans-serif"
+            fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
             fontSize={9.5}
             fontStyle="bold"
             fill={marker.isActive ? "#FFE36E" : "#4DFF8A"}
@@ -731,6 +741,7 @@ export function TeamGameplayV2Page() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isTeamPanelOpen, setIsTeamPanelOpen] = useState(false);
+  const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
@@ -743,8 +754,11 @@ export function TeamGameplayV2Page() {
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({width: 0, height: 0});
   const [mapTransform, setMapTransform] = useState<MapTransform>({x: 0, y: 0, scale: 1});
+  const [isMapInteracting, setIsMapInteracting] = useState(false);
   const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<Konva.Stage | null>(null);
+  const liveMapTransformRef = useRef<MapTransform>(mapTransform);
   const isSubmittingQrRef = useRef(false);
   const pinchRef = useRef<{distance: number; scale: number} | null>(null);
   const panRef = useRef<{
@@ -756,13 +770,26 @@ export function TeamGameplayV2Page() {
   const lastTapAtRef = useRef(0);
   const previousViewportRef = useRef<ViewportSize | null>(null);
   const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
-  if (mapTransformSchedulerRef.current == null) {
-    mapTransformSchedulerRef.current = createLatestFrameScheduler<MapTransform>({
+  useEffect(() => {
+    const scheduler = createLatestFrameScheduler<MapTransform>({
       requestFrame: (callback) => requestAnimationFrame(callback),
       cancelFrame: (frameId) => cancelAnimationFrame(frameId),
-      commit: setMapTransform,
+      commit: (transform) => {
+        const stage = stageRef.current;
+        if (!stage) {
+          return;
+        }
+        stage.position({x: transform.x, y: transform.y});
+        stage.scale({x: transform.scale, y: transform.scale});
+        stage.batchDraw();
+      },
     });
-  }
+    mapTransformSchedulerRef.current = scheduler;
+    return () => {
+      scheduler.cancel();
+      mapTransformSchedulerRef.current = null;
+    };
+  }, []);
   const playingCounts = useStationPlayingCounts(Boolean(session?.role === "user"));
 
   const completedCount = activeTeamStations.filter((station) => station.status === "Finished").length;
@@ -825,7 +852,9 @@ export function TeamGameplayV2Page() {
     const previousViewport = previousViewportRef.current;
     setMapTransform((current) => {
       if (!previousViewport) {
-        return getDefaultMapTransform(viewportSize);
+        const next = getDefaultMapTransform(viewportSize);
+        liveMapTransformRef.current = next;
+        return next;
       }
       const previousBaseScale = getBaseMapScale(previousViewport);
       const nextBaseScale = getBaseMapScale(viewportSize);
@@ -835,19 +864,16 @@ export function TeamGameplayV2Page() {
         y: (previousViewport.height / 2 - current.y) / current.scale,
       };
       const scale = clampScale(nextBaseScale * zoomRatio, viewportSize);
-      return {
+      const next = {
         scale,
         x: viewportSize.width / 2 - worldCenter.x * scale,
         y: viewportSize.height / 2 - worldCenter.y * scale,
       };
+      liveMapTransformRef.current = next;
+      return next;
     });
     previousViewportRef.current = viewportSize;
   }, [viewportSize]);
-
-  useEffect(() => {
-    const scheduler = mapTransformSchedulerRef.current;
-    return () => scheduler?.cancel();
-  }, []);
 
   useEffect(() => {
     const syncFullscreenState = () => {
@@ -894,13 +920,25 @@ export function TeamGameplayV2Page() {
   }, [mapTransform.scale, viewportSize]);
 
   const scheduleMapTransform = (nextTransform: MapTransform) => {
-    // Pointer events can arrive faster than the display refresh rate. Keep only
-    // the latest transform and commit at most once per animation frame.
+    // Pointer events can arrive faster than the display refresh rate. During a
+    // gesture, update Konva imperatively and keep React/culling work for release.
+    liveMapTransformRef.current = nextTransform;
     mapTransformSchedulerRef.current?.schedule(nextTransform);
   };
 
+  const beginMapInteraction = () => {
+    setIsMapInteracting((current) => current || true);
+  };
+
+  const commitMapInteraction = () => {
+    mapTransformSchedulerRef.current?.cancel();
+    const nextTransform = liveMapTransformRef.current;
+    setMapTransform(nextTransform);
+    setIsMapInteracting(false);
+  };
+
   const applyScaleAtPoint = (nextScale: number, point: {x: number; y: number}) => {
-    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
+    const current = liveMapTransformRef.current;
     const clampedScale = clampScale(nextScale, viewportSize);
     const worldPoint = {
       x: (point.x - current.x) / current.scale,
@@ -928,6 +966,7 @@ export function TeamGameplayV2Page() {
     if (event.evt.button !== 0) {
       return;
     }
+    beginMapInteraction();
     panRef.current = {
       clientX: event.evt.clientX,
       clientY: event.evt.clientY,
@@ -951,6 +990,7 @@ export function TeamGameplayV2Page() {
 
   const handleMouseUp = () => {
     panRef.current = null;
+    commitMapInteraction();
   };
 
   const handleTouchStart = (event: KonvaEventObject<TouchEvent>) => {
@@ -962,16 +1002,18 @@ export function TeamGameplayV2Page() {
           first.clientX - second.clientX,
           first.clientY - second.clientY,
         ),
-        scale: mapTransform.scale,
+        scale: liveMapTransformRef.current.scale,
       };
+      beginMapInteraction();
       panRef.current = null;
       return;
     }
     if (touches.length === 1) {
+      beginMapInteraction();
       panRef.current = {
         clientX: touches[0].clientX,
         clientY: touches[0].clientY,
-        transform: mapTransform,
+        transform: liveMapTransformRef.current,
         moved: false,
       };
     }
@@ -1006,7 +1048,7 @@ export function TeamGameplayV2Page() {
       y: (first.clientY + second.clientY) / 2 - rect.top,
     };
     if (!pinchRef.current) {
-      pinchRef.current = {distance, scale: mapTransform.scale};
+      pinchRef.current = {distance, scale: liveMapTransformRef.current.scale};
       return;
     }
     applyScaleAtPoint(pinchRef.current.scale * (distance / pinchRef.current.distance), center);
@@ -1014,7 +1056,10 @@ export function TeamGameplayV2Page() {
 
   const resetMap = () => {
     mapTransformSchedulerRef.current?.cancel();
-    setMapTransform(getDefaultMapTransform(viewportSize));
+    const nextTransform = getDefaultMapTransform(viewportSize);
+    liveMapTransformRef.current = nextTransform;
+    setMapTransform(nextTransform);
+    setIsMapInteracting(false);
   };
 
   const handleTouchEnd = (event: KonvaEventObject<TouchEvent>) => {
@@ -1034,6 +1079,7 @@ export function TeamGameplayV2Page() {
     }
     pinchRef.current = null;
     panRef.current = null;
+    commitMapInteraction();
   };
 
   const handleQrAction = async (rawToken: string): Promise<TeamV2QrSubmitResult> => {
@@ -1134,11 +1180,9 @@ export function TeamGameplayV2Page() {
   }
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
-  const footerScale = clamp(
-    (viewportSize.width - 24) / 344,
-    0.82,
-    2.25,
-  );
+  const footerScale = viewportSize.width > viewportSize.height
+    ? clamp(Math.min((viewportSize.width - 24) / 344, (viewportSize.height - 10) / 440), 0.8, 0.9)
+    : clamp((viewportSize.width - 24) / 344, 0.82, 2.25);
   const footerFontCompensation = 1 / Math.sqrt(footerScale);
 
   return (
@@ -1154,6 +1198,7 @@ export function TeamGameplayV2Page() {
         onDoubleClick={resetMap}>
         {viewportSize.width > 0 && viewportSize.height > 0 && (
           <Stage
+            ref={stageRef}
             width={viewportSize.width}
             height={viewportSize.height}
             x={mapTransform.x}
@@ -1201,6 +1246,7 @@ export function TeamGameplayV2Page() {
                     x={layout.anchorX}
                     y={layout.anchorY}
                     pointsUnit={t("teamV2.pointsUnit")}
+                    isInteracting={isMapInteracting}
                     onSelect={() => {
                       setSelectedStationId(marker.station.id);
                       setIsStationDetailOpen(true);
@@ -1244,6 +1290,27 @@ export function TeamGameplayV2Page() {
           </button>
         </div>
       </header>
+
+      <div className={`team-v2-legend-control${isLegendOpen ? " is-open" : ""}`}>
+        <button
+          type="button"
+          className="team-v2-legend-toggle"
+          aria-expanded={isLegendOpen}
+          aria-controls="team-v2-marker-legend"
+          onClick={() => setIsLegendOpen((current) => !current)}>
+          <span aria-hidden="true">i</span>
+          {t("teamV2.legendTitle")}
+          <b aria-hidden="true">⌄</b>
+        </button>
+        {isLegendOpen && (
+          <section id="team-v2-marker-legend" className="team-v2-marker-legend" aria-label={t("teamV2.legendTitle")}>
+            <span className="is-active"><i />{t("teamV2.legendPlaying")}</span>
+            <span><i />{t("teamV2.legendNotPlayed")}</span>
+            <span className="is-completed"><i />{t("teamV2.legendCompleted")}</span>
+            <span className="is-locked"><i>▣</i>{t("teamV2.legendLocked")}</span>
+          </section>
+        )}
+      </div>
 
       {selectedStation && isStationDetailOpen && (
         <TeamV2StationDetailOverlay
@@ -1324,7 +1391,7 @@ export function TeamGameplayV2Page() {
           }}>
           <span className="team-v2-bottom-icon"><TeamOutlined /></span>
           <span className="team-v2-bottom-copy team-v2-my-team-copy">
-            <strong>{getLocalizedTeamName(activeTeam.name, language)}</strong>
+            <strong>{t("teamV2.myTeam")}</strong>
           </span>
         </button>
         <span className="team-v2-footer-rail is-right" aria-hidden="true" />

@@ -8,10 +8,10 @@ const challenge = {
   title: 'Final',
   clueText: 'Solve it',
   startsAt: new Date('2020-01-01T00:00:00.000Z'),
-  maxWinners: 2,
-  pointsByRank: [20, 10],
+  maxWinners: 10,
+  pointsByRank: [40, 30, 25, 22, 20, 18, 16, 14, 12, 10],
   isActive: true,
-  answerHash: 'DISANVANHOA2026',
+  answerHash: 'EVERY MOVE COUNTS',
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -101,7 +101,7 @@ describe('FinalService', () => {
     expect(result).toMatchObject({
       title: 'Final',
       clueText: 'Solve it',
-      currentKeyword: 'DISANVANHOA2026',
+      currentKeyword: 'EVERY MOVE COUNTS',
     })
     expect(result).not.toHaveProperty('answerHash')
   })
@@ -142,7 +142,7 @@ describe('FinalService', () => {
     expect(result).toMatchObject({
       title: 'Updated Final',
       clueText: 'Updated clue',
-      currentKeyword: 'DISANVANHOA2026',
+      currentKeyword: 'EVERY MOVE COUNTS',
     })
   })
 
@@ -161,7 +161,7 @@ describe('FinalService', () => {
         title: undefined,
         clueText: undefined,
         isActive: undefined,
-        answerHash: 'NEW KEYWORD',
+        answerHash: 'NEW   KEYWORD',
       },
     })
     expect(result).toMatchObject({ currentKeyword: 'NEW KEYWORD' })
@@ -178,29 +178,29 @@ describe('FinalService', () => {
       teamId: 4,
       isCorrect: true,
       winnerRank: 1,
-      pointsAwarded: 10,
+      pointsAwarded: 40,
       submittedAt: new Date(),
       scoreEventId: 9,
     })
 
-    const result = await service.submitFinal(4, { answer: '  DISANVANHOA2026  ' })
+    const result = await service.submitFinal(4, { answer: '  every move counts  ' })
 
     expect(mockTx.scoreEvent.create).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
           teamId: 4,
           scoreBefore: 50,
-          scoreAfter: 60,
-          delta: 10,
+          scoreAfter: 90,
+          delta: 40,
           reason: 'Final rank 1',
         }),
       }),
     )
     expect(mockTx.team.update).toHaveBeenCalledWith({
       where: { id: 4 },
-      data: { totalPoints: { increment: 10 } },
+      data: { totalPoints: { increment: 40 } },
     })
-    expect(result).toMatchObject({ winnerRank: 1, pointsAwarded: 10 })
+    expect(result).toMatchObject({ winnerRank: 1, pointsAwarded: 40 })
   })
 
   it('returns the prior correct submission without awarding points again', async () => {
@@ -244,15 +244,15 @@ describe('FinalService', () => {
       teamId: 5,
       isCorrect: true,
       winnerRank: 2,
-      pointsAwarded: 9,
+      pointsAwarded: 30,
       submittedAt: new Date(),
       scoreEventId: 10,
     })
 
-    const result = await service.submitFinal(5, { answer: 'DISANVANHOA2026' })
+    const result = await service.submitFinal(5, { answer: 'EVERY MOVE COUNTS' })
 
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(2)
-    expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 9 })
+    expect(result).toMatchObject({ winnerRank: 2, pointsAwarded: 30 })
   })
 
   it('does not open final before finalStartsAt even after eventEndTime', async () => {
@@ -314,7 +314,7 @@ describe('FinalService', () => {
       stationId: 'ST15A',
     })
 
-    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
+    await expect(service.submitFinal(4, { answer: 'EVERY MOVE COUNTS' })).rejects.toThrow(
       'Finish the active station before entering Final Challenge',
     )
   })
@@ -322,7 +322,7 @@ describe('FinalService', () => {
   it('allows final when stations are unfinished but none is active', async () => {
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)
 
-    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).resolves.toMatchObject({
+    await expect(service.submitFinal(4, { answer: 'EVERY MOVE COUNTS' })).resolves.toMatchObject({
       isCorrect: true,
     })
 
@@ -336,14 +336,21 @@ describe('FinalService', () => {
   })
 
   it.each([
-    ['lowercase', 'disanvanhoa2026'],
-    ['mixed-case', 'DiSanVanHoa2026'],
-    ['surrounding whitespace', '  DISANVANHOA2026  '],
+    ['lowercase', 'every move counts'],
+    ['mixed-case', 'Every Move Counts'],
+    ['surrounding whitespace', '  EVERY MOVE COUNTS  '],
   ])('normalizes %s answers before backend validation', async (_label, answer) => {
     await expect(service.submitFinal(4, { answer })).resolves.toMatchObject({
       isCorrect: true,
     })
   })
+
+  it.each(['EVERY  MOVE COUNTS', 'EVERY\tMOVE COUNTS', 'EVERY\nMOVE COUNTS'])(
+    'rejects changed internal whitespace in Final answer %p',
+    async (answer) => {
+      await expect(service.submitFinal(4, {answer})).resolves.toMatchObject({isCorrect: false})
+    },
+  )
 
   it('records a wrong answer without awarding rank or points', async () => {
 
@@ -357,7 +364,7 @@ describe('FinalService', () => {
     })
     expect(result).not.toHaveProperty('currentKeyword')
     expect(result).not.toHaveProperty('answerHash')
-    expect(JSON.stringify(result)).not.toContain('DISANVANHOA2026')
+    expect(JSON.stringify(result)).not.toContain('EVERY MOVE COUNTS')
     expect(mockTx.scoreEvent.create).not.toHaveBeenCalled()
     expect(mockTx.team.update).not.toHaveBeenCalled()
   })
@@ -369,7 +376,7 @@ describe('FinalService', () => {
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ submittedAt })
 
-    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
+    await expect(service.submitFinal(4, { answer: 'EVERY MOVE COUNTS' })).rejects.toThrow(
       'Final answer cooldown is active',
     )
   })
@@ -388,13 +395,12 @@ describe('FinalService', () => {
   })
 
   it.each([
-    [10, 1],
-    [11, 0],
+    [1, 40], [2, 30], [3, 25], [4, 22], [5, 20], [6, 18], [7, 16], [8, 14], [9, 12], [10, 10], [11, 0],
   ])('awards %i rank with %i final bonus points', async (rank, points) => {
     mockTx.finalSubmission.count.mockResolvedValue(rank - 1)
     mockTx.team.findUniqueOrThrow.mockResolvedValue({ totalPoints: 50 })
 
-    const result = await service.submitFinal(rank + 10, { answer: 'DISANVANHOA2026' })
+    const result = await service.submitFinal(rank + 10, { answer: 'EVERY MOVE COUNTS' })
 
     expect(result).toMatchObject({ winnerRank: rank, pointsAwarded: points })
     if (points > 0) {
@@ -425,7 +431,7 @@ describe('FinalService', () => {
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ submittedAt: new Date() })
 
-    await expect(service.submitFinal(4, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
+    await expect(service.submitFinal(4, { answer: 'EVERY MOVE COUNTS' })).rejects.toThrow(
       'Final answer cooldown is active',
     )
 
@@ -437,7 +443,7 @@ describe('FinalService', () => {
     const failure = new Error('database is unavailable')
     mockPrisma.$transaction.mockRejectedValueOnce(failure)
 
-    await expect(service.submitFinal(5, { answer: 'DISANVANHOA2026' })).rejects.toThrow(
+    await expect(service.submitFinal(5, { answer: 'EVERY MOVE COUNTS' })).rejects.toThrow(
       'database is unavailable',
     )
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1)

@@ -202,7 +202,8 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | Station ban đầu | Mọi Station active khởi tạo trạng thái `AVAILABLE` cho mỗi Team. |
 | Station tuần tự | Không bắt buộc khóa hoặc mở Station theo thứ tự. |
 | Team active Station | Một Team chỉ được chơi một Station tại một thời điểm. |
-| Cancel Station | Cancel đưa Team Station về `AVAILABLE` và áp dụng cooldown mặc định 5 phút. |
+| Cancel Station | Cancel đưa Team Station về `AVAILABLE`, xóa dữ liệu attempt dở dang và không áp dụng cooldown. |
+| Chuyển Station | Check-in B khi A đang `CHECKED_IN` hoặc `PLAYING` và chưa Check-out sẽ đưa A về `AVAILABLE` không tính điểm/thời gian rồi bắt đầu B atomically. A được phép chơi lại. Station đã Check-out chờ score phải được hoàn thành trước khi vào B. |
 | Locked Station | `LOCKED` chỉ sử dụng khi Admin khóa Station hoặc Station bị giới hạn theo event time. |
 | Station status | Không sử dụng `WAITING_SCORE`, `CANCELLED` hoặc `REOPENED` làm status chính thức của Team Station flow. |
 
@@ -482,6 +483,9 @@ Rotate Check-out không được tự rotate Check-in.
 
 ## 7. Event Time và Final Challenge
 
+| Final keyword | `EVERY MOVE COUNTS`; so sánh không phân biệt hoa/thường, `trim()` hai đầu và giữ nguyên whitespace bên trong. |
+| Final points | Top 10 nhận lần lượt `40, 30, 25, 22, 20, 18, 16, 14, 12, 10`; hạng 11+ nhận `0`. |
+
 | Chủ đề | Quyết định |
 | --- | --- |
 | Event Config | Event start time và end time được quản lý trong Admin Event Config. |
@@ -492,11 +496,11 @@ Rotate Check-out không được tự rotate Check-in.
 | Station đang chơi | Team đã Check-in trước Event end time được phép hoàn thành Station hiện tại. |
 | Điều kiện vào Final | Team không bắt buộc phải hoàn thành tất cả Station. |
 | Active Station | Team đang chơi Station phải hoàn thành Station đó trước khi vào Final. |
-| Final keyword | Keyword là `DISANVANHOA2026`. |
+| Final keyword | Keyword là `EVERY MOVE COUNTS`. |
 | Final answer storage | Final Challenge lưu keyword đã normalize dạng plain text trong cột tương thích `answerHash`; không hash keyword Final. |
-| Keyword normalization | Frontend và backend đều trim và normalize keyword thành uppercase. |
+| Keyword normalization | Frontend và backend trim khoảng trắng đầu/cuối rồi so sánh uppercase. Whitespace giữa các từ được giữ nguyên, không collapse/replace/normalize. |
 | Final scoring | Backend tự chấm và xác định rank theo lần nhập đúng đầu tiên được database ghi nhận. |
-| Final points | Hạng 1 nhận 10 điểm, hạng 2 nhận 9 điểm, tiếp tục đến hạng 10 nhận 1 điểm. |
+| Final points | Top 10 lần lượt nhận `40, 30, 25, 22, 20, 18, 16, 14, 12, 10` điểm. |
 | Sau hạng 10 | Từ hạng 11 trở đi nhận 0 điểm Final. |
 | Multiple attempts | Team được phép nhập nhiều lần cho đến khi đúng hoặc Event kết thúc. |
 | Wrong answer cooldown | Cooldown tăng từ 1 giây đến tối đa 10 giây theo số lần nhập sai. |

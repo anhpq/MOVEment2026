@@ -1,5 +1,11 @@
 # Station QR and Scoring Analysis
 
+## 2026-08-12 Cancel and Station-switch policy
+
+- Cancel returns the progress to `AVAILABLE` immediately with no Station cooldown.
+- Check-in to B abandons an un-checked-out active A and claims B in one serializable transaction; the activity log records `ABANDON_STATION` then `CHECK_IN`.
+- A checked-out Station pending score blocks the switch until its score is submitted.
+
 ## 2026-08-03 Completed Station gameplay action
 
 - Team V1 Station List and map drawer now disable the gameplay button for a
