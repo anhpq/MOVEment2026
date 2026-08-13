@@ -12,7 +12,7 @@ import type {KonvaEventObject} from "konva/lib/Node";
 import Konva from "konva";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
-import {Arc, Circle, Group, Image as KonvaImage, Layer, Path, Rect, Stage, Text} from "react-konva";
+import {Arc, Circle, Ellipse, Group, Image as KonvaImage, Layer, Path, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
 import {
   getPlayerLeaderboard,
@@ -71,6 +71,7 @@ import {
   getStationEffectiveMaxPoints,
 } from "../utils";
 import "./TeamGameplayV2Page.css";
+import "./TeamGameplayV2Demo.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
@@ -179,10 +180,6 @@ function clampScale(value: number, viewport: ViewportSize) {
   );
 }
 
-function clamp(value: number, minimum: number, maximum: number) {
-  return Math.max(minimum, Math.min(maximum, value));
-}
-
 function getDefaultMapTransform(viewport: ViewportSize): MapTransform {
   const scale = getBaseMapScale(viewport);
   return {
@@ -213,29 +210,37 @@ function getStationPosition(station: StationDefinition, index: number, total: nu
 function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   if (marker.isActive) {
     return {
-      stroke: "#FFD447",
-      glow: "#FFB800",
-      usesSilverPurple: false,
+      stroke: "#FFD45B",
+      glow: "#FFCB4B",
+      gradient: [0, "#FFF8B7", 0.42, "#FFD45B", 0.72, "#FFAD2F", 1, "#FF67B3"],
+      inner: "rgba(65, 43, 3, 0.88)",
+      meta: "#FFF8D8",
     };
   }
   if (marker.isCompleted) {
     return {
-      stroke: "#8FA4B8",
-      glow: "#58738C",
-      usesSilverPurple: true,
+      stroke: "#EEF4FF",
+      glow: "#FFFFFF",
+      gradient: [0, "#FFFFFF", 0.58, "#CDD7E9", 1, "#A89CC7"],
+      inner: "rgba(31, 37, 49, 0.9)",
+      meta: "#E8EAF0",
     };
   }
   if (marker.isLocked) {
     return {
-      stroke: "#778698",
-      glow: "#526276",
-      usesSilverPurple: true,
+      stroke: "#817A99",
+      glow: "#8E62BA",
+      gradient: [0, "#8194AA", 0.5, "#665F86", 1, "#854DA8"],
+      inner: "rgba(24, 24, 35, 0.9)",
+      meta: "#A9A4B9",
     };
   }
   return {
-    stroke: hudAccent,
+    stroke: "#76EFFF",
     glow: hudAccent,
-    usesSilverPurple: false,
+    gradient: [0, "#92F7FF", 0.46, "#4BDCFF", 0.76, "#6E82FF", 1, "#B04CFF"],
+    inner: "rgba(4, 18, 27, 0.94)",
+    meta: "#76EFFF",
   };
 }
 
@@ -260,8 +265,13 @@ function StationMarker({
 }) {
   const activeMarkerRef = useRef<Konva.Group>(null);
   const colors = getMarkerColors(marker, hudAccent);
-  const markerCenterY = -size * 0.9;
-  const hitRadius = Math.max(22, size * 0.51);
+  const pinWidth = size;
+  const pinHeight = size * 1.35;
+  const markerCenterY = -pinHeight * 0.57;
+  const pinScaleX = pinWidth / 58;
+  const pinScaleY = pinHeight / 84;
+  const pinBottomOffset = -54 * pinScaleY;
+  const hitRadius = Math.max(22, size * 0.55);
   const lockRadius = Math.max(5, size * 0.16);
   const points = getStationEffectiveMaxPoints({
     trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
@@ -318,84 +328,77 @@ function StationMarker({
         if (stage) stage.container().style.cursor = "";
       }}>
       <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
+      <Group ref={activeMarkerRef} listening={false}>
       {marker.isActive && (
-        <Group ref={activeMarkerRef} listening={false}>
+        <Group listening={false}>
           <Circle
-            y={-1}
-            radius={size * 0.52}
-            scaleY={0.2}
+            y={markerCenterY}
+            radius={size * 0.9}
             stroke="#FFD447"
-            strokeWidth={2}
+            strokeWidth={1}
             shadowColor="#FFB800"
             shadowBlur={isInteracting ? 0 : 18}
-            opacity={0.82}
+            opacity={0.22}
             listening={false}
           />
-          <Circle
-            y={-1}
-            radius={size * 0.72}
-            scaleY={0.2}
+          <Ellipse
+            y={size * 0.05}
+            radiusX={size * 1.24}
+            radiusY={size * 0.38}
             stroke="#FFB800"
-            strokeWidth={1.2}
-            opacity={0.48}
+            strokeWidth={1}
+            opacity={0.32}
             listening={false}
           />
-          <Circle
-            y={-1}
-            radius={size * 0.9}
-            scaleY={0.2}
+          <Ellipse
+            y={size * 0.05}
+            radiusX={size * 0.92}
+            radiusY={size * 0.28}
             stroke="#FFD21A"
-            strokeWidth={0.9}
-            opacity={0.24}
+            strokeWidth={1.1}
+            opacity={0.5}
+            listening={false}
+          />
+          <Ellipse
+            y={size * 0.05}
+            radiusX={size * 0.6}
+            radiusY={size * 0.17}
+            stroke="#FFF0A6"
+            strokeWidth={1.2}
+            opacity={0.74}
             listening={false}
           />
         </Group>
       )}
       <Path
-        x={-size / 2}
-        y={-size * 1.52}
-        scaleX={size / 80}
-        scaleY={size / 80}
-        data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
-        fill="#08283A"
-        stroke={colors.glow}
-        strokeWidth={10}
-        opacity={0.28}
-        shadowColor={colors.glow}
-        shadowBlur={marker.isSelected || marker.isActive ? 30 : 18}
-        listening={false}
-      />
-      <Path
-        x={-size / 2}
-        y={-size * 1.52}
-        scaleX={size / 80}
-        scaleY={size / 80}
-        data="M40 0 C17 0 0 18 0 42 C0 70 14 94 40 122 C66 94 80 70 80 42 C80 18 63 0 40 0 Z"
-        fillLinearGradientStartPoint={{x: 12, y: 4}}
-        fillLinearGradientEndPoint={{x: 68, y: 118}}
-        fillLinearGradientColorStops={[0, "#0B3A52", 0.48, "#072A3D", 1, "#041A29"]}
+        y={pinBottomOffset}
+        scaleX={pinScaleX}
+        scaleY={pinScaleY}
+        data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
+        fill={marker.isActive ? "rgba(38, 28, 4, 0.96)" : marker.isCompleted ? "rgba(15, 18, 24, 0.96)" : "rgba(2, 9, 15, 0.97)"}
         stroke={colors.stroke}
-        strokeWidth={3.6}
+        strokeWidth={2.1 / Math.max(pinScaleX, pinScaleY)}
         shadowColor={colors.glow}
-        shadowBlur={marker.isSelected || marker.isActive ? 18 : 10}
+        shadowBlur={isInteracting ? 0 : marker.isSelected || marker.isActive ? 18 : 12}
         shadowOpacity={0.82}
         listening={false}
       />
-      <Circle
-        y={markerCenterY}
-        radius={size * 0.34}
-        fill="rgba(13, 55, 74, 0.64)"
-        stroke="rgba(170, 235, 244, 0.32)"
-        strokeWidth={1}
-        shadowColor="#000000"
-        shadowBlur={8}
+      <Path
+        y={pinBottomOffset}
+        scaleX={pinScaleX * 0.9}
+        scaleY={pinScaleY * 0.91}
+        data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
+        fillEnabled={false}
+        stroke={marker.isActive ? "#FF67B3" : marker.isCompleted ? "#A89CC7" : marker.isLocked ? "#665F86" : "#B04CFF"}
+        strokeWidth={1.05 / Math.max(pinScaleX, pinScaleY)}
+        opacity={0.78}
         listening={false}
       />
       <Text
         x={-size / 2}
-        y={markerCenterY - size * 0.25}
+        y={markerCenterY - size * 0.22}
         width={size}
-        height={size * 0.5}
+        height={size * 0.44}
         text={marker.code}
         align="center"
         verticalAlign="middle"
@@ -409,8 +412,8 @@ function StationMarker({
       />
       {marker.isLocked && (
         <Group
-          x={size * 0.35}
-          y={-size * 1.16}
+          x={size * 0.31}
+          y={-size * 0.53}
           listening={false}>
           <Circle
             radius={lockRadius}
@@ -439,7 +442,7 @@ function StationMarker({
           />
         </Group>
       )}
-      <Group x={-STATION_LABEL_WIDTH / 2} y={6} listening={false}>
+      <Group x={-STATION_LABEL_WIDTH / 2} y={4} listening={false}>
         {(marker.isSelected || marker.isActive) && (
           <>
             <Rect
@@ -475,39 +478,90 @@ function StationMarker({
           shadowBlur={9}
           shadowOpacity={0.64}
         />
-        {marker.isLocked ? (
-          <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2}>
-            <Arc innerRadius={4} outerRadius={4} angle={180} rotation={180} y={-2} stroke="#E7EDF2" strokeWidth={1.8} />
-            <Rect x={-5} y={-1} width={10} height={8} cornerRadius={2} fill="#E7EDF2" />
-          </Group>
-        ) : marker.isCompleted ? (
-          <Group x={STATION_LABEL_WIDTH / 2} y={STATION_LABEL_HEIGHT / 2}>
-            <Path
-              x={-7}
-              y={-7}
-              data="M2 1 H12 V5 C12 8 10 10 7 11 C4 10 2 8 2 5 Z M2 3 H0 V5 C0 7 2 8 4 8 M12 3 H14 V5 C14 7 12 8 10 8 M7 11 V14 M3 14 H11"
-              stroke="#D5E0E9"
-              strokeWidth={1.5}
-              lineCap="round"
-              lineJoin="round"
-            />
-          </Group>
-        ) : (
-          <Text
-            text={`${points} ${pointsUnit}`}
-            x={4}
-            width={STATION_LABEL_WIDTH - 8}
-            height={STATION_LABEL_HEIGHT}
-            fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
-            fontSize={9.5}
-            fontStyle="bold"
-            fill={marker.isActive ? "#FFE36E" : "#4DFF8A"}
-            align="center"
-            verticalAlign="middle"
-          />
-        )}
+        <Text
+          text={`${points} ${pointsUnit}`}
+          x={4}
+          width={STATION_LABEL_WIDTH - 8}
+          height={STATION_LABEL_HEIGHT}
+          fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
+          fontSize={9.5}
+          fontStyle="bold"
+          fill={colors.meta}
+          align="center"
+          verticalAlign="middle"
+        />
+      </Group>
       </Group>
     </Group>
+  );
+}
+
+function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => void}) {
+  const {t} = useTranslation();
+  return (
+    <>
+      <header className="team-v2-header team-v2-demo-header">
+        <div className="team-v2-event-brand" aria-label="MOVEment 2026"><h1>MOVEment 2026</h1></div>
+        <button type="button" className="team-v2-settings-button" aria-label={t("teamV2.openSettings")} title={t("teamV2.openSettings")} onClick={onSettings}>
+          <SettingOutlined />
+        </button>
+      </header>
+      <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
+        <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
+        <small>{t("common.totalScore")}</small>
+      </section>
+    </>
+  );
+}
+
+function DemoMarkerLegend({open, onToggle}: {open: boolean; onToggle: () => void}) {
+  const {t} = useTranslation();
+  return (
+    <div className={`team-v2-legend-control${open ? " is-open" : ""}`}>
+      <button type="button" className="team-v2-legend-toggle" aria-expanded={open} aria-controls="team-v2-marker-legend" onClick={onToggle}>
+        <span aria-hidden="true">i</span>{t("teamV2.legendTitle")}<b aria-hidden="true">⌄</b>
+      </button>
+      {open && (
+        <section id="team-v2-marker-legend" className="team-v2-marker-legend" aria-label={t("teamV2.legendTitle")}>
+          <span className="is-active"><i />{t("teamV2.legendPlaying")}</span>
+          <span><i />{t("teamV2.legendNotPlayed")}</span>
+          <span className="is-completed"><i />{t("teamV2.legendCompleted")}</span>
+          <span className="is-locked"><i>▣</i>{t("teamV2.legendLocked")}</span>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function DemoFooter({
+  activeStation,
+  footerScale,
+  onLeaderboard,
+  onMyTeam,
+  onScan,
+}: {
+  activeStation: TeamStation | null;
+  footerScale: number;
+  onLeaderboard: () => void;
+  onMyTeam: () => void;
+  onScan: () => void;
+}) {
+  const {t} = useTranslation();
+  const footerFontCompensation = 1 / Math.sqrt(footerScale);
+  return (
+    <footer className="team-v2-bottom team-v2-demo-footer" style={{"--team-v2-footer-scale": footerScale, "--team-v2-footer-font-compensation": footerFontCompensation} as CSSProperties}>
+      <button type="button" className="team-v2-footer-panel team-v2-leaderboard-chip" onClick={onLeaderboard}>
+        <span className="team-v2-footer-content"><span className="team-v2-bottom-icon"><TrophyFilled /></span><span className="team-v2-bottom-copy"><strong>{t("teamV2.leaderboardControl")}</strong></span></span>
+      </button>
+      <div className="team-v2-scan-action">
+        <TeamV2QrBadge ariaLabel={t("teamV2.openScanner")} onClick={onScan} />
+        <strong>{t("teamV2.scan")}</strong>
+        <small className={activeStation ? "is-active-context" : undefined}>{activeStation ? `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}` : t("teamV2.scanGameHint")}</small>
+      </div>
+      <button type="button" className="team-v2-footer-panel team-v2-progress-panel" onClick={onMyTeam}>
+        <span className="team-v2-footer-content"><span className="team-v2-bottom-icon"><TeamOutlined /></span><span className="team-v2-bottom-copy team-v2-my-team-copy"><strong>{t("teamV2.myTeam")}</strong></span></span>
+      </button>
+    </footer>
   );
 }
 
@@ -792,7 +846,6 @@ export function TeamGameplayV2Page() {
   }, []);
   const playingCounts = useStationPlayingCounts(Boolean(session?.role === "user"));
 
-  const completedCount = activeTeamStations.filter((station) => station.status === "Finished").length;
   const scoreStation = activeTeamStations.find((station) => station.stationId === scoreStationId) ?? null;
   const selectedStation =
     activeTeamStations.find((station) => station.stationId === selectedStationId) ?? null;
@@ -1180,11 +1233,7 @@ export function TeamGameplayV2Page() {
   }
 
   const selectedPlayingCount = selectedStation ? (playingCounts[selectedStation.stationId] ?? 0) : 0;
-  const footerScale = viewportSize.width > viewportSize.height
-    ? clamp(Math.min((viewportSize.width - 24) / 344, (viewportSize.height - 10) / 440), 0.8, 0.9)
-    : clamp((viewportSize.width - 24) / 344, 0.82, 2.25);
-  const footerFontCompensation = 1 / Math.sqrt(footerScale);
-
+  const footerScale = 1;
   return (
     <main className="team-v2-page">
       <div
@@ -1242,7 +1291,7 @@ export function TeamGameplayV2Page() {
                     key={`marker-${marker.station.id}`}
                     marker={marker}
                     hudAccent={V2_HUD_ACCENT}
-                    size={layout.markerSize * (marker.isActive ? 1.18 : 1)}
+                    size={layout.markerSize}
                     x={layout.anchorX}
                     y={layout.anchorY}
                     pointsUnit={t("teamV2.pointsUnit")}
@@ -1259,58 +1308,19 @@ export function TeamGameplayV2Page() {
         )}
       </div>
 
-      <header className="team-v2-header">
-        <div className="team-v2-center-score">
-          <div className="team-v2-event-banner" aria-label="MOVEment 2026">
-            <span className="team-v2-event-rail is-left" aria-hidden="true" />
-            <span className="team-v2-event-brand">
-              <span>MOVEment</span>
-              <small>2026</small>
-            </span>
-            <span className="team-v2-event-rail is-right" aria-hidden="true" />
-          </div>
-          <div className="team-v2-score" aria-label={`${t("common.totalScore")}: ${activeTeam.score}`}>
-            <strong>{activeTeam.score}</strong>
-            <span>{t("teamV2.pointsUnit")}</span>
-            <small>{t("common.totalScore")}</small>
-          </div>
-        </div>
-        <div className="team-v2-header-actions">
-          <button
-            type="button"
-            className="team-v2-settings-button"
-            aria-label={t("teamV2.openSettings")}
-            title={t("teamV2.openSettings")}
-            onClick={() => {
-              setIsLeaderboardOpen(false);
-              setIsScannerOpen(false);
-              setIsSettingsOpen(true);
-            }}>
-            <SettingOutlined />
-          </button>
-        </div>
-      </header>
+      <DemoHudHeader
+        score={activeTeam.score}
+        onSettings={() => {
+          setIsLeaderboardOpen(false);
+          setIsScannerOpen(false);
+          setIsSettingsOpen(true);
+        }}
+      />
 
-      <div className={`team-v2-legend-control${isLegendOpen ? " is-open" : ""}`}>
-        <button
-          type="button"
-          className="team-v2-legend-toggle"
-          aria-expanded={isLegendOpen}
-          aria-controls="team-v2-marker-legend"
-          onClick={() => setIsLegendOpen((current) => !current)}>
-          <span aria-hidden="true">i</span>
-          {t("teamV2.legendTitle")}
-          <b aria-hidden="true">⌄</b>
-        </button>
-        {isLegendOpen && (
-          <section id="team-v2-marker-legend" className="team-v2-marker-legend" aria-label={t("teamV2.legendTitle")}>
-            <span className="is-active"><i />{t("teamV2.legendPlaying")}</span>
-            <span><i />{t("teamV2.legendNotPlayed")}</span>
-            <span className="is-completed"><i />{t("teamV2.legendCompleted")}</span>
-            <span className="is-locked"><i>▣</i>{t("teamV2.legendLocked")}</span>
-          </section>
-        )}
-      </div>
+      <DemoMarkerLegend
+        open={isLegendOpen}
+        onToggle={() => setIsLegendOpen((current) => !current)}
+      />
 
       {selectedStation && isStationDetailOpen && (
         <TeamV2StationDetailOverlay
@@ -1342,60 +1352,27 @@ export function TeamGameplayV2Page() {
         />
       )}
 
-      <footer
-        className="team-v2-bottom"
-        style={{
-          "--team-v2-footer-scale": footerScale,
-          "--team-v2-footer-font-compensation": footerFontCompensation,
-        } as CSSProperties}>
-        <span className="team-v2-footer-rail is-left" aria-hidden="true" />
-        <button
-          type="button"
-          className="team-v2-footer-panel team-v2-leaderboard-chip"
-          onClick={() => {
-            setIsSettingsOpen(false);
-            setIsScannerOpen(false);
-            setIsLeaderboardOpen(true);
-          }}>
-          <span className="team-v2-bottom-icon"><TrophyFilled /></span>
-          <span className="team-v2-bottom-copy">
-            <strong>{t("teamV2.leaderboardControl")}</strong>
-          </span>
-        </button>
-        <div className="team-v2-scan-action">
-          <TeamV2QrBadge
-            ariaLabel={t("teamV2.openScanner")}
-            onClick={() => {
-              setIsSettingsOpen(false);
-              setIsLeaderboardOpen(false);
-              setQrToken("");
-              setIsScannerOpen(true);
-            }}
-          />
-          <strong>{t("teamV2.scan")}</strong>
-          <small className={activeStation ? "is-active-context" : undefined}>
-            {activeStation ?
-              `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}`
-            : t("teamV2.scanGameHint")}
-          </small>
-        </div>
-        <button
-          type="button"
-          className="team-v2-footer-panel team-v2-progress-panel"
-          aria-label={`${t("teamV2.teamLabel")} ${activeTeam.id}, ${t("teamV2.stationCount", {count: completedCount})}`}
-          onClick={() => {
-            setIsSettingsOpen(false);
-            setIsLeaderboardOpen(false);
-            setIsScannerOpen(false);
-            setIsTeamPanelOpen(true);
-          }}>
-          <span className="team-v2-bottom-icon"><TeamOutlined /></span>
-          <span className="team-v2-bottom-copy team-v2-my-team-copy">
-            <strong>{t("teamV2.myTeam")}</strong>
-          </span>
-        </button>
-        <span className="team-v2-footer-rail is-right" aria-hidden="true" />
-      </footer>
+      <DemoFooter
+        activeStation={activeStation}
+        footerScale={footerScale}
+        onLeaderboard={() => {
+          setIsSettingsOpen(false);
+          setIsScannerOpen(false);
+          setIsLeaderboardOpen(true);
+        }}
+        onScan={() => {
+          setIsSettingsOpen(false);
+          setIsLeaderboardOpen(false);
+          setQrToken("");
+          setIsScannerOpen(true);
+        }}
+        onMyTeam={() => {
+          setIsSettingsOpen(false);
+          setIsLeaderboardOpen(false);
+          setIsScannerOpen(false);
+          setIsTeamPanelOpen(true);
+        }}
+      />
 
       <TeamOverviewOverlay
         open={isTeamPanelOpen}

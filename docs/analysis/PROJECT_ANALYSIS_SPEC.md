@@ -1,5 +1,22 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-13 Team V2 demo v4 full-screen overlays
+
+- Demo v4 controls the Team V2 presentation. The map is visible below the
+  lightweight HUD and empty HUD areas do not intercept map gestures.
+- Every V2 overlay is a safe-area-aware full-screen cyberpunk panel with
+  internal scrolling; presentation changes do not alter Team data, QR/scanner
+  behavior, Station actions or Backend contracts.
+
+## 2026-08-12 Team V2 full-map HUD composition
+
+- Team V2's Konva map occupies the complete safe viewport. The React header,
+  score, legend and footer are overlays on the map rather than independent
+  header/map/footer regions, so responsive rotation never crops the map canvas.
+- HUD actions remain native accessible controls while Station visuals and active
+  animation remain Konva-owned. At short landscape heights, QR/side controls
+  shrink by height without reserving a fixed map inset.
+
 ## 2026-08-04 Team V2 direct Station detail
 
 - Clicking a map marker or Team overview Station opens V2 Station/Game Detail

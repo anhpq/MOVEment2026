@@ -1,7 +1,25 @@
+# 2026-08-14 Team V2 demo marker/header/footer fidelity
+
+- Frontend-only: aligned the production React/Konva marker, header and footer geometry with `demo/Movement2026.jsx` and `demo/styles.css` while preserving the real map, data and callbacks.
+- Verification PASS: focused Frontend Vitest `16/16`, lint, i18n parity `440`, production build/bundle gate, `git diff --check`, Graphify update and authenticated Chromium E2E at `390x844`, `844x390`, and `1024x768`.
+- Not verified: WebKit/Safari. The local Playwright project is Chromium-only and no real Safari result is inferred.
+
 # 2026-08-12 Team V2 demo visual port
 
 - Frontend-only port of the supplied Team V2 demo visual. It preserves API, Backend, QR, scoring, map data, and Business Rules; local fonts replace runtime web-font loading.
 - Frontend verification passed: focused map/layout tests, i18n parity, lint, production build, and authenticated Chromium portrait/landscape E2E. Safari real-device BrowserStack remains blocked by outbound access to `hub-aps.browserstack.com`.
+
+# 2026-08-12 Team V2 full-map HUD reconciliation
+
+- Frontend-only: converted the demo HUD into React components and marker state/heartbeat/radar into Konva rendering. The Stage now fills the complete viewport; header/footer are DOM overlays and do not crop the production map.
+- Verification PASS: focused Frontend Vitest `16/16`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E at `390x844`, `844x390`, and `1024x768`.
+- Not verified: Safari/WebKit real browser run; BrowserStack remains an external network dependency and no pass is inferred from Chromium.
+
+# 2026-08-13 Team V2 demo v4 full-screen overlay presentation
+
+- Frontend-only: made HUD fade/translucent so the full Konva map remains visible and gesture-capable under it; styled Settings, scanner, Team, Leaderboard, score entry and Station Detail as full-screen cyberpunk panels without changing their flows.
+- Verification PASS: focused Frontend Vitest `16/16`, lint, i18n parity `440`, production build/bundle gate and authenticated Chromium E2E at `390x844`, `844x390`, `1024x768`.
+- Not verified: Safari/WebKit. Local Playwright installation has Chromium only; BrowserStack results are not inferred.
 
 # 2026-08-12 Final / Station transition reconciliation
 

@@ -20,6 +20,16 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-13: Supersede Team Gameplay V2 presentation theo `demo/` v4. Konva
+  map phủ toàn bộ `100dvh` và hiển thị xuyên dưới HUD; Header, score, legend và
+  footer chỉ là overlay trong suốt/gradient nhẹ, không cắt viewport map và
+  không chặn pan/pinch ở vùng trống. Chỉ native HUD controls nhận pointer
+  events. Marker `Completed` hiện white/silver mờ nhưng vẫn tappable; marker
+  Playing dùng gold double-heartbeat/radar, không lightning, dotted route hay
+  sparkle. Settings, scanner, Team, Leaderboard, score entry và Station Detail
+  dùng full-screen cyberpunk panels có safe-area và scroll nội bộ; flow, data,
+  QR lifecycle và Business Rules không đổi.
+
 - 2026-07-31: Tất cả overlay trong `/team/v2` dùng default background opacity
   `95%`. Opacity chỉ áp dụng cho backdrop và nền panel, không áp dụng lên DOM
   container chứa nội dung; chữ, icon và interactive controls luôn render ở

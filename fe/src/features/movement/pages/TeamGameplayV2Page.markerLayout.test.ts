@@ -87,9 +87,9 @@ describe("TeamGameplayV2Page marker label layout", () => {
   });
 
   it("shrinks marker text for station codes with up to four characters", () => {
-    expect(getStationMarkerFontSize("02", BASE_MARKER_SIZE)).toBeCloseTo(12);
-    expect(getStationMarkerFontSize("047", BASE_MARKER_SIZE)).toBeCloseTo(9.6);
-    expect(getStationMarkerFontSize("ST04", BASE_MARKER_SIZE)).toBe(8);
+    expect(getStationMarkerFontSize("02", BASE_MARKER_SIZE)).toBeCloseTo(17.6);
+    expect(getStationMarkerFontSize("047", BASE_MARKER_SIZE)).toBeCloseTo(14.08);
+    expect(getStationMarkerFontSize("ST04", BASE_MARKER_SIZE)).toBeCloseTo(11.44);
   });
 
   it("keeps the selected label visible while suppressing overlapping labels", () => {
