@@ -1,5 +1,12 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Overlay type scale and left-side Legend
+
+- Overlay typography now uses shared semantic tokens across Settings, Team, Leaderboard, scanner, score and Station Detail: the common body baseline is exactly 30% above the preceding `15..17px` scale, while all overlay titles share the Leaderboard title token and all secondary text shares one secondary token.
+- Legend is a single accessible 44x44 `i` icon at the left edge. Opening it reveals the four marker states in one vertical left-side column. In low-height landscape the total score stays horizontally centered instead of yielding the center to Legend.
+- Every Konva marker pin and its points label share one exact two-color gradient pair per semantic state: cyan-purple default, gold-pink active, white-lavender completed and slate-purple locked. Multi-stop three/four-color edges were removed.
+- Authenticated Chromium E2E PASS `4/4`: portrait, landscape and desktop full-map geometry; landscape score center within 1px; icon-only Legend dimensions/left placement/vertical grid; overlay body >=19.5px; equal Team/Leaderboard title and body computed sizes.
+
 ## 2026-08-15 Legend, Settings and complete Leaderboard refinement
 
 - Legend toggle/popover now uses the rounded cyan-to-magenta border and polygon marker swatches from the standalone React/Konva demo; the Settings button uses the same gradient ring and explicitly centers the Ant Design icon.

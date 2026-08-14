@@ -1,3 +1,9 @@
+# 2026-08-15 Team V2 overlay typography and left-side Legend
+
+- Frontend-only: increased overlay information typography by 30% through shared semantic title/body/secondary tokens, converted Legend to a left-side 44px icon with a vertical expanded list, centered total score in low-height landscape, and standardized each marker/label state on one exact two-color gradient pair.
+- Verification PASS: focused Frontend Vitest `19/19`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `4/4` with computed geometry/type equality assertions.
+- No Backend, API, database, migration, seed, gameplay or ranking behavior changed.
+
 # 2026-08-15 Team V2 Legend, Settings and complete Leaderboard
 
 - Frontend-only: aligned Legend and Settings framing with the React/Konva demo, centered the Settings icon, made footer underline stacking explicit, increased overlay typography, and removed the V2 Top 5 projection so every authoritative Leaderboard row renders with its real rank.

@@ -7,6 +7,8 @@
 - [x] Apply demo v4 presentation to all V2 overlays as full-screen cyberpunk panels while retaining their existing behavior.
 - [x] Match the demo's slender double-outline marker, clipped header, footer wings and central multi-ring QR geometry; verify authenticated Chromium at three target viewports.
 - [x] Align Legend/Settings detail framing, center the Settings icon, harden footer underline stacking, increase overlay typography, and show every authoritative Leaderboard row with its real rank.
+- [x] Increase overlay body typography by 30% with shared semantic type tokens; keep landscape score centered and move icon-only/vertical expanded Legend to the left edge.
+- [x] Use one exact two-color semantic gradient pair across each Konva marker pin and its points label.
 - [ ] Re-run BrowserStack Safari macOS/iPhone smoke after network permits outbound `hub-aps.browserstack.com`.
 
 ## 2026-08-12 Final, Station switching, and Team V2 mobile

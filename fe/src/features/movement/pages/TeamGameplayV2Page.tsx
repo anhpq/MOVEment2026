@@ -211,35 +211,39 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   if (marker.isActive) {
     return {
       stroke: "#FFD45B",
+      edgeEnd: "#FF67B3",
       glow: "#FFCB4B",
-      gradient: [0, "#FFF8B7", 0.42, "#FFD45B", 0.72, "#FFAD2F", 1, "#FF67B3"],
-      inner: "rgba(65, 43, 3, 0.88)",
+      edgeGradient: [0, "#FFD45B", 1, "#FF67B3"],
+      fillGradient: [0, "#261C04", 1, "#130A17"],
       meta: "#FFF8D8",
     };
   }
   if (marker.isCompleted) {
     return {
       stroke: "#EEF4FF",
+      edgeEnd: "#A89CC7",
       glow: "#FFFFFF",
-      gradient: [0, "#FFFFFF", 0.58, "#CDD7E9", 1, "#A89CC7"],
-      inner: "rgba(31, 37, 49, 0.9)",
+      edgeGradient: [0, "#FFFFFF", 1, "#A89CC7"],
+      fillGradient: [0, "#1F2531", 1, "#15111D"],
       meta: "#E8EAF0",
     };
   }
   if (marker.isLocked) {
     return {
       stroke: "#817A99",
+      edgeEnd: "#854DA8",
       glow: "#8E62BA",
-      gradient: [0, "#8194AA", 0.5, "#665F86", 1, "#854DA8"],
-      inner: "rgba(24, 24, 35, 0.9)",
+      edgeGradient: [0, "#8194AA", 1, "#854DA8"],
+      fillGradient: [0, "#181823", 1, "#0E0B16"],
       meta: "#A9A4B9",
     };
   }
   return {
     stroke: "#76EFFF",
+    edgeEnd: "#B04CFF",
     glow: hudAccent,
-    gradient: [0, "#92F7FF", 0.46, "#4BDCFF", 0.76, "#6E82FF", 1, "#B04CFF"],
-    inner: "rgba(4, 18, 27, 0.94)",
+    edgeGradient: [0, "#76EFFF", 1, "#B04CFF"],
+    fillGradient: [0, "#04121B", 1, "#100A20"],
     meta: "#76EFFF",
   };
 }
@@ -375,8 +379,13 @@ function StationMarker({
         scaleX={pinScaleX}
         scaleY={pinScaleY}
         data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
-        fill={marker.isActive ? "rgba(38, 28, 4, 0.96)" : marker.isCompleted ? "rgba(15, 18, 24, 0.96)" : "rgba(2, 9, 15, 0.97)"}
+        fillLinearGradientStartPoint={{x: -29, y: -30}}
+        fillLinearGradientEndPoint={{x: 29, y: 54}}
+        fillLinearGradientColorStops={colors.fillGradient}
         stroke={colors.stroke}
+        strokeLinearGradientStartPoint={{x: -29, y: -30}}
+        strokeLinearGradientEndPoint={{x: 29, y: 54}}
+        strokeLinearGradientColorStops={colors.edgeGradient}
         strokeWidth={2.1 / Math.max(pinScaleX, pinScaleY)}
         shadowColor={colors.glow}
         shadowBlur={isInteracting ? 0 : marker.isSelected || marker.isActive ? 18 : 12}
@@ -389,7 +398,7 @@ function StationMarker({
         scaleY={pinScaleY * 0.91}
         data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
         fillEnabled={false}
-        stroke={marker.isActive ? "#FF67B3" : marker.isCompleted ? "#A89CC7" : marker.isLocked ? "#665F86" : "#B04CFF"}
+        stroke={colors.edgeEnd}
         strokeWidth={1.05 / Math.max(pinScaleX, pinScaleY)}
         opacity={0.78}
         listening={false}
@@ -451,6 +460,9 @@ function StationMarker({
               width={STATION_LABEL_WIDTH - 10}
               height={STATION_LABEL_HEIGHT}
               stroke={colors.stroke}
+              strokeLinearGradientStartPoint={{x: 0, y: 0}}
+              strokeLinearGradientEndPoint={{x: STATION_LABEL_WIDTH - 10, y: STATION_LABEL_HEIGHT}}
+              strokeLinearGradientColorStops={colors.edgeGradient}
               strokeWidth={1}
               cornerRadius={STATION_LABEL_HEIGHT / 2}
               opacity={marker.isActive ? 0.5 : 0.3}
@@ -461,6 +473,9 @@ function StationMarker({
               width={STATION_LABEL_WIDTH - 20}
               height={STATION_LABEL_HEIGHT}
               stroke={colors.stroke}
+              strokeLinearGradientStartPoint={{x: 0, y: 0}}
+              strokeLinearGradientEndPoint={{x: STATION_LABEL_WIDTH - 20, y: STATION_LABEL_HEIGHT}}
+              strokeLinearGradientColorStops={colors.edgeGradient}
               strokeWidth={1}
               cornerRadius={STATION_LABEL_HEIGHT / 2}
               opacity={0.16}
@@ -470,8 +485,13 @@ function StationMarker({
         <Rect
           width={STATION_LABEL_WIDTH}
           height={STATION_LABEL_HEIGHT}
-          fill={marker.isActive ? "rgba(32, 26, 5, 0.97)" : "rgba(5, 31, 45, 0.96)"}
+          fillLinearGradientStartPoint={{x: 0, y: 0}}
+          fillLinearGradientEndPoint={{x: STATION_LABEL_WIDTH, y: STATION_LABEL_HEIGHT}}
+          fillLinearGradientColorStops={colors.fillGradient}
           stroke={colors.stroke}
+          strokeLinearGradientStartPoint={{x: 0, y: 0}}
+          strokeLinearGradientEndPoint={{x: STATION_LABEL_WIDTH, y: STATION_LABEL_HEIGHT}}
+          strokeLinearGradientColorStops={colors.edgeGradient}
           strokeWidth={1.2}
           cornerRadius={STATION_LABEL_HEIGHT / 2}
           shadowColor={colors.glow}
@@ -518,8 +538,10 @@ function DemoMarkerLegend({open, onToggle}: {open: boolean; onToggle: () => void
   const {t} = useTranslation();
   return (
     <div className={`team-v2-legend-control${open ? " is-open" : ""}`}>
-      <button type="button" className="team-v2-legend-toggle" aria-expanded={open} aria-controls="team-v2-marker-legend" onClick={onToggle}>
-        <span aria-hidden="true">i</span>{t("teamV2.legendTitle")}<b aria-hidden="true">⌄</b>
+      <button type="button" className="team-v2-legend-toggle" aria-label={t("teamV2.legendTitle")} title={t("teamV2.legendTitle")} aria-expanded={open} aria-controls="team-v2-marker-legend" onClick={onToggle}>
+        <span className="team-v2-legend-icon" aria-hidden="true">i</span>
+        <span className="team-v2-legend-label">{t("teamV2.legendTitle")}</span>
+        <b aria-hidden="true">⌄</b>
       </button>
       {open && (
         <section id="team-v2-marker-legend" className="team-v2-marker-legend" aria-label={t("teamV2.legendTitle")}>

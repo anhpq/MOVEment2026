@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 overlay typography and Legend placement
+
+- Team V2 overlays share semantic title/body/secondary font-size tokens; body information is 30% larger than the previous overlay baseline and equivalent semantic levels match across Team and Leaderboard panels.
+- Legend uses one 44x44 icon at the left edge and expands vertically on the left. Landscape keeps total score centered horizontally.
+- Marker pin and points label use the same exact two-color gradient pair for their semantic state.
+
 ## 2026-08-15 Team V2 complete Leaderboard and HUD detail refinement
 
 - Team V2 Leaderboard shows every Team returned by the authoritative Backend response in Backend rank order and preserves real ranks; the full-screen overlay scrolls internally when the list exceeds the viewport.

@@ -20,6 +20,14 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-15: Team Gameplay V2 tăng typography thông tin trong toàn bộ overlay
+  thêm `30%` so với baseline 2026-08-15 trước đó. Legend HUD thu thành một icon
+  `i` tối thiểu `44x44px` ở cạnh trái; khi mở, bốn trạng thái xếp dọc bên trái.
+  Ở landscape, total score giữ chính giữa theo trục ngang và Legend không được
+  chiếm vị trí trung tâm. Không thay đổi data, gameplay hoặc overlay opacity.
+  Marker pin và points label dùng cùng một gradient đúng hai màu theo semantic
+  state; không dùng chuỗi ba/bốn màu hoặc marker/label edge khác hệ màu.
+
 - 2026-08-15: Supersede giới hạn Leaderboard overlay của Team Gameplay V2 từ
   Top 5 + một dòng Team hiện tại có rank hiển thị giả `6`. Overlay `/team/v2`
   phải hiển thị toàn bộ Team từ response Leaderboard authoritative, giữ nguyên
