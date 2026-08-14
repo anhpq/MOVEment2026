@@ -1,5 +1,39 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-14 Demo v4 marker/header/footer fidelity pass
+
+- Replaced the rounded Team V2 pin with the demo's slender double-outline Konva pin, preserved the 44px touch target, and matched the active whole-marker heartbeat with circular aura plus three elliptical radar rings.
+- Rebuilt the header and footer geometry from the demo: clipped cyan-to-magenta title frame, gradient-ring Settings control, dark inset footer wings, underline accents, circular icon wells, and the multi-ring central QR control. The production map still fills the viewport beneath the HUD.
+- Authenticated Chromium E2E PASS at `390x844`, `844x390`, and `1024x768`, including full-viewport Stage bounds, Settings controls, footer bounds and minimum 44px targets. Focused Vitest `16/16`, lint, i18n parity `440`, production build/bundle gate and `git diff --check` also PASS.
+- WebKit/Safari was not verified: the local Playwright config contains only Chromium and no local WebKit runner is installed. No Safari PASS is inferred from Chromium.
+
+## 2026-08-13 Demo v4 full-screen presentation reconciliation
+
+- `demo/Movement2026.jsx` và `demo/styles.css` v4 là chuẩn presentation; `reference.png` chỉ là chuẩn thị giác. Không thêm dotted routes hoặc sparkle vào production V2.
+- Konva map vẫn dùng production data/gesture nhưng phủ toàn viewport và nằm dưới HUD. Header, score, legend và footer dùng nền transparent/fade, chỉ native controls nhận pointer event để phần HUD trống vẫn pan/pinch map.
+- Settings, scanner, Team overview, Leaderboard, score entry và Station Detail giữ nguyên state/callback/QR lifecycle nhưng hiển thị thành full-screen cyberpunk panels có safe-area và scroll nội bộ.
+- Frontend verification PASS: focused Vitest `16/16`, lint, i18n parity `440`, production build/bundle gate và authenticated Chromium E2E tại `390x844`, `844x390`, `1024x768`. WebKit/Safari chưa verified vì máy chỉ có Chromium Playwright; BrowserStack vẫn phụ thuộc network ngoài.
+
+## 2026-08-12 Full-map React/Konva demo reconciliation
+
+- The supplied `demo/` is now ported as React HUD components plus Konva Station artwork/animation, rather than a legacy CSS layer alone. The map continues to use production Station data, gestures, scanner, Settings, Team panel and overlays.
+- The Konva Stage now covers the whole `100dvh` viewport (`inset: 0`). Header, score, legend and footer are safe-area-aware DOM overlays within the same map viewport; they do not reserve/crop a top, middle and bottom map region.
+- Portrait keeps a compact stacked HUD and low-height landscape keeps a 78px QR plus 58px side controls at `844x390`. Chrome/Safari fallbacks retain local fonts, viewport fallback, safe-area and native controls.
+- Authenticated Chromium smoke passed at `390x844`, `844x390`, and `1024x768`, including full-map geometry, Settings display switches and footer hit targets. Real Safari remains unverified while BrowserStack connectivity is unavailable.
+
+## 2026-08-12 Demo v4 visual port
+
+- `/team/v2` keeps the real Suoi Tien map, Konva pan/pinch/zoom, Station data, scanner, settings, and overlays while adopting the supplied demo HUD: clipped cyan-to-magenta brand, green score card, framed three-control footer, and expandable marker legend.
+- Marker semantics are visual only: unplayed cyan/blue/purple, completed silver, active gold double-heartbeat/radar without a lightning glyph, and locked muted purple/gray with a lock badge. Active animation uses imperative Konva frames and is reduced during map interaction and reduced-motion preference.
+- Oxanium and Space Grotesk are bundled local WOFF2 assets with attribution; the route does not request Google Fonts at runtime.
+- Portrait uses a compact legend/2×2 legend grid; landscape low-height uses height-capped header, legend, map inset, QR, and footer controls. `100dvh` retains its existing `100vh` minimum fallback and safe-area insets apply to both orientations.
+
+## 2026-08-12 Mobile map interaction and short landscape footer
+
+- Map pan/pinch now applies Stage transforms imperatively at most once per animation frame; React transform/culling layout commits once at gesture end.
+- Marker glow is reduced while interacting and restored after release.
+- At landscape height <= 500px, footer sizing is capped by viewport height: QR is 78px, side panels 58px, and map/preview/legend share a 92–98px bottom inset.
+
 ## 2026-08-08 Settings display controls and QR badge
 
 - Moved the browser fullscreen control from the V2 header into Settings; the header retains only Settings.

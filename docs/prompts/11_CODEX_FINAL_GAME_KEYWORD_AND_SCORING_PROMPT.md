@@ -37,7 +37,7 @@ This Prompt is not the Business Rule Source of Truth.
 1. Final keyword is:
 
 ```text
-DISANVANHOA2026
+EVERY MOVE COUNTS
 ```
 
 2. Frontend and backend trim and uppercase input.
@@ -56,10 +56,16 @@ DISANVANHOA2026
 14. Rank points are:
 
 ```text
-Rank 1  = 10
-Rank 2  = 9
-...
-Rank 10 = 1
+Rank 1  = 40
+Rank 2  = 30
+Rank 3  = 25
+Rank 4  = 22
+Rank 5  = 20
+Rank 6  = 18
+Rank 7  = 16
+Rank 8  = 14
+Rank 9  = 12
+Rank 10 = 10
 Rank 11+ = 0
 ```
 
@@ -149,8 +155,8 @@ Store answer according to current secure configuration architecture. Do not expo
 Input behavior:
 
 ```text
-disanvanhoa2026 -> DISANVANHOA2026
-DiSanVanHoa2026 -> DISANVANHOA2026
+every move counts -> EVERY MOVE COUNTS
+Every Move Counts -> EVERY MOVE COUNTS
 ```
 
 Frontend must:
@@ -229,8 +235,8 @@ Backend:
 - cooldown never exceeds 10 seconds;
 - duplicate correct request does not award twice;
 - concurrent submissions get unique ranks;
-- rank 1 gets 10;
-- rank 10 gets 1;
+- rank 1 gets 40;
+- rank 10 gets 10;
 - rank 11 gets 0;
 - leaderboard includes bonus.
 

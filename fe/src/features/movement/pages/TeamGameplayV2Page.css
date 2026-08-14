@@ -854,6 +854,183 @@
   margin: clamp(18px, 4vh, 34px) auto 0;
 }
 
+/* Demo v4 visual layer. It deliberately sits last so the Team V2 map/data
+   implementation stays intact while the HUD adopts the approved reference. */
+.team-v2-page {
+  min-height: 100vh;
+  font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 9%, rgba(52, 195, 255, .08), transparent 34%),
+    radial-gradient(ellipse at 12% 88%, rgba(146, 71, 255, .06), transparent 26%),
+    #010205;
+}
+
+.team-v2-page::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  opacity: .22;
+  background:
+    linear-gradient(rgba(112, 225, 255, .028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(112, 225, 255, .022) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.65), transparent 54%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.65), transparent 54%);
+}
+
+.team-v2-map-backdrop::after {
+  background: radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, .36) 100%);
+}
+
+.team-v2-header {
+  min-height: clamp(152px, 21dvh, 210px);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 760px) minmax(72px, 1fr);
+  background: linear-gradient(180deg, rgba(1, 4, 9, .98), rgba(1, 5, 10, .87));
+  border-bottom-color: rgba(91, 228, 255, .32);
+}
+
+.team-v2-map-backdrop {
+  top: clamp(152px, 21dvh, 210px);
+  bottom: clamp(130px, 18dvh, 170px);
+  border-block-color: rgba(91, 228, 255, .25);
+}
+
+.team-v2-event-banner { width: min(92vw, 830px, calc(100vw - 112px)); }
+.team-v2-event-brand {
+  width: clamp(278px, 50vw, 560px);
+  height: 66px;
+  padding: 7px 52px 10px;
+  font-family: "Oxanium", Aptos, sans-serif;
+  font-size: clamp(25px, 4vw, 45px);
+  font-weight: 700;
+  letter-spacing: .045em;
+  background: linear-gradient(115deg, #74efff 0%, #2bb7ff 36%, #8654ff 70%, #ff47cd 100%);
+}
+.team-v2-event-brand::before { background: linear-gradient(180deg, rgba(5, 13, 24, .99), rgba(1, 3, 7, 1)); }
+.team-v2-event-brand span, .team-v2-event-brand small { font: inherit; }
+.team-v2-event-brand small { margin-left: .14em; font-size: .82em; }
+
+.team-v2-score {
+  min-width: 210px;
+  padding: 10px 30px 11px;
+  border-color: rgba(100, 242, 154, .72);
+  border-radius: 0;
+  clip-path: polygon(7% 0, 93% 0, 100% 20%, 100% 80%, 93% 100%, 7% 100%, 0 80%, 0 20%);
+  background: linear-gradient(180deg, rgba(7, 16, 12, .97), rgba(1, 5, 3, .99));
+  box-shadow: 0 0 15px rgba(100, 255, 151, .2), inset 0 0 18px rgba(100, 255, 151, .08);
+}
+.team-v2-score strong { font-family: "Oxanium", Aptos, sans-serif; color: #64f29a; }
+.team-v2-score span { color: #88efaa; font-family: "Oxanium", Aptos, sans-serif; }
+.team-v2-score small { font-family: "Space Grotesk", Aptos, sans-serif; color: #dffcf1; }
+
+.team-v2-settings-button {
+  border: 2px solid #76efff;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, #09141b, #010306 73%);
+  box-shadow: 0 0 15px rgba(74, 211, 255, .28), inset 0 0 16px rgba(57, 171, 230, .12);
+}
+
+.team-v2-legend-control {
+  position: absolute;
+  z-index: calc(var(--team-v2-layer-fixed-ui) + 4);
+  top: clamp(128px, 18dvh, 190px);
+  left: 50%;
+  width: min(92vw, 866px);
+  pointer-events: auto;
+  transform: translateX(-50%);
+}
+.team-v2-legend-toggle {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  border: 1px solid rgba(118, 239, 255, .72);
+  border-radius: 4px;
+  background: rgba(2, 9, 17, .94);
+  color: #dffcff;
+  font: 700 11px/1 "Space Grotesk", Aptos, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 13px rgba(47, 228, 240, .17);
+  cursor: pointer;
+}
+.team-v2-legend-toggle > span { display: grid; width: 22px; height: 22px; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-family: serif; font-size: 15px; }
+.team-v2-legend-toggle b { font-size: 15px; transition: transform 160ms ease; }
+.team-v2-legend-control.is-open .team-v2-legend-toggle b { transform: rotate(180deg); }
+.team-v2-marker-legend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 7px;
+  padding: 10px 16px;
+  border: 1px solid rgba(118, 239, 255, .54);
+  background: linear-gradient(105deg, rgba(3, 15, 25, .98), rgba(2, 7, 14, .98));
+  box-shadow: 0 0 16px rgba(47, 228, 240, .18);
+}
+.team-v2-marker-legend > span { display: flex; min-width: 0; align-items: center; justify-content: center; gap: 8px; color: #76efff; font-size: clamp(9px, 1.4vw, 12px); font-weight: 700; letter-spacing: .035em; text-transform: uppercase; white-space: nowrap; }
+.team-v2-marker-legend i { display: inline-grid; width: 17px; height: 22px; flex: 0 0 auto; place-items: center; border: 2px solid currentColor; border-radius: 50% 50% 50% 0; box-shadow: 0 0 8px currentColor; transform: rotate(-45deg); }
+.team-v2-marker-legend i::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.team-v2-marker-legend .is-active { color: #ffd45b; }
+.team-v2-marker-legend .is-completed { color: #f1f5ff; }
+.team-v2-marker-legend .is-locked { color: #8d83ac; }
+.team-v2-marker-legend .is-locked i { font-size: 10px; transform: rotate(0); }
+.team-v2-marker-legend .is-locked i::after { content: none; }
+
+.team-v2-bottom { --team-v2-footer-design-width: 700px; --team-v2-footer-height: 126px; }
+.team-v2-footer-panel {
+  height: 76px;
+  border: 1px solid #76efff;
+  border-radius: 0;
+  background: linear-gradient(105deg, rgba(3, 18, 27, .98), rgba(2, 12, 20, .96));
+  box-shadow: inset 0 0 18px rgba(0, 231, 255, .08), 0 0 14px rgba(0, 231, 255, .26);
+}
+.team-v2-leaderboard-chip { width: 250px; padding: 12px 20px; }
+.team-v2-progress-panel { width: 250px; padding: 12px 20px; }
+.team-v2-bottom-copy strong { font-family: "Space Grotesk", Aptos, sans-serif; font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); }
+.team-v2-scan-action { min-height: 126px; width: 128px; }
+.team-v2-scan-button { width: 112px; height: 112px; }
+.team-v2-scan-action > strong { bottom: 18px; font-family: "Space Grotesk", Aptos, sans-serif; }
+.team-v2-footer-rail { display: none; }
+
+@media (orientation: portrait) {
+  .team-v2-header { min-height: clamp(155px, 23dvh, 205px); }
+  .team-v2-map-backdrop { top: clamp(155px, 23dvh, 205px); bottom: 130px; }
+  .team-v2-event-brand { width: clamp(216px, 66vw, 340px); height: 52px; padding-inline: 28px; font-size: clamp(18px, 5.6vw, 28px); }
+  .team-v2-legend-control { top: clamp(130px, 19dvh, 172px); width: min(94vw, 520px); }
+  .team-v2-marker-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 9px 10px; }
+  .team-v2-marker-legend > span { justify-content: flex-start; font-size: 9px; }
+  .team-v2-bottom { --team-v2-footer-design-width: 344px; --team-v2-footer-height: 96px; }
+  .team-v2-footer-panel { bottom: 12px; width: 124px; height: 72px; }
+  .team-v2-leaderboard-chip { left: 0; padding: 14px 12px 14px 14px; }
+  .team-v2-progress-panel { right: 0; padding: 14px 14px 14px 12px; }
+  .team-v2-scan-action { width: 96px; min-height: 96px; }
+  .team-v2-scan-button { width: 96px; height: 96px; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .team-v2-header { min-height: 86px; padding-top: max(5px, env(safe-area-inset-top, 0)); }
+  .team-v2-map-backdrop { top: 86px; bottom: 92px; }
+  .team-v2-event-brand { width: clamp(240px, 44vw, 410px); height: 38px; padding: 4px 26px; font-size: clamp(16px, 3vw, 24px); }
+  .team-v2-score { min-width: 132px; padding: 3px 14px 4px; }
+  .team-v2-score strong { font-size: 25px; }
+  .team-v2-score small { font-size: 7px; }
+  .team-v2-legend-control { top: 90px; width: min(82vw, 720px); }
+  .team-v2-legend-toggle { min-height: 32px; padding-block: 4px; font-size: 9px; }
+  .team-v2-marker-legend { padding: 6px 10px; }
+  .team-v2-marker-legend > span { font-size: 8px; }
+  .team-v2-bottom { --team-v2-footer-design-width: 344px; --team-v2-footer-height: 82px; }
+  .team-v2-footer-panel { bottom: 8px; width: 124px; height: 58px; min-height: 58px; }
+  .team-v2-scan-action, .team-v2-scan-button { width: 78px; height: 78px; min-height: 78px; }
+  .team-v2-scan-action > strong { bottom: 11px; font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-v2-legend-toggle b { transition: none; }
+}
+
 .team-v2-display-controls {
   display: grid;
   grid-template-columns: 1fr;
@@ -1519,6 +1696,36 @@
   bottom: calc(clamp(130px, 30vw, 258px) + env(safe-area-inset-bottom, 0));
 }
 
+/* A short landscape viewport must reserve map space by height, not by the wide
+   screen width. The controls retain usable touch targets without covering it. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .team-v2-bottom {
+    --team-v2-footer-height: 82px;
+    bottom: calc(4px + env(safe-area-inset-bottom, 0));
+  }
+
+  .team-v2-footer-panel {
+    bottom: 8px;
+    height: 58px;
+    min-height: 58px;
+    padding-block: 8px;
+  }
+
+  .team-v2-scan-action,
+  .team-v2-scan-button {
+    width: 78px;
+    height: 78px;
+    min-height: 78px;
+  }
+
+  .team-v2-scan-action::before { inset: 9px -10px; }
+  .team-v2-scan-action > strong { bottom: 11px; font-size: 8px; }
+  .team-v2-map-backdrop { bottom: 92px; }
+  .team-v2-station-preview { bottom: calc(98px + env(safe-area-inset-bottom, 0)); }
+  .team-v2-legend,
+  .team-v2-legend-button { bottom: calc(98px + env(safe-area-inset-bottom, 0)); }
+}
+
 .team-v2-team-panel {
   width: min(360px, calc(100vw - 20px));
   max-height: min(780px, calc(100dvh - 20px));
@@ -1880,4 +2087,25 @@
     min-height: 18px;
     padding-inline: 4px;
   }
+}
+@font-face {
+  font-family: "Oxanium";
+  src: url("../../../assets/fonts/oxanium.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 500 700;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../../../assets/fonts/space-grotesk-vietnamese.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 500 700;
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../../../assets/fonts/space-grotesk-latin.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 500 700;
 }

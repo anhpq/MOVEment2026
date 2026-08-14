@@ -137,7 +137,7 @@ CREATE TABLE "event_config" (
   "event_end_time" TEXT NOT NULL DEFAULT '23:59',
   "final_starts_at" TEXT NOT NULL DEFAULT '23:59',
   "notify_before_minutes" INTEGER NOT NULL DEFAULT 15,
-  "cancel_cooldown_minutes" INTEGER NOT NULL DEFAULT 5,
+  "cancel_cooldown_minutes" INTEGER NOT NULL DEFAULT 0,
   "timezone" TEXT NOT NULL DEFAULT 'Asia/Ho_Chi_Minh',
   "updated_by_user_id" INTEGER,
   "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP

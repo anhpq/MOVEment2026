@@ -1,5 +1,19 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-12 Team V2 demo visual port
+
+- [x] Port demo v4 HUD as React components and semantic marker appearance/animation as Konva while retaining the production map and behavior.
+- [x] Expand the Konva map to the full viewport; overlay header, legend and footer rather than reserving three map regions.
+- [x] Apply demo v4 presentation to all V2 overlays as full-screen cyberpunk panels while retaining their existing behavior.
+- [x] Match the demo's slender double-outline marker, clipped header, footer wings and central multi-ring QR geometry; verify authenticated Chromium at three target viewports.
+- [ ] Re-run BrowserStack Safari macOS/iPhone smoke after network permits outbound `hub-aps.browserstack.com`.
+
+## 2026-08-12 Final, Station switching, and Team V2 mobile
+
+- [x] Persist Final Top 10 table and strict internal-whitespace normalization rule.
+- [x] Remove Station cancel cooldown and handle A→B transition atomically.
+- [x] Reduce Team V2 map React work during gestures and size the low-height landscape footer by viewport height.
+
 ## 2026-08-04 Team V2 direct marker-to-game flow
 
 - [x] Remove the intermediate selected-Station preview card.

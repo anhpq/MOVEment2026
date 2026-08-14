@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#020306" />
+  <title>MOVEment 2026</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="movement-app">
+    <header class="hud-header">
+      <div class="title-frame" aria-label="MOVEment 2026">
+        <h1>MOVEment 2026</h1>
+      </div>
+
+      <button class="settings-button" type="button" aria-label="Cài đặt">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19.14 12.94c.04-.31.06-.62.06-.94s-.02-.63-.06-.94l2.03-1.58-1.92-3.32-2.39.96a7.23 7.23 0 0 0-1.63-.94L14.87 3h-3.84l-.36 3.18c-.58.24-1.12.55-1.63.94l-2.39-.96-1.92 3.32 2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58 1.92 3.32 2.39-.96c.5.39 1.05.7 1.63.94l.36 3.18h3.84l.36-3.18c.58-.24 1.13-.55 1.63-.94l2.39.96 1.92-3.32-2.03-1.58ZM12.95 15.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Z"/>
+        </svg>
+      </button>
+    </header>
+
+    <section class="score-card" aria-label="Tổng điểm 11">
+      <div class="score-line"><strong>11</strong><span>PTS</span></div>
+      <div class="score-label">TỔNG ĐIỂM</div>
+    </section>
+
+    <section class="station-layer" aria-label="Bản đồ trạm">
+      <button class="station state-unplayed s10" type="button" aria-label="Trạm 10, chưa chơi">
+        <span class="marker-pin"><span class="marker-label">10</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-unplayed s15top" type="button" aria-label="Trạm 15, chưa chơi">
+        <span class="marker-pin"><span class="marker-label">15</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-unplayed s15a" type="button" aria-label="Trạm ST15A, chưa chơi">
+        <span class="marker-pin"><span class="marker-label marker-label-long">ST15A</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-completed s02" type="button" aria-label="Trạm 02, đã hoàn thành">
+        <span class="marker-pin"><span class="marker-label">02</span></span>
+        <span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-unplayed s16" type="button" aria-label="Trạm 16, chưa chơi">
+        <span class="marker-pin"><span class="marker-label">16</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-unplayed s07" type="button" aria-label="Trạm 07, chưa chơi">
+        <span class="marker-pin"><span class="marker-label">07</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-playing sactive" type="button" aria-label="Trạm 15, đang chơi">
+        <span class="marker-pin"><span class="marker-label">15</span></span>
+        <span class="marker-meta">10 PTS</span>
+        <span class="radar" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+
+      <button class="station state-unplayed s12" type="button" aria-label="Trạm 12, chưa chơi">
+        <span class="marker-pin"><span class="marker-label">12</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-unplayed s047" type="button" aria-label="Trạm ST047, chưa chơi">
+        <span class="marker-pin"><span class="marker-label marker-label-long">ST047</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-completed s031" type="button" aria-label="Trạm ST031, đã hoàn thành">
+        <span class="marker-pin"><span class="marker-label marker-label-long">ST031</span></span>
+        <span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-unplayed s23" type="button" aria-label="Trạm 23, chưa chơi">
+        <span class="marker-pin"><span class="marker-label">23</span></span><span class="marker-meta">10 PTS</span>
+      </button>
+
+      <button class="station state-locked s052" type="button" aria-label="Trạm ST052, đã khóa">
+        <span class="marker-pin">
+          <span class="marker-label marker-label-long">ST052</span>
+          <span class="lock-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg></span>
+        </span>
+        <span class="marker-meta">10 PTS</span>
+      </button>
+    </section>
+
+    <div class="legend-control" id="legendControl">
+      <button class="legend-toggle" id="legendToggle" type="button" aria-expanded="false" aria-controls="movementLegend">
+        <span class="legend-info-icon" aria-hidden="true">i</span>
+        <span>CHÚ THÍCH</span>
+        <span class="legend-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <section class="legend-hud" id="movementLegend" aria-label="Chú thích màu marker" hidden>
+        <span class="legend-item"><i class="legend-pin state-playing"></i><b>ĐANG CHƠI</b></span>
+        <span class="legend-item"><i class="legend-pin state-unplayed"></i><b>CHƯA CHƠI</b></span>
+        <span class="legend-item"><i class="legend-pin state-completed"></i><b>HOÀN THÀNH</b></span>
+        <span class="legend-item"><i class="legend-pin state-locked"><em>▣</em></i><b>ĐÃ KHÓA</b></span>
+      </section>
+    </div>
+
+    <nav class="footer-nav" aria-label="Điều hướng chính">
+      <button class="footer-wing footer-left" type="button">
+        <span class="footer-content">
+          <span class="footer-icon-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v4a4 4 0 0 1-8 0V4Z"/><path d="M8 6H5v2a4 4 0 0 0 4 4m7-6h3v2a4 4 0 0 1-4 4M12 12v4m-3 3h6"/></svg>
+          </span>
+          <span class="footer-label">BXH</span>
+        </span>
+      </button>
+
+      <button class="scan-button" type="button" aria-label="Quét mã">
+        <span class="scan-ring scan-ring-outer"></span>
+        <span class="scan-ring scan-ring-inner"></span>
+        <span class="scan-content">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V4h4M16 4h4v4M4 16v4h4M20 16v4h-4"/><path d="M8 8h4v4H8zM15 8h2v2h-2zM15 13h2v2h-2zM8 15h2v2H8zM12 15h2v2h-2zM17 17h2"/></svg>
+          <span>QUÉT MÃ</span>
+        </span>
+      </button>
+
+      <button class="footer-wing footer-right" type="button">
+        <span class="footer-content">
+          <span class="footer-icon-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="2.5"/><circle cx="16.5" cy="9" r="2"/><path d="M4 18c.5-3.4 2.4-5.2 5-5.2s4.5 1.8 5 5.2M14 14c2.8-.6 5 .9 5.6 3.8"/></svg>
+          </span>
+          <span class="footer-label">ĐỘI CỦA TÔI</span>
+        </span>
+      </button>
+    </nav>
+  </main>
+  <script>
+    const legendToggle = document.getElementById('legendToggle');
+    const legendPanel = document.getElementById('movementLegend');
+    const legendControl = document.getElementById('legendControl');
+
+    legendToggle?.addEventListener('click', () => {
+      const open = legendToggle.getAttribute('aria-expanded') !== 'true';
+      legendToggle.setAttribute('aria-expanded', String(open));
+      legendPanel.hidden = !open;
+      legendControl.classList.toggle('is-open', open);
+    });
+  </script>
+
+</body>
+</html>

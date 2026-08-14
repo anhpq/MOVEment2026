@@ -555,11 +555,11 @@ docs/prompts/11_CODEX_FINAL_GAME_KEYWORD_AND_SCORING_PROMPT.md
 
 ### Confirmed Rules
 
-- Final keyword: `DISANVANHOA2026`.
-- Frontend and backend normalize to uppercase.
+- Final keyword: `EVERY MOVE COUNTS`.
+- Frontend and backend trim outer whitespace then normalize to uppercase; internal whitespace is preserved exactly.
 - Backend determines correctness.
 - Database-confirmed first-correct order determines rank.
-- Top 10 receive points from 10 down to 1.
+- Top 10 receive `40, 30, 25, 22, 20, 18, 16, 14, 12, 10` points.
 - Rank 11 and later receive 0 Final points.
 - Wrong-answer cooldown increases from 1 second to a maximum of 10 seconds.
 - A Team must never receive Final rank or bonus twice.
