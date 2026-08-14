@@ -503,7 +503,6 @@ function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => vo
       </header>
       <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
         <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
-        <small>{t("common.totalScore")}</small>
       </section>
     </>
   );

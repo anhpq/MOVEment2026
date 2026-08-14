@@ -1,5 +1,11 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 score caption removal
+
+- [x] Remove the visible `Total score` / `Tổng điểm` caption from the centered score card.
+- [x] Preserve the numeric score, points unit, accessible label and responsive centering.
+- [x] Pass Frontend lint, build/bundle and authenticated Chromium E2E (`5/5`) at portrait, landscape and desktop viewports.
+
 ## 2026-08-15 Team V2 expanded map zoom
 
 - [x] Expand responsive map zoom from `0.8x..5x` to `0.5x..8x` in portrait and landscape.

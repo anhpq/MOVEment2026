@@ -1,5 +1,9 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 compact score card
+
+- The centered Team V2 score card displays only the authoritative numeric score and localized points unit. The visible `Total score` caption is omitted while its accessible label remains available.
+
 ## 2026-08-15 Team V2 expanded map zoom
 
 - Team V2 supports map zoom from `0.5x` to `8x` of its responsive base scale in portrait and landscape.

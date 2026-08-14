@@ -1,3 +1,9 @@
+# 2026-08-15 Team V2 score caption removal
+
+- Frontend-only: removed the visible localized `Total score` caption from the centered V2 score card while preserving its numeric value, points unit and accessible label.
+- Verification PASS: Frontend lint, production build/bundle gate, and authenticated Chromium E2E `5/5` at the three responsive target viewports.
+- No Backend, API, database, migration, seed, score authority or calculation changed.
+
 # 2026-08-15 Team V2 expanded map zoom
 
 - Frontend-only: expanded responsive map zoom from `0.8x..5x` to `0.5x..8x`, normalized wheel/trackpad deltas, fixed repeated-wheel accumulation by committing the live transform after idle, and retained focal-point stability for wheel/pinch plus exact reset geometry.

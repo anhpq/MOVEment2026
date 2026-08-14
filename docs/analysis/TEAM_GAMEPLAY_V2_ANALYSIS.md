@@ -1,5 +1,11 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Score caption removal
+
+- The visible `Total score` / `Tổng điểm` caption is removed from the centered Team V2 score card; the authoritative numeric score and localized points unit remain unchanged.
+- The score card retains its localized accessible name, centered HUD placement and responsive portrait/landscape geometry.
+- Verification PASS: Frontend lint, production build/bundle gate, and authenticated Chromium E2E `5/5` across `390x844`, `844x390`, and `1024x768`, including absence of the visible caption and presence of the accessible score label.
+
 ## 2026-08-15 Expanded and normalized map zoom
 
 - Team V2 map zoom now spans `0.5x..8x` of the responsive base scale, superseding the previous `0.8x..5x` limits in both portrait and landscape.
