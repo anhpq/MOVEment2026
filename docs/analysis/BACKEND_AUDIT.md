@@ -1,3 +1,9 @@
+# 2026-08-15 Team V2 expanded map zoom
+
+- Frontend-only: expanded responsive map zoom from `0.8x..5x` to `0.5x..8x`, normalized wheel/trackpad deltas, fixed repeated-wheel accumulation by committing the live transform after idle, and retained focal-point stability for wheel/pinch plus exact reset geometry.
+- Verification PASS: full Frontend Vitest `70/70`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `5/5`; the zoom smoke reached both exact clamps and reset at `844x390`.
+- No Backend, API, database, migration, seed, gameplay, QR or Station-coordinate behavior changed.
+
 # 2026-08-15 Team V2 overlay typography and left-side Legend
 
 - Frontend-only: increased overlay information typography by 30% through shared semantic title/body/secondary tokens, converted Legend to a left-side 44px icon with a vertical expanded list, centered total score in low-height landscape, and standardized each marker/label state on one exact two-color gradient pair.

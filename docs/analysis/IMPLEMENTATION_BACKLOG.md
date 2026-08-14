@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 expanded map zoom
+
+- [x] Expand responsive map zoom from `0.8x..5x` to `0.5x..8x` in portrait and landscape.
+- [x] Normalize trackpad/mouse-wheel deltas while preserving the focal world coordinate for wheel and pinch.
+- [x] Accumulate repeated wheel input from the live Konva transform and commit React/culling state after wheel idle.
+- [x] Cover min/max clamps, focal stability, reset geometry, wheel behavior and frame scheduling with focused Vitest (`15/15`).
+- [x] Pass full Frontend Vitest (`70/70`), lint, i18n, build/bundle and authenticated Chromium E2E (`5/5`).
+- [ ] Confirm the wider zoom range and gesture feel on a physical iPhone Safari device.
+
 ## 2026-08-12 Team V2 demo visual port
 
 - [x] Port demo v4 HUD as React components and semantic marker appearance/animation as Konva while retaining the production map and behavior.

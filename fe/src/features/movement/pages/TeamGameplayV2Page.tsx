@@ -44,6 +44,15 @@ import {
 } from "./teamV2FrameScheduler";
 import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
 import {
+  clampTeamV2MapScale as clampScale,
+  getTeamV2BaseMapScale as getBaseMapScale,
+  getTeamV2DefaultMapTransform as getDefaultMapTransform,
+  getTeamV2WheelZoomFactor,
+  scaleTeamV2MapAtPoint,
+  TEAM_V2_MAP_WORLD_HEIGHT as MAP_WORLD_HEIGHT,
+  TEAM_V2_MAP_WORLD_WIDTH as MAP_WORLD_WIDTH,
+} from "./teamV2MapTransform";
+import {
   getActiveFullscreenElement,
   isStandaloneDisplayMode,
   TEAM_V2_FULLSCREEN_CHANGE_EVENTS,
@@ -75,10 +84,6 @@ import "./TeamGameplayV2Demo.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
-const MAP_WORLD_WIDTH = 2048;
-const MAP_WORLD_HEIGHT = 1000;
-const MIN_MAP_ZOOM = 0.8;
-const MAX_MAP_ZOOM = 5;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
@@ -157,36 +162,6 @@ function persistPanelOpacity(value: number) {
     return;
   }
   window.localStorage.setItem(PANEL_OPACITY_STORAGE_KEY, String(value));
-}
-
-function getBaseMapScale(viewport: ViewportSize) {
-  if (viewport.width <= 0 || viewport.height <= 0) {
-    return 1;
-  }
-  if (viewport.height > viewport.width) {
-    return (viewport.height * 0.94) / MAP_WORLD_HEIGHT;
-  }
-  return Math.min(
-    viewport.width / MAP_WORLD_WIDTH,
-    viewport.height / MAP_WORLD_HEIGHT,
-  );
-}
-
-function clampScale(value: number, viewport: ViewportSize) {
-  const baseScale = getBaseMapScale(viewport);
-  return Math.max(
-    baseScale * MIN_MAP_ZOOM,
-    Math.min(baseScale * MAX_MAP_ZOOM, value),
-  );
-}
-
-function getDefaultMapTransform(viewport: ViewportSize): MapTransform {
-  const scale = getBaseMapScale(viewport);
-  return {
-    scale,
-    x: (viewport.width - MAP_WORLD_WIDTH * scale) / 2,
-    y: (viewport.height - MAP_WORLD_HEIGHT * scale) / 2,
-  };
 }
 
 function clampPercent(value: number) {
@@ -845,6 +820,7 @@ export function TeamGameplayV2Page() {
   } | null>(null);
   const lastTapAtRef = useRef(0);
   const previousViewportRef = useRef<ViewportSize | null>(null);
+  const wheelCommitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
   useEffect(() => {
     const scheduler = createLatestFrameScheduler<MapTransform>({
@@ -862,6 +838,10 @@ export function TeamGameplayV2Page() {
     });
     mapTransformSchedulerRef.current = scheduler;
     return () => {
+      if (wheelCommitTimerRef.current !== null) {
+        clearTimeout(wheelCommitTimerRef.current);
+        wheelCommitTimerRef.current = null;
+      }
       scheduler.cancel();
       mapTransformSchedulerRef.current = null;
     };
@@ -1006,6 +986,10 @@ export function TeamGameplayV2Page() {
   };
 
   const commitMapInteraction = () => {
+    if (wheelCommitTimerRef.current !== null) {
+      clearTimeout(wheelCommitTimerRef.current);
+      wheelCommitTimerRef.current = null;
+    }
     mapTransformSchedulerRef.current?.cancel();
     const nextTransform = liveMapTransformRef.current;
     setMapTransform(nextTransform);
@@ -1014,16 +998,7 @@ export function TeamGameplayV2Page() {
 
   const applyScaleAtPoint = (nextScale: number, point: {x: number; y: number}) => {
     const current = liveMapTransformRef.current;
-    const clampedScale = clampScale(nextScale, viewportSize);
-    const worldPoint = {
-      x: (point.x - current.x) / current.scale,
-      y: (point.y - current.y) / current.scale,
-    };
-    scheduleMapTransform({
-      scale: clampedScale,
-      x: point.x - worldPoint.x * clampedScale,
-      y: point.y - worldPoint.y * clampedScale,
-    });
+    scheduleMapTransform(scaleTeamV2MapAtPoint(current, nextScale, point, viewportSize));
   };
 
   const handleWheel = (event: KonvaEventObject<WheelEvent>) => {
@@ -1032,9 +1007,20 @@ export function TeamGameplayV2Page() {
     if (!pointer) {
       return;
     }
-    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
-    const nextScale = event.evt.deltaY > 0 ? current.scale / 1.08 : current.scale * 1.08;
+    beginMapInteraction();
+    const current = liveMapTransformRef.current;
+    const nextScale = current.scale * getTeamV2WheelZoomFactor(
+      event.evt.deltaY,
+      event.evt.deltaMode,
+    );
     applyScaleAtPoint(nextScale, pointer);
+    if (wheelCommitTimerRef.current !== null) {
+      clearTimeout(wheelCommitTimerRef.current);
+    }
+    wheelCommitTimerRef.current = setTimeout(() => {
+      wheelCommitTimerRef.current = null;
+      commitMapInteraction();
+    }, 120);
   };
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
@@ -1130,6 +1116,10 @@ export function TeamGameplayV2Page() {
   };
 
   const resetMap = () => {
+    if (wheelCommitTimerRef.current !== null) {
+      clearTimeout(wheelCommitTimerRef.current);
+      wheelCommitTimerRef.current = null;
+    }
     mapTransformSchedulerRef.current?.cancel();
     const nextTransform = getDefaultMapTransform(viewportSize);
     liveMapTransformRef.current = nextTransform;

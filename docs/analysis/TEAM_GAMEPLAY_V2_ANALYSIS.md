@@ -1,5 +1,13 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Expanded and normalized map zoom
+
+- Team V2 map zoom now spans `0.5x..8x` of the responsive base scale, superseding the previous `0.8x..5x` limits in both portrait and landscape.
+- Wheel zoom derives a bounded exponential factor from browser `deltaY`/`deltaMode`, keeping trackpads smooth while making conventional mouse-wheel steps more responsive. Wheel and pinch retain the same focal world coordinate through both zoom clamps; double-click/double-tap still resets to the exact centered base transform.
+- Fixed wheel accumulation by reading the live imperative transform and committing it to React after 120 ms of wheel inactivity, so repeated wheel frames continue from the latest scale and refresh marker culling once the gesture settles.
+- Verification PASS: full Frontend Vitest `70/70`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `5/5`, including exact `0.5x`, `8x`, and reset assertions at `844x390`.
+- This is Frontend presentation/interaction only; map coordinates, marker state, gameplay, QR, APIs and Backend behavior are unchanged.
+
 ## 2026-08-15 Overlay type scale and left-side Legend
 
 - Overlay typography now uses shared semantic tokens across Settings, Team, Leaderboard, scanner, score and Station Detail: the common body baseline is exactly 30% above the preceding `15..17px` scale, while all overlay titles share the Leaderboard title token and all secondary text shares one secondary token.

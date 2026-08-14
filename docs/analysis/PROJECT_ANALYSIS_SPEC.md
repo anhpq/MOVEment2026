@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 expanded map zoom
+
+- Team V2 supports map zoom from `0.5x` to `8x` of its responsive base scale in portrait and landscape.
+- Mouse-wheel and trackpad deltas are normalized into bounded zoom factors; wheel and pinch preserve their focal map coordinate, while reset restores the centered base transform.
+- This interaction change does not alter map coordinates, Station state, gameplay, QR or Backend contracts.
+
 ## 2026-08-15 Team V2 overlay typography and Legend placement
 
 - Team V2 overlays share semantic title/body/secondary font-size tokens; body information is 30% larger than the previous overlay baseline and equivalent semantic levels match across Team and Leaderboard panels.
