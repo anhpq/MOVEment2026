@@ -1,5 +1,16 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 demo and cleanup audit
+
+- [x] Commit the standalone React/TypeScript/Konva demo source, config and package lock.
+- [x] Exclude demo dependencies, dist, logs, TypeScript build info and generated Vite config output.
+- [x] Remove the retired bitmap reference and route demo documentation to the executable reference.
+- [x] Remove dead score-caption CSS and synchronize all demo score cards.
+- [x] Remove the stale generated Vite config, split React/Konva chunks and eliminate the demo's `>500 kB` bundle warning.
+- [x] Fix low-height landscape overflow/footer clipping and enforce minimum `44px` demo controls.
+- [x] Pass reproducible install, build/typecheck and Chromium portrait/landscape demo smoke (`2/2`).
+- [x] Pass final production Vitest (`70/70`), lint, i18n, build/bundle and combined Chromium E2E (`7/7`).
+
 ## 2026-08-15 Team V2 score caption removal
 
 - [x] Remove the visible `Total score` / `Tổng điểm` caption from the centered score card.

@@ -1,3 +1,12 @@
+# 2026-08-15 Team V2 demo and dead-style audit
+
+- Frontend/demo-only: added the standalone TypeScript/Konva reference package with a reproducible lockfile and local generated-artifact ignores; retained legacy v4 sources for provenance and removed the retired bitmap reference.
+- Removed all dead production score-caption selectors and synchronized the static, React and Konva demo variants with the caption-free score card.
+- Fixed the demo's hard `620px` minimum-height landscape overflow, restored `100vh`/`100dvh` behavior and minimum `44px` controls, fitted the low-height footer/QR, and split React/Konva vendor chunks after removing the stale generated Vite config that shadowed source configuration.
+- Verification PASS: demo `npm ci`, strict unused TypeScript check, production build, demo build without the prior chunk-size warning, and demo authenticated-independent Chromium smoke `2/2` at portrait/landscape.
+- Final Frontend regression PASS: Vitest `70/70`, lint, i18n parity `440`, production bundle gate, and combined Chromium E2E `7/7`.
+- No Backend, API, database, migration, seed, scoring or gameplay behavior changed.
+
 # 2026-08-15 Team V2 score caption removal
 
 - Frontend-only: removed the visible localized `Total score` caption from the centered V2 score card while preserving its numeric value, points unit and accessible label.

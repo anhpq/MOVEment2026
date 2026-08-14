@@ -78,7 +78,6 @@ export default function Movement2026({ onStationClick, onSettings, onLeaderboard
       <section className="score-card" aria-label="Tổng điểm 11">
         <div>
           <div className="score-line"><strong>11</strong><span>PTS</span></div>
-          <div className="score-label">TỔNG ĐIỂM</div>
         </div>
       </section>
 

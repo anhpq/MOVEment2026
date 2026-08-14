@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 executable visual reference
+
+- `demo/movement2026-react-konva` is the buildable React/TypeScript/Konva reference package. Its source, configuration and package lock are versioned; dependencies and generated build/compiler output are not.
+- Legacy v4 demo source remains as historical provenance, while the retired bitmap reference is removed.
+
 ## 2026-08-15 Team V2 compact score card
 
 - The centered Team V2 score card displays only the authoritative numeric score and localized points unit. The visible `Total score` caption is omitted while its accessible label remains available.

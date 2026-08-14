@@ -1,5 +1,14 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Demo hygiene and dead score CSS cleanup
+
+- The legacy HTML/React v4 reference remains for provenance, while `demo/movement2026-react-konva` is committed as the independently buildable TypeScript/Konva reference package with its own reproducible lockfile.
+- Generated demo dependencies, build output, logs, TypeScript build info and emitted Vite config files are excluded. The retired `reference.png` is removed and the demo documentation routes contributors to the executable reference.
+- All demo variants now omit the visible total-score caption, and production removes every dead `.team-v2-score small` selector left after that element was retired.
+- Removed a stale emitted `vite.config.js` that shadowed the TypeScript config. The active Vite 8 config now separates app (`11.50 kB`), React (`178.59 kB`) and Konva (`317.37 kB`) chunks without the previous `>500 kB` warning.
+- Demo responsive smoke PASS `2/2` at `390x844` and `844x390`: the shell fits the viewport, all buttons are at least `44px`, the caption is absent, Legend opens and the landscape footer/QR remains fully visible.
+- Final regression PASS: production Vitest `70/70`, lint, i18n parity `440`, production/demo builds, and combined Chromium E2E `7/7` (five authenticated Team V2 cases plus two standalone demo cases).
+
 ## 2026-08-15 Score caption removal
 
 - The visible `Total score` / `Tổng điểm` caption is removed from the centered Team V2 score card; the authoritative numeric score and localized points unit remain unchanged.

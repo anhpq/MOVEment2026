@@ -375,18 +375,6 @@
   letter-spacing: 0.04em;
 }
 
-.team-v2-score small {
-  grid-column: 1 / -1;
-  color: var(--team-v2-muted);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  text-align: center;
-  text-shadow: none;
-  text-transform: uppercase;
-}
-
 .team-v2-fullscreen-button,
 .team-v2-settings-button,
 .team-v2-icon-button {
@@ -923,7 +911,6 @@
 }
 .team-v2-score strong { font-family: "Oxanium", Aptos, sans-serif; color: #64f29a; }
 .team-v2-score span { color: #88efaa; font-family: "Oxanium", Aptos, sans-serif; }
-.team-v2-score small { font-family: "Space Grotesk", Aptos, sans-serif; color: #dffcf1; }
 
 .team-v2-settings-button {
   border: 2px solid #76efff;
@@ -1016,7 +1003,6 @@
   .team-v2-event-brand { width: clamp(240px, 44vw, 410px); height: 38px; padding: 4px 26px; font-size: clamp(16px, 3vw, 24px); }
   .team-v2-score { min-width: 132px; padding: 3px 14px 4px; }
   .team-v2-score strong { font-size: 25px; }
-  .team-v2-score small { font-size: 7px; }
   .team-v2-legend-control { top: 90px; width: min(82vw, 720px); }
   .team-v2-legend-toggle { min-height: 32px; padding-block: 4px; font-size: 9px; }
   .team-v2-marker-legend { padding: 6px 10px; }
@@ -1396,11 +1382,6 @@
   font-size: clamp(30px, 4vw, 44px);
 }
 
-.team-v2-score small {
-  font-size: 10px;
-  color: #d9f7f4;
-}
-
 .team-v2-bottom {
   --team-v2-footer-height: 154px;
   top: auto;
@@ -1540,10 +1521,6 @@
 
   .team-v2-score strong {
     font-size: clamp(25px, 7vw, 32px);
-  }
-
-  .team-v2-score small {
-    font-size: 8px;
   }
 
   .team-v2-bottom {
