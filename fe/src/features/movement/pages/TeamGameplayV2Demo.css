@@ -152,6 +152,11 @@
   box-shadow: 0 0 15px rgba(74, 211, 255, .16);
   color: #bdf5ff;
   font-size: clamp(21px, 4.2vw, 28px);
+  line-height: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  isolation: isolate;
 }
 .team-v2-demo-header .team-v2-settings-button::before {
   content: "";
@@ -160,12 +165,25 @@
   border-radius: 50%;
   background: radial-gradient(circle at 50% 45%, #09141b, #010306 73%);
   box-shadow: inset 0 0 16px rgba(57, 171, 230, .12);
+  pointer-events: none;
+}
+.team-v2-demo-header .team-v2-settings-button .anticon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  line-height: 0;
+  transform: none;
 }
 .team-v2-demo-header .team-v2-settings-button svg {
   position: relative;
   z-index: 1;
   width: 52% !important;
   height: 52% !important;
+  display: block;
+  margin: 0;
   color: #bdf5ff;
   filter: drop-shadow(0 0 5px rgba(95, 224, 255, .42));
 }
@@ -205,9 +223,12 @@
   align-items: center;
   gap: 8px;
   padding: 6px 13px;
-  border: 1px solid rgba(118, 239, 255, .72);
-  clip-path: polygon(8% 0, 92% 0, 100% 22%, 100% 78%, 92% 100%, 8% 100%, 0 78%, 0 22%);
-  background: rgba(2, 9, 17, .96);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  clip-path: none;
+  background:
+    linear-gradient(rgba(2, 10, 20, .96), rgba(2, 10, 20, .96)) padding-box,
+    linear-gradient(115deg, #74efff 0%, #2bb7ff 36%, #8654ff 70%, #ff47cd 100%) border-box;
   color: #dffcff;
   font: 700 11px/1 "Space Grotesk", Aptos, sans-serif;
   letter-spacing: .06em;
@@ -227,20 +248,25 @@
   gap: 8px;
   margin-top: 7px;
   padding: 10px 16px;
-  border: 1px solid rgba(118, 239, 255, .54);
-  clip-path: polygon(2.5% 0, 97.5% 0, 100% 23%, 100% 77%, 97.5% 100%, 2.5% 100%, 0 77%, 0 23%);
-  background: linear-gradient(105deg, rgba(3, 15, 25, .98), rgba(2, 7, 14, .98));
+  border: 1px solid transparent;
+  border-radius: 10px;
+  clip-path: none;
+  background:
+    linear-gradient(rgba(2, 9, 18, .98), rgba(2, 9, 18, .98)) padding-box,
+    linear-gradient(115deg, #74efff 0%, #2bb7ff 36%, #8654ff 70%, #ff47cd 100%) border-box;
   box-shadow: 0 0 16px rgba(47, 228, 240, .18);
   pointer-events: auto;
 }
 
 .team-v2-marker-legend > span { display: flex; min-width: 0; align-items: center; justify-content: center; gap: 8px; color: #76efff; font-size: clamp(9px, 1.4vw, 12px); font-weight: 700; text-transform: uppercase; white-space: nowrap; }
-.team-v2-marker-legend i { display: inline-grid; width: 17px; height: 22px; flex: 0 0 auto; place-items: center; border: 2px solid currentColor; border-radius: 50% 50% 50% 0; box-shadow: 0 0 8px currentColor; transform: rotate(-45deg); }
-.team-v2-marker-legend i::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.team-v2-marker-legend i { display: inline-grid; width: 18px; height: 25px; flex: 0 0 auto; place-items: center; border: 0; border-radius: 0; clip-path: polygon(50% 100%, 17% 65%, 10% 51%, 10% 38%, 15% 23%, 27% 10%, 39% 4%, 50% 2%, 61% 4%, 73% 10%, 85% 23%, 90% 38%, 90% 51%, 83% 65%); background: linear-gradient(155deg, #92f7ff, #4bdcff 46%, #6e82ff 76%, #b04cff); box-shadow: 0 0 8px currentColor; transform: none; }
+.team-v2-marker-legend i::after { content: none; }
 .team-v2-marker-legend .is-active { color: #ffd45b; }
+.team-v2-marker-legend .is-active i { background: linear-gradient(155deg, #fff8b7, #ffd45b 42%, #ffad2f 70%, #ff67b3); }
 .team-v2-marker-legend .is-completed { color: #f1f5ff; opacity: .78; }
+.team-v2-marker-legend .is-completed i { background: linear-gradient(155deg, #fff, #cdd7e9 58%, #a89cc7); }
 .team-v2-marker-legend .is-locked { color: #8d83ac; opacity: .78; }
-.team-v2-marker-legend .is-locked i { font-size: 10px; transform: none; }
+.team-v2-marker-legend .is-locked i { background: linear-gradient(155deg, #8194aa, #665f86 50%, #854da8); font-size: 9px; transform: none; }
 .team-v2-marker-legend .is-locked i::after { content: none; }
 
 .team-v2-demo-footer {
@@ -273,6 +299,7 @@
   background: linear-gradient(115deg, #74efff 0%, #2bb7ff 36%, #8654ff 70%, #ff47cd 100%);
   box-shadow: 0 0 8px rgba(58, 206, 255, .18), 0 2px 8px rgba(147, 67, 255, .14);
   pointer-events: auto;
+  isolation: isolate;
 }
 
 .team-v2-demo-footer .team-v2-footer-panel::before {
@@ -292,6 +319,8 @@
   left: 7%;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(99, 220, 255, .35), transparent 40%, rgba(167, 65, 255, .42), transparent);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .team-v2-demo-footer .team-v2-leaderboard-chip { left: 0; padding: 2px; clip-path: polygon(4% 0, 79% 0, 84% 9%, 100% 9%, 100% 91%, 83% 91%, 78% 100%, 4% 100%, 0 79%, 0 21%); }
@@ -368,6 +397,12 @@
     radial-gradient(ellipse at 50% 0%, rgba(42, 208, 255, .13), transparent 38%),
     rgba(0, 3, 8, var(--team-v2-overlay-opacity, .95));
   backdrop-filter: blur(8px);
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.45;
+}
+
+.team-v2-overlay-layer small {
+  font-size: .86em;
 }
 
 .team-v2-overlay,
@@ -447,6 +482,38 @@
 
 .team-v2-team-panel__header { display: flex; align-items: center; justify-content: space-between; }
 .team-v2-team-panel__header button { position: static; flex: 0 0 44px; }
+
+.team-v2-leaderboard .team-v2-rank-list {
+  gap: 10px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+}
+
+.team-v2-leaderboard .team-v2-rank-row {
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  gap: 12px;
+  min-height: 58px;
+  padding: 12px 14px;
+}
+
+.team-v2-leaderboard .team-v2-rank-number {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+}
+
+.team-v2-leaderboard .team-v2-rank-team strong {
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.2;
+}
+
+.team-v2-leaderboard .team-v2-rank-team small {
+  margin-top: 3px;
+  font-size: clamp(13px, 1.5vw, 15px);
+}
+
+.team-v2-leaderboard .team-v2-rank-score {
+  font-size: clamp(19px, 2.3vw, 23px);
+}
 
 @media (orientation: landscape) and (max-height: 500px) {
   .team-v2-overlay-layer { padding: max(4px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) max(4px, env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }

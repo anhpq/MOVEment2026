@@ -1,3 +1,9 @@
+# 2026-08-15 Team V2 Legend, Settings and complete Leaderboard
+
+- Frontend-only: aligned Legend and Settings framing with the React/Konva demo, centered the Settings icon, made footer underline stacking explicit, increased overlay typography, and removed the V2 Top 5 projection so every authoritative Leaderboard row renders with its real rank.
+- Verification PASS: focused Frontend Vitest `19/19`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `4/4` at the three responsive viewports plus computed-style/all-row Leaderboard coverage.
+- No Backend, API, schema, migration, seed, ranking order or tie-break changed.
+
 # 2026-08-14 Team V2 demo marker/header/footer fidelity
 
 - Frontend-only: aligned the production React/Konva marker, header and footer geometry with `demo/Movement2026.jsx` and `demo/styles.css` while preserving the real map, data and callbacks.

@@ -1,5 +1,10 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 complete Leaderboard and HUD detail refinement
+
+- Team V2 Leaderboard shows every Team returned by the authoritative Backend response in Backend rank order and preserves real ranks; the full-screen overlay scrolls internally when the list exceeds the viewport.
+- Legend and Settings follow the standalone React/Konva rounded-gradient framing, overlay information uses slightly larger responsive typography, and footer underline decoration never intercepts pointer input.
+
 ## 2026-08-13 Team V2 demo v4 full-screen overlays
 
 - Demo v4 controls the Team V2 presentation. The map is visible below the

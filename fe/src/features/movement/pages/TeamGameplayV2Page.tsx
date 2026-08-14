@@ -685,8 +685,8 @@ function LeaderboardOverlay({
   const [isLoading, setIsLoading] = useState(false);
   const mountedRef = useRef(false);
   const visibleRows = useMemo(
-    () => getTeamV2LeaderboardRows(rows, activeTeam?.id),
-    [activeTeam?.id, rows],
+    () => getTeamV2LeaderboardRows(rows),
+    [rows],
   );
 
   useEffect(() => {

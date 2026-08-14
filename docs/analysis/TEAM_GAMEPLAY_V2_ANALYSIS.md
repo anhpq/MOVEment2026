@@ -1,5 +1,12 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Legend, Settings and complete Leaderboard refinement
+
+- Legend toggle/popover now uses the rounded cyan-to-magenta border and polygon marker swatches from the standalone React/Konva demo; the Settings button uses the same gradient ring and explicitly centers the Ant Design icon.
+- Team V2 Leaderboard renders every row from the authoritative Backend response, preserves each real rank, scrolls inside the full-screen overlay, and uses larger Team/rank/score typography. This supersedes the previous Top 5 + display-rank-6 projection.
+- Footer panel underline pseudo-elements have explicit stacking and `pointer-events: none`; overlay information typography is one responsive step larger without changing controls or data.
+- Verification PASS: focused Vitest `19/19`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `4/4`, including all-row response parity, Settings icon centering, Legend state count, footer pseudo-element computed styles and typography minimums.
+
 ## 2026-08-14 Demo v4 marker/header/footer fidelity pass
 
 - Replaced the rounded Team V2 pin with the demo's slender double-outline Konva pin, preserved the 44px touch target, and matched the active whole-marker heartbeat with circular aura plus three elliptical radar rings.

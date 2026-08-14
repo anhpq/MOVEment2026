@@ -6,6 +6,7 @@
 - [x] Expand the Konva map to the full viewport; overlay header, legend and footer rather than reserving three map regions.
 - [x] Apply demo v4 presentation to all V2 overlays as full-screen cyberpunk panels while retaining their existing behavior.
 - [x] Match the demo's slender double-outline marker, clipped header, footer wings and central multi-ring QR geometry; verify authenticated Chromium at three target viewports.
+- [x] Align Legend/Settings detail framing, center the Settings icon, harden footer underline stacking, increase overlay typography, and show every authoritative Leaderboard row with its real rank.
 - [ ] Re-run BrowserStack Safari macOS/iPhone smoke after network permits outbound `hub-aps.browserstack.com`.
 
 ## 2026-08-12 Final, Station switching, and Team V2 mobile

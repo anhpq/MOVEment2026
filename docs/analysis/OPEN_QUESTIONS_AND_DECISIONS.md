@@ -20,6 +20,13 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-15: Supersede giới hạn Leaderboard overlay của Team Gameplay V2 từ
+  Top 5 + một dòng Team hiện tại có rank hiển thị giả `6`. Overlay `/team/v2`
+  phải hiển thị toàn bộ Team từ response Leaderboard authoritative, giữ nguyên
+  rank thật và thứ tự Backend; danh sách scroll nội bộ khi dài. Đồng thời tăng
+  nhẹ typography thông tin trong overlay và đồng bộ Legend/Settings frame theo
+  demo React/Konva mà không thay đổi Backend ranking, tie-break hoặc dữ liệu.
+
 - 2026-08-13: Supersede Team Gameplay V2 presentation theo `demo/` v4. Konva
   map phủ toàn bộ `100dvh` và hiển thị xuyên dưới HUD; Header, score, legend và
   footer chỉ là overlay trong suốt/gradient nhẹ, không cắt viewport map và
