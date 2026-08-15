@@ -1,3 +1,21 @@
+# 2026-08-15 Team V2 dead-code and demo runtime audit
+
+- Frontend/demo-only cleanup removed one unreferenced 339-line Konva marker
+  component plus retired V2 CSS selectors for superseded previews, controls,
+  rails, counters, and Legend generations. Duplicate font-face rules and the
+  orphaned Legend keyframes were removed; the production Team V2 CSS asset
+  decreased from `70.14 kB` to `60.30 kB` raw.
+- The React/Konva demo no longer emits duplicate resize state or remounts its
+  Stage on rotation/font readiness, and its compact HUD reference was refreshed.
+- Static audit PASS: no remaining Team V2 CSS class without a Source Code
+  consumer, no additional file-level suspect, no tracked generated artifact, and
+  no tracked zero-byte file. Legacy v4 demo source remains historical provenance.
+- Verification PASS: Frontend Vitest `69/69`, lint, i18n parity `439`, production
+  build/bundle gate, demo TypeScript/Vite build, authenticated Chromium plus demo
+  E2E `8/8`, and `git diff --check`.
+- No Backend, API, schema, migration, seed, gameplay, scoring, QR, auth, or
+  ranking behavior changed. Safari/WebKit was not run for this cleanup.
+
 # 2026-08-15 Team V2 compact HUD and Station Detail actions
 
 - Frontend-only: changed Legend to intrinsic localized width with a compact

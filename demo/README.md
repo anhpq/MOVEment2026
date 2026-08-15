@@ -33,4 +33,5 @@ demo/movement2026-react-konva/
 - Marker đang chơi có double-heartbeat rõ hơn + aura/radar pulse.
 - Bỏ toàn bộ dotted route lines giữa các trạm.
 - Bỏ `footer-sparkle`.
-- Chú thích thu gọn thành nút `i CHÚ THÍCH`; chỉ bung legend khi bấm.
+- Reference React/Konva hiện dùng nút `i` lowercase compact; chỉ bung legend
+  content-fit một cột khi bấm.

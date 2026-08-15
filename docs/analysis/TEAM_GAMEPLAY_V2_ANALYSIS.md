@@ -1,5 +1,23 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Dead-code and demo runtime cleanup
+
+- Removed the unreferenced `TeamV2NeonMapMarker` implementation; Graphify showed
+  no consumer beyond its own file, and repository search confirmed no imports.
+- Removed retired Team V2 CSS generations for Station preview, header
+  Fullscreen, event/footer rails, team/station counters, and the pre-demo Legend.
+  A token-aware selector audit reports no remaining Team V2 class without a
+  Source Code consumer. Duplicate font-face declarations and dead keyframes were
+  also removed from the legacy stylesheet layer; the production Team V2 CSS
+  asset decreased from `70.14 kB` to `60.30 kB` raw.
+- The standalone React/Konva demo now rounds observed geometry and skips equal
+  resize updates, relies on ResizeObserver/browser resize for rotation, redraws
+  after font readiness without remounting the Stage, and matches the compact
+  score/Settings/lowercase-`i` Legend presentation.
+- Legacy v4 files remain intentionally for provenance. No tracked generated
+  output, dependency directory, log, TypeScript build info, or zero-byte file was
+  found.
+
 ## 2026-08-15 Compact HUD controls and Station Detail actions
 
 - Legend popover now sizes to its longest localized row instead of a fixed

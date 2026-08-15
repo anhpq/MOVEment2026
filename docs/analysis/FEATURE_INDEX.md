@@ -89,7 +89,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `STATION_MAP_ANALYSIS.md` | Station map markers, position persistence, and WebP delivery. |
 | `STATION_MEDIA_GALLERY_ANALYSIS.md` | Ordered Station image URLs, Admin management, Player gallery, and action layout. |
 | `STATION_QR_AND_SCORING_ANALYSIS.md` | Station QR auto-submit, checkout, and scoring. |
-| `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, dedicated persistent scanner, QR badge, V2-owned Station Detail/gallery overlays, responsive HUD, and V2 navigation. |
+| `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, dedicated persistent scanner, QR badge, V2-owned Station Detail/Video overlay, responsive HUD, and V2 navigation. |
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
 | `TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md` | Lean Team APIs, adaptive polling, error resilience, concurrency hardening, and Team bundle/data budgets. |
 | `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
