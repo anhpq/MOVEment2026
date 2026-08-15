@@ -1,5 +1,11 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 Settings logout removal
+
+- `/team/v2` Settings no longer renders a Logout action. Automatic session
+  expiry and auth-failure cleanup remain active. Team/Admin header behavior on
+  routes outside the full-screen V2 experience is unchanged.
+
 ## 2026-08-15 Team V2 and React/Konva demo cleanup
 
 - Removed an unreferenced legacy Konva marker component and all CSS rules whose

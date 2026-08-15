@@ -1,7 +1,6 @@
 import {
   CloseOutlined,
   CustomerServiceOutlined,
-  LogoutOutlined,
   SettingOutlined,
   TeamOutlined,
   TrophyFilled,
@@ -18,7 +17,6 @@ import {
   ApiError,
   cancelPlayerStation,
   isAuthFailure,
-  logout as logoutApi,
   submitPlayerQrAction,
   submitStationScore,
   type LeaderboardEntryResponse,
@@ -1191,16 +1189,6 @@ export function TeamGameplayV2Page() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await logoutApi();
-    } catch {
-      // Keep logout available offline; backend session validation remains authoritative.
-    }
-    clearSession();
-    navigate("/login");
-  };
-
   const openSupport = () => {
     const supportWindow = window.open(ZALO_SUPPORT_URL, "_blank", "noopener,noreferrer");
     if (supportWindow) {
@@ -1456,9 +1444,6 @@ export function TeamGameplayV2Page() {
               </div>
               <Button icon={<CustomerServiceOutlined />} onClick={openSupport}>
                 {t("teamV2.zaloSupport")}
-              </Button>
-              <Button danger icon={<LogoutOutlined />} onClick={handleLogout}>
-                {t("auth.logout")}
               </Button>
             </div>
           </section>

@@ -1,5 +1,14 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Settings logout removal
+
+- Removed the visible Logout action from Team V2 Settings and deleted its
+  V2-only icon/API handler path.
+- Session-expiry and unauthorized-session cleanup remain unchanged; AppFrame
+  Team/Admin header logout behavior outside `/team/v2` remains unchanged.
+- Verification PASS: Frontend Vitest `69/69`, lint, i18n parity `439`, production
+  build/bundle gate, and authenticated Chromium/demo E2E `8/8`.
+
 ## 2026-08-15 Dead-code and demo runtime cleanup
 
 - Removed the unreferenced `TeamV2NeonMapMarker` implementation; Graphify showed
@@ -710,7 +719,7 @@ This feature covers:
 - fullscreen Team Gameplay V2 HUD and responsive layout;
 - shared map canvas reuse with the existing Suoi Tien WebP map, station
   coordinates, pan/zoom, and marker state;
-- Team-only settings, opacity, language, Zalo support, and logout;
+- Team-only settings, opacity, language, and Zalo support;
 - unified Team Station QR action endpoint for camera and manual QR input;
 - V2 leaderboard and V2-owned Station Detail overlays;
 - VI/EN copy and a fixed V2 palette isolated from Team Color.
@@ -814,14 +823,13 @@ progress, QR, or Leaderboard HUD controls.
 | Leaderboard | `TrophyFilled` |
 | Close overlay | `CloseOutlined` |
 | Zalo support | `CustomerServiceOutlined` |
-| Logout | `LogoutOutlined` |
 | Execute/manual QR action | `CameraOutlined` |
 | Station score | `StarFilled` |
 | Teams playing | `TeamOutlined` |
 
 All primary gameplay targets remain at least 44px. Icons inherit the fixed V2
-accent or semantic color from their container; danger/logout retains Ant Design
-danger semantics.
+accent or semantic color from their container; danger semantics remain available
+for gameplay actions where required.
 
 ### Overlay Layout Policy
 
@@ -884,8 +892,8 @@ danger semantics.
     entry after checkout using the existing Team session.
 11. Polling: dashboard, Stations, progress, and playing counts poll every 5s
     only while visible and avoid overlapping requests.
-12. Release hygiene: keep logout for this task and record a backlog review to
-    revisit hiding login/logout before 2026-08-20.
+12. Release hygiene: the 2026-08-15 decision supersedes the visible Team V2
+    Settings logout action; session expiry and auth-failure cleanup remain.
 
 ### Reference HUD Refinement Review Rounds
 

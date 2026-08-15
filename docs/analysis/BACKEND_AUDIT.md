@@ -1,3 +1,14 @@
+# 2026-08-15 Team V2 Settings logout removal
+
+- Frontend-only: removed the visible Logout button, `LogoutOutlined` import, and
+  V2-only explicit logout API handler from Team V2 Settings.
+- Automatic session expiry, HTTP `401` cleanup, Backend session authority, and
+  Team/Admin AppFrame headers outside `/team/v2` remain unchanged.
+- Verification PASS: Frontend Vitest `69/69`, lint, i18n parity `439`, production
+  build/bundle gate, and authenticated Chromium/demo E2E `8/8`.
+- No Backend, API contract, schema, migration, seed, QR, gameplay, or auth policy
+  changed.
+
 # 2026-08-15 Team V2 dead-code and demo runtime audit
 
 - Frontend/demo-only cleanup removed one unreferenced 339-line Konva marker

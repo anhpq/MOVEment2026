@@ -1,5 +1,12 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 Settings logout removal
+
+- [x] Remove the Logout action and its V2-only explicit API handler from Settings.
+- [x] Preserve automatic session expiry and unauthorized-session cleanup.
+- [x] Leave Team/Admin AppFrame headers outside `/team/v2` unchanged.
+- [x] Pass Frontend Vitest, lint, i18n, build/bundle and Chromium E2E `8/8`.
+
 ## 2026-08-15 Team V2 dead-code and demo cleanup
 
 - [x] Remove the unreferenced legacy Konva marker component.
