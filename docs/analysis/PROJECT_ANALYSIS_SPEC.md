@@ -1,5 +1,15 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 compact HUD and Detail actions
+
+- Legend keeps a 44px native target but shows a smaller lowercase `i`; its
+  expanded panel uses intrinsic localized content width in VI and EN.
+- The centered score frame is compact around score/points, and the Settings
+  ring is visually smaller without reducing accessibility or changing score.
+- V2 Station Detail shows one branded YouTube Video action and no Image Gallery.
+  Available Stations use a QR-first Start CTA that opens the existing V2
+  scanner. Settings no longer advertises V1; V1 routes/gallery remain intact.
+
 ## 2026-08-15 Team V2 executable visual reference
 
 - `demo/movement2026-react-konva` is the buildable React/TypeScript/Konva reference package. Its source, configuration and package lock are versioned; dependencies and generated build/compiler output are not.

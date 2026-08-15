@@ -1,3 +1,18 @@
+# 2026-08-15 Team V2 compact HUD and Station Detail actions
+
+- Frontend-only: changed Legend to intrinsic localized width with a compact
+  lowercase `i`, tightened score geometry, and reduced the visible Settings ring
+  while retaining 44px native hit targets.
+- Removed the V2-only Image Gallery component/action and legacy-interface button.
+  Video now uses YouTube brand treatment; Start uses a QR-first CTA while still
+  calling the existing V2 scanner `START` intent. Shared V1 gallery/routes remain.
+- Verification PASS: focused Detail Vitest `7/7`, full Frontend Vitest `69/69`,
+  lint, i18n parity `439`, production build/bundle gate, `git diff --check`, and
+  authenticated Chromium E2E `8/8` at `390x844`, `844x390`, and `1024x768`.
+- Safari/WebKit was not run for this patch; no Safari PASS is inferred.
+- No Backend, API, schema, migration, seed, scoring, QR payload or gameplay
+  Business Rule changed.
+
 # 2026-08-15 Team V2 demo and dead-style audit
 
 - Frontend/demo-only: added the standalone TypeScript/Konva reference package with a reproducible lockfile and local generated-artifact ignores; retained legacy v4 sources for provenance and removed the retired bitmap reference.

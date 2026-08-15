@@ -1,5 +1,19 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Compact HUD controls and Station Detail actions
+
+- Legend popover now sizes to its longest localized row instead of a fixed
+  panel width. The visible Legend control is a compact lowercase `i`, while its
+  native button keeps a 44px interaction target.
+- The score frame is tightened around the numeric score and points unit in both
+  portrait and low-height landscape. The Settings ring is visually smaller
+  while preserving its accessible hit area and centered icon.
+- V2 Station Detail no longer renders Image Gallery. Video remains visible as a
+  branded YouTube action, and an available Station uses a prominent QR-first
+  start action that keeps the existing `START` scanner callback.
+- V2 Settings no longer advertises the legacy interface. V1 routes and media
+  galleries outside `/team/v2` remain unchanged.
+
 ## 2026-08-15 Demo hygiene and dead score CSS cleanup
 
 - The legacy HTML/React v4 reference remains for provenance, while `demo/movement2026-react-konva` is committed as the independently buildable TypeScript/Konva reference package with its own reproducible lockfile.
@@ -399,8 +413,8 @@
 - `/team/v2` is now the default destination for Team username login, Team QR
   login, automatic URL QR login, authenticated login-page recovery, forbidden
   route recovery, and unknown-route fallback.
-- V1 remains available at `/stations` and `/stations/map`; V2 Settings retains
-  the explicit return-to-V1 action during the trial.
+- V1 remains available at `/stations` and `/stations/map`; the 2026-08-15
+  decision removes the explicit return-to-V1 action from V2 Settings.
 - Admin redirects and all authentication, QR, Station, scoring, and Final
   Business Rules remain unchanged.
 - Frontend container verification passed: Vitest `61/61`, i18n parity `417`,
@@ -545,10 +559,9 @@
 
 ## 2026-07-31 Station marker visibility and media affordances
 
-- Team V2 always renders the YouTube and image-gallery controls in Station
-  Detail. When their required media is unavailable, the control remains
-  readable but disabled with a muted silver-neon treatment; no media action is
-  invoked.
+- This dated media rule is superseded on 2026-08-15: Team V2 Detail renders the
+  branded YouTube action only. Missing video remains readable and disabled;
+  Image Gallery remains available outside V2 Detail.
 - Completed and Locked Stations retain their marker, label, and connector.
   Both use the dedicated silver-purple marker palette; Completed is dimmed and
   uses a check, while Locked stays fully opaque with a lock badge. Locked state
@@ -679,7 +692,7 @@ This feature covers:
 - fullscreen Team Gameplay V2 HUD and responsive layout;
 - shared map canvas reuse with the existing Suoi Tien WebP map, station
   coordinates, pan/zoom, and marker state;
-- Team-only settings, opacity, language, Zalo, legacy UI return, and logout;
+- Team-only settings, opacity, language, Zalo support, and logout;
 - unified Team Station QR action endpoint for camera and manual QR input;
 - V2 leaderboard and V2-owned Station Detail overlays;
 - VI/EN copy and a fixed V2 palette isolated from Team Color.
@@ -783,7 +796,6 @@ progress, QR, or Leaderboard HUD controls.
 | Leaderboard | `TrophyFilled` |
 | Close overlay | `CloseOutlined` |
 | Zalo support | `CustomerServiceOutlined` |
-| Return to V1 | `ArrowLeftOutlined` |
 | Logout | `LogoutOutlined` |
 | Execute/manual QR action | `CameraOutlined` |
 | Station score | `StarFilled` |

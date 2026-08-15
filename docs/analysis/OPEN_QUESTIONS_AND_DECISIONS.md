@@ -20,6 +20,14 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-15: Supersede media/navigation presentation trong Team Gameplay V2.
+  Station Detail của `/team/v2` chỉ giữ action Video theo YouTube brand treatment;
+  không còn hiển thị action Xem hình ảnh hoặc gallery trong V2 Detail. Gallery ở
+  V1/List/Map và dữ liệu media Backend không đổi. Action bắt đầu Station vẫn mở
+  V2 scanner với intent `START`, nhưng dùng QR-first presentation nổi bật hơn.
+  Settings của `/team/v2` không còn hiển thị nút quay về giao diện V1; các route
+  V1 `/stations` và `/stations/map` vẫn tồn tại và không bị thay đổi.
+
 - 2026-08-15: Team Gameplay V2 tăng typography thông tin trong toàn bộ overlay
   thêm `30%` so với baseline 2026-08-15 trước đó. Legend HUD thu thành một icon
   `i` tối thiểu `44x44px` ở cạnh trái; khi mở, bốn trạng thái xếp dọc bên trái.
@@ -61,8 +69,8 @@ Whenever a Business Rule changes:
 
 - 2026-08-03: Team Gameplay V2 trở thành giao diện mặc định sau Team username,
   Team QR và automatic URL QR Login. Team home/fallback redirect dùng
-  `/team/v2`; V1 vẫn được giữ tại `/stations` và `/stations/map` và V2 Settings
-  tiếp tục cung cấp lối quay lại V1 trong giai đoạn thử nghiệm.
+  `/team/v2`; V1 vẫn được giữ tại `/stations` và `/stations/map`. Quyết định
+  2026-08-15 supersede lối quay lại V1 trong V2 Settings.
 
 - 2026-07-31: Team V2 Detail dùng intrinsic content height, căn giữa viewport và
   chỉ giới hạn bằng available height để scroll khi cần; không ép full-height trên
@@ -596,9 +604,10 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Team Gameplay V2 HUD layout | Header V2 dùng clipped brand tab ở top-center và Settings ở top-right; Fullscreen nằm trong Settings. Settings cũng có control xoay ngang: browser hỗ trợ sẽ lock landscape sau khi thử fullscreen, browser/API không hỗ trợ (bao gồm Safari phù hợp) hiển thị hướng dẫn xoay thiết bị thủ công, không báo thành công giả. Không hiển thị Team identity block trên map HUD và luôn đặt total score ở chính giữa viewport. Fullscreen dùng browser Fullscreen API với Safari `webkit*` fallback; iPhone Safari không hỗ trợ fullscreen DOM phải hướng dẫn mở từ Home Screen ở standalone mode. Bottom HUD dùng ba vùng sci-fi độc lập: Leaderboard ở trái, QR CTA/pedestal nổi giữa, Team/progress ở phải, chỉ nối bằng rail cyan mảnh. Giữ product copy, safe-area, accessibility và gameplay behavior hiện có. |
 | Team Gameplay V2 QR badge | QR CTA trung tâm của `/team/v2` dùng inline SVG/CSS theo reference với static conic ring pink `#FF3FD8` → purple `#B06BFF` → cyan `#2FE4F0`, dark core và light QR glyph. SVG badge dùng toàn bộ diện tích control với `translateY(-5px)` ở mọi breakpoint; không có idle animation. |
 | Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
-| Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, media và action theo trạng thái; dùng V2-owned presentation/gallery và reuse shared data/API/mutation helpers. Không dùng `?from=team-v2`. |
+| Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, YouTube Video và action theo trạng thái; dùng V2-owned presentation và reuse shared data/API/mutation helpers. V2 Detail không sở hữu/render gallery. Không dùng `?from=team-v2`. |
 | Team Gameplay V2 Detail actions | `Available` mở V2 scanner để bắt đầu; `In Progress` có Complete và Cancel; `Finished` chỉ xem kết quả/media. Check-in, completion và cancel success đóng Detail về map V2. API rejection giữ V2 scanner mở theo scanner rule hiện hành. |
-| Team Gameplay V2 media/marker states | Detail luôn hiển thị nút YouTube và Xem hình ảnh; nút thiếu nội dung vẫn disabled nhưng phải đọc được bằng neon-muted styling. Map không render marker/label/connector của Station `COMPLETED`/`Finished`. Marker có `backendStatus === "LOCKED"` dùng silver-neon cho artwork, halo, label và connector. |
+| Team Gameplay V2 media/marker states | Detail chỉ hiển thị action Video theo YouTube brand treatment; khi không có YouTube hợp lệ, action vẫn hiện disabled và đọc được bằng neon-muted styling. V2 Detail không hiển thị action Xem hình ảnh/gallery; V1/List/Map gallery không đổi. Map không render marker/label/connector của Station `COMPLETED`/`Finished`. Marker có `backendStatus === "LOCKED"` dùng silver-neon cho artwork, halo, label và connector. |
+| Team Gameplay V2 Settings navigation | Settings không hiển thị nút quay lại giao diện V1. Các route V1 `/stations` và `/stations/map` vẫn tồn tại nhưng không được quảng bá trong V2 Settings. |
 | Team Gameplay V2 active QR context | Khi Team có Station `In Progress`, caption dưới QR hiển thị localized active status cùng Station code/name. Camera chỉ mở khi user bấm QR/Detail scan action; QR success/close/unmount cleanup scanner như hiện hành. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
 | Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |

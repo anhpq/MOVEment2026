@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 compact HUD and Detail actions
+
+- [x] Fit the expanded Legend panel to localized VI/EN content instead of a fixed width.
+- [x] Keep a 44px Legend target while rendering a smaller lowercase `i` control.
+- [x] Tighten score geometry and reduce the visible Settings ring in portrait and low-height landscape.
+- [x] Remove V2 Image Gallery and the V2 Settings return-to-V1 action without changing V1 routes/gallery.
+- [x] Brand the Video action as YouTube and redesign Start as a QR-first scanner CTA.
+- [x] Pass focused/full Vitest, lint, i18n, build/bundle, diff check, and authenticated Chromium E2E `8/8`.
+- [ ] Confirm the revised HUD and Detail controls on Safari macOS and a physical iPhone Safari.
+
 ## 2026-08-15 Team V2 demo and cleanup audit
 
 - [x] Commit the standalone React/TypeScript/Konva demo source, config and package lock.

@@ -1,5 +1,4 @@
 import {
-  ArrowLeftOutlined,
   CloseOutlined,
   CustomerServiceOutlined,
   LogoutOutlined,
@@ -1457,9 +1456,6 @@ export function TeamGameplayV2Page() {
               </div>
               <Button icon={<CustomerServiceOutlined />} onClick={openSupport}>
                 {t("teamV2.zaloSupport")}
-              </Button>
-              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/stations/map")}>
-                {t("teamV2.backToV1")}
               </Button>
               <Button danger icon={<LogoutOutlined />} onClick={handleLogout}>
                 {t("auth.logout")}
