@@ -1,5 +1,41 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 compact HUD and Detail actions
+
+- Legend keeps a 44px native target but shows a smaller lowercase `i`; its
+  expanded panel uses intrinsic localized content width in VI and EN.
+- The centered score frame is compact around score/points, and the Settings
+  ring is visually smaller without reducing accessibility or changing score.
+- V2 Station Detail shows one branded YouTube Video action and no Image Gallery.
+  Available Stations use a QR-first Start CTA that opens the existing V2
+  scanner. Settings no longer advertises V1; V1 routes/gallery remain intact.
+
+## 2026-08-15 Team V2 executable visual reference
+
+- `demo/movement2026-react-konva` is the buildable React/TypeScript/Konva reference package. Its source, configuration and package lock are versioned; dependencies and generated build/compiler output are not.
+- Legacy v4 demo source remains as historical provenance, while the retired bitmap reference is removed.
+
+## 2026-08-15 Team V2 compact score card
+
+- The centered Team V2 score card displays only the authoritative numeric score and localized points unit. The visible `Total score` caption is omitted while its accessible label remains available.
+
+## 2026-08-15 Team V2 expanded map zoom
+
+- Team V2 supports map zoom from `0.5x` to `8x` of its responsive base scale in portrait and landscape.
+- Mouse-wheel and trackpad deltas are normalized into bounded zoom factors; wheel and pinch preserve their focal map coordinate, while reset restores the centered base transform.
+- This interaction change does not alter map coordinates, Station state, gameplay, QR or Backend contracts.
+
+## 2026-08-15 Team V2 overlay typography and Legend placement
+
+- Team V2 overlays share semantic title/body/secondary font-size tokens; body information is 30% larger than the previous overlay baseline and equivalent semantic levels match across Team and Leaderboard panels.
+- Legend uses one 44x44 icon at the left edge and expands vertically on the left. Landscape keeps total score centered horizontally.
+- Marker pin and points label use the same exact two-color gradient pair for their semantic state.
+
+## 2026-08-15 Team V2 complete Leaderboard and HUD detail refinement
+
+- Team V2 Leaderboard shows every Team returned by the authoritative Backend response in Backend rank order and preserves real ranks; the full-screen overlay scrolls internally when the list exceeds the viewport.
+- Legend and Settings follow the standalone React/Konva rounded-gradient framing, overlay information uses slightly larger responsive typography, and footer underline decoration never intercepts pointer input.
+
 ## 2026-08-13 Team V2 demo v4 full-screen overlays
 
 - Demo v4 controls the Team V2 presentation. The map is visible below the

@@ -1,14 +1,10 @@
 import {App} from "antd";
 import {render, screen, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {describe, expect, it, vi} from "vitest";
+import {afterEach, describe, expect, it, vi} from "vitest";
 import i18n from "../i18n";
 import type {TeamStation} from "../types";
 import {TeamV2StationDetailOverlay} from "./TeamV2StationDetailOverlay";
-
-vi.mock("./TeamV2StationImageGallery", () => ({
-  TeamV2StationImageGallery: () => <button type="button">gallery</button>,
-}));
 
 const station: TeamStation = {
   id: "progress-1",
@@ -58,19 +54,42 @@ function renderDetail(
 }
 
 describe("TeamV2StationDetailOverlay", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("keeps an unavailable YouTube action visible and disabled", () => {
     renderDetail();
 
     expect(screen.getByRole("button", {name: i18n.t("common.watchVideo")})).toBeVisible();
     expect(screen.getByRole("button", {name: i18n.t("common.watchVideo")})).toBeDisabled();
-    expect(screen.getByRole("button", {name: "gallery"})).toBeVisible();
+    expect(document.querySelector(".team-v2-detail-gallery-button")).not.toBeInTheDocument();
+  });
+
+  it("opens an available video from the branded YouTube action", async () => {
+    const user = userEvent.setup();
+    const open = vi.spyOn(window, "open").mockReturnValue(null);
+    renderDetail({gameType: "ST", youtubeUrl: "https://www.youtube.com/watch?v=test"});
+
+    const videoAction = screen.getByRole("button", {name: i18n.t("common.watchVideo")});
+    expect(videoAction).toHaveClass("team-v2-detail-youtube-button");
+    await user.click(videoAction);
+
+    expect(open).toHaveBeenCalledWith(
+      "https://www.youtube.com/watch?v=test",
+      "_blank",
+      "noopener,noreferrer",
+    );
   });
 
   it("offers scan-to-start only for an available Station", async () => {
     const user = userEvent.setup();
     const {onRequestScan} = renderDetail();
 
-    await user.click(screen.getByRole("button", {name: i18n.t("teamV2.scanToStart")}));
+    const startAction = screen.getByRole("button", {name: i18n.t("teamV2.scanToStart")});
+    expect(startAction).toHaveClass("team-v2-detail-start-scan");
+    expect(startAction.querySelector(".anticon-qrcode")).toBeInTheDocument();
+    await user.click(startAction);
 
     expect(onRequestScan).toHaveBeenCalledWith("START");
     expect(screen.queryByRole("button", {name: i18n.t("stationDetail.completedButton")})).not.toBeInTheDocument();

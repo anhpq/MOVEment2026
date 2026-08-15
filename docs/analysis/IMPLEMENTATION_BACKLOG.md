@@ -1,11 +1,50 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 compact HUD and Detail actions
+
+- [x] Fit the expanded Legend panel to localized VI/EN content instead of a fixed width.
+- [x] Keep a 44px Legend target while rendering a smaller lowercase `i` control.
+- [x] Tighten score geometry and reduce the visible Settings ring in portrait and low-height landscape.
+- [x] Remove V2 Image Gallery and the V2 Settings return-to-V1 action without changing V1 routes/gallery.
+- [x] Brand the Video action as YouTube and redesign Start as a QR-first scanner CTA.
+- [x] Pass focused/full Vitest, lint, i18n, build/bundle, diff check, and authenticated Chromium E2E `8/8`.
+- [ ] Confirm the revised HUD and Detail controls on Safari macOS and a physical iPhone Safari.
+
+## 2026-08-15 Team V2 demo and cleanup audit
+
+- [x] Commit the standalone React/TypeScript/Konva demo source, config and package lock.
+- [x] Exclude demo dependencies, dist, logs, TypeScript build info and generated Vite config output.
+- [x] Remove the retired bitmap reference and route demo documentation to the executable reference.
+- [x] Remove dead score-caption CSS and synchronize all demo score cards.
+- [x] Remove the stale generated Vite config, split React/Konva chunks and eliminate the demo's `>500 kB` bundle warning.
+- [x] Fix low-height landscape overflow/footer clipping and enforce minimum `44px` demo controls.
+- [x] Pass reproducible install, build/typecheck and Chromium portrait/landscape demo smoke (`2/2`).
+- [x] Pass final production Vitest (`70/70`), lint, i18n, build/bundle and combined Chromium E2E (`7/7`).
+
+## 2026-08-15 Team V2 score caption removal
+
+- [x] Remove the visible `Total score` / `Tổng điểm` caption from the centered score card.
+- [x] Preserve the numeric score, points unit, accessible label and responsive centering.
+- [x] Pass Frontend lint, build/bundle and authenticated Chromium E2E (`5/5`) at portrait, landscape and desktop viewports.
+
+## 2026-08-15 Team V2 expanded map zoom
+
+- [x] Expand responsive map zoom from `0.8x..5x` to `0.5x..8x` in portrait and landscape.
+- [x] Normalize trackpad/mouse-wheel deltas while preserving the focal world coordinate for wheel and pinch.
+- [x] Accumulate repeated wheel input from the live Konva transform and commit React/culling state after wheel idle.
+- [x] Cover min/max clamps, focal stability, reset geometry, wheel behavior and frame scheduling with focused Vitest (`15/15`).
+- [x] Pass full Frontend Vitest (`70/70`), lint, i18n, build/bundle and authenticated Chromium E2E (`5/5`).
+- [ ] Confirm the wider zoom range and gesture feel on a physical iPhone Safari device.
+
 ## 2026-08-12 Team V2 demo visual port
 
 - [x] Port demo v4 HUD as React components and semantic marker appearance/animation as Konva while retaining the production map and behavior.
 - [x] Expand the Konva map to the full viewport; overlay header, legend and footer rather than reserving three map regions.
 - [x] Apply demo v4 presentation to all V2 overlays as full-screen cyberpunk panels while retaining their existing behavior.
 - [x] Match the demo's slender double-outline marker, clipped header, footer wings and central multi-ring QR geometry; verify authenticated Chromium at three target viewports.
+- [x] Align Legend/Settings detail framing, center the Settings icon, harden footer underline stacking, increase overlay typography, and show every authoritative Leaderboard row with its real rank.
+- [x] Increase overlay body typography by 30% with shared semantic type tokens; keep landscape score centered and move icon-only/vertical expanded Legend to the left edge.
+- [x] Use one exact two-color semantic gradient pair across each Konva marker pin and its points label.
 - [ ] Re-run BrowserStack Safari macOS/iPhone smoke after network permits outbound `hub-aps.browserstack.com`.
 
 ## 2026-08-12 Final, Station switching, and Team V2 mobile

@@ -14,23 +14,24 @@ function createRows(count = 10): LeaderboardEntryResponse[] {
 }
 
 describe("Team V2 leaderboard projection", () => {
-  it("shows only the first five rows when the active Team is already included", () => {
-    const visibleRows = getTeamV2LeaderboardRows(createRows(), "3");
+  it("shows every authoritative leaderboard row", () => {
+    const visibleRows = getTeamV2LeaderboardRows(createRows());
 
-    expect(visibleRows.map((row) => row.teamId)).toEqual([1, 2, 3, 4, 5]);
-    expect(visibleRows.map((row) => row.rank)).toEqual([1, 2, 3, 4, 5]);
+    expect(visibleRows.map((row) => row.teamId)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    expect(visibleRows.map((row) => row.rank)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
-  it("appends an out-of-top-five active Team with display rank six", () => {
+  it("keeps each Backend rank unchanged", () => {
     const rows = createRows();
-    const visibleRows = getTeamV2LeaderboardRows(rows, "9");
+    rows[8] = {...rows[8], rank: 27};
+    const visibleRows = getTeamV2LeaderboardRows(rows);
 
-    expect(visibleRows.map((row) => row.teamId)).toEqual([1, 2, 3, 4, 5, 9]);
-    expect(visibleRows.at(-1)?.rank).toBe(6);
-    expect(rows[8].rank).toBe(9);
+    expect(visibleRows[8].rank).toBe(27);
+    expect(rows[8].rank).toBe(27);
   });
 
-  it("keeps the top five when the active Team is absent", () => {
-    expect(getTeamV2LeaderboardRows(createRows(), "99")).toHaveLength(5);
+  it("returns a copy so UI projection cannot mutate the response array", () => {
+    const rows = createRows();
+    expect(getTeamV2LeaderboardRows(rows)).not.toBe(rows);
   });
 });

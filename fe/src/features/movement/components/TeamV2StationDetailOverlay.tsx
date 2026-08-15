@@ -3,6 +3,7 @@ import {
   CloseOutlined,
   FlagOutlined,
   PlayCircleFilled,
+  QrcodeOutlined,
   ReloadOutlined,
   StarFilled,
   TeamOutlined,
@@ -19,7 +20,6 @@ import {
   getStationDisplayCode,
   getStationEffectiveMaxPoints,
 } from "../utils";
-import {TeamV2StationImageGallery} from "./TeamV2StationImageGallery";
 import "./TeamV2StationDetailOverlay.css";
 
 export type TeamV2StationDetailOverlayProps = {
@@ -134,11 +134,6 @@ export function TeamV2StationDetailOverlay({
             onClick={openVideo}>
             {t("common.watchVideo")}
           </Button>
-          <TeamV2StationImageGallery
-            stationId={station.stationId}
-            imageCount={station.imageCount}
-            imageUrls={station.imageUrls}
-          />
         </div>
 
         <div className="team-v2-detail-actions">
@@ -146,7 +141,8 @@ export function TeamV2StationDetailOverlay({
             <Button
               type="primary"
               size="large"
-              icon={<PlayCircleFilled />}
+              className="team-v2-detail-start-scan"
+              icon={<QrcodeOutlined />}
               aria-label={t("teamV2.scanToStart")}
               onClick={() => onRequestScan("START")}>
               {t("teamV2.scanToStart")}

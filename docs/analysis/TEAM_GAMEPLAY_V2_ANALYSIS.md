@@ -1,5 +1,56 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Compact HUD controls and Station Detail actions
+
+- Legend popover now sizes to its longest localized row instead of a fixed
+  panel width. The visible Legend control is a compact lowercase `i`, while its
+  native button keeps a 44px interaction target.
+- The score frame is tightened around the numeric score and points unit in both
+  portrait and low-height landscape. The Settings ring is visually smaller
+  while preserving its accessible hit area and centered icon.
+- V2 Station Detail no longer renders Image Gallery. Video remains visible as a
+  branded YouTube action, and an available Station uses a prominent QR-first
+  start action that keeps the existing `START` scanner callback.
+- V2 Settings no longer advertises the legacy interface. V1 routes and media
+  galleries outside `/team/v2` remain unchanged.
+
+## 2026-08-15 Demo hygiene and dead score CSS cleanup
+
+- The legacy HTML/React v4 reference remains for provenance, while `demo/movement2026-react-konva` is committed as the independently buildable TypeScript/Konva reference package with its own reproducible lockfile.
+- Generated demo dependencies, build output, logs, TypeScript build info and emitted Vite config files are excluded. The retired `reference.png` is removed and the demo documentation routes contributors to the executable reference.
+- All demo variants now omit the visible total-score caption, and production removes every dead `.team-v2-score small` selector left after that element was retired.
+- Removed a stale emitted `vite.config.js` that shadowed the TypeScript config. The active Vite 8 config now separates app (`11.50 kB`), React (`178.59 kB`) and Konva (`317.37 kB`) chunks without the previous `>500 kB` warning.
+- Demo responsive smoke PASS `2/2` at `390x844` and `844x390`: the shell fits the viewport, all buttons are at least `44px`, the caption is absent, Legend opens and the landscape footer/QR remains fully visible.
+- Final regression PASS: production Vitest `70/70`, lint, i18n parity `440`, production/demo builds, and combined Chromium E2E `7/7` (five authenticated Team V2 cases plus two standalone demo cases).
+
+## 2026-08-15 Score caption removal
+
+- The visible `Total score` / `Tổng điểm` caption is removed from the centered Team V2 score card; the authoritative numeric score and localized points unit remain unchanged.
+- The score card retains its localized accessible name, centered HUD placement and responsive portrait/landscape geometry.
+- Verification PASS: Frontend lint, production build/bundle gate, and authenticated Chromium E2E `5/5` across `390x844`, `844x390`, and `1024x768`, including absence of the visible caption and presence of the accessible score label.
+
+## 2026-08-15 Expanded and normalized map zoom
+
+- Team V2 map zoom now spans `0.5x..8x` of the responsive base scale, superseding the previous `0.8x..5x` limits in both portrait and landscape.
+- Wheel zoom derives a bounded exponential factor from browser `deltaY`/`deltaMode`, keeping trackpads smooth while making conventional mouse-wheel steps more responsive. Wheel and pinch retain the same focal world coordinate through both zoom clamps; double-click/double-tap still resets to the exact centered base transform.
+- Fixed wheel accumulation by reading the live imperative transform and committing it to React after 120 ms of wheel inactivity, so repeated wheel frames continue from the latest scale and refresh marker culling once the gesture settles.
+- Verification PASS: full Frontend Vitest `70/70`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `5/5`, including exact `0.5x`, `8x`, and reset assertions at `844x390`.
+- This is Frontend presentation/interaction only; map coordinates, marker state, gameplay, QR, APIs and Backend behavior are unchanged.
+
+## 2026-08-15 Overlay type scale and left-side Legend
+
+- Overlay typography now uses shared semantic tokens across Settings, Team, Leaderboard, scanner, score and Station Detail: the common body baseline is exactly 30% above the preceding `15..17px` scale, while all overlay titles share the Leaderboard title token and all secondary text shares one secondary token.
+- Legend is a single accessible 44x44 `i` icon at the left edge. Opening it reveals the four marker states in one vertical left-side column. In low-height landscape the total score stays horizontally centered instead of yielding the center to Legend.
+- Every Konva marker pin and its points label share one exact two-color gradient pair per semantic state: cyan-purple default, gold-pink active, white-lavender completed and slate-purple locked. Multi-stop three/four-color edges were removed.
+- Authenticated Chromium E2E PASS `4/4`: portrait, landscape and desktop full-map geometry; landscape score center within 1px; icon-only Legend dimensions/left placement/vertical grid; overlay body >=19.5px; equal Team/Leaderboard title and body computed sizes.
+
+## 2026-08-15 Legend, Settings and complete Leaderboard refinement
+
+- Legend toggle/popover now uses the rounded cyan-to-magenta border and polygon marker swatches from the standalone React/Konva demo; the Settings button uses the same gradient ring and explicitly centers the Ant Design icon.
+- Team V2 Leaderboard renders every row from the authoritative Backend response, preserves each real rank, scrolls inside the full-screen overlay, and uses larger Team/rank/score typography. This supersedes the previous Top 5 + display-rank-6 projection.
+- Footer panel underline pseudo-elements have explicit stacking and `pointer-events: none`; overlay information typography is one responsive step larger without changing controls or data.
+- Verification PASS: focused Vitest `19/19`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `4/4`, including all-row response parity, Settings icon centering, Legend state count, footer pseudo-element computed styles and typography minimums.
+
 ## 2026-08-14 Demo v4 marker/header/footer fidelity pass
 
 - Replaced the rounded Team V2 pin with the demo's slender double-outline Konva pin, preserved the 44px touch target, and matched the active whole-marker heartbeat with circular aura plus three elliptical radar rings.
@@ -362,8 +413,8 @@
 - `/team/v2` is now the default destination for Team username login, Team QR
   login, automatic URL QR login, authenticated login-page recovery, forbidden
   route recovery, and unknown-route fallback.
-- V1 remains available at `/stations` and `/stations/map`; V2 Settings retains
-  the explicit return-to-V1 action during the trial.
+- V1 remains available at `/stations` and `/stations/map`; the 2026-08-15
+  decision removes the explicit return-to-V1 action from V2 Settings.
 - Admin redirects and all authentication, QR, Station, scoring, and Final
   Business Rules remain unchanged.
 - Frontend container verification passed: Vitest `61/61`, i18n parity `417`,
@@ -508,10 +559,9 @@
 
 ## 2026-07-31 Station marker visibility and media affordances
 
-- Team V2 always renders the YouTube and image-gallery controls in Station
-  Detail. When their required media is unavailable, the control remains
-  readable but disabled with a muted silver-neon treatment; no media action is
-  invoked.
+- This dated media rule is superseded on 2026-08-15: Team V2 Detail renders the
+  branded YouTube action only. Missing video remains readable and disabled;
+  Image Gallery remains available outside V2 Detail.
 - Completed and Locked Stations retain their marker, label, and connector.
   Both use the dedicated silver-purple marker palette; Completed is dimmed and
   uses a check, while Locked stays fully opaque with a lock badge. Locked state
@@ -642,7 +692,7 @@ This feature covers:
 - fullscreen Team Gameplay V2 HUD and responsive layout;
 - shared map canvas reuse with the existing Suoi Tien WebP map, station
   coordinates, pan/zoom, and marker state;
-- Team-only settings, opacity, language, Zalo, legacy UI return, and logout;
+- Team-only settings, opacity, language, Zalo support, and logout;
 - unified Team Station QR action endpoint for camera and manual QR input;
 - V2 leaderboard and V2-owned Station Detail overlays;
 - VI/EN copy and a fixed V2 palette isolated from Team Color.
@@ -746,7 +796,6 @@ progress, QR, or Leaderboard HUD controls.
 | Leaderboard | `TrophyFilled` |
 | Close overlay | `CloseOutlined` |
 | Zalo support | `CustomerServiceOutlined` |
-| Return to V1 | `ArrowLeftOutlined` |
 | Logout | `LogoutOutlined` |
 | Execute/manual QR action | `CameraOutlined` |
 | Station score | `StarFilled` |

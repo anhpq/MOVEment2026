@@ -1,5 +1,4 @@
 import {
-  ArrowLeftOutlined,
   CloseOutlined,
   CustomerServiceOutlined,
   LogoutOutlined,
@@ -44,6 +43,15 @@ import {
 } from "./teamV2FrameScheduler";
 import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
 import {
+  clampTeamV2MapScale as clampScale,
+  getTeamV2BaseMapScale as getBaseMapScale,
+  getTeamV2DefaultMapTransform as getDefaultMapTransform,
+  getTeamV2WheelZoomFactor,
+  scaleTeamV2MapAtPoint,
+  TEAM_V2_MAP_WORLD_HEIGHT as MAP_WORLD_HEIGHT,
+  TEAM_V2_MAP_WORLD_WIDTH as MAP_WORLD_WIDTH,
+} from "./teamV2MapTransform";
+import {
   getActiveFullscreenElement,
   isStandaloneDisplayMode,
   TEAM_V2_FULLSCREEN_CHANGE_EVENTS,
@@ -75,10 +83,6 @@ import "./TeamGameplayV2Demo.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
-const MAP_WORLD_WIDTH = 2048;
-const MAP_WORLD_HEIGHT = 1000;
-const MIN_MAP_ZOOM = 0.8;
-const MAX_MAP_ZOOM = 5;
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
@@ -159,36 +163,6 @@ function persistPanelOpacity(value: number) {
   window.localStorage.setItem(PANEL_OPACITY_STORAGE_KEY, String(value));
 }
 
-function getBaseMapScale(viewport: ViewportSize) {
-  if (viewport.width <= 0 || viewport.height <= 0) {
-    return 1;
-  }
-  if (viewport.height > viewport.width) {
-    return (viewport.height * 0.94) / MAP_WORLD_HEIGHT;
-  }
-  return Math.min(
-    viewport.width / MAP_WORLD_WIDTH,
-    viewport.height / MAP_WORLD_HEIGHT,
-  );
-}
-
-function clampScale(value: number, viewport: ViewportSize) {
-  const baseScale = getBaseMapScale(viewport);
-  return Math.max(
-    baseScale * MIN_MAP_ZOOM,
-    Math.min(baseScale * MAX_MAP_ZOOM, value),
-  );
-}
-
-function getDefaultMapTransform(viewport: ViewportSize): MapTransform {
-  const scale = getBaseMapScale(viewport);
-  return {
-    scale,
-    x: (viewport.width - MAP_WORLD_WIDTH * scale) / 2,
-    y: (viewport.height - MAP_WORLD_HEIGHT * scale) / 2,
-  };
-}
-
 function clampPercent(value: number) {
   return Math.max(4, Math.min(96, value));
 }
@@ -211,35 +185,39 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   if (marker.isActive) {
     return {
       stroke: "#FFD45B",
+      edgeEnd: "#FF67B3",
       glow: "#FFCB4B",
-      gradient: [0, "#FFF8B7", 0.42, "#FFD45B", 0.72, "#FFAD2F", 1, "#FF67B3"],
-      inner: "rgba(65, 43, 3, 0.88)",
+      edgeGradient: [0, "#FFD45B", 1, "#FF67B3"],
+      fillGradient: [0, "#261C04", 1, "#130A17"],
       meta: "#FFF8D8",
     };
   }
   if (marker.isCompleted) {
     return {
       stroke: "#EEF4FF",
+      edgeEnd: "#A89CC7",
       glow: "#FFFFFF",
-      gradient: [0, "#FFFFFF", 0.58, "#CDD7E9", 1, "#A89CC7"],
-      inner: "rgba(31, 37, 49, 0.9)",
+      edgeGradient: [0, "#FFFFFF", 1, "#A89CC7"],
+      fillGradient: [0, "#1F2531", 1, "#15111D"],
       meta: "#E8EAF0",
     };
   }
   if (marker.isLocked) {
     return {
       stroke: "#817A99",
+      edgeEnd: "#854DA8",
       glow: "#8E62BA",
-      gradient: [0, "#8194AA", 0.5, "#665F86", 1, "#854DA8"],
-      inner: "rgba(24, 24, 35, 0.9)",
+      edgeGradient: [0, "#8194AA", 1, "#854DA8"],
+      fillGradient: [0, "#181823", 1, "#0E0B16"],
       meta: "#A9A4B9",
     };
   }
   return {
     stroke: "#76EFFF",
+    edgeEnd: "#B04CFF",
     glow: hudAccent,
-    gradient: [0, "#92F7FF", 0.46, "#4BDCFF", 0.76, "#6E82FF", 1, "#B04CFF"],
-    inner: "rgba(4, 18, 27, 0.94)",
+    edgeGradient: [0, "#76EFFF", 1, "#B04CFF"],
+    fillGradient: [0, "#04121B", 1, "#100A20"],
     meta: "#76EFFF",
   };
 }
@@ -375,8 +353,13 @@ function StationMarker({
         scaleX={pinScaleX}
         scaleY={pinScaleY}
         data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
-        fill={marker.isActive ? "rgba(38, 28, 4, 0.96)" : marker.isCompleted ? "rgba(15, 18, 24, 0.96)" : "rgba(2, 9, 15, 0.97)"}
+        fillLinearGradientStartPoint={{x: -29, y: -30}}
+        fillLinearGradientEndPoint={{x: 29, y: 54}}
+        fillLinearGradientColorStops={colors.fillGradient}
         stroke={colors.stroke}
+        strokeLinearGradientStartPoint={{x: -29, y: -30}}
+        strokeLinearGradientEndPoint={{x: 29, y: 54}}
+        strokeLinearGradientColorStops={colors.edgeGradient}
         strokeWidth={2.1 / Math.max(pinScaleX, pinScaleY)}
         shadowColor={colors.glow}
         shadowBlur={isInteracting ? 0 : marker.isSelected || marker.isActive ? 18 : 12}
@@ -389,7 +372,7 @@ function StationMarker({
         scaleY={pinScaleY * 0.91}
         data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
         fillEnabled={false}
-        stroke={marker.isActive ? "#FF67B3" : marker.isCompleted ? "#A89CC7" : marker.isLocked ? "#665F86" : "#B04CFF"}
+        stroke={colors.edgeEnd}
         strokeWidth={1.05 / Math.max(pinScaleX, pinScaleY)}
         opacity={0.78}
         listening={false}
@@ -451,6 +434,9 @@ function StationMarker({
               width={STATION_LABEL_WIDTH - 10}
               height={STATION_LABEL_HEIGHT}
               stroke={colors.stroke}
+              strokeLinearGradientStartPoint={{x: 0, y: 0}}
+              strokeLinearGradientEndPoint={{x: STATION_LABEL_WIDTH - 10, y: STATION_LABEL_HEIGHT}}
+              strokeLinearGradientColorStops={colors.edgeGradient}
               strokeWidth={1}
               cornerRadius={STATION_LABEL_HEIGHT / 2}
               opacity={marker.isActive ? 0.5 : 0.3}
@@ -461,6 +447,9 @@ function StationMarker({
               width={STATION_LABEL_WIDTH - 20}
               height={STATION_LABEL_HEIGHT}
               stroke={colors.stroke}
+              strokeLinearGradientStartPoint={{x: 0, y: 0}}
+              strokeLinearGradientEndPoint={{x: STATION_LABEL_WIDTH - 20, y: STATION_LABEL_HEIGHT}}
+              strokeLinearGradientColorStops={colors.edgeGradient}
               strokeWidth={1}
               cornerRadius={STATION_LABEL_HEIGHT / 2}
               opacity={0.16}
@@ -470,8 +459,13 @@ function StationMarker({
         <Rect
           width={STATION_LABEL_WIDTH}
           height={STATION_LABEL_HEIGHT}
-          fill={marker.isActive ? "rgba(32, 26, 5, 0.97)" : "rgba(5, 31, 45, 0.96)"}
+          fillLinearGradientStartPoint={{x: 0, y: 0}}
+          fillLinearGradientEndPoint={{x: STATION_LABEL_WIDTH, y: STATION_LABEL_HEIGHT}}
+          fillLinearGradientColorStops={colors.fillGradient}
           stroke={colors.stroke}
+          strokeLinearGradientStartPoint={{x: 0, y: 0}}
+          strokeLinearGradientEndPoint={{x: STATION_LABEL_WIDTH, y: STATION_LABEL_HEIGHT}}
+          strokeLinearGradientColorStops={colors.edgeGradient}
           strokeWidth={1.2}
           cornerRadius={STATION_LABEL_HEIGHT / 2}
           shadowColor={colors.glow}
@@ -508,7 +502,6 @@ function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => vo
       </header>
       <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
         <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
-        <small>{t("common.totalScore")}</small>
       </section>
     </>
   );
@@ -518,8 +511,10 @@ function DemoMarkerLegend({open, onToggle}: {open: boolean; onToggle: () => void
   const {t} = useTranslation();
   return (
     <div className={`team-v2-legend-control${open ? " is-open" : ""}`}>
-      <button type="button" className="team-v2-legend-toggle" aria-expanded={open} aria-controls="team-v2-marker-legend" onClick={onToggle}>
-        <span aria-hidden="true">i</span>{t("teamV2.legendTitle")}<b aria-hidden="true">⌄</b>
+      <button type="button" className="team-v2-legend-toggle" aria-label={t("teamV2.legendTitle")} title={t("teamV2.legendTitle")} aria-expanded={open} aria-controls="team-v2-marker-legend" onClick={onToggle}>
+        <span className="team-v2-legend-icon" aria-hidden="true">i</span>
+        <span className="team-v2-legend-label">{t("teamV2.legendTitle")}</span>
+        <b aria-hidden="true">⌄</b>
       </button>
       {open && (
         <section id="team-v2-marker-legend" className="team-v2-marker-legend" aria-label={t("teamV2.legendTitle")}>
@@ -685,8 +680,8 @@ function LeaderboardOverlay({
   const [isLoading, setIsLoading] = useState(false);
   const mountedRef = useRef(false);
   const visibleRows = useMemo(
-    () => getTeamV2LeaderboardRows(rows, activeTeam?.id),
-    [activeTeam?.id, rows],
+    () => getTeamV2LeaderboardRows(rows),
+    [rows],
   );
 
   useEffect(() => {
@@ -823,6 +818,7 @@ export function TeamGameplayV2Page() {
   } | null>(null);
   const lastTapAtRef = useRef(0);
   const previousViewportRef = useRef<ViewportSize | null>(null);
+  const wheelCommitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
   useEffect(() => {
     const scheduler = createLatestFrameScheduler<MapTransform>({
@@ -840,6 +836,10 @@ export function TeamGameplayV2Page() {
     });
     mapTransformSchedulerRef.current = scheduler;
     return () => {
+      if (wheelCommitTimerRef.current !== null) {
+        clearTimeout(wheelCommitTimerRef.current);
+        wheelCommitTimerRef.current = null;
+      }
       scheduler.cancel();
       mapTransformSchedulerRef.current = null;
     };
@@ -984,6 +984,10 @@ export function TeamGameplayV2Page() {
   };
 
   const commitMapInteraction = () => {
+    if (wheelCommitTimerRef.current !== null) {
+      clearTimeout(wheelCommitTimerRef.current);
+      wheelCommitTimerRef.current = null;
+    }
     mapTransformSchedulerRef.current?.cancel();
     const nextTransform = liveMapTransformRef.current;
     setMapTransform(nextTransform);
@@ -992,16 +996,7 @@ export function TeamGameplayV2Page() {
 
   const applyScaleAtPoint = (nextScale: number, point: {x: number; y: number}) => {
     const current = liveMapTransformRef.current;
-    const clampedScale = clampScale(nextScale, viewportSize);
-    const worldPoint = {
-      x: (point.x - current.x) / current.scale,
-      y: (point.y - current.y) / current.scale,
-    };
-    scheduleMapTransform({
-      scale: clampedScale,
-      x: point.x - worldPoint.x * clampedScale,
-      y: point.y - worldPoint.y * clampedScale,
-    });
+    scheduleMapTransform(scaleTeamV2MapAtPoint(current, nextScale, point, viewportSize));
   };
 
   const handleWheel = (event: KonvaEventObject<WheelEvent>) => {
@@ -1010,9 +1005,20 @@ export function TeamGameplayV2Page() {
     if (!pointer) {
       return;
     }
-    const current = mapTransformSchedulerRef.current?.peek() ?? mapTransform;
-    const nextScale = event.evt.deltaY > 0 ? current.scale / 1.08 : current.scale * 1.08;
+    beginMapInteraction();
+    const current = liveMapTransformRef.current;
+    const nextScale = current.scale * getTeamV2WheelZoomFactor(
+      event.evt.deltaY,
+      event.evt.deltaMode,
+    );
     applyScaleAtPoint(nextScale, pointer);
+    if (wheelCommitTimerRef.current !== null) {
+      clearTimeout(wheelCommitTimerRef.current);
+    }
+    wheelCommitTimerRef.current = setTimeout(() => {
+      wheelCommitTimerRef.current = null;
+      commitMapInteraction();
+    }, 120);
   };
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
@@ -1108,6 +1114,10 @@ export function TeamGameplayV2Page() {
   };
 
   const resetMap = () => {
+    if (wheelCommitTimerRef.current !== null) {
+      clearTimeout(wheelCommitTimerRef.current);
+      wheelCommitTimerRef.current = null;
+    }
     mapTransformSchedulerRef.current?.cancel();
     const nextTransform = getDefaultMapTransform(viewportSize);
     liveMapTransformRef.current = nextTransform;
@@ -1446,9 +1456,6 @@ export function TeamGameplayV2Page() {
               </div>
               <Button icon={<CustomerServiceOutlined />} onClick={openSupport}>
                 {t("teamV2.zaloSupport")}
-              </Button>
-              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/stations/map")}>
-                {t("teamV2.backToV1")}
               </Button>
               <Button danger icon={<LogoutOutlined />} onClick={handleLogout}>
                 {t("auth.logout")}

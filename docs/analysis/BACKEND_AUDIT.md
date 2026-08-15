@@ -1,3 +1,51 @@
+# 2026-08-15 Team V2 compact HUD and Station Detail actions
+
+- Frontend-only: changed Legend to intrinsic localized width with a compact
+  lowercase `i`, tightened score geometry, and reduced the visible Settings ring
+  while retaining 44px native hit targets.
+- Removed the V2-only Image Gallery component/action and legacy-interface button.
+  Video now uses YouTube brand treatment; Start uses a QR-first CTA while still
+  calling the existing V2 scanner `START` intent. Shared V1 gallery/routes remain.
+- Verification PASS: focused Detail Vitest `7/7`, full Frontend Vitest `69/69`,
+  lint, i18n parity `439`, production build/bundle gate, `git diff --check`, and
+  authenticated Chromium E2E `8/8` at `390x844`, `844x390`, and `1024x768`.
+- Safari/WebKit was not run for this patch; no Safari PASS is inferred.
+- No Backend, API, schema, migration, seed, scoring, QR payload or gameplay
+  Business Rule changed.
+
+# 2026-08-15 Team V2 demo and dead-style audit
+
+- Frontend/demo-only: added the standalone TypeScript/Konva reference package with a reproducible lockfile and local generated-artifact ignores; retained legacy v4 sources for provenance and removed the retired bitmap reference.
+- Removed all dead production score-caption selectors and synchronized the static, React and Konva demo variants with the caption-free score card.
+- Fixed the demo's hard `620px` minimum-height landscape overflow, restored `100vh`/`100dvh` behavior and minimum `44px` controls, fitted the low-height footer/QR, and split React/Konva vendor chunks after removing the stale generated Vite config that shadowed source configuration.
+- Verification PASS: demo `npm ci`, strict unused TypeScript check, production build, demo build without the prior chunk-size warning, and demo authenticated-independent Chromium smoke `2/2` at portrait/landscape.
+- Final Frontend regression PASS: Vitest `70/70`, lint, i18n parity `440`, production bundle gate, and combined Chromium E2E `7/7`.
+- No Backend, API, database, migration, seed, scoring or gameplay behavior changed.
+
+# 2026-08-15 Team V2 score caption removal
+
+- Frontend-only: removed the visible localized `Total score` caption from the centered V2 score card while preserving its numeric value, points unit and accessible label.
+- Verification PASS: Frontend lint, production build/bundle gate, and authenticated Chromium E2E `5/5` at the three responsive target viewports.
+- No Backend, API, database, migration, seed, score authority or calculation changed.
+
+# 2026-08-15 Team V2 expanded map zoom
+
+- Frontend-only: expanded responsive map zoom from `0.8x..5x` to `0.5x..8x`, normalized wheel/trackpad deltas, fixed repeated-wheel accumulation by committing the live transform after idle, and retained focal-point stability for wheel/pinch plus exact reset geometry.
+- Verification PASS: full Frontend Vitest `70/70`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `5/5`; the zoom smoke reached both exact clamps and reset at `844x390`.
+- No Backend, API, database, migration, seed, gameplay, QR or Station-coordinate behavior changed.
+
+# 2026-08-15 Team V2 overlay typography and left-side Legend
+
+- Frontend-only: increased overlay information typography by 30% through shared semantic title/body/secondary tokens, converted Legend to a left-side 44px icon with a vertical expanded list, centered total score in low-height landscape, and standardized each marker/label state on one exact two-color gradient pair.
+- Verification PASS: focused Frontend Vitest `19/19`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `4/4` with computed geometry/type equality assertions.
+- No Backend, API, database, migration, seed, gameplay or ranking behavior changed.
+
+# 2026-08-15 Team V2 Legend, Settings and complete Leaderboard
+
+- Frontend-only: aligned Legend and Settings framing with the React/Konva demo, centered the Settings icon, made footer underline stacking explicit, increased overlay typography, and removed the V2 Top 5 projection so every authoritative Leaderboard row renders with its real rank.
+- Verification PASS: focused Frontend Vitest `19/19`, lint, i18n parity `440`, production build/bundle gate, and authenticated Chromium E2E `4/4` at the three responsive viewports plus computed-style/all-row Leaderboard coverage.
+- No Backend, API, schema, migration, seed, ranking order or tie-break changed.
+
 # 2026-08-14 Team V2 demo marker/header/footer fidelity
 
 - Frontend-only: aligned the production React/Konva marker, header and footer geometry with `demo/Movement2026.jsx` and `demo/styles.css` while preserving the real map, data and callbacks.
