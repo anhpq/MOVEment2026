@@ -1,5 +1,24 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-15 Team V2 Settings logout removal
+
+- `/team/v2` Settings no longer renders a Logout action. Automatic session
+  expiry and auth-failure cleanup remain active. Team/Admin header behavior on
+  routes outside the full-screen V2 experience is unchanged.
+
+## 2026-08-15 Team V2 and React/Konva demo cleanup
+
+- Removed an unreferenced legacy Konva marker component and all CSS rules whose
+  retired V2 classes have no Source Code consumer, including the old Station
+  preview, header Fullscreen, event/footer rails, and pre-demo Legend.
+- Team V2 font faces now have one owner in the final demo stylesheet. The
+  production CSS payload is smaller without changing rendered controls.
+- The standalone React/Konva demo suppresses duplicate resize commits, keeps its
+  Stage mounted across rotation/font readiness, and matches the compact score,
+  Settings, lowercase `i`, and content-fit Legend presentation.
+- Historical v4 demo files remain intentionally as provenance; generated demo
+  dependencies, build output, logs, and TypeScript build info remain ignored.
+
 ## 2026-08-15 Team V2 compact HUD and Detail actions
 
 - Legend keeps a 44px native target but shows a smaller lowercase `i`; its
@@ -278,7 +297,7 @@ measured the canonical state/catalog at 3,885/5,908 bytes and passed the full
 auth, QR, scoring, Final, leaderboard, migration, seed, and environment-guard
 flow.
 
-Team Gameplay V2 provides a header fullscreen control using the standard
+Team Gameplay V2 provides a Settings fullscreen switch using the standard
 Fullscreen API with Safari `webkit*` fallback. It requests hidden navigation UI,
 tracks enter/exit state, uses dynamic viewport height and safe-area insets, and
 recognizes installed standalone mode. Because iPhone Safari does not reliably
@@ -438,8 +457,9 @@ Stations are not unlocked in a fixed sequence.
 
 A Team may play only one Station at a time.
 
-Cancel returns the Team Station to `AVAILABLE` and applies the configured cooldown, default 5 minutes.
-Player Station list and map UI must surface this cooldown from `nextCheckInAllowedAt` as a countdown and prevent opening the Check-in QR modal until the deadline passes. Backend remains the authority if the client clock is wrong.
+Cancel returns the Team Station to `AVAILABLE`, clears the unfinished attempt,
+and applies no Station cooldown. Legacy `nextCheckInAllowedAt` values are not
+used to block an immediate restart.
 
 ## Station Localization
 
@@ -510,7 +530,6 @@ Backend validates:
 - token active/revoked/expired;
 - Station active;
 - Event time;
-- Team cooldown;
 - Team does not have another active Station.
 
 ## Check-out
@@ -685,8 +704,8 @@ The Konva Stage is limited to the visible viewport while the existing logical
 map coordinate space remains unchanged. The static map image is isolated in a
 non-listening background Layer; markers render in a separate interactive Layer.
 Only the active Station animates, with animation paused during map dragging and
-when the device requests reduced motion. Map-drawer live counts and cooldown
-clock updates run only while the drawer is open.
+when the device requests reduced motion. Map-drawer live counts update only
+while the drawer is open.
 
 ## Team Gameplay V2
 
@@ -764,7 +783,7 @@ the same device.
 Marker/label selection opens a V2-owned Station Detail overlay without changing
 the `/team/v2` URL. It uses state-aware Start/Complete/Cancel actions, the V2
 scanner and score overlay, shared authoritative Player data/mutations, and a
-V2-owned lazy gallery presentation. It never routes through
+V2-owned branded YouTube action. It never routes through
 `/stations/:stationId` and does not use `?from=team-v2`.
 
 Check-in, completion, and cancel success close Detail back to the preserved map.
@@ -781,9 +800,9 @@ Team V2 keeps Completed and Locked marker groups visible and tappable. Completed
 uses a check with `40%` opacity, rising to `70%` while selected. Locked uses a
 lower-right lock badge and remains fully opaque. Marker, label, and connector
 share the same state opacity and silver-purple palette. Station Detail keeps
-both YouTube and image-gallery
-controls visible; unavailable media renders as a readable disabled
-silver-neon control instead of disappearing.
+the YouTube action visible; unavailable video renders as a readable disabled
+silver-neon control instead of disappearing. Image Gallery remains outside V2
+Detail.
 Team V2 Station Detail uses centered intrinsic content height, capped by the
 available viewport with overflow scrolling. The footer uses `BXH`/`RANK` for
 its compact Leaderboard control, a `222px` center QR button (three times the

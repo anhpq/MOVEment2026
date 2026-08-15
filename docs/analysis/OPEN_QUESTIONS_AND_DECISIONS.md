@@ -20,6 +20,10 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-15: Team Gameplay V2 Settings không còn hiển thị nút Logout. Thay đổi
+  này chỉ áp dụng cho overlay Settings của `/team/v2`; automatic session expiry,
+  auth-failure cleanup, Team header ở các route khác và Admin header không đổi.
+
 - 2026-08-15: Supersede media/navigation presentation trong Team Gameplay V2.
   Station Detail của `/team/v2` chỉ giữ action Video theo YouTube brand treatment;
   không còn hiển thị action Xem hình ảnh hoặc gallery trong V2 Detail. Gallery ở
@@ -608,6 +612,7 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Team Gameplay V2 Detail actions | `Available` mở V2 scanner để bắt đầu; `In Progress` có Complete và Cancel; `Finished` chỉ xem kết quả/media. Check-in, completion và cancel success đóng Detail về map V2. API rejection giữ V2 scanner mở theo scanner rule hiện hành. |
 | Team Gameplay V2 media/marker states | Detail chỉ hiển thị action Video theo YouTube brand treatment; khi không có YouTube hợp lệ, action vẫn hiện disabled và đọc được bằng neon-muted styling. V2 Detail không hiển thị action Xem hình ảnh/gallery; V1/List/Map gallery không đổi. Map không render marker/label/connector của Station `COMPLETED`/`Finished`. Marker có `backendStatus === "LOCKED"` dùng silver-neon cho artwork, halo, label và connector. |
 | Team Gameplay V2 Settings navigation | Settings không hiển thị nút quay lại giao diện V1. Các route V1 `/stations` và `/stations/map` vẫn tồn tại nhưng không được quảng bá trong V2 Settings. |
+| Team Gameplay V2 Settings logout | Settings không hiển thị nút Logout. Session expiry và auth-failure cleanup vẫn hoạt động; Team/Admin header ngoài `/team/v2` không đổi. |
 | Team Gameplay V2 active QR context | Khi Team có Station `In Progress`, caption dưới QR hiển thị localized active status cùng Station code/name. Camera chỉ mở khi user bấm QR/Detail scan action; QR success/close/unmount cleanup scanner như hiện hành. |
 | Primary buttons | Trong Team context, enabled `primary` buttons dùng gradient theo Team Color và luôn dùng chữ/icon trắng `#FFFFFF`; disabled, danger, default và non-button accent/status/map colors giữ semantics/style hiện tại. |
 | Team Gameplay V2 buttons | Primary controls bên trong `/team/v2` dùng fixed V2 HUD accent/gradient thay vì Team Color. Danger/default/disabled semantics vẫn giữ nguyên. |

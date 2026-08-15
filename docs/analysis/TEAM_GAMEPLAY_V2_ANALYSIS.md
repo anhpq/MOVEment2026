@@ -1,5 +1,32 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-15 Settings logout removal
+
+- Removed the visible Logout action from Team V2 Settings and deleted its
+  V2-only icon/API handler path.
+- Session-expiry and unauthorized-session cleanup remain unchanged; AppFrame
+  Team/Admin header logout behavior outside `/team/v2` remains unchanged.
+- Verification PASS: Frontend Vitest `69/69`, lint, i18n parity `439`, production
+  build/bundle gate, and authenticated Chromium/demo E2E `8/8`.
+
+## 2026-08-15 Dead-code and demo runtime cleanup
+
+- Removed the unreferenced `TeamV2NeonMapMarker` implementation; Graphify showed
+  no consumer beyond its own file, and repository search confirmed no imports.
+- Removed retired Team V2 CSS generations for Station preview, header
+  Fullscreen, event/footer rails, team/station counters, and the pre-demo Legend.
+  A token-aware selector audit reports no remaining Team V2 class without a
+  Source Code consumer. Duplicate font-face declarations and dead keyframes were
+  also removed from the legacy stylesheet layer; the production Team V2 CSS
+  asset decreased from `70.14 kB` to `60.30 kB` raw.
+- The standalone React/Konva demo now rounds observed geometry and skips equal
+  resize updates, relies on ResizeObserver/browser resize for rotation, redraws
+  after font readiness without remounting the Stage, and matches the compact
+  score/Settings/lowercase-`i` Legend presentation.
+- Legacy v4 files remain intentionally for provenance. No tracked generated
+  output, dependency directory, log, TypeScript build info, or zero-byte file was
+  found.
+
 ## 2026-08-15 Compact HUD controls and Station Detail actions
 
 - Legend popover now sizes to its longest localized row instead of a fixed
@@ -692,7 +719,7 @@ This feature covers:
 - fullscreen Team Gameplay V2 HUD and responsive layout;
 - shared map canvas reuse with the existing Suoi Tien WebP map, station
   coordinates, pan/zoom, and marker state;
-- Team-only settings, opacity, language, Zalo support, and logout;
+- Team-only settings, opacity, language, and Zalo support;
 - unified Team Station QR action endpoint for camera and manual QR input;
 - V2 leaderboard and V2-owned Station Detail overlays;
 - VI/EN copy and a fixed V2 palette isolated from Team Color.
@@ -796,14 +823,13 @@ progress, QR, or Leaderboard HUD controls.
 | Leaderboard | `TrophyFilled` |
 | Close overlay | `CloseOutlined` |
 | Zalo support | `CustomerServiceOutlined` |
-| Logout | `LogoutOutlined` |
 | Execute/manual QR action | `CameraOutlined` |
 | Station score | `StarFilled` |
 | Teams playing | `TeamOutlined` |
 
 All primary gameplay targets remain at least 44px. Icons inherit the fixed V2
-accent or semantic color from their container; danger/logout retains Ant Design
-danger semantics.
+accent or semantic color from their container; danger semantics remain available
+for gameplay actions where required.
 
 ### Overlay Layout Policy
 
@@ -866,8 +892,8 @@ danger semantics.
     entry after checkout using the existing Team session.
 11. Polling: dashboard, Stations, progress, and playing counts poll every 5s
     only while visible and avoid overlapping requests.
-12. Release hygiene: keep logout for this task and record a backlog review to
-    revisit hiding login/logout before 2026-08-20.
+12. Release hygiene: the 2026-08-15 decision supersedes the visible Team V2
+    Settings logout action; session expiry and auth-failure cleanup remain.
 
 ### Reference HUD Refinement Review Rounds
 

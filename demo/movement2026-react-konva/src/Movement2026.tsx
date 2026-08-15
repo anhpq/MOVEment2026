@@ -68,18 +68,20 @@ function useElementSize<T extends HTMLElement>() {
 
     const update = () => {
       const rect = el.getBoundingClientRect();
-      setSize({ width: Math.max(1, rect.width), height: Math.max(1, rect.height) });
+      const width = Math.max(1, Math.round(rect.width));
+      const height = Math.max(1, Math.round(rect.height));
+      setSize((current) =>
+        current.width === width && current.height === height ? current : { width, height },
+      );
     };
 
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
-    window.addEventListener('orientationchange', update);
     window.addEventListener('resize', update);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('orientationchange', update);
       window.removeEventListener('resize', update);
     };
   }, []);
@@ -302,10 +304,10 @@ function Marker({
 }
 
 function Score({ width, totalPoints }: { width: number; totalPoints: number }) {
-  const w = Math.min(220, Math.max(176, width * 0.31));
-  const h = 82;
+  const w = Math.min(188, Math.max(154, width * 0.25));
+  const h = 64;
   return (
-    <Group x={width / 2} y={52}>
+    <Group x={width / 2} y={42}>
       <Rect
         x={-w / 2}
         y={-h / 2}
@@ -321,12 +323,12 @@ function Score({ width, totalPoints }: { width: number; totalPoints: number }) {
       />
       <Text
         text={String(totalPoints)}
-        x={-75}
-        y={-20}
-        width={74}
+        x={-66}
+        y={-17}
+        width={66}
         align="right"
         fontFamily="Oxanium, sans-serif"
-        fontSize={39}
+        fontSize={34}
         fontStyle="700"
         fill={COLORS.green}
         shadowColor={COLORS.green}
@@ -334,11 +336,11 @@ function Score({ width, totalPoints }: { width: number; totalPoints: number }) {
       />
       <Text
         text="PTS"
-        x={7}
-        y={-11}
-        width={64}
+        x={6}
+        y={-9}
+        width={56}
         fontFamily="Oxanium, sans-serif"
-        fontSize={23}
+        fontSize={20}
         fontStyle="700"
         fill="#88efaa"
       />
@@ -356,10 +358,8 @@ function Legend({ open, onToggle }: { open: boolean; onToggle: () => void }) {
 
   return (
     <div className={`legend-wrap ${open ? 'is-open' : ''}`}>
-      <button className="legend-toggle" type="button" onClick={onToggle} aria-expanded={open}>
+      <button className="legend-toggle" type="button" onClick={onToggle} aria-label="Chú thích" title="Chú thích" aria-expanded={open}>
         <span className="legend-i">i</span>
-        <span>CHÚ THÍCH</span>
-        <span className="legend-arrow">⌄</span>
       </button>
       {open && (
         <div className="legend-popover" role="dialog" aria-label="Chú thích màu marker">
@@ -431,11 +431,11 @@ export default function Movement2026({
 }: Props) {
   const [mainRef, mainSize] = useElementSize<HTMLDivElement>();
   const [legendOpen, setLegendOpen] = useState(false);
-  const [fontReady, setFontReady] = useState(false);
+  const stageRef = useRef<Konva.Stage | null>(null);
   const isLandscape = mainSize.width > mainSize.height * 1.18;
 
   useEffect(() => {
-    document.fonts?.ready.then(() => setFontReady(true)).catch(() => setFontReady(true));
+    void document.fonts?.ready.then(() => stageRef.current?.batchDraw()).catch(() => undefined);
   }, []);
 
   const stations = useMemo(() => (isLandscape ? LANDSCAPE_STATIONS : STATIONS), [isLandscape]);
@@ -448,7 +448,7 @@ export default function Movement2026({
         <div className="main-grid" aria-hidden="true" />
         <Legend open={legendOpen} onToggle={() => setLegendOpen((v) => !v)} />
 
-        <Stage width={mainSize.width} height={mainSize.height} key={`${isLandscape}-${fontReady}`}>
+        <Stage ref={stageRef} width={mainSize.width} height={mainSize.height}>
           <Layer listening={false}>
             <Rect x={0} y={0} width={mainSize.width} height={mainSize.height} fill="rgba(0,0,0,0)" />
             <Score width={mainSize.width} totalPoints={totalPoints} />

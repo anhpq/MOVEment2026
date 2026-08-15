@@ -1,5 +1,23 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-15 Team V2 Settings logout removal
+
+- [x] Remove the Logout action and its V2-only explicit API handler from Settings.
+- [x] Preserve automatic session expiry and unauthorized-session cleanup.
+- [x] Leave Team/Admin AppFrame headers outside `/team/v2` unchanged.
+- [x] Pass Frontend Vitest, lint, i18n, build/bundle and Chromium E2E `8/8`.
+
+## 2026-08-15 Team V2 dead-code and demo cleanup
+
+- [x] Remove the unreferenced legacy Konva marker component.
+- [x] Remove every retired Team V2 CSS class with no Source Code consumer.
+- [x] Remove duplicate font faces and orphaned animation definitions.
+- [x] Prevent duplicate demo resize commits and Stage remounts on rotation/font readiness.
+- [x] Synchronize compact score/Settings/Legend presentation in the React/Konva demo.
+- [x] Confirm no tracked generated artifacts, zero-byte files, or further file-level suspects.
+- [x] Pass Frontend/demo builds, full Frontend quality gates, Chromium E2E `8/8`, and diff check.
+- [ ] Confirm the cleanup on Safari macOS and a physical iPhone Safari.
+
 ## 2026-08-15 Team V2 compact HUD and Detail actions
 
 - [x] Fit the expanded Legend panel to localized VI/EN content instead of a fixed width.

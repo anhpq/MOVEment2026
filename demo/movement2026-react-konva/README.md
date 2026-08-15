@@ -25,13 +25,16 @@ Không còn đường chấm nối các trạm và không có footer sparkle.
 
 ## Legend
 
-Mặc định chỉ hiện nút `i CHÚ THÍCH`. Bấm mới bung bảng màu marker.
+Mặc định chỉ hiện một nút `i` lowercase có hit target `44px`. Bấm mới bung
+bảng màu marker một cột, với panel tự ôm nội dung thay vì giữ width cố định.
 
 ## Responsive
 
 - Portrait: layout marker theo bản mobile.
 - Landscape: chuyển sang layout marker ngang riêng.
 - `ResizeObserver` resize Konva Stage theo đúng kích thước main.
+- Resize chỉ commit React state khi kích thước thực sự đổi; rotation không
+  remount Konva Stage và font-ready chỉ yêu cầu redraw.
 - Shell dùng `100vh` fallback + `100dvh`, không ép minimum height nên không tràn viewport landscape thấp; các control giữ touch target tối thiểu `44px`.
 
 ## Chạy
