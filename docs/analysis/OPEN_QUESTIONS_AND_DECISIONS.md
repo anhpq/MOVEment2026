@@ -544,7 +544,7 @@ Rotate Check-out không được tự rotate Check-in.
 | Final points | Top 10 lần lượt nhận `40, 30, 25, 22, 20, 18, 16, 14, 12, 10` điểm. |
 | Sau hạng 10 | Từ hạng 11 trở đi nhận 0 điểm Final. |
 | Multiple attempts | Team được phép nhập nhiều lần cho đến khi đúng. |
-| Wrong answer cooldown | Cooldown theo lần sai là `1, 3, 5, 10, 15, 20, ...` giây và capped tại `50` giây. |
+| Wrong answer cooldown | Cooldown theo lần sai là `3, 5, 10, 15, 20, ...` giây và capped tại `50` giây. |
 | Cooldown enforcement | Backend phải enforce cooldown. |
 | Duplicate protection | Một Team không được nhận Final rank hoặc bonus nhiều hơn một lần. |
 

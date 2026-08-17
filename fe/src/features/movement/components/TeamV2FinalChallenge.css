@@ -9,5 +9,5 @@
 .team-v2-final-slot.is-filled { border-color:var(--team-v2-accent); box-shadow:0 0 12px var(--team-v2-focus-ring), inset 0 0 12px rgba(47,228,240,.13); }
 .team-v2-final-feedback { min-height:24px; color:var(--team-v2-score); font-weight:800; }
 .team-v2-final-success { background:radial-gradient(circle,rgba(47,228,240,.2),transparent 60%); }
-.team-v2-final-success > span { font-size:68px; color:var(--team-v2-score); text-shadow:0 0 26px var(--team-v2-score); }
+.team-v2-final-trophy { padding:18px; border:1px solid rgba(255,211,74,.72); border-radius:50%; background:radial-gradient(circle,rgba(255,211,74,.22),rgba(47,228,240,.06) 64%,transparent 66%); color:#ffd34a; font-size:68px; filter:drop-shadow(0 0 20px rgba(255,211,74,.72)); }
 .team-v2-final-success p { max-width:380px; color:var(--team-v2-muted); font-size:17px; line-height:1.5; }

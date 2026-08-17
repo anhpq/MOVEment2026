@@ -628,7 +628,7 @@ function GatheringPointMarker({
   );
 }
 
-function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => void}) {
+function DemoHudHeader({score, hideScore, onSettings}: {score: number; hideScore: boolean; onSettings: () => void}) {
   const {t} = useTranslation();
   return (
     <>
@@ -638,9 +638,9 @@ function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => vo
           <SettingOutlined />
         </button>
       </header>
-      <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
+      {!hideScore && <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
         <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
-      </section>
+      </section>}
     </>
   );
 }
@@ -934,6 +934,8 @@ export function TeamGameplayV2Page() {
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const [isFinalCompleted, setIsFinalCompleted] = useState(false);
+  const handleFinalCompleted = useCallback(() => setIsFinalCompleted(true), []);
   const [finalClock, setFinalClock] = useState({seconds: 0, receivedAt: Date.now()});
   const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
     () => Boolean(getActiveFullscreenElement()),
@@ -1511,6 +1513,7 @@ export function TeamGameplayV2Page() {
 
       <DemoHudHeader
         score={activeTeam.score}
+        hideScore={isFinalMode && isFinalCompleted}
         onSettings={() => {
           setIsLeaderboardOpen(false);
           setIsScannerOpen(false);
@@ -1526,7 +1529,7 @@ export function TeamGameplayV2Page() {
         </aside>
       )}
 
-      {isFinalMode && <TeamV2FinalChallenge language={language} />}
+      {isFinalMode && <TeamV2FinalChallenge language={language} onCompleted={handleFinalCompleted} />}
 
       {!isFinalMode && <DemoMarkerLegend
         open={isLegendOpen}

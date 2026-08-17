@@ -397,6 +397,26 @@ describe('FinalService', () => {
   })
 
   it.each([
+    [1, 3],
+    [2, 5],
+    [3, 10],
+    [4, 15],
+    [5, 20],
+    [11, 50],
+    [25, 50],
+  ])('uses a %i-wrong-attempt cooldown of %i seconds', async (wrongAttemptCount, expectedSeconds) => {
+    mockPrisma.finalSubmission.count.mockResolvedValue(wrongAttemptCount)
+    mockPrisma.finalSubmission.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({submittedAt: new Date()})
+
+    const result = await service.getPlayerFinal(4)
+
+    expect(result.cooldownSeconds).toBe(expectedSeconds)
+    expect(result.canSubmit).toBe(false)
+  })
+
+  it.each([
     [1, 40], [2, 30], [3, 25], [4, 22], [5, 20], [6, 18], [7, 16], [8, 14], [9, 12], [10, 10], [11, 0],
   ])('awards %i rank with %i final bonus points', async (rank, points) => {
     mockTx.finalSubmission.count.mockResolvedValue(rank - 1)

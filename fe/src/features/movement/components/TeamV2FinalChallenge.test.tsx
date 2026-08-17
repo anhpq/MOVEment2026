@@ -47,6 +47,9 @@ const finalResponse = {
 
 describe("TeamV2FinalChallenge input", () => {
   beforeEach(() => {
+    mocks.getPlayerFinal.mockReset();
+    mocks.submitFinalAnswer.mockReset();
+    mocks.executePlayerMutation.mockReset();
     mocks.getPlayerFinal.mockResolvedValue(finalResponse);
     mocks.submitFinalAnswer.mockResolvedValue({isCorrect: true});
     mocks.executePlayerMutation.mockImplementation(async (mutation: () => Promise<unknown>) => ({
@@ -88,5 +91,60 @@ describe("TeamV2FinalChallenge input", () => {
     await user.paste("every move counts");
 
     expect(input).toHaveValue("EVERY MOVE COUNTS");
+  });
+
+  it("revalidates an expired wrong-answer cooldown and submits a second answer", async () => {
+    const staleAfterWrong = {
+      ...finalResponse,
+      canSubmit: false,
+      wrongAttemptCount: 1,
+      cooldownSeconds: 3,
+      nextAttemptAt: new Date(Date.now() - 10).toISOString(),
+    };
+    const readyForRetry = {
+      ...staleAfterWrong,
+      canSubmit: true,
+      nextAttemptAt: null,
+    };
+    const correctSubmission = {
+      id: 9,
+      teamId: 1,
+      isCorrect: true,
+      winnerRank: 1,
+      pointsAwarded: 40,
+      submittedAt: new Date().toISOString(),
+    };
+    const completed = {...readyForRetry, canSubmit: false, teamSubmission: correctSubmission};
+    const onCompleted = vi.fn();
+    mocks.getPlayerFinal
+      .mockResolvedValueOnce(finalResponse)
+      .mockResolvedValueOnce(staleAfterWrong)
+      .mockResolvedValueOnce(readyForRetry)
+      .mockResolvedValue(completed);
+    mocks.submitFinalAnswer
+      .mockResolvedValueOnce({isCorrect: false})
+      .mockResolvedValueOnce({isCorrect: true});
+
+    const user = userEvent.setup();
+    render(
+      <App>
+        <TeamV2FinalChallenge language="vi" onCompleted={onCompleted} />
+      </App>,
+    );
+
+    const input = await screen.findByRole("textbox");
+    await user.type(input, "AAAAAAAAAAAAAAAAA");
+    await user.keyboard("{Enter}");
+    await waitFor(() => expect(mocks.getPlayerFinal).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(input).toBeEnabled());
+
+    await user.type(input, "every move counts");
+    const submit = screen.getByRole("button", {name: /final\.submit/});
+    await waitFor(() => expect(submit).toBeEnabled());
+    await user.click(submit);
+
+    await waitFor(() => expect(mocks.submitFinalAnswer).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(onCompleted).toHaveBeenCalled());
+    expect(document.querySelector(".team-v2-final-trophy")).toBeTruthy();
   });
 });
