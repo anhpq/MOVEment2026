@@ -211,3 +211,6 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 - Team protected-route recovery now uses bilingual `Quay về trò chơi` / `Back
   to game` copy for the `/team/v2` default destination.
 - i18n parity passed with `417` Vietnamese/English keys.
+# Final V2 — cập nhật 2026-08-17
+
+Đã bổ sung copy VI/EN cho countdown Final V2, notice/urgent toast, và warning Admin cấu hình thời điểm đóng QR bắt đầu Station.

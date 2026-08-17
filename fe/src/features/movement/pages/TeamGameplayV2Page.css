@@ -70,6 +70,26 @@
   pointer-events: auto;
 }
 
+.team-v2-final-notice {
+  position: absolute;
+  z-index: var(--team-v2-layer-fixed-ui);
+  top: calc(env(safe-area-inset-top, 0px) + clamp(106px, 15dvh, 138px));
+  left: 50%;
+  width: min(92vw, 520px);
+  transform: translateX(-50%);
+  display: grid;
+  gap: 2px;
+  padding: 8px 16px;
+  border: 1px solid var(--team-v2-line);
+  background: rgba(2, 16, 27, .88);
+  box-shadow: 0 0 16px rgba(47, 228, 240, .22);
+  color: #eafcff;
+  text-align: center;
+  pointer-events: none;
+}
+
+.team-v2-final-notice span { color: var(--team-v2-score); font-weight: 800; }
+
 .team-v2-overlay-layer {
   position: absolute;
 }

@@ -222,6 +222,11 @@ function toPlayerFinalSummary(
     activeStationId: final.activeStationId,
     finalStartsAt: final.finalStartsAt,
     eventEndTime: final.eventEndTime,
+    notifyBeforeMinutes: final.notifyBeforeMinutes,
+    secondsUntilFinal: final.secondsUntilFinal,
+    stationCheckInClosed: final.stationCheckInClosed,
+    phase: final.phase,
+    pendingScoreStationId: final.pendingScoreStationId,
   };
 }
 

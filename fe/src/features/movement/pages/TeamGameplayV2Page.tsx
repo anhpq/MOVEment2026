@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity, react-hooks/set-state-in-effect */
 import {
   CloseOutlined,
   CustomerServiceOutlined,
@@ -24,6 +25,7 @@ import {
 import {LanguageSwitch} from "../components/LanguageSwitch";
 import {TeamV2QrBadge} from "../components/TeamV2QrBadge";
 import {TeamV2StationDetailOverlay} from "../components/TeamV2StationDetailOverlay";
+import {TeamV2FinalChallenge} from "../components/TeamV2FinalChallenge";
 import {
   DEFAULT_TEAM_V2_OVERLAY_OPACITY,
   getTeamV2OverlayStyle,
@@ -82,6 +84,11 @@ import "./TeamGameplayV2Demo.css";
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
 const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
+
+function formatFinalCountdown(seconds: number) {
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}:${String(seconds % 60).padStart(2, "0")}`;
+}
 
 const QR_ACTION_ERROR_KEYS: Readonly<Record<string, string>> = {
   PLAYER_QR_INVALID: "teamV2.qrErrors.invalid",
@@ -774,6 +781,7 @@ export function TeamGameplayV2Page() {
   const activeTeamId = useMovementStore((state) => state.activeTeamId);
   const stationDefinitions = useMovementStore((state) => state.stationDefinitions);
   const teamStations = useMovementStore((state) => state.teamStations);
+  const finalSummary = useMovementStore((state) => state.finalSummary);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
   const clearSession = useMovementStore((state) => state.logout);
   const activeTeam = teams.find((team) => team.id === activeTeamId);
@@ -793,6 +801,7 @@ export function TeamGameplayV2Page() {
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const [finalClock, setFinalClock] = useState({seconds: 0, receivedAt: Date.now()});
   const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
     () => Boolean(getActiveFullscreenElement()),
   );
@@ -817,6 +826,8 @@ export function TeamGameplayV2Page() {
   const lastTapAtRef = useRef(0);
   const previousViewportRef = useRef<ViewportSize | null>(null);
   const wheelCommitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const finalRefreshRequestedRef = useRef(false);
+  const finalToastPhasesRef = useRef(new Set<string>());
   const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
   useEffect(() => {
     const scheduler = createLatestFrameScheduler<MapTransform>({
@@ -849,6 +860,46 @@ export function TeamGameplayV2Page() {
     activeTeamStations.find((station) => station.stationId === selectedStationId) ?? null;
   const activeStation =
     activeTeamStations.find((station) => station.status === "In Progress") ?? null;
+  const isFinalMode = finalSummary?.phase === "FINAL_STARTED" && !finalSummary.pendingScoreStationId && !finalSummary.blockedByActiveStation;
+  const secondsUntilFinal = Math.max(0, finalClock.seconds - Math.floor((Date.now() - finalClock.receivedAt) / 1000));
+  const showFinalNotice = finalSummary?.phase === "NOTICE" || finalSummary?.phase === "STATIONS_CLOSED";
+
+  useEffect(() => {
+    setFinalClock({seconds: finalSummary?.secondsUntilFinal ?? 0, receivedAt: Date.now()});
+  }, [finalSummary?.secondsUntilFinal]);
+
+  useEffect(() => {
+    if (!showFinalNotice) return;
+    const timer = window.setInterval(() => setFinalClock((clock) => ({...clock})), 1000);
+    return () => window.clearInterval(timer);
+  }, [showFinalNotice]);
+
+  useEffect(() => {
+    if (!finalSummary) return;
+    if (finalSummary.phase === "FINAL_STARTED") {
+      setIsStationDetailOpen(false);
+      setIsLegendOpen(false);
+      setIsTeamPanelOpen(false);
+      setIsLeaderboardOpen(false);
+      setIsScannerOpen(false);
+      setIsSettingsOpen(false);
+      setSelectedStationId(null);
+    }
+    if (finalSummary.pendingScoreStationId) {
+      scoreForm.setFieldsValue({score: 0, reason: ""});
+      setScoreStationId(finalSummary.pendingScoreStationId);
+    }
+    if ((finalSummary.phase === "NOTICE" || finalSummary.phase === "STATIONS_CLOSED") && !finalToastPhasesRef.current.has(finalSummary.phase)) {
+      finalToastPhasesRef.current.add(finalSummary.phase);
+      message.info(finalSummary.phase === "STATIONS_CLOSED" ? t("teamV2.finalUrgentToast") : t("teamV2.finalNoticeToast"), 6);
+    }
+  }, [finalSummary, message, scoreForm, t]);
+
+  useEffect(() => {
+    if (!showFinalNotice || secondsUntilFinal > 0 || finalRefreshRequestedRef.current) return;
+    finalRefreshRequestedRef.current = true;
+    void fetchPlayerDatabase(language, {fresh: true}).then(loadDatabase).catch(() => undefined);
+  }, [language, loadDatabase, secondsUntilFinal, showFinalNotice]);
 
   const markerViewModels = useMemo<MarkerViewModel[]>(() => {
     const byStationId = new Map(activeTeamStations.map((station) => [station.stationId, station]));
@@ -1234,7 +1285,7 @@ export function TeamGameplayV2Page() {
   const footerScale = 1;
   return (
     <main className="team-v2-page">
-      <div
+      {!isFinalMode && <div
         className="team-v2-map-backdrop"
         ref={mapViewportRef}
         role="region"
@@ -1304,7 +1355,7 @@ export function TeamGameplayV2Page() {
             </Layer>
           </Stage>
         )}
-      </div>
+      </div>}
 
       <DemoHudHeader
         score={activeTeam.score}
@@ -1315,12 +1366,21 @@ export function TeamGameplayV2Page() {
         }}
       />
 
-      <DemoMarkerLegend
+      {showFinalNotice && !isFinalMode && (
+        <aside className="team-v2-final-notice" role="status">
+          <strong>{finalSummary?.phase === "STATIONS_CLOSED" ? t("teamV2.finalUrgentTitle") : t("teamV2.finalNoticeTitle")}</strong>
+          <span>{t("teamV2.finalCountdown", {time: formatFinalCountdown(secondsUntilFinal)})}</span>
+        </aside>
+      )}
+
+      {isFinalMode && <TeamV2FinalChallenge language={language} />}
+
+      {!isFinalMode && <DemoMarkerLegend
         open={isLegendOpen}
         onToggle={() => setIsLegendOpen((current) => !current)}
-      />
+      />}
 
-      {selectedStation && isStationDetailOpen && (
+      {!isFinalMode && selectedStation && isStationDetailOpen && (
         <TeamV2StationDetailOverlay
           station={selectedStation}
           playingTeamCount={selectedPlayingCount}
@@ -1350,7 +1410,7 @@ export function TeamGameplayV2Page() {
         />
       )}
 
-      <DemoFooter
+      {!isFinalMode && <DemoFooter
         activeStation={activeStation}
         footerScale={footerScale}
         onLeaderboard={() => {
@@ -1370,9 +1430,9 @@ export function TeamGameplayV2Page() {
           setIsScannerOpen(false);
           setIsTeamPanelOpen(true);
         }}
-      />
+      />}
 
-      <TeamOverviewOverlay
+      {!isFinalMode && <TeamOverviewOverlay
         open={isTeamPanelOpen}
         opacity={panelOpacity}
         team={activeTeam}
@@ -1384,7 +1444,7 @@ export function TeamGameplayV2Page() {
           setSelectedStationId(stationId);
           setIsStationDetailOpen(true);
         }}
-      />
+      />}
 
       {isSettingsOpen && (
         <div
@@ -1458,7 +1518,7 @@ export function TeamGameplayV2Page() {
         onClose={() => setIsLeaderboardOpen(false)}
       />
 
-      {isScannerOpen && (
+      {!isFinalMode && isScannerOpen && (
         <div
           className="team-v2-overlay-layer"
           style={getTeamV2OverlayStyle(panelOpacity)}

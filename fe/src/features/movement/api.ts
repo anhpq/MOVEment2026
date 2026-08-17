@@ -215,6 +215,11 @@ export type PlayerStateResponse = {
     activeStationId: string | null
     finalStartsAt: string
     eventEndTime: string
+    notifyBeforeMinutes: number
+    secondsUntilFinal: number
+    stationCheckInClosed: boolean
+    phase: 'NORMAL' | 'NOTICE' | 'STATIONS_CLOSED' | 'FINAL_STARTED'
+    pendingScoreStationId: string | null
   }
 }
 
@@ -574,6 +579,9 @@ export type FinalResponse = {
   canSubmit: boolean; blockedByActiveStation: boolean; activeStationId: string | null
   teamSubmission: FinalSubmissionResponse | null; wrongAttemptCount: number
   cooldownSeconds: number; nextAttemptAt: string | null; serverNow: string
+  answerLength: number | null; notifyBeforeMinutes: number; secondsUntilFinal: number
+  stationCheckInClosed: boolean; phase: 'NORMAL' | 'NOTICE' | 'STATIONS_CLOSED' | 'FINAL_STARTED'
+  pendingScoreStationId: string | null
 }
 export type FinalSubmissionResponse = {
   id: number; teamId: number; isCorrect: boolean; winnerRank: number | null

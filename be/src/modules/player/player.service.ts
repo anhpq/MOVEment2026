@@ -22,6 +22,7 @@ import {
   normalizeQrToken,
 } from '../../common/qr/qr-token';
 import { EventConfigService } from '../event-config/event-config.service';
+import { EventLifecycleService } from '../event-config/event-lifecycle.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TeamResultsService } from '../team-results/team-results.service';
 import { QrActionDto } from './dto/player-actions.dto';
@@ -36,6 +37,7 @@ export class PlayerService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly eventConfig: EventConfigService,
+    private readonly eventLifecycle: EventLifecycleService,
     private readonly activityLog: ActivityLogService,
     private readonly teamResults: TeamResultsService,
   ) {}
@@ -164,6 +166,7 @@ export class PlayerService {
 
   async getState(teamId: number) {
     const now = new Date();
+    await this.eventLifecycle.reconcileFinalStart(now);
     const [team, eventConfig, catalogVersion, leaderboard, finalChallenge] =
       await Promise.all([
         this.prisma.team.findUniqueOrThrow({
@@ -209,7 +212,7 @@ export class PlayerService {
       ...item,
       status: this.toEffectiveProgressStatus(
         item.status,
-        eventConfig.isPastEventEnd,
+        eventConfig.isPastEventEnd || eventConfig.isPastFinalStart,
       ),
     }));
     const activeProgress = progress.find(
@@ -217,6 +220,7 @@ export class PlayerService {
         item.status === ProgressStatus.CHECKED_IN ||
         item.status === ProgressStatus.PLAYING,
     );
+    const pendingScoreProgress = activeProgress?.checkedOutAt ? activeProgress : null;
     const finalSubmissionState = finalChallenge
       ? await this.getFinalSubmissionState(finalChallenge.id, teamId, now)
       : { hasCorrectSubmission: false, isCoolingDown: false };
@@ -255,8 +259,13 @@ export class PlayerService {
           !finalSubmissionState.isCoolingDown,
         blockedByActiveStation: Boolean(activeProgress),
         activeStationId: activeProgress?.stationId ?? null,
+        pendingScoreStationId: pendingScoreProgress?.stationId ?? null,
         finalStartsAt: eventConfig.finalStartsAt,
         eventEndTime: eventConfig.eventEndTime,
+        notifyBeforeMinutes: eventConfig.notifyBeforeMinutes,
+        secondsUntilFinal: eventConfig.secondsUntilFinal,
+        stationCheckInClosed: eventConfig.isPastEventEnd || eventConfig.isPastFinalStart,
+        phase: eventConfig.isPastFinalStart ? 'FINAL_STARTED' : eventConfig.isPastEventEnd ? 'STATIONS_CLOSED' : eventConfig.secondsUntilFinal <= eventConfig.notifyBeforeMinutes * 60 ? 'NOTICE' : 'NORMAL',
       },
     };
   }
@@ -283,7 +292,7 @@ export class PlayerService {
 
   async getStations(teamId: number, lang?: string) {
     const locale = this.normalizeLocale(lang);
-    const [stations, isPastEventEnd] = await Promise.all([
+    const [stations, eventConfig] = await Promise.all([
       this.prisma.station.findMany({
         where: { isActive: true },
         orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
@@ -296,7 +305,7 @@ export class PlayerService {
           progress: { where: { teamId }, take: 1 },
         },
       }),
-      this.eventConfig.isPastEventEnd(),
+      this.eventConfig.getPublicConfig(),
     ]);
 
     return stations.map((station) => ({
@@ -323,7 +332,7 @@ export class PlayerService {
             ...station.progress[0],
             status: this.toEffectiveProgressStatus(
               station.progress[0].status,
-              isPastEventEnd,
+              eventConfig.isPastEventEnd || eventConfig.isPastFinalStart,
             ),
           }
         : null,
@@ -332,7 +341,7 @@ export class PlayerService {
 
   async getProgress(teamId: number, lang?: string) {
     const locale = this.normalizeLocale(lang);
-    const [progress, isPastEventEnd] = await Promise.all([
+    const [progress, eventConfig] = await Promise.all([
       this.prisma.teamStationProgress.findMany({
         where: { teamId },
         include: {
@@ -348,12 +357,12 @@ export class PlayerService {
         },
         orderBy: [{ station: { sortOrder: 'asc' } }, { stationId: 'asc' }],
       }),
-      this.eventConfig.isPastEventEnd(),
+      this.eventConfig.getPublicConfig(),
     ]);
 
     return progress.map(({ game, station, ...item }) => ({
       ...item,
-      status: this.toEffectiveProgressStatus(item.status, isPastEventEnd),
+      status: this.toEffectiveProgressStatus(item.status, eventConfig.isPastEventEnd || eventConfig.isPastFinalStart),
       station: this.toPublicStation(station, locale),
       game: this.toPublicGame(game),
     }));
@@ -571,6 +580,7 @@ export class PlayerService {
   }
 
   private async checkOutValidated(teamId: number, stationId: string) {
+    await this.eventLifecycle.reconcileFinalStart();
     const progress = await this.getProgressForAction(teamId, stationId);
     if (progress.checkedOutAt || progress.completedAt) {
       return progress;
@@ -989,7 +999,8 @@ export class PlayerService {
   }
 
   private async assertStationsOpen() {
-    if (await this.eventConfig.isPastEventEnd()) {
+    const config = await this.eventConfig.getPublicConfig();
+    if (config.isPastEventEnd || config.isPastFinalStart) {
       throw this.playerError(
         HttpStatus.FORBIDDEN,
         PLAYER_ERROR_CODES.stationsClosed,
@@ -1058,7 +1069,7 @@ export class PlayerService {
           select: { submittedAt: true },
         }),
       ]);
-    const cooldownSeconds = Math.min(wrongAttemptCount, 10);
+    const cooldownSeconds = this.getFinalCooldownSeconds(wrongAttemptCount);
     const nextAttemptAt = latestWrongSubmission
       ? new Date(
           latestWrongSubmission.submittedAt.getTime() + cooldownSeconds * 1000,
@@ -1068,6 +1079,13 @@ export class PlayerService {
       hasCorrectSubmission: Boolean(correctSubmission),
       isCoolingDown: Boolean(nextAttemptAt && nextAttemptAt > now),
     };
+  }
+
+  private getFinalCooldownSeconds(wrongAttemptCount: number) {
+    if (wrongAttemptCount <= 0) return 0;
+    if (wrongAttemptCount === 1) return 1;
+    if (wrongAttemptCount === 2) return 3;
+    return Math.min((wrongAttemptCount - 2) * 5, 50);
   }
 
   private validateScoreValue(score: number, maxPoints: number) {

@@ -52,6 +52,7 @@ const mockTeamResults = {
   getLeanLeaderboard: jest.fn(),
   toLeaderboardRows: jest.fn(),
 }
+const mockEventLifecycle = { reconcileFinalStart: jest.fn().mockResolvedValue(0) }
 
 describe('PlayerService station flow', () => {
   let service: PlayerService
@@ -60,6 +61,7 @@ describe('PlayerService station flow', () => {
     service = new PlayerService(
       mockPrisma as never,
       mockEventConfig as never,
+      mockEventLifecycle as never,
       mockActivityLog as never,
       mockTeamResults as never,
     )
@@ -68,6 +70,10 @@ describe('PlayerService station flow', () => {
       callback(mockPrisma),
     )
     mockEventConfig.isPastEventEnd.mockResolvedValue(false)
+    mockEventConfig.getPublicConfig.mockResolvedValue({
+      isPastEventEnd: false,
+      isPastFinalStart: false,
+    })
     mockPrisma.teamStationProgress.updateMany.mockResolvedValue({ count: 1 })
     mockPrisma.qrToken.findUnique.mockResolvedValue({
       id: 1,
@@ -307,7 +313,10 @@ describe('PlayerService station flow', () => {
   })
 
   it('rejects check-in after eventEndTime with a closed station message', async () => {
-    mockEventConfig.isPastEventEnd.mockResolvedValue(true)
+    mockEventConfig.getPublicConfig.mockResolvedValue({
+      isPastEventEnd: true,
+      isPastFinalStart: false,
+    })
 
     await expect(
       service.checkIn(2, 'ST002', { qrToken: 'MV26-SQ1-I-ABCDEFGHIJKLMNOPQRSTUVWXY2' }),

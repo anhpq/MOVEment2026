@@ -63,3 +63,9 @@ attempt started before Event end, and enters Final only from `finalStartsAt`.
 
 - `.kilo/plans/1784831016754-final-start-event-end-fix-plan.md`
 
+# Final Challenge V2 — cập nhật 2026-08-17
+
+- `eventEndTime` đóng Check-in mới; operator nên đặt đúng Final trừ 5 phút, UI Admin cảnh báo nhưng vẫn cho phép lưu khác.
+- V2 gửi notice persistent từ `notifyBeforeMinutes` (mặc định 15) và urgent notice ở mốc đóng Station; Final start hủy attempt chưa Check-out, nhưng pending score còn được submit.
+- Final takeover giữ HUD Team V2, không đổi URL; map/gameplay overlays bị ẩn khi Team có thể vào Final.
+- Sai đáp án dùng cooldown `1, 3, 5, 10, 15, ... 50` giây, cap 50, và thử lại đến khi đúng.
