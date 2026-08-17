@@ -633,6 +633,27 @@
   margin: clamp(18px, 4vh, 34px) auto 0;
 }
 
+.team-v2-support-actions {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.team-v2-support-actions .ant-btn {
+  width: 100%;
+  min-height: 44px;
+  white-space: normal;
+}
+
+.team-v2-support-actions .ant-btn:disabled {
+  border-color: rgba(159, 212, 217, 0.24);
+  color: rgba(234, 252, 255, 0.5);
+  cursor: not-allowed;
+  filter: saturate(0.45);
+}
+
 /* Demo v4 visual layer. It deliberately sits last so the Team V2 map/data
    implementation stays intact while the HUD adopts the approved reference. */
 .team-v2-page {
@@ -995,6 +1016,10 @@
   .team-v2-settings-body > .team-v2-setting-row,
   .team-v2-settings-body > .team-v2-team-card {
     grid-column: 1 / -1;
+  }
+
+  .team-v2-support-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

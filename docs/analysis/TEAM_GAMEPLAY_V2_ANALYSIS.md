@@ -1,5 +1,22 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-18 Settings opacity and dual Zalo support
+
+- The Settings opacity slider now drives every full-screen overlay background
+  layer, including the demo-v4 panel, header and button surfaces, while text and
+  controls remain fully opaque and readable.
+- Settings exposes two full-width Zalo support actions. Support 1 keeps the
+  existing contact; Support 2 is visibly disabled with localized "coming soon"
+  copy until its URL is configured. Updating the second URL automatically
+  enables the same safe external-window behavior.
+- Portrait stacks the actions; landscape at `640px+` uses two equal columns that
+  span the full Settings content width. Both actions retain a minimum `44px`
+  target and Safari-compatible CSS fallbacks.
+- Verification PASS: full Frontend Vitest `83/83`, i18n parity `453`, lint,
+  production build/bundle gate, authenticated Chromium feature smoke `3/3` and
+  local WebKit feature smoke `3/3` at `390x844`, `844x390`, and `1024x768`.
+  Physical Safari/iPhone verification was not performed.
+
 ## 2026-08-15 Settings logout removal
 
 - Removed the visible Logout action from Team V2 Settings and deleted its

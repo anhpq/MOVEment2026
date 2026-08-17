@@ -87,7 +87,7 @@ import "./TeamGameplayV2Demo.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
-const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
+const ZALO_SUPPORT_URLS: readonly [string, string | null] = ["https://zalo.me/0909384697", null];
 
 function formatFinalCountdown(seconds: number) {
   const minutes = Math.floor(seconds / 60);
@@ -1383,8 +1383,8 @@ export function TeamGameplayV2Page() {
     }
   };
 
-  const openSupport = () => {
-    const supportWindow = window.open(ZALO_SUPPORT_URL, "_blank", "noopener,noreferrer");
+  const openSupport = (supportUrl: string) => {
+    const supportWindow = window.open(supportUrl, "_blank", "noopener,noreferrer");
     if (supportWindow) {
       supportWindow.opener = null;
     }
@@ -1655,9 +1655,24 @@ export function TeamGameplayV2Page() {
                   }}
                 />
               </div>
-              <Button icon={<CustomerServiceOutlined />} onClick={openSupport}>
-                {t("teamV2.zaloSupport")}
-              </Button>
+              <div className="team-v2-support-actions">
+                <Button block icon={<CustomerServiceOutlined />} onClick={() => openSupport(ZALO_SUPPORT_URLS[0])}>
+                  {t("teamV2.zaloSupport1")}
+                </Button>
+                <Button
+                  block
+                  icon={<CustomerServiceOutlined />}
+                  disabled={!ZALO_SUPPORT_URLS[1]}
+                  onClick={() => {
+                    const supportUrl = ZALO_SUPPORT_URLS[1];
+                    if (supportUrl) {
+                      openSupport(supportUrl);
+                    }
+                  }}
+                >
+                  {t(ZALO_SUPPORT_URLS[1] ? "teamV2.zaloSupport2" : "teamV2.zaloSupport2Pending")}
+                </Button>
+              </div>
             </div>
           </section>
         </div>

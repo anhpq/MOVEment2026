@@ -1,3 +1,17 @@
+# 2026-08-18 Team V2 overlay opacity and dual Zalo support
+
+- Frontend-only: replaced the remaining demo-v4 hard-coded near-opaque overlay
+  surfaces with the existing `--team-v2-overlay-opacity` variable, so the
+  Settings slider visibly affects overlay backgrounds without fading content.
+- Added localized Zalo support 1 and pending Zalo support 2 actions. Portrait
+  stacks them; landscape uses two equal full-width columns. Support 2 remains
+  disabled until its URL is supplied and will enable without a markup change.
+- Verification PASS: Frontend Vitest `83/83`, i18n parity `453`, lint,
+  production build/bundle gate, authenticated Chromium targeted E2E `3/3`, and
+  local WebKit targeted E2E `3/3` at the three responsive target viewports.
+- No Backend source, API contract, database, migration, seed, QR, auth, gameplay,
+  or Business Rule changed. Physical Safari/iPhone verification remains pending.
+
 # 2026-08-18 Team V2 Final notice, input, polling, and WebKit compatibility
 
 - Team V2 Final notice now stays below Total Score, uses consistent return-to-gathering-point copy, and renders a non-interactive neon-pink gathering marker at `65.56%, 68.94%` during `NOTICE` and `STATIONS_CLOSED` only.

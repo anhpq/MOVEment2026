@@ -1,5 +1,17 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-18 Team V2 Settings opacity and Zalo support
+
+- [x] Apply the saved opacity value to every Team V2 overlay background surface
+  without reducing content opacity.
+- [x] Keep Zalo support 1 active and expose Zalo support 2 as localized pending
+  configuration that auto-enables when its URL is added.
+- [x] Stack both actions in portrait and fill Settings width with two equal
+  columns in landscape while retaining `44px` targets.
+- [x] Pass Frontend Vitest `83/83`, i18n parity `453`, lint, build/bundle,
+  Chromium targeted E2E `3/3`, and WebKit targeted E2E `3/3`.
+- [ ] Confirm the controls on physical Safari macOS and iPhone Safari.
+
 ## 2026-08-18 Team V2 Final notice and runtime stop
 
 - [x] Keep the Final notice below Total Score with consistent VI/EN gathering-point guidance.

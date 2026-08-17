@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1786997529.8545988,
-    "ast_hash": "88d65908e5f400ef17fa22625b62e021",
+    "mtime": 1787000139.3722522,
+    "ast_hash": "49488c80096d30143d2b86ac86c01a2c",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1786997670.4986546,
-    "ast_hash": "afb89fd0f0d96c663262a3e424cee360",
+    "mtime": 1787000138.8018458,
+    "ast_hash": "3f83defeacdc4457b65b7cb9978e7347",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1786996512.7341304,
-    "ast_hash": "74ff927f37bf717f0ecf82f299c8288d",
+    "mtime": 1786999339.2020504,
+    "ast_hash": "8380d6efeea61763f0ee0ba523907842",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -965,8 +965,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md": {
-    "mtime": 1786997531.5097523,
-    "ast_hash": "0f52193669b9f938d299238ac58eddb4",
+    "mtime": 1787000139.9479547,
+    "ast_hash": "238699a3815d847084c2a45a87c2823e",
     "semantic_hash": ""
   },
   "docs/analysis/GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md": {
@@ -1030,13 +1030,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.tsx": {
-    "mtime": 1786996511.592433,
-    "ast_hash": "701b44307aa8e19f48fb3202cd6f48c6",
+    "mtime": 1786999348.747992,
+    "ast_hash": "dd461485f38e8683afc3ffb5399898ef",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {
-    "mtime": 1786997671.0602188,
-    "ast_hash": "afa278107479855b725a5e32507ec5d9",
+    "mtime": 1787000138.2155123,
+    "ast_hash": "322162eb0ea66aced87ad444a05ef5c7",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {
@@ -1380,8 +1380,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/teamV2FinalInput.ts": {
-    "mtime": 1786996674.2276354,
-    "ast_hash": "c4e42e532c8be02417311d8409b4d66b",
+    "mtime": 1786997991.9250386,
+    "ast_hash": "12ab795b137ce8fb10abdc4cfa8fedad",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2FinalNotice.test.ts": {
@@ -1390,8 +1390,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2FinalNotice.ts": {
-    "mtime": 1786996439.0146854,
-    "ast_hash": "bfe45ce330660eba08f76e8b10de3d4e",
+    "mtime": 1786997992.5717754,
+    "ast_hash": "f9ce0fba098689d08ce9f99029def173",
     "semantic_hash": ""
   }
 }

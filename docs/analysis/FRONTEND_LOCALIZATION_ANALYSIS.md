@@ -1,5 +1,12 @@
 # Frontend Localization Analysis
 
+## 2026-08-18 Team V2 dual Zalo support copy
+
+- Replaced the single support label with synchronized VI/EN labels for Zalo
+  support 1, Zalo support 2, and the pending second-contact state.
+- i18n parity passed with `453` keys. Authenticated Chromium and local WebKit
+  feature smoke both passed `3/3` across portrait, landscape, and desktop.
+
 ## 2026-08-03 Team V2 Station preview copy
 
 - Added synchronized VI/EN accessible copy for the compact Station preview,

@@ -1,5 +1,16 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-18 Team V2 overlay opacity and support contacts
+
+- The Team V2 Settings opacity preference applies to all overlay backdrop,
+  panel, header, and action backgrounds through a background-only CSS variable;
+  content opacity remains unchanged.
+- Settings provides Zalo support 1 with the current contact and a disabled,
+  localized Zalo support 2 pending its contact URL. Portrait stacks both actions;
+  landscape renders two equal columns across the Settings content width.
+- This is route-local presentation only and does not change Backend, QR,
+  gameplay, authentication, or Team data contracts.
+
 ## 2026-08-15 Team V2 Settings logout removal
 
 - `/team/v2` Settings no longer renders a Logout action. Automatic session
