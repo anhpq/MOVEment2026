@@ -1,5 +1,14 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-18 Team V2 Vietnamese font policy
+
+- Team V2 UI text that can be localized or contain Vietnamese uses bundled
+  Space Grotesk Vietnamese/Latin WOFF2 files. Oxanium is reserved for invariant
+  brand, score, marker-code and HUD-symbol content.
+- The route must not mix Oxanium and fallback glyphs inside Vietnamese strings;
+  localized text stays within the bundled Space Grotesk `500..700` weight range.
+  Font loading remains local-only with no runtime Google Fonts request.
+
 ## 2026-08-18 Admin Event time recommendation
 
 - When `Close Station start QR at` differs from the recommended offset, Admin

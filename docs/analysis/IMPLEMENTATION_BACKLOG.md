@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-18 Team V2 Vietnamese font consistency
+
+- [x] Use bundled Space Grotesk for every localized/dynamic Team V2 DOM heading and action.
+- [x] Keep localized Space Grotesk weights within the bundled `500..700` range.
+- [x] Keep Oxanium only for invariant brand, score, marker code and HUD-symbol content.
+- [x] Verify the Vietnamese face and computed font on Chromium and WebKit at three viewports.
+- [ ] Confirm the corrected rendering on physical Safari macOS and iPhone Safari.
+
 ## 2026-08-18 Admin Event close-time recommendation
 
 - [x] Calculate the recommended Station start QR close time as Final minus 5 minutes.

@@ -1,5 +1,12 @@
 # Frontend Localization Analysis
 
+## 2026-08-18 Team V2 Vietnamese font consistency
+
+- Team V2 localized/dynamic UI now consistently uses bundled Space Grotesk
+  Vietnamese plus Latin subsets. Oxanium is restricted to invariant HUD content.
+- Chromium and local WebKit computed-style/font-loading smoke passed `3/3` each
+  across portrait, low-height landscape, and desktop.
+
 ## 2026-08-18 Admin Event close-time recommendation copy
 
 - Added synchronized VI/EN guidance for the calculated Station-start QR close

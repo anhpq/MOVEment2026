@@ -1,5 +1,20 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-18 Vietnamese font consistency
+
+- All Team V2 localized/dynamic DOM UI now uses the bundled Space Grotesk
+  Vietnamese/Latin family. This includes the Final notice title, overlay titles,
+  Team/Station names and the Station Detail start-scan CTA.
+- Oxanium remains limited to invariant HUD content that does not require
+  Vietnamese glyphs: `MOVEment 2026`, score/`PTS`, marker codes and the gathering
+  point `X`. This prevents per-glyph fallback, mismatched baselines and broken
+  diacritics while preserving the approved cyberpunk brand treatment.
+- Localized labels/actions use the bundled supported weight ceiling `700`
+  instead of synthetic `800..900` weights, avoiding jagged Vietnamese strokes.
+- Computed-font smoke PASS on authenticated Chromium and local WebKit `3/3` each
+  at `390x844`, `844x390`, and `1024x768`; the bundled Vietnamese face reported
+  loaded in both engines. Physical Safari/iPhone verification remains pending.
+
 ## 2026-08-18 Settings opacity and dual Zalo support
 
 - The Settings opacity slider now drives every full-screen overlay background

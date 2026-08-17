@@ -88,9 +88,9 @@
   pointer-events: none;
 }
 
-.team-v2-final-notice strong { font-family: "Oxanium", Aptos, sans-serif; font-size: clamp(14px, 2.5vw, 18px); }
+.team-v2-final-notice strong { font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif; font-size: clamp(14px, 2.5vw, 18px); }
 .team-v2-final-notice p { margin: 0; color: var(--team-v2-muted); font-size: clamp(12px, 2vw, 15px); line-height: 1.3; }
-.team-v2-final-notice span { color: var(--team-v2-score); font-weight: 800; }
+.team-v2-final-notice span { color: var(--team-v2-score); font-weight: 700; }
 
 @media (orientation: portrait) {
   .team-v2-final-notice { top: calc(9% + clamp(58px, 7%, 68px) + 12px); }
@@ -353,7 +353,7 @@
   color: #eafcff;
   font-size: calc(12px * var(--team-v2-footer-font-compensation, 1));
   font-style: normal;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.055em;
   text-shadow: 0 0 8px var(--team-v2-focus-ring);
   text-transform: uppercase;
@@ -371,7 +371,7 @@
   overflow: hidden;
   color: var(--team-v2-muted);
   font-size: calc(8px * var(--team-v2-footer-font-compensation, 1));
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
   text-overflow: ellipsis;
@@ -517,7 +517,7 @@
   bottom: 62px;
   color: #eafcff;
   font-size: calc(12px * var(--team-v2-footer-font-compensation, 1));
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-shadow: 0 0 8px var(--team-v2-accent);
   text-transform: uppercase;
@@ -535,7 +535,7 @@
   overflow: hidden;
   color: var(--team-v2-muted);
   font-size: 7px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   text-align: center;
   text-overflow: ellipsis;
@@ -1570,7 +1570,7 @@
 .team-v2-team-panel__active small { color: #ffd21a; font-size: 8px; text-transform: uppercase; }
 .team-v2-team-panel__active strong { font-size: 18px; }
 .team-v2-team-panel__active em { overflow: hidden; color: #b9d1d8; font-size: 9px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
-.team-v2-team-panel__active button { min-height: 38px; padding: 0 12px; border: 0; border-radius: 5px; background: #ffd21a; color: #241a00; font-size: 10px; font-weight: 900; text-transform: uppercase; box-shadow: 0 0 12px rgba(255, 210, 26, 0.55); cursor: pointer; }
+.team-v2-team-panel__active button { min-height: 38px; padding: 0 12px; border: 0; border-radius: 5px; background: #ffd21a; color: #241a00; font-size: 10px; font-weight: 700; text-transform: uppercase; box-shadow: 0 0 12px rgba(255, 210, 26, 0.55); cursor: pointer; }
 
 .team-v2-team-panel__stations { overflow: hidden; }
 .team-v2-team-panel__stations > strong { display: block; padding: 9px 10px; border-bottom: 1px solid rgba(0, 231, 255, 0.24); font-size: 11px; text-transform: uppercase; }

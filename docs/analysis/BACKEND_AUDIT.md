@@ -1,3 +1,17 @@
+# 2026-08-18 Team V2 Vietnamese font consistency
+
+- Frontend-only: removed Oxanium-first declarations from the localized Final
+  notice, overlay/Team/Station headings and Station start-scan CTA. These surfaces
+  now share bundled Space Grotesk Vietnamese with Latin and system fallbacks.
+- Preserved Oxanium for invariant brand, numeric score, marker codes and HUD
+  symbols only.
+- Normalized localized action/label weights to supported Space Grotesk `700`
+  instead of browser-synthesized `800..900` glyphs.
+- Verification PASS: Frontend Vitest `85/85`, lint, production build/bundle,
+  authenticated Chromium computed-font E2E `3/3`, and local WebKit computed-font
+  E2E `3/3` at the three responsive target viewports.
+- No Backend, API, database, migration, seed, QR flow, gameplay, or Business Rule changed.
+
 # 2026-08-18 Admin Station-start close-time recommendation
 
 - Frontend-only: the existing non-blocking Event Config warning now calculates
