@@ -72,6 +72,7 @@ import {
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
+import {useTeamV2RuntimePolling} from "../hooks/useTeamV2RuntimePolling";
 import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import {
   executePlayerMutation,
@@ -927,6 +928,7 @@ export function TeamGameplayV2Page() {
     [activeTeamId, teamStations],
   );
   const language = i18n.language === "en" ? "en" : "vi";
+  useTeamV2RuntimePolling();
   const [panelOpacity, setPanelOpacity] = useState(readStoredPanelOpacity);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
   const [isStationDetailOpen, setIsStationDetailOpen] = useState(false);
@@ -1356,6 +1358,7 @@ export function TeamGameplayV2Page() {
       const {result} = await executePlayerMutation(
         () => submitPlayerQrAction(token),
         language,
+        {reconcile: "v2-runtime"},
       );
       setQrToken("");
       setIsScannerOpen(false);
@@ -1559,6 +1562,7 @@ export function TeamGameplayV2Page() {
               await executePlayerMutation(
                 () => cancelPlayerStation(selectedStation.stationId),
                 language,
+                {reconcile: "v2-runtime"},
               );
               message.success(t("stationDetail.cancelled"));
               setSelectedStationId(null);
@@ -1767,6 +1771,7 @@ export function TeamGameplayV2Page() {
                           values.reason,
                         ),
                         language,
+                        {reconcile: "v2-runtime"},
                       );
                       message.success(t("stationDetail.completedSuccess"));
                       setScoreStationId(null);

@@ -113,7 +113,11 @@ export function TeamV2FinalChallenge({language, onCompleted}: TeamV2FinalChallen
     if (!canSubmit) return;
     setSubmitting(true);
     try {
-      const {result} = await executePlayerMutation(() => submitFinalAnswer(answer), language);
+      const {result} = await executePlayerMutation(
+        () => submitFinalAnswer(answer),
+        language,
+        {reconcile: "v2-runtime"},
+      );
       if (result.isCorrect) {
         onCompleted?.();
         message.success(t("final.acceptedMessage"));

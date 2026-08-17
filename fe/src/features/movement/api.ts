@@ -223,6 +223,27 @@ export type PlayerStateResponse = {
   }
 }
 
+export type PlayerV2RuntimeResponse = {
+  runtimeVersion: string
+  catalogVersion: string
+  totalPoints: number
+  rank: number | null
+  completedStations: number
+  progress: Array<{
+    stationId: string
+    status: PlayerStateProgressResponse['status']
+    checkedInAt?: string
+    checkedOutAt?: string
+    completedAt?: string
+    scoreAchieved: number
+    attemptNo: number
+  }>
+  final: Pick<
+    PlayerStateResponse['final'],
+    'phase' | 'blockedByActiveStation' | 'pendingScoreStationId' | 'secondsUntilFinal'
+  >
+}
+
 export type PlayerStationImagesResponse = {
   stationId: string
   imageUrls: string[]
@@ -259,6 +280,11 @@ export async function getPlayerCatalog(
 
 export async function getPlayerState(): Promise<PlayerStateResponse> {
   return apiGet<PlayerStateResponse>('/api/player/state')
+}
+
+export async function getPlayerV2Runtime(): Promise<PlayerV2RuntimeResponse> {
+  return runPlayerRead('player-v2-runtime', () =>
+    apiGet<PlayerV2RuntimeResponse>('/api/player/v2/runtime'))
 }
 
 export async function getPlayerStationImages(

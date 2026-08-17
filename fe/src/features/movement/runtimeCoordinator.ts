@@ -1,5 +1,7 @@
 const inFlightRequests = new Map<string, Promise<unknown>>();
 
+// Rollback baseline: keep these defaults at 15s/30s unless the runtime analysis,
+// measurements, and tests are updated together.
 export const TEAM_RUNTIME_POLL_INTERVAL_MS = 15_000;
 export const TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS = 30_000;
 

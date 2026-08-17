@@ -4,6 +4,7 @@ import {
   getPlayerFinal,
   getPlayerProgress,
   getPlayerState,
+  getPlayerV2Runtime,
   getPlayerStationImages,
   getPlayerStations,
   isAuthFailure,
@@ -11,6 +12,7 @@ import {
   type PlayerCatalogStationResponse,
   type PlayerProgressResponse,
   type PlayerStateProgressResponse,
+  type PlayerV2RuntimeResponse,
   type PlayerStationResponse,
 } from "./api";
 import {ApiError} from "./apiClient";
@@ -58,6 +60,7 @@ let catalogCache: {
   version: string;
   stations: PlayerCatalogStationResponse[];
 } | null = null;
+const appliedV2RuntimeVersions = new Map<string, string>();
 
 const playerMapImageCache = new Map<string, Promise<HTMLImageElement>>();
 const stationImageUrlCache = new Map<string, Promise<string[]>>();
@@ -230,6 +233,70 @@ function toPlayerFinalSummary(
   };
 }
 
+function buildV2RuntimeSeed(
+  runtime: PlayerV2RuntimeResponse,
+  dataSessionKey: string,
+): LocalDatabaseSeed {
+  const current = useMovementStore.getState();
+  const teamId = current.session?.teamId ?? current.activeTeamId;
+  const activeTeam = current.teams.find((team) => team.id === teamId);
+  if (!teamId || !activeTeam) {
+    throw new StaleSessionResponseError();
+  }
+  const progressByStation = new Map(
+    runtime.progress.map((progress) => [progress.stationId, progress]),
+  );
+  const currentStations = current.teamStations[teamId] ?? [];
+
+  return {
+    dataSessionKey,
+    activeTeamId: teamId,
+    finalSummary: {
+      ...(current.finalSummary ?? {
+        isOpen: false,
+        canSubmit: false,
+        blockedByActiveStation: false,
+        activeStationId: null,
+        finalStartsAt: "",
+        eventEndTime: "",
+        notifyBeforeMinutes: 0,
+        secondsUntilFinal: 0,
+        stationCheckInClosed: false,
+        phase: "NORMAL",
+        pendingScoreStationId: null,
+      }),
+      ...runtime.final,
+    },
+    teams: current.teams.map((team) =>
+      team.id === teamId ? {
+        ...team,
+        score: runtime.totalPoints,
+        rank: runtime.rank,
+        finish: runtime.completedStations,
+      } : team,
+    ),
+    stationDefinitions: current.stationDefinitions,
+    teamStations: {
+      ...current.teamStations,
+      [teamId]: currentStations.map((station) => {
+        const progress = progressByStation.get(station.stationId);
+        if (!progress) {
+          return station;
+        }
+        return {
+          ...station,
+          status: mapProgressStatus(progress.status),
+          score: progress.scoreAchieved,
+          startTime: progress.checkedInAt ?? null,
+          endTime: progress.completedAt ?? progress.checkedOutAt ?? null,
+          nextCheckInAllowedAt: null,
+          backendStatus: progress.status,
+        };
+      }),
+    },
+  };
+}
+
 async function fetchLegacyPlayerFinalSummary() {
   try {
     return toPlayerFinalSummary(await getPlayerFinal());
@@ -387,6 +454,30 @@ export async function reconcilePlayerDatabase(
   return seed;
 }
 
+export async function reconcileTeamV2Runtime(
+  language: SupportedLanguage = readStoredLanguage(),
+) {
+  const dataSessionKey = getCurrentDataSessionKey();
+  if (!dataSessionKey) {
+    throw new StaleSessionResponseError();
+  }
+  const runtime = await getPlayerV2Runtime();
+  assertCurrentDataSession(dataSessionKey);
+
+  if (!catalogCache || catalogCache.version !== runtime.catalogVersion) {
+    await reconcilePlayerDatabase(language, {fresh: true});
+    appliedV2RuntimeVersions.set(dataSessionKey, runtime.runtimeVersion);
+    return {changed: true as const, catalogReloaded: true as const};
+  }
+  if (appliedV2RuntimeVersions.get(dataSessionKey) === runtime.runtimeVersion) {
+    return {changed: false as const, catalogReloaded: false as const};
+  }
+
+  useMovementStore.getState().loadDatabase(buildV2RuntimeSeed(runtime, dataSessionKey));
+  appliedV2RuntimeVersions.set(dataSessionKey, runtime.runtimeVersion);
+  return {changed: true as const, catalogReloaded: false as const};
+}
+
 function isMutationOutcomeUnknown(error: unknown) {
   return error instanceof ApiError && error.retryable;
 }
@@ -394,7 +485,11 @@ function isMutationOutcomeUnknown(error: unknown) {
 export async function executePlayerMutation<T>(
   mutation: () => Promise<T>,
   language: SupportedLanguage = readStoredLanguage(),
+  options: {reconcile?: "full" | "v2-runtime"} = {},
 ) {
+  const reconcile = () => options.reconcile === "v2-runtime" ?
+      reconcileTeamV2Runtime(language)
+    : reconcilePlayerDatabase(language, {fresh: true});
   let result: T;
   try {
     result = await mutation();
@@ -403,7 +498,7 @@ export async function executePlayerMutation<T>(
       useMovementStore.getState().logout();
     } else if (isMutationOutcomeUnknown(error)) {
       try {
-        await reconcilePlayerDatabase(language, {fresh: true});
+        await reconcile();
       } catch (reconciliationError) {
         if (isAuthFailure(reconciliationError)) {
           useMovementStore.getState().logout();
@@ -414,7 +509,7 @@ export async function executePlayerMutation<T>(
   }
 
   try {
-    await reconcilePlayerDatabase(language, {fresh: true});
+    await reconcile();
     return {result, reconciled: true as const};
   } catch (reconciliationError) {
     if (isAuthFailure(reconciliationError)) {
@@ -480,4 +575,5 @@ export function resetPlayerRuntimeCachesForTests() {
   playerDatabaseRequestSeq = 0;
   playerMapImageCache.clear();
   stationImageUrlCache.clear();
+  appliedV2RuntimeVersions.clear();
 }

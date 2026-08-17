@@ -40,6 +40,11 @@ afterEach(() => {
 });
 
 describe("reduced data mode", () => {
+  it("locks the documented 15s/30s polling rollback baseline", () => {
+    expect(TEAM_RUNTIME_POLL_INTERVAL_MS).toBe(15_000);
+    expect(TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS).toBe(30_000);
+  });
+
   it.each([
     [{saveData: true, effectiveType: "4g"}],
     [{saveData: false, effectiveType: "2g"}],
