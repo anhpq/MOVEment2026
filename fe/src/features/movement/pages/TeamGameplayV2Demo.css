@@ -517,6 +517,45 @@
 .team-v2-team-panel,
 .team-v2-detail { overflow: auto; padding: 0 !important; }
 
+.team-v2-scanner-layer {
+  padding: 0;
+}
+
+.team-v2-scanner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none !important;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.team-v2-scanner > .team-v2-overlay-header {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding:
+    max(12px, env(safe-area-inset-top, 0px))
+    max(16px, env(safe-area-inset-right, 0px))
+    12px
+    max(16px, env(safe-area-inset-left, 0px));
+  border-bottom: 0;
+  background: linear-gradient(180deg, rgba(1, 7, 13, .9), rgba(1, 7, 13, .52) 72%, transparent);
+  pointer-events: none;
+}
+
+.team-v2-scanner > .team-v2-overlay-header .team-v2-icon-button {
+  pointer-events: auto;
+}
+
+.team-v2-scanner .team-v2-qr-scanner {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
 .team-v2-settings-body,
 .team-v2-score-entry form,
 .team-v2-rank-list,
@@ -573,6 +612,9 @@
   .team-v2-team-panel__header,
   .team-v2-detail-header { padding-block: 8px; }
   .team-v2-settings-body { margin-block: 12px; }
+  .team-v2-scanner > .team-v2-overlay-header {
+    padding-block: max(6px, env(safe-area-inset-top, 0px)) 6px;
+  }
 }
 
 @supports not (clip-path: polygon(0 0)) {

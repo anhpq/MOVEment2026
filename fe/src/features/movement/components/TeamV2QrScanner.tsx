@@ -1,5 +1,5 @@
-import {CameraOutlined, ReloadOutlined} from "@ant-design/icons";
-import {Alert, Button, Flex, Input, Typography} from "antd";
+import {CameraOutlined, CopyOutlined, ReloadOutlined} from "@ant-design/icons";
+import {Alert, Button, Flex, Input} from "antd";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
@@ -15,6 +15,7 @@ import "./TeamV2QrScanner.css";
 const REARM_EMPTY_MS = 600;
 
 type ScannerState = "idle" | "requesting" | "active" | "submitting" | "error";
+type ScannerTab = "camera" | "paste";
 
 export type TeamV2QrSubmitResult =
   | Readonly<{status: "accepted"}>
@@ -123,7 +124,7 @@ export function TeamV2QrScanner({
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
   const [cameraErrorKey, setCameraErrorKey] = useState<CameraErrorKey | null>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [manualVisible, setManualVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState<ScannerTab>("camera");
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -177,7 +178,6 @@ export function TeamV2QrScanner({
       return;
     }
     setCameraErrorKey(errorKey);
-    setManualVisible(true);
     setScannerState("error");
   }, [stopScanner]);
 
@@ -189,11 +189,9 @@ export function TeamV2QrScanner({
     const token = normalizeDecodedQrValue(rawToken);
     if (!token) {
       setSubmissionError(t("teamV2.qrRequired"));
-      setManualVisible(true);
       return;
     }
     if (token === blockedTokenRef.current) {
-      setManualVisible(true);
       return;
     }
     if (submittingRef.current) {
@@ -228,7 +226,6 @@ export function TeamV2QrScanner({
     blockedTokenRef.current = token;
     emptyFrameStartedAtRef.current = null;
     setSubmissionError(result.message);
-    setManualVisible(true);
 
     if (streamRef.current?.active && detectorRef.current && videoRef.current) {
       setScannerState("active");
@@ -361,24 +358,71 @@ export function TeamV2QrScanner({
 
   useEffect(() => {
     mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      stopScanner();
+    };
+  }, [stopScanner]);
+
+  useEffect(() => {
+    if (activeTab !== "camera") {
+      stopScanner();
+      return;
+    }
+
     const startFrame = window.requestAnimationFrame(() => {
       void startCamera();
     });
     return () => {
       window.cancelAnimationFrame(startFrame);
-      mountedRef.current = false;
       stopScanner();
     };
-  }, [startCamera, stopScanner]);
+  }, [activeTab, startCamera, stopScanner]);
 
   const isCameraRunning =
     scannerState === "requesting" ||
     scannerState === "active" ||
     scannerState === "submitting";
 
+  const selectTab = (tab: ScannerTab) => {
+    if (tab === activeTab) {
+      return;
+    }
+    setCameraErrorKey(null);
+    setSubmissionError(null);
+    if (tab === "paste") {
+      stopScanner();
+      setScannerState("idle");
+    }
+    setActiveTab(tab);
+  };
+
   return (
-    <Flex vertical gap={12} className="team-v2-qr-scanner">
-      <div className="team-v2-qr-scanner__viewport" data-state={scannerState}>
+    <div className="team-v2-qr-scanner" data-active-tab={activeTab}>
+      <div className="team-v2-qr-scanner__tabs" role="tablist" aria-label={t("teamV2.scanTitle")}>
+        <button
+          type="button"
+          role="tab"
+          aria-label={t("teamV2.scanQrTab")}
+          aria-selected={activeTab === "camera"}
+          className={activeTab === "camera" ? "is-active" : undefined}
+          onClick={() => selectTab("camera")}>
+          <CameraOutlined />
+          <span>{t("teamV2.scanQrTab")}</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-label={t("teamV2.pasteQrTab")}
+          aria-selected={activeTab === "paste"}
+          className={activeTab === "paste" ? "is-active" : undefined}
+          onClick={() => selectTab("paste")}>
+          <CopyOutlined />
+          <span>{t("teamV2.pasteQrTab")}</span>
+        </button>
+      </div>
+
+      {activeTab === "camera" && <div className="team-v2-qr-scanner__viewport" data-state={scannerState} role="tabpanel">
         <video
           ref={videoRef}
           autoPlay
@@ -387,29 +431,34 @@ export function TeamV2QrScanner({
           className="team-v2-qr-scanner__video"
         />
         <div className="team-v2-qr-scanner__frame" aria-hidden="true" />
-        {scannerState === "requesting" && (
+        {(scannerState === "requesting" || scannerState === "submitting") && (
           <span className="team-v2-qr-scanner__status">
-            {t("teamV2.cameraStarting")}
+            {scannerState === "submitting" ? t("common.loading") : t("teamV2.cameraStarting")}
           </span>
         )}
-      </div>
+        {isCameraRunning && scannerState !== "submitting" && (
+          <span className="team-v2-qr-scanner__instruction">{t("qrScanner.instruction")}</span>
+        )}
+        {(cameraErrorKey || submissionError) && (
+          <div className="team-v2-qr-scanner__camera-error">
+            <Alert
+              type="error"
+              showIcon
+              description={cameraErrorKey ? t(cameraErrorKey) : submissionError}
+            />
+            {cameraErrorKey && (
+              <Button icon={<ReloadOutlined />} onClick={() => void startCamera()}>
+                {t("teamV2.retryCamera")}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>}
 
-      {isCameraRunning && (
-        <Typography.Text type="secondary">
-          {t("qrScanner.instruction")}
-        </Typography.Text>
-      )}
-
-      {cameraErrorKey && (
-        <Alert type="error" showIcon description={t(cameraErrorKey)} />
-      )}
-      {submissionError && (
-        <Alert type="error" showIcon description={submissionError} />
-      )}
-
-      {manualVisible && (
-        <Flex vertical gap={8} className="team-v2-qr-scanner__manual">
-          <Typography.Text strong>{t("teamV2.manualQrLabel")}</Typography.Text>
+      {activeTab === "paste" && (
+        <Flex vertical gap={12} className="team-v2-qr-scanner__manual" role="tabpanel">
+          <strong>{t("teamV2.manualQrLabel")}</strong>
+          {submissionError && <Alert type="error" showIcon description={submissionError} />}
           <Input
             value={value}
             placeholder={placeholder}
@@ -431,21 +480,6 @@ export function TeamV2QrScanner({
           </Button>
         </Flex>
       )}
-
-      <Button
-        icon={isCameraRunning ? <CameraOutlined /> : <ReloadOutlined />}
-        disabled={scannerState === "submitting"}
-        onClick={() => {
-          if (isCameraRunning) {
-            stopScanner();
-            setManualVisible(true);
-            setScannerState("idle");
-            return;
-          }
-          void startCamera();
-        }}>
-        {isCameraRunning ? t("qrScanner.stopCamera") : t("teamV2.retryCamera")}
-      </Button>
-    </Flex>
+    </div>
   );
 }

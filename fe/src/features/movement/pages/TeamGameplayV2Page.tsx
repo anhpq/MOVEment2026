@@ -1688,7 +1688,7 @@ export function TeamGameplayV2Page() {
 
       {!isFinalMode && isScannerOpen && (
         <div
-          className="team-v2-overlay-layer"
+          className="team-v2-overlay-layer team-v2-scanner-layer"
           style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setIsScannerOpen(false);

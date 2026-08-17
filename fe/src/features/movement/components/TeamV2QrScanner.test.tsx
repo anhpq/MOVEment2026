@@ -6,15 +6,24 @@ import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
 import i18n from "../i18n";
 import {TeamV2QrScanner} from "./TeamV2QrScanner";
 
-vi.mock("../qrDetect", () => ({
+const qrMocks = vi.hoisted(() => ({
+  supported: false,
   createQrFrameDetector: vi.fn(),
+  openQrCameraStream: vi.fn(),
+}));
+
+vi.mock("../qrDetect", () => ({
+  createQrFrameDetector: qrMocks.createQrFrameDetector,
   getVideoMediaStream: () => null,
   normalizeDecodedQrValue: (value: string) => value.trim(),
-  openQrCameraStream: vi.fn(),
-  supportsCameraQrScan: () => false,
+  openQrCameraStream: qrMocks.openQrCameraStream,
+  supportsCameraQrScan: () => qrMocks.supported,
 }));
 
 beforeEach(() => {
+  qrMocks.supported = false;
+  qrMocks.createQrFrameDetector.mockReset();
+  qrMocks.openQrCameraStream.mockReset();
   class FakeMediaStream {
     active = false;
     getTracks() {
@@ -64,6 +73,7 @@ describe("TeamV2QrScanner manual duplicate guard", () => {
     const user = userEvent.setup();
     render(<ScannerHarness onSubmitToken={onSubmitToken} />);
 
+    await user.click(screen.getByRole("tab", {name: i18n.t("teamV2.pasteQrTab")}));
     const input = await screen.findByRole("textbox");
     await user.type(input, "MV26-SQ1-I-TEST");
     const submit = screen.getByRole("button", {name: i18n.t("teamV2.submitQr")});
@@ -73,5 +83,34 @@ describe("TeamV2QrScanner manual duplicate guard", () => {
     await user.click(submit);
 
     expect(onSubmitToken).toHaveBeenCalledTimes(1);
+  });
+
+  it("stops the camera when switching to the paste tab", async () => {
+    const stop = vi.fn();
+    const dispose = vi.fn();
+    qrMocks.supported = true;
+    qrMocks.openQrCameraStream.mockResolvedValue({
+      active: true,
+      getTracks: () => [{stop}],
+    });
+    qrMocks.createQrFrameDetector.mockReturnValue({
+      detect: vi.fn().mockResolvedValue(null),
+      dispose,
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, "readyState", {
+      configurable: true,
+      get: () => HTMLMediaElement.HAVE_METADATA,
+    });
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+
+    const user = userEvent.setup();
+    render(<ScannerHarness onSubmitToken={vi.fn().mockResolvedValue({status: "rejected", message: "rejected"})} />);
+
+    await waitFor(() => expect(qrMocks.openQrCameraStream).toHaveBeenCalledTimes(1));
+    await user.click(screen.getByRole("tab", {name: i18n.t("teamV2.pasteQrTab")}));
+
+    await waitFor(() => expect(stop).toHaveBeenCalled());
+    expect(dispose).toHaveBeenCalled();
+    expect(screen.getByRole("textbox")).toBeVisible();
   });
 });
