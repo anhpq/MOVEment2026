@@ -303,6 +303,20 @@
   font-size: 0.7rem;
 }
 
+.ops-info-note-warning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.ops-recommended-time.ant-typography {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .ops-submissions-card .ant-card-head-title {
   color: #17243e;
   font-weight: 700;

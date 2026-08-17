@@ -1,3 +1,15 @@
+# 2026-08-18 Admin Station-start close-time recommendation
+
+- Frontend-only: the existing non-blocking Event Config warning now calculates
+  `Final starts at - 5 minutes` and renders the result as a copyable `HH:mm`
+  value beside localized VI/EN guidance.
+- Added focused coverage for calculation, optional seconds, invalid values, and
+  detecting whether the current close time already matches the recommendation.
+- Verification PASS: focused Vitest `2/2`, full Frontend Vitest `85/85`, i18n
+  parity `455`, lint, and production build/bundle gate.
+- No Backend, API contract, database, migration, seed, Event timing authority,
+  Final opening rule, or save restriction changed.
+
 # 2026-08-18 Team V2 overlay opacity and dual Zalo support
 
 - Frontend-only: replaced the remaining demo-v4 hard-coded near-opaque overlay

@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-18 Admin Event close-time recommendation
+
+- [x] Calculate the recommended Station start QR close time as Final minus 5 minutes.
+- [x] Display the `HH:mm` recommendation with a copy action in the existing warning.
+- [x] Preserve non-blocking saves for a different close time.
+- [x] Cover calculation, invalid input, optional seconds, and match detection.
+- [x] Pass Frontend Vitest `85/85`, i18n parity `455`, lint, and build/bundle.
+
 ## 2026-08-18 Team V2 Settings opacity and Zalo support
 
 - [x] Apply the saved opacity value to every Team V2 overlay background surface

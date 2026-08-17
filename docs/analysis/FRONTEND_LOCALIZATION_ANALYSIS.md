@@ -1,5 +1,11 @@
 # Frontend Localization Analysis
 
+## 2026-08-18 Admin Event close-time recommendation copy
+
+- Added synchronized VI/EN guidance for the calculated Station-start QR close
+  time, unavailable recommendation state, copy instruction, and advisory save behavior.
+- Dynamic Final and recommended `HH:mm` values remain unmodified identifiers.
+
 ## 2026-08-18 Team V2 dual Zalo support copy
 
 - Replaced the single support label with synchronized VI/EN labels for Zalo

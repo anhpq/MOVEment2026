@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1787000139.3722522,
-    "ast_hash": "49488c80096d30143d2b86ac86c01a2c",
+    "mtime": 1787000641.2116234,
+    "ast_hash": "2ffa7f2b3f324de2090767629d2433f2",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1786996252.3616514,
-    "ast_hash": "c0f7ba9759a4e3ef0ab1989ffb2f8143",
+    "mtime": 1787000569.0847418,
+    "ast_hash": "6d1b2167d277ce07e9962d30ac6db672",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1787000138.8018458,
-    "ast_hash": "3f83defeacdc4457b65b7cb9978e7347",
+    "mtime": 1787000640.5564356,
+    "ast_hash": "fd00faeed5d000392dc8bad74002b65a",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -600,8 +600,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/AdminOperationsPage.tsx": {
-    "mtime": 1786966508.9922519,
-    "ast_hash": "4fe9b8a16ad8e072937c968ebacd9d6b",
+    "mtime": 1787000656.1930745,
+    "ast_hash": "b4d1e70f1415437f128019c45ed0b40b",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/FinalPage.tsx": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1786999339.2020504,
-    "ast_hash": "8380d6efeea61763f0ee0ba523907842",
+    "mtime": 1787000550.0251856,
+    "ast_hash": "3511598806fe3b17474a953098b8488b",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -965,8 +965,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md": {
-    "mtime": 1787000139.9479547,
-    "ast_hash": "238699a3815d847084c2a45a87c2823e",
+    "mtime": 1787000570.81958,
+    "ast_hash": "6f9f4bbfa4843b32ddf2a9eb767781e3",
     "semantic_hash": ""
   },
   "docs/analysis/GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md": {
@@ -1392,6 +1392,16 @@
   "fe/src/features/movement/pages/teamV2FinalNotice.ts": {
     "mtime": 1786997992.5717754,
     "ast_hash": "f9ce0fba098689d08ce9f99029def173",
+    "semantic_hash": ""
+  },
+  "fe/src/features/movement/eventTimeRecommendation.test.ts": {
+    "mtime": 1787000549.4648318,
+    "ast_hash": "105d4757b17cb7782bcbfda9594fa2a5",
+    "semantic_hash": ""
+  },
+  "fe/src/features/movement/eventTimeRecommendation.ts": {
+    "mtime": 1787000505.7386477,
+    "ast_hash": "bc156056b2e4f63ebecc519d0a8cb9f8",
     "semantic_hash": ""
   }
 }
