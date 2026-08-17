@@ -1680,3 +1680,6 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Verification PASS: Frontend Vitest `61/61`, i18n parity `413`, lint,
   production build, and bundle budget (`203.95 KiB` initial gzip).
 - Manual physical-camera and mobile visual verification remains pending.
+# Final lifecycle — cập nhật 2026-08-17
+
+`EventLifecycleService` reconcile mỗi 5 giây và tại các Player/Final read-write boundary. Reconcile idempotent theo `updateMany`, chỉ cancel progress `CHECKED_IN`/`PLAYING` chưa `checkedOutAt`, reset attempt state và ghi System activity log. Public event/final/player state trả phase, timing, pending score để V2 takeover.

@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { ActorType, FinalChallenge, Prisma, ProgressStatus, Team } from '@prisma/client';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { EventConfigService } from '../event-config/event-config.service';
+import { EventLifecycleService } from '../event-config/event-lifecycle.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubmitFinalDto, UpdateFinalConfigDto } from './dto/final.dto';
 
@@ -13,10 +14,12 @@ export class FinalService {
     private readonly prisma: PrismaService,
     private readonly activityLog: ActivityLogService,
     private readonly eventConfig: EventConfigService,
+    private readonly eventLifecycle: EventLifecycleService,
   ) {}
 
   async getPlayerFinal(teamId: number) {
     const now = new Date();
+    await this.eventLifecycle.reconcileFinalStart(now);
     const [challenge, eventConfig] = await Promise.all([
       this.getActiveChallenge(),
       this.eventConfig.getPublicConfig(),
@@ -50,10 +53,17 @@ export class FinalService {
       cooldownSeconds: cooldown.cooldownSeconds,
       nextAttemptAt: cooldown.nextAttemptAt,
       serverNow: now.toISOString(),
+      answerLength: isOpen && !submission ? Array.from(this.getStoredFinalKeyword(challenge)).length : null,
+      notifyBeforeMinutes: eventConfig.notifyBeforeMinutes,
+      secondsUntilFinal: eventConfig.secondsUntilFinal,
+      stationCheckInClosed: eventConfig.isPastEventEnd || eventConfig.isPastFinalStart,
+      phase: eventConfig.isPastFinalStart ? 'FINAL_STARTED' : eventConfig.isPastEventEnd ? 'STATIONS_CLOSED' : eventConfig.secondsUntilFinal <= eventConfig.notifyBeforeMinutes * 60 ? 'NOTICE' : 'NORMAL',
+      pendingScoreStationId: activeProgress?.checkedOutAt ? activeProgress.stationId : null,
     };
   }
 
   async submitFinal(teamId: number, dto: SubmitFinalDto) {
+    await this.eventLifecycle.reconcileFinalStart();
     const challenge = await this.getActiveChallenge();
     const now = new Date();
     if (!(await this.eventConfig.isPastFinalStart(now))) {
@@ -256,7 +266,7 @@ export class FinalService {
         teamId,
         status: { in: [ProgressStatus.CHECKED_IN, ProgressStatus.PLAYING] },
       },
-      select: { id: true, stationId: true },
+      select: { id: true, stationId: true, checkedOutAt: true },
     });
   }
 
@@ -275,7 +285,7 @@ export class FinalService {
         orderBy: { submittedAt: 'desc' },
       }),
     ]);
-    const cooldownSeconds = Math.min(wrongAttemptCount, 10);
+    const cooldownSeconds = this.getCooldownSeconds(wrongAttemptCount);
     const nextAttemptAt =
       latestWrong && cooldownSeconds > 0
         ? new Date(latestWrong.submittedAt.getTime() + cooldownSeconds * 1000)
@@ -287,6 +297,13 @@ export class FinalService {
       nextAttemptAt: nextAttemptAt?.toISOString() ?? null,
       isCoolingDown: Boolean(nextAttemptAt && nextAttemptAt > now),
     };
+  }
+
+  private getCooldownSeconds(wrongAttemptCount: number) {
+    if (wrongAttemptCount <= 0) return 0;
+    if (wrongAttemptCount === 1) return 1;
+    if (wrongAttemptCount === 2) return 3;
+    return Math.min((wrongAttemptCount - 2) * 5, 50);
   }
 
   private getPointsByRank(challenge: FinalChallenge) {

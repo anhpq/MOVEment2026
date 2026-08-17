@@ -1365,3 +1365,8 @@ Acceptance:
 - [ ] Full Backend Jest suite, disposable DB reset execute/idempotency, `db:verify`, Graphify update, and final diff check remain pending in the active run.
 - [ ] Manual browser smoke for live counts, hidden-tab polling, fixed nav safe-area, map persistence, WebP network requests, Team QR lifecycle, and Leaderboard polling remains pending.
 - [ ] Production mutation, push, deploy, and Production runtime verification remain out of scope without explicit approval.
+# Final Challenge V2 — completed 2026-08-17
+
+- [x] Final V2 native takeover, manual character cells (space included), success UI và cooldown 1–50 giây.
+- [x] Event timing notice, Station Check-in closure, Final-start forced cancellation và pending-score preservation.
+- [x] Admin mốc đóng Station QR warning, Backend/Frontend build, i18n parity và unit tests.

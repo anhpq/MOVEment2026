@@ -44,6 +44,7 @@ const mockEventConfig = {
   isPastEventEnd: jest.fn(),
   isPastFinalStart: jest.fn(),
 }
+const mockEventLifecycle = { reconcileFinalStart: jest.fn().mockResolvedValue(0) }
 
 describe('FinalService', () => {
   let service: FinalService
@@ -53,6 +54,7 @@ describe('FinalService', () => {
       mockPrisma as never,
       mockActivityLog as never,
       mockEventConfig as never,
+      mockEventLifecycle as never,
     )
     jest.clearAllMocks()
     jest.restoreAllMocks()
@@ -304,7 +306,7 @@ describe('FinalService', () => {
         teamId: 4,
         status: { in: ['CHECKED_IN', 'PLAYING'] },
       },
-      select: { id: true, stationId: true },
+      select: { id: true, stationId: true, checkedOutAt: true },
     })
   })
 
@@ -331,7 +333,7 @@ describe('FinalService', () => {
         teamId: 4,
         status: { in: ['CHECKED_IN', 'PLAYING'] },
       },
-      select: { id: true, stationId: true },
+      select: { id: true, stationId: true, checkedOutAt: true },
     })
   })
 
@@ -381,7 +383,7 @@ describe('FinalService', () => {
     )
   })
 
-  it('caps wrong-answer cooldown at ten seconds', async () => {
+  it('caps wrong-answer cooldown at fifty seconds', async () => {
     const submittedAt = new Date()
     mockPrisma.finalSubmission.count.mockResolvedValue(25)
     mockPrisma.finalSubmission.findFirst
@@ -390,7 +392,7 @@ describe('FinalService', () => {
 
     const result = await service.getPlayerFinal(4)
 
-    expect(result.cooldownSeconds).toBe(10)
+    expect(result.cooldownSeconds).toBe(50)
     expect(result.canSubmit).toBe(false)
   })
 

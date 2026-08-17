@@ -282,3 +282,6 @@ Update Source of Truth only when the Business Rule changes.
 ```
 
 Do not claim Production behavior is fixed without active-environment verification.
+# V2 execution note — 2026-08-17
+
+When Final is implemented in Team V2, keep it route-local at `/team/v2`; preserve manually entered spaces in answer cells, use the authoritative answer length, and enforce cooldown `1, 3, 5, 10, 15, ... 50` seconds. Event Config `eventEndTime` closes new Station starts; Final start cancels only attempts not checked out.

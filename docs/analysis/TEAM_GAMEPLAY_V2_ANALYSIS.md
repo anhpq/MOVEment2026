@@ -1114,3 +1114,6 @@ for gameplay actions where required.
   `IMPLEMENTATION_BACKLOG.md` after implementation and verification.
 - Prompt path review: `docs/prompts/02_PLAYER_SCREENS_PROMPT.md` is the active
   repository-root path; older `docs/prompts/old/...` references are historical.
+# Final Challenge V2 — cập nhật 2026-08-17
+
+`/team/v2` render Final native, không route qua V1. Với đáp án hiện tại, UI nhận `answerLength` authoritative và render 17 ô ký tự gồm cả space; space phải được nhập tay, hiển thị ô đã điền nhưng không render glyph. Enter hoặc button submit; sai đáp án xóa ô và lock theo cooldown.

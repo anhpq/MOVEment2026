@@ -39,6 +39,11 @@ export class EventConfigService {
         serverNow,
         config.timezone,
       ),
+      secondsUntilFinal: this.getSecondsUntilLocalTime(
+        config.finalStartsAt,
+        serverNow,
+        config.timezone,
+      ),
     };
   }
 
@@ -91,6 +96,12 @@ export class EventConfigService {
     return localParts.minute >= minutes;
   }
 
+  getSecondsUntilLocalTime(hhmm: string, now = new Date(), timezone = 'Asia/Ho_Chi_Minh') {
+    const [hours, minutes] = hhmm.split(':').map(Number);
+    const local = this.getLocalDateTimeParts(now, timezone);
+    return Math.max(0, hours * 3600 + minutes * 60 - (local.hour * 3600 + local.minute * 60 + local.second));
+  }
+
   private assertValidTimezone(timezone: string) {
     try {
       this.getLocalDateTimeParts(new Date(), timezone);
@@ -104,6 +115,7 @@ export class EventConfigService {
       timeZone: timezone,
       hour: '2-digit',
       minute: '2-digit',
+      second: '2-digit',
       hour12: false,
     });
     const parts = Object.fromEntries(
@@ -113,6 +125,7 @@ export class EventConfigService {
     return {
       hour: Number(parts.hour),
       minute: Number(parts.minute),
+      second: Number(parts.second),
     };
   }
 }

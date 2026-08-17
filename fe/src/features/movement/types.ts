@@ -41,6 +41,11 @@ export type PlayerFinalSummary = {
   activeStationId: string | null;
   finalStartsAt: string;
   eventEndTime: string;
+  notifyBeforeMinutes?: number;
+  secondsUntilFinal?: number;
+  stationCheckInClosed?: boolean;
+  phase?: "NORMAL" | "NOTICE" | "STATIONS_CLOSED" | "FINAL_STARTED";
+  pendingScoreStationId?: string | null;
 };
 
 export type StationDefinition = {

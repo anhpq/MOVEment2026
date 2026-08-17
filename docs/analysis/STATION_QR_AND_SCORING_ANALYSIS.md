@@ -139,3 +139,6 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
 
 - `.kilo/plans/1784998100232-qr-checkout-scoring-prod-login-sync.md`
 
+# Final timing — cập nhật 2026-08-17
+
+Check-in bị Backend từ chối sau `eventEndTime` hoặc Final start. Check-out của attempt đang chơi vẫn được phép trước Final start. Tại Final start lifecycle worker reset các attempt chưa Check-out về `AVAILABLE` và log `FINAL_STARTED_CANCEL_STATION`; attempt đã Check-out chờ SCORE/BOTH không bị hủy.

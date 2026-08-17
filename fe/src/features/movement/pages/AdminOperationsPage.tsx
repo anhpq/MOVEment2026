@@ -56,6 +56,16 @@ function formatValue(
   return String(value);
 }
 
+function isFiveMinutesBeforeFinal(eventEndTime?: string, finalStartsAt?: string) {
+  const toMinutes = (value?: string) => {
+    const [hours, minutes] = (value ?? "").split(":").map(Number);
+    return Number.isFinite(hours) && Number.isFinite(minutes) ? hours * 60 + minutes : null;
+  };
+  const eventEnd = toMinutes(eventEndTime);
+  const finalStart = toMinutes(finalStartsAt);
+  return eventEnd !== null && finalStart !== null && (finalStart - eventEnd + 1440) % 1440 === 5;
+}
+
 function OperationList({
   items,
   emptyText,
@@ -120,6 +130,8 @@ export function AdminOperationsPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [eventForm] = Form.useForm();
   const [finalForm] = Form.useForm();
+  const eventEndTime = Form.useWatch("eventEndTime", eventForm);
+  const finalStartsAt = Form.useWatch("finalStartsAt", eventForm);
 
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
@@ -215,7 +227,7 @@ export function AdminOperationsPage() {
               await refresh();
             }}>
             <div className="ops-form-grid">
-              <Form.Item name="eventEndTime" label={t("ops.eventEnd")}>
+              <Form.Item name="eventEndTime" label={t("ops.stationStartsCloseAt")}>
                 <Input />
               </Form.Item>
               <Form.Item name="finalStartsAt" label={t("ops.finalStartsAt")}>
@@ -225,6 +237,11 @@ export function AdminOperationsPage() {
             <div className="ops-info-note">
               {t("ops.eventNote")}
             </div>
+            {!isFiveMinutesBeforeFinal(eventEndTime, finalStartsAt) && (
+              <div className="ops-info-note ops-info-note-warning">
+                {t("ops.stationCloseWarning")}
+              </div>
+            )}
             <div className="ops-form-grid">
               <Form.Item
                 name="notifyBeforeMinutes"

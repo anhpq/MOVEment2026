@@ -907,3 +907,6 @@ Historical audit indicates that current or recent implementation may still conta
 - real iPhone HTTPS camera verification pending.
 
 Documentation synchronization does not close these implementation gaps.
+# Final takeover update — 2026-08-17
+
+Event Config là authority cho mốc đóng QR Station và mở Final. Final V2 không thêm route, giữ state map khi chưa takeover và dùng state polling/refresh để chuyển UI khi Final bắt đầu.

@@ -528,19 +528,21 @@ Rotate Check-out không được tự rotate Check-in.
 | Event Config | Event start time và end time được quản lý trong Admin Event Config. |
 | Hard-coded time | Không hard-code `11:30`, `11:45` hoặc giờ cố định trong Business Rule. |
 | Final opening | Final Challenge mở theo `finalStartsAt` hiện tại trong Admin Event Config. |
-| Event end time | `eventEndTime` là thời gian đóng Station mới, không phải thời gian mở Final. |
-| Station mới sau end time | Team không được bắt đầu Station mới sau Event end time. |
-| Station đang chơi | Team đã Check-in trước Event end time được phép hoàn thành Station hiện tại. |
+| Event end time | `eventEndTime` là giờ đóng Station đối với Check-in mới; vận hành nên đặt trước `finalStartsAt` đúng 5 phút. Admin chỉ cảnh báo khi hai mốc lệch, không chặn lưu. |
+| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown vẫn hiển thị tới giờ Final. |
+| Station mới sau end time | Team không được bắt đầu Station mới sau `eventEndTime`; đúng `finalStartsAt` Backend luôn hard-close Check-in. |
+| Station đang chơi | Team đã Check-in trước `eventEndTime` có thể Check-out đến `finalStartsAt`. Đúng giờ Final, attempt chưa Check-out bị SYSTEM hủy, không tính score hoặc play time. |
+| Pending score tại Final | Station đã Check-out nhưng chờ score (`SCORE`/`BOTH`) không bị hủy và phải hoàn tất score trước khi Team vào Final. |
 | Điều kiện vào Final | Team không bắt buộc phải hoàn thành tất cả Station. |
-| Active Station | Team đang chơi Station phải hoàn thành Station đó trước khi vào Final. |
+| Active Station | Team đang chơi chưa Check-out bị hủy tại giờ Final; pending score phải hoàn tất trước khi vào Final. |
 | Final keyword | Keyword là `EVERY MOVE COUNTS`. |
 | Final answer storage | Final Challenge lưu keyword đã normalize dạng plain text trong cột tương thích `answerHash`; không hash keyword Final. |
 | Keyword normalization | Frontend và backend trim khoảng trắng đầu/cuối rồi so sánh uppercase. Whitespace giữa các từ được giữ nguyên, không collapse/replace/normalize. |
 | Final scoring | Backend tự chấm và xác định rank theo lần nhập đúng đầu tiên được database ghi nhận. |
 | Final points | Top 10 lần lượt nhận `40, 30, 25, 22, 20, 18, 16, 14, 12, 10` điểm. |
 | Sau hạng 10 | Từ hạng 11 trở đi nhận 0 điểm Final. |
-| Multiple attempts | Team được phép nhập nhiều lần cho đến khi đúng hoặc Event kết thúc. |
-| Wrong answer cooldown | Cooldown tăng từ 1 giây đến tối đa 10 giây theo số lần nhập sai. |
+| Multiple attempts | Team được phép nhập nhiều lần cho đến khi đúng. |
+| Wrong answer cooldown | Cooldown theo lần sai là `1, 3, 5, 10, 15, 20, ...` giây và capped tại `50` giây. |
 | Cooldown enforcement | Backend phải enforce cooldown. |
 | Duplicate protection | Một Team không được nhận Final rank hoặc bonus nhiều hơn một lần. |
 
