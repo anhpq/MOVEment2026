@@ -1,3 +1,12 @@
+# 2026-08-18 Team V2 Final notice, input, polling, and WebKit compatibility
+
+- Team V2 Final notice now stays below Total Score, uses consistent return-to-gathering-point copy, and renders a non-interactive neon-pink gathering marker at `65.56%, 68.94%` during `NOTICE` and `STATIONS_CLOSED` only.
+- Replaced the 17 independently focused Final inputs with one native input plus presentation slots, preserving rapid typing, paste, internal spaces, Enter submission, and filled-slot highlighting.
+- Player state and Station playing-count polling now stop after authoritative phase `FINAL_STARTED`; Final load/submission requests remain independent.
+- Removed runtime `instanceof MediaStream` assumptions from Login, shared QR input, and Team V2 scanner cleanup. Stream detection now uses the `srcObject.getTracks` capability, preventing WebKit without a global `MediaStream` constructor from crashing the Team V2 lazy chunk.
+- Verification PASS: focused Vitest `22/22`, full Frontend Vitest `83/83`, i18n parity `451`, lint, production build/bundle gate, authenticated Chromium existing smoke `6/6` plus Final notice/input/polling `5/5`, and WebKit Final notice/input/polling `5/5` at `390x844`, `844x390`, and `1024x768`.
+- No Backend source, API contract, schema, migration, seed, QR payload, scoring, or Station gameplay rule changed. Physical Safari/iPhone verification remains pending.
+
 # 2026-08-15 Team V2 Settings logout removal
 
 - Frontend-only: removed the visible Logout button, `LogoutOutlined` import, and

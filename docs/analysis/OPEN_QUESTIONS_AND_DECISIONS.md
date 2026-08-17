@@ -529,7 +529,9 @@ Rotate Check-out không được tự rotate Check-in.
 | Hard-coded time | Không hard-code `11:30`, `11:45` hoặc giờ cố định trong Business Rule. |
 | Final opening | Final Challenge mở theo `finalStartsAt` hiện tại trong Admin Event Config. |
 | Event end time | `eventEndTime` là giờ đóng Station đối với Check-in mới; vận hành nên đặt trước `finalStartsAt` đúng 5 phút. Admin chỉ cảnh báo khi hai mốc lệch, không chặn lưu. |
-| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown vẫn hiển thị tới giờ Final. |
+| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown phải nằm dưới Total Score, hướng dẫn Team trở về Điểm tập trung và vẫn hiển thị tới giờ Final. |
+| Marker Điểm tập trung | Team V2 hiển thị marker thông báo neon hồng, không tương tác tại `mapX = 65.56`, `mapY = 68.94` từ phase `NOTICE`, giữ nguyên qua `STATIONS_CLOSED` và ẩn khi `FINAL_STARTED`; marker này không phải Station gameplay và không thay đổi quyền Check-in. |
+| Polling sau khi Final mở | Sau khi Player state xác nhận phase `FINAL_STARTED`, Frontend dừng polling `/api/player/state` và `/api/player/stations/playing-counts`; các request Final phục vụ tải/submission vẫn hoạt động. |
 | Station mới sau end time | Team không được bắt đầu Station mới sau `eventEndTime`; đúng `finalStartsAt` Backend luôn hard-close Check-in. |
 | Station đang chơi | Team đã Check-in trước `eventEndTime` có thể Check-out đến `finalStartsAt`. Đúng giờ Final, attempt chưa Check-out bị SYSTEM hủy, không tính score hoặc play time. |
 | Pending score tại Final | Station đã Check-out nhưng chờ score (`SCORE`/`BOTH`) không bị hủy và phải hoàn tất score trước khi Team vào Final. |

@@ -30,6 +30,7 @@ import {
 import {fetchPlayerDatabase} from "../playerData";
 import {
   createQrFrameDetector,
+  getVideoMediaStream,
   openQrCameraStream,
   supportsCameraQrScan,
 } from "../qrDetect";
@@ -173,7 +174,7 @@ export function LoginPage() {
     const video = videoRef.current;
     const stream =
       streamRef.current ??
-      (video?.srcObject instanceof MediaStream ? video.srcObject : null);
+      getVideoMediaStream(video);
     if (stream) {
       for (const track of stream.getTracks()) {
         track.stop();

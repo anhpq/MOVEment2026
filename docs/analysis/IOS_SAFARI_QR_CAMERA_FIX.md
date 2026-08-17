@@ -896,3 +896,13 @@ docs/analysis/FEATURE_INDEX.md
 chỉ khi Feature routing hoặc document inventory thay đổi.
 
 Không đưa implementation history dài vào Source of Truth.
+
+---
+
+# 21. WebKit `MediaStream` capability guard — 2026-08-18
+
+Playwright WebKit on Windows exposed a compatibility failure where `MediaStream` was not defined globally. Cleanup code using `video.srcObject instanceof MediaStream` threw during Login unmount and prevented the Team V2 lazy chunk from rendering.
+
+Login, shared QR input, and Team V2 scanner cleanup now recognize an attached stream through the required `getTracks()` capability instead of referencing the optional global constructor. This preserves track cleanup on Safari while safely returning `null` when no stream is attached.
+
+Local WebKit authenticated smoke passed Final notice geometry and post-Final polling at `390x844`, `844x390`, and `1024x768`. This is not a physical iPhone camera PASS; the existing physical-device risk remains open.

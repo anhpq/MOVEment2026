@@ -4,6 +4,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
   createQrFrameDetector,
+  getVideoMediaStream,
   normalizeDecodedQrValue,
   openQrCameraStream,
   supportsCameraQrScan,
@@ -152,7 +153,7 @@ export function TeamV2QrScanner({
     const video = videoRef.current;
     const stream =
       streamRef.current ??
-      (video?.srcObject instanceof MediaStream ? video.srcObject : null);
+      getVideoMediaStream(video);
     stream?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
 

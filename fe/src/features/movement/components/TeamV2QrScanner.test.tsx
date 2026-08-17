@@ -8,6 +8,7 @@ import {TeamV2QrScanner} from "./TeamV2QrScanner";
 
 vi.mock("../qrDetect", () => ({
   createQrFrameDetector: vi.fn(),
+  getVideoMediaStream: () => null,
   normalizeDecodedQrValue: (value: string) => value.trim(),
   openQrCameraStream: vi.fn(),
   supportsCameraQrScan: () => false,

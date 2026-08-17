@@ -60,6 +60,10 @@ import {
   unlockLandscapeOrientation,
 } from "./teamV2Fullscreen";
 import {
+  shouldShowTeamV2GatheringPoint,
+  TEAM_V2_GATHERING_POINT,
+} from "./teamV2FinalNotice";
+import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
@@ -495,6 +499,135 @@ function StationMarker({
   );
 }
 
+function GatheringPointMarker({
+  x,
+  y,
+  size,
+  label,
+  isInteracting,
+}: {
+  x: number;
+  y: number;
+  size: number;
+  label: string;
+  isInteracting: boolean;
+}) {
+  const markerRef = useRef<Konva.Group>(null);
+  const pinWidth = size * 1.08;
+  const pinHeight = size * 1.42;
+  const markerCenterY = -pinHeight * 0.57;
+  const pinScaleX = pinWidth / 58;
+  const pinScaleY = pinHeight / 84;
+  const pinBottomOffset = -54 * pinScaleY;
+  const labelWidth = Math.max(104, Math.min(154, 52 + Array.from(label).length * 5.4));
+
+  useEffect(() => {
+    const node = markerRef.current;
+    if (!node || isInteracting || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    let frameId = 0;
+    const animate = (time: number) => {
+      const firstBeat = Math.max(0, Math.sin((time / 1500) * Math.PI * 4));
+      const secondBeat = Math.max(0, Math.sin(((time + 210) / 1500) * Math.PI * 4));
+      const beat = Math.max(firstBeat, secondBeat * 0.72);
+      const scale = 1 + beat * 0.09;
+      node.scale({x: scale, y: scale});
+      node.opacity(0.88 + beat * 0.12);
+      node.getLayer()?.batchDraw();
+      frameId = requestAnimationFrame(animate);
+    };
+    frameId = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(frameId);
+      node.scale({x: 1, y: 1});
+      node.opacity(1);
+    };
+  }, [isInteracting]);
+
+  return (
+    <Group x={x} y={y} listening={false}>
+      <Group ref={markerRef} listening={false}>
+        <Circle
+          y={markerCenterY}
+          radius={size * 1.05}
+          stroke="#FF42D0"
+          strokeWidth={1.4}
+          opacity={0.38}
+          shadowColor="#FF2BC8"
+          shadowBlur={isInteracting ? 0 : 24}
+        />
+        <Circle
+          y={markerCenterY}
+          radius={size * 0.76}
+          stroke="#FF8AE1"
+          strokeWidth={1.2}
+          opacity={0.58}
+        />
+        <Path
+          y={pinBottomOffset}
+          scaleX={pinScaleX}
+          scaleY={pinScaleY}
+          data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
+          fillLinearGradientStartPoint={{x: -29, y: -30}}
+          fillLinearGradientEndPoint={{x: 29, y: 54}}
+          fillLinearGradientColorStops={[0, "#360725", 0.55, "#1C071F", 1, "#090412"]}
+          strokeLinearGradientStartPoint={{x: -29, y: -30}}
+          strokeLinearGradientEndPoint={{x: 29, y: 54}}
+          strokeLinearGradientColorStops={[0, "#FF8AE1", 0.5, "#FF2BC8", 1, "#B14CFF"]}
+          strokeWidth={2.4 / Math.max(pinScaleX, pinScaleY)}
+          shadowColor="#FF2BC8"
+          shadowBlur={isInteracting ? 0 : 24}
+          shadowOpacity={0.95}
+        />
+        <Text
+          x={-size / 2}
+          y={markerCenterY - size * 0.24}
+          width={size}
+          height={size * 0.48}
+          text="X"
+          align="center"
+          verticalAlign="middle"
+          fontFamily="Oxanium, Aptos, Segoe UI, sans-serif"
+          fontSize={size * 0.45}
+          fontStyle="bold"
+          fill="#FFFFFF"
+          shadowColor="#FF42D0"
+          shadowBlur={7}
+        />
+        <Group x={-labelWidth / 2} y={6} listening={false}>
+          <Rect
+            width={labelWidth}
+            height={22}
+            cornerRadius={11}
+            fillLinearGradientStartPoint={{x: 0, y: 0}}
+            fillLinearGradientEndPoint={{x: labelWidth, y: 22}}
+            fillLinearGradientColorStops={[0, "#25051C", 1, "#13051D"]}
+            strokeLinearGradientStartPoint={{x: 0, y: 0}}
+            strokeLinearGradientEndPoint={{x: labelWidth, y: 22}}
+            strokeLinearGradientColorStops={[0, "#FF75DA", 1, "#B14CFF"]}
+            strokeWidth={1.4}
+            shadowColor="#FF2BC8"
+            shadowBlur={isInteracting ? 0 : 14}
+          />
+          <Text
+            x={7}
+            width={labelWidth - 14}
+            height={22}
+            text={label}
+            align="center"
+            verticalAlign="middle"
+            fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
+            fontSize={10}
+            fontStyle="bold"
+            fill="#FFD9F5"
+          />
+        </Group>
+      </Group>
+    </Group>
+  );
+}
+
 function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => void}) {
   const {t} = useTranslation();
   return (
@@ -863,6 +996,7 @@ export function TeamGameplayV2Page() {
   const isFinalMode = finalSummary?.phase === "FINAL_STARTED" && !finalSummary.pendingScoreStationId && !finalSummary.blockedByActiveStation;
   const secondsUntilFinal = Math.max(0, finalClock.seconds - Math.floor((Date.now() - finalClock.receivedAt) / 1000));
   const showFinalNotice = finalSummary?.phase === "NOTICE" || finalSummary?.phase === "STATIONS_CLOSED";
+  const showGatheringPoint = shouldShowTeamV2GatheringPoint(finalSummary?.phase);
 
   useEffect(() => {
     setFinalClock({seconds: finalSummary?.secondsUntilFinal ?? 0, receivedAt: Date.now()});
@@ -928,6 +1062,15 @@ export function TeamGameplayV2Page() {
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
     [mapTransform, markerViewModels, viewportSize],
   );
+  const gatheringPointLayout = useMemo(() => {
+    if (!showGatheringPoint) return null;
+    const marker = {
+      station: {id: TEAM_V2_GATHERING_POINT.id},
+      x: (TEAM_V2_GATHERING_POINT.mapX / 100) * MAP_WORLD_WIDTH,
+      y: (TEAM_V2_GATHERING_POINT.mapY / 100) * MAP_WORLD_HEIGHT,
+    };
+    return getStationLabelLayouts([marker], viewportSize, mapTransform).get(marker.station.id) ?? null;
+  }, [mapTransform, showGatheringPoint, viewportSize]);
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
@@ -1352,6 +1495,15 @@ export function TeamGameplayV2Page() {
                   />
                 ) : null;
               })}
+              {gatheringPointLayout?.isInViewport && (
+                <GatheringPointMarker
+                  x={gatheringPointLayout.anchorX}
+                  y={gatheringPointLayout.anchorY}
+                  size={gatheringPointLayout.markerSize}
+                  label={t("teamV2.gatheringPoint")}
+                  isInteracting={isMapInteracting}
+                />
+              )}
             </Layer>
           </Stage>
         )}
@@ -1369,6 +1521,7 @@ export function TeamGameplayV2Page() {
       {showFinalNotice && !isFinalMode && (
         <aside className="team-v2-final-notice" role="status">
           <strong>{finalSummary?.phase === "STATIONS_CLOSED" ? t("teamV2.finalUrgentTitle") : t("teamV2.finalNoticeTitle")}</strong>
+          <p>{t("teamV2.finalNoticeDescription")}</p>
           <span>{t("teamV2.finalCountdown", {time: formatFinalCountdown(secondsUntilFinal)})}</span>
         </aside>
       )}

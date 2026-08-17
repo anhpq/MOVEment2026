@@ -1,10 +1,12 @@
 .team-v2-final { position:absolute; inset:132px 16px 24px; z-index:30; display:grid; place-content:center; justify-items:center; gap:16px; overflow:auto; text-align:center; color:#eafcff; }
 .team-v2-final-kicker { margin:0; color:var(--team-v2-accent); letter-spacing:.16em; font-weight:900; }
 .team-v2-final h2 { margin:0; font-size:clamp(24px,5vw,42px); text-shadow:0 0 16px var(--team-v2-accent); }
-.team-v2-final-grid { display:flex; flex-wrap:wrap; justify-content:center; max-width:720px; gap:7px; }
-.team-v2-final-grid input { width:clamp(30px,6vw,52px); aspect-ratio:1; height:auto; border:1px solid var(--team-v2-line); background:#03131b; color:#eafcff; text-align:center; text-transform:uppercase; font-size:clamp(16px,3vw,27px); outline:none; }
-.team-v2-final-grid input:focus, .team-v2-final-grid input.is-filled-space { border-color:var(--team-v2-accent); box-shadow:0 0 12px var(--team-v2-focus-ring), inset 0 0 12px rgba(47,228,240,.13); }
-.team-v2-final-grid input.is-filled-space { color:transparent; }
+.team-v2-final-grid { position:relative; width:min(720px,100%); }
+.team-v2-final-capture { position:absolute; z-index:2; inset:0; width:100%; height:100%; margin:0; padding:0; border:0; opacity:.01; color:transparent; caret-color:transparent; background:transparent; font-size:16px; }
+.team-v2-final-capture:focus { outline:none; }
+.team-v2-final-slots { display:flex; flex-wrap:wrap; justify-content:center; gap:7px; pointer-events:none; }
+.team-v2-final-slot { display:grid; width:clamp(30px,6vw,52px); aspect-ratio:1; place-items:center; border:1px solid var(--team-v2-line); background:#03131b; color:#eafcff; text-align:center; text-transform:uppercase; font-size:clamp(16px,3vw,27px); }
+.team-v2-final-slot.is-filled { border-color:var(--team-v2-accent); box-shadow:0 0 12px var(--team-v2-focus-ring), inset 0 0 12px rgba(47,228,240,.13); }
 .team-v2-final-feedback { min-height:24px; color:var(--team-v2-score); font-weight:800; }
 .team-v2-final-success { background:radial-gradient(circle,rgba(47,228,240,.2),transparent 60%); }
 .team-v2-final-success > span { font-size:68px; color:var(--team-v2-score); text-shadow:0 0 26px var(--team-v2-score); }

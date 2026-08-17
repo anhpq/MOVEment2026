@@ -3,11 +3,13 @@ import {useTranslation} from "react-i18next";
 import {isAuthFailure} from "../api";
 import {reconcilePlayerDatabase} from "../playerData";
 import {useMovementStore} from "../store";
+import {shouldPollTeamRuntime} from "../runtimeCoordinator";
 import {useVisibleOnlinePolling} from "./useVisibleOnlinePolling";
 
 export function usePlayerStatePolling() {
   const {i18n} = useTranslation();
   const sessionRole = useMovementStore((state) => state.session?.role);
+  const finalPhase = useMovementStore((state) => state.finalSummary?.phase);
   const logout = useMovementStore((state) => state.logout);
   const language = i18n.language === "en" ? "en" : "vi";
 
@@ -22,5 +24,7 @@ export function usePlayerStatePolling() {
     }
   }, [language, logout]);
 
-  useVisibleOnlinePolling(refresh, {enabled: sessionRole === "user"});
+  useVisibleOnlinePolling(refresh, {
+    enabled: shouldPollTeamRuntime(sessionRole, finalPhase),
+  });
 }

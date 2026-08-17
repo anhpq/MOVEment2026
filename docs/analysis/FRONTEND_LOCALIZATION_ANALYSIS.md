@@ -214,3 +214,9 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 # Final V2 — cập nhật 2026-08-17
 
 Đã bổ sung copy VI/EN cho countdown Final V2, notice/urgent toast, và warning Admin cấu hình thời điểm đóng QR bắt đầu Station.
+
+## Final notice copy — cập nhật 2026-08-18
+
+- `NOTICE`: `Final Challenge sắp bắt đầu` / `Final Challenge starts soon`.
+- `STATIONS_CLOSED`: `Các trạm đã đóng` / `All Stations are now closed`.
+- Hai phase dùng chung hướng dẫn localized trở về `Điểm tập trung` / `Gathering Point`; marker map dùng cùng terminology.

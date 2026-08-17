@@ -278,3 +278,10 @@ confirmed Business Rules.
   and mutation reconciliation.
 - Frontend tests, lint, build, and bundle budget passed. Authenticated browser
   redirect/data bootstrap smoke remains pending.
+
+## 2026-08-18 Final phase polling terminal state
+
+- Team runtime treats authoritative `FINAL_STARTED` as terminal for passive Player state and Station playing-count polling.
+- The countdown performs the one boundary refresh required to learn the new phase; cleanup then removes interval, visibility, and online-triggered refreshes.
+- Final Challenge load and submission use their dedicated API lifecycle and remain enabled.
+- Authenticated Chromium and WebKit smoke observed no additional calls to either polling endpoint across a complete post-settlement polling interval.

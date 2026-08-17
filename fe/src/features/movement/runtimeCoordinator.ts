@@ -3,6 +3,13 @@ const inFlightRequests = new Map<string, Promise<unknown>>();
 export const TEAM_RUNTIME_POLL_INTERVAL_MS = 15_000;
 export const TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS = 30_000;
 
+export function shouldPollTeamRuntime(
+  sessionRole: "user" | "admin" | null | undefined,
+  phase: "NORMAL" | "NOTICE" | "STATIONS_CLOSED" | "FINAL_STARTED" | null | undefined,
+) {
+  return sessionRole === "user" && phase !== "FINAL_STARTED";
+}
+
 type NetworkConnectionLike = {
   saveData?: boolean;
   effectiveType?: string;

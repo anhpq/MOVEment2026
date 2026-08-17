@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-18 Team V2 Final notice and runtime stop
+
+- [x] Keep the Final notice below Total Score with consistent VI/EN gathering-point guidance.
+- [x] Render the non-interactive neon-pink gathering marker only during `NOTICE` and `STATIONS_CLOSED`.
+- [x] Replace per-character Final focus choreography with one native answer input and filled presentation slots.
+- [x] Stop Player state and Station playing-count polling after `FINAL_STARTED`.
+- [x] Guard QR stream cleanup from a missing WebKit `MediaStream` global.
+- [x] Pass focused/full Frontend tests, i18n, lint, build/bundle, authenticated Chromium existing `6/6` plus Final notice/input/polling `5/5`, and WebKit Final notice/input/polling `5/5`.
+- [ ] Confirm the revised notice, marker, Final keyboard, and camera cleanup on physical iPhone Safari.
+
 ## 2026-08-15 Team V2 Settings logout removal
 
 - [x] Remove the Logout action and its V2-only explicit API handler from Settings.

@@ -130,3 +130,10 @@ export async function openQrCameraStream(): Promise<MediaStream> {
     audio: false,
   });
 }
+
+export function getVideoMediaStream(video: HTMLVideoElement | null | undefined) {
+  const source = video?.srcObject;
+  return source && typeof (source as MediaStream).getTracks === "function" ?
+      source as MediaStream
+    : null;
+}

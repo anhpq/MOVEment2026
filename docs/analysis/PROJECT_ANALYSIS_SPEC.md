@@ -910,3 +910,9 @@ Documentation synchronization does not close these implementation gaps.
 # Final takeover update — 2026-08-17
 
 Event Config là authority cho mốc đóng QR Station và mở Final. Final V2 không thêm route, giữ state map khi chưa takeover và dùng state polling/refresh để chuyển UI khi Final bắt đầu.
+
+## Team V2 Final notice update — 2026-08-18
+
+- `notifyBeforeMinutes` tiếp tục quyết định thời điểm phase `NOTICE`; Team V2 dùng phase này để hiện banner hướng dẫn và marker Điểm tập trung không tương tác.
+- Marker Điểm tập trung tại `mapX = 65.56`, `mapY = 68.94` giữ neon hồng qua `STATIONS_CLOSED`, rồi ẩn khi Final takeover bắt đầu.
+- Sau khi state authoritative chuyển sang `FINAL_STARTED`, Team runtime dừng Player state và Station playing-count polling; Final load/submission không bị ảnh hưởng.

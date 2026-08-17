@@ -1117,3 +1117,24 @@ for gameplay actions where required.
 # Final Challenge V2 — cập nhật 2026-08-17
 
 `/team/v2` render Final native, không route qua V1. Với đáp án hiện tại, UI nhận `answerLength` authoritative và render 17 ô ký tự gồm cả space; space phải được nhập tay, hiển thị ô đã điền nhưng không render glyph. Enter hoặc button submit; sai đáp án xóa ô và lock theo cooldown.
+
+## Final notice và Điểm tập trung — quyết định 2026-08-18
+
+- Banner `NOTICE`/`STATIONS_CLOSED` nằm dưới Total Score, có title, hướng dẫn trở về Điểm tập trung và countdown đồng nhất VI/EN.
+- Marker Điểm tập trung là Konva presentation marker không tương tác tại `65.56%, 68.94%`; chỉ hiện từ `NOTICE` qua `STATIONS_CLOSED`, giữ neon hồng và biến mất khi `FINAL_STARTED`.
+- Marker không thuộc Station catalog/progress, không mở Detail và không thay đổi QR hoặc quyền Check-in.
+- Final answer dùng một native input làm nguồn dữ liệu để loại race khi gõ nhanh; các slot chỉ trình bày ký tự và trạng thái filled.
+- Player state và Station playing-count polling dừng ngay sau khi Store xác nhận `FINAL_STARTED`; Final API vẫn hoạt động độc lập.
+
+### Decision log
+
+- Review concern: banner che score, copy chưa định hướng Team, Final input lặp ký tự và polling tiếp tục sau Final.
+- Decision: neo banner theo geometry score, dùng marker thông báo riêng, một input chuỗi và phase làm polling gate.
+- Effect: không đổi Backend/API/schema/seed hoặc Station gameplay; thay đổi giới hạn trong Team V2 presentation và runtime polling.
+
+### Verification result
+
+- PASS focused Vitest `22/22`, full Frontend Vitest `83/83`, i18n parity `451`, lint và production build/bundle gate.
+- PASS authenticated Chromium: existing Team V2 smoke `6/6` và Final notice/input/polling `5/5`.
+- PASS local Playwright WebKit Final notice/input/polling `5/5` tại `390x844`, `844x390`, `1024x768` sau khi guard cleanup khỏi global `MediaStream` không tồn tại.
+- Physical iPhone Safari vẫn chưa được xác nhận.
