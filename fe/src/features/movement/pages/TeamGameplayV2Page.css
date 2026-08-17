@@ -88,7 +88,7 @@
   pointer-events: none;
 }
 
-.team-v2-final-notice strong { font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif; font-size: clamp(14px, 2.5vw, 18px); }
+.team-v2-final-notice strong { font-family: var(--team-v2-font-ui); font-size: clamp(14px, 2.5vw, 18px); }
 .team-v2-final-notice p { margin: 0; color: var(--team-v2-muted); font-size: clamp(12px, 2vw, 15px); line-height: 1.3; }
 .team-v2-final-notice span { color: var(--team-v2-score); font-weight: 700; }
 
@@ -658,7 +658,7 @@
    implementation stays intact while the HUD adopts the approved reference. */
 .team-v2-page {
   min-height: 100vh;
-  font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  font-family: var(--team-v2-font-ui);
   background:
     radial-gradient(ellipse at 50% 9%, rgba(52, 195, 255, .08), transparent 34%),
     radial-gradient(ellipse at 12% 88%, rgba(146, 71, 255, .06), transparent 26%),
@@ -700,7 +700,7 @@
   width: clamp(278px, 50vw, 560px);
   height: 66px;
   padding: 7px 52px 10px;
-  font-family: "Oxanium", Aptos, sans-serif;
+  font-family: var(--team-v2-font-display);
   font-size: clamp(25px, 4vw, 45px);
   font-weight: 700;
   letter-spacing: .045em;
@@ -719,8 +719,8 @@
   background: linear-gradient(180deg, rgba(7, 16, 12, .97), rgba(1, 5, 3, .99));
   box-shadow: 0 0 15px rgba(100, 255, 151, .2), inset 0 0 18px rgba(100, 255, 151, .08);
 }
-.team-v2-score strong { font-family: "Oxanium", Aptos, sans-serif; color: #64f29a; }
-.team-v2-score span { color: #88efaa; font-family: "Oxanium", Aptos, sans-serif; }
+.team-v2-score strong { font-family: var(--team-v2-font-display); color: #64f29a; }
+.team-v2-score span { color: #88efaa; font-family: var(--team-v2-font-display); }
 
 .team-v2-settings-button {
   border: 2px solid #76efff;
@@ -748,13 +748,13 @@
   border-radius: 4px;
   background: rgba(2, 9, 17, .94);
   color: #dffcff;
-  font: 700 11px/1 "Space Grotesk", Aptos, sans-serif;
+  font: 700 11px/1 var(--team-v2-font-ui);
   letter-spacing: .08em;
   text-transform: uppercase;
   box-shadow: 0 0 13px rgba(47, 228, 240, .17);
   cursor: pointer;
 }
-.team-v2-legend-toggle > span { display: grid; width: 22px; height: 22px; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-family: serif; font-size: 15px; }
+.team-v2-legend-toggle > span { display: grid; width: 22px; height: 22px; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-family: var(--team-v2-font-display); font-size: 15px; }
 .team-v2-legend-toggle b { font-size: 15px; transition: transform 160ms ease; }
 .team-v2-legend-control.is-open .team-v2-legend-toggle b { transform: rotate(180deg); }
 .team-v2-marker-legend {
@@ -786,10 +786,10 @@
 }
 .team-v2-leaderboard-chip { width: 250px; padding: 12px 20px; }
 .team-v2-progress-panel { width: 250px; padding: 12px 20px; }
-.team-v2-bottom-copy strong { font-family: "Space Grotesk", Aptos, sans-serif; font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); }
+.team-v2-bottom-copy strong { font-family: var(--team-v2-font-ui); font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); }
 .team-v2-scan-action { min-height: 126px; width: 128px; }
 .team-v2-scan-button { width: 112px; height: 112px; }
-.team-v2-scan-action > strong { bottom: 18px; font-family: "Space Grotesk", Aptos, sans-serif; }
+.team-v2-scan-action > strong { bottom: 18px; font-family: var(--team-v2-font-ui); }
 
 @media (orientation: portrait) {
   .team-v2-header { min-height: clamp(155px, 23dvh, 205px); }

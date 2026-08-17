@@ -64,6 +64,10 @@ import {
   TEAM_V2_GATHERING_POINT,
 } from "./teamV2FinalNotice";
 import {
+  TEAM_V2_DISPLAY_FONT_FAMILY,
+  TEAM_V2_UI_FONT_FAMILY,
+} from "./teamV2Typography";
+import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
@@ -394,7 +398,7 @@ function StationMarker({
         text={marker.code}
         align="center"
         verticalAlign="middle"
-        fontFamily="Oxanium, Aptos, Segoe UI, sans-serif"
+        fontFamily={TEAM_V2_DISPLAY_FONT_FAMILY}
         fontSize={getStationMarkerFontSize(marker.code, size)}
         fontStyle="bold"
         fill="#FFFFFF"
@@ -486,7 +490,7 @@ function StationMarker({
           x={4}
           width={STATION_LABEL_WIDTH - 8}
           height={STATION_LABEL_HEIGHT}
-          fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
+          fontFamily={TEAM_V2_UI_FONT_FAMILY}
           fontSize={9.5}
           fontStyle="bold"
           fill={colors.meta}
@@ -588,7 +592,7 @@ function GatheringPointMarker({
           text="X"
           align="center"
           verticalAlign="middle"
-          fontFamily="Oxanium, Aptos, Segoe UI, sans-serif"
+          fontFamily={TEAM_V2_DISPLAY_FONT_FAMILY}
           fontSize={size * 0.45}
           fontStyle="bold"
           fill="#FFFFFF"
@@ -617,7 +621,7 @@ function GatheringPointMarker({
             text={label}
             align="center"
             verticalAlign="middle"
-            fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
+            fontFamily={TEAM_V2_UI_FONT_FAMILY}
             fontSize={10}
             fontStyle="bold"
             fill="#FFD9F5"

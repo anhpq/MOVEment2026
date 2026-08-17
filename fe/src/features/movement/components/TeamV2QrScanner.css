@@ -32,7 +32,7 @@
   border: 0;
   background: transparent;
   color: #9cb6c0;
-  font: 700 14px/1.2 "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  font: 700 14px/1.2 var(--team-v2-font-ui);
   cursor: pointer;
 }
 

@@ -23,9 +23,11 @@
 /* React/Konva port of demo/Movement2026.jsx. This stylesheet is imported after
    the legacy route CSS so the demo composition is the authoritative HUD. */
 .team-v2-page {
+  --team-v2-font-ui: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  --team-v2-font-display: "Oxanium", "Space Grotesk", Aptos, "Segoe UI", sans-serif;
   min-height: 100vh;
   min-height: 100dvh;
-  font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  font-family: var(--team-v2-font-ui);
   background:
     radial-gradient(ellipse at 50% 9%, rgba(52, 195, 255, .08), transparent 34%),
     radial-gradient(ellipse at 12% 88%, rgba(146, 71, 255, .06), transparent 26%),
@@ -76,7 +78,7 @@
   place-items: center;
   transform: translateX(-50%);
   clip-path: polygon(3.4% 0, 27% 0, 29% 5%, 71% 5%, 73% 0, 96.6% 0, 100% 28%, 100% 73%, 96% 100%, 72% 100%, 70% 95%, 30% 95%, 28% 100%, 4% 100%, 0 73%, 0 27%);
-  font-family: "Oxanium", Aptos, sans-serif;
+  font-family: var(--team-v2-font-display);
   background: linear-gradient(115deg, #74efff 0%, #2bb7ff 36%, #8654ff 70%, #ff47cd 100%);
   filter: drop-shadow(0 0 7px rgba(68, 209, 255, .32));
 }
@@ -102,7 +104,7 @@
 .team-v2-demo-header .team-v2-event-brand h1 {
   position: relative;
   margin: 0;
-  font-family: "Oxanium", "Space Grotesk", sans-serif;
+  font-family: var(--team-v2-font-display);
   font-size: clamp(22px, 5.15vw, 35px);
   line-height: 1;
   letter-spacing: .02em;
@@ -135,8 +137,8 @@
 
 .team-v2-score::before { content: ""; position: absolute; inset: 2px; z-index: -1; clip-path: inherit; background: linear-gradient(180deg, rgba(7, 16, 12, .97), rgba(1, 5, 3, .99)); }
 .team-v2-score-line { display: flex; align-items: baseline; justify-content: center; gap: 9px; margin-top: -1px; }
-.team-v2-score strong { font: 700 clamp(29px, 4.8vw, 35px)/1 "Oxanium", sans-serif; color: #64f29a; }
-.team-v2-score span { font: 700 clamp(16px, 2.8vw, 21px)/1 "Oxanium", sans-serif; color: #88efaa; }
+.team-v2-score strong { font: 700 clamp(29px, 4.8vw, 35px)/1 var(--team-v2-font-display); color: #64f29a; }
+.team-v2-score span { font: 700 clamp(16px, 2.8vw, 21px)/1 var(--team-v2-font-display); color: #88efaa; }
 .team-v2-demo-header .team-v2-settings-button {
   position: absolute;
   top: 17%;
@@ -240,7 +242,7 @@
   clip-path: none;
   background: transparent;
   color: #dffcff;
-  font: 700 16px/1 "Oxanium", "Space Grotesk", Aptos, sans-serif;
+  font: 700 16px/1 var(--team-v2-font-display);
   box-shadow: none;
   cursor: pointer;
   pointer-events: auto;
@@ -342,12 +344,12 @@
 .team-v2-leaderboard-chip .team-v2-footer-content { justify-content: flex-start; padding-left: 13%; padding-right: 24%; }
 .team-v2-progress-panel .team-v2-footer-content { justify-content: flex-end; padding-left: 24%; padding-right: 10%; }
 .team-v2-demo-footer .team-v2-bottom-icon { width: clamp(38px, 6.2vw, 45px); height: auto; aspect-ratio: 1; border: 1px solid rgba(99, 220, 255, .37); background: transparent; color: #aef0ff; font-size: clamp(18px, 3vw, 24px); box-shadow: inset 0 0 10px rgba(54, 178, 225, .08), 0 0 9px rgba(64, 205, 255, .08); }
-.team-v2-demo-footer .team-v2-bottom-copy strong { font-family: "Space Grotesk", Aptos, sans-serif; font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); white-space: nowrap; }
+.team-v2-demo-footer .team-v2-bottom-copy strong { font-family: var(--team-v2-font-ui); font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); white-space: nowrap; }
 .team-v2-demo-footer .team-v2-scan-action { top: 50%; bottom: auto; width: clamp(118px, 19.5vw, 133px); min-height: 0; aspect-ratio: 1; border-radius: 50%; background: rgba(1, 5, 8, .94); box-shadow: 0 0 0 2px rgba(68, 214, 255, .8), 0 0 0 7px rgba(19, 72, 95, .8), 0 0 0 9px rgba(79, 211, 255, .32), 0 0 19px rgba(47, 207, 255, .26), 0 0 31px rgba(132, 74, 255, .11), inset 0 0 22px rgba(57, 181, 230, .16); transform: translate(-50%, -50%); }
 .team-v2-demo-footer .team-v2-scan-action::before { inset: 10%; z-index: 0; height: auto; border: 1.5px solid rgba(117, 239, 255, .72); border-radius: 50%; clip-path: none; background: radial-gradient(circle at 50% 45%, rgba(12, 43, 54, .44), rgba(1, 8, 12, .97) 70%); box-shadow: inset 0 0 18px rgba(53, 210, 255, .13), 0 0 10px rgba(60, 220, 255, .18); }
 .team-v2-demo-footer .team-v2-scan-button { z-index: 1; width: 100%; height: 100%; border: 0; background: transparent; box-shadow: none; filter: none; }
 .team-v2-demo-footer .team-v2-qr-badge { width: 100%; height: 100%; transform: translateY(-5px); }
-.team-v2-demo-footer .team-v2-scan-action > strong { bottom: 18px; font-family: "Space Grotesk", Aptos, sans-serif; }
+.team-v2-demo-footer .team-v2-scan-action > strong { bottom: 18px; font-family: var(--team-v2-font-ui); }
 .team-v2-demo-footer .team-v2-scan-action > small { display: none; }
 
 @media (orientation: portrait) {
@@ -457,7 +459,7 @@
 .team-v2-overlay h2,
 .team-v2-team-panel h2,
 .team-v2-detail h2 {
-  font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  font-family: var(--team-v2-font-ui);
   letter-spacing: .05em;
   text-transform: uppercase;
 }

@@ -270,6 +270,7 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | --- | --- |
 | Frontend copy | Frontend-owned visible copy phải hỗ trợ VI/EN, bao gồm label, button, placeholder, validation, toast, modal, status, loading/empty/error state, tooltip và ARIA text. |
 | Brand | `MOVEment 2026` giữ nguyên ở mọi ngôn ngữ. |
+| Vietnamese typography | Team V2 localized copy và dữ liệu động có thể chứa tiếng Việt phải dùng bundled `Space Grotesk` Vietnamese/Latin với fallback `Aptos`, `Segoe UI`, `sans-serif`. `Oxanium` chỉ dùng cho nội dung ASCII bất biến như brand, số điểm/`PTS`, marker code và ký hiệu không chứa tiếng Việt. Không tải Google Fonts lúc runtime. |
 | Preserved values | Station ID, Team ID, username, token, URL, QR payload, enum/API values, `Game.title` và `clueText` không tự dịch trong Frontend. |
 | Language control | Language switch hiển thị cờ bằng text/emoji `🇻🇳 VI` và `🇬🇧 EN`; không cần thêm image asset. |
 | Final terminology | Menu có thể giữ label ngắn `Final`; heading đầy đủ là `Thử thách cuối cùng` trong VI và `Final Challenge` trong EN. Từ `cipher/mật mã` chỉ dùng khi nói về đáp án/mật mã thực tế. |

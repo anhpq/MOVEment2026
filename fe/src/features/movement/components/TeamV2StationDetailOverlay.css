@@ -211,7 +211,7 @@
     linear-gradient(115deg, rgba(3, 25, 37, 0.98), rgba(13, 5, 31, 0.98)) padding-box,
     linear-gradient(110deg, #76efff 0%, #2fe4f0 36%, #8654ff 72%, #ff47cd 100%) border-box;
   color: #fff;
-  font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  font-family: var(--team-v2-font-ui);
   font-weight: 700;
   letter-spacing: 0.045em;
   text-transform: uppercase;
