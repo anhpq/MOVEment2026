@@ -1,5 +1,21 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-18 Team V2 compact runtime and interaction update
+
+- Team V2 scanner owns two tabs: camera-first `Quét QR` and `Dán QR`; leaving
+  the camera tab stops its stream and returning starts a new scanner lifecycle.
+- A correct Final response hides the score HUD and shows the native neon trophy
+  success state. Wrong-answer retry remains Backend-authoritative and both Enter
+  and the button use one submit path.
+- Overlay opacity changes only backdrop/panel surface alpha. Content, borders,
+  icons and controls remain fully opaque.
+- Team V2 passive refresh uses `GET /api/player/v2/runtime`; static catalog data
+  is versioned separately. Runtime and playing-count responses use private ETag
+  validation and stop after authoritative `FINAL_STARTED`.
+- Polling cadence remains `15_000ms` normally and `30_000ms` for save-data/2G.
+  These values are the rollback baseline and are independent from the compact
+  endpoint, ETag and response projection.
+
 ## 2026-08-18 Team V2 Vietnamese font policy
 
 - Team V2 UI text that can be localized or contain Vietnamese uses bundled
@@ -651,7 +667,8 @@ Backend stores the normalized Final keyword directly in the compatibility column
 
 Team may retry until correct or Final closes.
 
-Wrong-answer cooldown increases from 1 second up to 10 seconds and is enforced by backend.
+Wrong-answer cooldown follows `3, 5, 10, 15, 20, ...` seconds, is capped at
+50 seconds, and is enforced by Backend.
 
 Rank is assigned by database-confirmed first correct submission.
 

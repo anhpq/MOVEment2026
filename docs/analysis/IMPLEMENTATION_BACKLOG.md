@@ -1,5 +1,28 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-18 Team V2 QR, Final retry and compact runtime
+
+- [x] Split scanner into camera-first `Quét QR` and `Dán QR` tabs with camera
+  stop/restart lifecycle and full-overlay video.
+- [x] Enforce Final cooldown `3, 5, 10, 15, 20, ...`, cap `50`, revalidate retry
+  availability, share Enter/button submission and show trophy success without
+  Total Score.
+- [x] Limit opacity to overlay backgrounds and enforce bundled Space Grotesk
+  Vietnamese/Latin for localized/dynamic Team V2 UI.
+- [x] Add compact V2 runtime projection, private ETags, unchanged
+  `15_000/30_000ms` constants, single-flight reconciliation and terminal Final
+  polling gate.
+- [x] Measure full state `4,020` bytes versus runtime `1,569` bytes (`60.97%`
+  reduction); verify runtime/counts `304` responses have `0` body bytes.
+- [x] Pass Backend `191/191`, Frontend `91/91`, i18n `458`, font guard, lint,
+  build/bundle, Chromium `3/3`, local WebKit `3/3`, and BrowserStack macOS
+  Playwright WebKit `3/3`.
+- [ ] BrowserStack real iPhone 15 Safari QR interaction/rotation remains blocked
+  by the provider's Playwright bridge. Actual Team login/auth bootstrap and map
+  render passed; retry after BrowserStack resolves its real-device
+  `route.fetch`/click/touchscreen command failures.
+- [ ] Production deploy/runtime remains out of scope and was not performed.
+
 ## 2026-08-18 Team V2 Vietnamese font consistency
 
 - [x] Use bundled Space Grotesk for every localized/dynamic Team V2 DOM heading and action.

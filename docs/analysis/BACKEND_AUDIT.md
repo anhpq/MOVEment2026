@@ -1,3 +1,31 @@
+# 2026-08-18 Team V2 QR, Final retry, typography and compact runtime
+
+- Added camera-first/paste QR tabs with explicit camera lifecycle, full scanner
+  viewport and safe-area controls. Wrong-first Final retry now revalidates
+  Backend availability and shares one Enter/button submit path; success hides
+  Total Score and renders the neon trophy state.
+- Wrong-answer cooldown is Backend-authoritative at
+  `3, 5, 10, 15, 20, ...`, capped at `50` seconds. Overlay opacity changes only
+  background surface alpha. Team V2 localized/dynamic text uses guarded bundled
+  Space Grotesk Vietnamese/Latin tokens.
+- Added compact `GET /api/player/v2/runtime` plus private ETags for runtime and
+  Station playing counts. Cadence remains `15_000/30_000ms` and polling stops
+  after `FINAL_STARTED`.
+- Local authenticated payload measurement: `/api/player/state` `4,020` bytes,
+  changed runtime `1,569` bytes (`60.97%` smaller), and repeated runtime/counts
+  requests returned `304` with `0` body bytes.
+- Verification PASS: Backend Jest `191/191`, Frontend Vitest `91/91`, i18n
+  parity `458`, font guard, Backend/Frontend lint and build, Frontend bundle
+  gate, focused Chromium `3/3`, focused local WebKit `3/3`, and BrowserStack
+  macOS Playwright WebKit `3/3`.
+- BrowserStack real iPhone 15 Safari PARTIAL: Local tunnel, actual `team01`
+  login, `/auth/me`, Player bootstrap and map render were observed. QR
+  interaction/rotation is BLOCKED by the BrowserStack real-device Playwright
+  bridge after failures in `route.fetch`, forced click, DOM click and
+  touchscreen/expect paths. No credential or BrowserStack artifact is tracked.
+- No schema, migration or seed change. V1 is not a compatibility or acceptance
+  gate for this Team V2 performance change.
+
 # 2026-08-18 Team V2 Vietnamese font consistency
 
 - Frontend-only: removed Oxanium-first declarations from the localized Final

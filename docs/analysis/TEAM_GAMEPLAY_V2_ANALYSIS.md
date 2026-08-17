@@ -1,5 +1,29 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-18 QR tabs, Final retry and compact runtime
+
+- Scanner opens on a full-overlay camera tab and offers a separate paste tab.
+  Switching to paste stops camera resources; switching back starts a fresh
+  scanner run while preserving normalization, duplicate guards and callbacks.
+- Final wrong-answer cooldown is Backend-authoritative at
+  `3, 5, 10, 15, 20, ...`, capped at `50` seconds. When local cooldown expires,
+  V2 revalidates availability through a single-flight GET before enabling the
+  shared button/Enter submit path.
+- Correct Final state hides Total Score and replaces decorative sparkle with a
+  neon `TrophyFilled` success mark, including restored sessions after reload.
+- Overlay opacity controls only background surfaces. Text, icons, borders,
+  buttons and form controls remain fully opaque.
+- Team V2 polls the compact runtime projection instead of full Player state,
+  skips store updates for an unchanged `runtimeVersion`, reloads catalog only
+  when `catalogVersion` changes, and stops passive polling after
+  `FINAL_STARTED`.
+- Local authenticated focused smoke PASS on Chromium and WebKit `3/3` each for
+  portrait/landscape QR tabs and wrong-first Final retry/success. BrowserStack
+  macOS Playwright WebKit passed the same `3/3`. Real iPhone 15 Safari verified
+  the Local tunnel, actual `team01` login/auth bootstrap and map render, but QR
+  interaction/rotation remains blocked by BrowserStack's real-device Playwright
+  bridge (`route.fetch`, forced click, DOM click and touchscreen/expect failures).
+
 ## 2026-08-18 Vietnamese font consistency
 
 - All Team V2 localized/dynamic DOM UI now uses the bundled Space Grotesk

@@ -1,5 +1,16 @@
 # Frontend Localization Analysis
 
+## 2026-08-18 Vietnamese typography guardrail
+
+- Team V2 localized/dynamic copy uses the bundled Space Grotesk Vietnamese and
+  Latin subsets through `--team-v2-font-ui`, with `Aptos`, `Segoe UI` and
+  `sans-serif` fallbacks. Oxanium through `--team-v2-font-display` is limited to
+  invariant ASCII brand, score, `PTS`, marker codes and symbols.
+- `npm run font:check` fails when a localized Team V2 selector bypasses the UI
+  token or directly selects Oxanium. No runtime Google Fonts request is used.
+- Full Frontend validation passed with 458 synchronized i18n keys and 91 Vitest
+  tests.
+
 ## 2026-08-18 Team V2 Vietnamese font consistency
 
 - Team V2 localized/dynamic UI now consistently uses bundled Space Grotesk
