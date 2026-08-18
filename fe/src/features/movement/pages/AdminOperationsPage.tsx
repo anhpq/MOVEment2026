@@ -35,6 +35,10 @@ import {
   updateAdminEventConfig,
   updateAdminFinalConfig,
 } from "../api";
+import {
+  getRecommendedStationCloseTime,
+  isFiveMinutesBeforeFinal,
+} from "../eventTimeRecommendation";
 import "./AdminOperationsPage.css";
 
 type OperationRecord = Record<string, unknown>;
@@ -54,16 +58,6 @@ function formatValue(
   if (typeof value === "boolean") return value ? t("ops.yes") : t("ops.no");
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
-}
-
-function isFiveMinutesBeforeFinal(eventEndTime?: string, finalStartsAt?: string) {
-  const toMinutes = (value?: string) => {
-    const [hours, minutes] = (value ?? "").split(":").map(Number);
-    return Number.isFinite(hours) && Number.isFinite(minutes) ? hours * 60 + minutes : null;
-  };
-  const eventEnd = toMinutes(eventEndTime);
-  const finalStart = toMinutes(finalStartsAt);
-  return eventEnd !== null && finalStart !== null && (finalStart - eventEnd + 1440) % 1440 === 5;
 }
 
 function OperationList({
@@ -132,6 +126,7 @@ export function AdminOperationsPage() {
   const [finalForm] = Form.useForm();
   const eventEndTime = Form.useWatch("eventEndTime", eventForm);
   const finalStartsAt = Form.useWatch("finalStartsAt", eventForm);
+  const recommendedStationCloseTime = getRecommendedStationCloseTime(finalStartsAt);
 
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
@@ -239,7 +234,22 @@ export function AdminOperationsPage() {
             </div>
             {!isFiveMinutesBeforeFinal(eventEndTime, finalStartsAt) && (
               <div className="ops-info-note ops-info-note-warning">
-                {t("ops.stationCloseWarning")}
+                <span>
+                  {recommendedStationCloseTime ?
+                    t("ops.stationCloseWarning", {finalStartsAt})
+                  : t("ops.stationCloseWarningUnavailable")}
+                </span>
+                {recommendedStationCloseTime && (
+                  <>
+                    <Typography.Text
+                      className="ops-recommended-time"
+                      code
+                      copyable={{text: recommendedStationCloseTime}}>
+                      {recommendedStationCloseTime}
+                    </Typography.Text>
+                    <span>{t("ops.stationCloseWarningTail")}</span>
+                  </>
+                )}
               </div>
             )}
             <div className="ops-form-grid">

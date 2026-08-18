@@ -73,13 +73,13 @@
 .team-v2-final-notice {
   position: absolute;
   z-index: var(--team-v2-layer-fixed-ui);
-  top: calc(env(safe-area-inset-top, 0px) + clamp(106px, 15dvh, 138px));
+  top: calc(9.35% + clamp(58px, 6.8%, 72px) + 12px);
   left: 50%;
   width: min(92vw, 520px);
   transform: translateX(-50%);
   display: grid;
-  gap: 2px;
-  padding: 8px 16px;
+  gap: 3px;
+  padding: 9px 16px 10px;
   border: 1px solid var(--team-v2-line);
   background: rgba(2, 16, 27, .88);
   box-shadow: 0 0 16px rgba(47, 228, 240, .22);
@@ -88,7 +88,25 @@
   pointer-events: none;
 }
 
-.team-v2-final-notice span { color: var(--team-v2-score); font-weight: 800; }
+.team-v2-final-notice strong { font-family: var(--team-v2-font-ui); font-size: clamp(14px, 2.5vw, 18px); }
+.team-v2-final-notice p { margin: 0; color: var(--team-v2-muted); font-size: clamp(12px, 2vw, 15px); line-height: 1.3; }
+.team-v2-final-notice span { color: var(--team-v2-score); font-weight: 700; }
+
+@media (orientation: portrait) {
+  .team-v2-final-notice { top: calc(9% + clamp(58px, 7%, 68px) + 12px); }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .team-v2-final-notice {
+    top: calc(15.5% + clamp(48px, 13%, 58px) + 8px);
+    width: min(68vw, 560px);
+    gap: 1px;
+    padding: 5px 14px 6px;
+  }
+  .team-v2-final-notice strong { font-size: clamp(12px, 3.2vh, 15px); }
+  .team-v2-final-notice p { font-size: clamp(10px, 2.7vh, 12px); }
+  .team-v2-final-notice span { font-size: clamp(10px, 2.7vh, 12px); }
+}
 
 .team-v2-overlay-layer {
   position: absolute;
@@ -335,7 +353,7 @@
   color: #eafcff;
   font-size: calc(12px * var(--team-v2-footer-font-compensation, 1));
   font-style: normal;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.055em;
   text-shadow: 0 0 8px var(--team-v2-focus-ring);
   text-transform: uppercase;
@@ -353,7 +371,7 @@
   overflow: hidden;
   color: var(--team-v2-muted);
   font-size: calc(8px * var(--team-v2-footer-font-compensation, 1));
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
   text-overflow: ellipsis;
@@ -499,7 +517,7 @@
   bottom: 62px;
   color: #eafcff;
   font-size: calc(12px * var(--team-v2-footer-font-compensation, 1));
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-shadow: 0 0 8px var(--team-v2-accent);
   text-transform: uppercase;
@@ -517,7 +535,7 @@
   overflow: hidden;
   color: var(--team-v2-muted);
   font-size: 7px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   text-align: center;
   text-overflow: ellipsis;
@@ -615,11 +633,32 @@
   margin: clamp(18px, 4vh, 34px) auto 0;
 }
 
+.team-v2-support-actions {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.team-v2-support-actions .ant-btn {
+  width: 100%;
+  min-height: 44px;
+  white-space: normal;
+}
+
+.team-v2-support-actions .ant-btn:disabled {
+  border-color: rgba(159, 212, 217, 0.24);
+  color: rgba(234, 252, 255, 0.5);
+  cursor: not-allowed;
+  filter: saturate(0.45);
+}
+
 /* Demo v4 visual layer. It deliberately sits last so the Team V2 map/data
    implementation stays intact while the HUD adopts the approved reference. */
 .team-v2-page {
   min-height: 100vh;
-  font-family: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  font-family: var(--team-v2-font-ui);
   background:
     radial-gradient(ellipse at 50% 9%, rgba(52, 195, 255, .08), transparent 34%),
     radial-gradient(ellipse at 12% 88%, rgba(146, 71, 255, .06), transparent 26%),
@@ -661,7 +700,7 @@
   width: clamp(278px, 50vw, 560px);
   height: 66px;
   padding: 7px 52px 10px;
-  font-family: "Oxanium", Aptos, sans-serif;
+  font-family: var(--team-v2-font-display);
   font-size: clamp(25px, 4vw, 45px);
   font-weight: 700;
   letter-spacing: .045em;
@@ -680,8 +719,8 @@
   background: linear-gradient(180deg, rgba(7, 16, 12, .97), rgba(1, 5, 3, .99));
   box-shadow: 0 0 15px rgba(100, 255, 151, .2), inset 0 0 18px rgba(100, 255, 151, .08);
 }
-.team-v2-score strong { font-family: "Oxanium", Aptos, sans-serif; color: #64f29a; }
-.team-v2-score span { color: #88efaa; font-family: "Oxanium", Aptos, sans-serif; }
+.team-v2-score strong { font-family: var(--team-v2-font-display); color: #64f29a; }
+.team-v2-score span { color: #88efaa; font-family: var(--team-v2-font-display); }
 
 .team-v2-settings-button {
   border: 2px solid #76efff;
@@ -709,13 +748,13 @@
   border-radius: 4px;
   background: rgba(2, 9, 17, .94);
   color: #dffcff;
-  font: 700 11px/1 "Space Grotesk", Aptos, sans-serif;
+  font: 700 11px/1 var(--team-v2-font-ui);
   letter-spacing: .08em;
   text-transform: uppercase;
   box-shadow: 0 0 13px rgba(47, 228, 240, .17);
   cursor: pointer;
 }
-.team-v2-legend-toggle > span { display: grid; width: 22px; height: 22px; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-family: serif; font-size: 15px; }
+.team-v2-legend-toggle > span { display: grid; width: 22px; height: 22px; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-family: var(--team-v2-font-display); font-size: 15px; }
 .team-v2-legend-toggle b { font-size: 15px; transition: transform 160ms ease; }
 .team-v2-legend-control.is-open .team-v2-legend-toggle b { transform: rotate(180deg); }
 .team-v2-marker-legend {
@@ -747,10 +786,10 @@
 }
 .team-v2-leaderboard-chip { width: 250px; padding: 12px 20px; }
 .team-v2-progress-panel { width: 250px; padding: 12px 20px; }
-.team-v2-bottom-copy strong { font-family: "Space Grotesk", Aptos, sans-serif; font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); }
+.team-v2-bottom-copy strong { font-family: var(--team-v2-font-ui); font-size: calc(15px * var(--team-v2-footer-font-compensation, 1)); }
 .team-v2-scan-action { min-height: 126px; width: 128px; }
 .team-v2-scan-button { width: 112px; height: 112px; }
-.team-v2-scan-action > strong { bottom: 18px; font-family: "Space Grotesk", Aptos, sans-serif; }
+.team-v2-scan-action > strong { bottom: 18px; font-family: var(--team-v2-font-ui); }
 
 @media (orientation: portrait) {
   .team-v2-header { min-height: clamp(155px, 23dvh, 205px); }
@@ -977,6 +1016,10 @@
   .team-v2-settings-body > .team-v2-setting-row,
   .team-v2-settings-body > .team-v2-team-card {
     grid-column: 1 / -1;
+  }
+
+  .team-v2-support-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1527,7 +1570,7 @@
 .team-v2-team-panel__active small { color: #ffd21a; font-size: 8px; text-transform: uppercase; }
 .team-v2-team-panel__active strong { font-size: 18px; }
 .team-v2-team-panel__active em { overflow: hidden; color: #b9d1d8; font-size: 9px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
-.team-v2-team-panel__active button { min-height: 38px; padding: 0 12px; border: 0; border-radius: 5px; background: #ffd21a; color: #241a00; font-size: 10px; font-weight: 900; text-transform: uppercase; box-shadow: 0 0 12px rgba(255, 210, 26, 0.55); cursor: pointer; }
+.team-v2-team-panel__active button { min-height: 38px; padding: 0 12px; border: 0; border-radius: 5px; background: #ffd21a; color: #241a00; font-size: 10px; font-weight: 700; text-transform: uppercase; box-shadow: 0 0 12px rgba(255, 210, 26, 0.55); cursor: pointer; }
 
 .team-v2-team-panel__stations { overflow: hidden; }
 .team-v2-team-panel__stations > strong { display: block; padding: 9px 10px; border-bottom: 1px solid rgba(0, 231, 255, 0.24); font-size: 11px; text-transform: uppercase; }

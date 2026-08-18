@@ -613,6 +613,24 @@ When editing:
 - use transactions when one operation must create several records atomically;
 - return safe user-facing errors without stack traces or secrets.
 
+## Vietnamese Typography Guardrail
+
+When changing Team V2 UI:
+
+- use bundled `Space Grotesk` Vietnamese/Latin for localized copy and dynamic
+  content that may contain Vietnamese;
+- use the fallback chain `"Space Grotesk", Aptos, "Segoe UI", sans-serif`;
+- restrict `Oxanium` to invariant ASCII-only brand, score/`PTS`, marker code,
+  and non-Vietnamese symbols;
+- use the shared Team V2 font tokens instead of adding selector-local font
+  stacks;
+- verify representative Vietnamese diacritics and the bundled font load before
+  completing the change;
+- do not add a runtime Google Fonts request.
+
+The confirmed product typography rule remains in
+`docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md`.
+
 ## Generated Team and Station Data
 
 When Business Rules permit automatic generation:

@@ -1,15 +1,13 @@
 import {useCallback} from "react";
 import {useTranslation} from "react-i18next";
-import {useLocation} from "react-router-dom";
 import {isAuthFailure} from "../api";
-import {reconcilePlayerDatabase} from "../playerData";
-import {useMovementStore} from "../store";
+import {reconcileTeamV2Runtime} from "../playerData";
 import {shouldPollTeamRuntime} from "../runtimeCoordinator";
+import {useMovementStore} from "../store";
 import {useVisibleOnlinePolling} from "./useVisibleOnlinePolling";
 
-export function usePlayerStatePolling() {
+export function useTeamV2RuntimePolling() {
   const {i18n} = useTranslation();
-  const {pathname} = useLocation();
   const sessionRole = useMovementStore((state) => state.session?.role);
   const finalPhase = useMovementStore((state) => state.finalSummary?.phase);
   const logout = useMovementStore((state) => state.logout);
@@ -17,18 +15,15 @@ export function usePlayerStatePolling() {
 
   const refresh = useCallback(async () => {
     try {
-      await reconcilePlayerDatabase(language);
+      await reconcileTeamV2Runtime(language);
     } catch (error) {
       if (isAuthFailure(error)) {
         logout();
       }
-      // Transient failures intentionally preserve the last-known projection.
     }
   }, [language, logout]);
 
   useVisibleOnlinePolling(refresh, {
-    enabled:
-      !pathname.startsWith("/team/v2") &&
-      shouldPollTeamRuntime(sessionRole, finalPhase),
+    enabled: shouldPollTeamRuntime(sessionRole, finalPhase),
   });
 }

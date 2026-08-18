@@ -1,3 +1,80 @@
+# 2026-08-18 Team V2 QR, Final retry, typography and compact runtime
+
+- Added camera-first/paste QR tabs with explicit camera lifecycle, full scanner
+  viewport and safe-area controls. Wrong-first Final retry now revalidates
+  Backend availability and shares one Enter/button submit path; success hides
+  Total Score and renders the neon trophy state.
+- Wrong-answer cooldown is Backend-authoritative at
+  `3, 5, 10, 15, 20, ...`, capped at `50` seconds. Overlay opacity changes only
+  background surface alpha. Team V2 localized/dynamic text uses guarded bundled
+  Space Grotesk Vietnamese/Latin tokens.
+- Added compact `GET /api/player/v2/runtime` plus private ETags for runtime and
+  Station playing counts. Cadence remains `15_000/30_000ms` and polling stops
+  after `FINAL_STARTED`.
+- Local authenticated payload measurement: `/api/player/state` `4,020` bytes,
+  changed runtime `1,569` bytes (`60.97%` smaller), and repeated runtime/counts
+  requests returned `304` with `0` body bytes.
+- Verification PASS: Backend Jest `191/191`, Frontend Vitest `91/91`, i18n
+  parity `458`, font guard, Backend/Frontend lint and build, Frontend bundle
+  gate, focused Chromium `3/3`, focused local WebKit `3/3`, and BrowserStack
+  macOS Playwright WebKit `3/3`.
+- BrowserStack real iPhone 15 Safari PARTIAL: Local tunnel, actual `team01`
+  login, `/auth/me`, Player bootstrap and map render were observed. QR
+  interaction/rotation is BLOCKED by the BrowserStack real-device Playwright
+  bridge after failures in `route.fetch`, forced click, DOM click and
+  touchscreen/expect paths. No credential or BrowserStack artifact is tracked.
+- No schema, migration or seed change. V1 is not a compatibility or acceptance
+  gate for this Team V2 performance change.
+
+# 2026-08-18 Team V2 Vietnamese font consistency
+
+- Frontend-only: removed Oxanium-first declarations from the localized Final
+  notice, overlay/Team/Station headings and Station start-scan CTA. These surfaces
+  now share bundled Space Grotesk Vietnamese with Latin and system fallbacks.
+- Preserved Oxanium for invariant brand, numeric score, marker codes and HUD
+  symbols only.
+- Normalized localized action/label weights to supported Space Grotesk `700`
+  instead of browser-synthesized `800..900` glyphs.
+- Verification PASS: Frontend Vitest `85/85`, lint, production build/bundle,
+  authenticated Chromium computed-font E2E `3/3`, and local WebKit computed-font
+  E2E `3/3` at the three responsive target viewports.
+- No Backend, API, database, migration, seed, QR flow, gameplay, or Business Rule changed.
+
+# 2026-08-18 Admin Station-start close-time recommendation
+
+- Frontend-only: the existing non-blocking Event Config warning now calculates
+  `Final starts at - 5 minutes` and renders the result as a copyable `HH:mm`
+  value beside localized VI/EN guidance.
+- Added focused coverage for calculation, optional seconds, invalid values, and
+  detecting whether the current close time already matches the recommendation.
+- Verification PASS: focused Vitest `2/2`, full Frontend Vitest `85/85`, i18n
+  parity `455`, lint, and production build/bundle gate.
+- No Backend, API contract, database, migration, seed, Event timing authority,
+  Final opening rule, or save restriction changed.
+
+# 2026-08-18 Team V2 overlay opacity and dual Zalo support
+
+- Frontend-only: replaced the remaining demo-v4 hard-coded near-opaque overlay
+  surfaces with the existing `--team-v2-overlay-opacity` variable, so the
+  Settings slider visibly affects overlay backgrounds without fading content.
+- Added localized Zalo support 1 and pending Zalo support 2 actions. Portrait
+  stacks them; landscape uses two equal full-width columns. Support 2 remains
+  disabled until its URL is supplied and will enable without a markup change.
+- Verification PASS: Frontend Vitest `83/83`, i18n parity `453`, lint,
+  production build/bundle gate, authenticated Chromium targeted E2E `3/3`, and
+  local WebKit targeted E2E `3/3` at the three responsive target viewports.
+- No Backend source, API contract, database, migration, seed, QR, auth, gameplay,
+  or Business Rule changed. Physical Safari/iPhone verification remains pending.
+
+# 2026-08-18 Team V2 Final notice, input, polling, and WebKit compatibility
+
+- Team V2 Final notice now stays below Total Score, uses consistent return-to-gathering-point copy, and renders a non-interactive neon-pink gathering marker at `65.56%, 68.94%` during `NOTICE` and `STATIONS_CLOSED` only.
+- Replaced the 17 independently focused Final inputs with one native input plus presentation slots, preserving rapid typing, paste, internal spaces, Enter submission, and filled-slot highlighting.
+- Player state and Station playing-count polling now stop after authoritative phase `FINAL_STARTED`; Final load/submission requests remain independent.
+- Removed runtime `instanceof MediaStream` assumptions from Login, shared QR input, and Team V2 scanner cleanup. Stream detection now uses the `srcObject.getTracks` capability, preventing WebKit without a global `MediaStream` constructor from crashing the Team V2 lazy chunk.
+- Verification PASS: focused Vitest `22/22`, full Frontend Vitest `83/83`, i18n parity `451`, lint, production build/bundle gate, authenticated Chromium existing smoke `6/6` plus Final notice/input/polling `5/5`, and WebKit Final notice/input/polling `5/5` at `390x844`, `844x390`, and `1024x768`.
+- No Backend source, API contract, schema, migration, seed, QR payload, scoring, or Station gameplay rule changed. Physical Safari/iPhone verification remains pending.
+
 # 2026-08-15 Team V2 Settings logout removal
 
 - Frontend-only: removed the visible Logout button, `LogoutOutlined` import, and

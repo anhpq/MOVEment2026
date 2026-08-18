@@ -301,9 +301,8 @@ export class FinalService {
 
   private getCooldownSeconds(wrongAttemptCount: number) {
     if (wrongAttemptCount <= 0) return 0;
-    if (wrongAttemptCount === 1) return 1;
-    if (wrongAttemptCount === 2) return 3;
-    return Math.min((wrongAttemptCount - 2) * 5, 50);
+    if (wrongAttemptCount === 1) return 3;
+    return Math.min((wrongAttemptCount - 1) * 5, 50);
   }
 
   private getPointsByRank(challenge: FinalChallenge) {

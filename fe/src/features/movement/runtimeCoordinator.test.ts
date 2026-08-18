@@ -4,9 +4,25 @@ import {
   getTeamRuntimePollIntervalMs,
   isReducedDataMode,
   runSingleFlight,
+  shouldPollTeamRuntime,
   TEAM_RUNTIME_POLL_INTERVAL_MS,
   TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS,
 } from "./runtimeCoordinator";
+
+describe("Final runtime polling gate", () => {
+  it.each(["NORMAL", "NOTICE", "STATIONS_CLOSED"] as const)(
+    "keeps Team polling active during %s",
+    (phase) => {
+      expect(shouldPollTeamRuntime("user", phase)).toBe(true);
+    },
+  );
+
+  it("stops Team polling after Final starts", () => {
+    expect(shouldPollTeamRuntime("user", "FINAL_STARTED")).toBe(false);
+    expect(shouldPollTeamRuntime("admin", "NOTICE")).toBe(false);
+    expect(shouldPollTeamRuntime(undefined, undefined)).toBe(false);
+  });
+});
 
 function setNetworkConnection(connection?: {
   saveData?: boolean;
@@ -24,6 +40,11 @@ afterEach(() => {
 });
 
 describe("reduced data mode", () => {
+  it("locks the documented 15s/30s polling rollback baseline", () => {
+    expect(TEAM_RUNTIME_POLL_INTERVAL_MS).toBe(15_000);
+    expect(TEAM_RUNTIME_REDUCED_DATA_POLL_INTERVAL_MS).toBe(30_000);
+  });
+
   it.each([
     [{saveData: true, effectiveType: "4g"}],
     [{saveData: false, effectiveType: "2g"}],

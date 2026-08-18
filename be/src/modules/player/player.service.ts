@@ -270,6 +270,42 @@ export class PlayerService {
     };
   }
 
+  async getV2Runtime(teamId: number) {
+    const state = await this.getState(teamId);
+    const runtime = {
+      catalogVersion: state.catalogVersion,
+      totalPoints: state.team.totalPoints,
+      rank: state.team.rank,
+      completedStations: state.completedStations,
+      progress: state.progress.map((item) => ({
+        stationId: item.stationId,
+        status: item.status,
+        ...(item.checkedInAt ? {checkedInAt: item.checkedInAt} : {}),
+        ...(item.checkedOutAt ? {checkedOutAt: item.checkedOutAt} : {}),
+        ...(item.completedAt ? {completedAt: item.completedAt} : {}),
+        scoreAchieved: item.scoreAchieved,
+        attemptNo: item.attemptNo,
+      })),
+      final: {
+        phase: state.final.phase,
+        blockedByActiveStation: state.final.blockedByActiveStation,
+        pendingScoreStationId: state.final.pendingScoreStationId,
+        secondsUntilFinal: state.final.secondsUntilFinal,
+      },
+    };
+    const versionInput = {
+      ...runtime,
+      final: {
+        ...runtime.final,
+        secondsUntilFinal: undefined,
+      },
+    };
+    return {
+      runtimeVersion: this.buildResponseVersion(versionInput),
+      ...runtime,
+    };
+  }
+
   async getStationImages(stationId: string) {
     const station = await this.prisma.station.findFirst({
       where: { id: stationId, isActive: true },
@@ -399,6 +435,17 @@ export class PlayerService {
       stationId: row.stationId,
       playingTeamCount: row._count._all,
     }));
+  }
+
+  async getStationPlayingCountsSnapshot() {
+    const rows = await this.getStationPlayingCounts();
+    const sortedRows = [...rows].sort((left, right) =>
+      left.stationId.localeCompare(right.stationId),
+    );
+    return {
+      version: this.buildResponseVersion(sortedRows),
+      rows: sortedRows,
+    };
   }
 
   async qrAction(teamId: number, dto: QrActionDto) {
@@ -1049,6 +1096,12 @@ export class PlayerService {
       .digest('hex');
   }
 
+  private buildResponseVersion(value: unknown) {
+    return createHash('sha256')
+      .update(JSON.stringify(value))
+      .digest('hex');
+  }
+
   private async getFinalSubmissionState(
     finalChallengeId: number,
     teamId: number,
@@ -1083,9 +1136,8 @@ export class PlayerService {
 
   private getFinalCooldownSeconds(wrongAttemptCount: number) {
     if (wrongAttemptCount <= 0) return 0;
-    if (wrongAttemptCount === 1) return 1;
-    if (wrongAttemptCount === 2) return 3;
-    return Math.min((wrongAttemptCount - 2) * 5, 50);
+    if (wrongAttemptCount === 1) return 3;
+    return Math.min((wrongAttemptCount - 1) * 5, 50);
   }
 
   private validateScoreValue(score: number, maxPoints: number) {

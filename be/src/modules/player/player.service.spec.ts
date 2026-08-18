@@ -1120,6 +1120,86 @@ describe('PlayerService station flow', () => {
     expect(mockTeamResults.toLeaderboardRows).not.toHaveBeenCalled()
   })
 
+  it('builds a stable compact V2 runtime version without clock-only churn', async () => {
+    const state = {
+      catalogVersion: 'catalog-v1',
+      serverNow: '2026-08-18T01:00:00.000Z',
+      team: {
+        id: 2,
+        name: 'Team 2',
+        username: 'team02',
+        captainName: 'Captain',
+        totalPoints: 75,
+        maxPossiblePoints: 510,
+        totalPlaySeconds: 600,
+        status: 'ACTIVE',
+        rank: 3,
+        teamColor: '#123456',
+        color: '#123456',
+      },
+      completedStations: 1,
+      progress: Array.from({length: 17}, (_, index) => ({
+        id: 11 + index,
+        teamId: 2,
+        stationId: `ST${String(index + 1).padStart(3, '0')}`,
+        status: index === 0 ? ProgressStatus.COMPLETED : ProgressStatus.AVAILABLE,
+        checkedInAt: index === 0 ? new Date('2026-08-18T00:00:00.000Z') : null,
+        checkedOutAt: index === 0 ? new Date('2026-08-18T00:10:00.000Z') : null,
+        completedAt: index === 0 ? new Date('2026-08-18T00:11:00.000Z') : null,
+        cancelledAt: null,
+        nextCheckInAllowedAt: null,
+        scoreAchieved: index === 0 ? 30 : 0,
+        attemptNo: index === 0 ? 1 : 0,
+      })),
+      final: {
+        phase: 'NOTICE',
+        isOpen: false,
+        canSubmit: false,
+        blockedByActiveStation: false,
+        activeStationId: null,
+        pendingScoreStationId: null,
+        finalStartsAt: '11:45',
+        eventEndTime: '11:40',
+        notifyBeforeMinutes: 15,
+        secondsUntilFinal: 600,
+        stationCheckInClosed: false,
+      },
+    }
+    const getState = jest.spyOn(service, 'getState')
+      .mockResolvedValueOnce(state as never)
+      .mockResolvedValueOnce({
+        ...state,
+        serverNow: '2026-08-18T01:00:15.000Z',
+        final: {...state.final, secondsUntilFinal: 585},
+      } as never)
+
+    const first = await service.getV2Runtime(2)
+    const second = await service.getV2Runtime(2)
+
+    expect(first.runtimeVersion).toBe(second.runtimeVersion)
+    expect(first).not.toHaveProperty('serverNow')
+    expect(first).not.toHaveProperty('team')
+    expect(first.progress[0]).not.toHaveProperty('teamId')
+    expect(first.progress[0]).not.toHaveProperty('cancelledAt')
+    expect(Buffer.byteLength(JSON.stringify(first))).toBeLessThanOrEqual(
+      Buffer.byteLength(JSON.stringify(state)) * 0.65,
+    )
+    expect(getState).toHaveBeenCalledTimes(2)
+  })
+
+  it('sorts and versions the compact Station playing counts', async () => {
+    jest.spyOn(service, 'getStationPlayingCounts').mockResolvedValue([
+      {stationId: 'ST010', playingTeamCount: 1},
+      {stationId: 'ST002', playingTeamCount: 3},
+    ])
+
+    const first = await service.getStationPlayingCountsSnapshot()
+    const second = await service.getStationPlayingCountsSnapshot()
+
+    expect(first.rows.map((row) => row.stationId)).toEqual(['ST002', 'ST010'])
+    expect(first.version).toBe(second.version)
+  })
+
   it('maps a concurrent different-Station check-in to a stable 409 conflict', async () => {
     mockPrisma.teamStationProgress.findUnique.mockResolvedValue(progress)
     mockPrisma.teamStationProgress.findFirst.mockResolvedValue(null)

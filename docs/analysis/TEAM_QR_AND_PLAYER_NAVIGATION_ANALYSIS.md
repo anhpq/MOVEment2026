@@ -90,3 +90,9 @@ visible-only polling, and fixed bottom navigation themed by Team Color.
   Admin destinations are unchanged and V1 remains directly accessible.
 - Frontend tests, i18n parity, lint, production build, and bundle budget passed;
   authenticated browser redirect smoke remains pending.
+
+## 2026-08-18 Final polling and WebKit cleanup
+
+- `GET /api/player/stations/playing-counts` polling stops once Player state confirms `FINAL_STARTED`; no API response shape changed.
+- QR scanner cleanup no longer requires a global `MediaStream` constructor and continues stopping every attached track through the stream capability.
+- Chromium and WebKit authenticated smoke passed; physical iPhone camera verification remains pending.

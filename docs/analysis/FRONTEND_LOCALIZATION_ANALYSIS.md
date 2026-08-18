@@ -1,5 +1,36 @@
 # Frontend Localization Analysis
 
+## 2026-08-18 Vietnamese typography guardrail
+
+- Team V2 localized/dynamic copy uses the bundled Space Grotesk Vietnamese and
+  Latin subsets through `--team-v2-font-ui`, with `Aptos`, `Segoe UI` and
+  `sans-serif` fallbacks. Oxanium through `--team-v2-font-display` is limited to
+  invariant ASCII brand, score, `PTS`, marker codes and symbols.
+- `npm run font:check` fails when a localized Team V2 selector bypasses the UI
+  token or directly selects Oxanium. No runtime Google Fonts request is used.
+- Full Frontend validation passed with 458 synchronized i18n keys and 91 Vitest
+  tests.
+
+## 2026-08-18 Team V2 Vietnamese font consistency
+
+- Team V2 localized/dynamic UI now consistently uses bundled Space Grotesk
+  Vietnamese plus Latin subsets. Oxanium is restricted to invariant HUD content.
+- Chromium and local WebKit computed-style/font-loading smoke passed `3/3` each
+  across portrait, low-height landscape, and desktop.
+
+## 2026-08-18 Admin Event close-time recommendation copy
+
+- Added synchronized VI/EN guidance for the calculated Station-start QR close
+  time, unavailable recommendation state, copy instruction, and advisory save behavior.
+- Dynamic Final and recommended `HH:mm` values remain unmodified identifiers.
+
+## 2026-08-18 Team V2 dual Zalo support copy
+
+- Replaced the single support label with synchronized VI/EN labels for Zalo
+  support 1, Zalo support 2, and the pending second-contact state.
+- i18n parity passed with `453` keys. Authenticated Chromium and local WebKit
+  feature smoke both passed `3/3` across portrait, landscape, and desktop.
+
 ## 2026-08-03 Team V2 Station preview copy
 
 - Added synchronized VI/EN accessible copy for the compact Station preview,
@@ -214,3 +245,9 @@ Admin CRUD, Player Station APIs, and canonical Station seed translation data.
 # Final V2 — cập nhật 2026-08-17
 
 Đã bổ sung copy VI/EN cho countdown Final V2, notice/urgent toast, và warning Admin cấu hình thời điểm đóng QR bắt đầu Station.
+
+## Final notice copy — cập nhật 2026-08-18
+
+- `NOTICE`: `Final Challenge sắp bắt đầu` / `Final Challenge starts soon`.
+- `STATIONS_CLOSED`: `Các trạm đã đóng` / `All Stations are now closed`.
+- Hai phase dùng chung hướng dẫn localized trở về `Điểm tập trung` / `Gathering Point`; marker map dùng cùng terminology.

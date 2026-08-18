@@ -1,5 +1,66 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-18 Team V2 QR, Final retry and compact runtime
+
+- [x] Split scanner into camera-first `Quét QR` and `Dán QR` tabs with camera
+  stop/restart lifecycle and full-overlay video.
+- [x] Enforce Final cooldown `3, 5, 10, 15, 20, ...`, cap `50`, revalidate retry
+  availability, share Enter/button submission and show trophy success without
+  Total Score.
+- [x] Limit opacity to overlay backgrounds and enforce bundled Space Grotesk
+  Vietnamese/Latin for localized/dynamic Team V2 UI.
+- [x] Add compact V2 runtime projection, private ETags, unchanged
+  `15_000/30_000ms` constants, single-flight reconciliation and terminal Final
+  polling gate.
+- [x] Measure full state `4,020` bytes versus runtime `1,569` bytes (`60.97%`
+  reduction); verify runtime/counts `304` responses have `0` body bytes.
+- [x] Pass Backend `191/191`, Frontend `91/91`, i18n `458`, font guard, lint,
+  build/bundle, Chromium `3/3`, local WebKit `3/3`, and BrowserStack macOS
+  Playwright WebKit `3/3`.
+- [ ] BrowserStack real iPhone 15 Safari QR interaction/rotation remains blocked
+  by the provider's Playwright bridge. Actual Team login/auth bootstrap and map
+  render passed; retry after BrowserStack resolves its real-device
+  `route.fetch`/click/touchscreen command failures.
+- [ ] Production deploy/runtime remains out of scope and was not performed.
+
+## 2026-08-18 Team V2 Vietnamese font consistency
+
+- [x] Use bundled Space Grotesk for every localized/dynamic Team V2 DOM heading and action.
+- [x] Keep localized Space Grotesk weights within the bundled `500..700` range.
+- [x] Keep Oxanium only for invariant brand, score, marker code and HUD-symbol content.
+- [x] Verify the Vietnamese face and computed font on Chromium and WebKit at three viewports.
+- [ ] Confirm the corrected rendering on physical Safari macOS and iPhone Safari.
+
+## 2026-08-18 Admin Event close-time recommendation
+
+- [x] Calculate the recommended Station start QR close time as Final minus 5 minutes.
+- [x] Display the `HH:mm` recommendation with a copy action in the existing warning.
+- [x] Preserve non-blocking saves for a different close time.
+- [x] Cover calculation, invalid input, optional seconds, and match detection.
+- [x] Pass Frontend Vitest `85/85`, i18n parity `455`, lint, and build/bundle.
+
+## 2026-08-18 Team V2 Settings opacity and Zalo support
+
+- [x] Apply the saved opacity value to every Team V2 overlay background surface
+  without reducing content opacity.
+- [x] Keep Zalo support 1 active and expose Zalo support 2 as localized pending
+  configuration that auto-enables when its URL is added.
+- [x] Stack both actions in portrait and fill Settings width with two equal
+  columns in landscape while retaining `44px` targets.
+- [x] Pass Frontend Vitest `83/83`, i18n parity `453`, lint, build/bundle,
+  Chromium targeted E2E `3/3`, and WebKit targeted E2E `3/3`.
+- [ ] Confirm the controls on physical Safari macOS and iPhone Safari.
+
+## 2026-08-18 Team V2 Final notice and runtime stop
+
+- [x] Keep the Final notice below Total Score with consistent VI/EN gathering-point guidance.
+- [x] Render the non-interactive neon-pink gathering marker only during `NOTICE` and `STATIONS_CLOSED`.
+- [x] Replace per-character Final focus choreography with one native answer input and filled presentation slots.
+- [x] Stop Player state and Station playing-count polling after `FINAL_STARTED`.
+- [x] Guard QR stream cleanup from a missing WebKit `MediaStream` global.
+- [x] Pass focused/full Frontend tests, i18n, lint, build/bundle, authenticated Chromium existing `6/6` plus Final notice/input/polling `5/5`, and WebKit Final notice/input/polling `5/5`.
+- [ ] Confirm the revised notice, marker, Final keyboard, and camera cleanup on physical iPhone Safari.
+
 ## 2026-08-15 Team V2 Settings logout removal
 
 - [x] Remove the Logout action and its V2-only explicit API handler from Settings.

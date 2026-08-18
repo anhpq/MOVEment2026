@@ -562,7 +562,7 @@ docs/prompts/11_CODEX_FINAL_GAME_KEYWORD_AND_SCORING_PROMPT.md
 - Database-confirmed first-correct order determines rank.
 - Top 10 receive `40, 30, 25, 22, 20, 18, 16, 14, 12, 10` points.
 - Rank 11 and later receive 0 Final points.
-- Wrong-answer cooldown increases from 1 second to a maximum of 10 seconds.
+- Wrong-answer cooldown follows `3, 5, 10, 15, 20, ...` seconds and is capped at 50 seconds.
 - A Team must never receive Final rank or bonus twice.
 
 ### Must Update After Change

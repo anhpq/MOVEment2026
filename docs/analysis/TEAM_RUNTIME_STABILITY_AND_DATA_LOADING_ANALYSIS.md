@@ -1,5 +1,27 @@
 # Team Runtime Stability and Data Loading Analysis
 
+## 2026-08-18 Team V2 compact runtime polling
+
+- Initial Team V2 bootstrap remains complete; passive refresh now uses
+  `GET /api/player/v2/runtime` with only runtime/catalog versions, authoritative
+  score/rank/completed count, minimal progress, and Final phase state consumed
+  by V2.
+- Runtime and Station playing-count responses have private ETags. Unchanged
+  conditional requests return `304` with an empty body. An unchanged
+  `runtimeVersion` does not update the store or reset local countdown state.
+- A V2 mutation schedules at most one runtime reconciliation. Catalog reloads
+  only when `catalogVersion` changes. Runtime and playing-count polling stop at
+  authoritative `FINAL_STARTED`; dedicated Final requests remain available.
+- Cadence is intentionally unchanged: `15_000ms` normal and `30_000ms` under
+  save-data/2G. Hidden, offline and `FINAL_STARTED` states stop polling.
+- Rollback note: if a later cadence experiment is rejected, restore the two
+  constants to `15_000/30_000` without rolling back compact projection, ETag or
+  catalog versioning. Any future cadence change must update constants, locked
+  tests, measurement and this decision log together.
+- Local authenticated measurement: full state `4,020` bytes versus changed
+  runtime `1,569` bytes, a `60.97%` reduction. Repeated runtime and
+  playing-count requests both returned `304` with `0` response-body bytes.
+
 ## Status
 
 | Area | Status |
@@ -278,3 +300,10 @@ confirmed Business Rules.
   and mutation reconciliation.
 - Frontend tests, lint, build, and bundle budget passed. Authenticated browser
   redirect/data bootstrap smoke remains pending.
+
+## 2026-08-18 Final phase polling terminal state
+
+- Team runtime treats authoritative `FINAL_STARTED` as terminal for passive Player state and Station playing-count polling.
+- The countdown performs the one boundary refresh required to learn the new phase; cleanup then removes interval, visibility, and online-triggered refreshes.
+- Final Challenge load and submission use their dedicated API lifecycle and remain enabled.
+- Authenticated Chromium and WebKit smoke observed no additional calls to either polling endpoint across a complete post-settlement polling interval.

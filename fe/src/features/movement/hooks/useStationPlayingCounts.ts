@@ -5,6 +5,7 @@ import {
   type StationPlayingCountResponse,
 } from "../api";
 import {useMovementStore} from "../store";
+import {shouldPollTeamRuntime} from "../runtimeCoordinator";
 import type {TeamStation} from "../types";
 import {useVisibleOnlinePolling} from "./useVisibleOnlinePolling";
 
@@ -31,6 +32,8 @@ function normalizeCounts(rows: StationPlayingCountResponse[]) {
 
 export function useStationPlayingCounts(enabled: boolean) {
   const teamStations = useMovementStore((state) => state.teamStations);
+  const sessionRole = useMovementStore((state) => state.session?.role);
+  const finalPhase = useMovementStore((state) => state.finalSummary?.phase);
   const logout = useMovementStore((state) => state.logout);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [hasLiveCounts, setHasLiveCounts] = useState(false);
@@ -62,7 +65,9 @@ export function useStationPlayingCounts(enabled: boolean) {
     }
   }, [logout]);
 
-  useVisibleOnlinePolling(refresh, {enabled});
+  const pollingEnabled = enabled && shouldPollTeamRuntime(sessionRole, finalPhase);
 
-  return enabled && hasLiveCounts ? counts : fallbackCounts;
+  useVisibleOnlinePolling(refresh, {enabled: pollingEnabled});
+
+  return pollingEnabled && hasLiveCounts ? counts : fallbackCounts;
 }

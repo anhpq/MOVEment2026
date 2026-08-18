@@ -13,7 +13,7 @@ This Prompt covers:
 - multiple attempts;
 - wrong-answer cooldown;
 - atomic first-correct ranking;
-- 10-to-1 Final bonus;
+- Top-10 Final bonus;
 - duplicate and concurrency protection;
 - leaderboard integration;
 - verification and documentation sync.
@@ -50,7 +50,7 @@ EVERY MOVE COUNTS
 9. A Team with an active Station must finish it before entering Final.
 9. Team does not need to complete every Station before Final.
 10. Team may submit multiple attempts until correct or Event closes.
-11. Wrong-answer cooldown increases from 1 second to a maximum of 10 seconds.
+11. Wrong-answer cooldown follows `3, 5, 10, 15, 20, ...` seconds and is capped at 50 seconds.
 12. Backend enforces cooldown.
 13. First correct database-confirmed submission receives rank 1.
 14. Rank points are:
@@ -195,12 +195,13 @@ Use backend-authoritative cooldown.
 Confirmed progression:
 
 ```text
-minimum 1 second
-increases after wrong attempts
-maximum 10 seconds
+attempt 1: 3 seconds
+attempt 2: 5 seconds
+later attempts: increase by 5 seconds
+maximum 50 seconds
 ```
 
-The exact formula may follow current implementation if it satisfies the confirmed range and is documented.
+The progression is exact and must not be replaced by a separate frontend formula.
 
 Concurrent requests must not bypass cooldown.
 
@@ -231,8 +232,8 @@ Backend:
 - mixed case accepted;
 - surrounding spaces handled;
 - wrong keyword rejected;
-- cooldown starts at 1 second;
-- cooldown never exceeds 10 seconds;
+- cooldown starts at 3 seconds, then 5 seconds;
+- later cooldowns increase by 5 seconds and never exceed 50 seconds;
 - duplicate correct request does not award twice;
 - concurrent submissions get unique ranks;
 - rank 1 gets 40;

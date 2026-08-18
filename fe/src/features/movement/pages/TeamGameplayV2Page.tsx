@@ -60,10 +60,19 @@ import {
   unlockLandscapeOrientation,
 } from "./teamV2Fullscreen";
 import {
+  shouldShowTeamV2GatheringPoint,
+  TEAM_V2_GATHERING_POINT,
+} from "./teamV2FinalNotice";
+import {
+  TEAM_V2_DISPLAY_FONT_FAMILY,
+  TEAM_V2_UI_FONT_FAMILY,
+} from "./teamV2Typography";
+import {
   TeamV2QrScanner,
   type TeamV2QrSubmitResult,
 } from "../components/TeamV2QrScanner";
 import {useStationPlayingCounts} from "../hooks/useStationPlayingCounts";
+import {useTeamV2RuntimePolling} from "../hooks/useTeamV2RuntimePolling";
 import {useVisibleOnlinePolling} from "../hooks/useVisibleOnlinePolling";
 import {
   executePlayerMutation,
@@ -83,7 +92,7 @@ import "./TeamGameplayV2Demo.css";
 
 const PANEL_OPACITY_STORAGE_KEY = "movement-team-v2-panel-opacity-v2";
 const V2_HUD_ACCENT = "#2FE4F0";
-const ZALO_SUPPORT_URL = "https://zalo.me/0909384697";
+const ZALO_SUPPORT_URLS: readonly [string, string | null] = ["https://zalo.me/0909384697", null];
 
 function formatFinalCountdown(seconds: number) {
   const minutes = Math.floor(seconds / 60);
@@ -390,7 +399,7 @@ function StationMarker({
         text={marker.code}
         align="center"
         verticalAlign="middle"
-        fontFamily="Oxanium, Aptos, Segoe UI, sans-serif"
+        fontFamily={TEAM_V2_DISPLAY_FONT_FAMILY}
         fontSize={getStationMarkerFontSize(marker.code, size)}
         fontStyle="bold"
         fill="#FFFFFF"
@@ -482,7 +491,7 @@ function StationMarker({
           x={4}
           width={STATION_LABEL_WIDTH - 8}
           height={STATION_LABEL_HEIGHT}
-          fontFamily="Space Grotesk, Aptos, Segoe UI, sans-serif"
+          fontFamily={TEAM_V2_UI_FONT_FAMILY}
           fontSize={9.5}
           fontStyle="bold"
           fill={colors.meta}
@@ -495,7 +504,136 @@ function StationMarker({
   );
 }
 
-function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => void}) {
+function GatheringPointMarker({
+  x,
+  y,
+  size,
+  label,
+  isInteracting,
+}: {
+  x: number;
+  y: number;
+  size: number;
+  label: string;
+  isInteracting: boolean;
+}) {
+  const markerRef = useRef<Konva.Group>(null);
+  const pinWidth = size * 1.08;
+  const pinHeight = size * 1.42;
+  const markerCenterY = -pinHeight * 0.57;
+  const pinScaleX = pinWidth / 58;
+  const pinScaleY = pinHeight / 84;
+  const pinBottomOffset = -54 * pinScaleY;
+  const labelWidth = Math.max(104, Math.min(154, 52 + Array.from(label).length * 5.4));
+
+  useEffect(() => {
+    const node = markerRef.current;
+    if (!node || isInteracting || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    let frameId = 0;
+    const animate = (time: number) => {
+      const firstBeat = Math.max(0, Math.sin((time / 1500) * Math.PI * 4));
+      const secondBeat = Math.max(0, Math.sin(((time + 210) / 1500) * Math.PI * 4));
+      const beat = Math.max(firstBeat, secondBeat * 0.72);
+      const scale = 1 + beat * 0.09;
+      node.scale({x: scale, y: scale});
+      node.opacity(0.88 + beat * 0.12);
+      node.getLayer()?.batchDraw();
+      frameId = requestAnimationFrame(animate);
+    };
+    frameId = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(frameId);
+      node.scale({x: 1, y: 1});
+      node.opacity(1);
+    };
+  }, [isInteracting]);
+
+  return (
+    <Group x={x} y={y} listening={false}>
+      <Group ref={markerRef} listening={false}>
+        <Circle
+          y={markerCenterY}
+          radius={size * 1.05}
+          stroke="#FF42D0"
+          strokeWidth={1.4}
+          opacity={0.38}
+          shadowColor="#FF2BC8"
+          shadowBlur={isInteracting ? 0 : 24}
+        />
+        <Circle
+          y={markerCenterY}
+          radius={size * 0.76}
+          stroke="#FF8AE1"
+          strokeWidth={1.2}
+          opacity={0.58}
+        />
+        <Path
+          y={pinBottomOffset}
+          scaleX={pinScaleX}
+          scaleY={pinScaleY}
+          data="M 0 -30 C -19 -30 -29 -17 -29 1 C -29 19 -12 38 0 54 C 12 38 29 19 29 1 C 29 -17 19 -30 0 -30 Z"
+          fillLinearGradientStartPoint={{x: -29, y: -30}}
+          fillLinearGradientEndPoint={{x: 29, y: 54}}
+          fillLinearGradientColorStops={[0, "#360725", 0.55, "#1C071F", 1, "#090412"]}
+          strokeLinearGradientStartPoint={{x: -29, y: -30}}
+          strokeLinearGradientEndPoint={{x: 29, y: 54}}
+          strokeLinearGradientColorStops={[0, "#FF8AE1", 0.5, "#FF2BC8", 1, "#B14CFF"]}
+          strokeWidth={2.4 / Math.max(pinScaleX, pinScaleY)}
+          shadowColor="#FF2BC8"
+          shadowBlur={isInteracting ? 0 : 24}
+          shadowOpacity={0.95}
+        />
+        <Text
+          x={-size / 2}
+          y={markerCenterY - size * 0.24}
+          width={size}
+          height={size * 0.48}
+          text="X"
+          align="center"
+          verticalAlign="middle"
+          fontFamily={TEAM_V2_DISPLAY_FONT_FAMILY}
+          fontSize={size * 0.45}
+          fontStyle="bold"
+          fill="#FFFFFF"
+          shadowColor="#FF42D0"
+          shadowBlur={7}
+        />
+        <Group x={-labelWidth / 2} y={6} listening={false}>
+          <Rect
+            width={labelWidth}
+            height={22}
+            cornerRadius={11}
+            fillLinearGradientStartPoint={{x: 0, y: 0}}
+            fillLinearGradientEndPoint={{x: labelWidth, y: 22}}
+            fillLinearGradientColorStops={[0, "#25051C", 1, "#13051D"]}
+            strokeLinearGradientStartPoint={{x: 0, y: 0}}
+            strokeLinearGradientEndPoint={{x: labelWidth, y: 22}}
+            strokeLinearGradientColorStops={[0, "#FF75DA", 1, "#B14CFF"]}
+            strokeWidth={1.4}
+            shadowColor="#FF2BC8"
+            shadowBlur={isInteracting ? 0 : 14}
+          />
+          <Text
+            x={7}
+            width={labelWidth - 14}
+            height={22}
+            text={label}
+            align="center"
+            verticalAlign="middle"
+            fontFamily={TEAM_V2_UI_FONT_FAMILY}
+            fontSize={10}
+            fontStyle="bold"
+            fill="#FFD9F5"
+          />
+        </Group>
+      </Group>
+    </Group>
+  );
+}
+
+function DemoHudHeader({score, hideScore, onSettings}: {score: number; hideScore: boolean; onSettings: () => void}) {
   const {t} = useTranslation();
   return (
     <>
@@ -505,9 +643,9 @@ function DemoHudHeader({score, onSettings}: {score: number; onSettings: () => vo
           <SettingOutlined />
         </button>
       </header>
-      <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
+      {!hideScore && <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
         <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
-      </section>
+      </section>}
     </>
   );
 }
@@ -790,6 +928,7 @@ export function TeamGameplayV2Page() {
     [activeTeamId, teamStations],
   );
   const language = i18n.language === "en" ? "en" : "vi";
+  useTeamV2RuntimePolling();
   const [panelOpacity, setPanelOpacity] = useState(readStoredPanelOpacity);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
   const [isStationDetailOpen, setIsStationDetailOpen] = useState(false);
@@ -801,6 +940,8 @@ export function TeamGameplayV2Page() {
   const [qrToken, setQrToken] = useState("");
   const [scoreStationId, setScoreStationId] = useState<string | null>(null);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
+  const [isFinalCompleted, setIsFinalCompleted] = useState(false);
+  const handleFinalCompleted = useCallback(() => setIsFinalCompleted(true), []);
   const [finalClock, setFinalClock] = useState({seconds: 0, receivedAt: Date.now()});
   const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(
     () => Boolean(getActiveFullscreenElement()),
@@ -863,6 +1004,7 @@ export function TeamGameplayV2Page() {
   const isFinalMode = finalSummary?.phase === "FINAL_STARTED" && !finalSummary.pendingScoreStationId && !finalSummary.blockedByActiveStation;
   const secondsUntilFinal = Math.max(0, finalClock.seconds - Math.floor((Date.now() - finalClock.receivedAt) / 1000));
   const showFinalNotice = finalSummary?.phase === "NOTICE" || finalSummary?.phase === "STATIONS_CLOSED";
+  const showGatheringPoint = shouldShowTeamV2GatheringPoint(finalSummary?.phase);
 
   useEffect(() => {
     setFinalClock({seconds: finalSummary?.secondsUntilFinal ?? 0, receivedAt: Date.now()});
@@ -928,6 +1070,15 @@ export function TeamGameplayV2Page() {
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
     [mapTransform, markerViewModels, viewportSize],
   );
+  const gatheringPointLayout = useMemo(() => {
+    if (!showGatheringPoint) return null;
+    const marker = {
+      station: {id: TEAM_V2_GATHERING_POINT.id},
+      x: (TEAM_V2_GATHERING_POINT.mapX / 100) * MAP_WORLD_WIDTH,
+      y: (TEAM_V2_GATHERING_POINT.mapY / 100) * MAP_WORLD_HEIGHT,
+    };
+    return getStationLabelLayouts([marker], viewportSize, mapTransform).get(marker.station.id) ?? null;
+  }, [mapTransform, showGatheringPoint, viewportSize]);
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
@@ -1207,6 +1358,7 @@ export function TeamGameplayV2Page() {
       const {result} = await executePlayerMutation(
         () => submitPlayerQrAction(token),
         language,
+        {reconcile: "v2-runtime"},
       );
       setQrToken("");
       setIsScannerOpen(false);
@@ -1240,8 +1392,8 @@ export function TeamGameplayV2Page() {
     }
   };
 
-  const openSupport = () => {
-    const supportWindow = window.open(ZALO_SUPPORT_URL, "_blank", "noopener,noreferrer");
+  const openSupport = (supportUrl: string) => {
+    const supportWindow = window.open(supportUrl, "_blank", "noopener,noreferrer");
     if (supportWindow) {
       supportWindow.opener = null;
     }
@@ -1352,6 +1504,15 @@ export function TeamGameplayV2Page() {
                   />
                 ) : null;
               })}
+              {gatheringPointLayout?.isInViewport && (
+                <GatheringPointMarker
+                  x={gatheringPointLayout.anchorX}
+                  y={gatheringPointLayout.anchorY}
+                  size={gatheringPointLayout.markerSize}
+                  label={t("teamV2.gatheringPoint")}
+                  isInteracting={isMapInteracting}
+                />
+              )}
             </Layer>
           </Stage>
         )}
@@ -1359,6 +1520,7 @@ export function TeamGameplayV2Page() {
 
       <DemoHudHeader
         score={activeTeam.score}
+        hideScore={isFinalMode && isFinalCompleted}
         onSettings={() => {
           setIsLeaderboardOpen(false);
           setIsScannerOpen(false);
@@ -1369,11 +1531,12 @@ export function TeamGameplayV2Page() {
       {showFinalNotice && !isFinalMode && (
         <aside className="team-v2-final-notice" role="status">
           <strong>{finalSummary?.phase === "STATIONS_CLOSED" ? t("teamV2.finalUrgentTitle") : t("teamV2.finalNoticeTitle")}</strong>
+          <p>{t("teamV2.finalNoticeDescription")}</p>
           <span>{t("teamV2.finalCountdown", {time: formatFinalCountdown(secondsUntilFinal)})}</span>
         </aside>
       )}
 
-      {isFinalMode && <TeamV2FinalChallenge language={language} />}
+      {isFinalMode && <TeamV2FinalChallenge language={language} onCompleted={handleFinalCompleted} />}
 
       {!isFinalMode && <DemoMarkerLegend
         open={isLegendOpen}
@@ -1399,6 +1562,7 @@ export function TeamGameplayV2Page() {
               await executePlayerMutation(
                 () => cancelPlayerStation(selectedStation.stationId),
                 language,
+                {reconcile: "v2-runtime"},
               );
               message.success(t("stationDetail.cancelled"));
               setSelectedStationId(null);
@@ -1502,9 +1666,24 @@ export function TeamGameplayV2Page() {
                   }}
                 />
               </div>
-              <Button icon={<CustomerServiceOutlined />} onClick={openSupport}>
-                {t("teamV2.zaloSupport")}
-              </Button>
+              <div className="team-v2-support-actions">
+                <Button block icon={<CustomerServiceOutlined />} onClick={() => openSupport(ZALO_SUPPORT_URLS[0])}>
+                  {t("teamV2.zaloSupport1")}
+                </Button>
+                <Button
+                  block
+                  icon={<CustomerServiceOutlined />}
+                  disabled={!ZALO_SUPPORT_URLS[1]}
+                  onClick={() => {
+                    const supportUrl = ZALO_SUPPORT_URLS[1];
+                    if (supportUrl) {
+                      openSupport(supportUrl);
+                    }
+                  }}
+                >
+                  {t(ZALO_SUPPORT_URLS[1] ? "teamV2.zaloSupport2" : "teamV2.zaloSupport2Pending")}
+                </Button>
+              </div>
             </div>
           </section>
         </div>
@@ -1520,7 +1699,7 @@ export function TeamGameplayV2Page() {
 
       {!isFinalMode && isScannerOpen && (
         <div
-          className="team-v2-overlay-layer"
+          className="team-v2-overlay-layer team-v2-scanner-layer"
           style={getTeamV2OverlayStyle(panelOpacity)}
           onClick={(event) => {
             if (event.target === event.currentTarget) setIsScannerOpen(false);
@@ -1592,6 +1771,7 @@ export function TeamGameplayV2Page() {
                           values.reason,
                         ),
                         language,
+                        {reconcile: "v2-runtime"},
                       );
                       message.success(t("stationDetail.completedSuccess"));
                       setScoreStationId(null);

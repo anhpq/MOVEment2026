@@ -1,5 +1,61 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-18 QR tabs, Final retry and compact runtime
+
+- Scanner opens on a full-overlay camera tab and offers a separate paste tab.
+  Switching to paste stops camera resources; switching back starts a fresh
+  scanner run while preserving normalization, duplicate guards and callbacks.
+- Final wrong-answer cooldown is Backend-authoritative at
+  `3, 5, 10, 15, 20, ...`, capped at `50` seconds. When local cooldown expires,
+  V2 revalidates availability through a single-flight GET before enabling the
+  shared button/Enter submit path.
+- Correct Final state hides Total Score and replaces decorative sparkle with a
+  neon `TrophyFilled` success mark, including restored sessions after reload.
+- Overlay opacity controls only background surfaces. Text, icons, borders,
+  buttons and form controls remain fully opaque.
+- Team V2 polls the compact runtime projection instead of full Player state,
+  skips store updates for an unchanged `runtimeVersion`, reloads catalog only
+  when `catalogVersion` changes, and stops passive polling after
+  `FINAL_STARTED`.
+- Local authenticated focused smoke PASS on Chromium and WebKit `3/3` each for
+  portrait/landscape QR tabs and wrong-first Final retry/success. BrowserStack
+  macOS Playwright WebKit passed the same `3/3`. Real iPhone 15 Safari verified
+  the Local tunnel, actual `team01` login/auth bootstrap and map render, but QR
+  interaction/rotation remains blocked by BrowserStack's real-device Playwright
+  bridge (`route.fetch`, forced click, DOM click and touchscreen/expect failures).
+
+## 2026-08-18 Vietnamese font consistency
+
+- All Team V2 localized/dynamic DOM UI now uses the bundled Space Grotesk
+  Vietnamese/Latin family. This includes the Final notice title, overlay titles,
+  Team/Station names and the Station Detail start-scan CTA.
+- Oxanium remains limited to invariant HUD content that does not require
+  Vietnamese glyphs: `MOVEment 2026`, score/`PTS`, marker codes and the gathering
+  point `X`. This prevents per-glyph fallback, mismatched baselines and broken
+  diacritics while preserving the approved cyberpunk brand treatment.
+- Localized labels/actions use the bundled supported weight ceiling `700`
+  instead of synthetic `800..900` weights, avoiding jagged Vietnamese strokes.
+- Computed-font smoke PASS on authenticated Chromium and local WebKit `3/3` each
+  at `390x844`, `844x390`, and `1024x768`; the bundled Vietnamese face reported
+  loaded in both engines. Physical Safari/iPhone verification remains pending.
+
+## 2026-08-18 Settings opacity and dual Zalo support
+
+- The Settings opacity slider now drives every full-screen overlay background
+  layer, including the demo-v4 panel, header and button surfaces, while text and
+  controls remain fully opaque and readable.
+- Settings exposes two full-width Zalo support actions. Support 1 keeps the
+  existing contact; Support 2 is visibly disabled with localized "coming soon"
+  copy until its URL is configured. Updating the second URL automatically
+  enables the same safe external-window behavior.
+- Portrait stacks the actions; landscape at `640px+` uses two equal columns that
+  span the full Settings content width. Both actions retain a minimum `44px`
+  target and Safari-compatible CSS fallbacks.
+- Verification PASS: full Frontend Vitest `83/83`, i18n parity `453`, lint,
+  production build/bundle gate, authenticated Chromium feature smoke `3/3` and
+  local WebKit feature smoke `3/3` at `390x844`, `844x390`, and `1024x768`.
+  Physical Safari/iPhone verification was not performed.
+
 ## 2026-08-15 Settings logout removal
 
 - Removed the visible Logout action from Team V2 Settings and deleted its
@@ -1117,3 +1173,24 @@ for gameplay actions where required.
 # Final Challenge V2 — cập nhật 2026-08-17
 
 `/team/v2` render Final native, không route qua V1. Với đáp án hiện tại, UI nhận `answerLength` authoritative và render 17 ô ký tự gồm cả space; space phải được nhập tay, hiển thị ô đã điền nhưng không render glyph. Enter hoặc button submit; sai đáp án xóa ô và lock theo cooldown.
+
+## Final notice và Điểm tập trung — quyết định 2026-08-18
+
+- Banner `NOTICE`/`STATIONS_CLOSED` nằm dưới Total Score, có title, hướng dẫn trở về Điểm tập trung và countdown đồng nhất VI/EN.
+- Marker Điểm tập trung là Konva presentation marker không tương tác tại `65.56%, 68.94%`; chỉ hiện từ `NOTICE` qua `STATIONS_CLOSED`, giữ neon hồng và biến mất khi `FINAL_STARTED`.
+- Marker không thuộc Station catalog/progress, không mở Detail và không thay đổi QR hoặc quyền Check-in.
+- Final answer dùng một native input làm nguồn dữ liệu để loại race khi gõ nhanh; các slot chỉ trình bày ký tự và trạng thái filled.
+- Player state và Station playing-count polling dừng ngay sau khi Store xác nhận `FINAL_STARTED`; Final API vẫn hoạt động độc lập.
+
+### Decision log
+
+- Review concern: banner che score, copy chưa định hướng Team, Final input lặp ký tự và polling tiếp tục sau Final.
+- Decision: neo banner theo geometry score, dùng marker thông báo riêng, một input chuỗi và phase làm polling gate.
+- Effect: không đổi Backend/API/schema/seed hoặc Station gameplay; thay đổi giới hạn trong Team V2 presentation và runtime polling.
+
+### Verification result
+
+- PASS focused Vitest `22/22`, full Frontend Vitest `83/83`, i18n parity `451`, lint và production build/bundle gate.
+- PASS authenticated Chromium: existing Team V2 smoke `6/6` và Final notice/input/polling `5/5`.
+- PASS local Playwright WebKit Final notice/input/polling `5/5` tại `390x844`, `844x390`, `1024x768` sau khi guard cleanup khỏi global `MediaStream` không tồn tại.
+- Physical iPhone Safari vẫn chưa được xác nhận.
