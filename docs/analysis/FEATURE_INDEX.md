@@ -93,6 +93,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
 | `TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md` | Lean Team APIs, adaptive polling, error resilience, concurrency hardening, and Team bundle/data budgets. |
 | `FRONTEND_LOCALIZATION_ANALYSIS.md` | Vietnamese/English Frontend localization. |
+| `ADMIN_LAYOUT_RESTRUCTURE_ANALYSIS.md` | Restructure Admin navigation, Operations tabs, Management hub, and System Config portal. |
 | `AGENT_SKILLS_ANALYSIS.md` | Codex project-local skills, runtime-skill boundaries, admission gate, and workflow validation. |
 
 ---

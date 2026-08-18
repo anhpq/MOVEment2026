@@ -72,6 +72,11 @@ const AdminOperationsPage = lazyRoute(() =>
     default: component,
   })),
 );
+const AdminV2Page = lazyRoute(() =>
+  import("./pages/adminV2/AdminV2Page").then(({AdminV2Page: component}) => ({
+    default: component,
+  })),
+);
 
 export function MovementRoutes() {
   return (
@@ -137,6 +142,22 @@ export function MovementRoutes() {
         element={
           <LazyRouteBoundary>
             <ProtectedRoute allow={["user"]}><FinalPage /></ProtectedRoute>
+          </LazyRouteBoundary>
+        }
+      />
+      <Route
+        path="/admin/v2"
+        element={
+          <LazyRouteBoundary>
+            <ProtectedRoute allow={["admin"]}><AdminV2Page /></ProtectedRoute>
+          </LazyRouteBoundary>
+        }
+      />
+      <Route
+        path="/admin/v2/*"
+        element={
+          <LazyRouteBoundary>
+            <ProtectedRoute allow={["admin"]}><AdminV2Page /></ProtectedRoute>
           </LazyRouteBoundary>
         }
       />
