@@ -4,6 +4,7 @@ import {
   executePlayerMutation,
   fetchPlayerDatabase,
   loadPlayerMapImage,
+  reconcileTeamV2Runtime,
   resetPlayerRuntimeCachesForTests,
   selectPlayerMapImageVariant,
 } from "./playerData";
@@ -15,6 +16,7 @@ const apiMocks = vi.hoisted(() => ({
   getPlayerFinal: vi.fn(),
   getPlayerProgress: vi.fn(),
   getPlayerState: vi.fn(),
+  getPlayerV2Runtime: vi.fn(),
   getPlayerStationImages: vi.fn(),
   getPlayerStations: vi.fn(),
 }));
@@ -104,6 +106,38 @@ function mockLeanResponses() {
         mediaUrl: null,
       },
     }],
+  });
+}
+
+function mockV2Runtime(runtimeVersion = "runtime-v1") {
+  apiMocks.getPlayerV2Runtime.mockResolvedValue({
+    runtimeVersion,
+    catalogVersion: "catalog-v1",
+    totalPoints: 140,
+    rank: 1,
+    completedStations: 1,
+    progress: [{
+      stationId: "ST001",
+      status: "COMPLETED",
+      checkedInAt: "2026-07-29T01:00:00.000Z",
+      checkedOutAt: "2026-07-29T01:01:00.000Z",
+      completedAt: "2026-07-29T01:01:00.000Z",
+      scoreAchieved: 30,
+      attemptNo: 1,
+    }],
+    final: {
+      isOpen: false,
+      canSubmit: false,
+      blockedByActiveStation: false,
+      activeStationId: null,
+      finalStartsAt: "03:00",
+      eventEndTime: "02:55",
+      notifyBeforeMinutes: 15,
+      secondsUntilFinal: 600,
+      stationCheckInClosed: false,
+      phase: "NOTICE",
+      pendingScoreStationId: null,
+    },
   });
 }
 
@@ -224,6 +258,39 @@ describe("player mutation reconciliation", () => {
     expect(mutation).toHaveBeenCalledTimes(1);
     expect(apiMocks.getPlayerState).toHaveBeenCalledTimes(1);
     expect(apiMocks.getPlayerCatalog).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Team V2 compact runtime reconciliation", () => {
+  it("merges dynamic runtime fields without reloading an unchanged catalog", async () => {
+    mockLeanResponses();
+    mockV2Runtime();
+    useMovementStore.getState().loadDatabase(await fetchPlayerDatabase("vi"));
+
+    await expect(reconcileTeamV2Runtime("vi")).resolves.toEqual({
+      changed: true,
+      catalogReloaded: false,
+    });
+
+    expect(useMovementStore.getState().teams[0]).toMatchObject({score: 140, rank: 1});
+    expect(useMovementStore.getState().finalSummary).toMatchObject({phase: "NOTICE"});
+    expect(apiMocks.getPlayerCatalog).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getPlayerState).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not update the store twice for the same runtime version", async () => {
+    mockLeanResponses();
+    mockV2Runtime();
+    useMovementStore.getState().loadDatabase(await fetchPlayerDatabase("vi"));
+    await reconcileTeamV2Runtime("vi");
+    const stateAfterFirstRuntime = useMovementStore.getState();
+
+    await expect(reconcileTeamV2Runtime("vi")).resolves.toEqual({
+      changed: false,
+      catalogReloaded: false,
+    });
+
+    expect(useMovementStore.getState()).toBe(stateAfterFirstRuntime);
   });
 });
 

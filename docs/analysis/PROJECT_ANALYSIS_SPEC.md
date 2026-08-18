@@ -1,5 +1,49 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-18 Team V2 compact runtime and interaction update
+
+- Team V2 scanner owns two tabs: camera-first `Quét QR` and `Dán QR`; leaving
+  the camera tab stops its stream and returning starts a new scanner lifecycle.
+- A correct Final response hides the score HUD and shows the native neon trophy
+  success state. Wrong-answer retry remains Backend-authoritative and both Enter
+  and the button use one submit path.
+- Overlay opacity changes only backdrop/panel surface alpha. Content, borders,
+  icons and controls remain fully opaque.
+- Team V2 passive refresh uses `GET /api/player/v2/runtime`; static catalog data
+  is versioned separately. Runtime and playing-count responses use private ETag
+  validation and stop after authoritative `FINAL_STARTED`.
+- Polling cadence remains `15_000ms` normally and `30_000ms` for save-data/2G.
+  These values are the rollback baseline and are independent from the compact
+  endpoint, ETag and response projection.
+
+## 2026-08-18 Team V2 Vietnamese font policy
+
+- Team V2 UI text that can be localized or contain Vietnamese uses bundled
+  Space Grotesk Vietnamese/Latin WOFF2 files. Oxanium is reserved for invariant
+  brand, score, marker-code and HUD-symbol content.
+- The route must not mix Oxanium and fallback glyphs inside Vietnamese strings;
+  localized text stays within the bundled Space Grotesk `500..700` weight range.
+  Font loading remains local-only with no runtime Google Fonts request.
+
+## 2026-08-18 Admin Event time recommendation
+
+- When `Close Station start QR at` differs from the recommended offset, Admin
+  Event Config calculates and displays `Final starts at - 5 minutes` as a
+  copy-ready `HH:mm` value.
+- The recommendation remains advisory: Admin can copy it into the field or save
+  another close time. Backend validation and Event/Final timing rules are unchanged.
+
+## 2026-08-18 Team V2 overlay opacity and support contacts
+
+- The Team V2 Settings opacity preference applies to all overlay backdrop,
+  panel, header, and action backgrounds through a background-only CSS variable;
+  content opacity remains unchanged.
+- Settings provides Zalo support 1 with the current contact and a disabled,
+  localized Zalo support 2 pending its contact URL. Portrait stacks both actions;
+  landscape renders two equal columns across the Settings content width.
+- This is route-local presentation only and does not change Backend, QR,
+  gameplay, authentication, or Team data contracts.
+
 ## 2026-08-15 Team V2 Settings logout removal
 
 - `/team/v2` Settings no longer renders a Logout action. Automatic session
@@ -623,7 +667,8 @@ Backend stores the normalized Final keyword directly in the compatibility column
 
 Team may retry until correct or Final closes.
 
-Wrong-answer cooldown increases from 1 second up to 10 seconds and is enforced by backend.
+Wrong-answer cooldown follows `3, 5, 10, 15, 20, ...` seconds, is capped at
+50 seconds, and is enforced by Backend.
 
 Rank is assigned by database-confirmed first correct submission.
 
@@ -910,3 +955,9 @@ Documentation synchronization does not close these implementation gaps.
 # Final takeover update — 2026-08-17
 
 Event Config là authority cho mốc đóng QR Station và mở Final. Final V2 không thêm route, giữ state map khi chưa takeover và dùng state polling/refresh để chuyển UI khi Final bắt đầu.
+
+## Team V2 Final notice update — 2026-08-18
+
+- `notifyBeforeMinutes` tiếp tục quyết định thời điểm phase `NOTICE`; Team V2 dùng phase này để hiện banner hướng dẫn và marker Điểm tập trung không tương tác.
+- Marker Điểm tập trung tại `mapX = 65.56`, `mapY = 68.94` giữ neon hồng qua `STATIONS_CLOSED`, rồi ẩn khi Final takeover bắt đầu.
+- Sau khi state authoritative chuyển sang `FINAL_STARTED`, Team runtime dừng Player state và Station playing-count polling; Final load/submission không bị ảnh hưởng.

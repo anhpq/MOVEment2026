@@ -270,6 +270,7 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | --- | --- |
 | Frontend copy | Frontend-owned visible copy phải hỗ trợ VI/EN, bao gồm label, button, placeholder, validation, toast, modal, status, loading/empty/error state, tooltip và ARIA text. |
 | Brand | `MOVEment 2026` giữ nguyên ở mọi ngôn ngữ. |
+| Vietnamese typography | Team V2 localized copy và dữ liệu động có thể chứa tiếng Việt phải dùng bundled `Space Grotesk` Vietnamese/Latin với fallback `Aptos`, `Segoe UI`, `sans-serif`. `Oxanium` chỉ dùng cho nội dung ASCII bất biến như brand, số điểm/`PTS`, marker code và ký hiệu không chứa tiếng Việt. Không tải Google Fonts lúc runtime. |
 | Preserved values | Station ID, Team ID, username, token, URL, QR payload, enum/API values, `Game.title` và `clueText` không tự dịch trong Frontend. |
 | Language control | Language switch hiển thị cờ bằng text/emoji `🇻🇳 VI` và `🇬🇧 EN`; không cần thêm image asset. |
 | Final terminology | Menu có thể giữ label ngắn `Final`; heading đầy đủ là `Thử thách cuối cùng` trong VI và `Final Challenge` trong EN. Từ `cipher/mật mã` chỉ dùng khi nói về đáp án/mật mã thực tế. |
@@ -529,7 +530,9 @@ Rotate Check-out không được tự rotate Check-in.
 | Hard-coded time | Không hard-code `11:30`, `11:45` hoặc giờ cố định trong Business Rule. |
 | Final opening | Final Challenge mở theo `finalStartsAt` hiện tại trong Admin Event Config. |
 | Event end time | `eventEndTime` là giờ đóng Station đối với Check-in mới; vận hành nên đặt trước `finalStartsAt` đúng 5 phút. Admin chỉ cảnh báo khi hai mốc lệch, không chặn lưu. |
-| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown vẫn hiển thị tới giờ Final. |
+| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown phải nằm dưới Total Score, hướng dẫn Team trở về Điểm tập trung và vẫn hiển thị tới giờ Final. |
+| Marker Điểm tập trung | Team V2 hiển thị marker thông báo neon hồng, không tương tác tại `mapX = 65.56`, `mapY = 68.94` từ phase `NOTICE`, giữ nguyên qua `STATIONS_CLOSED` và ẩn khi `FINAL_STARTED`; marker này không phải Station gameplay và không thay đổi quyền Check-in. |
+| Polling sau khi Final mở | Sau khi Player state xác nhận phase `FINAL_STARTED`, Frontend dừng polling `/api/player/state` và `/api/player/stations/playing-counts`; các request Final phục vụ tải/submission vẫn hoạt động. |
 | Station mới sau end time | Team không được bắt đầu Station mới sau `eventEndTime`; đúng `finalStartsAt` Backend luôn hard-close Check-in. |
 | Station đang chơi | Team đã Check-in trước `eventEndTime` có thể Check-out đến `finalStartsAt`. Đúng giờ Final, attempt chưa Check-out bị SYSTEM hủy, không tính score hoặc play time. |
 | Pending score tại Final | Station đã Check-out nhưng chờ score (`SCORE`/`BOTH`) không bị hủy và phải hoàn tất score trước khi Team vào Final. |
@@ -542,7 +545,7 @@ Rotate Check-out không được tự rotate Check-in.
 | Final points | Top 10 lần lượt nhận `40, 30, 25, 22, 20, 18, 16, 14, 12, 10` điểm. |
 | Sau hạng 10 | Từ hạng 11 trở đi nhận 0 điểm Final. |
 | Multiple attempts | Team được phép nhập nhiều lần cho đến khi đúng. |
-| Wrong answer cooldown | Cooldown theo lần sai là `1, 3, 5, 10, 15, 20, ...` giây và capped tại `50` giây. |
+| Wrong answer cooldown | Cooldown theo lần sai là `3, 5, 10, 15, 20, ...` giây và capped tại `50` giây. |
 | Cooldown enforcement | Backend phải enforce cooldown. |
 | Duplicate protection | Một Team không được nhận Final rank hoặc bonus nhiều hơn một lần. |
 

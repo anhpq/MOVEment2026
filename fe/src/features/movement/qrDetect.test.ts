@@ -1,5 +1,5 @@
 import {afterEach, describe, expect, it, vi} from "vitest";
-import {createQrFrameDetector} from "./qrDetect";
+import {createQrFrameDetector, getVideoMediaStream} from "./qrDetect";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -24,5 +24,17 @@ describe("createQrFrameDetector", () => {
       dispose: expect.any(Function),
     });
     expect(() => detector.dispose()).not.toThrow();
+  });
+});
+
+describe("getVideoMediaStream", () => {
+  it("does not require a global MediaStream constructor", () => {
+    vi.stubGlobal("MediaStream", undefined);
+    const stream = {getTracks: vi.fn().mockReturnValue([])} as unknown as MediaStream;
+    const video = document.createElement("video");
+    Object.defineProperty(video, "srcObject", {configurable: true, value: stream});
+
+    expect(getVideoMediaStream(video)).toBe(stream);
+    expect(getVideoMediaStream(null)).toBeNull();
   });
 });

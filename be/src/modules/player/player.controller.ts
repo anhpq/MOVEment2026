@@ -58,16 +58,50 @@ export class PlayerController {
     return this.playerService.getState(this.requireTeam(auth));
   }
 
+  @Get('v2/runtime')
+  async getV2Runtime(
+    @CurrentAuth() auth: AuthContext,
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const runtime = await this.playerService.getV2Runtime(this.requireTeam(auth));
+    if (
+      this.applyPrivateCache(
+        request,
+        response,
+        runtime.runtimeVersion,
+        'private, no-cache',
+      )
+    ) {
+      return;
+    }
+    return runtime;
+  }
+
   @Get('stations')
   getStations(@CurrentAuth() auth: AuthContext, @Query('lang') lang?: string) {
     return this.playerService.getStations(this.requireTeam(auth), lang);
   }
 
   @Get('stations/playing-counts')
-  @Header('Cache-Control', 'private, no-cache')
-  getStationPlayingCounts(@CurrentAuth() auth: AuthContext) {
+  async getStationPlayingCounts(
+    @CurrentAuth() auth: AuthContext,
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     this.requireTeam(auth);
-    return this.playerService.getStationPlayingCounts();
+    const snapshot = await this.playerService.getStationPlayingCountsSnapshot();
+    if (
+      this.applyPrivateCache(
+        request,
+        response,
+        snapshot.version,
+        'private, no-cache',
+      )
+    ) {
+      return;
+    }
+    return snapshot.rows;
   }
 
   @Get('stations/:stationId/images')
@@ -159,9 +193,10 @@ export class PlayerController {
     request: Request,
     response: Response,
     version: string,
+    cacheControl = 'private, max-age=300, must-revalidate',
   ) {
     const etag = `"${version}"`;
-    response.setHeader('Cache-Control', 'private, max-age=300, must-revalidate');
+    response.setHeader('Cache-Control', cacheControl);
     response.setHeader('ETag', etag);
     if (request.header('If-None-Match') === etag) {
       response.status(HttpStatus.NOT_MODIFIED).end();
