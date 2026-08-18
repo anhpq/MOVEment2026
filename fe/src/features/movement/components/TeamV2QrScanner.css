@@ -123,6 +123,11 @@
   margin-inline: auto;
 }
 
+.team-v2-qr-scanner__manual .ant-input {
+  font-size: 1.5em;
+  min-height: 48px;
+}
+
 @media (orientation: landscape) and (max-height: 430px) {
   .team-v2-qr-scanner__tabs {
     top: max(58px, calc(env(safe-area-inset-top, 0px) + 50px));
