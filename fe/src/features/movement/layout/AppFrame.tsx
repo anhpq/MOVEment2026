@@ -123,101 +123,65 @@ export function AppFrame({children}: AppFrameProps) {
     return children;
   }
 
-  const isAdminV2 = location.pathname.startsWith("/admin/v2");
-
-  const navItems: FixedBottomNavigationItem[] =
-    session.role !== "user" ?
-      isAdminV2 ?
-        [
-          {
-            key: "ops-v2",
-            label: t("ops.dashboard"),
-            icon: <DashboardOutlined />,
-            active: location.pathname === "/admin/v2" || location.pathname.startsWith("/admin/v2/operations"),
-            onClick: () => navigate("/admin/v2/operations"),
-          },
-          {
-            key: "mgmt-v2",
-            label: "Quản lý",
-            icon: <TeamOutlined />,
-            active: location.pathname.startsWith("/admin/v2/management"),
-            onClick: () => navigate("/admin/v2/management"),
-          },
-          {
-            key: "rank",
-            label: t("nav.rank"),
-            icon: <TrophyOutlined />,
-            active: location.pathname.startsWith("/leaderboard"),
-            onClick: () => navigate("/leaderboard"),
-          },
-          {
-            key: "cfg-v2",
-            label: t("nav.setting"),
-            icon: <SettingOutlined />,
-            active: location.pathname.startsWith("/admin/v2/config"),
-            onClick: () => navigate("/admin/v2/config"),
-          },
-        ]
-      : [
-          {
-            key: "teams",
-            label: t("nav.teams"),
-            icon: <TeamOutlined />,
-            active: location.pathname.startsWith("/teams"),
-            onClick: () => navigate("/teams"),
-          },
-          {
-            key: "rank",
-            label: t("nav.rank"),
-            icon: <TrophyOutlined />,
-            active: location.pathname.startsWith("/leaderboard"),
-            onClick: () => navigate("/leaderboard"),
-          },
-          {
-            key: "ops",
-            label: t("nav.ops"),
-            icon: <DashboardOutlined />,
-            active: location.pathname.startsWith("/admin/operations"),
-            onClick: () => navigate("/admin/operations"),
-          },
-          {
-            key: "setting",
-            label: t("nav.setting"),
-            icon: <SettingOutlined />,
-            active: location.pathname.startsWith("/system-config"),
-            onClick: () => navigate("/system-config"),
-          },
-        ]
-    : [
-        {
-          key: "stations",
-          label: t("nav.stations"),
-          icon: <QrcodeOutlined />,
-          active: location.pathname.startsWith("/stations") && !location.pathname.startsWith("/stations/map"),
-          onClick: () => navigate("/stations"),
-        },
-        {
-          key: "rank",
-          label: t("nav.rank"),
-          icon: <TrophyOutlined />,
-          active: location.pathname.startsWith("/leaderboard"),
-          onClick: () => navigate("/leaderboard"),
-        },
-        {
-          key: "final",
-          label: t("nav.final"),
-          icon: <FlagOutlined />,
-          active: location.pathname.startsWith("/final"),
-          onClick: () => navigate("/final"),
-        },
-        {
-          key: "map",
-          label: t("nav.map"),
-          icon: <EnvironmentOutlined />,
-          active: location.pathname.startsWith("/stations/map"),
-          onClick: () => navigate("/stations/map"),
-        },
-      ];
+  const navItems: FixedBottomNavigationItem[] = session.role !== "user" ? [
+    {
+      key: "teams",
+      label: t("nav.teams"),
+      icon: <TeamOutlined />,
+      active: location.pathname.startsWith("/teams"),
+      onClick: () => navigate("/teams"),
+    },
+    {
+      key: "rank",
+      label: t("nav.rank"),
+      icon: <TrophyOutlined />,
+      active: location.pathname.startsWith("/leaderboard"),
+      onClick: () => navigate("/leaderboard"),
+    },
+    {
+      key: "ops",
+      label: t("nav.ops"),
+      icon: <DashboardOutlined />,
+      active: location.pathname.startsWith("/admin/operations"),
+      onClick: () => navigate("/admin/operations"),
+    },
+    {
+      key: "setting",
+      label: t("nav.setting"),
+      icon: <SettingOutlined />,
+      active: location.pathname.startsWith("/system-config"),
+      onClick: () => navigate("/system-config"),
+    },
+  ] : [
+    {
+      key: "stations",
+      label: t("nav.stations"),
+      icon: <QrcodeOutlined />,
+      active: location.pathname.startsWith("/stations") && !location.pathname.startsWith("/stations/map"),
+      onClick: () => navigate("/stations"),
+    },
+    {
+      key: "rank",
+      label: t("nav.rank"),
+      icon: <TrophyOutlined />,
+      active: location.pathname.startsWith("/leaderboard"),
+      onClick: () => navigate("/leaderboard"),
+    },
+    {
+      key: "final",
+      label: t("nav.final"),
+      icon: <FlagOutlined />,
+      active: location.pathname.startsWith("/final"),
+      onClick: () => navigate("/final"),
+    },
+    {
+      key: "map",
+      label: t("nav.map"),
+      icon: <EnvironmentOutlined />,
+      active: location.pathname.startsWith("/stations/map"),
+      onClick: () => navigate("/stations/map"),
+    },
+  ];
 
   return (
     <Layout className={shellClassName} style={teamThemeVars}>
@@ -237,22 +201,13 @@ export function AppFrame({children}: AppFrameProps) {
             </Typography.Text>
             <div className="account-actions">
               {session.role === "admin" && (
-                <>
-                  <Button
-                    type="primary"
-                    variant="outlined"
-                    size="small"
-                    onClick={() => navigate(isAdminV2 ? "/teams" : "/admin/v2")}>
-                    {isAdminV2 ? "↩️ Admin V1" : "⚡ Admin V2"}
-                  </Button>
-                  <Button
-                    color="danger"
-                    variant="filled"
-                    icon={<LogoutOutlined />}
-                    onClick={handleLogout}>
-                    {t("common.admin")}
-                  </Button>
-                </>
+                <Button
+                  color="danger"
+                  variant="filled"
+                  icon={<LogoutOutlined />}
+                  onClick={handleLogout}>
+                  {t("common.admin")}
+                </Button>
               )}
               {session.role === "user" && (
                 <Button
