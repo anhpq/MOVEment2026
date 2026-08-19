@@ -310,8 +310,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/routes.tsx": {
-    "mtime": 1785762094.5207286,
-    "ast_hash": "855393f2f2aa206206278556dce3984d",
+    "mtime": 1787067412.0287137,
+    "ast_hash": "85f5dbfeddfbc986714d269665e4c6ed",
     "semantic_hash": ""
   },
   "fe/src/features/movement/store.ts": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1787015989.927051,
-    "ast_hash": "67cdc5609c57e7080b6ffd2e399fcba2",
+    "mtime": 1787076157.361723,
+    "ast_hash": "7dbdde789ef1e328309f3f0d21ec42c6",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1787015989.910051,
-    "ast_hash": "0a9b1ee581b22a277e63c09af092eef0",
+    "mtime": 1787076156.7624767,
+    "ast_hash": "be0ddc8bb7e614b04a97451e903d0565",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -695,8 +695,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FEATURE_INDEX.md": {
-    "mtime": 1787015989.916051,
-    "ast_hash": "829da938b7975b02a6d2c0c5f927c163",
+    "mtime": 1787067412.6443992,
+    "ast_hash": "3b20ad95507ad2e7ee26304e5ee21daf",
     "semantic_hash": ""
   },
   "docs/prompts/09_CODEX_MASTER_EXECUTION_PROMPT.md": {
@@ -1175,8 +1175,8 @@
     "semantic_hash": ""
   },
   "fe/src/test/setup.ts": {
-    "mtime": 1785324665.0009973,
-    "ast_hash": "3ccb7539c3d8b16f3dd698da42937414",
+    "mtime": 1787075491.550985,
+    "ast_hash": "7cad1f73ec40e886388f67b288a3ea9e",
     "semantic_hash": ""
   },
   "fe/vitest.config.ts": {
@@ -1422,6 +1422,101 @@
   "fe/src/features/movement/pages/teamV2Typography.ts": {
     "mtime": 1787015990.0634933,
     "ast_hash": "536e4c7d7d6cfce903eeaf6349254667",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/AdminV2Entry.test.tsx": {
+    "mtime": 1787075538.5322702,
+    "ast_hash": "5955c6690573b71da0cb921e636c3d67",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/AdminV2Entry.tsx": {
+    "mtime": 1787067410.2908294,
+    "ast_hash": "d3a1daa4374e611f7d1a3e516eb75beb",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/i18n/resources.ts": {
+    "mtime": 1787076191.1748223,
+    "ast_hash": "4c11f19d9cf373c0a0648048b212256c",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/layout/AdminV2Header.tsx": {
+    "mtime": 1787073904.8941712,
+    "ast_hash": "bbb7f14db54984eaf2863f62e44ba7e7",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/layout/AdminV2MobileNav.tsx": {
+    "mtime": 1787076070.1229055,
+    "ast_hash": "47a4315ce16adf2ca7bcc1fbb4b08ad8",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/layout/AdminV2Shell.test.tsx": {
+    "mtime": 1787076118.6637268,
+    "ast_hash": "cf0a33f75487061bf4a4a17a06a27c8b",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/layout/AdminV2Shell.tsx": {
+    "mtime": 1787067407.635176,
+    "ast_hash": "224337609bf0cc2a19a04b2f3d4cfb70",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/layout/AdminV2Sidebar.tsx": {
+    "mtime": 1787073827.6775682,
+    "ast_hash": "63028857fefee2f25b07db1630fb0aff",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/foundation/AdminV2FoundationPage.tsx": {
+    "mtime": 1787073829.4588113,
+    "ast_hash": "b5352b591da951e6da5c64a5676e085d",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/foundation/AdminV2NotFoundPage.tsx": {
+    "mtime": 1787073830.0293615,
+    "ast_hash": "a5a928ee8b28af86c8e7b0593f613fa9",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/routes/AdminV2Routes.tsx": {
+    "mtime": 1787076167.4110198,
+    "ast_hash": "4488789f79eb8c0974da4e908e7e723e",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/routes/adminV2RouteConfig.tsx": {
+    "mtime": 1787067531.34798,
+    "ast_hash": "20e76067a1fb630a7e38c634feb8d734",
+    "semantic_hash": ""
+  },
+  "docs/admin-v2/PLAN.md": {
+    "mtime": 1787076156.1629028,
+    "ast_hash": "f5efd0ce37f085ea32403d62c6d6068c",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/dashboard/AdminV2DashboardPage.tsx": {
+    "mtime": 1787075537.9103193,
+    "ast_hash": "56e50889190dc6eefdb73e1b49e607c3",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/dashboard/adminV2DashboardData.ts": {
+    "mtime": 1787075691.7327986,
+    "ast_hash": "0f52d421a34866885110c64ca0ef944c",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/dashboard/AdminV2DashboardPage.test.tsx": {
+    "mtime": 1787075424.8754523,
+    "ast_hash": "9b5d2ea815cda0db4d3d334ff5195f72",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/teams/AdminV2TeamsPage.test.tsx": {
+    "mtime": 1787076235.5872493,
+    "ast_hash": "268641acac052538c0f406ebf14391a0",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/teams/AdminV2TeamsPage.tsx": {
+    "mtime": 1787076259.1145701,
+    "ast_hash": "6cb7fe8ef78984253dae6a57a68ff74b",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/teams/adminV2TeamsData.ts": {
+    "mtime": 1787076166.1377268,
+    "ast_hash": "15a1370afdf770cc431d0199a22cdb1c",
     "semantic_hash": ""
   }
 }
