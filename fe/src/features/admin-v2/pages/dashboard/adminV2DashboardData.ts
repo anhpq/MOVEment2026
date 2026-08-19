@@ -63,14 +63,17 @@ function parseEventConfig(value: unknown): AdminV2EventConfig | null {
   const eventEndTime = asString(config.eventEndTime);
   const finalStartsAt = asString(config.finalStartsAt);
   const timezone = asString(config.timezone);
-  if (!eventEndTime || !finalStartsAt || !timezone) return null;
+  const notifyBeforeMinutes = asFiniteNumber(config.notifyBeforeMinutes);
+  const secondsUntilFinal = asFiniteNumber(config.secondsUntilFinal);
+  if (!eventEndTime || !finalStartsAt || !timezone || notifyBeforeMinutes === null || secondsUntilFinal === null
+    || typeof config.isPastEventEnd !== "boolean" || typeof config.isPastFinalStart !== "boolean") return null;
 
   return {
     eventEndTime,
     finalStartsAt,
     timezone,
-    notifyBeforeMinutes: asFiniteNumber(config.notifyBeforeMinutes) ?? 0,
-    secondsUntilFinal: asFiniteNumber(config.secondsUntilFinal) ?? 0,
+    notifyBeforeMinutes,
+    secondsUntilFinal,
     isPastEventEnd: asBoolean(config.isPastEventEnd),
     isPastFinalStart: asBoolean(config.isPastFinalStart),
   };

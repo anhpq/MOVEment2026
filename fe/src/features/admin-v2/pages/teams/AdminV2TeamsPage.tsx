@@ -1,7 +1,9 @@
 import {MoreOutlined, SearchOutlined} from "@ant-design/icons";
-import {Alert, Avatar, Badge, Button, Dropdown, Empty, Flex, Input, Select, Skeleton, Space, Table, Tag, Tooltip, Typography, type TableColumnsType} from "antd";
+import {Alert, Avatar, Badge, Button, Empty, Flex, Input, Select, Skeleton, Space, Table, Tag, Tooltip, Typography, type TableColumnsType} from "antd";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
+import {getLocalizedTeamName} from "../../../movement/utils";
 import {getAdminV2TeamsList, type AdminV2TeamActivityStatus, type AdminV2TeamListItem} from "./adminV2TeamsData";
 
 type TeamsState = Readonly<{
@@ -13,6 +15,22 @@ type TeamsState = Readonly<{
 
 const initialState: TeamsState = {teams: null, qrStatusUnavailable: false, error: false, refreshing: false};
 
+function useNarrowAdminV2Layout() {
+  const [isNarrow, setIsNarrow] = useState(() => window.matchMedia?.("(max-width: 768px)").matches ?? false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia?.("(max-width: 768px)");
+    if (!mediaQuery) return undefined;
+
+    const update = () => setIsNarrow(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  return isNarrow;
+}
+
 function formatDuration(seconds: number, t: (key: string, options?: Record<string, number>) => string) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -22,7 +40,7 @@ function formatDuration(seconds: number, t: (key: string, options?: Record<strin
 
 function StatusCell({status, qrStatus}: Readonly<{status: AdminV2TeamActivityStatus; qrStatus: AdminV2TeamListItem["qrStatus"]}>) {
   const {t} = useTranslation();
-  const statusColor = status === "IN_PROGRESS" ? "processing" : status === "COMPLETED" ? "success" : "default";
+  const statusColor = status === "IN_PROGRESS" ? "processing" : status === "COMPLETED" ? "success" : status === "PARTIALLY_COMPLETED" ? "warning" : "default";
   const qrColor = qrStatus === "ACTIVE" ? "success" : qrStatus === "NONE" ? "warning" : "default";
   return (
     <Space direction="vertical" size={2}>
@@ -34,6 +52,7 @@ function StatusCell({status, qrStatus}: Readonly<{status: AdminV2TeamActivitySta
 
 export function AdminV2TeamsPage() {
   const {t, i18n} = useTranslation();
+  const isNarrow = useNarrowAdminV2Layout();
   const [state, setState] = useState(initialState);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | AdminV2TeamActivityStatus>("ALL");
@@ -56,15 +75,19 @@ export function AdminV2TeamsPage() {
 
   const teams = useMemo(() => (state.teams ?? []).filter((team) => {
     const normalizedQuery = query.trim().toLocaleLowerCase(i18n.language === "vi" ? "vi" : "en");
-    const matchesQuery = !normalizedQuery || [team.name, team.username, team.captainName]
+    const localizedName = getLocalizedTeamName(team.name, i18n.language === "en" ? "en" : "vi");
+    const matchesQuery = !normalizedQuery || [team.name, localizedName, team.username, team.captainName]
       .some((value) => value.toLocaleLowerCase(i18n.language === "vi" ? "vi" : "en").includes(normalizedQuery));
     return matchesQuery && (statusFilter === "ALL" || team.activityStatus === statusFilter) && (qrFilter === "ALL" || team.qrStatus === qrFilter);
   }), [i18n.language, query, qrFilter, state.teams, statusFilter]);
 
   const columns = useMemo<TableColumnsType<AdminV2TeamListItem>>(() => [
     {
-      title: t("adminV2.teams.columns.team"), key: "team", fixed: "left", width: 250,
-      render: (_, team) => <Space size="middle"><Avatar className="admin-v2-teams__avatar" style={{backgroundColor: team.color ?? undefined}}>{team.name.slice(0, 1)}</Avatar><div><Typography.Text strong>{team.name}</Typography.Text><Typography.Text className="admin-v2-teams__id" type="secondary">#{team.id}</Typography.Text></div></Space>,
+      title: t("adminV2.teams.columns.team"), key: "team", fixed: isNarrow ? undefined : "left", width: 250,
+      render: (_, team) => {
+        const name = getLocalizedTeamName(team.name, i18n.language === "en" ? "en" : "vi");
+        return <Space size="middle"><Avatar className="admin-v2-teams__avatar" style={{backgroundColor: team.color ?? undefined}}>{name.slice(0, 1)}</Avatar><div><Typography.Text strong>{name}</Typography.Text><Typography.Text className="admin-v2-teams__id" type="secondary">#{team.id}</Typography.Text></div></Space>;
+      },
     },
     {
       title: t("adminV2.teams.columns.captain"), key: "captain", width: 210,
@@ -81,10 +104,10 @@ export function AdminV2TeamsPage() {
       render: (_, team) => <Space direction="vertical" size={0}><Typography.Text>{formatDuration(team.totalPlaySeconds, t)}</Typography.Text><Typography.Text type="secondary">{team.lastActivityAt ? t("adminV2.teams.lastActivity", {time: new Intl.DateTimeFormat(i18n.language === "vi" ? "vi-VN" : "en-US", {dateStyle: "medium", timeStyle: "short"}).format(new Date(team.lastActivityAt))}) : t("adminV2.teams.noActivity")}</Typography.Text></Space>,
     },
     {
-      title: t("adminV2.teams.columns.actions"), key: "actions", fixed: "right", align: "center", width: 96,
-      render: (_, team) => <Tooltip title={t("adminV2.teams.actions.phaseFourHint")}><Dropdown menu={{items: [{key: "details", label: t("adminV2.teams.actions.viewDetails"), disabled: true}]}} trigger={["click"]}><Button aria-label={t("adminV2.teams.actions.openFor", {team: team.name})} icon={<MoreOutlined />} /></Dropdown></Tooltip>,
+      title: t("adminV2.teams.columns.actions"), key: "actions", fixed: isNarrow ? undefined : "right", align: "center", width: 96,
+      render: (_, team) => <Tooltip title={t("adminV2.teams.actions.viewDetails")}><Link aria-label={t("adminV2.teams.actions.openFor", {team: team.name})} to={`/admin-v2/teams/${team.id}`}><Button icon={<MoreOutlined />} type="text" /></Link></Tooltip>,
     },
-  ], [i18n.language, t]);
+  ], [i18n.language, isNarrow, t]);
 
   const isInitialLoading = state.teams === null && !state.error;
   return (
@@ -100,7 +123,7 @@ export function AdminV2TeamsPage() {
       {isInitialLoading ? <Skeleton active paragraph={{rows: 8}} title /> : !state.error && <>
         <Flex className="admin-v2-teams__filters" gap="small" wrap>
           <Input.Search allowClear aria-label={t("adminV2.teams.searchLabel")} onChange={(event) => setQuery(event.target.value)} placeholder={t("adminV2.teams.searchPlaceholder")} prefix={<SearchOutlined />} value={query} />
-          <Select aria-label={t("adminV2.teams.activityFilter")} onChange={setStatusFilter} options={[{label: t("adminV2.teams.allActivities"), value: "ALL"}, ...(["IN_PROGRESS", "COMPLETED", "NO_ACTIVITY"] as const).map((value) => ({label: t(`adminV2.teams.activity.${value}`), value}))]} value={statusFilter} />
+          <Select aria-label={t("adminV2.teams.activityFilter")} onChange={setStatusFilter} options={[{label: t("adminV2.teams.allActivities"), value: "ALL"}, ...(["IN_PROGRESS", "COMPLETED", "PARTIALLY_COMPLETED", "NO_ACTIVITY"] as const).map((value) => ({label: t(`adminV2.teams.activity.${value}`), value}))]} value={statusFilter} />
           <Select aria-label={t("adminV2.teams.qrFilter")} disabled={state.qrStatusUnavailable} onChange={setQrFilter} options={[{label: t("adminV2.teams.allQrStatuses"), value: "ALL"}, ...(["ACTIVE", "NONE"] as const).map((value) => ({label: t(`adminV2.teams.qr.${value}`), value}))]} value={qrFilter} />
         </Flex>
         <Table className="admin-v2-teams__table" columns={columns} dataSource={teams} locale={{emptyText: <Empty description={state.teams?.length === 0 ? t("adminV2.teams.empty") : t("adminV2.teams.noMatches")} image={Empty.PRESENTED_IMAGE_SIMPLE} />}} pagination={{hideOnSinglePage: true, pageSize: 20, showSizeChanger: false}} rowKey="id" scroll={{x: 1180}} />

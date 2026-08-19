@@ -619,7 +619,29 @@ export const submitFinalAnswer = (answer: string) =>
   apiPost<FinalSubmissionResponse>('/api/player/final/submit', {answer})
 
 export const getAdminDashboard = () => apiGet<Record<string, unknown>>('/api/admin/dashboard')
-export const getAdminScoreQueue = () => apiGet<Array<Record<string, unknown>>>('/api/admin/score-queue')
+export type AdminScoreQueueItemResponse = {
+  id: number
+  teamId: number
+  stationId: string
+  status: PlayerProgressResponse['status']
+  checkedOutAt: string | null
+  completedAt: string | null
+  scoreAchieved: number
+  notes?: string | null
+  station: {
+    id: string
+    name: string
+    nameEn?: string | null
+    trackingMode: StationTrackingMode
+  }
+  game: {
+    id: string
+    type: GameType
+    maxPoints: number
+  }
+  team: AdminTeamResponse
+}
+export const getAdminScoreQueue = () => apiGet<AdminScoreQueueItemResponse[]>('/api/admin/score-queue')
 export const getAdminEventConfig = () => apiGet<Record<string, unknown>>('/api/admin/event-config')
 export const updateAdminEventConfig = (values: Record<string, unknown>) =>
   apiPatch('/api/admin/event-config', values)

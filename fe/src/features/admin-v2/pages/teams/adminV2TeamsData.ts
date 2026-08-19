@@ -1,7 +1,7 @@
 import {getAdminProgressMatrix, getAdminQrStatusSummary, type AdminProgressMatrixResponse} from "../../../movement/api";
 import {normalizeTeamColor} from "../../../movement/teamTheme";
 
-export type AdminV2TeamActivityStatus = "IN_PROGRESS" | "COMPLETED" | "NO_ACTIVITY";
+export type AdminV2TeamActivityStatus = "IN_PROGRESS" | "COMPLETED" | "PARTIALLY_COMPLETED" | "NO_ACTIVITY";
 export type AdminV2TeamQrStatus = "ACTIVE" | "NONE" | "UNAVAILABLE";
 
 export type AdminV2TeamListItem = Readonly<{
@@ -34,6 +34,7 @@ function latestActivity(...timestamps: Array<string | null>) {
 function activityStatus(cells: AdminProgressMatrixResponse["rows"][number]["cells"], stationCount: number): AdminV2TeamActivityStatus {
   if (cells.some((cell) => cell?.status === "CHECKED_IN" || cell?.status === "PLAYING")) return "IN_PROGRESS";
   if (stationCount > 0 && cells.filter((cell) => cell?.status === "COMPLETED").length === stationCount) return "COMPLETED";
+  if (cells.some((cell) => cell?.status === "COMPLETED")) return "PARTIALLY_COMPLETED";
   return "NO_ACTIVITY";
 }
 

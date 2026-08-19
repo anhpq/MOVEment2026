@@ -51,11 +51,12 @@ export const adminV2OperationsRoutes: readonly AdminV2RouteDefinition[] = [
 export const adminV2Routes = [...adminV2PrimaryRoutes, ...adminV2OperationsRoutes] as const;
 
 export function getAdminV2Route(pathname: string) {
-  return adminV2Routes.find((route) => route.path === pathname);
+  return adminV2Routes.find((route) => route.path === pathname)
+    ?? adminV2PrimaryRoutes.find((route) => isAdminV2RouteActive(route, pathname));
 }
 
 export function isAdminV2RouteActive(route: AdminV2RouteDefinition, pathname: string) {
-  return route.key === "operations"
-    ? pathname === route.path || pathname.startsWith(`${route.path}/`)
-    : pathname === route.path;
+  if (route.parentKey) return pathname === route.path;
+  return pathname === route.path || (["teams", "stations", "operations"] as const).includes(route.key as "teams" | "stations" | "operations")
+    && pathname.startsWith(`${route.path}/`);
 }

@@ -49,6 +49,19 @@ describe("AdminV2Shell", () => {
     expect(await screen.findByRole("tooltip", {name: "Dashboard"})).toBeInTheDocument();
   });
 
+  it.each([
+    ["Teams", "/admin-v2/teams/2/edit"],
+    ["Stations", "/admin-v2/stations/ST001/qr"],
+  ])("keeps %s active on a nested detail route", (label, path) => {
+    render(
+      <MemoryRouter initialEntries={[path]}>
+        <AdminV2Shell><div>content</div></AdminV2Shell>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getAllByRole("link", {name: label}).some((link) => link.getAttribute("aria-current") === "page")).toBe(true);
+  });
+
   it("uses the localized Vietnamese navigation labels", async () => {
     await i18n.changeLanguage("vi");
     render(

@@ -44,4 +44,14 @@ describe("AdminV2Entry", () => {
     expect(await screen.findByRole("heading", {name: "Admin V2 page not found"})).toBeVisible();
     expect(screen.getByRole("button", {name: /Back to Dashboard/})).toBeVisible();
   });
+
+  it("uses the Operations root as a direct navigation hub", async () => {
+    renderAdminRoute("/admin-v2/operations");
+
+    expect(await screen.findByRole("heading", {name: "Operations center"})).toBeVisible();
+    expect(screen.getByRole("link", {name: /Open Score Queue/})).toHaveAttribute("href", "/admin-v2/operations/score-queue");
+    expect(screen.getByRole("link", {name: /Open Event Control/})).toHaveAttribute("href", "/admin-v2/operations/event-control");
+    expect(screen.getByRole("link", {name: /Open Final Challenge/})).toHaveAttribute("href", "/admin-v2/operations/final-challenge");
+    expect(screen.getByRole("link", {name: /Open Activity Logs/})).toHaveAttribute("href", "/admin-v2/operations/activity-logs");
+  });
 });
