@@ -211,10 +211,12 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | QR Login token | Token phải là Opaque Random Token, không suy ra từ `teamId`, username hoặc dữ liệu nghiệp vụ. |
 | Team QR expiry | Team QR Login token không tự hết hạn theo thời gian. `expires_at` có thể `null`; token mới/active phải dùng `expiresAt: null`. Revoke và rotate là cơ chế vô hiệu hóa chính. |
 | Team creation | Khi tạo Team mới, backend tự động tạo Team QR Login token nếu request không cung cấp token hợp lệ. |
+| Team inventory | MOVEMENT 2026 hỗ trợ từ `0` đến tối đa `25` Teams. Mọi flow tạo Team trong tương lai phải chặn Team thứ 26; Dashboard và các danh sách tiếp tục hiển thị số Team thực tế từ API, không hard-code `25`. |
 | Team seed | Khi seed Team mới, seed tự động tạo Team QR Login token theo cùng policy. |
 | Missing token repair | Seed hoặc maintenance command phải có khả năng bổ sung token cho Team đang thiếu token. |
 | Team QR rotation | Admin có thể rotate Team QR Login token. Token cũ phải bị revoke. |
 | Team QR revocation | Admin có thể revoke Team QR Login token mà không cần xóa Team. |
+| Admin V2 QR boundary | Admin V2 chỉ hiển thị Team QR preview, status/info khi có và Download PNG; không expose generate, rotate hoặc revoke. Backend/V1 lifecycle hiện có không thay đổi bởi giới hạn UI này. |
 | Admin raw token display | Backend lưu raw Team QR Login token cho token mới hoặc token được seed repair/rotate để Admin có thể xem và in lại QR Login dạng string/URL. |
 | QR Login error | Nếu auto-login thất bại, frontend phải hiển thị lỗi rõ ràng và cho phép thử lại hoặc dùng login thủ công. |
 
@@ -243,6 +245,7 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | Chuyển Station | Check-in B khi A đang `CHECKED_IN` hoặc `PLAYING` và chưa Check-out sẽ đưa A về `AVAILABLE` không tính điểm/thời gian rồi bắt đầu B atomically. A được phép chơi lại. Station đã Check-out chờ score phải được hoàn thành trước khi vào B. |
 | Locked Station | `LOCKED` chỉ sử dụng khi Admin khóa Station hoặc Station bị giới hạn theo event time. |
 | Station status | Không sử dụng `WAITING_SCORE`, `CANCELLED` hoặc `REOPENED` làm status chính thức của Team Station flow. |
+| Station inventory | MOVEMENT 2026 có đúng `17` Station predefined. Admin V2 không cung cấp Add Station hoặc Delete Station; Dashboard và các màn hình đọc dữ liệu tiếp tục lấy số Station thực tế từ API, không hard-code `17`. |
 
 ---
 

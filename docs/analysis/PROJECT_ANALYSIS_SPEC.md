@@ -665,6 +665,8 @@ Frontend and backend trim outer whitespace and uppercase input. Internal whitesp
 
 Backend stores the normalized Final keyword directly in the compatibility column `answerHash` and compares normalized submitted text directly against that stored value. Public APIs and logs must not expose the configured answer.
 
+Admin V2 Final Challenge configuration accepts a new keyword only as a blank-by-default password field; it omits a blank value and never redisplays the configured keyword. Admin submissions remain the existing authenticated operational projection, including submitted answer, correctness, rank, points, timestamp, and Team; their order, correctness, rank, and points are all Backend-authoritative.
+
 Team may retry until correct or Final closes.
 
 Wrong-answer cooldown follows `3, 5, 10, 15, 20, ...` seconds, is capped at

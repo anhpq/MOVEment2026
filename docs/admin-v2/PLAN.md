@@ -486,17 +486,17 @@ Pan/zoom bị tách khỏi placement mode để click kéo map không vô tình 
 - V1 dependencies: `fetchAdminDatabase`, Team localization/color helpers via wrappers.
 - Risks: client sort conflicting with Backend ranking; Team color leakage; stale QR status.
 - Tests: VI/EN names, long names, empty list, search, QR status, color accent isolation, keyboard row actions.
-- Acceptance: list shows supported Team operational fields; no giant color cards; Add/View/Edit/QR actions route correctly.
+- Acceptance: list shows supported Team operational fields; no giant color cards; View/Edit/QR actions route correctly. Team create is deferred and must enforce the maximum of 25 Teams before a future V2 create action is added.
 
 ### Phase 4 — Team Detail, Edit và QR
 
 - Objective: complete Team management without V1 drawer UX.
 - Scope/files: detail page, route panels, forms, QR credential workspace, mutation hooks/tests.
-- APIs reused: create/update/delete Team, QR list/generate/rotate/revoke, progress matrix refresh.
+- APIs reused: update Team, Team QR list, progress matrix refresh.
 - V1 dependencies: domain validation types, QR URL/cache helpers, API safe errors.
-- Risks: raw token exposure, accidental rotate on ordinary edit, destructive delete, password semantics.
-- Tests: create auto-provision QR, update omit password/token, color normalize/clear, rotate/revoke lifecycle, no raw token logs, dirty close, backend error retention.
-- Acceptance: 480–560px sticky-action editor desktop/full-screen mobile; Team QR status/usage/timestamps/actions; computed score/progress read-only.
+- Risks: raw token exposure and password semantics.
+- Tests: update omits blank password, color normalize/clear, no raw token logs, no V2 destructive/QR mutation controls, dirty close, backend error retention.
+- Acceptance: 480–560px sticky-action editor desktop/full-screen mobile; Team QR preview/status/usage/timestamps/PNG download only; computed score/progress read-only. No V2 create action may allow Team #26.
 
 ### Phase 5 — Stations List
 
@@ -506,17 +506,17 @@ Pan/zoom bị tách khỏi placement mode để click kéo map không vô tình 
 - V1 dependencies: Station localization/order/display helpers via V2 adapter.
 - Risks: showing inactive/deleted Stations not present in current API; language fallback; QR pair status ambiguity.
 - Tests: VI/EN per-field fallback, natural ID order, modes/types, missing/partial QR pair, empty/error/loading.
-- Acceptance: list shows config, gameplay type, score, QR pair and map placement; Add/View/Edit/QR/Map routes work.
+- Acceptance: list shows config, gameplay type, score, QR pair and map placement; View/Edit/QR/Map routes work. No Add Station or Delete Station action is present; the predefined inventory remains exactly 17 Stations.
 
 ### Phase 6 — Station Detail, Edit và QR
 
-- Objective: full Station CRUD/config/QR lifecycle in structured V2 workspace.
+- Objective: Station edit/config and read-only QR workspace in structured V2 layout.
 - Scope/files: detail, route editor, media list editor, QR pair panels, mutation tests.
-- APIs reused: create/update/deactivate Station, QR list/generate/rotate/revoke, progress matrix.
+- APIs reused: update Station, QR list, progress matrix.
 - V1 dependencies: constants and API types; QR cache helper; no V1 editor component.
 - Risks: create transaction QR provisioning, `TIME` max rule display, duplicate/invalid gallery URLs, replacing one QR purpose unintentionally.
-- Tests: required VI/EN names, optional descriptions, tracking/game/media validation, max 10 unique HTTPS images/order, omit/preserve/clear, QR pair independent lifecycle, deactivate confirmation.
-- Acceptance: sections Basic/Gameplay/Media/Map/QR; sticky Save/Cancel; Backend errors preserved; create displays both newly provisioned QR artifacts securely.
+- Tests: required VI/EN names, optional descriptions, tracking/game/media validation, max 10 unique HTTPS images/order, omit/preserve/clear, QR pair preview/status/download, no V2 destructive or QR-mutation action.
+- Acceptance: sections Basic/Gameplay/Media/Map/QR; sticky Save/Cancel; Backend errors preserved; QR shows existing Check-in and Check-out artifacts securely. No Add/Delete Station, QR rotate, or QR revoke action is exposed in V2.
 
 ### Phase 7 — Leaderboard
 
@@ -558,6 +558,8 @@ Pan/zoom bị tách khỏi placement mode để click kéo map không vô tình 
 - Tests: HH:mm, notify/cooldown bounds, timezone reject, serverNow/countdown, Final-minus-5 advisory, save alternative allowed.
 - Acceptance: labels state exact semantics; recommendation is copy-ready/advisory; Backend response refreshes phase; no hard-coded event time.
 
+Completed 2026-08-19: `/admin-v2/operations/event-control` now reuses the existing Admin Event Config read/update API and renders the authoritative Station Check-in close time, Final start, notification lead time, cancel cooldown, and IANA timezone. The `Final - 5 minutes` check remains advisory and saving a different supported configuration remains allowed. No Admin V1, Backend, API contract, schema, migration, seed, or Business Rule was changed.
+
 ### Phase 11 — Final Challenge
 
 - Objective: manage Final config and inspect submissions.
@@ -567,6 +569,8 @@ Pan/zoom bị tách khỏi placement mode để click kéo map không vô tình 
 - Risks: exposing/storing keyword, update after Final open, client re-rank.
 - Tests: omit blank answer preserves current keyword, nonblank rotates, currentKeyword read-only, post-open error, submissions order/correctness/bonus.
 - Acceptance: title/clue/active/keyword rotation supported; raw answer never redisplayed/logged; submissions use Backend rank/order.
+
+Completed 2026-08-19: `/admin-v2/operations/final-challenge` now reuses the existing Final config, Final submissions, and Event Config read APIs. It updates only `title`, `clueText`, `isActive`, and a nonblank `answer`; the configured keyword is never redisplayed. Submissions remain read-only in the Backend response order because no Admin review or score mutation API exists. No Admin V1, Backend, API contract, schema, migration, seed, or Business Rule was changed.
 
 ### Phase 12 — Activity Logs
 
@@ -597,6 +601,8 @@ Pan/zoom bị tách khỏi placement mode để click kéo map không vô tình 
 - Risks: turning Settings back into a miscellaneous management page; inventing unsupported server config.
 - Tests: language persistence, preference persistence/reset, no management links masquerading as settings.
 - Acceptance: no Team List, Station List hoặc Map; operational settings stay in Operations/Event Control.
+
+Completed 2026-08-19: `/admin-v2/settings` now contains only supported client-side Admin V2 preferences (language status and navigation density) plus existing build/API diagnostics. Team, Station, Station Map, QR, Event Control, and Final Challenge configuration are intentionally omitted because they belong to their dedicated V2 areas. No Backend, API contract, schema, migration, seed, or Admin V1 code was changed.
 
 ### Phase 15 — Responsive, accessibility và i18n hardening
 
@@ -901,10 +907,47 @@ Không sửa Backend, Prisma, migration, seed, deploy config hoặc root redirec
 
 - Replaced only `/admin-v2/teams` with a real, read-only Teams List using `GET /api/admin/progress-matrix` and `GET /api/admin/qr-status-summary`; no Backend, contract, schema, seed, or V1 presentation source changed.
 - The list uses authoritative Team identity, captain/username, score, total play time, completed Station cells, and the latest valid progress timestamp. Progress labels are derived only from Backend cell states; QR availability is displayed separately from the authoritative QR summary.
+- A Team with one or more completed Station cells but not every active Station is now displayed and filtered as partially completed, rather than incorrectly as no activity. Seed-style Team names use the shared display-layer VI/EN localization helper; custom names remain unchanged.
 - Client-side search/filter applies only to loaded Team name, captain, username, derived progress, and QR summary fields. No filtering endpoint or mock Team was added.
 - Team Detail, Edit, QR management, mutations, and destructive actions remain deferred to Phase 4. The row action explicitly indicates this boundary.
-- Verification PASS: focused Teams List tests, full Frontend Vitest (`110/110`), lint, i18n parity, font guard, production build/bundle gate, and a Vite `/admin-v2/teams` HTTP smoke. Authenticated graphical viewport verification remains pending because this workspace has no controlled browser/E2E runner.
+- Verification PASS: focused Teams List tests, full Frontend Vitest (`111/111`), lint, i18n parity, font guard, production build/bundle gate, and a Vite `/admin-v2/teams` HTTP smoke. Authenticated graphical viewport verification at `1024x768` and `768x1024` remains pending because this workspace has no controlled browser/E2E runner.
+
+### Phase 4 implementation record — 2026-08-19
+
+- Replaced only `/admin-v2/teams/:teamId` with a Team Detail workspace that composes the existing progress matrix, Team QR-token, and Team mutation APIs. Admin V1, Backend, API contracts, schema, seed, and deployment configuration remain unchanged.
+- Team identity (name/ID, captain, username, color), score, completed Stations, total time, derived activity status, and latest activity are read-only values from the existing Admin data surface. Edit uses only name, username, captain, team color, and optional password; an empty password is omitted so the current password is retained.
+- The QR workspace reuses existing Team QR read behavior only: active preview and PNG download, metadata/status, and secure-storage notice. It does not display raw QR tokens or alter token lifecycle semantics.
+- Finalized Admin V2 boundary: no Team create/delete, QR generate/rotate/revoke, Station add/delete, or Station Check-in/Check-out QR rotate/revoke action is exposed. Team creation remains deferred and must enforce the maximum of 25 Teams; Stations remain the predefined inventory of exactly 17 and all count displays remain API-derived.
+
+### Phase 5 implementation record — 2026-08-19
+
+- Replaced only `/admin-v2/stations` with a read-only Station list that reuses `GET /api/admin/progress-matrix` and `GET /api/admin/qr-status-summary`. No Admin V1, Backend, API contract, schema, migration, seed, or deployment configuration changed.
+- The table presents natural Station code order, VI/EN per-field name fallback, game type, tracking mode, real max-points values including zero, backend-derived playing Team count, and the API QR status plus active-token count. Search and filters operate only on these loaded API fields.
+- Station Detail/Edit/Map, Add/Delete Station, and all QR generate/rotate/revoke controls remain deferred. The disabled row action makes the Phase boundary explicit rather than navigating to an unimplemented route.
+
+### Phase 6 implementation record — 2026-08-19
+
+- Added Admin V2 Station Detail at `/admin-v2/stations/:stationId`, with deep-linkable `/edit` and `/qr` views. It composes the current progress matrix, Station update, and Station QR list APIs only; Admin V1, Backend, API contracts, schema, migration, seed, and deployment configuration are unchanged.
+- Detail displays the supported bilingual identity/descriptions, gameplay configuration, media, map coordinates, backend-derived active Team count, and current QR pair metadata. The edit form preserves Station ID and updates only existing backend-supported fields, including ordered HTTPS image URLs.
+- QR is preview/download-only: Check-in and Check-out are separately labelled, status/timestamps are shown when returned, raw tokens are never rendered, and missing raw values safely omit preview. No Add/Delete Station or QR generate/rotate/revoke action is exposed.
+
+### Phase 12 implementation record — 2026-08-19
+
+- Replaced only `/admin-v2/operations/activity-logs` with a read-only operational history that reuses `GET /api/admin/activity-logs`; the existing progress matrix is an optional display-name resolver only. Admin V1, Backend, API contracts, schema, audit records, and Business Rules remain unchanged.
+- The page preserves Backend `createdAt DESC` order and displays timestamp, localized human-readable action, resolved or ID-fallback Team/Station/entity target, actor, and action code. It exposes only client-side search plus action/actor-type filters because the existing latest-100 endpoint has no filter, pagination, Team/Station, or date-range query contract.
+- Technical details are available in a Drawer. Metadata is not rendered as the primary table content, and sensitive-looking metadata keys (tokens, passwords, secrets, authorization, cookies, answers, keywords) are recursively redacted before display. No edit/delete controls exist.
+- Focused tests cover real records, empty/error state, search, sanitized details/read-only behavior, and narrow responsive columns. Full frontend test suite still has pre-existing failures in Station Map, Final Challenge, and Score Queue; lint, i18n parity, font guard, and production build passed.
 
 ## Cutover Boundary
 
 This plan intentionally ends with coexistence. Feature flag, default landing change, route redirect, V1 rename/removal, migration/cutover, Production deploy and deprecation require a separate user-approved plan after V2 comparison and verification.
+
+## Final audit record — 2026-08-19
+
+- Overall result: **NOT READY** for primary-Admin cutover. Admin V2 is responsive and the implemented modules are wired to existing APIs, but V1 parity is incomplete.
+- Release blockers: no Team create flow with the 25-Team guard; no per-Team Station progress workspace with completed-score correction/reopen/status operations; no Team Results Excel export; Leaderboard refresh remains manual rather than the V1 visible/online polling behavior; Event Control and Final configuration save immediately without the explicit confirmation required for critical actions.
+- Safe fixes completed during the audit: direct Team `/edit` and `/qr` routes with Back/Forward behavior; nested Teams/Stations active navigation and header context; a route-based Operations hub exposing Score Queue, Event Control, Final Challenge, and Activity Logs; Event Control timeline initialization; strict Dashboard Event Config parsing so missing numeric/boolean fields cannot appear as operational zero/false values; full-suite test stabilization.
+- Business boundaries verified: Admin V2 exposes no Team/Station delete, Station add, or Team/Station QR generate/rotate/revoke action. Counts remain API-derived. Local read-only verification returned 25 Teams, 17 Stations, 25 Teams with active login QR, and 17 Stations with two active QR tokens.
+- Browser QA passed against local Vite + local API at `1440x900`, `1024x768`, and `768x1024`: direct URLs loaded across all implemented V2 areas, no horizontal page overflow was measured, 1024 used the full sidebar, 768 used the six direct icon-only bottom destinations, tables scrolled internally, map markers remained aligned, and Team/Station edit drawers fit portrait. This is local verification, not Production or physical-device verification.
+- Automated verification passed: Frontend Vitest `158/158`, lint, i18n parity `458` keys, font guard, TypeScript/Vite production build, and bundle budget. Vite still reports the Admin V2 chunk above its generic 500 kB warning threshold (`502.64 KiB` raw) while remaining below the enforced 512 KiB raw budget.
+- Cutover, V1 removal, deploy, commit, and push were not performed.

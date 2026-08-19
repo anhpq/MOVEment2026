@@ -1,3 +1,18 @@
+# 2026-08-19 Admin V2 Phase 3 Teams List follow-up
+
+- Kept `/admin-v2/teams` on the existing read-only `GET /api/admin/progress-matrix`
+  and `GET /api/admin/qr-status-summary` sources. No Backend, API contract,
+  schema, migration, seed, authentication, or V1 presentation changed.
+- Corrected the presentation-derived progress label so a Team with completed
+  Station cells but incomplete overall progress is `PARTIALLY_COMPLETED`, not
+  `NO_ACTIVITY`. Team names now use the existing VI/EN display localization
+  helper; this does not alter raw Team data.
+- Verification PASS: focused Teams List tests (`4/4`), full Frontend Vitest
+  (`111/111`), lint, i18n parity (`458` keys), font guard, Vite build/bundle
+  budget, and Vite `/admin-v2/teams` HTTP smoke. Visual browser verification at
+  `1024x768` and `768x1024` remains pending because no local browser runner is
+  available.
+
 # 2026-08-19 Admin V2 Phase 2 Dashboard
 
 - Replaced the Admin V2 Dashboard placeholder with a read-only, typed adapter
@@ -1811,3 +1826,22 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 # Final lifecycle — cập nhật 2026-08-17
 
 `EventLifecycleService` reconcile mỗi 5 giây và tại các Player/Final read-write boundary. Reconcile idempotent theo `updateMany`, chỉ cancel progress `CHECKED_IN`/`PLAYING` chưa `checkedOutAt`, reset attempt state và ghi System activity log. Public event/final/player state trả phase, timing, pending score để V2 takeover.
+
+# 2026-08-19 Admin V2 Stations List
+
+- Admin V2 reuses only the existing read endpoints `GET /api/admin/progress-matrix` and `GET /api/admin/qr-status-summary` for Station list data; no Backend mutation or contract change was required.
+- The current QR summary supports only API status plus `activeCount`; V2 therefore does not infer, expose, or mutate individual Check-in/Check-out QR tokens in this phase.
+
+# 2026-08-19 Admin V2 Final Challenge
+
+- Admin V2 now reuses `GET/PATCH /api/admin/final-config`, `GET /api/admin/final/submissions`, and read-only `GET /api/admin/event-config` at `/admin-v2/operations/final-challenge`.
+- The V2 mutation sends only the existing supported `title`, `clueText`, `isActive`, and nonblank `answer` fields. The blank-by-default password control does not redisplay `currentKeyword`; Backend normalization, post-open rejection, rank, bonus, and duplicate protection remain unchanged.
+- The submission table presents the existing Backend order and values. No review, score, result, rank, or submission mutation was added because the Final Admin API exposes none.
+
+# 2026-08-19 Admin V2 final production-readiness audit
+
+- Result: **NOT READY** for primary Admin routing. Existing V2 data and mutations continue to use the current Frontend API wrappers and Backend authority; no Backend, contract, schema, migration, or seed change was required.
+- Read-only local API inventory verified 25 Teams, 17 Stations, active Team QR for all 25 Teams, and two active Station QR tokens for all 17 Stations. No raw token was printed.
+- Safe Frontend fixes restored direct Team edit/QR URLs, nested active navigation/header context, Operations access on mobile/tablet, correct initial Event Control timeline values, and strict Dashboard Event Config parsing.
+- Required parity still missing: Team create with Team #26 prevention, Team Station progress/correction/reopen/status operations, Team Results Excel export, V1-equivalent automatic Leaderboard refresh, and explicit confirmation before Event/Final configuration mutations.
+- Verification passed: Frontend Vitest `158/158`, lint, i18n parity `458`, font guard, production build/bundle budget, plus authenticated local Vite visual QA at `1440x900`, `1024x768`, and `768x1024`. Production, physical-device, deploy, and cutover checks were not performed.

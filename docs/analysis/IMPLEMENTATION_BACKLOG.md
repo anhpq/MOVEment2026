@@ -1,5 +1,36 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Admin V2 final audit — NOT READY for cutover (2026-08-19)
+
+- [x] Restore direct Team detail/edit/QR route behavior and nested Teams/Stations active navigation.
+- [x] Replace the Operations root placeholder with a responsive navigation hub for Score Queue, Event Control, Final Challenge, and Activity Logs.
+- [x] Correct Event Control timeline initialization and reject incomplete Dashboard Event Config data instead of showing fake zero/false values.
+- [x] Pass Frontend Vitest (`158/158`), lint, i18n parity (`458` keys), font guard, production build/bundle budget, and authenticated local visual QA at `1440x900`, `1024x768`, and `768x1024`.
+- [ ] Implement Team creation using the existing API and block Team #26 while allowing any count below 25.
+- [ ] Implement per-Team Station progress detail plus existing completed-score correction, reopen, and force-status operations without changing Backend rules.
+- [ ] Add Team Results Excel export using the existing download API.
+- [ ] Decide and implement V1-equivalent visible/online Leaderboard polling or explicitly approve manual refresh as an intentional difference.
+- [ ] Add explicit localized confirmation before Event Control and Final Challenge configuration mutations; keep Backend validation and post-open Final rejection authoritative.
+- [ ] Re-run the parity matrix and Production/physical-device smoke before any primary-route switch. V1 removal, redirect, deploy, commit, and push remain out of scope.
+
+## Admin V2 Phase 3 — Teams List completed 2026-08-19
+
+- [x] Replace `/admin-v2/teams` with a read-only, searchable/filterable table
+  based only on the existing progress matrix and Team QR status summary APIs.
+- [x] Show supported Team identity, captain/username, score, completed Station
+  count, total play time, latest progress timestamp, derived activity state,
+  and QR availability without mock data or full-row Team-color styling.
+- [x] Keep zero, loading, empty, error, and QR-status-unavailable states
+  distinct; use localized VI/EN copy and display-localized seed Team names.
+- [x] Correct partially completed progress so it is never represented as no
+  activity. Focused test coverage includes this state and name localization.
+- [x] Pass Frontend Vitest (`111/111`), lint, i18n parity (`458` keys), font
+  guard, Vite build/bundle budget, and `/admin-v2/teams` Vite HTTP smoke.
+- [ ] Perform authenticated visual smoke at `1024x768` and `768x1024` when a
+  controlled browser/E2E runner is available.
+- [ ] Phase 4: implement Team Detail, Edit, and QR management. These actions
+  remain intentionally disabled/deferred in the Phase 3 list.
+
 ## Admin V2 Phase 1 — completed 2026-08-18
 
 - [x] Add isolated, lazy, admin-only `/admin-v2/*` namespace without V1 cutover.
@@ -1463,3 +1494,16 @@ Acceptance:
 - [x] Final V2 native takeover, manual character cells (space included), success UI và cooldown 1–50 giây.
 - [x] Event timing notice, Station Check-in closure, Final-start forced cancellation và pending-score preservation.
 - [x] Admin mốc đóng Station QR warning, Backend/Frontend build, i18n parity và unit tests.
+
+# Admin V2 Stations — 2026-08-19
+
+- [x] Read-only Stations List at `/admin-v2/stations` with search, API-backed game/tracking/QR filters, total count, refresh, loading/error/empty states, and VI/EN display fallback.
+- [ ] Implement Station Detail/Edit and read-only individual QR workspace in a later approved phase; do not add/delete Stations or add QR mutation controls.
+- [ ] Implement Station Map in its dedicated later phase.
+
+# Admin V2 Final Challenge — 2026-08-19
+
+- [x] Implemented `/admin-v2/operations/final-challenge` with localized config loading/saving, Backend-authoritative Final schedule and scoring summary, submissions search/result filters, and distinct loading, empty, error, stale, mutation-success, and mutation-error states.
+- [x] Kept configured keyword undisclosed: blank rotation preserves it, nonblank rotation is sent to the existing Backend normalization path, and no hashing, versioning, or API change was introduced.
+- [x] Added focused Frontend coverage for config loading, blank/nonblank keyword behavior, submissions rendering, validation, duplicate-save prevention, and success/error states.
+- [ ] Perform authenticated visual smoke at 1024x768 and 768x1024; no graphical browser runner is tracked in this workspace.
