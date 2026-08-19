@@ -125,14 +125,10 @@
   .admin-v2-header__mobile-account { display: inline-flex; }
   .admin-v2-header__mobile-account .ant-btn { color: var(--admin-v2-navy); min-height: 44px; min-width: 44px; padding-inline: 10px; }
   .admin-v2-main { min-height: auto; padding: var(--admin-v2-space-3) var(--admin-v2-space-2); }
-  .admin-v2-mobile-nav { background: var(--admin-v2-navy-deep); border-top: 1px solid rgba(217, 228, 243, .22); bottom: 0; display: grid; gap: 2px; grid-template-columns: repeat(5, minmax(0, 1fr)); left: 0; padding: 6px max(8px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right)); position: fixed; right: 0; z-index: 4; }
-  .admin-v2-mobile-nav__link, .admin-v2-mobile-nav__more { align-items: center; appearance: none; background: transparent; border: 0; border-radius: 8px; color: var(--admin-v2-nav-inactive); display: grid; font: inherit; font-weight: 600; justify-items: center; min-height: 44px; min-width: 44px; padding: 5px 2px; text-align: center; text-decoration: none; }
-  .admin-v2-mobile-nav__link.is-active, .admin-v2-mobile-nav__more.is-active { background: var(--admin-v2-coral); color: #fff; font-weight: 700; }
-  .admin-v2-mobile-nav__link .anticon, .admin-v2-mobile-nav__more .anticon { font-size: 1.1rem; }
-  .admin-v2-mobile-nav__label { display: none; }
-  .admin-v2-mobile-more-menu { display: grid; gap: 4px; min-width: 160px; }
-  .admin-v2-mobile-more-menu__link { align-items: center; color: var(--admin-v2-text); display: flex; gap: 8px; min-height: 44px; padding: 0 8px; text-decoration: none; }
-  .admin-v2-mobile-more-menu__link.is-active { color: var(--admin-v2-coral); font-weight: 700; }
+  .admin-v2-mobile-nav { background: var(--admin-v2-navy-deep); border-top: 1px solid rgba(217, 228, 243, .22); bottom: 0; display: grid; gap: 2px; grid-template-columns: repeat(6, minmax(0, 1fr)); left: 0; overflow: hidden; padding: 6px max(8px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right)); position: fixed; right: 0; z-index: 4; }
+  .admin-v2-mobile-nav__link { align-items: center; background: transparent; border-radius: 8px; color: var(--admin-v2-nav-inactive); display: grid; justify-items: center; min-height: 44px; min-width: 44px; padding: 5px 2px; text-decoration: none; }
+  .admin-v2-mobile-nav__link.is-active { background: var(--admin-v2-coral); color: #fff; }
+  .admin-v2-mobile-nav__link .anticon { font-size: 1.1rem; }
   .admin-v2-dashboard { gap: var(--admin-v2-space-2); }
   .admin-v2-dashboard__heading .ant-btn { width: 100%; }
   .admin-v2-dashboard__metric .ant-statistic-title { min-height: 0; }

@@ -837,6 +837,74 @@ Không sửa Backend, Prisma, migration, seed, deploy config hoặc root redirec
 - Targeted V1 regression checks pass and failures/skips are reported.
 - Phase 2 can implement Dashboard without changing shell boundary or V1 routes.
 
+### Phase 1 implementation record — 2026-08-18
+
+- Completed the isolated lazy `/admin-v2/*` namespace, admin guard, V2 shell,
+  desktop sidebar/tablet rail/mobile navigation, planned-module placeholders,
+  V2 404, scoped tokens/styles, and VI/EN resource bundle.
+- Responsive navigation is width-based: the full `200px` icon-and-label sidebar
+  applies at `>=1024px`, the icon rail at `769–1023px`, and an
+  icon-only bottom navigation at `<=768px`. Compact rail and narrow
+  bottom-navigation controls expose an Ant Design focus/hover tooltip without
+  changing V1 styles or using orientation detection.
+- On the narrow layout, inactive bottom-navigation text/icons use the semantic
+  `--admin-v2-nav-inactive` token for readable navy-background contrast. No global
+  anchor color reset is applied; sidebar link inheritance is scoped to the sidebar
+  navigation component. Language controls
+  remain visible, while a compact account popover exposes the Admin identity,
+  build information, and the existing logout action without increasing header
+  height or changing the `>=1024px` approved layout.
+- Narrow navigation is one icon-only row with direct Dashboard, Teams, Stations,
+  Leaderboard, Operations, and Settings links. Every item has a localized Ant
+  Design Tooltip plus `aria-label`; the active route uses the coral treatment.
+- The only shared Source Code change is the lazy `AdminV2Entry` route in
+  `fe/src/features/movement/routes.tsx`; V1 presentation, Backend, API,
+  database, migration, seed, and deployment files remain unchanged.
+- Focused V2 tests, full Frontend Vitest, lint, i18n parity, font guard, and
+  production build/bundle gate passed. Manual graphical-browser verification
+  remains pending because the repository has no tracked E2E/browser runner in
+  this execution environment.
+- Foundation refactor standardized existing V2 feedback and navigation controls
+  on Ant Design: `Tooltip`, `Button`, `Popover`, `Space`, `Typography`, `Alert`,
+  and `Result`. Route-aware links and branding/responsive CSS remain custom only
+  where React Router or the approved MOVEMENT shell layout requires them.
+
+### Phase 2 implementation record — 2026-08-19
+
+- Replaced only `/admin-v2/dashboard` with a real, read-only operations
+  Dashboard. It composes the existing Dashboard, Score Queue, and Final
+  Submissions APIs; no Backend, contract, schema, seed, Business Rule, or V1
+  presentation source changed.
+- Event Overview shows the authoritative Station Check-in close time, Final
+  start time, timezone, and a state derived only from existing Event Config
+  flags/countdown. Needs Attention contains only pending scores, the existing
+  advisory that Station close should be five minutes before Final, and Final
+  submissions when present.
+- Key metrics preserve the Backend meaning of `completedCount` as completed
+  Station attempts. Loading uses skeletons; real zero, empty, per-source error,
+  and partial-response states are distinct. Last known successful data is kept
+  on refresh failure.
+- Recent Activity uses the existing bounded `dashboard.latestLogs` response and
+  presents the newest five recognized actions with a safe localized fallback.
+  Event Progress and an Active Stations list are intentionally omitted: current
+  sources expose counts but not a reliable progress denominator or Station names.
+- Added quick actions for Teams, Stations, Score Queue, Station Map, Event
+  Control, and Final Challenge. Station Map is an explicit V2 planned-state
+  route; no Stations or Map page was implemented.
+- Verification PASS: focused Dashboard tests plus full Frontend Vitest
+  (`103/103`), lint, i18n parity (`458` keys), font guard, production
+  build/bundle gate, and a Vite dev-server `/admin-v2/dashboard` HTTP smoke.
+  Authenticated visual checks at `1440x900`, `1024x768`, and `768x1024` remain
+  pending because this workspace has no controlled browser/E2E runner.
+
+### Phase 3 implementation record — 2026-08-19
+
+- Replaced only `/admin-v2/teams` with a real, read-only Teams List using `GET /api/admin/progress-matrix` and `GET /api/admin/qr-status-summary`; no Backend, contract, schema, seed, or V1 presentation source changed.
+- The list uses authoritative Team identity, captain/username, score, total play time, completed Station cells, and the latest valid progress timestamp. Progress labels are derived only from Backend cell states; QR availability is displayed separately from the authoritative QR summary.
+- Client-side search/filter applies only to loaded Team name, captain, username, derived progress, and QR summary fields. No filtering endpoint or mock Team was added.
+- Team Detail, Edit, QR management, mutations, and destructive actions remain deferred to Phase 4. The row action explicitly indicates this boundary.
+- Verification PASS: focused Teams List tests, full Frontend Vitest (`110/110`), lint, i18n parity, font guard, production build/bundle gate, and a Vite `/admin-v2/teams` HTTP smoke. Authenticated graphical viewport verification remains pending because this workspace has no controlled browser/E2E runner.
+
 ## Cutover Boundary
 
 This plan intentionally ends with coexistence. Feature flag, default landing change, route redirect, V1 rename/removal, migration/cutover, Production deploy and deprecation require a separate user-approved plan after V2 comparison and verification.

@@ -1,5 +1,37 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Admin V2 Phase 1 — completed 2026-08-18
+
+- [x] Add isolated, lazy, admin-only `/admin-v2/*` namespace without V1 cutover.
+- [x] Add `AdminV2Shell` foundation with desktop sidebar, tablet rail, mobile
+  navigation, header, localized resources, V2 fallback, and planned-module
+  placeholders only.
+- [x] Use viewport-width navigation breakpoints: full icon-and-label sidebar at
+  `>=1024px`, accessible icon rail at `769–1023px`, and icon-and-label bottom
+  navigation at `<=768px`.
+- [x] Improve narrow bottom-navigation contrast and provide compact, accessible
+  Admin identity/build/logout access through the existing session behavior.
+- [x] Keep narrow navigation to one icon-only six-item row with direct Dashboard,
+  Teams, Stations, Leaderboard, Operations, and Settings destinations; no More
+  menu is rendered.
+- [x] Preserve V1 presentation and Backend/API/database behavior; the shared
+  router is the sole existing Source Code file changed.
+- [x] Verify focused V2 tests, full Frontend Vitest (`95/95`), lint, i18n
+  parity, font guard, and production build/bundle budget.
+- [ ] Perform authenticated graphical-browser smoke at 1440x900, 1280x800,
+  1024x768, and 768x1024, including V1 Admin non-regression and browser
+  console review. No tracked E2E/browser runner exists yet.
+- [x] Phase 2: replace only `/admin-v2/dashboard` with a real Dashboard using
+  authoritative Dashboard, Score Queue, and Final Submission data. Keep V1,
+  Backend, API contracts, schema, and Business Rules unchanged.
+- [x] Show Event Overview, supported metrics, data-backed Needs Attention,
+  Quick Actions, and the newest five human-readable activity records; keep
+  loading, zero, empty, partial, and error states distinct.
+- [x] Omit Event Progress and Active Stations because current APIs provide only
+  aggregate counts, not a reliable denominator or Station-level activity data.
+- [ ] Perform authenticated graphical-browser Dashboard review at `1440x900`,
+  `1024x768`, and `768x1024`; no controlled browser/E2E runner is tracked.
+
 ## 2026-08-18 Team V2 QR, Final retry and compact runtime
 
 - [x] Split scanner into camera-first `Quét QR` and `Dán QR` tabs with camera

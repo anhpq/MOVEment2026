@@ -1,4 +1,55 @@
+# 2026-08-19 Admin V2 Phase 2 Dashboard
+
+- Replaced the Admin V2 Dashboard placeholder with a read-only, typed adapter
+  over `GET /api/admin/dashboard`, `GET /api/admin/score-queue`, and
+  `GET /api/admin/final/submissions`. Backend implementation, API contracts,
+  schema, migration, seed, authentication, and Business Rules are unchanged.
+- The UI reports authoritative Event Config timing/status, six supported
+  metrics, data-backed attention items, localized recent activity, and route
+  actions. It does not manufacture Event Progress or Active Station details
+  from aggregate counts.
+- Verification PASS: focused Dashboard tests, Frontend Vitest `103/103`, lint,
+  i18n parity `458`, font guard, Vite build/bundle budget, and Vite dev-server
+  HTTP smoke. Responsive authenticated browser review remains pending.
+
 # 2026-08-18 Team V2 QR, Final retry, typography and compact runtime
+
+# 2026-08-18 Admin V2 Phase 1 foundation
+
+- Added the isolated, admin-protected lazy namespace `/admin-v2/*` with a
+  dedicated V2 shell, scoped styles, bundled Space Grotesk, VI/EN resources,
+  desktop sidebar, tablet rail, and compact mobile navigation.
+- Corrected the V2 navigation breakpoint to preserve its full `200px`
+  icon-and-label sidebar at `>=1024px`; only `769–1023px` now uses the compact
+  icon rail, with accessible hover/focus tooltips. Bottom navigation is
+  icon-only at `<=768px`, with Ant Design tooltips and accessible labels.
+- Narrow V2 header now keeps language selection plus a compact Ant Design
+  account popover for Admin identity, build metadata, and the existing logout
+  behavior. Inactive bottom navigation uses `--admin-v2-nav-inactive` for
+  readable contrast while the coral active treatment remains unchanged. No global
+  V2 anchor color reset is applied; sidebar link inheritance is scoped to
+  `.admin-v2-nav-link`.
+- Narrow V2 navigation now has one icon-only six-item row: Dashboard, Teams,
+  Stations, Leaderboard, Operations, and Settings. Each destination is direct,
+  has a localized Ant Design Tooltip/`aria-label`, and uses the coral active
+  treatment; the More popover was removed.
+- `/admin-v2` redirects internally to `/admin-v2/dashboard`; known future
+  modules show intentional planned states and unknown V2 URLs remain in the
+  V2-specific 404. No operational data or Backend contract is mocked.
+- The only shared Source Code integration is the lazy route registration in
+  `fe/src/features/movement/routes.tsx`. V1 presentation, Backend, schema,
+  migration, seed, and API contracts remain untouched.
+- Verification PASS: focused V2 Vitest (`4/4`), full Frontend Vitest
+  (`95/95`), lint, i18n parity (`458` keys), font guard, and production
+  build/bundle gate. Manual graphical-browser verification remains pending.
+- Foundation-only follow-up standardized Admin V2 on Ant Design `Tooltip`,
+  `Button`, `Popover`, `Space`, `Typography`, `Alert`, and `Result`; removed
+  inline More-menu styling and the hand-built rail tooltip. Route-aware links,
+  shell geometry, MOVEMENT tokens, and responsive bottom navigation remain
+  intentionally scoped custom code. Focused V2 Vitest (`8/8`), full Frontend
+  Vitest (`99/99`), lint, i18n parity (`458`), font guard, and production build
+  with the bundle gate passed. No V1, Backend, API, schema, migration, or seed
+  source changed.
 
 - Added camera-first/paste QR tabs with explicit camera lifecycle, full scanner
   viewport and safe-area controls. Wrong-first Final retry now revalidates
