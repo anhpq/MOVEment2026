@@ -1,5 +1,10 @@
 # CODEX STATION SCORE ENTRY LIMITS
 
+> Superseded for Station reference points and Ba Tiêu by
+> `13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md` (2026-08-19).
+> Do not treat a Station reference/max value as a score-entry hard cap, and do
+> not treat TIME's provisional `10` as the final ST009 score.
+
 ## Purpose
 
 Audit and implement Station tracking-mode and score-entry behavior.
@@ -9,8 +14,8 @@ This Prompt covers:
 - `SCORE`, `TIME`, and `BOTH`;
 - Check-out result handling;
 - score-entry modal;
-- per-Station max score;
-- default max score 30;
+- per-Station reference points;
+- default noncanonical reference 30 and global score-entry cap 105;
 - score submission without a confirmation code;
 - duplicate protection;
 - transaction behavior;
@@ -43,14 +48,14 @@ Behavior:
 | Mode | Duration | Score entry |
 | --- | --- | --- |
 | `SCORE` | Does not contribute play duration under the confirmed rule. | Required after Check-out. |
-| `TIME` | Real Check-in to Check-out duration. | No modal; backend completes with score `0`. |
+| `TIME` | Real Check-in to Check-out duration. | No modal; backend completes provisionally with score `10`. |
 | `BOTH` | Real Check-in to Check-out duration. | Required after Check-out. |
 
 Additional rules:
 
-1. Default max score is `30`.
-2. Each Station may configure its own max score.
-3. Score must be an integer from `0` to Station max score.
+1. Default noncanonical Station reference is `30`; only ST007 may be null/displayed as `???`.
+2. Each Station may configure reference points, which are display data rather than a validation cap.
+3. Team/Admin score writes accept integers from `0` to the global `scoreEntryMax = 105`.
 4. Backend is authoritative.
 5. Frontend min/max is UX only.
 6. Score entry occurs on the device logged into the Team account.
@@ -84,7 +89,7 @@ Frontend:
 - Station state refresh;
 - score modal;
 - Team session;
-- max-score display;
+- reference-point display and explicit score-entry cap;
 - score input without a confirmation-code field;
 - loading and duplicate guard;
 - TIME-mode completion UX.
@@ -92,7 +97,7 @@ Frontend:
 Database and seed:
 
 - tracking mode column;
-- max score field/default;
+- nullable reference field/default and global score cap;
 - progress timestamps;
 - score/completion fields;
 - score event/audit table;
@@ -111,7 +116,7 @@ Tests:
 
 ```text
 1. Existing tracking-mode behavior
-2. Existing max-score field
+2. Existing reference-point field
 3. Existing default
 4. Check-out response shape
 5. When modal opens
@@ -126,7 +131,7 @@ Tests:
 
 Use existing naming where possible.
 
-A Station field equivalent to:
+A Station reference field equivalent to:
 
 ```text
 maxScore
@@ -138,7 +143,7 @@ must default to:
 30
 ```
 
-Migration/backfill must safely set existing null values.
+Migration/backfill must permit null only for ST007 and preserve the canonical reference table.
 
 Do not duplicate the default literal across unrelated frontend components.
 
@@ -158,7 +163,7 @@ After valid Check-out:
 1. record real `checked_out_at`;
 2. calculate duration;
 3. complete progress;
-4. persist score `0`;
+4. persist provisional score `10`;
 5. do not open score modal;
 6. refresh Team progress.
 
@@ -198,11 +203,12 @@ Waiting for score may be derived from timestamps and completion state.
 For `SCORE` and `BOTH` only:
 
 - show Station name;
-- show allowed range `0–{stationMaxScore}`;
+- show allowed range `0–{scoreEntryMax}`;
+- show a non-blocking warning above a non-null Station reference;
 - use numeric integer input;
 - do not render or require a confirmation code;
 - prevent negative value;
-- prevent value above max;
+- prevent value above the global cap `105`;
 - disable submit while pending;
 - prevent double-click;
 - show safe backend errors;
@@ -223,7 +229,7 @@ Backend must validate:
 6. tracking mode accepts score;
 7. integer score;
 8. score >= 0;
-9. score <= Station max score;
+9. score <= global `scoreEntryMax` (`105`);
 10. Event/state rules;
 11. duplicate request safety.
 
@@ -277,18 +283,18 @@ Admin correction must:
 
 Tracking mode:
 
-- `TIME` completes with score 0 and no score endpoint;
+- `TIME` completes provisionally with score 10 and no score endpoint;
 - `BOTH` records duration and requires score;
 - `SCORE` does not contribute duration and requires score.
 
 Limits:
 
-- missing config defaults to 30;
-- custom max works;
+- missing noncanonical reference defaults to 30;
+- custom/null-ST007 reference display works;
 - 0 accepted;
-- exact max accepted;
+- 105 accepted, including above-reference values;
 - negative rejected;
-- above max rejected;
+- 106 rejected;
 - decimal rejected when integer required;
 - frontend bypass still rejected by backend.
 

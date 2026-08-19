@@ -64,7 +64,9 @@ export type StationDefinition = {
   markerY?: number | null;
   trackingMode?: StationTrackingMode;
   gameType?: GameType;
-  maxPoints?: number;
+  maxPoints?: number | null;
+  scoreEntryMax?: number;
+  referenceExceeded?: boolean;
 };
 
 export type TeamStation = {
@@ -86,7 +88,9 @@ export type TeamStation = {
   teamId: string;
   stationId: string;
   progressId?: number;
-  maxPoints?: number;
+  maxPoints?: number | null;
+  scoreEntryMax?: number;
+  referenceExceeded?: boolean;
   backendStatus?: "LOCKED" | "AVAILABLE" | "CHECKED_IN" | "PLAYING" | "COMPLETED";
   gameType?: GameType;
 };
@@ -102,7 +106,7 @@ export type StationFormValues = {
   markerX?: number;
   markerY?: number;
   gameType?: GameType;
-  maxPoints?: number;
+  maxPoints?: number | null;
   youtubeUrl?: string | null;
   imageUrls: string[];
   checkInQrToken?: string;

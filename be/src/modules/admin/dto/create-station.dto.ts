@@ -64,7 +64,7 @@ export class CreateStationDto {
   @IsOptional()
   @IsInt()
   @Min(0)
-  maxPoints?: number;
+  maxPoints?: number | null;
 
   @IsOptional()
   @IsUrl()

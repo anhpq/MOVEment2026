@@ -586,19 +586,20 @@ For `SCORE` and `BOTH`, Check-out leaves the progress awaiting score and the fro
 
 ## Scoring
 
-Default Station max score:
+Default noncanonical Station reference points:
 
 ```text
 30
 ```
 
-Each Station may configure a different max.
+Each Station may configure a different reference; only `ST007` may use `null`, displayed as `???`.
 
 Score rules:
 
 - integer;
 - minimum 0;
-- maximum effective Station max score; `TIME` effective max is 10 even when stored `game.maxPoints` differs;
+- maximum `105` for Team submit, Admin pending-score submit, and Admin correction; `game.maxPoints` is not a validation cap;
+- a valid score above non-null reference returns `referenceExceeded` as a non-blocking UI/audit warning;
 - backend authoritative;
 - no scoring confirmation code is required or stored;
 - duplicate request does not duplicate completion or score;
@@ -619,7 +620,7 @@ STANDARD
   a filled YouTube icon across Station List, Map drawer, and Station Detail;
   disabled actions retain the explicit neutral style.
 - Admin Team Station lists do not expose video actions; each Admin card provides only `View & Edit`.
-- The canonical active Station inventory has exactly 17 Stations, 17 active Games, Team `maxPossiblePoints = 300`, 4 `ST` Games, and 13 `STANDARD` Games. The sum of current per-Station `games.max_points` is Station configuration data and is not a hard validation for Team `maxPossiblePoints`.
+- The canonical active Station inventory has exactly 17 Stations, 17 active Games, Team `maxPossiblePoints = 1785`, 4 `ST` Games, and 13 `STANDARD` Games. Station references do not alter this fixed Team maximum.
 - Station technical IDs remain `ST001`...`ST017` for database, API, routes, React keys, select values, and QR mapping. Station list and map UI display the shorter code `01`...`17` for the canonical inventory and support `ST018` as `18` if it appears later; other noncanonical IDs remain unchanged when displayed.
 - The current designated `ST` Stations are `ST001` Thủy Lộ Ký Ức, `ST002` Ngự Ảnh Tái Hiện, `ST003` Vạn Vật Ghi Tâm, and `ST004` Thiên Địa Chao Đảo; all other Stations are `STANDARD` even if they retain a stored media URL.
 - Admin selects the type from a fixed combobox; Backend and database reject unsupported values.

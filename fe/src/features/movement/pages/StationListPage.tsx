@@ -38,7 +38,7 @@ import {
   getLocalizedTeamName,
   getStationCooldownRemainingSeconds,
   getStationDisplayCode,
-  getStationEffectiveMaxPoints,
+  getStationReferencePointsDisplay,
   getStationStatusColor,
 } from "../utils";
 
@@ -272,7 +272,7 @@ export function StationListPage() {
                     <span>
                       <small>{t("common.scoreMax")}</small>
                       <strong>
-                        {station.score} / {getStationEffectiveMaxPoints(station)}
+                        {station.score} / {getStationReferencePointsDisplay(station)}
                       </strong>
                     </span>
                   </div>

@@ -444,8 +444,8 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 
 - Score entry after Check-out.
 - Score submission after a valid Check-out without a confirmation code.
-- Station maximum score.
-- Default maximum score.
+- Station reference points and the default reference `30`.
+- Global score-entry cap `105`.
 - Backend validation.
 - Duplicate submission protection.
 - Completion and score transaction behavior.
@@ -469,9 +469,9 @@ docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
 
 ### Confirmed Rules
 
-- Default max score is `30` unless the Station has its own configuration.
-- Score cannot be negative.
-- Score cannot exceed effective Station max score; `TIME` effective max is `10`.
+- `Game.maxPoints` is reference/display data; noncanonical Stations default to `30`, and only `ST007` may be `null`/displayed as `???`.
+- Team/Admin score writes accept integers `0..105`; Backend returns `scoreEntryMax: 105` and an above-reference score is valid with `referenceExceeded` warning.
+- `TIME` Check-out auto-completes provisionally with `10`; `ST009` is finalized by rank at `finalStartsAt` and never accepts score entry.
 - Backend is the final validation authority.
 - Duplicate submissions must not create duplicate completion or score records.
 - The retired scoring-code field, hash, configuration, and UI must not be reintroduced.

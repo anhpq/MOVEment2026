@@ -44,9 +44,9 @@ describe('Team Results ranking and Excel', () => {
   it('builds one Team Results worksheet without excluded columns or secrets', async () => {
     const buffer = await buildTeamResultsWorkbook({
       stationColumns: [
-        { id: 'ST001', name: 'Station', header: 'Station', trackingMode: 'BOTH' },
-        { id: 'ST002', name: 'Station', header: 'Station (#02)', trackingMode: 'SCORE' },
-        { id: 'ST003', name: 'Timer', header: 'Timer', trackingMode: 'TIME' },
+        { id: 'ST001', name: 'Station', header: 'Station', trackingMode: 'BOTH', referencePoints: 30 },
+        { id: 'ST007', name: 'Unknown', header: 'Unknown', trackingMode: 'SCORE', referencePoints: null },
+        { id: 'ST009', name: 'Ba Tieu', header: 'Ba Tieu', trackingMode: 'TIME', referencePoints: 25 },
       ],
       rows: [
         {
@@ -60,22 +60,25 @@ describe('Team Results ranking and Excel', () => {
               stationId: 'ST001',
               checkedInAt: new Date('2026-08-21T07:00:00.000Z'),
               checkedOutAt: new Date('2026-08-21T07:05:00.000Z'),
-              score: 30,
+              score: 31,
+              stationRank: null,
               completed: true,
             },
-            ST002: {
-              stationId: 'ST002',
+            ST007: {
+              stationId: 'ST007',
               checkedInAt: new Date('2026-08-21T07:10:00.000Z'),
               checkedOutAt: new Date('2026-08-21T07:15:00.000Z'),
-              score: 25,
+              score: 105,
+              stationRank: null,
               completed: true,
             },
-            ST003: {
-              stationId: 'ST003',
-              checkedInAt: null,
-              checkedOutAt: null,
-              score: 0,
-              completed: false,
+            ST009: {
+              stationId: 'ST009',
+              checkedInAt: new Date('2026-08-21T07:20:00.123Z'),
+              checkedOutAt: new Date('2026-08-21T07:20:01.579Z'),
+              score: 25,
+              stationRank: 1,
+              completed: true,
             },
           },
         },
@@ -97,6 +100,7 @@ describe('Team Results ranking and Excel', () => {
       'Total Play Time',
       'Total Score',
       'Computed Score',
+      'Warnings',
       'Rank',
       'Final Submitted At',
       'Final Rank',
@@ -104,29 +108,68 @@ describe('Team Results ranking and Excel', () => {
       'Station [Both time and score] - Check-in',
       'Station [Both time and score] - Check-out',
       'Station [Both time and score] - Score',
-      'Station (#02) [Score only] - Check-in',
-      'Station (#02) [Score only] - Check-out',
-      'Station (#02) [Score only] - Score',
-      'Timer [Time only] - Check-in',
-      'Timer [Time only] - Check-out',
-      'Timer [Time only] - Score',
+      'Unknown [Score only] - Check-in',
+      'Unknown [Score only] - Check-out',
+      'Unknown [Score only] - Score',
+      'Ba Tieu [Time only] - Check-in',
+      'Ba Tieu [Time only] - Check-out',
+      'Ba Tieu [Time only] - Duration',
+      'Ba Tieu [Time only] - Station Rank',
+      'Ba Tieu [Time only] - Score',
     ]);
     const headerValues = worksheet!.getRow(1).values as unknown[];
-    expect(worksheet!.getCell('P2').value).not.toBe('');
-    expect(worksheet!.getCell('Q2').value).not.toBe('');
-    expect(worksheet!.getCell('P2').value).not.toEqual(worksheet!.getCell('Q2').value);
-    expect(
-      headerValues.some(
-        (value) => typeof value === 'string' && value.endsWith(' - Duration'),
-      ),
-    ).toBe(false);
+    expect(worksheet!.getCell('P2').fill).toEqual(expect.objectContaining({
+      type: 'pattern',
+      fgColor: {argb: 'FFFF0000'},
+    }));
+    expect(worksheet!.getCell('P2').font).toEqual(expect.objectContaining({
+      bold: true,
+      color: {argb: 'FFFFFFFF'},
+    }));
+    expect(worksheet!.getCell('S2').fill).toBeUndefined();
+    expect(worksheet!.getCell('T2').numFmt).toBe('dd/mm/yyyy hh:mm:ss.000');
+    expect(worksheet!.getCell('U2').numFmt).toBe('dd/mm/yyyy hh:mm:ss.000');
+    expect(worksheet!.getCell('V2').numFmt).toBe('[h]:mm:ss.000');
+    expect((worksheet!.getCell('U2').value as Date).getTime() - (worksheet!.getCell('T2').value as Date).getTime()).toBe(1456);
+    const durationDate = worksheet!.getCell('V2').value as Date;
+    expect(((durationDate.getTime() % 86_400_000) + 86_400_000) % 86_400_000).toBe(1456);
+    expect(worksheet!.getCell('W2').value).toBe(1);
+    expect(worksheet!.getCell('X2').value).toBe(25);
     expect(headerValues).not.toContain('Team Color');
     expect(headerValues).not.toContain('Team Status');
     expect(headerValues).not.toContain('Total Stations');
     expect(headerValues).not.toContain('Final Challenge Status');
     expect(worksheet!.getColumn(6).numFmt).toBe('[h]:mm:ss');
-    expect(worksheet!.getColumn(10).numFmt).toBe('dd/mm/yyyy hh:mm:ss');
+    expect(worksheet!.getColumn(11).numFmt).toBe('dd/mm/yyyy hh:mm:ss');
     expect(JSON.stringify(worksheet!.getSheetValues())).not.toContain('answerSubmitted');
+  });
+
+  it('exports an explicit warning for a provisional ST009 score', async () => {
+    const buffer = await buildTeamResultsWorkbook({
+      stationColumns: [{id: 'ST009', name: 'Ba Tieu', header: 'Ba Tieu', trackingMode: 'TIME', referencePoints: 25}],
+      rows: [{
+        rank: 1,
+        ...baseRow,
+        warnings: 'ST009 provisional score',
+        stations: {
+          ST009: {
+            stationId: 'ST009',
+            checkedInAt: new Date('2026-08-21T07:20:00.123Z'),
+            checkedOutAt: new Date('2026-08-21T07:20:01.579Z'),
+            score: 10,
+            stationRank: null,
+            completed: true,
+          },
+        },
+      }],
+    });
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(buffer as unknown as ArrayBuffer);
+    const worksheet = workbook.getWorksheet('Team Results')!;
+
+    expect(worksheet.getCell('I2').value).toBe('ST009 provisional score');
+    expect(worksheet.getCell('Q2').value).toBe('');
+    expect(worksheet.getCell('R2').value).toBe(10);
   });
 
   it('formats filename timestamp in Asia/Ho_Chi_Minh', () => {
@@ -179,7 +222,8 @@ describe('TeamResultsService lean leaderboard', () => {
         ]),
       },
     };
-    const service = new TeamResultsService(prisma as never);
+    const eventLifecycle = { reconcileFinalStart: jest.fn().mockResolvedValue(0) };
+    const service = new TeamResultsService(prisma as never, eventLifecycle as never);
 
     const leaderboard = await service.getLeanLeaderboard();
 
@@ -205,5 +249,6 @@ describe('TeamResultsService lean leaderboard', () => {
     expect(prisma.team.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ select: expect.any(Object) }),
     );
+    expect(eventLifecycle.reconcileFinalStart).toHaveBeenCalledTimes(1);
   });
 });

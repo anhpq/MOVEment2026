@@ -151,7 +151,8 @@ export type PlayerStationResponse = {
     title: string
     type: GameType
     difficulty: number
-    maxPoints: number
+    maxPoints: number | null
+    scoreEntryMax?: number
     clueText: string | null
     mediaUrl: string | null
   } | null
@@ -169,6 +170,8 @@ export type PlayerProgressResponse = {
   cancelledAt: string | null
   nextCheckInAllowedAt: string | null
   scoreAchieved: number
+  scoreEntryMax?: number
+  referenceExceeded?: boolean
   attemptNo: number
   game?: PlayerStationResponse['game']
 }
@@ -186,7 +189,8 @@ export type PlayerCatalogStationResponse = {
     title: string
     type: GameType
     difficulty: number
-    maxPoints: number
+    maxPoints: number | null
+    scoreEntryMax?: number
     clueText: string | null
     mediaUrl: string | null
   } | null
@@ -358,7 +362,7 @@ export type AdminStationUpdateInput = {
   mapX?: number
   mapY?: number
   gameType?: GameType
-  maxPoints?: number
+  maxPoints?: number | null
   mediaUrl?: string | null
   imageUrls?: string[]
   checkInQrToken?: string
@@ -397,7 +401,7 @@ export type AdminProgressMatrixResponse = {
     mapY: number | null
     trackingMode: StationTrackingMode
     imageUrls: string[]
-    games?: Array<{type: GameType; maxPoints: number; mediaUrl: string | null}>
+  games?: Array<{type: GameType; maxPoints: number | null; mediaUrl: string | null}>
   }>
   rows: Array<{
     team: AdminTeamResponse
@@ -406,7 +410,9 @@ export type AdminProgressMatrixResponse = {
       stationId: string
       status: PlayerProgressResponse['status']
       scoreAchieved: number
-      maxPoints: number
+      maxPoints: number | null
+      scoreEntryMax?: number
+      referenceExceeded?: boolean
       checkedInAt: string | null
       checkedOutAt: string | null
       completedAt: string | null
@@ -523,7 +529,7 @@ export type AdminCreatedStationResponse = {
 export const createAdminStation = (values: {
   id: string; name: string; nameEn: string; description?: string | null; descriptionEn?: string | null
   trackingMode: StationTrackingMode; mapX: number; mapY: number
-  gameType: GameType; maxPoints?: number; mediaUrl?: string | null; imageUrls?: string[]
+  gameType: GameType; maxPoints?: number | null; mediaUrl?: string | null; imageUrls?: string[]
 }) => apiPost<AdminCreatedStationResponse>('/api/admin/stations', values)
 
 export const deleteAdminStation = (stationId: string) =>
@@ -637,8 +643,11 @@ export type AdminScoreQueueItemResponse = {
   game: {
     id: string
     type: GameType
-    maxPoints: number
+    maxPoints: number | null
+    scoreEntryMax?: number
   }
+  scoreEntryMax?: number
+  referenceExceeded?: boolean
   team: AdminTeamResponse
 }
 export const getAdminScoreQueue = () => apiGet<AdminScoreQueueItemResponse[]>('/api/admin/score-queue')

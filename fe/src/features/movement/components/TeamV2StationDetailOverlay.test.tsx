@@ -123,6 +123,12 @@ describe("TeamV2StationDetailOverlay", () => {
     expect(screen.queryByRole("button", {name: i18n.t("stationDetail.cancelStation")})).not.toBeInTheDocument();
   });
 
+  it("shows ??? for the unknown ST007 reference", () => {
+    renderDetail({stationId: "ST007", maxPoints: null});
+
+    expect(screen.getByText("0 / ???")).toBeVisible();
+  });
+
   it("closes on Escape", async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();

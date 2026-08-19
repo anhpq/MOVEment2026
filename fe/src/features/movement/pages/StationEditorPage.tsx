@@ -362,8 +362,19 @@ export function StationEditorPage() {
         <Form.Item label={t("stationEditor.gameType")} name="gameType" rules={[{required: true}]}>
           <Select options={[...GAME_TYPE_OPTIONS]} />
         </Form.Item>
-        <Form.Item label={t("stationEditor.maxPoints")} name="maxPoints" rules={[{required: true}]}>
-          <InputNumber min={0} precision={0} className="full-width" />
+        <Form.Item
+          label={t("stationEditor.maxPoints")}
+          name="maxPoints"
+          rules={[{
+            validator: async (_, value) => {
+              const stationId = String(form.getFieldValue("id") ?? "").trim().toUpperCase();
+              if (value === null || value === undefined) {
+                if (stationId === "ST007") return;
+                throw new Error(t("stationEditor.referenceRequired"));
+              }
+            },
+          }]}>
+          <InputNumber min={0} precision={0} placeholder={String(form.getFieldValue("id") ?? "").trim().toUpperCase() === "ST007" ? "???" : undefined} className="full-width" />
         </Form.Item>
         {isEditing && (
           <>

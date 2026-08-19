@@ -32,7 +32,9 @@ import {
   formatDateTime,
   formatDurationFromMs,
   getStationDisplayCode,
-  getStationEffectiveMaxPoints,
+  getStationReferencePointsDisplay,
+  getStationScoreEntryMax,
+  isStationReferenceExceeded,
   getStationStatusColor,
 } from "../utils";
 import {
@@ -142,7 +144,8 @@ export function StationDetailPage() {
     );
   }
 
-  const stationMaxPoints = getStationEffectiveMaxPoints(station);
+  const stationMaxPoints = getStationReferencePointsDisplay(station);
+  const scoreEntryMax = getStationScoreEntryMax(station);
   const canAdminEditScore =
     session.role === "admin" &&
     station.backendStatus === "COMPLETED" &&
@@ -406,7 +409,7 @@ export function StationDetailPage() {
                 rules={[{required: true}]}>
                 <InputNumber
                   min={0}
-                  max={stationMaxPoints}
+                  max={scoreEntryMax}
                   disabled={!canAdminEditScore}
                   className="full-width"
                 />
@@ -545,9 +548,14 @@ export function StationDetailPage() {
                 t("stationDetail.confirmScoreTitle", {score: values.score})
               : t("stationDetail.confirmCompletion"),
               content: session.role === "user" ?
-                t("stationDetail.confirmScoreContent", {
-                  station: `${getStationDisplayCode(station.stationId)} - ${station.name}`,
-                })
+                <Flex vertical gap={8}>
+                  <Typography.Text>{t("stationDetail.confirmScoreContent", {
+                    station: `${getStationDisplayCode(station.stationId)} - ${station.name}`,
+                  })}</Typography.Text>
+                  {isStationReferenceExceeded(station, values.score) && (
+                    <Alert showIcon type="warning" message={t("stationDetail.referenceExceededWarning", {reference: stationMaxPoints})} />
+                  )}
+                </Flex>
               : t("stationDetail.confirmCompletionContent"),
               okText: t("common.confirm"),
               cancelText: t("common.cancel"),
@@ -600,7 +608,7 @@ export function StationDetailPage() {
             name="score"
             initialValue={0}
             rules={[{required: true}]}>
-            <InputNumber min={0} max={stationMaxPoints} className="full-width" />
+            <InputNumber min={0} max={scoreEntryMax} className="full-width" />
           </Form.Item>
           {session.role !== "user" && (
             <Form.Item label={t("stationDetail.reason")} name="reason">

@@ -106,13 +106,14 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
 
 - Station QR tokens remain independent opaque check-in/check-out tokens.
 - No confirmation/scoring code is reintroduced.
-- Backend is authoritative for purpose, state, max score, and duplicate claims.
+- Backend is authoritative for purpose, state, global score-entry cap, and duplicate claims.
 - Production `/qr-login` static-hosting behavior was outside this Station QR task.
 
 ## Interfaces and Data
 
 - Existing player check-in, check-out, and submit-score APIs remain authoritative.
-- Effective max score is `10` for TIME and Station-configured/default max otherwise.
+- `Game.maxPoints` is reference/display data. Team/Admin score entry uses the explicit global cap `scoreEntryMax = 105`; above-reference scores remain valid and return `referenceExceeded`.
+- TIME Check-out completes provisionally with `10`; ST009 never opens score entry and is finalized by durable Station rank at Final.
 - Accepted checkout timestamp is retained according to tracking-mode rules.
 
 ## Verification and Risks
@@ -130,9 +131,9 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
 1. QR review: auto-submit camera results only.
 2. Security review: database token mapping remains authoritative.
 3. Tracking review: preserve SCORE, TIME, and BOTH semantics.
-4. Scoring review: TIME completes with `10`; other modes validate input.
+4. Scoring review: TIME completes provisionally with `10`; other modes validate integer `0..105`.
 5. Concurrency review: claim/update prevents duplicate award.
-6. UI review: show effective max without changing backend authority.
+6. UI review: show reference points (`???` for ST007), use API cap `105`, and warn without blocking above-reference input.
 7. Consolidation review: keep Production/browser checks pending.
 
 ## Provenance

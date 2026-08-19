@@ -436,14 +436,14 @@ describe('AdminService Team QR login lifecycle', () => {
       data: expect.objectContaining({maxPoints: 30}),
     });
     expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
-      data: {maxPossiblePoints: {increment: 30}},
+      data: {maxPossiblePoints: 1785},
     });
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({
         action: 'CREATE_STATION',
         metadata: expect.objectContaining({
           maxPoints: 30,
-          effectiveMaxPoints: 30,
+          effectiveMaxPoints: 105,
           gameType: 'STANDARD',
           imageCount: 0,
         }),
@@ -479,7 +479,7 @@ describe('AdminService Team QR login lifecycle', () => {
       data: expect.objectContaining({maxPoints: 100}),
     });
     expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
-      data: {maxPossiblePoints: {increment: 10}},
+      data: {maxPossiblePoints: 1785},
     });
   });
 
@@ -511,7 +511,7 @@ describe('AdminService Team QR login lifecycle', () => {
       data: expect.objectContaining({maxPoints: 45}),
     });
     expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
-      data: {maxPossiblePoints: {increment: 45}},
+      data: {maxPossiblePoints: 1785},
     });
   });
 
@@ -697,9 +697,7 @@ describe('AdminService Team QR login lifecycle', () => {
         maxPoints: 45,
       },
     });
-    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
-      data: {maxPossiblePoints: {increment: 15}},
-    });
+    expect(mockPrisma.team.updateMany).not.toHaveBeenCalled();
     expect(mockActivityLog.log).toHaveBeenCalledWith(
       expect.objectContaining({
         action: 'UPDATE_STATION',
@@ -726,9 +724,7 @@ describe('AdminService Team QR login lifecycle', () => {
       trackingMode: StationTrackingMode.TIME,
     });
 
-    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
-      data: {maxPossiblePoints: {increment: -90}},
-    });
+    expect(mockPrisma.team.updateMany).not.toHaveBeenCalled();
   });
 
   it('increments Team maximums when changing a Station from TIME to BOTH', async () => {
@@ -746,9 +742,7 @@ describe('AdminService Team QR login lifecycle', () => {
       trackingMode: StationTrackingMode.BOTH,
     });
 
-    expect(mockPrisma.team.updateMany).toHaveBeenCalledWith({
-      data: {maxPossiblePoints: {increment: 90}},
-    });
+    expect(mockPrisma.team.updateMany).not.toHaveBeenCalled();
   });
 
   it('does not change Team maximums when updating TIME stored max points', async () => {
@@ -870,6 +864,22 @@ describe('AdminService Team QR login lifecycle', () => {
     );
   });
 
+  it('accepts an unknown reference only for ST007', async () => {
+    mockPrisma.station.update.mockResolvedValue({id: 'ST007'});
+
+    await expect(
+      service.updateStation(1, 'ST008', {maxPoints: null}),
+    ).rejects.toThrow('Only ST007 may have an unknown reference point value');
+    await expect(
+      service.updateStation(1, 'ST007', {maxPoints: null}),
+    ).resolves.toEqual(expect.objectContaining({id: 'ST007'}));
+
+    expect(mockPrisma.game.updateMany).toHaveBeenCalledWith({
+      where: {stationId: 'ST007', isActive: true},
+      data: {maxPoints: null},
+    });
+  });
+
   it('returns only fields consumed by the Admin progress matrix client', async () => {
     const checkedInAt = new Date('2026-08-01T02:00:00.000Z');
     mockPrisma.station.findMany.mockResolvedValue([
@@ -922,6 +932,8 @@ describe('AdminService Team QR login lifecycle', () => {
           status: ProgressStatus.PLAYING,
           scoreAchieved: 0,
           maxPoints: 30,
+          scoreEntryMax: 105,
+          referenceExceeded: false,
           checkedInAt,
           checkedOutAt: null,
           completedAt: null,
@@ -1073,6 +1085,8 @@ describe('AdminService Team QR login lifecycle', () => {
   });
 
   it('generates one-time Station QR tokens without returning hashes', async () => {
+    mockPrisma.station.findUniqueOrThrow.mockReset();
+    mockPrisma.station.findUniqueOrThrow.mockResolvedValue({id: 'ST999', isActive: true});
     mockPrisma.qrToken.create.mockImplementation(({data}) => Promise.resolve({id: data.purpose === QrPurpose.CHECK_IN ? 1 : 2, createdAt: new Date(), expiresAt: null, ...data}));
 
     const result = await service.generateStationQrTokens(1, 'ST999');
@@ -1089,7 +1103,7 @@ describe('AdminService Team QR login lifecycle', () => {
   it.each([
     ['negative', -1],
     ['decimal', 10.5],
-    ['above max', 31],
+    ['above global limit', 106],
   ])('rejects %s Admin score corrections before writing', async (_label, score) => {
     mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue({
       id: 99,
@@ -1159,6 +1173,34 @@ describe('AdminService Team QR login lifecycle', () => {
         metadata: {score: 10, reason: 'audit reason', delta: 5},
       }),
     );
+  });
+
+  it('accepts 105 above the Station reference and returns a warning', async () => {
+    const existingProgress = {
+      id: 99,
+      teamId: 7,
+      stationId: 'ST999',
+      status: ProgressStatus.COMPLETED,
+      checkedInAt: new Date('2026-07-19T01:00:00.000Z'),
+      checkedOutAt: new Date('2026-07-19T01:10:00.000Z'),
+      completedAt: new Date('2026-07-19T01:12:00.000Z'),
+      scoreAchieved: 5,
+      stationRank: null,
+      team: {...team, totalPoints: 20},
+      game: {maxPoints: 30},
+      station: {trackingMode: StationTrackingMode.BOTH},
+    };
+    mockPrisma.teamStationProgress.findUniqueOrThrow.mockResolvedValue(existingProgress);
+    mockPrisma.teamStationProgress.update.mockResolvedValue({...existingProgress, scoreAchieved: 105});
+
+    await expect(
+      service.editScore(1, 99, {score: 105, reason: 'verified above reference'}),
+    ).resolves.toEqual(expect.objectContaining({
+      scoreAchieved: 105,
+      scoreEntryMax: 105,
+      referenceExceeded: true,
+      stationRank: null,
+    }));
   });
 
   it('requires a non-empty reason for every Admin score edit', async () => {

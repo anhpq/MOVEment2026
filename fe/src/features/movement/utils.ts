@@ -1,4 +1,4 @@
-import {DEFAULT_STATION_MAX_POINTS} from "./constants";
+import {DEFAULT_SCORE_ENTRY_MAX, DEFAULT_STATION_MAX_POINTS} from "./constants";
 import {STATUS_ORDER} from "./constants";
 import type {
   AuthAccount,
@@ -46,10 +46,25 @@ export function createInitialTeamStations(
   );
 }
 
-export function getStationEffectiveMaxPoints(
-  station: Pick<TeamStation, "trackingMode" | "maxPoints">,
+export function getStationReferencePointsDisplay(
+  station: Pick<TeamStation, "maxPoints">,
 ) {
-  return station.trackingMode === "TIME" ? 10 : station.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
+  return station.maxPoints === null ? "???" : String(station.maxPoints ?? DEFAULT_STATION_MAX_POINTS);
+}
+
+export function getStationScoreEntryMax(
+  station: Pick<TeamStation, "scoreEntryMax">,
+) {
+  return station.scoreEntryMax ?? DEFAULT_SCORE_ENTRY_MAX;
+}
+
+export function isStationReferenceExceeded(
+  station: Pick<TeamStation, "maxPoints">,
+  score: number,
+) {
+  return station.maxPoints !== null &&
+    station.maxPoints !== undefined &&
+    score > station.maxPoints;
 }
 
 export function getStationDisplayCode(stationId: string) {

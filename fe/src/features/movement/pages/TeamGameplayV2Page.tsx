@@ -6,7 +6,7 @@ import {
   TeamOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
-import {App as AntdApp, Button, Empty, Form, Input, InputNumber, Slider, Spin, Switch, Typography} from "antd";
+import {Alert, App as AntdApp, Button, Empty, Flex, Form, Input, InputNumber, Slider, Spin, Switch, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import Konva from "konva";
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
@@ -85,7 +85,9 @@ import type {StationDefinition, SupportedLanguage, Team, TeamStation} from "../t
 import {
   getLocalizedTeamName,
   getStationDisplayCode,
-  getStationEffectiveMaxPoints,
+  getStationReferencePointsDisplay,
+  getStationScoreEntryMax,
+  isStationReferenceExceeded,
 } from "../utils";
 import "./TeamGameplayV2Page.css";
 import "./TeamGameplayV2Demo.css";
@@ -265,8 +267,7 @@ function StationMarker({
   const pinBottomOffset = -54 * pinScaleY;
   const hitRadius = Math.max(22, size * 0.55);
   const lockRadius = Math.max(5, size * 0.16);
-  const points = getStationEffectiveMaxPoints({
-    trackingMode: marker.teamStation?.trackingMode ?? marker.station.trackingMode ?? "BOTH",
+  const points = getStationReferencePointsDisplay({
     maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
   });
 
@@ -778,8 +779,7 @@ function TeamOverviewOverlay({
             <section key={group.key} className={`is-${group.key}`}>
               <h3>{group.title} ({group.items.length})</h3>
               {group.items.map((item) => {
-                const maxPoints = getStationEffectiveMaxPoints({
-                  trackingMode: item.teamStation?.trackingMode ?? item.station.trackingMode ?? "BOTH",
+                const maxPoints = getStationReferencePointsDisplay({
                   maxPoints: item.teamStation?.maxPoints ?? item.station.maxPoints,
                 });
                 const points = item.isCompleted && (item.teamStation?.score ?? 0) > 0 ? item.teamStation!.score : maxPoints;
@@ -1756,9 +1756,14 @@ export function TeamGameplayV2Page() {
                 modal.confirm({
                   centered: true,
                   title: t("stationDetail.confirmScoreTitle", {score: values.score}),
-                  content: t("stationDetail.confirmScoreContent", {
-                    station: `${getStationDisplayCode(scoreStation.stationId)} - ${scoreStation.name}`,
-                  }),
+                  content: <Flex vertical gap={8}>
+                    <Typography.Text>{t("stationDetail.confirmScoreContent", {
+                      station: `${getStationDisplayCode(scoreStation.stationId)} - ${scoreStation.name}`,
+                    })}</Typography.Text>
+                    {isStationReferenceExceeded(scoreStation, values.score) && (
+                      <Alert showIcon type="warning" message={t("stationDetail.referenceExceededWarning", {reference: getStationReferencePointsDisplay(scoreStation)})} />
+                    )}
+                  </Flex>,
                   okText: t("common.confirm"),
                   cancelText: t("common.cancel"),
                   onOk: async () => {
@@ -1785,7 +1790,7 @@ export function TeamGameplayV2Page() {
                 });
               }}>
               <Form.Item label={t("stationDetail.inputScore")} name="score" initialValue={0} rules={[{required: true}]}>
-                <InputNumber min={0} max={getStationEffectiveMaxPoints(scoreStation)} className="full-width" />
+                <InputNumber min={0} max={getStationScoreEntryMax(scoreStation)} className="full-width" />
               </Form.Item>
               <Form.Item label={t("stationDetail.reason")} name="reason">
                 <Input.TextArea rows={2} placeholder={t("stationDetail.optionalNote")} />

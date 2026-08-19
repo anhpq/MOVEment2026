@@ -14,7 +14,8 @@ vi.mock("../../../movement/api", () => api);
 const pendingScore = {
   id: 17, teamId: 2, stationId: "ST004", status: "PLAYING", checkedOutAt: "2026-08-19T03:32:00.000Z", completedAt: null, scoreAchieved: 0, notes: "Needs score review",
   station: {id: "ST004", name: "Trạm Gió", nameEn: "Wind Station", trackingMode: "SCORE"},
-  game: {id: "game-4", type: "STANDARD", maxPoints: 30},
+  game: {id: "game-4", type: "STANDARD", maxPoints: 30, scoreEntryMax: 105},
+  scoreEntryMax: 105,
   team: {id: 2, name: "Team 02", username: "team02", captainName: "Minh", totalPoints: 40, totalPlaySeconds: 360, color: "#0066AA"},
 };
 
@@ -73,7 +74,7 @@ describe("AdminV2ScoreQueuePage", () => {
     const dialog = screen.getByRole("dialog");
     expect(dialog).toHaveTextContent("Team 02");
     expect(dialog).toHaveTextContent("ST004 · Wind Station");
-    expect(dialog).toHaveTextContent("Max score");
+    expect(dialog).toHaveTextContent("Reference points");
     await user.click(screen.getByRole("button", {name: "Save score"}));
 
     await waitFor(() => expect(api.submitAdminProgressScore).toHaveBeenCalledWith(17, 20, "Verified by operations"));
@@ -82,20 +83,31 @@ describe("AdminV2ScoreQueuePage", () => {
   }, 10000);
 
   it("validates the integer score range used by the score form", () => {
-    expect(isScoreWithinRange(-1, 30)).toBe(false);
-    expect(isScoreWithinRange(0, 30)).toBe(true);
-    expect(isScoreWithinRange(30, 30)).toBe(true);
-    expect(isScoreWithinRange(31, 30)).toBe(false);
-    expect(isScoreWithinRange(12.5, 30)).toBe(false);
+    expect(isScoreWithinRange(-1, 105)).toBe(false);
+    expect(isScoreWithinRange(0, 105)).toBe(true);
+    expect(isScoreWithinRange(105, 105)).toBe(true);
+    expect(isScoreWithinRange(106, 105)).toBe(false);
+    expect(isScoreWithinRange(12.5, 105)).toBe(false);
   });
 
-  it("sets the Score input bounds from the authoritative Station maximum", async () => {
+  it("sets the Score input bounds from the authoritative global cap", async () => {
     const user = userEvent.setup();
     renderPage();
     await openAndFillReview(user, "20");
     const scoreInput = screen.getByRole("spinbutton", {name: "Score"});
     expect(scoreInput).toHaveAttribute("aria-valuemin", "0");
-    expect(scoreInput).toHaveAttribute("aria-valuemax", "30");
+    expect(scoreInput).toHaveAttribute("aria-valuemax", "105");
+  });
+
+  it("warns without blocking when a valid score exceeds the reference", async () => {
+    const user = userEvent.setup();
+    api.getAdminScoreQueue.mockResolvedValueOnce([pendingScore]).mockResolvedValueOnce([]);
+    renderPage();
+    await openAndFillReview(user, "31");
+
+    await waitFor(() => expect(screen.getByRole("dialog")).toHaveTextContent("This score exceeds the 30 reference points but remains valid."));
+    await user.click(screen.getByRole("button", {name: "Save score"}));
+    await waitFor(() => expect(api.submitAdminProgressScore).toHaveBeenCalledWith(17, 31, "Verified by operations"));
   });
 
   it("locks the confirmation while the score mutation is in flight", async () => {

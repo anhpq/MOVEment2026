@@ -1,5 +1,11 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-20 Station reference points and score entry
+
+- Marker, Team overview list and V2 Station Detail use the shared reference display; `ST007` renders exactly `???` without fallback to `30`.
+- Score input consumes Backend `scoreEntryMax` (`105`). A score above a non-null reference shows a non-blocking confirmation warning.
+- ST009 remains on the TIME Check-out success path with provisional `10` and never opens the score modal.
+
 ## 2026-08-18 QR tabs, Final retry and compact runtime
 
 - Scanner opens on a full-overlay camera tab and offers a separate paste tab.
@@ -188,7 +194,7 @@
   navigating to V1. It shows the localized Team identity, authoritative score,
   rank, completed progress, current Station, and grouped Station inventory.
 - Station rows display code, localized name, and points. Completed rows prefer
-  the recorded score; active/available rows use effective maximum points.
+  the recorded score; active/available rows use Station reference points.
 - Continue/row actions close the overlay and select the Station on the V2 map.
 - i18n parity passed (`436` keys), lint, build, and bundle budget passed
   (`204.41 KiB` initial gzip).
@@ -446,7 +452,7 @@
 ## 2026-08-03 Numeric marker and points pill
 
 - Team V2 map markers now place the compact Station display number inside the
-  pin and show only the effective maximum points in a small pill below it.
+  pin and show only the Station reference points in a small pill below it.
 - Station names and connector lines are no longer rendered on the map; names
   remain available in the selected-Station preview and full Detail.
 - Selected, active, Completed, and Locked palettes remain authoritative.

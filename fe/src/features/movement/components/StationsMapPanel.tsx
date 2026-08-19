@@ -54,7 +54,7 @@ import {
   getDisabledReason,
   getStationCooldownRemainingSeconds,
   getStationDisplayCode,
-  getStationEffectiveMaxPoints,
+  getStationReferencePointsDisplay,
   getStationStatusColor,
   compareStationIds,
 } from "../utils";
@@ -1019,7 +1019,7 @@ export function StationsMapPanel({editable = false}: StationsMapPanelProps) {
                 <span>
                   <small>{t("common.scoreMax")}</small>
                   <strong>
-                    {focusedTeamStation.score} / {getStationEffectiveMaxPoints(focusedTeamStation)}
+                    {focusedTeamStation.score} / {getStationReferencePointsDisplay(focusedTeamStation)}
                   </strong>
                 </span>
               </div>

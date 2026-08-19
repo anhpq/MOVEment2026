@@ -1,3 +1,12 @@
+# 2026-08-20 Station reference points and Ba Tiêu
+
+- `maxPoints` is nullable reference data; score entry uses backend global `0..105` cap and Team maximum is fixed at `1785`.
+- Added ST009 provisional TIME completion and Final lifecycle ranking by millisecond duration, checkout time, then Team ID, with a PostgreSQL transaction advisory lock, full-candidate ranking, transactional score deltas and durable `stationRank`.
+- Added Team Results Excel `Warnings`, ST009 audit columns/millisecond formats, and red reference-exceeded score cells.
+- Verified on local non-Production DB: migration status current (`21` migrations), Prisma validate/generate, seed twice, and `db:verify` (`25` Teams, `17` Stations, `425` progress, `34` Station QR, `25` Team QR). Backend lint/build and full Jest passed (`201/201`). Frontend full Vitest (`163/163`), i18n parity (`460` keys), font guard, lint, production build and bundle gate passed. Workbook reopen tests cover milliseconds, rank, provisional warning and reference styling; manual Excel/Google Sheets and authenticated browser smoke remain pending.
+- Graphify code graph update completed (`3644` nodes, `6120` edges). Graphify reported one empty `hooks.json` source and skipped SQL topology because optional `tree_sitter_sql` is not installed; neither warning blocked code verification.
+- `prisma migrate diff --from-schema-datasource ... --to-schema-datamodel ... --exit-code` remains non-zero only for pre-existing `updated_at` default drift and the existing Final submission index name. The new Station rank unique index no longer appears in the diff after the alignment migration.
+
 # 2026-08-19 Admin V2 Phase 3 Teams List follow-up
 
 - Kept `/admin-v2/teams` on the existing read-only `GET /api/admin/progress-matrix`

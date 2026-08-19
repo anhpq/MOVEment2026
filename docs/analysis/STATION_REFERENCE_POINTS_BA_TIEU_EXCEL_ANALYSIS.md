@@ -5,8 +5,8 @@
 | Area | Status |
 | --- | --- |
 | Business decisions | Approved on 2026-08-19 |
-| Implementation | Not started |
-| Automated verification | Not run |
+| Implementation | Completed locally across schema, Backend, Frontend, seed and Excel |
+| Automated verification | Backend Jest `201/201`, Frontend Vitest `163/163`, Prisma/seed checks, i18n/font/lint/build and workbook reopen coverage passed on 2026-08-20 |
 | Runtime/Production verification | Not run |
 
 ## Objective

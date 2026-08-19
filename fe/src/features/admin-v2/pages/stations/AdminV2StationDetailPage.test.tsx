@@ -32,7 +32,7 @@ describe("AdminV2StationDetailPage", () => {
     expect(await screen.findByText("Station Two")).toBeVisible();
     expect(screen.getByText("CHECK-IN")).toBeVisible();
     expect(screen.getByText("CHECK-OUT")).toBeVisible();
-    expect(screen.getAllByText("Download PNG")).toHaveLength(2);
+    expect(await screen.findAllByText("Download PNG")).toHaveLength(2);
     expect(screen.queryByText(/rotate|revoke/i)).not.toBeInTheDocument();
     expect(screen.queryByText("check-in-secret")).not.toBeInTheDocument();
   });
@@ -48,5 +48,17 @@ describe("AdminV2StationDetailPage", () => {
     await waitFor(() => expect(api.updateAdminStation).toHaveBeenCalledWith("ST002", expect.objectContaining({name: "Trạm Mới", nameEn: "Station Two", mapX: 25, mapY: 75, gameType: "ST", maxPoints: 10})));
     expect(api.updateAdminStation.mock.calls[0][1]).not.toHaveProperty("checkInQrToken");
     expect(api.updateAdminStation.mock.calls[0][1]).not.toHaveProperty("checkOutQrToken");
+  });
+
+  it("shows the unknown ST007 reference exactly as ???", async () => {
+    api.getAdminProgressMatrix.mockResolvedValueOnce({
+      stations: [{...matrix.stations[0], id: "ST007", games: [{...matrix.stations[0].games[0], maxPoints: null}]}],
+      rows: [],
+    });
+    api.getAdminStationQrTokens.mockResolvedValueOnce([]);
+
+    renderDetail("/admin-v2/stations/ST007");
+
+    expect(await screen.findByText("???")).toBeVisible();
   });
 });

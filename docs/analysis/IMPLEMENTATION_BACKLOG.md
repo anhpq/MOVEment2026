@@ -1,5 +1,13 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-20 Station reference points and Ba Tiêu follow-up
+
+- [x] Run the new migration and seed twice against an isolated non-Production database, then run `db:verify`.
+- [x] Add deterministic unit coverage for ST009 millisecond ties, ranks `1..25`, positive/zero/negative deltas, legacy normalization, durable-rank retry, concurrent reconciliation and exact Final checkout cutoff.
+- [ ] Add disposable-database concurrency coverage for ST009 Final ranking and exact final-start checkout race.
+- [ ] Manually inspect the generated Team Results workbook in Excel/Google Sheets and smoke V1/V2/Admin reference display, including ST007 `???`.
+- [ ] Reconcile pre-existing Prisma drift for `updated_at` defaults and the Final submission index name in a separate migration scope.
+
 ## Admin V2 final audit — NOT READY for cutover (2026-08-19)
 
 - [x] Restore direct Team detail/edit/QR route behavior and nested Teams/Stations active navigation.

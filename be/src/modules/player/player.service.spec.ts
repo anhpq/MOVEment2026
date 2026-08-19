@@ -52,7 +52,10 @@ const mockTeamResults = {
   getLeanLeaderboard: jest.fn(),
   toLeaderboardRows: jest.fn(),
 }
-const mockEventLifecycle = { reconcileFinalStart: jest.fn().mockResolvedValue(0) }
+const mockEventLifecycle = {
+  reconcileFinalStart: jest.fn().mockResolvedValue(0),
+  isCheckoutBeforeFinalStart: jest.fn().mockResolvedValue(true),
+}
 
 describe('PlayerService station flow', () => {
   let service: PlayerService
@@ -762,7 +765,11 @@ describe('PlayerService station flow', () => {
         score: 40,
         reason: 'staff scored',
       }),
-    ).resolves.toEqual(completed)
+    ).resolves.toEqual({
+      ...completed,
+      scoreEntryMax: 105,
+      referenceExceeded: false,
+    })
 
     expect(tx.teamStationProgress.updateMany).toHaveBeenCalledWith({
       where: { id: progress.id, completedAt: null, checkedOutAt: { not: null } },
@@ -829,20 +836,68 @@ describe('PlayerService station flow', () => {
     })
   })
 
-  it('rejects score values above the station maximum', async () => {
-    mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
+  it('accepts scores above a Station reference but rejects values above the global entry limit', async () => {
+    const scoreProgress = {
       ...progress,
       checkedOutAt: new Date(),
       team: { totalPoints: 0 },
       game: { maxPoints: 50 },
-    })
+    }
+    const completed = {...scoreProgress, completedAt: new Date(), scoreAchieved: 105}
+    const tx = {
+      teamStationProgress: {
+        updateMany: jest.fn().mockResolvedValue({count: 1}),
+        findUniqueOrThrow: jest.fn().mockResolvedValue(completed),
+      },
+      team: {update: jest.fn()},
+      scoreEvent: {create: jest.fn()},
+    }
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue(scoreProgress)
+    mockPrisma.$transaction.mockImplementation((callback: (txArg: typeof tx) => unknown) => callback(tx))
+
+    await expect(
+      service.submitScore(2, 'ST002', {score: 105}),
+    ).resolves.toEqual(expect.objectContaining({
+      scoreAchieved: 105,
+      scoreEntryMax: 105,
+      referenceExceeded: true,
+    }))
 
     await expect(
       service.submitScore(2, 'ST002', {
-        score: 51,
+        score: 106,
       }),
     ).rejects.toThrow(PlayerActionException)
-    expect(mockPrisma.$transaction).not.toHaveBeenCalled()
+    expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects a Check-out that loses the serialized Final cutoff race', async () => {
+    mockPrisma.qrToken.findUnique.mockResolvedValue({
+      id: 2,
+      stationId: 'ST009',
+      tokenHash: 'hashed-qr-token',
+      tokenFingerprint: 'fingerprint',
+      purpose: QrPurpose.CHECK_OUT,
+      isActive: true,
+      revokedAt: null,
+      expiresAt: null,
+      station: {isActive: true},
+    })
+    mockPrisma.teamStationProgress.findUnique.mockResolvedValue({
+      ...progress,
+      stationId: 'ST009',
+      status: ProgressStatus.PLAYING,
+      checkedInAt: new Date('2026-08-20T05:00:00.000Z'),
+      station: {trackingMode: StationTrackingMode.TIME},
+      team: {totalPoints: 12},
+      game: {maxPoints: 25},
+    })
+    mockEventLifecycle.isCheckoutBeforeFinalStart.mockResolvedValueOnce(false)
+
+    await expect(
+      service.checkOut(2, 'ST009', {qrToken: 'MV26-SQ1-O-ABCDEFGHIJKLMNOPQRSTUVWXY2'}),
+    ).rejects.toThrow(PlayerActionException)
+    expect(mockPrisma.teamStationProgress.updateMany).not.toHaveBeenCalled()
   })
 
   it('accepts score 0 and the exact station maximum', async () => {
@@ -997,6 +1052,7 @@ describe('PlayerService station flow', () => {
           type: 'STANDARD',
           difficulty: 1,
           maxPoints: 30,
+          scoreEntryMax: 105,
           clueText: null,
           mediaUrl: 'https://cdn.example.com/game.webp',
           updatedAt: gameUpdatedAt,
@@ -1032,6 +1088,7 @@ describe('PlayerService station flow', () => {
           type: 'STANDARD',
           difficulty: 1,
           maxPoints: 30,
+          scoreEntryMax: 105,
           clueText: null,
           mediaUrl: 'https://cdn.example.com/game.webp',
         },

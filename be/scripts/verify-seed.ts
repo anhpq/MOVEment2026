@@ -4,6 +4,7 @@ import {
   CANONICAL_QR_TOKEN_COUNT,
   CANONICAL_STATION_COUNT,
   CANONICAL_STATION_IDS,
+  CANONICAL_STATIONS,
   CANONICAL_TOTAL_MAX_SCORE,
   CANONICAL_STANDARD_COUNT,
   CANONICAL_ST_COUNT,
@@ -50,7 +51,7 @@ async function main() {
     prisma.station.count({where: {id: {notIn: CANONICAL_STATION_IDS}}}),
     prisma.game.findMany({
       where: {stationId: {in: CANONICAL_STATION_IDS}, isActive: true},
-      select: {type: true, maxPoints: true},
+      select: {stationId: true, type: true, maxPoints: true},
     }),
     prisma.team.count(),
     prisma.qrToken.count({
@@ -92,6 +93,21 @@ async function main() {
     name: 'canonical STANDARD games',
     actual: activeGames.filter((game) => game.type === 'STANDARD').length,
     expected: CANONICAL_STANDARD_COUNT,
+  });
+  const referenceByStation = new Map(
+    activeGames.map((game) => [game.stationId, game.maxPoints]),
+  );
+  for (const station of CANONICAL_STATIONS) {
+    if (referenceByStation.get(station.id) !== station.maxScore) {
+      throw new Error(
+        `${station.id} reference expected ${String(station.maxScore)}, found ${String(referenceByStation.get(station.id))}`,
+      );
+    }
+  }
+  assertExact({
+    name: 'ST009 TIME tracking mode',
+    actual: await prisma.station.count({where: {id: 'ST009', trackingMode: 'TIME'}}),
+    expected: 1,
   });
   assertExact({
     name: 'seed-managed team max possible points',

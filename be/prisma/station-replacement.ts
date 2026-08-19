@@ -80,7 +80,7 @@ export async function replaceAllStations(tx: Prisma.TransactionClient): Promise<
         descriptionEn: station.shortDescriptionEn,
         mapX: station.mapX,
         mapY: station.mapY,
-        trackingMode: 'BOTH',
+        trackingMode: station.id === 'ST009' ? 'TIME' : 'BOTH',
         isActive: true,
         sortOrder: station.sortOrder,
       },

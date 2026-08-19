@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { FinalSubmission, ProgressStatus, StationTrackingMode, TeamStationProgress } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { EventLifecycleService } from '../event-config/event-lifecycle.service';
 
 export type TeamResultStationColumn = {
   id: string;
   name: string;
   header: string;
   trackingMode: StationTrackingMode;
+  referencePoints?: number | null;
 };
 
 export type TeamResultStation = {
@@ -14,6 +16,7 @@ export type TeamResultStation = {
   checkedInAt: Date | null;
   checkedOutAt: Date | null;
   score: number;
+  stationRank?: number | null;
   completed: boolean;
 };
 
@@ -32,6 +35,7 @@ export type TeamResultRow = {
   finalSubmittedAt: Date | null;
   finalRank: number | null;
   finalBonusScore: number;
+  warnings?: string;
   lastStationName: string | null;
   stations: Record<string, TeamResultStation>;
 };
@@ -92,9 +96,13 @@ export function compareTeamResultRows(
 
 @Injectable()
 export class TeamResultsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventLifecycle: EventLifecycleService,
+  ) {}
 
   async getRankedTeamResults(): Promise<RankedTeamResults> {
+    await this.eventLifecycle.reconcileFinalStart();
     const [stations, teams, activeFinalChallenge] = await Promise.all([
       this.prisma.station.findMany({
         where: { isActive: true },
@@ -164,6 +172,7 @@ export class TeamResultsService {
   }
 
   async getLeanLeaderboard() {
+    await this.eventLifecycle.reconcileFinalStart();
     const [teams, activeFinalChallenge] = await Promise.all([
       this.prisma.team.findMany({
         select: {
@@ -229,7 +238,7 @@ export class TeamResultsService {
   }
 
   private toStationColumns(
-    stations: Array<{ id: string; name: string; trackingMode: StationTrackingMode }>,
+    stations: Array<{ id: string; name: string; trackingMode: StationTrackingMode; games: Array<{ maxPoints: number | null }> }>,
   ): TeamResultStationColumn[] {
     const nameCounts = new Map<string, number>();
     return stations.map((station) => {
@@ -240,6 +249,7 @@ export class TeamResultsService {
         name: station.name,
         header: count === 1 ? station.name : `${station.name} (#${String(count).padStart(2, '0')})`,
         trackingMode: station.trackingMode,
+        referencePoints: station.games[0]?.maxPoints ?? null,
       };
     });
   }
@@ -285,6 +295,7 @@ export class TeamResultsService {
       finalSubmittedAt: finalSubmission?.submittedAt ?? null,
       finalRank: finalSubmission?.winnerRank ?? null,
       finalBonusScore,
+      warnings: Object.values(stations).some((station) => station.stationId === 'ST009' && station.completed && station.stationRank === null) ? 'ST009 provisional score' : '',
       lastStationName: latestCompleted?.station.name ?? null,
       stations,
     };
@@ -300,6 +311,7 @@ export class TeamResultsService {
         checkedInAt: null,
         checkedOutAt: null,
         score: 0,
+        stationRank: null,
         completed: false,
       };
     }
@@ -309,6 +321,7 @@ export class TeamResultsService {
       checkedInAt: progress.checkedInAt,
       checkedOutAt: progress.checkedOutAt,
       score: progress.scoreAchieved,
+      stationRank: progress.stationRank,
       completed: true,
     };
   }

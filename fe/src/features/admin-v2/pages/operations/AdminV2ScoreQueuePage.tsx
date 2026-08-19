@@ -3,7 +3,7 @@ import {App as AntdApp, Alert, Badge, Button, Empty, Flex, Form, Input, InputNum
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {getAdminScoreQueue, submitAdminProgressScore, type AdminScoreQueueItemResponse} from "../../../movement/api";
-import {DEFAULT_STATION_MAX_POINTS} from "../../../movement/constants";
+import {DEFAULT_SCORE_ENTRY_MAX} from "../../../movement/constants";
 import {getLocalizedTeamName} from "../../../movement/utils";
 import {isScoreWithinRange} from "./scoreQueueValidation";
 
@@ -25,8 +25,12 @@ function useNarrowAdminV2Layout() {
   return isNarrow;
 }
 
-function getEffectiveMaxScore(item: AdminScoreQueueItemResponse) {
-  return item.station.trackingMode === "TIME" ? 10 : item.game.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
+function getScoreEntryMax(item: AdminScoreQueueItemResponse) {
+  return item.scoreEntryMax ?? item.game.scoreEntryMax ?? DEFAULT_SCORE_ENTRY_MAX;
+}
+
+function getReferencePointsDisplay(item: AdminScoreQueueItemResponse) {
+  return item.game.maxPoints === null ? "???" : item.game.maxPoints;
 }
 
 function formatDateTime(value: string | null, language: string, fallback: string) {
@@ -105,7 +109,7 @@ export function AdminV2ScoreQueuePage() {
     {title: t("adminV2.scoreQueue.columns.team"), key: "team", width: 190, render: (_, item) => <Typography.Text strong>{getLocalizedTeamName(item.team.name, language)}</Typography.Text>},
     {title: t("adminV2.scoreQueue.columns.station"), key: "station", width: 210, render: (_, item) => <Space orientation="vertical" size={0}><Typography.Text strong>{item.stationId}</Typography.Text><Typography.Text type="secondary">{stationName(item, language)}</Typography.Text></Space>},
     {title: t("adminV2.scoreQueue.columns.currentScore"), dataIndex: "scoreAchieved", align: "right", width: 128},
-    {title: t("adminV2.scoreQueue.columns.maxScore"), key: "maxScore", align: "right", width: 118, render: (_, item) => getEffectiveMaxScore(item)},
+    {title: t("adminV2.scoreQueue.columns.maxScore"), key: "maxScore", align: "right", width: 118, render: (_, item) => getReferencePointsDisplay(item)},
     {title: t("adminV2.scoreQueue.columns.checkedOut"), dataIndex: "checkedOutAt", width: 180, hidden: isNarrow, render: (value: string | null) => formatDateTime(value, language, t("adminV2.scoreQueue.noDate"))},
     {title: t("adminV2.scoreQueue.columns.status"), dataIndex: "status", width: 125, render: (status: AdminScoreQueueItemResponse["status"]) => <Tag>{t(`adminV2.scoreQueue.status.${status}`, {defaultValue: status})}</Tag>},
     {title: t("adminV2.scoreQueue.columns.note"), dataIndex: "notes", width: 200, hidden: isNarrow, render: (note: string | null | undefined) => <Typography.Text ellipsis={{tooltip: note}}>{note?.trim() || t("adminV2.scoreQueue.noNote")}</Typography.Text>},
@@ -114,7 +118,13 @@ export function AdminV2ScoreQueuePage() {
 
   const isInitialLoading = state.items === null && !state.error;
   const hasStaleData = state.error && state.items !== null;
-  const maxScore = selected ? getEffectiveMaxScore(selected) : 0;
+  const maxScore = selected ? getScoreEntryMax(selected) : DEFAULT_SCORE_ENTRY_MAX;
+  const referenceExceeded = Boolean(
+    selected &&
+    typeof scoreToRecord === "number" &&
+    selected.game.maxPoints !== null &&
+    scoreToRecord > selected.game.maxPoints,
+  );
   const selectedStationName = selected ? stationName(selected, language) : "";
 
   return <section className="admin-v2-score-queue" aria-labelledby="admin-v2-score-queue-title">
@@ -130,7 +140,8 @@ export function AdminV2ScoreQueuePage() {
     <Modal cancelButtonProps={{disabled: submitting}} cancelText={t("adminV2.scoreQueue.modal.cancel")} confirmLoading={submitting} destroyOnHidden onCancel={() => !submitting && setSelected(null)} okText={submitting ? t("adminV2.scoreQueue.modal.saving") : t("adminV2.scoreQueue.modal.save")} onOk={() => form.submit()} open={selected !== null} title={t("adminV2.scoreQueue.modal.title")} width={560}>
       {selected && <Form form={form} layout="vertical" onFinish={(values) => void submit(values)}>
         <Typography.Paragraph type="secondary">{t("adminV2.scoreQueue.modal.description")}</Typography.Paragraph>
-        <div className="admin-v2-score-queue__review-summary"><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.team")}</Typography.Text><Typography.Text strong>{getLocalizedTeamName(selected.team.name, language)}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.station")}</Typography.Text><Typography.Text strong>{selected.stationId} · {selectedStationName}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.submittedScore")}</Typography.Text><Typography.Text strong>{selected.scoreAchieved}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.maxScore")}</Typography.Text><Typography.Text strong>{maxScore}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.result")}</Typography.Text><Typography.Text strong>{scoreToRecord ?? selected.scoreAchieved}</Typography.Text></div></div>
+        <div className="admin-v2-score-queue__review-summary"><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.team")}</Typography.Text><Typography.Text strong>{getLocalizedTeamName(selected.team.name, language)}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.station")}</Typography.Text><Typography.Text strong>{selected.stationId} · {selectedStationName}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.submittedScore")}</Typography.Text><Typography.Text strong>{selected.scoreAchieved}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.maxScore")}</Typography.Text><Typography.Text strong>{getReferencePointsDisplay(selected)}</Typography.Text></div><div><Typography.Text type="secondary">{t("adminV2.scoreQueue.modal.result")}</Typography.Text><Typography.Text strong>{scoreToRecord ?? selected.scoreAchieved}</Typography.Text></div></div>
+        {referenceExceeded && <Alert className="admin-v2-score-queue__reference-warning" showIcon title={t("adminV2.scoreQueue.modal.referenceExceeded", {reference: selected.game.maxPoints})} type="warning" />}
         {selected.notes?.trim() && <Alert className="admin-v2-score-queue__note" description={selected.notes} showIcon title={t("adminV2.scoreQueue.modal.note")} type="info" />}
         {mutationError && <Alert className="admin-v2-score-queue__mutation-error" showIcon title={t("adminV2.scoreQueue.modal.failure")} type="error" />}
         <Form.Item label={t("adminV2.scoreQueue.modal.score")} name="score" rules={[{required: true, message: t("adminV2.scoreQueue.modal.scoreRequired")}, {validator: (_, value: unknown) => isScoreWithinRange(value, maxScore) ? Promise.resolve() : Promise.reject(new Error(typeof value === "number" && Number.isInteger(value) ? t("adminV2.scoreQueue.modal.scoreRange", {max: maxScore}) : t("adminV2.scoreQueue.modal.scoreInteger")))}]}><InputNumber aria-label={t("adminV2.scoreQueue.modal.score")} max={maxScore} min={0} precision={0} step={1} style={{width: "100%"}} /></Form.Item>
