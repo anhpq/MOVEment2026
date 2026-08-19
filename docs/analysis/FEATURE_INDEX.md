@@ -944,6 +944,39 @@ agent workflow changes.
 
 ---
 
+## 20. Admin V2
+
+### Scope
+
+- Parallel, admin-only frontend namespace under `/admin-v2/*`.
+- V2 shell, navigation, later V2 modules, and localized presentation.
+- Coexists with protected Admin V1 routes; no V1 cutover or redirect.
+
+### Required Reading
+
+```text
+docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
+docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
+docs/admin-v2/PLAN.md
+```
+
+### Confirmed Boundaries
+
+- Source boundary: `fe/src/features/admin-v2/`.
+- Only the shared route registry may mount the lazy V2 entry when required.
+- V2 does not change Backend, API contracts, database schema, seed behavior, or Business Rules.
+- V1 routes and V1 presentation remain unchanged throughout the rollout.
+
+### Must Update After Change
+
+```text
+docs/admin-v2/PLAN.md
+docs/analysis/BACKEND_AUDIT.md
+docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+---
+
 # Prompt Routing
 
 ## Documentation and Workflow

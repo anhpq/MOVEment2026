@@ -1,0 +1,21 @@
+.admin-v2-root {
+  --admin-v2-font-ui: "Space Grotesk", Aptos, "Segoe UI", sans-serif;
+  --admin-v2-navy: #10233e;
+  --admin-v2-navy-deep: #08172b;
+  --admin-v2-surface: #f8fafc;
+  --admin-v2-surface-strong: #ffffff;
+  --admin-v2-border: #dce4ed;
+  --admin-v2-nav-inactive: #9fb0c7;
+  --admin-v2-text: #172033;
+  --admin-v2-muted: #607085;
+  --admin-v2-coral: #f06445;
+  --admin-v2-blue: #2563eb;
+  --admin-v2-green: #16834d;
+  --admin-v2-amber: #b7791f;
+  --admin-v2-red: #c53333;
+  --admin-v2-radius: 10px;
+  --admin-v2-space-1: 8px;
+  --admin-v2-space-2: 16px;
+  --admin-v2-space-3: 24px;
+  --admin-v2-space-4: 32px;
+}
