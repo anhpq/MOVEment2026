@@ -89,6 +89,7 @@ If Source Code conflicts with confirmed Business Rules:
 | `STATION_MAP_ANALYSIS.md` | Station map markers, position persistence, and WebP delivery. |
 | `STATION_MEDIA_GALLERY_ANALYSIS.md` | Ordered Station image URLs, Admin management, Player gallery, and action layout. |
 | `STATION_QR_AND_SCORING_ANALYSIS.md` | Station QR auto-submit, checkout, and scoring. |
+| `STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md` | Approved Station reference-point policy, global score cap, Ba Tiêu Final ranking, and auditable Excel export plan. |
 | `TEAM_GAMEPLAY_V2_ANALYSIS.md` | Parallel Team Gameplay V2 screen, unified QR action, dedicated persistent scanner, QR badge, V2-owned Station Detail/Video overlay, responsive HUD, and V2 navigation. |
 | `TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md` | Reusable Team QR, live counts, polling, and bottom navigation. |
 | `TEAM_RUNTIME_STABILITY_AND_DATA_LOADING_ANALYSIS.md` | Lean Team APIs, adaptive polling, error resilience, concurrency hardening, and Team bundle/data budgets. |
@@ -408,6 +409,7 @@ BOTH
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 ```
 
@@ -423,6 +425,7 @@ docs/analysis/BACKEND_AUDIT.md
 
 ```text
 docs/prompts/12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md
+docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
 ```
 
 ### Must Update After Change
@@ -452,6 +455,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
@@ -460,6 +464,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 
 ```text
 docs/prompts/12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md
+docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
 ```
 
 ### Confirmed Rules
@@ -501,6 +506,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
@@ -543,6 +549,7 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```text
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
+docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
 ```
@@ -631,8 +638,16 @@ docs/analysis/IMPLEMENTATION_BACKLOG.md
 docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md
 docs/analysis/PROJECT_ANALYSIS_SPEC.md
 docs/analysis/EXCEL_EXPORT_AND_TEAM_COLOR_ANALYSIS.md
+docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md
 docs/analysis/BACKEND_AUDIT.md
 docs/analysis/IMPLEMENTATION_BACKLOG.md
+```
+
+### Relevant Prompt
+
+```text
+docs/prompts/12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md
+docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
 ```
 
 ### Must Update After Change
@@ -800,6 +815,7 @@ docs/analysis/PROJECT_ANALYSIS_SPEC.md
 docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md
 docs/analysis/STATION_MAP_ANALYSIS.md
 docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md
+docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md
 docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md
 docs/analysis/FRONTEND_LOCALIZATION_ANALYSIS.md
 docs/analysis/IOS_SAFARI_QR_CAMERA_FIX.md
@@ -1002,6 +1018,12 @@ docs/prompts/11_CODEX_FINAL_GAME_KEYWORD_AND_SCORING_PROMPT.md
 
 ```text
 docs/prompts/12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md
+```
+
+## Station Reference Points, Ba Tiêu Ranking, and Excel
+
+```text
+docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
 ```
 
 Do not run the Master Prompt automatically when only one Feature needs work.
