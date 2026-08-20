@@ -17,6 +17,9 @@
 - [ ] Existing `TeamGameplayV2Demo.css` still applies full-viewport map-under-HUD
   presentation while the latest documented layout rule says Header/Footer are
   outside Konva. Header/Footer reconciliation was explicitly out of scope here.
+- [ ] Investigate the existing Backend `ERR_HTTP_HEADERS_SENT` error observed
+  when repeated Team runtime/playing-count polling receives `304`; Backend
+  changes were outside this Frontend-only request.
 
 ## QR login session replacement route fix — 2026-08-20
 

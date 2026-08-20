@@ -14,7 +14,9 @@
   wheel-pan-resize smoke. Two default-concurrency full runs each timed out the
   same unrelated Admin V2 test at 5 seconds; its focused rerun passed `10/10`.
 - Browser smoke used response interception only to keep the already-started
-  local Final phase from taking over the map; no database record was changed.
+  local Final phase from taking over the map, so Event/gameplay data was not
+  changed. Normal local `team01` login created/replaced its active Team session
+  according to the one-active-session policy; Production was untouched.
 
 # 2026-08-20 QR login session replacement route fix
 
