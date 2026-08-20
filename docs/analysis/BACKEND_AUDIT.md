@@ -1,3 +1,42 @@
+# 2026-08-20 Team V2 map performance refactor
+
+- Root cause: up to two marker-owned animation loops redrew the full marker
+  Layer containing complex gradients/shadows and its hit graph; marker artwork
+  was not cached, ResizeObserver was not frame-coalesced, and high-DPI mobile
+  canvases rendered at device ratio `3`.
+- Refactored `/team/v2` into background/static-marker/active-marker/interaction
+  layers. Static/active visual layers do not listen; lightweight hit circles own
+  interactions. Marker visuals are cached and memoized, and exactly one
+  visibility-aware `Konva.Animation` updates all animated marker nodes.
+- Pan, touch, pinch and wheel retain direct Konva transforms with final-only React
+  commit. Responsive grid rows keep Header/Footer outside Konva. Visual canvas
+  ratio caps at `2`; interaction scene/hit ratio is `1`.
+- Same local Chrome CDP harness measured desktop drag TaskDuration
+  `0.950s -> 0.117s`, ScriptDuration `0.237s -> 0.049s`, frame probe
+  `62.7 -> 106.0 FPS`, and removed two baseline `52ms` long tasks in the final
+  comparison run. Synthetic touch TaskDuration fell about `62%` and script time
+  about `73%`. These are headless comparative figures, not physical-device FPS.
+- Verification PASS: focused map Vitest `22/22`, full Frontend Vitest `181/181`,
+  TypeScript, ESLint, i18n parity `460`, Team V2 font guard, production build and
+  bundle gate. Authenticated production-preview Chrome smoke passed mouse,
+  wheel, synthetic touch, portrait, landscape, locked-marker Detail, Legend and
+  Header/map/Footer separation. Physical mobile, live active-marker pause and
+  completed-marker click remain unverified because those states/devices were not
+  available locally.
+- No Backend, API, schema, migration, seed, Station coordinates, gameplay rule,
+  typography, palette, visual dimension or Production configuration changed.
+
+# 2026-08-20 Admin V2 Event Control timing update
+
+- Removed the five-minute Station-close recommendation and timing-gap advisory
+  from Admin V2 Event Control. Station close and Final opening remain separate
+  Event Config values.
+- Local development Event Config was set to `eventEndTime = 11:30` and
+  `finalStartsAt = 11:45`; no Production configuration was changed.
+- Focused Event Control Vitest passed `4/4`; i18n parity passed with `460` keys;
+  Frontend lint and production build/bundle gate passed. Authenticated browser
+  visual verification was not run.
+
 # 2026-08-20 Station reference points and Ba Tiêu
 
 - `maxPoints` is nullable reference data; score entry uses backend global `0..105` cap and Team maximum is fixed at `1785`.
@@ -1854,3 +1893,12 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Safe Frontend fixes restored direct Team edit/QR URLs, nested active navigation/header context, Operations access on mobile/tablet, correct initial Event Control timeline values, and strict Dashboard Event Config parsing.
 - Required parity still missing: Team create with Team #26 prevention, Team Station progress/correction/reopen/status operations, Team Results Excel export, V1-equivalent automatic Leaderboard refresh, and explicit confirmation before Event/Final configuration mutations.
 - Verification passed: Frontend Vitest `158/158`, lint, i18n parity `458`, font guard, production build/bundle budget, plus authenticated local Vite visual QA at `1440x900`, `1024x768`, and `768x1024`. Production, physical-device, deploy, and cutover checks were not performed.
+
+# 2026-08-20 Admin V2 controlled route cutover
+
+- User-approved scope changed only Frontend routing: `/admin` now enters `/admin-v2/dashboard`; Admin login and role-aware fallback resolve through `/admin`; `/admin-v2/*` remains canonical.
+- `/admin-v1/*` is the explicit legacy/rollback entry and redirects to unchanged V1 `/teams`. Existing V1 routes, components, assets, APIs, Backend, schema, migration, seed, and authentication/authorization behavior were not removed or changed.
+- V2 Dashboard, Teams, Stations, Leaderboard, Operations, and Settings links remain under `/admin-v2/*`. Focused tests cover direct entry, all six primary destinations, Back/Forward, anonymous/Team authorization, expired-session cleanup, and legacy entry.
+- Verification PASS: focused tests `14/14`; full Frontend Vitest `174/174`; lint; i18n parity `460`; font guard; TypeScript/Vite production build and bundle budget. One intermediate full run exposed an unrelated async Team QR test flake; its focused rerun passed `5/5` and the final full rerun passed.
+- Local Chrome headless/CDP smoke against the production build passed direct refresh/navigation for `/admin`, `/admin-v2`, all 17 implemented V2 child routes, four Operations links, `/admin-v1`, anonymous, Team-denied, expired-session, and Back/Forward cases. `1440x900`, `1024x768`, and `768x1024` retained the approved six-link navigation with no horizontal page overflow.
+- The 2026-08-19 parity gaps remain open. No Production deploy, physical-device smoke, commit, or push was performed.

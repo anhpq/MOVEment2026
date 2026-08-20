@@ -1,5 +1,30 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-20 Team V2 map performance and framed layout
+
+- Team V2 map uses four Konva layers: non-listening background, cached
+  non-listening static markers, non-listening animated markers, and lightweight
+  marker hit areas. Decorative nodes do not participate in hit testing.
+- Active Station and Điểm tập trung share one `Konva.Animation`; it pauses while
+  interacting, when no animated marker is visible, when the page is hidden, and
+  on unmount. Marker scale/opacity formulas and visual geometry are unchanged.
+- Mouse, touch, pinch and wheel transforms update the Konva Stage imperatively
+  through a latest-frame scheduler. React receives the final transform only at
+  interaction completion; ResizeObserver updates are also frame-coalesced.
+- Header, map and Footer use dedicated grid rows. Konva fills only the middle
+  `minmax(0, 1fr)` row in desktop, portrait and landscape.
+- Visual canvases cap effective pixel ratio at `2`; the transparent interaction
+  scene/hit canvas uses `1`, while marker artwork caches use the same bounded
+  sharp ratio. Coordinates, palette, typography, dimensions and gameplay remain
+  unchanged.
+
+## 2026-08-20 Admin V2 Event Control timing update
+
+- Station Check-in close and Final opening remain independently configurable
+  through `eventEndTime` and `finalStartsAt`.
+- Admin V2 no longer calculates, displays, or warns about a recommended gap
+  between the two milestones.
+
 ## 2026-08-18 Team V2 compact runtime and interaction update
 
 - Team V2 scanner owns two tabs: camera-first `Quét QR` and `Dán QR`; leaving
@@ -300,8 +325,11 @@
 
 - Initial Leaderboard load failures provide a localized retry action; refresh
   failures retain and identify stale rows.
-- Unknown routes return Admin to `/teams`, Team to `/stations`, and anonymous
+- Unknown routes return Admin to `/admin`, Team to `/stations`, and anonymous
   users to `/login`.
+- Controlled Admin cutover uses `/admin` as the primary entry to Admin V2
+  `/admin-v2/dashboard`. Admin V1 remains available through `/admin-v1/*`,
+  which enters the unchanged V1 route set at `/teams`.
 - Icon-only map controls provide localized accessible names and tooltips.
 - Shared mobile UI keeps important controls near a 44px touch target and avoids
   sub-12px text for the optimized Leaderboard/Admin/Team-list metadata paths.
@@ -366,7 +394,8 @@ Admin users:
 
 - manage Event Config;
 - manage Teams and Stations;
-- open a Team first to view that Team's Station/progress list; Admin has no standalone Stations navigation item;
+- in Admin V1 legacy, open a Team first to view that Team's Station/progress list and do not show a standalone Stations navigation item;
+- in primary Admin V2, use the approved standalone Stations management workspace while preserving Team-context progress routes;
 - never present a selected Team as the Admin's own/current Team;
 - configure tracking mode and max score;
 - choose Station Game Type from `ST` or `STANDARD`;

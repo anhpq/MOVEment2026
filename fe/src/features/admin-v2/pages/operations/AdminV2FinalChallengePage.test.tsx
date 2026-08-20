@@ -11,7 +11,7 @@ import {isValidOptionalKeywordRotation} from "./finalChallengeValidation";
 const api = vi.hoisted(() => ({getAdminFinalConfig: vi.fn(), getAdminFinalSubmissions: vi.fn(), getAdminEventConfig: vi.fn(), updateAdminFinalConfig: vi.fn()}));
 vi.mock("../../../movement/api", () => api);
 
-const config = (overrides: Record<string, unknown> = {}) => ({id: 1, title: "Final title", clueText: "Find the answer", startsAt: "2026-08-19T12:00:00.000Z", maxWinners: 10, pointsByRank: [40, 30, 25], isActive: true, currentKeyword: "DO NOT DISPLAY", ...overrides});
+const config = (overrides: Record<string, unknown> = {}) => ({id: 1, title: "Final title", clueText: "Find the answer", startsAt: "2026-08-19T12:00:00.000Z", maxWinners: 10, pointsByRank: [40, 30, 25], isActive: true, currentKeyword: "CURRENT FINAL KEYWORD", ...overrides});
 const submissions = () => [
   {id: 1, answerSubmitted: "EVERY MOVE COUNTS", isCorrect: true, winnerRank: 1, pointsAwarded: 40, submittedAt: "2026-08-19T12:05:00.000Z", team: {id: 7, name: "Team 07"}},
   {id: 2, answerSubmitted: "WRONG", isCorrect: false, winnerRank: null, pointsAwarded: 0, submittedAt: "2026-08-19T12:04:00.000Z", team: {id: 8, name: "Team 08"}},
@@ -32,12 +32,14 @@ describe("AdminV2FinalChallengePage", () => {
   });
   afterEach(() => vi.clearAllMocks());
 
-  it("loads supported config and does not redisplay the configured keyword", async () => {
+  it("loads supported config and displays the current keyword read-only", async () => {
     renderPage();
     expect(await screen.findByDisplayValue("Final title")).toBeVisible();
     expect(screen.getByText("12:00")).toBeVisible();
     expect(screen.getByText("Rank 1: 40")).toBeVisible();
-    expect(screen.queryByText("DO NOT DISPLAY")).not.toBeInTheDocument();
+    const currentKeyword = screen.getByLabelText("Current keyword");
+    expect(currentKeyword).toHaveValue("CURRENT FINAL KEYWORD");
+    expect(currentKeyword).toHaveAttribute("readonly");
   });
 
   it("preserves the current keyword when the rotation field is blank and sends a nonblank rotation unchanged for Backend normalization", async () => {

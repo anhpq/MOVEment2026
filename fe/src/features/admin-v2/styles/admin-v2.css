@@ -201,7 +201,6 @@
 .admin-v2-event-control__timeline h2 { margin: 2px 0 0; font-variant-numeric: tabular-nums; }
 .admin-v2-event-control__timeline-gap { align-items: center; color: var(--admin-v2-muted); display: flex; flex-direction: column; justify-content: center; text-align: center; }
 .admin-v2-event-control__timeline-gap > span { color: var(--admin-v2-blue); font-size: 1.5rem; line-height: 1; }
-.admin-v2-event-control__advisory { margin: 0; }
 .admin-v2-event-control__form-actions { background: var(--admin-v2-surface, #fff); bottom: 0; padding: var(--admin-v2-space-2) 0 calc(var(--admin-v2-space-2) + env(safe-area-inset-bottom)); position: sticky; z-index: 1; }
 .admin-v2-final-challenge { display: grid; gap: var(--admin-v2-space-3); margin: 0 auto; max-width: 1180px; }
 .admin-v2-final-challenge__heading h1 { margin: 0; }

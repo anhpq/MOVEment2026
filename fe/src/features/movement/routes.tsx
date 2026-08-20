@@ -1,11 +1,18 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 import {LazyRouteBoundary} from "./routing/LazyRouteBoundary";
+import {
+  ADMIN_PRIMARY_PATH,
+  ADMIN_V1_HOME_PATH,
+  ADMIN_V1_LEGACY_PATH,
+  ADMIN_V2_HOME_PATH,
+  getRoleHomePath,
+} from "./routing/adminRoutePaths";
 import {lazyRoute} from "./routing/lazyRoute";
 import {useMovementStore} from "./store";
 
 function RoleAwareFallback() {
   const role = useMovementStore((state) => state.session?.role);
-  return <Navigate to={role === "admin" ? "/teams" : role === "user" ? "/team/v2" : "/login"} replace />;
+  return <Navigate to={getRoleHomePath(role)} replace />;
 }
 
 const ProtectedRoute = lazyRoute(() =>
@@ -89,6 +96,8 @@ export function MovementRoutes() {
         path="/qr-login"
         element={<LazyRouteBoundary><QrLoginPage /></LazyRouteBoundary>}
       />
+      <Route path={ADMIN_PRIMARY_PATH} element={<Navigate to={ADMIN_V2_HOME_PATH} replace />} />
+      <Route path={`${ADMIN_V1_LEGACY_PATH}/*`} element={<Navigate to={ADMIN_V1_HOME_PATH} replace />} />
       <Route
         path="/stations"
         element={

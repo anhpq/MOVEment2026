@@ -1,6 +1,11 @@
 .team-v2-page {
   position: fixed;
   inset: 0;
+  display: grid;
+  grid-template-rows:
+    var(--team-v2-map-header-space)
+    minmax(0, 1fr)
+    var(--team-v2-map-footer-space);
   height: 100dvh;
   min-height: 100dvh;
   overflow: hidden;
@@ -29,6 +34,8 @@
   --team-v2-accent-wash: color-mix(in srgb, var(--team-v2-accent) 13%, transparent);
   --team-v2-muted: #9fd4d9;
   --team-v2-score: #44ff57;
+  --team-v2-map-header-space: clamp(126px, 18dvh, 164px);
+  --team-v2-map-footer-space: clamp(124px, 30vw, 252px);
 }
 
 .team-v2-map-backdrop {
@@ -1112,8 +1119,11 @@
 
 /* Premium framed composition: header and footer stay outside the map canvas. */
 .team-v2-map-backdrop {
-  top: clamp(126px, 18dvh, 164px);
-  bottom: clamp(126px, 18dvh, 158px);
+  position: relative;
+  inset: auto;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
   overflow: hidden;
   border-block: 1px solid color-mix(in srgb, var(--team-v2-accent) 22%, transparent);
 }
@@ -1272,9 +1282,8 @@
 }
 
 @media (orientation: portrait) {
-  .team-v2-map-backdrop {
-    top: clamp(116px, 16dvh, 146px);
-    bottom: clamp(116px, 17dvh, 146px);
+  .team-v2-page {
+    --team-v2-map-header-space: clamp(116px, 16dvh, 146px);
   }
 
   .team-v2-header {
@@ -1416,13 +1425,11 @@
   transform: translateY(-5px);
 }
 
-.team-v2-map-backdrop {
-  bottom: clamp(124px, 30vw, 252px);
-}
-
 /* A short landscape viewport must reserve map space by height, not by the wide
    screen width. The controls retain usable touch targets without covering it. */
 @media (orientation: landscape) and (max-height: 500px) {
+  .team-v2-page { --team-v2-map-footer-space: 92px; }
+
   .team-v2-bottom {
     --team-v2-footer-height: 82px;
     bottom: calc(4px + env(safe-area-inset-bottom, 0));
@@ -1444,7 +1451,6 @@
 
   .team-v2-scan-action::before { inset: 9px -10px; }
   .team-v2-scan-action > strong { bottom: 11px; font-size: 8px; }
-  .team-v2-map-backdrop { bottom: 92px; }
 }
 
 .team-v2-team-panel {

@@ -1,5 +1,41 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Team V2 map performance — 2026-08-20
+
+- [x] Profile Stage/layers, marker animation, pan/touch/wheel, resize, DPR,
+  shadows, cache and React render boundaries before changing Source Code.
+- [x] Cache and memoize marker visuals; split background, static marker, active
+  marker and interaction layers; restrict listening to lightweight hit circles.
+- [x] Replace per-marker animation loops with one visibility-aware
+  `Konva.Animation` and clean up animation/listeners on pause/unmount.
+- [x] Keep real-time transform state in Konva, commit React state only after the
+  interaction, and coalesce ResizeObserver updates.
+- [x] Use Header/map/Footer grid rows and cap visual DPR at `2` / hit DPR at `1`.
+- [x] Pass focused map Vitest `22/22`, full Frontend Vitest `181/181`, TypeScript,
+  ESLint, i18n/font checks, production build/bundle gate and authenticated Chrome
+  mouse/wheel/synthetic-touch responsive smoke.
+- [ ] Verify sustained FPS, physical touch/pinch and Page Visibility behavior on
+  a modern real mobile device with an active marker; click a completed marker in
+  an authoritative runtime state. Local smoke covered a locked marker only.
+
+## Admin V2 Event Control timing update — 2026-08-20
+
+- [x] Remove the five-minute recommendation and timing-gap advisory from Admin
+  V2 Event Control.
+- [x] Keep `eventEndTime` and `finalStartsAt` independently editable and persist
+  the requested `11:30` / `11:45` values in the local development config.
+- [x] Pass focused Event Control Vitest (`4/4`), i18n parity (`460` keys),
+  Frontend lint, production build, and bundle budget.
+- [ ] Authenticated browser visual verification remains pending.
+
+## Admin V2 controlled route cutover — 2026-08-20
+
+- [x] Make `/admin`, Admin post-login, and Admin unknown-route fallback enter `/admin-v2/dashboard` without changing authentication/session behavior.
+- [x] Keep `/admin-v2/*` canonical and verify all six primary V2 navigation destinations remain inside V2.
+- [x] Add `/admin-v1/*` as the explicit legacy/rollback entry to unchanged V1 `/teams`; retain all existing V1 routes/components/APIs/assets.
+- [x] Pass focused cutover/auth tests (`14/14`), full Frontend Vitest (`174/174`), lint, i18n parity (`460` keys), font guard, production build, bundle budget, and local Chrome responsive/direct-route smoke at `1440x900`, `1024x768`, and `768x1024`.
+- [ ] Historical V1 parity gaps listed below remain unresolved by explicit scope. Production deploy and physical-device verification were not performed.
+
 ## 2026-08-20 Station reference points and Ba Tiêu follow-up
 
 - [x] Run the new migration and seed twice against an isolated non-Production database, then run `db:verify`.
@@ -19,7 +55,7 @@
 - [ ] Add Team Results Excel export using the existing download API.
 - [ ] Decide and implement V1-equivalent visible/online Leaderboard polling or explicitly approve manual refresh as an intentional difference.
 - [ ] Add explicit localized confirmation before Event Control and Final Challenge configuration mutations; keep Backend validation and post-open Final rejection authoritative.
-- [ ] Re-run the parity matrix and Production/physical-device smoke before any primary-route switch. V1 removal, redirect, deploy, commit, and push remain out of scope.
+- [ ] Re-run the parity matrix and Production/physical-device smoke. The user separately approved a rollback-safe primary-route switch on 2026-08-20 despite these known gaps; V1 removal, deploy, commit, and push remain out of scope.
 
 ## Admin V2 Phase 3 — Teams List completed 2026-08-19
 
@@ -102,13 +138,15 @@
 - [x] Verify the Vietnamese face and computed font on Chromium and WebKit at three viewports.
 - [ ] Confirm the corrected rendering on physical Safari macOS and iPhone Safari.
 
-## 2026-08-18 Admin Event close-time recommendation
+## 2026-08-18 Admin Event close-time recommendation (superseded 2026-08-20)
 
 - [x] Calculate the recommended Station start QR close time as Final minus 5 minutes.
 - [x] Display the `HH:mm` recommendation with a copy action in the existing warning.
 - [x] Preserve non-blocking saves for a different close time.
 - [x] Cover calculation, invalid input, optional seconds, and match detection.
 - [x] Pass Frontend Vitest `85/85`, i18n parity `455`, lint, and build/bundle.
+- [x] Superseded for Admin V2 Event Control: the five-minute recommendation and
+  timing-gap advisory were removed by the 2026-08-20 Business Rule change.
 
 ## 2026-08-18 Team V2 Settings opacity and Zalo support
 

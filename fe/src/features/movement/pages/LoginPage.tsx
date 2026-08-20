@@ -36,6 +36,7 @@ import {
 } from "../qrDetect";
 import {RunningPersonIcon} from "../components/RunningPersonIcon";
 import {LanguageSwitch} from "../components/LanguageSwitch";
+import {getRoleHomePath} from "../routing/adminRoutePaths";
 import type {QrFrameDetector} from "../qrDetect";
 
 type LoginFormValues = {
@@ -235,11 +236,7 @@ export function LoginPage() {
         expiresAt: userResponse.expiresAt,
       });
       message.success(t("auth.loginSuccess"));
-      navigate(
-        mapBackendRole(userResponse.user.role) === "admin" ?
-          "/teams"
-        : "/team/v2",
-      );
+      navigate(getRoleHomePath(mapBackendRole(userResponse.user.role)));
     } catch (error) {
       message.error(t(getSafeApiErrorTranslationKey(
         error,
@@ -392,7 +389,7 @@ export function LoginPage() {
 
   useEffect(() => {
     if (session && !isSubmitting) {
-      navigate(session.role === "user" ? "/team/v2" : "/teams", {
+      navigate(getRoleHomePath(session.role), {
         replace: true,
       });
     }

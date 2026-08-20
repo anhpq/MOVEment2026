@@ -9,7 +9,7 @@ import {
 import {Alert, App as AntdApp, Button, Empty, Flex, Form, Input, InputNumber, Slider, Spin, Switch, Typography} from "antd";
 import type {KonvaEventObject} from "konva/lib/Node";
 import Konva from "konva";
-import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties} from "react";
+import {memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type Ref} from "react";
 import {useTranslation} from "react-i18next";
 import {Arc, Circle, Ellipse, Group, Image as KonvaImage, Layer, Path, Rect, Stage, Text} from "react-konva";
 import {useNavigate} from "react-router-dom";
@@ -41,6 +41,11 @@ import {
   createLatestFrameScheduler,
   type LatestFrameScheduler,
 } from "./teamV2FrameScheduler";
+import {
+  applyTeamV2MarkerAnimationFrame,
+  getTeamV2CanvasPixelRatio,
+  resetTeamV2MarkerAnimation,
+} from "./teamV2MarkerAnimation";
 import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
 import {
   clampTeamV2MapScale as clampScale,
@@ -238,7 +243,7 @@ function getMarkerColors(marker: MarkerViewModel, hudAccent: string) {
   };
 }
 
-function StationMarker({
+const StationMarker = memo(function StationMarker({
   marker,
   hudAccent,
   size,
@@ -246,7 +251,7 @@ function StationMarker({
   y,
   pointsUnit,
   isInteracting,
-  onSelect,
+  animationRef,
 }: {
   marker: MarkerViewModel;
   hudAccent: string;
@@ -255,9 +260,9 @@ function StationMarker({
   y: number;
   pointsUnit: string;
   isInteracting: boolean;
-  onSelect: () => void;
+  animationRef?: Ref<Konva.Group>;
 }) {
-  const activeMarkerRef = useRef<Konva.Group>(null);
+  const cachedVisualRef = useRef<Konva.Group>(null);
   const colors = getMarkerColors(marker, hudAccent);
   const pinWidth = size;
   const pinHeight = size * 1.35;
@@ -265,63 +270,46 @@ function StationMarker({
   const pinScaleX = pinWidth / 58;
   const pinScaleY = pinHeight / 84;
   const pinBottomOffset = -54 * pinScaleY;
-  const hitRadius = Math.max(22, size * 0.55);
   const lockRadius = Math.max(5, size * 0.16);
   const points = getStationReferencePointsDisplay({
     maxPoints: marker.teamStation?.maxPoints ?? marker.station.maxPoints,
   });
 
-  useEffect(() => {
-    const node = activeMarkerRef.current;
-    if (!node || !marker.isActive || isInteracting || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  useLayoutEffect(() => {
+    const node = cachedVisualRef.current;
+    if (!node) {
       return;
     }
-    let frameId = 0;
-    const animate = (time: number) => {
-      const beat = Math.max(0, Math.sin((time / 1450) * Math.PI * 4));
-      const scale = 1 + beat * 0.08;
-      node.scale({x: scale, y: scale});
-      node.opacity(0.84 + beat * 0.16);
-      node.getLayer()?.batchDraw();
-      frameId = requestAnimationFrame(animate);
-    };
-    frameId = requestAnimationFrame(animate);
+    node.clearCache();
+    node.cache({
+      pixelRatio: getTeamV2CanvasPixelRatio(globalThis.devicePixelRatio || 1),
+    });
+    node.getLayer()?.batchDraw();
     return () => {
-      cancelAnimationFrame(frameId);
-      node.scale({x: 1, y: 1});
-      node.opacity(1);
+      node.clearCache();
     };
-  }, [isInteracting, marker.isActive]);
+  }, [
+    hudAccent,
+    isInteracting,
+    marker.code,
+    marker.isActive,
+    marker.isCompleted,
+    marker.isLocked,
+    marker.isSelected,
+    marker.station.maxPoints,
+    marker.teamStation?.maxPoints,
+    pointsUnit,
+    size,
+  ]);
 
   return (
     <Group
       x={x}
       y={y}
       opacity={marker.opacity}
-      onClick={(event) => {
-        event.cancelBubble = true;
-        onSelect();
-      }}
-      onTap={(event) => {
-        event.cancelBubble = true;
-        onSelect();
-      }}
-      onMouseDown={(event) => {
-        event.cancelBubble = true;
-      }}
-      onTouchStart={(event) => {
-        event.cancelBubble = true;
-      }}
-      onMouseEnter={(event) => {
-        const stage = event.target.getStage();
-        if (stage) stage.container().style.cursor = "pointer";
-      }}
-      onMouseLeave={(event) => {
-        const stage = event.target.getStage();
-        if (stage) stage.container().style.cursor = "";
-      }}>
-      <Circle y={-hitRadius} radius={hitRadius} fill="rgba(255,255,255,0.01)" />
-      <Group ref={activeMarkerRef} listening={false}>
+      listening={false}>
+      <Group ref={animationRef} listening={false}>
+      <Group ref={cachedVisualRef} listening={false}>
       {marker.isActive && (
         <Group listening={false}>
           <Circle
@@ -501,24 +489,73 @@ function StationMarker({
         />
       </Group>
       </Group>
+      </Group>
     </Group>
   );
-}
+});
 
-function GatheringPointMarker({
+const MarkerHitArea = memo(function MarkerHitArea({
+  markerId,
+  size,
+  x,
+  y,
+  onSelect,
+}: {
+  markerId: string;
+  size: number;
+  x: number;
+  y: number;
+  onSelect: (markerId: string) => void;
+}) {
+  const hitRadius = Math.max(22, size * 0.55);
+  return (
+    <Circle
+      x={x}
+      y={y - hitRadius}
+      radius={hitRadius}
+      fill="rgba(255,255,255,0.01)"
+      onClick={(event) => {
+        event.cancelBubble = true;
+        onSelect(markerId);
+      }}
+      onTap={(event) => {
+        event.cancelBubble = true;
+        onSelect(markerId);
+      }}
+      onMouseDown={(event) => {
+        event.cancelBubble = true;
+      }}
+      onTouchStart={(event) => {
+        event.cancelBubble = true;
+      }}
+      onMouseEnter={(event) => {
+        const stage = event.target.getStage();
+        if (stage) stage.container().style.cursor = "pointer";
+      }}
+      onMouseLeave={(event) => {
+        const stage = event.target.getStage();
+        if (stage) stage.container().style.cursor = "";
+      }}
+    />
+  );
+});
+
+const GatheringPointMarker = memo(function GatheringPointMarker({
   x,
   y,
   size,
   label,
   isInteracting,
+  animationRef,
 }: {
   x: number;
   y: number;
   size: number;
   label: string;
   isInteracting: boolean;
+  animationRef?: Ref<Konva.Group>;
 }) {
-  const markerRef = useRef<Konva.Group>(null);
+  const cachedVisualRef = useRef<Konva.Group>(null);
   const pinWidth = size * 1.08;
   const pinHeight = size * 1.42;
   const markerCenterY = -pinHeight * 0.57;
@@ -527,33 +564,25 @@ function GatheringPointMarker({
   const pinBottomOffset = -54 * pinScaleY;
   const labelWidth = Math.max(104, Math.min(154, 52 + Array.from(label).length * 5.4));
 
-  useEffect(() => {
-    const node = markerRef.current;
-    if (!node || isInteracting || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  useLayoutEffect(() => {
+    const node = cachedVisualRef.current;
+    if (!node) {
       return;
     }
-    let frameId = 0;
-    const animate = (time: number) => {
-      const firstBeat = Math.max(0, Math.sin((time / 1500) * Math.PI * 4));
-      const secondBeat = Math.max(0, Math.sin(((time + 210) / 1500) * Math.PI * 4));
-      const beat = Math.max(firstBeat, secondBeat * 0.72);
-      const scale = 1 + beat * 0.09;
-      node.scale({x: scale, y: scale});
-      node.opacity(0.88 + beat * 0.12);
-      node.getLayer()?.batchDraw();
-      frameId = requestAnimationFrame(animate);
-    };
-    frameId = requestAnimationFrame(animate);
+    node.clearCache();
+    node.cache({
+      pixelRatio: getTeamV2CanvasPixelRatio(globalThis.devicePixelRatio || 1),
+    });
+    node.getLayer()?.batchDraw();
     return () => {
-      cancelAnimationFrame(frameId);
-      node.scale({x: 1, y: 1});
-      node.opacity(1);
+      node.clearCache();
     };
-  }, [isInteracting]);
+  }, [isInteracting, label, size]);
 
   return (
     <Group x={x} y={y} listening={false}>
-      <Group ref={markerRef} listening={false}>
+      <Group ref={animationRef} listening={false}>
+      <Group ref={cachedVisualRef} listening={false}>
         <Circle
           y={markerCenterY}
           radius={size * 1.05}
@@ -630,9 +659,10 @@ function GatheringPointMarker({
           />
         </Group>
       </Group>
+      </Group>
     </Group>
   );
-}
+});
 
 function DemoHudHeader({score, hideScore, onSettings}: {score: number; hideScore: boolean; onSettings: () => void}) {
   const {t} = useTranslation();
@@ -955,6 +985,12 @@ export function TeamGameplayV2Page() {
   const loadedMapWidthRef = useRef(0);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<Konva.Stage | null>(null);
+  const backgroundLayerRef = useRef<Konva.Layer | null>(null);
+  const staticMarkerLayerRef = useRef<Konva.Layer | null>(null);
+  const activeMarkerLayerRef = useRef<Konva.Layer | null>(null);
+  const interactionLayerRef = useRef<Konva.Layer | null>(null);
+  const activeMarkerAnimationRef = useRef<Konva.Group | null>(null);
+  const gatheringPointAnimationRef = useRef<Konva.Group | null>(null);
   const liveMapTransformRef = useRef<MapTransform>(mapTransform);
   const isSubmittingQrRef = useRef(false);
   const pinchRef = useRef<{distance: number; scale: number} | null>(null);
@@ -1079,23 +1115,116 @@ export function TeamGameplayV2Page() {
     };
     return getStationLabelLayouts([marker], viewportSize, mapTransform).get(marker.station.id) ?? null;
   }, [mapTransform, showGatheringPoint, viewportSize]);
+  const visibleMarkers = useMemo(
+    () => markerViewModels.flatMap((marker) => {
+      const layout = markerScreenLayouts.get(marker.station.id);
+      return layout?.isInViewport ? [{marker, layout}] : [];
+    }),
+    [markerScreenLayouts, markerViewModels],
+  );
+  const staticVisibleMarkers = useMemo(
+    () => visibleMarkers.filter(({marker}) => !marker.isActive),
+    [visibleMarkers],
+  );
+  const activeVisibleMarkers = useMemo(
+    () => visibleMarkers.filter(({marker}) => marker.isActive),
+    [visibleMarkers],
+  );
+  const activeAnimatedMarkerId = activeVisibleMarkers[0]?.marker.station.id ?? null;
+  const isGatheringPointVisible = Boolean(gatheringPointLayout?.isInViewport);
+  const selectMarker = useCallback((stationId: string) => {
+    setSelectedStationId(stationId);
+    setIsStationDetailOpen(true);
+  }, []);
+
+  useEffect(() => {
+    const layer = activeMarkerLayerRef.current;
+    const nodes = {
+      active: activeMarkerAnimationRef.current,
+      gathering: gatheringPointAnimationRef.current,
+    };
+    if (
+      !layer ||
+      isMapInteracting ||
+      (!nodes.active && !nodes.gathering) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      resetTeamV2MarkerAnimation(nodes);
+      layer?.batchDraw();
+      return;
+    }
+
+    const animation = new Konva.Animation((frame) => {
+      applyTeamV2MarkerAnimationFrame(frame?.time ?? 0, nodes);
+    }, layer);
+    const syncVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        animation.stop();
+        resetTeamV2MarkerAnimation(nodes);
+        layer.batchDraw();
+        return;
+      }
+      animation.start();
+    };
+
+    document.addEventListener("visibilitychange", syncVisibility);
+    syncVisibility();
+    return () => {
+      document.removeEventListener("visibilitychange", syncVisibility);
+      animation.stop();
+      resetTeamV2MarkerAnimation(nodes);
+      layer.batchDraw();
+    };
+  }, [
+    activeAnimatedMarkerId,
+    isMapInteracting,
+    isGatheringPointVisible,
+  ]);
+
+  useLayoutEffect(() => {
+    if (!viewportSize.width || !viewportSize.height) {
+      return;
+    }
+    const visualPixelRatio = getTeamV2CanvasPixelRatio(globalThis.devicePixelRatio || 1);
+    for (const layer of [
+      backgroundLayerRef.current,
+      staticMarkerLayerRef.current,
+      activeMarkerLayerRef.current,
+    ]) {
+      layer?.getCanvas().setPixelRatio(visualPixelRatio);
+    }
+    interactionLayerRef.current?.getCanvas().setPixelRatio(1);
+    interactionLayerRef.current?.getHitCanvas().setPixelRatio(1);
+    stageRef.current?.batchDraw();
+  }, [viewportSize]);
 
   useLayoutEffect(() => {
     const element = mapViewportRef.current;
     if (!element) {
       return;
     }
+    const scheduler = createLatestFrameScheduler<ViewportSize>({
+      requestFrame: (callback) => requestAnimationFrame(callback),
+      cancelFrame: (frameId) => cancelAnimationFrame(frameId),
+      commit: (size) => {
+        setViewportSize((current) =>
+          current.width === size.width && current.height === size.height ? current : size,
+        );
+      },
+    });
     const updateSize = () => {
-      const width = element.clientWidth;
-      const height = element.clientHeight;
-      setViewportSize((current) =>
-        current.width === width && current.height === height ? current : {width, height},
-      );
+      scheduler.schedule({
+        width: Math.round(element.clientWidth),
+        height: Math.round(element.clientHeight),
+      });
     };
     updateSize();
     const observer = new ResizeObserver(updateSize);
     observer.observe(element);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      scheduler.cancel();
+    };
   }, []);
 
   useLayoutEffect(() => {
@@ -1465,11 +1594,12 @@ export function TeamGameplayV2Page() {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}>
-            <Layer>
+            <Layer ref={backgroundLayerRef} listening={false}>
               <Rect
                 width={MAP_WORLD_WIDTH}
                 height={MAP_WORLD_HEIGHT}
                 fill="rgba(0, 0, 0, 0.01)"
+                listening={false}
               />
               {mapImage && (
                 <KonvaImage
@@ -1481,29 +1611,45 @@ export function TeamGameplayV2Page() {
               )}
             </Layer>
             <Layer
+              ref={staticMarkerLayerRef}
+              listening={false}
               x={-mapTransform.x / mapTransform.scale}
               y={-mapTransform.y / mapTransform.scale}
               scaleX={1 / mapTransform.scale}
               scaleY={1 / mapTransform.scale}>
-              {[...markerViewModels].sort((a, b) => Number(a.isActive) - Number(b.isActive)).map((marker) => {
-                const layout = markerScreenLayouts.get(marker.station.id);
-                return layout?.isInViewport ? (
-                  <StationMarker
-                    key={`marker-${marker.station.id}`}
-                    marker={marker}
-                    hudAccent={V2_HUD_ACCENT}
-                    size={layout.markerSize}
-                    x={layout.anchorX}
-                    y={layout.anchorY}
-                    pointsUnit={t("teamV2.pointsUnit")}
-                    isInteracting={isMapInteracting}
-                    onSelect={() => {
-                      setSelectedStationId(marker.station.id);
-                      setIsStationDetailOpen(true);
-                    }}
-                  />
-                ) : null;
-              })}
+              {staticVisibleMarkers.map(({marker, layout}) => (
+                <StationMarker
+                  key={`marker-${marker.station.id}`}
+                  marker={marker}
+                  hudAccent={V2_HUD_ACCENT}
+                  size={layout.markerSize}
+                  x={layout.anchorX}
+                  y={layout.anchorY}
+                  pointsUnit={t("teamV2.pointsUnit")}
+                  isInteracting={isMapInteracting}
+                />
+              ))}
+            </Layer>
+            <Layer
+              ref={activeMarkerLayerRef}
+              listening={false}
+              x={-mapTransform.x / mapTransform.scale}
+              y={-mapTransform.y / mapTransform.scale}
+              scaleX={1 / mapTransform.scale}
+              scaleY={1 / mapTransform.scale}>
+              {activeVisibleMarkers.map(({marker, layout}, index) => (
+                <StationMarker
+                  key={`marker-${marker.station.id}`}
+                  marker={marker}
+                  hudAccent={V2_HUD_ACCENT}
+                  size={layout.markerSize}
+                  x={layout.anchorX}
+                  y={layout.anchorY}
+                  pointsUnit={t("teamV2.pointsUnit")}
+                  isInteracting={isMapInteracting}
+                  animationRef={index === 0 ? activeMarkerAnimationRef : undefined}
+                />
+              ))}
               {gatheringPointLayout?.isInViewport && (
                 <GatheringPointMarker
                   x={gatheringPointLayout.anchorX}
@@ -1511,8 +1657,26 @@ export function TeamGameplayV2Page() {
                   size={gatheringPointLayout.markerSize}
                   label={t("teamV2.gatheringPoint")}
                   isInteracting={isMapInteracting}
+                  animationRef={gatheringPointAnimationRef}
                 />
               )}
+            </Layer>
+            <Layer
+              ref={interactionLayerRef}
+              x={-mapTransform.x / mapTransform.scale}
+              y={-mapTransform.y / mapTransform.scale}
+              scaleX={1 / mapTransform.scale}
+              scaleY={1 / mapTransform.scale}>
+              {visibleMarkers.map(({marker, layout}) => (
+                <MarkerHitArea
+                  key={`marker-hit-${marker.station.id}`}
+                  markerId={marker.station.id}
+                  size={layout.markerSize}
+                  x={layout.anchorX}
+                  y={layout.anchorY}
+                  onSelect={selectMarker}
+                />
+              ))}
             </Layer>
           </Stage>
         )}

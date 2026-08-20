@@ -6,6 +6,7 @@ export type AdminV2FinalConfig = Readonly<{
   maxWinners: number;
   pointsByRank: readonly number[];
   isActive: boolean;
+  currentKeyword: string;
   createdAt?: string;
   updatedAt?: string;
 }>;
@@ -34,14 +35,14 @@ export function parseAdminV2FinalConfig(value: unknown): AdminV2FinalConfig | nu
   if (!value || typeof value !== "object") return null;
   const config = value as Record<string, unknown>;
   const id = number(config.id);
-  if (typeof config.title !== "string" || typeof config.clueText !== "string" || typeof config.startsAt !== "string") return null;
+  if (typeof config.title !== "string" || typeof config.clueText !== "string" || typeof config.startsAt !== "string" || typeof config.currentKeyword !== "string") return null;
   const title = config.title;
   const clueText = config.clueText;
   const startsAt = config.startsAt;
   const maxWinners = number(config.maxWinners);
   const pointsByRank = Array.isArray(config.pointsByRank) ? config.pointsByRank.filter((points): points is number => typeof points === "number" && Number.isFinite(points)) : [];
   if (id === null || !startsAt || maxWinners === null || typeof config.isActive !== "boolean") return null;
-  return {id, title, clueText, startsAt, maxWinners, pointsByRank, isActive: config.isActive, createdAt: string(config.createdAt) || undefined, updatedAt: string(config.updatedAt) || undefined};
+  return {id, title, clueText, startsAt, maxWinners, pointsByRank, isActive: config.isActive, currentKeyword: config.currentKeyword, createdAt: string(config.createdAt) || undefined, updatedAt: string(config.updatedAt) || undefined};
 }
 
 function parseSubmission(value: unknown): AdminV2FinalSubmission | null {
