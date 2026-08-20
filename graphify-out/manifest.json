@@ -440,18 +440,18 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1787210118.08894,
-    "ast_hash": "83dc1bb5b8604f66c9c3bec32e2bf820",
+    "mtime": 1787217515.2335012,
+    "ast_hash": "c7c9e814b9ce9e83051b3c346a1a595c",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1787209653.0444672,
-    "ast_hash": "dadf09df983b2398afcff2f62f8419cb",
+    "mtime": 1787215565.062582,
+    "ast_hash": "28d1e4972632b19c99282c7a66d537d1",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
-    "mtime": 1787208838.5039735,
-    "ast_hash": "ec3e17f1471a3381daddb19fceea78bc",
+    "mtime": 1787217512.470189,
+    "ast_hash": "f64140bafc2825fd0583e0856f009099",
     "semantic_hash": ""
   },
   "docs/prompts/00_WORKFLOW.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1787210116.614687,
-    "ast_hash": "89209e313ee42f1cea405197c49addd9",
+    "mtime": 1787217513.8570316,
+    "ast_hash": "21a8807a153aba91f47520faf474aa5c",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/i18n.ts": {
-    "mtime": 1787195342.8706748,
-    "ast_hash": "cc3c2761c27ae62733c73f7414a2f6f6",
+    "mtime": 1787216192.5701463,
+    "ast_hash": "b81b35ac67080e92e65379259ef494ae",
     "semantic_hash": ""
   },
   "docs/analysis/EVENT_TIMING_AND_FINAL_ANALYSIS.md": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/STATION_MAP_ANALYSIS.md": {
-    "mtime": 1787208838.5049772,
-    "ast_hash": "f7a74de933271579f3459b6a7ecd81c8",
+    "mtime": 1787217511.140886,
+    "ast_hash": "9b9c4608ff73bb537ec502216782fa2a",
     "semantic_hash": ""
   },
   "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md": {
@@ -1030,13 +1030,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/TeamGameplayV2Page.tsx": {
-    "mtime": 1787208838.506982,
-    "ast_hash": "b280fd64a9531e4c1f6cec510aa8c2a7",
+    "mtime": 1787216229.996907,
+    "ast_hash": "6b0ef7ed8e319f98c7be87d7b35e0582",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_GAMEPLAY_V2_ANALYSIS.md": {
-    "mtime": 1787208838.5049772,
-    "ast_hash": "25bdc957c77819651e90d5311b9fed16",
+    "mtime": 1787217509.8488286,
+    "ast_hash": "02b7c28cb92ce3b7129b3f0cdd7870fc",
     "semantic_hash": ""
   },
   "docs/prompts/01_PRODUCT_SCOPE_PROMPT.md": {
@@ -1190,13 +1190,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/TeamV2StationDetailOverlay.test.tsx": {
-    "mtime": 1787195342.8695529,
-    "ast_hash": "7e55d7af4424d3c04a8aae3dc9e9b508",
+    "mtime": 1787216196.6493979,
+    "ast_hash": "55770096e9e2abb423ffe47e40b7952c",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/TeamV2StationDetailOverlay.tsx": {
-    "mtime": 1787195342.8706748,
-    "ast_hash": "2db490463903404463f54d9339b90067",
+    "mtime": 1787216191.144945,
+    "ast_hash": "22bc6cd2625529649c301dbe00b9ed81",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/teamV2OverlayOpacity.test.ts": {
@@ -1340,13 +1340,13 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2MapTransform.test.ts": {
-    "mtime": 1787208838.506982,
-    "ast_hash": "fee2d3f1f5e70cbeea9a686d1ec48b32",
+    "mtime": 1787216188.411778,
+    "ast_hash": "438c22f703752f37bf552b5fe40719de",
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/teamV2MapTransform.ts": {
-    "mtime": 1787208838.5079832,
-    "ast_hash": "9612987bae930f4840bebdd8a10597ff",
+    "mtime": 1787216187.020059,
+    "ast_hash": "b8bfc41829a063a99fd8f89c2851e4e0",
     "semantic_hash": ""
   },
   "demo/README.md": {
@@ -1732,6 +1732,11 @@
   "fe/src/features/movement/pages/QrLoginPage.test.tsx": {
     "mtime": 1787210015.527304,
     "ast_hash": "9c813517bbac1781985b27859d504a67",
+    "semantic_hash": ""
+  },
+  "fe/src/features/movement/pages/TeamGameplayV2Page.footer.test.tsx": {
+    "mtime": 1787216198.0449736,
+    "ast_hash": "73297989d1b4c56517a6f8c0518b0ac0",
     "semantic_hash": ""
   }
 }

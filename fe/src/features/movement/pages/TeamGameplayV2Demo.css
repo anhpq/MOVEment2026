@@ -565,6 +565,20 @@
 .team-v2-detail-media,
 .team-v2-detail-actions { margin-inline: clamp(14px, 4vw, 48px); }
 
+.team-v2-score-entry .ant-form-item-label > label,
+.team-v2-score-entry .ant-input,
+.team-v2-score-entry .ant-input-number,
+.team-v2-score-entry .ant-input-number-input {
+  color: #eafcff;
+  caret-color: #eafcff;
+}
+
+.team-v2-score-entry .ant-input::placeholder,
+.team-v2-score-entry .ant-input-number-input::placeholder {
+  color: var(--team-v2-muted);
+  opacity: 1;
+}
+
 .team-v2-settings-body { width: auto; margin-block: 24px; }
 .team-v2-team-panel__identity,
 .team-v2-team-panel__progress,

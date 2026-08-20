@@ -1,5 +1,28 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-20 Focused UI and map interaction fixes
+
+- Business Rule change: footer trái giữ `BXH`/`RANK` khi không có Station đang
+  chơi; khi có Station `In Progress`, control này hiển thị timer `HH:MM:SS` và
+  mở đúng V2 Station Detail khi bấm.
+- Score entry chỉ override màu label/input/note trong `.team-v2-score-entry`
+  sang `#EAFCFF`; placeholder giữ muted token. Total Score bỏ đúng neon
+  `text-shadow`, không đổi màu, kích thước, vị trí hoặc box shadow.
+- Root cause map jump: mouse pan có thể snapshot React `mapTransform` cũ ngay
+  sau wheel update imperative. Mouse pan nay luôn bắt đầu từ live transform;
+  viewport resize hủy frame cũ và rebase live world center/zoom ratio.
+- V2 Detail action `COMPLETE` dùng QR icon và copy Check-out rõ nghĩa; callback,
+  scanner lifecycle, Backend QR authority và V1 không đổi.
+- Decision log: chỉ thay nội dung/click behavior footer trái; không sửa Header,
+  Footer geometry, Backend, API, schema, migration hoặc seed.
+- Verification PASS: focused Vitest `17/17`, full Frontend Vitest `187/187`
+  với một worker, i18n parity `461`, font guard, ESLint, production build/bundle
+  gate và authenticated Chrome 151 smoke tại desktop/portrait/landscape. Smoke
+  xác nhận wheel-then-pan giữ zoom, resize world-center drift dưới `0.07`, Total
+  Score `text-shadow: none`, score controls `rgb(234, 252, 255)` và timer vừa
+  footer. Full suite song song vẫn có một Admin V2 test ngoài scope timeout;
+  focused rerun của test đó PASS `10/10`.
+
 ## 2026-08-20 Map layout regression and persistent Gathering Point
 
 - Business Rule change: Điểm tập trung luôn xuất hiện mỗi khi Team V2 map được

@@ -4,6 +4,7 @@ import {
   getTeamV2BaseMapScale,
   getTeamV2DefaultMapTransform,
   getTeamV2WheelZoomFactor,
+  rebaseTeamV2MapTransform,
   scaleTeamV2MapAtPoint,
   scaleTeamV2MapFromGesture,
   TEAM_V2_MAX_MAP_ZOOM_RATIO,
@@ -69,6 +70,27 @@ describe("Team V2 map zoom", () => {
 
     expect((currentCenter.x - next.x) / next.scale).toBeCloseTo(initialWorldPoint.x);
     expect((currentCenter.y - next.y) / next.scale).toBeCloseTo(initialWorldPoint.y);
+  });
+
+  it("rebases the live transform across viewport changes without losing its world center or zoom ratio", () => {
+    const previousViewport = {width: 844, height: 390};
+    const nextViewport = {width: 390, height: 844};
+    const previousBaseScale = getTeamV2BaseMapScale(previousViewport);
+    const current = {
+      scale: previousBaseScale * 3.25,
+      x: -987,
+      y: -456,
+    };
+    const worldCenter = {
+      x: (previousViewport.width / 2 - current.x) / current.scale,
+      y: (previousViewport.height / 2 - current.y) / current.scale,
+    };
+
+    const next = rebaseTeamV2MapTransform(current, previousViewport, nextViewport);
+
+    expect(next.scale / getTeamV2BaseMapScale(nextViewport)).toBeCloseTo(3.25);
+    expect((nextViewport.width / 2 - next.x) / next.scale).toBeCloseTo(worldCenter.x);
+    expect((nextViewport.height / 2 - next.y) / next.scale).toBeCloseTo(worldCenter.y);
   });
 
   it("uses smooth trackpad deltas and stronger bounded mouse-wheel steps", () => {

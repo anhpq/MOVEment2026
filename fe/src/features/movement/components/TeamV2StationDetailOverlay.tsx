@@ -1,5 +1,4 @@
 import {
-  CheckCircleOutlined,
   CloseOutlined,
   FlagOutlined,
   PlayCircleFilled,
@@ -153,10 +152,10 @@ export function TeamV2StationDetailOverlay({
               <Button
                 type="primary"
                 size="large"
-                icon={<CheckCircleOutlined />}
-                aria-label={t("stationDetail.completedButton")}
+                icon={<QrcodeOutlined />}
+                aria-label={t("teamV2.scanToComplete")}
                 onClick={() => onRequestScan("COMPLETE")}>
-                {t("stationDetail.completedButton")}
+                {t("teamV2.scanToComplete")}
               </Button>
               <Button
                 danger

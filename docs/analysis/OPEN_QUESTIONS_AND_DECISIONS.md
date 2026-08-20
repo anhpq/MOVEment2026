@@ -20,6 +20,12 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-20: Footer trái của Team Gameplay V2 hiển thị `BXH`/`RANK` và mở
+  Leaderboard khi Team không chơi Station. Khi có Station `In Progress`, cùng
+  control này phải thay bằng thời gian chơi `HH:MM:SS`; bấm vào mở V2 Station
+  Detail của đúng Station đang chơi. Geometry Footer, Leaderboard Backend,
+  Station lifecycle, QR Check-out và các màn hình V1 không đổi.
+
 - 2026-08-20: Final phase toast của Team Gameplay V2 phải có action Close để
   Team tự dismiss ngay; Final banner/countdown persistent không đổi.
 

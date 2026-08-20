@@ -46,6 +46,26 @@ export function getTeamV2DefaultMapTransform(
   };
 }
 
+export function rebaseTeamV2MapTransform(
+  current: TeamV2MapTransform,
+  previousViewport: TeamV2ViewportSize,
+  nextViewport: TeamV2ViewportSize,
+): TeamV2MapTransform {
+  const previousBaseScale = getTeamV2BaseMapScale(previousViewport);
+  const nextBaseScale = getTeamV2BaseMapScale(nextViewport);
+  const zoomRatio = current.scale / previousBaseScale;
+  const worldCenter = {
+    x: (previousViewport.width / 2 - current.x) / current.scale,
+    y: (previousViewport.height / 2 - current.y) / current.scale,
+  };
+  const scale = clampTeamV2MapScale(nextBaseScale * zoomRatio, nextViewport);
+  return {
+    scale,
+    x: nextViewport.width / 2 - worldCenter.x * scale,
+    y: nextViewport.height / 2 - worldCenter.y * scale,
+  };
+}
+
 export function scaleTeamV2MapAtPoint(
   current: TeamV2MapTransform,
   requestedScale: number,

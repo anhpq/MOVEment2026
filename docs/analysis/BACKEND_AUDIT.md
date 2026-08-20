@@ -1,3 +1,21 @@
+# 2026-08-20 Team V2 focused UI and map stability fixes
+
+- Frontend-only: corrected V2 score-entry foreground colors, removed the exact
+  Total Score neon text shadow, replaced active footer Leaderboard content with
+  a live Station timer/detail action, and renamed the V2 completion CTA to an
+  explicit QR Check-out action.
+- Fixed the map jump path by starting mouse pan from the live imperative
+  transform and rebasing that live transform across viewport changes after
+  cancelling queued frames. Header/Footer geometry, V1, Backend, API, schema,
+  migration, seed and QR lifecycle were not changed.
+- Verification PASS: focused Vitest `17/17`; full Frontend `187/187` with one
+  worker; i18n parity `461`; font guard; ESLint; production build/bundle gate;
+  authenticated Chrome 151 desktop/portrait/landscape computed-style and
+  wheel-pan-resize smoke. Two default-concurrency full runs each timed out the
+  same unrelated Admin V2 test at 5 seconds; its focused rerun passed `10/10`.
+- Browser smoke used response interception only to keep the already-started
+  local Final phase from taking over the map; no database record was changed.
+
 # 2026-08-20 QR login session replacement route fix
 
 - Removed the Frontend `/qr-login` guard that stopped a valid Team QR from

@@ -1,5 +1,17 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-20 Team V2 active footer and focused UI stability
+
+- The left Team V2 footer control opens Leaderboard as `BXH`/`RANK` when no
+  Station is active. During `In Progress`, it displays a live `HH:MM:SS` timer
+  and opens the active Station's V2 Detail.
+- V2 score entry uses readable `#EAFCFF` label/input/note text, while Total
+  Score no longer uses the retired green text shadow.
+- V2 completion copy explicitly requests a Check-out QR and keeps the existing
+  `COMPLETE` scanner intent. V1 and Backend QR behavior remain unchanged.
+- Wheel-to-pan and viewport resize use the latest imperative transform so stale
+  React state cannot recenter the map. Header/Footer geometry is unchanged.
+
 ## 2026-08-20 Team V2 map performance and framed layout
 
 - Team V2 map uses four Konva layers: non-listening background, cached

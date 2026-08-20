@@ -1,5 +1,23 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Team V2 focused UI and map stability fixes — 2026-08-20
+
+- [x] Make V2 score-entry label, numeric input and note readable without
+  changing other forms.
+- [x] Remove only the specified Total Score text shadow.
+- [x] Prevent immediate wheel-to-pan and viewport-resize paths from restoring a
+  stale map transform.
+- [x] Replace the left footer Leaderboard control with a live `HH:MM:SS` timer
+  and active Station Detail action only while a Station is `In Progress`.
+- [x] Change only the V2 completion CTA to explicit QR Check-out copy/icon while
+  preserving `COMPLETE`, scanner lifecycle and V1 behavior.
+- [x] Pass focused/full tests, i18n/font/lint/build/bundle checks and authenticated
+  Chrome desktop/portrait/landscape style plus wheel-pan-resize smoke.
+- [ ] Physical touch/pinch verification remains pending.
+- [ ] Existing `TeamGameplayV2Demo.css` still applies full-viewport map-under-HUD
+  presentation while the latest documented layout rule says Header/Footer are
+  outside Konva. Header/Footer reconciliation was explicitly out of scope here.
+
 ## QR login session replacement route fix — 2026-08-20
 
 - [x] Allow a valid Team QR to replace an existing local browser session.

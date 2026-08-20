@@ -107,7 +107,9 @@ describe("TeamV2StationDetailOverlay", () => {
     }, {onRequestScan, onCancel});
 
     expect(screen.getByLabelText(i18n.t("teamV2.elapsedTime"))).toBeInTheDocument();
-    await user.click(screen.getByRole("button", {name: i18n.t("stationDetail.completedButton")}));
+    const completeAction = screen.getByRole("button", {name: i18n.t("teamV2.scanToComplete")});
+    expect(completeAction.querySelector(".anticon-qrcode")).toBeInTheDocument();
+    await user.click(completeAction);
     await user.click(screen.getByRole("button", {name: i18n.t("stationDetail.cancelStation")}));
 
     expect(onRequestScan).toHaveBeenCalledWith("COMPLETE");

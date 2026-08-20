@@ -8,6 +8,20 @@
 | Runtime/Production Verification | Local automated build/cache/polling verification completed; Production pending |
 | Browser/Manual Verification | Authenticated local Chrome geometry/wheel smoke completed; physical touch/pinch pending |
 
+## 2026-08-20 Wheel-to-pan and viewport rebase follow-up
+
+- Mouse pan snapshots `liveMapTransformRef` so a drag started before the wheel
+  debounce commit cannot restore stale React scale/position.
+- Viewport changes cancel a queued transform frame and rebase the live world
+  center plus zoom ratio into the new viewport. Zoom clamps, focal-point math,
+  reset behavior, coordinates, marker layers and image selection remain intact.
+- Unit coverage verifies world-center/zoom-ratio preservation. Authenticated
+  Chrome 151 production-preview smoke verified immediate wheel-to-pan retains
+  zoom (`0.5` to `0.6356`) and movement, while portrait rebase drift remained
+  below `0.07` world unit.
+- Header/Footer selectors and geometry were not changed in this follow-up.
+  Physical touch/pinch remains pending.
+
 ## 2026-08-20 Team V2 layout regression follow-up
 
 - Total Score được đặt lại vào named area của Header grid, tránh implicit page
