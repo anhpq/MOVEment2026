@@ -1,5 +1,23 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Team V2 map performance — 2026-08-20
+
+- [x] Profile Stage/layers, marker animation, pan/touch/wheel, resize, DPR,
+  shadows, cache and React render boundaries before changing Source Code.
+- [x] Cache and memoize marker visuals; split background, static marker, active
+  marker and interaction layers; restrict listening to lightweight hit circles.
+- [x] Replace per-marker animation loops with one visibility-aware
+  `Konva.Animation` and clean up animation/listeners on pause/unmount.
+- [x] Keep real-time transform state in Konva, commit React state only after the
+  interaction, and coalesce ResizeObserver updates.
+- [x] Use Header/map/Footer grid rows and cap visual DPR at `2` / hit DPR at `1`.
+- [x] Pass focused map Vitest `22/22`, full Frontend Vitest `181/181`, TypeScript,
+  ESLint, i18n/font checks, production build/bundle gate and authenticated Chrome
+  mouse/wheel/synthetic-touch responsive smoke.
+- [ ] Verify sustained FPS, physical touch/pinch and Page Visibility behavior on
+  a modern real mobile device with an active marker; click a completed marker in
+  an authoritative runtime state. Local smoke covered a locked marker only.
+
 ## 2026-08-20 Station reference points and Ba Tiêu follow-up
 
 - [x] Run the new migration and seed twice against an isolated non-Production database, then run `db:verify`.

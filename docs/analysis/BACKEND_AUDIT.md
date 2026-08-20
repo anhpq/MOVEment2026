@@ -1,3 +1,31 @@
+# 2026-08-20 Team V2 map performance refactor
+
+- Root cause: up to two marker-owned animation loops redrew the full marker
+  Layer containing complex gradients/shadows and its hit graph; marker artwork
+  was not cached, ResizeObserver was not frame-coalesced, and high-DPI mobile
+  canvases rendered at device ratio `3`.
+- Refactored `/team/v2` into background/static-marker/active-marker/interaction
+  layers. Static/active visual layers do not listen; lightweight hit circles own
+  interactions. Marker visuals are cached and memoized, and exactly one
+  visibility-aware `Konva.Animation` updates all animated marker nodes.
+- Pan, touch, pinch and wheel retain direct Konva transforms with final-only React
+  commit. Responsive grid rows keep Header/Footer outside Konva. Visual canvas
+  ratio caps at `2`; interaction scene/hit ratio is `1`.
+- Same local Chrome CDP harness measured desktop drag TaskDuration
+  `0.950s -> 0.117s`, ScriptDuration `0.237s -> 0.049s`, frame probe
+  `62.7 -> 106.0 FPS`, and removed two baseline `52ms` long tasks in the final
+  comparison run. Synthetic touch TaskDuration fell about `62%` and script time
+  about `73%`. These are headless comparative figures, not physical-device FPS.
+- Verification PASS: focused map Vitest `22/22`, full Frontend Vitest `181/181`,
+  TypeScript, ESLint, i18n parity `460`, Team V2 font guard, production build and
+  bundle gate. Authenticated production-preview Chrome smoke passed mouse,
+  wheel, synthetic touch, portrait, landscape, locked-marker Detail, Legend and
+  Header/map/Footer separation. Physical mobile, live active-marker pause and
+  completed-marker click remain unverified because those states/devices were not
+  available locally.
+- No Backend, API, schema, migration, seed, Station coordinates, gameplay rule,
+  typography, palette, visual dimension or Production configuration changed.
+
 # 2026-08-20 Station reference points and Ba Tiêu
 
 - `maxPoints` is nullable reference data; score entry uses backend global `0..105` cap and Team maximum is fixed at `1785`.

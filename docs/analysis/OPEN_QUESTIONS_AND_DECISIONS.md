@@ -20,6 +20,12 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-20: Supersede riêng clause layout map-under-HUD ngày 2026-08-13.
+  Header và Footer của Team Gameplay V2 phải nằm ngoài vùng Konva, dành riêng
+  vùng map ở giữa và không được che nội dung map chính trong desktop, portrait
+  hoặc landscape. Visual design, kích thước, spacing, marker coordinates và
+  gameplay behavior hiện tại không đổi.
+
 - 2026-08-15: Team Gameplay V2 Settings không còn hiển thị nút Logout. Thay đổi
   này chỉ áp dụng cho overlay Settings của `/team/v2`; automatic session expiry,
   auth-failure cleanup, Team header ở các route khác và Admin header không đổi.

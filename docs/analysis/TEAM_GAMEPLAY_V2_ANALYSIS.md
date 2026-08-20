@@ -1,5 +1,42 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-20 Map performance decision log
+
+- Review concern: pan/zoom đã coalesce pointer events nhưng active Station và
+  Điểm tập trung vẫn sở hữu các `requestAnimationFrame` loop riêng, cùng redraw
+  một marker Layer chứa toàn bộ gradient/shadow visuals và hit graph.
+- Decision: giữ nguyên transform, coordinates, hit targets và visual output;
+  tách background/static-marker/active-marker/interaction layers, cache marker
+  artwork ở node nhỏ nhất phù hợp, và dùng đúng một Konva animation loop cho
+  mọi marker đang animation.
+- Lifecycle: animation dừng khi không có animated marker nhìn thấy, khi tab bị
+  hidden, trong map interaction và khi component unmount. Pan/pinch/wheel tiếp
+  tục update Konva trực tiếp, chỉ commit React state khi interaction kết thúc.
+- Layout authority: Header/Footer dành riêng không gian ngoài vùng Konva; rule
+  này supersede riêng clause map-under-HUD 2026-08-13 và giữ nguyên layout Source
+  Code đang chạy.
+- Effect on plan: không đổi UI/UX, typography, palette, marker positions, QR,
+  gameplay, API, Backend, schema, migration hoặc seed. Verification phải bao
+  phủ animation lifecycle, frame coalescing, typecheck/build và responsive app
+  smoke trong khả năng tooling cục bộ.
+- Implemented result: marker visuals được cache và memoize; static, active và hit
+  nodes tách layer; active Station/Điểm tập trung dùng một `Konva.Animation` với
+  Page Visibility cleanup; ResizeObserver và transform events dùng latest-frame
+  scheduling; visual DPR cap `2`, hit canvas DPR `1`.
+- Same Chrome CDP harness against baseline `HEAD` and the implementation measured
+  desktop drag `TaskDuration 0.950s -> 0.117s`, `ScriptDuration 0.237s -> 0.049s`
+  and frame probe `62.7 -> 106.0 FPS`; baseline had two `52ms` long tasks while
+  the final comparison run had none. Synthetic touch kept the same responsive
+  frame range while reducing TaskDuration about `62%` and ScriptDuration about
+  `73%`. Headless figures are comparative, not physical-device certification.
+- Verification PASS: focused map Vitest `22/22`, full Frontend Vitest `181/181`,
+  TypeScript, ESLint, i18n parity `460`, Team V2 font guard, production build and
+  bundle gate. Authenticated Chrome production-preview smoke passed mouse drag,
+  wheel/trackpad, synthetic touch (`1/72/1` events), portrait, landscape, locked
+  marker Detail, Legend open/close and non-overlapping Header/map/Footer rows.
+  Physical mobile touch, runtime active-marker visibility pause and completed
+  marker click were not available in the local authoritative state.
+
 ## 2026-08-20 Station reference points and score entry
 
 - Marker, Team overview list and V2 Station Detail use the shared reference display; `ST007` renders exactly `???` without fallback to `30`.

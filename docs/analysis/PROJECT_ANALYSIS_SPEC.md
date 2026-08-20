@@ -1,5 +1,23 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-20 Team V2 map performance and framed layout
+
+- Team V2 map uses four Konva layers: non-listening background, cached
+  non-listening static markers, non-listening animated markers, and lightweight
+  marker hit areas. Decorative nodes do not participate in hit testing.
+- Active Station and Điểm tập trung share one `Konva.Animation`; it pauses while
+  interacting, when no animated marker is visible, when the page is hidden, and
+  on unmount. Marker scale/opacity formulas and visual geometry are unchanged.
+- Mouse, touch, pinch and wheel transforms update the Konva Stage imperatively
+  through a latest-frame scheduler. React receives the final transform only at
+  interaction completion; ResizeObserver updates are also frame-coalesced.
+- Header, map and Footer use dedicated grid rows. Konva fills only the middle
+  `minmax(0, 1fr)` row in desktop, portrait and landscape.
+- Visual canvases cap effective pixel ratio at `2`; the transparent interaction
+  scene/hit canvas uses `1`, while marker artwork caches use the same bounded
+  sharp ratio. Coordinates, palette, typography, dimensions and gameplay remain
+  unchanged.
+
 ## 2026-08-18 Team V2 compact runtime and interaction update
 
 - Team V2 scanner owns two tabs: camera-first `Quét QR` and `Dán QR`; leaving

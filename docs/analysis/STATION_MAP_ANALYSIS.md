@@ -8,6 +8,21 @@
 | Runtime/Production Verification | Local automated build/cache/polling verification completed; Production pending |
 | Browser/Manual Verification | Pending verification |
 
+## 2026-08-20 Team V2 Konva performance refactor
+
+- Scope is `/team/v2` only; shared V1 `StationsMapPanel` rendering and behavior
+  are unchanged.
+- V2 separates background, cached static marker visuals, animated marker visuals
+  and interaction hit areas. Only hit circles listen for events.
+- Pan/pinch/wheel update Konva directly, with one final React transform commit.
+  Animated markers share one visibility-aware Konva loop instead of owning one
+  `requestAnimationFrame` loop each.
+- Responsive grid rows reserve Header and Footer outside the Konva middle row.
+  Authenticated Chrome smoke verified positive gaps in desktop, portrait and
+  short landscape; baseline `HEAD` showed both Header and Footer overlap.
+- Automated and headless browser verification passed. Physical-device touch and
+  a live active-marker animation remain pending.
+
 ## 2026-08-20 Station reference display
 
 - V1 and Team V2 markers use `Game.maxPoints` only as reference/display data.
