@@ -1,5 +1,35 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-20 Map layout regression and persistent Gathering Point
+
+- Business Rule change: Điểm tập trung luôn xuất hiện mỗi khi Team V2 map được
+  render; visibility không còn phụ thuộc Final phase. Marker đứng yên trước giờ
+  thông báo và chỉ pulse/heartbeat trong `NOTICE`/`STATIONS_CLOSED`. Final
+  takeover vẫn có thể thay thế toàn bộ map theo behavior hiện tại.
+- Root cause: performance refactor biến page thành CSS grid trong khi Total
+  Score vẫn là direct child mang `grid-area: score`, dù named area này chỉ tồn
+  tại trong Header grid. Browser vì vậy tạo implicit track, làm score lệch phải
+  và làm sai kích thước vùng map.
+- Layout fix: Total Score thuộc Header grid; map giữ riêng middle row và footer
+  reservation bám theo chiều cao HUD thực tế thay vì tăng tới `30vw`.
+- Performance boundaries không đổi: bốn Konva layers, cached/memoized marker,
+  một `Konva.Animation`, imperative transform/final React commit và DPR policy
+  vẫn được giữ nguyên.
+- Zoom regression fix: Stage transform không còn đồng thời bị React controlled
+  props cũ và scheduler imperative ghi đè. Pinch dùng một transform/focal-point
+  snapshot ổn định suốt gesture để tránh drift/jump khi zoom in/out và pan.
+- Final phase toast có accessible Close action và chỉ dismiss toast tương ứng;
+  Final banner/countdown và phase state không bị thay đổi.
+- Verification PASS: focused Team V2/map tests `31/31`, full Frontend Vitest
+  `183/183`, TypeScript, ESLint, i18n parity `460`, font guard và production
+  build/bundle gate. Authenticated Chrome production-preview smoke tại
+  `1440x900`, `390x844`, `844x390` đo score center delta `0px`, Header/map và
+  map/Footer overlap `0px`, wheel zoom in/out focal drift dưới `0.13` world
+  unit, closable toast dismiss thành công và không có browser error.
+- Physical touch/pinch chưa được verify. CDP synthetic pinch không phát sinh
+  transform trong local headless Chrome; stable pinch snapshot được cover bằng
+  focused unit test nhưng không được báo là browser pinch PASS.
+
 ## 2026-08-20 Map performance decision log
 
 - Review concern: pan/zoom đã coalesce pointer events nhưng active Station và

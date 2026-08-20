@@ -6,7 +6,11 @@ export const TEAM_V2_GATHERING_POINT = {
   mapY: 68.94,
 } as const;
 
-export function shouldShowTeamV2GatheringPoint(
+export function shouldShowTeamV2GatheringPoint() {
+  return true;
+}
+
+export function shouldAnimateTeamV2GatheringPoint(
   phase: PlayerFinalSummary["phase"] | null | undefined,
 ) {
   return phase === "NOTICE" || phase === "STATIONS_CLOSED";

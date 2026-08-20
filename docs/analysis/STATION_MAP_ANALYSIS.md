@@ -6,7 +6,25 @@
 | --- | --- |
 | Implementation | Completed |
 | Runtime/Production Verification | Local automated build/cache/polling verification completed; Production pending |
-| Browser/Manual Verification | Pending verification |
+| Browser/Manual Verification | Authenticated local Chrome geometry/wheel smoke completed; physical touch/pinch pending |
+
+## 2026-08-20 Team V2 layout regression follow-up
+
+- Total Score được đặt lại vào named area của Header grid, tránh implicit page
+  track từng đẩy score sang phải và làm sai geometry Header/map/Footer.
+- Middle Konva row tiếp tục nằm hoàn toàn giữa Header và Footer. Footer reserve
+  dùng HUD height thực tế, không scale theo viewport width.
+- Điểm tập trung luôn được đưa vào marker layout khi Team V2 map đang render,
+  không còn bị gate theo Final phase; animation chỉ active trong `NOTICE` và
+  `STATIONS_CLOSED`. Tọa độ, visual và hit behavior không đổi.
+- Stage transform chỉ có một imperative owner trong gesture; React state là
+  final committed transform. Pinch tính scale/pan từ snapshot đầu gesture để
+  loại transform drift và jump.
+- Konva performance architecture từ refactor trước được giữ nguyên.
+- Authenticated Chrome production-preview smoke tại desktop, portrait và short
+  landscape đo score center delta `0px`, cả hai overlap `0px`, wheel zoom in/out
+  giữ focal drift dưới `0.13` world unit và không có browser error. Physical
+  touch/pinch vẫn pending; CDP synthetic pinch không tạo transform.
 
 ## 2026-08-20 Team V2 Konva performance refactor
 

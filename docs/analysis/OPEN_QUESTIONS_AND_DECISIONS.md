@@ -20,6 +20,15 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-20: Final phase toast của Team Gameplay V2 phải có action Close để
+  Team tự dismiss ngay; Final banner/countdown persistent không đổi.
+
+- 2026-08-20: Marker Điểm tập trung của Team Gameplay V2 luôn hiển thị mỗi khi
+  map được render, không còn phụ thuộc phase `NOTICE` hoặc `STATIONS_CLOSED`.
+  Marker chỉ pulse/heartbeat trong `NOTICE` và `STATIONS_CLOSED`; trước thời
+  điểm thông báo marker đứng yên. Rule này supersede riêng visibility clause
+  ngày 2026-08-18; vị trí, tính không tương tác và Final takeover không đổi.
+
 - 2026-08-20: Supersede riêng clause layout map-under-HUD ngày 2026-08-13.
   Header và Footer của Team Gameplay V2 phải nằm ngoài vùng Konva, dành riêng
   vùng map ở giữa và không được che nội dung map chính trong desktop, portrait
@@ -573,8 +582,8 @@ Canonical Station ID, name, and order remain unchanged; do not add a `Bonus` lab
 | Hard-coded time | Không hard-code `11:30`, `11:45` hoặc giờ cố định trong Business Rule. |
 | Final opening | Final Challenge mở theo `finalStartsAt` hiện tại trong Admin Event Config. |
 | Event end time | `eventEndTime` là giờ đóng Station đối với Check-in mới và được cấu hình độc lập với `finalStartsAt`; Admin V2 Event Control không hiển thị khuyến nghị hoặc bắt buộc một khoảng cách giữa hai mốc. |
-| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown phải nằm dưới Total Score, hướng dẫn Team trở về Điểm tập trung và vẫn hiển thị tới giờ Final. |
-| Marker Điểm tập trung | Team V2 hiển thị marker thông báo neon hồng, không tương tác tại `mapX = 65.56`, `mapY = 68.94` từ phase `NOTICE`, giữ nguyên qua `STATIONS_CLOSED` và ẩn khi `FINAL_STARTED`; marker này không phải Station gameplay và không thay đổi quyền Check-in. |
+| Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown phải nằm dưới Total Score, hướng dẫn Team trở về Điểm tập trung và vẫn hiển thị tới giờ Final. Toast khi chuyển phase phải có action Close để Team dismiss ngay mà không tắt banner/countdown. |
+| Marker Điểm tập trung | Team V2 luôn hiển thị marker neon hồng, không tương tác tại `mapX = 65.56`, `mapY = 68.94` mỗi khi map được render, không phụ thuộc phase `NORMAL`, `NOTICE`, `STATIONS_CLOSED` hoặc `FINAL_STARTED`; marker đứng yên trong `NORMAL` và chỉ pulse/heartbeat khi vào `NOTICE` hoặc `STATIONS_CLOSED`. Nếu Final takeover thay thế map thì marker không có canvas để render. Marker này không phải Station gameplay và không thay đổi quyền Check-in. |
 | Polling sau khi Final mở | Sau khi Player state xác nhận phase `FINAL_STARTED`, Frontend dừng polling `/api/player/state` và `/api/player/stations/playing-counts`; các request Final phục vụ tải/submission vẫn hoạt động. |
 | Station mới sau end time | Team không được bắt đầu Station mới sau `eventEndTime`; đúng `finalStartsAt` Backend luôn hard-close Check-in. |
 | Station đang chơi | Team đã Check-in trước `eventEndTime` có thể Check-out đến `finalStartsAt`. Đúng giờ Final, attempt chưa Check-out bị SYSTEM hủy, không tính score hoặc play time. |

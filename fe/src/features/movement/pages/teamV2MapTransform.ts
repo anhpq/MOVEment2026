@@ -52,15 +52,25 @@ export function scaleTeamV2MapAtPoint(
   point: {x: number; y: number},
   viewport: TeamV2ViewportSize,
 ): TeamV2MapTransform {
+  return scaleTeamV2MapFromGesture(current, requestedScale, point, point, viewport);
+}
+
+export function scaleTeamV2MapFromGesture(
+  initial: TeamV2MapTransform,
+  requestedScale: number,
+  initialPoint: {x: number; y: number},
+  currentPoint: {x: number; y: number},
+  viewport: TeamV2ViewportSize,
+): TeamV2MapTransform {
   const scale = clampTeamV2MapScale(requestedScale, viewport);
   const worldPoint = {
-    x: (point.x - current.x) / current.scale,
-    y: (point.y - current.y) / current.scale,
+    x: (initialPoint.x - initial.x) / initial.scale,
+    y: (initialPoint.y - initial.y) / initial.scale,
   };
   return {
     scale,
-    x: point.x - worldPoint.x * scale,
-    y: point.y - worldPoint.y * scale,
+    x: currentPoint.x - worldPoint.x * scale,
+    y: currentPoint.y - worldPoint.y * scale,
   };
 }
 

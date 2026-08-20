@@ -1,5 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {
+  shouldAnimateTeamV2GatheringPoint,
   shouldShowTeamV2GatheringPoint,
   TEAM_V2_GATHERING_POINT,
 } from "./teamV2FinalNotice";
@@ -9,17 +10,21 @@ describe("Team V2 gathering point notice marker", () => {
     expect(TEAM_V2_GATHERING_POINT).toMatchObject({mapX: 65.56, mapY: 68.94});
   });
 
+  it("is always visible whenever the Team V2 map is rendered", () => {
+    expect(shouldShowTeamV2GatheringPoint()).toBe(true);
+  });
+
   it.each(["NOTICE", "STATIONS_CLOSED"] as const)(
-    "is visible during %s",
+    "animates during %s",
     (phase) => {
-      expect(shouldShowTeamV2GatheringPoint(phase)).toBe(true);
+      expect(shouldAnimateTeamV2GatheringPoint(phase)).toBe(true);
     },
   );
 
   it.each(["NORMAL", "FINAL_STARTED", null, undefined] as const)(
-    "is hidden during %s",
+    "stays static during %s",
     (phase) => {
-      expect(shouldShowTeamV2GatheringPoint(phase)).toBe(false);
+      expect(shouldAnimateTeamV2GatheringPoint(phase)).toBe(false);
     },
   );
 });

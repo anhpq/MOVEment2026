@@ -35,7 +35,7 @@
   --team-v2-muted: #9fd4d9;
   --team-v2-score: #44ff57;
   --team-v2-map-header-space: clamp(126px, 18dvh, 164px);
-  --team-v2-map-footer-space: clamp(124px, 30vw, 252px);
+  --team-v2-map-footer-space: calc(clamp(112px, 13.5dvh, 138px) + 12px + env(safe-area-inset-bottom, 0));
 }
 
 .team-v2-map-backdrop {
@@ -98,6 +98,33 @@
 .team-v2-final-notice strong { font-family: var(--team-v2-font-ui); font-size: clamp(14px, 2.5vw, 18px); }
 .team-v2-final-notice p { margin: 0; color: var(--team-v2-muted); font-size: clamp(12px, 2vw, 15px); line-height: 1.3; }
 .team-v2-final-notice span { color: var(--team-v2-score); font-weight: 700; }
+
+.team-v2-final-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-v2-final-toast-close {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+}
+
+.team-v2-final-toast-close:hover,
+.team-v2-final-toast-close:focus-visible {
+  background: rgba(0, 0, 0, 0.08);
+  outline: 2px solid var(--team-v2-focus-ring);
+  outline-offset: 1px;
+}
 
 @media (orientation: portrait) {
   .team-v2-final-notice { top: calc(9% + clamp(58px, 7%, 68px) + 12px); }
@@ -1119,9 +1146,9 @@
 
 /* Premium framed composition: header and footer stay outside the map canvas. */
 .team-v2-map-backdrop {
-  position: relative;
+  /* position: relative; */
   inset: auto;
-  grid-row: 2;
+  /* grid-row: 2; */
   min-width: 0;
   min-height: 0;
   overflow: hidden;
@@ -1284,6 +1311,7 @@
 @media (orientation: portrait) {
   .team-v2-page {
     --team-v2-map-header-space: clamp(116px, 16dvh, 146px);
+    --team-v2-map-footer-space: calc(125px + env(safe-area-inset-bottom, 0));
   }
 
   .team-v2-header {

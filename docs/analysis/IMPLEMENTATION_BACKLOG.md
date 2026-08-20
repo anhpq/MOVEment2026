@@ -1,5 +1,25 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Team V2 map regression and persistent Gathering Point — 2026-08-20
+
+- [x] Update the Business Rule so Gathering Point is always present whenever
+  the Team V2 map is rendered, but only animates in `NOTICE` and
+  `STATIONS_CLOSED`.
+- [x] Move Total Score into the Header named grid area and remove the implicit
+  page track that shifted score/map geometry.
+- [x] Size the reserved Footer row from the actual HUD height instead of
+  viewport width while keeping Header/Footer outside Konva.
+- [x] Remove competing controlled Stage transforms and derive every pinch frame
+  from a stable gesture snapshot to prevent zoom drift/jumps.
+- [x] Add an accessible Close action to the Final phase toast without hiding the
+  persistent Final banner/countdown.
+- [x] Pass focused Team V2/map tests `31/31`, full Frontend `183/183`,
+  TypeScript, ESLint, i18n/font checks, production build/bundle gate and
+  authenticated Chrome desktop/portrait/short-landscape geometry, wheel and
+  alert-Close smoke with `0px` Header/Footer overlap.
+- [ ] Verify pinch zoom on a physical touch device. The stable gesture snapshot
+  has focused unit coverage; local CDP synthetic pinch did not emit a transform.
+
 ## Team V2 map performance — 2026-08-20
 
 - [x] Profile Stage/layers, marker animation, pan/touch/wheel, resize, DPR,
