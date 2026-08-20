@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## QR login session replacement route fix — 2026-08-20
+
+- [x] Allow a valid Team QR to replace an existing local browser session.
+- [x] Preserve Backend one-active-session enforcement and session-replacement
+  rejection for the prior device.
+- [x] Pass Frontend regression test, Backend auth/JWT tests, Frontend lint, and
+  production build/bundle gate.
+- [ ] Physical two-device QR scan verification remains pending.
+
 ## Canonical Station tracking mode update — 2026-08-20
 
 - [x] Set the 16 canonical Stations other than `ST009` to `SCORE`, while

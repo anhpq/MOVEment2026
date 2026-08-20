@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "be/prisma/seed.ts": {
-    "mtime": 1787209249.4477963,
-    "ast_hash": "32f307d5b146d7618b9880e1b0e1ba3a",
+    "mtime": 1787209653.0410173,
+    "ast_hash": "3970b2cff18bf41e02fa7547b0101da9",
     "semantic_hash": ""
   },
   "be/src/app.module.ts": {
@@ -440,13 +440,13 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1787209437.14755,
-    "ast_hash": "c0ea850431e1bcf753aecafee6a1cca6",
+    "mtime": 1787210118.08894,
+    "ast_hash": "83dc1bb5b8604f66c9c3bec32e2bf820",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
-    "mtime": 1787209293.1603427,
-    "ast_hash": "b3f0af22f154ea1b4d37c926b1da0341",
+    "mtime": 1787209653.0444672,
+    "ast_hash": "dadf09df983b2398afcff2f62f8419cb",
     "semantic_hash": ""
   },
   "docs/analysis/PROJECT_ANALYSIS_SPEC.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1787209436.5794506,
-    "ast_hash": "5ec866ae05e14b5c3e2fcd6a44620df1",
+    "mtime": 1787210116.614687,
+    "ast_hash": "89209e313ee42f1cea405197c49addd9",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -640,8 +640,8 @@
     "semantic_hash": ""
   },
   "be/scripts/verify-seed.ts": {
-    "mtime": 1787209250.57552,
-    "ast_hash": "5133a8f6ba758af92f9d3524a51512d8",
+    "mtime": 1787209653.0410173,
+    "ast_hash": "635211b9076c94d5d851340f16425ae7",
     "semantic_hash": ""
   },
   "be/prisma/migrations/000004_qr_login_tokens/migration.sql": {
@@ -660,8 +660,8 @@
     "semantic_hash": ""
   },
   "fe/src/features/movement/pages/QrLoginPage.tsx": {
-    "mtime": 1785842633.858761,
-    "ast_hash": "b1cd2ee990e71316d59b272afe481670",
+    "mtime": 1787210014.102124,
+    "ast_hash": "72ccb99ac0f76a98733fb92354b40b1b",
     "semantic_hash": ""
   },
   "be/src/common/qr/qr-token.spec.ts": {
@@ -670,8 +670,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/QR_LOGIN.md": {
-    "mtime": 1785222492.527067,
-    "ast_hash": "3cb714048fb4f3396cf62bbd7ad68647",
+    "mtime": 1787210017.0415528,
+    "ast_hash": "c5a415f6fe3d31062e06b24157a11fe6",
     "semantic_hash": ""
   },
   "fe/src/features/movement/qrDetect.ts": {
@@ -695,8 +695,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/FEATURE_INDEX.md": {
-    "mtime": 1787209295.459642,
-    "ast_hash": "6e6d5cf5258889da866fce923b4af203",
+    "mtime": 1787209653.0434465,
+    "ast_hash": "7fb5204e72b80c0b5ce32da76a9735ca",
     "semantic_hash": ""
   },
   "docs/prompts/09_CODEX_MASTER_EXECUTION_PROMPT.md": {
@@ -865,13 +865,13 @@
     "semantic_hash": ""
   },
   "be/prisma/station-replacement.ts": {
-    "mtime": 1787209249.996929,
-    "ast_hash": "3c1995a5d2ae064bdfeffbb645dc412b",
+    "mtime": 1787209653.0410173,
+    "ast_hash": "23e9d26f9bd88331fcc11efc55d8b371",
     "semantic_hash": ""
   },
   "be/prisma/station-seed-data.ts": {
-    "mtime": 1787209248.898443,
-    "ast_hash": "3f446925a815e25c1ba55b259032a73b",
+    "mtime": 1787209653.0410173,
+    "ast_hash": "b7a1822d35673638a44654edaf2726da",
     "semantic_hash": ""
   },
   "be/scripts/sync-stations.ts": {
@@ -970,8 +970,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/GAMEPLAY_RESET_AND_STATION_SEED_ANALYSIS.md": {
-    "mtime": 1787209294.896707,
-    "ast_hash": "bf1b749d4d7907db9ab01cd32cf90726",
+    "mtime": 1787209653.0434465,
+    "ast_hash": "b1f99e3ae7f574e7650cfde2a4a196df",
     "semantic_hash": ""
   },
   "docs/analysis/STATION_MAP_ANALYSIS.md": {
@@ -980,8 +980,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/STATION_QR_AND_SCORING_ANALYSIS.md": {
-    "mtime": 1787209294.314202,
-    "ast_hash": "890645ed16ff14978ba07b869778bcd5",
+    "mtime": 1787209653.0444672,
+    "ast_hash": "34f64e47f0ae27f0684b9f93e7301475",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_QR_AND_PLAYER_NAVIGATION_ANALYSIS.md": {
@@ -1670,8 +1670,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md": {
-    "mtime": 1787209293.7322738,
-    "ast_hash": "af5655a2c38d1e2738bcf95d10450d4f",
+    "mtime": 1787209653.0454624,
+    "ast_hash": "48a7529f48b78ff56910e367e56f5875",
     "semantic_hash": ""
   },
   "docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md": {
@@ -1727,6 +1727,11 @@
   "graphify-out/memory/query_20260820_041153_set_station_check_in_close_to_11_30__final_challen.md": {
     "mtime": 1787201987.103598,
     "ast_hash": "0223426314edf169f8718bb4ac4f9971",
+    "semantic_hash": ""
+  },
+  "fe/src/features/movement/pages/QrLoginPage.test.tsx": {
+    "mtime": 1787210015.527304,
+    "ast_hash": "9c813517bbac1781985b27859d504a67",
     "semantic_hash": ""
   }
 }

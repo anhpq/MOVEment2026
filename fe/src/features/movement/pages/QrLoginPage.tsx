@@ -9,8 +9,7 @@ import {useMovementStore} from "../store";
 
 type QrLoginState =
   | {type: "loading"; message: string}
-  | {type: "error"; title: string; description: string; canRetry: boolean}
-  | {type: "conflict"};
+  | {type: "error"; title: string; description: string; canRetry: boolean};
 
 function extractQrToken(search: string) {
   return new URLSearchParams(search).get("token")?.trim() ?? "";
@@ -75,7 +74,6 @@ export function QrLoginPage() {
   const {t, i18n} = useTranslation();
   const login = useMovementStore((state) => state.login);
   const loadDatabase = useMovementStore((state) => state.loadDatabase);
-  const session = useMovementStore((state) => state.session);
   const initialToken = extractQrToken(location.search);
   const tokenRef = useRef(initialToken);
   const submittedRef = useRef(false);
@@ -106,12 +104,6 @@ export function QrLoginPage() {
     if (inFlightRef.current) {
       return;
     }
-    if (session) {
-      submittedRef.current = true;
-      setState({type: "conflict"});
-      return;
-    }
-
     submittedRef.current = true;
     inFlightRef.current = true;
     setState({type: "loading", message: t("qrLogin.loading")});
@@ -147,20 +139,6 @@ export function QrLoginPage() {
       void submitQrLogin();
     }
   });
-
-  if (state.type === "conflict") {
-    return (
-      <div className="login-screen">
-        <LanguageSwitch />
-        <Result
-          status="warning"
-          title={t("qrLogin.conflictTitle")}
-          subTitle={t("qrLogin.conflictDescription")}
-          extra={<Button onClick={() => navigate("/team/v2")}>{t("qrLogin.back")}</Button>}
-        />
-      </div>
-    );
-  }
 
   if (state.type === "loading") {
     return (

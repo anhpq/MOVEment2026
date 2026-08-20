@@ -1,3 +1,17 @@
+# 2026-08-20 QR login session replacement route fix
+
+- Removed the Frontend `/qr-login` guard that stopped a valid Team QR from
+  reaching Backend whenever the scanning browser already had a local session.
+  A successful scan now replaces that local session; Backend revokes the prior
+  active Team session, so another device is rejected at its next authenticated
+  request.
+- Added Frontend regression coverage for QR login with an existing local
+  session. Targeted Backend auth/JWT-guard coverage confirms the revoke and
+  `SESSION_REPLACED` enforcement.
+- Verification PASS: Frontend targeted Vitest (`1/1`), Backend auth/JWT Jest
+  (`18/18`), Frontend lint, and production build/bundle gate. No schema,
+  migration, seed, or Production deployment change was made.
+
 # 2026-08-20 Canonical Station tracking mode update
 
 - Updated canonical Station policy: `ST001`...`ST008` and `ST010`...`ST017`

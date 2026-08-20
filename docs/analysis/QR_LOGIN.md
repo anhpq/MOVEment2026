@@ -457,6 +457,10 @@ Khi Team QR Login thành công trên thiết bị mới:
 4. QR token vẫn active nếu chưa bị revoke hoặc rotate; session expiry không làm
    Team QR hết hạn theo thời gian.
 
+Public route `/qr-login` không được chặn QR login chỉ vì browser đang giữ một
+session local. QR hợp lệ phải luôn tới Backend để thay session local đó và
+revoke session đang active của Team trên thiết bị khác.
+
 Phân biệt:
 
 ```text
