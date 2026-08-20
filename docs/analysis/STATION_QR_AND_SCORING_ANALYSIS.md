@@ -101,6 +101,8 @@ tracking-mode scoring, max-score enforcement, and duplicate protection.
 - Backend resolves Station and purpose from the stored token, not visible payload.
 - TIME completes at checkout with score `10`; SCORE/BOTH wait for validated score
   input and prevent duplicate completion/award.
+- Canonical inventory uses `SCORE` for every Station except `ST009`, which remains
+  `TIME`; all 17 Stations retain their independent CHECK_IN/CHECK_OUT QR pair.
 
 ## Decisions and Stale Assumptions
 

@@ -298,5 +298,10 @@
   "296": "migration.sql",
   "297": "migration.sql",
   "298": "migration.sql",
-  "299": "migration.sql"
+  "299": "migration.sql",
+  "300": "AdminV2LeaderboardPage.test.tsx",
+  "301": "GenerateQrLoginTokenDto",
+  "302": "QrLoginPage.tsx",
+  "303": "getTeamV2OverlayStyle",
+  "304": "TeamV2QrScanner.test.tsx"
 }

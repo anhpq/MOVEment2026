@@ -21,6 +21,7 @@ import {
   CANONICAL_STATIONS,
   CANONICAL_STATION_IDS,
   CANONICAL_TOTAL_MAX_SCORE,
+  canonicalStationTrackingMode,
   canonicalStationSignature,
   canonicalStationSignatureInput,
   validateCanonicalStations,
@@ -129,7 +130,7 @@ async function main() {
                 descriptionEn: station.shortDescriptionEn,
                 mapX: station.mapX,
                 mapY: station.mapY,
-                trackingMode: station.id === 'ST009' ? 'TIME' : 'BOTH',
+                trackingMode: canonicalStationTrackingMode(station.id),
                 isActive: true,
                 sortOrder: station.sortOrder,
               },
@@ -165,7 +166,7 @@ async function main() {
             mapY: station.mapY,
             isActive: true,
             sortOrder: station.sortOrder,
-            trackingMode: station.id === 'ST009' ? 'TIME' : 'BOTH',
+            trackingMode: canonicalStationTrackingMode(station.id),
           },
           update: {
             name: station.name,
@@ -176,6 +177,7 @@ async function main() {
             mapY: station.mapY,
             isActive: true,
             sortOrder: station.sortOrder,
+            trackingMode: canonicalStationTrackingMode(station.id),
           },
         });
       }

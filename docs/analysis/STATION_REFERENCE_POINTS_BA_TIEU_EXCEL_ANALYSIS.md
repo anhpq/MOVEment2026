@@ -38,23 +38,23 @@ approved behavior changes existing Business Rules.
 
 | ID | Station | Reference points | Tracking note |
 | --- | --- | ---: | --- |
-| `ST001` | Thủy Lộ Ký Ức | 20 | Keep current mode |
-| `ST002` | Ngự Ảnh Tái Hiện | 20 | Keep current mode |
-| `ST003` | Vạn Vật Ghi Tâm | 36 | Keep current mode |
-| `ST004` | Thiên Địa Chao Đảo | 15 | Keep current mode |
-| `ST005` | Phi Thuyền Xuyên Không | 105 | Keep current mode |
-| `ST006` | Tâm Đầu Ý Lon | 20 | Keep current mode |
-| `ST007` | Vòng Quay Công Lý | Unknown / `null` | Display `???` |
-| `ST008` | Song Tâm Dẫn Ngọc | 36 | Keep current mode |
+| `ST001` | Thủy Lộ Ký Ức | 20 | `SCORE` |
+| `ST002` | Ngự Ảnh Tái Hiện | 20 | `SCORE` |
+| `ST003` | Vạn Vật Ghi Tâm | 36 | `SCORE` |
+| `ST004` | Thiên Địa Chao Đảo | 15 | `SCORE` |
+| `ST005` | Phi Thuyền Xuyên Không | 105 | `SCORE` |
+| `ST006` | Tâm Đầu Ý Lon | 20 | `SCORE` |
+| `ST007` | Vòng Quay Công Lý | Unknown / `null` | `SCORE`; display `???` |
+| `ST008` | Song Tâm Dẫn Ngọc | 36 | `SCORE` |
 | `ST009` | Ba Tiêu Cuồng Phong | 25 | Change to `TIME` |
-| `ST010` | Bách Thú Quy Hội | 15 | Keep current mode |
-| `ST011` | Mê Trận Đồng Tâm | 20 | Keep current mode |
-| `ST012` | Trụ Vững Càn Khôn | 40 | Keep current mode |
-| `ST013` | Liên Hoàn Thần Chưởng | 36 | Keep current mode |
-| `ST014` | Hỏa Nhãn Kim Tinh | 10 | Keep current mode |
-| `ST015` | Tam Sao Thất Vậy | 30 | Keep current mode |
-| `ST016` | Vạn Ly Trường Thành | 30 | Keep current mode |
-| `ST017` | Nhất Nhịp Đồng Tâm | 20 | Keep current mode |
+| `ST010` | Bách Thú Quy Hội | 15 | `SCORE` |
+| `ST011` | Mê Trận Đồng Tâm | 20 | `SCORE` |
+| `ST012` | Trụ Vững Càn Khôn | 40 | `SCORE` |
+| `ST013` | Liên Hoàn Thần Chưởng | 36 | `SCORE` |
+| `ST014` | Hỏa Nhãn Kim Tinh | 10 | `SCORE` |
+| `ST015` | Tam Sao Thất Vậy | 30 | `SCORE` |
+| `ST016` | Vạn Ly Trường Thành | 30 | `SCORE` |
+| `ST017` | Nhất Nhịp Đồng Tâm | 20 | `SCORE` |
 
 - Keep all canonical Station names, IDs, and sort order unchanged. Do not add a
   `Bonus` prefix or badge to Vòng Quay Công Lý.

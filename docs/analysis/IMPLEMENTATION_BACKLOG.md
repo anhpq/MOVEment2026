@@ -1,5 +1,15 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Canonical Station tracking mode update — 2026-08-20
+
+- [x] Set the 16 canonical Stations other than `ST009` to `SCORE`, while
+  preserving `ST009` as `TIME` for Final ranking.
+- [x] Preserve and verify all existing CHECK_IN/CHECK_OUT Station QR pairs and
+  existing Team Station progress during in-place seed synchronization.
+- [x] Pass Backend lint/build, local seed, and `db:verify`.
+- [ ] Production seed/deploy/runtime verification remains pending and was not
+  performed.
+
 ## Team V2 map regression and persistent Gathering Point — 2026-08-20
 
 - [x] Update the Business Rule so Gathering Point is always present whenever

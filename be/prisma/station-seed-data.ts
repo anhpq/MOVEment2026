@@ -81,6 +81,10 @@ export const CANONICAL_STATIONS: CanonicalStation[] = CANONICAL_STATION_INPUT.ma
 
 export const CANONICAL_STATION_IDS = CANONICAL_STATIONS.map((station) => station.id);
 
+export function canonicalStationTrackingMode(stationId: string) {
+  return stationId === 'ST009' ? 'TIME' : 'SCORE';
+}
+
 export function validateCanonicalStations(allowedGameTypes: readonly string[] = ['ST', 'STANDARD']) {
   const ids = new Set<string>();
   const names = new Set<string>();
