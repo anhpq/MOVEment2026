@@ -1,3 +1,20 @@
+# 2026-08-20 Team V2 map layout regression and Gathering Point
+
+- Frontend-only follow-up sửa implicit CSS grid track từng làm Total Score lệch
+  phải và làm sai vùng Konva giữa Header/Footer.
+- Điểm tập trung được đổi thành always-visible whenever the Team V2 map is
+  rendered và chỉ animate trong `NOTICE`/`STATIONS_CLOSED`.
+- Stage gesture transform có một imperative owner; pinch scale/pan dùng snapshot
+  đầu gesture, loại React/scheduler overwrite và cumulative focal drift.
+  Không thay đổi Backend, API, scoring, schema, migration hoặc seed.
+- Final phase toast có nút Close scoped theo message key; persistent banner và
+  Backend-authoritative phase không đổi.
+- Verification PASS: focused tests `31/31`, full Frontend `183/183`, TypeScript,
+  ESLint, i18n/font checks, production build/bundle gate và authenticated Chrome
+  responsive geometry/wheel/Close smoke. Physical pinch chưa được verify.
+- Giữ nguyên bốn Konva layers, marker cache/memoization, shared animation loop,
+  imperative transform và DPR policy của performance refactor.
+
 # 2026-08-20 Team V2 map performance refactor
 
 - Root cause: up to two marker-owned animation loops redrew the full marker

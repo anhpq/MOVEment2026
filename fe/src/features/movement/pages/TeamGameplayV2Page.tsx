@@ -53,6 +53,7 @@ import {
   getTeamV2DefaultMapTransform as getDefaultMapTransform,
   getTeamV2WheelZoomFactor,
   scaleTeamV2MapAtPoint,
+  scaleTeamV2MapFromGesture,
   TEAM_V2_MAP_WORLD_HEIGHT as MAP_WORLD_HEIGHT,
   TEAM_V2_MAP_WORLD_WIDTH as MAP_WORLD_WIDTH,
 } from "./teamV2MapTransform";
@@ -65,6 +66,7 @@ import {
   unlockLandscapeOrientation,
 } from "./teamV2Fullscreen";
 import {
+  shouldAnimateTeamV2GatheringPoint,
   shouldShowTeamV2GatheringPoint,
   TEAM_V2_GATHERING_POINT,
 } from "./teamV2FinalNotice";
@@ -161,6 +163,12 @@ export type MapTransform = {
   y: number;
   scale: number;
 };
+
+function applyMapTransformToStage(stage: Konva.Stage, transform: MapTransform) {
+  stage.position({x: transform.x, y: transform.y});
+  stage.scale({x: transform.scale, y: transform.scale});
+  stage.batchDraw();
+}
 
 type ScoreFormValues = {
   score: number;
@@ -673,10 +681,10 @@ function DemoHudHeader({score, hideScore, onSettings}: {score: number; hideScore
         <button type="button" className="team-v2-settings-button" aria-label={t("teamV2.openSettings")} title={t("teamV2.openSettings")} onClick={onSettings}>
           <SettingOutlined />
         </button>
+        {!hideScore && <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
+          <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
+        </section>}
       </header>
-      {!hideScore && <section className="team-v2-score" aria-label={`${t("common.totalScore")}: ${score}`}>
-        <div className="team-v2-score-line"><strong>{score}</strong><span>{t("teamV2.pointsUnit")}</span></div>
-      </section>}
     </>
   );
 }
@@ -993,7 +1001,11 @@ export function TeamGameplayV2Page() {
   const gatheringPointAnimationRef = useRef<Konva.Group | null>(null);
   const liveMapTransformRef = useRef<MapTransform>(mapTransform);
   const isSubmittingQrRef = useRef(false);
-  const pinchRef = useRef<{distance: number; scale: number} | null>(null);
+  const pinchRef = useRef<{
+    distance: number;
+    point: {x: number; y: number};
+    transform: MapTransform;
+  } | null>(null);
   const panRef = useRef<{
     clientX: number;
     clientY: number;
@@ -1006,6 +1018,12 @@ export function TeamGameplayV2Page() {
   const finalRefreshRequestedRef = useRef(false);
   const finalToastPhasesRef = useRef(new Set<string>());
   const mapTransformSchedulerRef = useRef<LatestFrameScheduler<MapTransform> | null>(null);
+  const setStageNode = useCallback((stage: Konva.Stage | null) => {
+    stageRef.current = stage;
+    if (stage) {
+      applyMapTransformToStage(stage, liveMapTransformRef.current);
+    }
+  }, []);
   useEffect(() => {
     const scheduler = createLatestFrameScheduler<MapTransform>({
       requestFrame: (callback) => requestAnimationFrame(callback),
@@ -1015,9 +1033,7 @@ export function TeamGameplayV2Page() {
         if (!stage) {
           return;
         }
-        stage.position({x: transform.x, y: transform.y});
-        stage.scale({x: transform.scale, y: transform.scale});
-        stage.batchDraw();
+        applyMapTransformToStage(stage, transform);
       },
     });
     mapTransformSchedulerRef.current = scheduler;
@@ -1030,6 +1046,13 @@ export function TeamGameplayV2Page() {
       mapTransformSchedulerRef.current = null;
     };
   }, []);
+
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+    if (stage) {
+      applyMapTransformToStage(stage, mapTransform);
+    }
+  }, [mapTransform]);
   const playingCounts = useStationPlayingCounts(Boolean(session?.role === "user"));
 
   const scoreStation = activeTeamStations.find((station) => station.stationId === scoreStationId) ?? null;
@@ -1040,7 +1063,8 @@ export function TeamGameplayV2Page() {
   const isFinalMode = finalSummary?.phase === "FINAL_STARTED" && !finalSummary.pendingScoreStationId && !finalSummary.blockedByActiveStation;
   const secondsUntilFinal = Math.max(0, finalClock.seconds - Math.floor((Date.now() - finalClock.receivedAt) / 1000));
   const showFinalNotice = finalSummary?.phase === "NOTICE" || finalSummary?.phase === "STATIONS_CLOSED";
-  const showGatheringPoint = shouldShowTeamV2GatheringPoint(finalSummary?.phase);
+  const showGatheringPoint = shouldShowTeamV2GatheringPoint();
+  const animateGatheringPoint = shouldAnimateTeamV2GatheringPoint(finalSummary?.phase);
 
   useEffect(() => {
     setFinalClock({seconds: finalSummary?.secondsUntilFinal ?? 0, receivedAt: Date.now()});
@@ -1069,7 +1093,26 @@ export function TeamGameplayV2Page() {
     }
     if ((finalSummary.phase === "NOTICE" || finalSummary.phase === "STATIONS_CLOSED") && !finalToastPhasesRef.current.has(finalSummary.phase)) {
       finalToastPhasesRef.current.add(finalSummary.phase);
-      message.info(finalSummary.phase === "STATIONS_CLOSED" ? t("teamV2.finalUrgentToast") : t("teamV2.finalNoticeToast"), 6);
+      const toastKey = `team-v2-final-${finalSummary.phase}`;
+      message.open({
+        key: toastKey,
+        type: "info",
+        duration: 6,
+        content: (
+          <span className="team-v2-final-toast">
+            <span>{finalSummary.phase === "STATIONS_CLOSED" ? t("teamV2.finalUrgentToast") : t("teamV2.finalNoticeToast")}</span>
+            <button
+              type="button"
+              className="team-v2-final-toast-close"
+              aria-label={t("common.close")}
+              title={t("common.close")}
+              onClick={() => message.destroy(toastKey)}
+            >
+              <CloseOutlined />
+            </button>
+          </span>
+        ),
+      });
     }
   }, [finalSummary, message, scoreForm, t]);
 
@@ -1131,7 +1174,9 @@ export function TeamGameplayV2Page() {
     [visibleMarkers],
   );
   const activeAnimatedMarkerId = activeVisibleMarkers[0]?.marker.station.id ?? null;
-  const isGatheringPointVisible = Boolean(gatheringPointLayout?.isInViewport);
+  const isGatheringPointAnimated = Boolean(
+    animateGatheringPoint && gatheringPointLayout?.isInViewport,
+  );
   const selectMarker = useCallback((stationId: string) => {
     setSelectedStationId(stationId);
     setIsStationDetailOpen(true);
@@ -1141,7 +1186,7 @@ export function TeamGameplayV2Page() {
     const layer = activeMarkerLayerRef.current;
     const nodes = {
       active: activeMarkerAnimationRef.current,
-      gathering: gatheringPointAnimationRef.current,
+      gathering: animateGatheringPoint ? gatheringPointAnimationRef.current : null,
     };
     if (
       !layer ||
@@ -1177,8 +1222,9 @@ export function TeamGameplayV2Page() {
     };
   }, [
     activeAnimatedMarkerId,
+    animateGatheringPoint,
     isMapInteracting,
-    isGatheringPointVisible,
+    isGatheringPointAnimated,
   ]);
 
   useLayoutEffect(() => {
@@ -1385,12 +1431,18 @@ export function TeamGameplayV2Page() {
     const touches = event.evt.touches;
     if (touches.length === 2) {
       const [first, second] = [touches[0], touches[1]];
+      const rect = event.target.getStage()?.container().getBoundingClientRect();
+      const transform = liveMapTransformRef.current;
       pinchRef.current = {
         distance: Math.hypot(
           first.clientX - second.clientX,
           first.clientY - second.clientY,
         ),
-        scale: liveMapTransformRef.current.scale,
+        point: {
+          x: (first.clientX + second.clientX) / 2 - (rect?.left ?? 0),
+          y: (first.clientY + second.clientY) / 2 - (rect?.top ?? 0),
+        },
+        transform,
       };
       beginMapInteraction();
       panRef.current = null;
@@ -1436,10 +1488,21 @@ export function TeamGameplayV2Page() {
       y: (first.clientY + second.clientY) / 2 - rect.top,
     };
     if (!pinchRef.current) {
-      pinchRef.current = {distance, scale: liveMapTransformRef.current.scale};
+      pinchRef.current = {
+        distance,
+        point: center,
+        transform: liveMapTransformRef.current,
+      };
       return;
     }
-    applyScaleAtPoint(pinchRef.current.scale * (distance / pinchRef.current.distance), center);
+    const pinchStart = pinchRef.current;
+    scheduleMapTransform(scaleTeamV2MapFromGesture(
+      pinchStart.transform,
+      pinchStart.transform.scale * (distance / pinchStart.distance),
+      pinchStart.point,
+      center,
+      viewportSize,
+    ));
   };
 
   const resetMap = () => {
@@ -1577,13 +1640,9 @@ export function TeamGameplayV2Page() {
         onDoubleClick={resetMap}>
         {viewportSize.width > 0 && viewportSize.height > 0 && (
           <Stage
-            ref={stageRef}
+            ref={setStageNode}
             width={viewportSize.width}
             height={viewportSize.height}
-            x={mapTransform.x}
-            y={mapTransform.y}
-            scaleX={mapTransform.scale}
-            scaleY={mapTransform.scale}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -1657,7 +1716,7 @@ export function TeamGameplayV2Page() {
                   size={gatheringPointLayout.markerSize}
                   label={t("teamV2.gatheringPoint")}
                   isInteracting={isMapInteracting}
-                  animationRef={gatheringPointAnimationRef}
+                  animationRef={animateGatheringPoint ? gatheringPointAnimationRef : undefined}
                 />
               )}
             </Layer>

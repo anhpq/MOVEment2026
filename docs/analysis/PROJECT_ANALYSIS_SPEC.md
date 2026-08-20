@@ -988,8 +988,20 @@ Documentation synchronization does not close these implementation gaps.
 
 Event Config là authority cho mốc đóng QR Station và mở Final. Final V2 không thêm route, giữ state map khi chưa takeover và dùng state polling/refresh để chuyển UI khi Final bắt đầu.
 
+## Team V2 Gathering Point visibility update — 2026-08-20
+
+- Supersede riêng visibility rule ngày 2026-08-18: Điểm tập trung luôn được
+  render khi Team V2 map tồn tại, không phụ thuộc `NORMAL`, `NOTICE`,
+  `STATIONS_CLOSED` hoặc `FINAL_STARTED`.
+- Marker giữ nguyên tọa độ `65.56%, 68.94%`, neon hồng, không tương tác và không
+  tham gia Station catalog/progress. Marker đứng yên trong `NORMAL`, chỉ
+  pulse/heartbeat trong `NOTICE`/`STATIONS_CLOSED`; Final takeover vẫn có thể
+  thay thế map.
+- Toast thông báo khi chuyển vào Final notice/urgent phase có Close action; việc
+  dismiss toast không ẩn Final banner/countdown.
+
 ## Team V2 Final notice update — 2026-08-18
 
 - `notifyBeforeMinutes` tiếp tục quyết định thời điểm phase `NOTICE`; Team V2 dùng phase này để hiện banner hướng dẫn và marker Điểm tập trung không tương tác.
-- Marker Điểm tập trung tại `mapX = 65.56`, `mapY = 68.94` giữ neon hồng qua `STATIONS_CLOSED`, rồi ẩn khi Final takeover bắt đầu.
+- Marker Điểm tập trung tại `mapX = 65.56`, `mapY = 68.94` giữ neon hồng; visibility clause của mục này đã được quyết định 2026-08-20 supersede.
 - Sau khi state authoritative chuyển sang `FINAL_STARTED`, Team runtime dừng Player state và Station playing-count polling; Final load/submission không bị ảnh hưởng.

@@ -5,6 +5,7 @@ import {
   getTeamV2DefaultMapTransform,
   getTeamV2WheelZoomFactor,
   scaleTeamV2MapAtPoint,
+  scaleTeamV2MapFromGesture,
   TEAM_V2_MAX_MAP_ZOOM_RATIO,
   TEAM_V2_MIN_MAP_ZOOM_RATIO,
 } from "./teamV2MapTransform";
@@ -47,6 +48,27 @@ describe("Team V2 map zoom", () => {
     expect(transform.scale).toBe(getTeamV2BaseMapScale(viewport));
     expect(transform.x).toBeCloseTo((viewport.width - 2048 * transform.scale) / 2);
     expect(transform.y).toBeCloseTo((viewport.height - 1000 * transform.scale) / 2);
+  });
+
+  it("derives pinch zoom and pan from one stable gesture snapshot", () => {
+    const viewport = {width: 844, height: 390};
+    const initial = getTeamV2DefaultMapTransform(viewport);
+    const initialCenter = {x: 300, y: 170};
+    const currentCenter = {x: 336, y: 188};
+    const next = scaleTeamV2MapFromGesture(
+      initial,
+      initial.scale * 2.4,
+      initialCenter,
+      currentCenter,
+      viewport,
+    );
+    const initialWorldPoint = {
+      x: (initialCenter.x - initial.x) / initial.scale,
+      y: (initialCenter.y - initial.y) / initial.scale,
+    };
+
+    expect((currentCenter.x - next.x) / next.scale).toBeCloseTo(initialWorldPoint.x);
+    expect((currentCenter.y - next.y) / next.scale).toBeCloseTo(initialWorldPoint.y);
   });
 
   it("uses smooth trackpad deltas and stronger bounded mouse-wheel steps", () => {
