@@ -55,7 +55,20 @@ function renderDetail(
 
 describe("TeamV2StationDetailOverlay", () => {
   afterEach(() => {
+    vi.useRealTimers();
     vi.restoreAllMocks();
+  });
+
+  it("shows elapsed time as total minutes and seconds", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-08-20T05:00:00.000Z"));
+    renderDetail({
+      status: "In Progress",
+      backendStatus: "PLAYING",
+      startTime: "2026-08-20T04:58:55.000Z",
+    });
+
+    expect(screen.getByText("01:05")).toBeVisible();
   });
 
   it("keeps an unavailable YouTube action visible and disabled", () => {

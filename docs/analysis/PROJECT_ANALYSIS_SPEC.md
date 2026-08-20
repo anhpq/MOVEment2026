@@ -1,9 +1,19 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-20 Team V2 compact footer and closed-Station presentation
+
+- Footer phải hiển thị canonical Team name dạng compact theo locale, giữ custom
+  name; footer active Station và V2 Detail dùng tổng phút/giây `MM:SS`.
+- Trophy dùng gold `#FFC94D`, Team icon dùng purple `#B06BFF`; Header/Footer
+  geometry và V1 timer không đổi.
+- Trong `STATIONS_CLOSED`, chỉ Station marker/label nhân opacity với `0.55`;
+  map image, Điểm tập trung, banner, HUD và marker interaction giữ nguyên.
+- ST014 reference points là `20`; Team `maxPossiblePoints` tiếp tục là `1785`.
+
 ## 2026-08-20 Team V2 active footer and focused UI stability
 
 - The left Team V2 footer control opens Leaderboard as `BXH`/`RANK` when no
-  Station is active. During `In Progress`, it displays a live `HH:MM:SS` timer
+  Station is active. During `In Progress`, it displays a live `MM:SS` timer
   and opens the active Station's V2 Detail.
 - V2 score entry uses readable `#EAFCFF` label/input/note text, while Total
   Score no longer uses the retired green text shadow.

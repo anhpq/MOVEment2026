@@ -15,3 +15,10 @@ export function shouldAnimateTeamV2GatheringPoint(
 ) {
   return phase === "NOTICE" || phase === "STATIONS_CLOSED";
 }
+
+export function getTeamV2StationPhaseOpacity(
+  opacity: number,
+  phase: PlayerFinalSummary["phase"] | null | undefined,
+) {
+  return phase === "STATIONS_CLOSED" ? opacity * 0.55 : opacity;
+}

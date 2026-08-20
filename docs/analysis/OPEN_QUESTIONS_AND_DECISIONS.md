@@ -572,7 +572,7 @@ Canonical tracking policy: `ST001`...`ST008` and `ST010`...`ST017` use `SCORE`; 
 | ST011 | 20 | `SCORE` |
 | ST012 | 40 | `SCORE` |
 | ST013 | 36 | `SCORE` |
-| ST014 | 10 | `SCORE` |
+| ST014 | 20 | `SCORE` |
 | ST015 | 30 | `SCORE` |
 | ST016 | 30 | `SCORE` |
 | ST017 | 20 | `SCORE` |
@@ -681,6 +681,7 @@ The Team Results base columns include `Warnings` immediately after `Computed Sco
 | Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
 | Team Gameplay V2 palette | `/team/v2` là ngoại lệ có fixed reference palette riêng: accent/active cyan `#2FE4F0`, cyan-soft `#7DF3F9`, score/completed green `#4DFF8A`, selected pink `#FF3FD8`, secondary QR purple `#B06BFF`, leaderboard gold `#FFC94D`, background ink `#030C14`, text `#EAFCFF`, muted text `#9FD4D9`, và panel `rgba(3,14,20,0.82)`. Route này không được derive hoặc ghi đè HUD/marker/control colors từ `Team.color`, `--team-primary`, body Team theme, hoặc global Ant Design theme. Team Color vẫn áp dụng cho các Team UI ngoài V2. |
 | Team Gameplay V2 HUD layout | Header V2 dùng clipped brand tab ở top-center và Settings ở top-right; Fullscreen nằm trong Settings. Settings cũng có control xoay ngang: browser hỗ trợ sẽ lock landscape sau khi thử fullscreen, browser/API không hỗ trợ (bao gồm Safari phù hợp) hiển thị hướng dẫn xoay thiết bị thủ công, không báo thành công giả. Không hiển thị Team identity block trên map HUD và luôn đặt total score ở chính giữa viewport. Fullscreen dùng browser Fullscreen API với Safari `webkit*` fallback; iPhone Safari không hỗ trợ fullscreen DOM phải hướng dẫn mở từ Home Screen ở standalone mode. Bottom HUD dùng ba vùng sci-fi độc lập: Leaderboard ở trái, QR CTA/pedestal nổi giữa, Team/progress ở phải, chỉ nối bằng rail cyan mảnh. Giữ product copy, safe-area, accessibility và gameplay behavior hiện có. |
+| Team Gameplay V2 footer và Station đóng | Footer phải hiển thị tên Team canonical dạng compact theo locale (`Đội 03` → `Đội 3`, `Team 03` → `Team 3`) nhưng giữ nguyên custom name; footer active Station và V2 Station Detail hiển thị elapsed time dạng tổng phút và giây `MM:SS`, trong khi V1 giữ `HH:MM:SS`. Trophy dùng leaderboard gold `#FFC94D`, Team icon dùng QR purple `#B06BFF`. Chỉ trong phase `STATIONS_CLOSED`, marker/label Station nhân opacity hiện tại với `0.55`; map image, Điểm tập trung, banner, HUD và marker hit area không đổi. |
 | Team Gameplay V2 QR badge | QR CTA trung tâm của `/team/v2` dùng inline SVG/CSS theo reference với static conic ring pink `#FF3FD8` → purple `#B06BFF` → cyan `#2FE4F0`, dark core và light QR glyph. SVG badge dùng toàn bộ diện tích control với `translateY(-5px)` ở mọi breakpoint; không có idle animation. |
 | Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
 | Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, YouTube Video và action theo trạng thái; dùng V2-owned presentation và reuse shared data/API/mutation helpers. V2 Detail không sở hữu/render gallery. Không dùng `?from=team-v2`. |
@@ -843,7 +844,7 @@ Station technical ID vẫn là `ST001`...`ST017` cho database, API, route, React
 | `ST011` | Mê Trận Đồng Tâm | `STANDARD` | 20 |
 | `ST012` | Trụ Vững Càn Khôn | `STANDARD` | 40 |
 | `ST013` | Liên Hoàn Thần Chưởng | `STANDARD` | 36 |
-| `ST014` | Hỏa Nhãn Kim Tinh | `STANDARD` | 10 |
+| `ST014` | Hỏa Nhãn Kim Tinh | `STANDARD` | 20 |
 | `ST015` | Tam Sao Thất Vậy | `STANDARD` | 30 |
 | `ST016` | Vạn Ly Trường Thành | `STANDARD` | 30 |
 | `ST017` | Nhất Nhịp Đồng Tâm | `STANDARD` | 20 |

@@ -25,22 +25,29 @@ const activeStation: TeamStation = {
   gameType: "ST",
 };
 
-function renderFooter(station: TeamStation | null = null) {
+function renderFooter(
+  station: TeamStation | null = null,
+  teamName = "Đội 03",
+  language: "vi" | "en" = "vi",
+) {
   const onActiveStation = vi.fn();
   const onLeaderboard = vi.fn();
+  const onMyTeam = vi.fn();
   render(
     <App>
       <DemoFooter
         activeStation={station}
         footerScale={1}
+        language={language}
         onActiveStation={onActiveStation}
         onLeaderboard={onLeaderboard}
-        onMyTeam={vi.fn()}
+        onMyTeam={onMyTeam}
         onScan={vi.fn()}
+        teamName={teamName}
       />
     </App>,
   );
-  return {onActiveStation, onLeaderboard};
+  return {onActiveStation, onLeaderboard, onMyTeam};
 }
 
 describe("Team Gameplay V2 footer", () => {
@@ -57,16 +64,28 @@ describe("Team Gameplay V2 footer", () => {
     expect(onActiveStation).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ["Đội 03", "vi", "Đội 3"],
+    ["Team 03", "en", "Team 3"],
+    ["Biệt đội Sao", "vi", "Biệt đội Sao"],
+  ] as const)("shows compact Team name %s as %s", (teamName, language, expected) => {
+    const {onMyTeam} = renderFooter(null, teamName, language);
+
+    fireEvent.click(screen.getByRole("button", {name: expected}));
+
+    expect(onMyTeam).toHaveBeenCalledOnce();
+  });
+
   it("replaces the Leaderboard copy with a live timer and opens the active Station Detail", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-08-20T05:00:00.000Z"));
     const {onLeaderboard, onActiveStation} = renderFooter(activeStation);
 
     expect(screen.queryByText(i18n.t("teamV2.leaderboardControl"))).not.toBeInTheDocument();
-    expect(screen.getByText("00:01:05")).toBeVisible();
+    expect(screen.getByText("01:05")).toBeVisible();
 
     act(() => vi.advanceTimersByTime(1000));
-    const timer = screen.getByText("00:01:06");
+    const timer = screen.getByText("01:06");
     fireEvent.click(timer.closest("button") as HTMLButtonElement);
 
     expect(onActiveStation).toHaveBeenCalledWith("ST001");

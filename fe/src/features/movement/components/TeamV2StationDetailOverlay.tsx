@@ -15,7 +15,7 @@ import type {SupportedLanguage, TeamStation} from "../types";
 import {getTeamV2OverlayStyle} from "./teamV2OverlayOpacity";
 import {
   formatDateTime,
-  formatDurationFromMs,
+  formatMinutesSecondsFromMs,
   getStationDisplayCode,
   getStationReferencePointsDisplay,
 } from "../utils";
@@ -50,8 +50,8 @@ export function TeamV2StationDetailOverlay({
   const stationMaxPoints = getStationReferencePointsDisplay(station);
   const elapsed =
     isInProgress && station.startTime ?
-      formatDurationFromMs(clockTick - new Date(station.startTime).getTime())
-    : "00:00:00";
+      formatMinutesSecondsFromMs(clockTick - new Date(station.startTime).getTime())
+    : "00:00";
 
   useEffect(() => {
     if (!isInProgress || !station.startTime) {

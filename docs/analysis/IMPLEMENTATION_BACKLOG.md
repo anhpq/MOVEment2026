@@ -1,5 +1,24 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Team V2 compact footer, closed Stations and ST014 reference — 2026-08-20
+
+- [x] Hiển thị `Đội 03`/`Team 03` thành `Đội 3`/`Team 3` chỉ ở footer V2 và giữ
+  custom Team name.
+- [x] Đổi timer footer/Detail V2 sang tổng phút/giây `MM:SS`; giữ V1
+  `HH:MM:SS`.
+- [x] Dùng trophy gold `#FFC94D`, Team icon purple `#B06BFF` mà không đổi
+  Footer geometry hoặc active clock.
+- [x] Chỉ giảm Station marker/label xuống `0.55` opacity trong
+  `STATIONS_CLOSED`; giữ map, Điểm tập trung, banner, HUD và hit area.
+- [x] Đổi ST014 reference sang `20` bằng Business Rule, canonical seed và
+  data-only migration; giữ Team maximum `1785`.
+- [x] PASS focused/full Frontend, full Backend, i18n/font/lint/build/bundle,
+  Prisma validate, local migration, seed hai lần và `db:verify`.
+- [x] Graphify incremental code-only update hoàn tất sau khi semantic update
+  không có LLM key trên host.
+- [ ] Browser computed-style smoke còn pending vì host không có browser/driver.
+- [ ] Production migration/runtime verification chưa thực hiện.
+
 ## Team V2 focused UI and map stability fixes — 2026-08-20
 
 - [x] Make V2 score-entry label, numeric input and note readable without
@@ -7,7 +26,7 @@
 - [x] Remove only the specified Total Score text shadow.
 - [x] Prevent immediate wheel-to-pan and viewport-resize paths from restoring a
   stale map transform.
-- [x] Replace the left footer Leaderboard control with a live `HH:MM:SS` timer
+- [x] Replace the left footer Leaderboard control with a live `MM:SS` timer
   and active Station Detail action only while a Station is `In Progress`.
 - [x] Change only the V2 completion CTA to explicit QR Check-out copy/icon while
   preserving `COMPLETE`, scanner lifecycle and V1 behavior.

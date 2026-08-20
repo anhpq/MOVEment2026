@@ -1,9 +1,22 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-20 Compact Team identity, V2 timers, icon accents and closed Stations
+
+- Footer phải hiển thị localized canonical Team name không có leading zero
+  (`Đội 03` → `Đội 3`, `Team 03` → `Team 3`); custom Team name giữ nguyên.
+- Footer active Station và V2 Station Detail dùng elapsed time tổng phút/giây
+  `MM:SS`. Formatter `HH:MM:SS` và Station Detail V1 không đổi.
+- Footer trophy dùng `#FFC94D`, Team icon dùng `#B06BFF`; selector scoped sau
+  demo footer rule để không đổi clock, QR hoặc geometry.
+- Chỉ trong `STATIONS_CLOSED`, opacity hiện tại của Station marker/label được
+  nhân `0.55`. Map image, Điểm tập trung, banner, HUD và hit area giữ nguyên.
+- Decision log: thay đổi giới hạn trong Team V2 presentation; ST014 reference
+  đổi riêng theo Station reference Business Rule và không đổi Team maximum.
+
 ## 2026-08-20 Focused UI and map interaction fixes
 
 - Business Rule change: footer trái giữ `BXH`/`RANK` khi không có Station đang
-  chơi; khi có Station `In Progress`, control này hiển thị timer `HH:MM:SS` và
+  chơi; khi có Station `In Progress`, control này hiển thị timer `MM:SS` và
   mở đúng V2 Station Detail khi bấm.
 - Score entry chỉ override màu label/input/note trong `.team-v2-score-entry`
   sang `#EAFCFF`; placeholder giữ muted token. Total Score bỏ đúng neon

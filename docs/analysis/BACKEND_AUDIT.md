@@ -1,3 +1,22 @@
+# 2026-08-20 Team V2 compact footer, closed Stations and ST014 reference
+
+- Footer phải hiển thị canonical Team name không có leading zero, V2 footer và
+  V2 Detail dùng tổng phút/giây `MM:SS`, trophy dùng `#FFC94D` và Team icon dùng
+  `#B06BFF`. V1 timer và Header/Footer geometry không đổi.
+- `STATIONS_CLOSED` chỉ nhân Station marker/label opacity với `0.55`; map image,
+  Điểm tập trung, banner, HUD và hit area không đổi.
+- ST014 reference đổi từ `10` sang `20` trong Business Rule, canonical seed và
+  forward data-only migration; schema, tracking, score cap, API và Team maximum
+  `1785` không đổi.
+- Verification PASS: focused Frontend `25/25`, full Frontend `194/194`, full
+  Backend `201/201`, i18n parity `461`, font guard, Frontend/Backend lint và
+  build, production bundle gate, Prisma validate, local migration deploy, seed
+  hai lần và `db:verify` (`25` Team, `17` Station, `425` progress, `34` Station
+  QR, `25` Team QR). Browser computed-style smoke không chạy được vì host không
+  có browser/driver khả dụng. Graphify incremental semantic update thiếu LLM
+  key nên fallback code-only đã cập nhật thành công `3677` nodes/`6235` edges;
+  Production không được truy cập.
+
 # 2026-08-20 Team V2 focused UI and map stability fixes
 
 - Frontend-only: corrected V2 score-entry foreground colors, removed the exact
