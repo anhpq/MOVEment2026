@@ -1,5 +1,13 @@
 # Frontend Localization Analysis
 
+## 2026-08-20 Admin V2 Event Control actionable recommendation
+
+- Replaced the generic VI/EN gap-mismatch summary with the calculated
+  recommended close time: `Nên đóng lúc {{recommended}}` / `Recommended close:
+  {{recommended}}`.
+- The `HH:mm` value remains unmodified, detailed advisory copy is unchanged,
+  and i18n parity passed with `460` keys.
+
 ## 2026-08-18 Vietnamese typography guardrail
 
 - Team V2 localized/dynamic copy uses the bundled Space Grotesk Vietnamese and

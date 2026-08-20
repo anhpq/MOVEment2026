@@ -26,6 +26,17 @@
 - No Backend, API, schema, migration, seed, Station coordinates, gameplay rule,
   typography, palette, visual dimension or Production configuration changed.
 
+# 2026-08-20 Admin V2 Event Control timing update
+
+- Removed the five-minute Station-close recommendation and timing-gap advisory
+  from Admin V2 Event Control. Station close and Final opening remain separate
+  Event Config values.
+- Local development Event Config was set to `eventEndTime = 11:30` and
+  `finalStartsAt = 11:45`; no Production configuration was changed.
+- Focused Event Control Vitest passed `4/4`; i18n parity passed with `460` keys;
+  Frontend lint and production build/bundle gate passed. Authenticated browser
+  visual verification was not run.
+
 # 2026-08-20 Station reference points and Ba Tiêu
 
 - `maxPoints` is nullable reference data; score entry uses backend global `0..105` cap and Team maximum is fixed at `1785`.
@@ -1882,3 +1893,12 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Safe Frontend fixes restored direct Team edit/QR URLs, nested active navigation/header context, Operations access on mobile/tablet, correct initial Event Control timeline values, and strict Dashboard Event Config parsing.
 - Required parity still missing: Team create with Team #26 prevention, Team Station progress/correction/reopen/status operations, Team Results Excel export, V1-equivalent automatic Leaderboard refresh, and explicit confirmation before Event/Final configuration mutations.
 - Verification passed: Frontend Vitest `158/158`, lint, i18n parity `458`, font guard, production build/bundle budget, plus authenticated local Vite visual QA at `1440x900`, `1024x768`, and `768x1024`. Production, physical-device, deploy, and cutover checks were not performed.
+
+# 2026-08-20 Admin V2 controlled route cutover
+
+- User-approved scope changed only Frontend routing: `/admin` now enters `/admin-v2/dashboard`; Admin login and role-aware fallback resolve through `/admin`; `/admin-v2/*` remains canonical.
+- `/admin-v1/*` is the explicit legacy/rollback entry and redirects to unchanged V1 `/teams`. Existing V1 routes, components, assets, APIs, Backend, schema, migration, seed, and authentication/authorization behavior were not removed or changed.
+- V2 Dashboard, Teams, Stations, Leaderboard, Operations, and Settings links remain under `/admin-v2/*`. Focused tests cover direct entry, all six primary destinations, Back/Forward, anonymous/Team authorization, expired-session cleanup, and legacy entry.
+- Verification PASS: focused tests `14/14`; full Frontend Vitest `174/174`; lint; i18n parity `460`; font guard; TypeScript/Vite production build and bundle budget. One intermediate full run exposed an unrelated async Team QR test flake; its focused rerun passed `5/5` and the final full rerun passed.
+- Local Chrome headless/CDP smoke against the production build passed direct refresh/navigation for `/admin`, `/admin-v2`, all 17 implemented V2 child routes, four Operations links, `/admin-v1`, anonymous, Team-denied, expired-session, and Back/Forward cases. `1440x900`, `1024x768`, and `768x1024` retained the approved six-link navigation with no horizontal page overflow.
+- The 2026-08-19 parity gaps remain open. No Production deploy, physical-device smoke, commit, or push was performed.

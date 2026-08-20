@@ -11,7 +11,7 @@ const api = vi.hoisted(() => ({getAdminEventConfig: vi.fn(), updateAdminEventCon
 vi.mock("../../../movement/api", () => api);
 
 const config = (overrides: Record<string, unknown> = {}) => ({
-  eventEndTime: "23:54", finalStartsAt: "23:59", notifyBeforeMinutes: 15,
+  eventEndTime: "11:30", finalStartsAt: "11:45", notifyBeforeMinutes: 15,
   cancelCooldownMinutes: 0, timezone: "Asia/Ho_Chi_Minh", serverNow: "2026-08-19T12:00:00.000Z",
   isPastEventEnd: false, isPastFinalStart: false, secondsUntilFinal: 3600, ...overrides,
 });
@@ -24,19 +24,19 @@ describe("AdminV2EventControlPage", () => {
 
   it("loads config and renders existing values without converting its timezone", async () => {
     renderPage();
-    expect(await screen.findByDisplayValue("23:54")).toBeVisible();
-    expect(screen.getByDisplayValue("23:59")).toBeVisible();
+    expect(await screen.findByDisplayValue("11:30")).toBeVisible();
+    expect(screen.getByDisplayValue("11:45")).toBeVisible();
     expect(screen.getByDisplayValue("Asia/Ho_Chi_Minh")).toBeVisible();
-    expect(screen.getByText("5 minutes before Final")).toBeVisible();
+    expect(screen.queryByText("Review the timing gap")).not.toBeInTheDocument();
     expect(screen.getByText(/Server time: 2026-08-19T12:00:00.000Z/)).toBeVisible();
   });
 
-  it("shows the timing advisory but allows a non-recommended configuration", async () => {
-    api.getAdminEventConfig.mockResolvedValue(config({eventEndTime: "23:50"}));
+  it("saves the configured Station close and Final opening times without a timing advisory", async () => {
     const user = userEvent.setup(); renderPage();
-    expect(await screen.findByText("Review the timing gap")).toBeVisible();
+    expect(await screen.findByDisplayValue("11:30")).toBeVisible();
+    expect(screen.queryByText("Review the timing gap")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", {name: /Save configuration/}));
-    await waitFor(() => expect(api.updateAdminEventConfig).toHaveBeenCalledWith(expect.objectContaining({eventEndTime: "23:50", finalStartsAt: "23:59"})));
+    await waitFor(() => expect(api.updateAdminEventConfig).toHaveBeenCalledWith(expect.objectContaining({eventEndTime: "11:30", finalStartsAt: "11:45"})));
   });
 
   it("validates notification, cooldown, and timezone bounds before saving", () => {
@@ -48,7 +48,7 @@ describe("AdminV2EventControlPage", () => {
   it("prevents duplicate save, refreshes after success, and shows save errors", async () => {
     let resolve!: (value: unknown) => void;
     api.updateAdminEventConfig.mockImplementation(() => new Promise((done) => { resolve = done; }));
-    const user = userEvent.setup(); renderPage(); await screen.findByDisplayValue("23:54");
+    const user = userEvent.setup(); renderPage(); await screen.findByDisplayValue("11:30");
     const save = screen.getByRole("button", {name: /Save configuration/});
     await user.click(save); await user.click(save);
     expect(api.updateAdminEventConfig).toHaveBeenCalledTimes(1);

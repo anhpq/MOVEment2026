@@ -4,7 +4,6 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {Alert, App as AntdApp, Button, Card, Divider, Flex, Form, Input, InputNumber, Skeleton, Space, TimePicker, Typography} from "antd";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getRecommendedStationCloseTime, isFiveMinutesBeforeFinal} from "../../../movement/eventTimeRecommendation";
 import {getAdminEventConfig, updateAdminEventConfig} from "../../../movement/api";
 import {parseAdminV2EventConfig, type AdminV2EventConfig} from "./adminV2EventControlData";
 import {validCancelCooldownMinutes, validNotifyBeforeMinutes, validTimezone} from "./eventControlValidation";
@@ -33,8 +32,6 @@ export function AdminV2EventControlPage() {
   const finalStartsAt = Form.useWatch("finalStartsAt", form);
   const currentEnd = eventEndTime?.isValid() ? timeValue(eventEndTime) : config?.eventEndTime;
   const currentFinal = finalStartsAt?.isValid() ? timeValue(finalStartsAt) : config?.finalStartsAt;
-  const recommendation = getRecommendedStationCloseTime(currentFinal);
-  const isRecommended = isFiveMinutesBeforeFinal(currentEnd, currentFinal);
 
   const refresh = useCallback(async () => {
     setLoading(true); setLoadError(false);
@@ -80,7 +77,7 @@ export function AdminV2EventControlPage() {
         <Typography.Paragraph type="secondary">{t("adminV2.eventControl.timeline.description")}</Typography.Paragraph>
         <div className="admin-v2-event-control__timeline">
           <div><Typography.Text type="secondary">{t("adminV2.eventControl.stationAccess.closeAt")}</Typography.Text><Typography.Title level={2}>{currentEnd ?? "—"}</Typography.Title></div>
-          <div className="admin-v2-event-control__timeline-gap">{recommendation && currentEnd ? <><span aria-hidden="true">↓</span><Typography.Text>{isRecommended ? t("adminV2.eventControl.timeline.recommendedGap") : t("adminV2.eventControl.timeline.customGap")}</Typography.Text></> : null}</div>
+          <div className="admin-v2-event-control__timeline-gap"><span aria-hidden="true">↓</span></div>
           <div><Typography.Text type="secondary">{t("adminV2.eventControl.finalTiming.opensAt")}</Typography.Text><Typography.Title level={2}>{currentFinal ?? "—"}</Typography.Title></div>
         </div>
         {phase && <Alert showIcon type="info" title={t(`adminV2.eventControl.phase.${phase}`)} description={config?.serverNow ? t("adminV2.eventControl.serverNow", {serverNow: config.serverNow, timezone: config.timezone}) : undefined} />}
@@ -90,7 +87,6 @@ export function AdminV2EventControlPage() {
         <Card title={t("adminV2.eventControl.stationAccess.title")}><Typography.Paragraph type="secondary">{t("adminV2.eventControl.stationAccess.description")}</Typography.Paragraph><Form.Item label={t("adminV2.eventControl.stationAccess.closeAt")} name="eventEndTime" rules={[{required: true, message: t("adminV2.eventControl.requiredTime")}]}><TimePicker allowClear={false} format="HH:mm" minuteStep={1} style={{width: "100%"}} /></Form.Item></Card>
         <Card title={t("adminV2.eventControl.finalTiming.title")}><Typography.Paragraph type="secondary">{t("adminV2.eventControl.finalTiming.description")}</Typography.Paragraph><Form.Item label={t("adminV2.eventControl.finalTiming.opensAt")} name="finalStartsAt" rules={[{required: true, message: t("adminV2.eventControl.requiredTime")}]}><TimePicker allowClear={false} format="HH:mm" minuteStep={1} style={{width: "100%"}} /></Form.Item></Card>
       </div>
-      {currentEnd && currentFinal && !isRecommended && <Alert showIcon className="admin-v2-event-control__advisory" type="warning" title={t("adminV2.eventControl.advisory.title")} description={recommendation ? t("adminV2.eventControl.advisory.description", {recommended: recommendation}) : t("adminV2.eventControl.advisory.unavailable")} />}
       <Card title={t("adminV2.eventControl.notifications.title")}><Typography.Paragraph type="secondary">{t("adminV2.eventControl.notifications.description")}</Typography.Paragraph><Flex gap="middle" wrap><Form.Item label={t("adminV2.eventControl.notifications.notifyBefore")} name="notifyBeforeMinutes" rules={[{required: true, message: t("adminV2.eventControl.notifications.notifyBounds")}, {validator: async (_, value) => { if (validNotifyBeforeMinutes(value)) return; throw new Error(t("adminV2.eventControl.notifications.notifyBounds")); }}]}><InputNumber min={1} precision={0} style={{width: "100%"}} /></Form.Item><Form.Item label={t("adminV2.eventControl.notifications.cooldown")} name="cancelCooldownMinutes" rules={[{required: true, message: t("adminV2.eventControl.notifications.cooldownBounds")}, {validator: async (_, value) => { if (validCancelCooldownMinutes(value)) return; throw new Error(t("adminV2.eventControl.notifications.cooldownBounds")); }}]}><InputNumber min={0} precision={0} style={{width: "100%"}} /></Form.Item></Flex></Card>
       <Card title={t("adminV2.eventControl.timezone.title")}><Typography.Paragraph type="secondary">{t("adminV2.eventControl.timezone.description")}</Typography.Paragraph><Form.Item label={t("adminV2.eventControl.timezone.label")} name="timezone" rules={[{required: true, message: t("adminV2.eventControl.timezone.required")}, {validator: async (_, value) => { if (validTimezone(value ?? "")) return; throw new Error(t("adminV2.eventControl.timezone.invalid")); }}]}><Input autoComplete="off" /></Form.Item></Card>
       <Divider />

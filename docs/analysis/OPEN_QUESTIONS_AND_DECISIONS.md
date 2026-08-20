@@ -572,7 +572,7 @@ Canonical Station ID, name, and order remain unchanged; do not add a `Bonus` lab
 | Event Config | Event start time và end time được quản lý trong Admin Event Config. |
 | Hard-coded time | Không hard-code `11:30`, `11:45` hoặc giờ cố định trong Business Rule. |
 | Final opening | Final Challenge mở theo `finalStartsAt` hiện tại trong Admin Event Config. |
-| Event end time | `eventEndTime` là giờ đóng Station đối với Check-in mới; vận hành nên đặt trước `finalStartsAt` đúng 5 phút. Admin chỉ cảnh báo khi hai mốc lệch, không chặn lưu. |
+| Event end time | `eventEndTime` là giờ đóng Station đối với Check-in mới và được cấu hình độc lập với `finalStartsAt`; Admin V2 Event Control không hiển thị khuyến nghị hoặc bắt buộc một khoảng cách giữa hai mốc. |
 | Thông báo Final | Team V2 báo trước theo `notifyBeforeMinutes` (mặc định 15 phút) và báo khẩn cố định tại T−5 phút; banner countdown phải nằm dưới Total Score, hướng dẫn Team trở về Điểm tập trung và vẫn hiển thị tới giờ Final. |
 | Marker Điểm tập trung | Team V2 hiển thị marker thông báo neon hồng, không tương tác tại `mapX = 65.56`, `mapY = 68.94` từ phase `NOTICE`, giữ nguyên qua `STATIONS_CLOSED` và ẩn khi `FINAL_STARTED`; marker này không phải Station gameplay và không thay đổi quyền Check-in. |
 | Polling sau khi Final mở | Sau khi Player state xác nhận phase `FINAL_STARTED`, Frontend dừng polling `/api/player/state` và `/api/player/stations/playing-counts`; các request Final phục vụ tải/submission vẫn hoạt động. |
@@ -913,9 +913,10 @@ Business Rules:
 
 ## 13.2 Admin Team Station Navigation
 
-- Admin navigation không hiển thị menu `Stations` độc lập.
+- Admin V1 legacy navigation không hiển thị menu `Stations` độc lập.
+- Admin V2 primary navigation giữ sáu destination đã duyệt: Dashboard, Teams, Stations, Leaderboard, Operations và Settings. V2 `Stations` là management workspace độc lập; V1 Team Station progress flow không bị thay đổi.
 - Admin không thuộc Team nào; giao diện Admin không được hiển thị `Current team`, `Your team`, hoặc đánh dấu một Team là Team của Admin.
-- Sau khi đăng nhập, Admin đi tới danh sách Teams.
+- Sau khi đăng nhập, Admin đi qua primary entry `/admin` tới Admin V2 Dashboard. Explicit legacy/rollback entry `/admin-v1/*` đi tới V1 `/teams`.
 - Admin chỉ mở danh sách Station/progress trong ngữ cảnh một Team bằng cách chọn Team đó.
 - Route danh sách và chi tiết Station của Admin phải giữ Team ID để back/navigation không làm mất Team đang xem.
 - Player vẫn sử dụng menu và route Station riêng theo Player flow.

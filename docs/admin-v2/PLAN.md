@@ -1,15 +1,24 @@
 # Admin V2 Architecture and Implementation Plan
 
+## 2026-08-20 Event Control timing follow-up
+
+- Removed the calculated five-minute recommendation and detailed timing-gap
+  advisory from Event Control.
+- `eventEndTime` and `finalStartsAt` remain independent Backend-owned values;
+  the UI does not recommend or enforce a gap.
+
 ## 1. Executive Summary
 
 ### Kết luận
 
-- Admin V2 được xây dựng song song với Admin V1, không thay thế, redirect, rename, refactor hoặc sửa presentation/behavior của V1.
+- Admin V2 được xây dựng song song với Admin V1; controlled cutover ngày 2026-08-20 đưa `/admin` sang V2 nhưng không xóa, rename, refactor hoặc sửa presentation/behavior của V1.
 - Source boundary đề xuất: `fe/src/features/admin-v2/`.
 - URL namespace đề xuất: `/admin-v2/*`, với `/admin-v2` redirect nội bộ sang `/admin-v2/dashboard`.
+- Primary Admin entry hiện là `/admin`, canonical-redirect sang `/admin-v2/dashboard`. Admin login và role-aware fallback cùng đi qua `/admin`.
+- Legacy/rollback entry là `/admin-v1/*`, canonical-redirect sang V1 `/teams`; toàn bộ V1 URL hiện hữu tiếp tục hoạt động trực tiếp.
 - Admin V2 tiếp tục chạy trong frontend React/Vite hiện tại và reuse Backend, auth/session, API client, domain API, Zustand store, i18next, Ant Design, icon library, QR helpers, map assets và Business Rules hiện hữu.
 - V2 có shell, route tree, page/component/style/localization riêng. Chỉ shared router được sửa ở Phase 1 để lazy-mount V2.
-- Kế hoạch gồm 16 phase độc lập, mỗi phase phải chạy V1 non-regression checks. Cutover, redirect từ V1, feature flag mặc định sang V2, deploy và deprecate V1 đều ngoài scope.
+- Kế hoạch rollout ban đầu gồm 16 phase độc lập và kết thúc ở coexistence. Controlled cutover hiện tại là phase được user phê duyệt riêng; deploy, V1 removal và deprecation vẫn ngoài scope.
 
 ### Phân loại task
 
@@ -126,7 +135,7 @@ Các route dưới đây là inventory để bảo vệ và reuse infrastructure
 - Dashboard API thật trả `teamCount`, active `stationCount`, total `completedCount`, `activePlayingCount`, `eventConfig`, `latestLogs`.
 - Score Queue trả progress đã Check-out nhưng chưa completed, kèm Team/Station/Game.
 - Event Config trả `eventEndTime`, `finalStartsAt`, `notifyBeforeMinutes`, `cancelCooldownMinutes`, `timezone`, `serverNow`, phase flags/countdown.
-- `eventEndTime` đóng Station starts; `finalStartsAt` mở Final. UI chỉ advisory khi close time không bằng Final minus 5 minutes.
+- `eventEndTime` đóng Station starts; `finalStartsAt` mở Final. UI không khuyến nghị hoặc bắt buộc khoảng cách giữa hai mốc.
 
 ### Final Challenge
 
@@ -317,6 +326,7 @@ Successful mutation
 
 | Route | Purpose |
 | --- | --- |
+| `/admin` | Primary Admin entry; redirect sang `/admin-v2/dashboard` |
 | `/admin-v2` | Redirect nội bộ sang `/admin-v2/dashboard` |
 | `/admin-v2/dashboard` | Event operations dashboard |
 | `/admin-v2/teams` | Dense Team list |
@@ -338,6 +348,7 @@ Successful mutation
 | `/admin-v2/operations/final` | Final config + submissions |
 | `/admin-v2/operations/activity` | Human-readable activity log |
 | `/admin-v2/settings` | V2 preferences/diagnostics only |
+| `/admin-v1/*` | Explicit legacy/rollback entry; redirect sang V1 `/teams` |
 
 Unknown `/admin-v2/*` route phải render V2-owned 404 với action về Dashboard. Không fall through sang V1 `RoleAwareFallback`.
 
@@ -940,7 +951,7 @@ Không sửa Backend, Prisma, migration, seed, deploy config hoặc root redirec
 
 ## Cutover Boundary
 
-This plan intentionally ends with coexistence. Feature flag, default landing change, route redirect, V1 rename/removal, migration/cutover, Production deploy and deprecation require a separate user-approved plan after V2 comparison and verification.
+Rollout ban đầu kết thúc ở coexistence. User đã phê duyệt riêng controlled route cutover ngày 2026-08-20: `/admin`, Admin post-login và Admin role-aware fallback dùng V2, trong khi V1 được giữ nguyên dưới các URL hiện hữu và explicit legacy entry `/admin-v1/*`. V1 removal/rename, Backend/API/schema change, Production deploy và deprecation vẫn cần task riêng.
 
 ## Final audit record — 2026-08-19
 
@@ -951,3 +962,19 @@ This plan intentionally ends with coexistence. Feature flag, default landing cha
 - Browser QA passed against local Vite + local API at `1440x900`, `1024x768`, and `768x1024`: direct URLs loaded across all implemented V2 areas, no horizontal page overflow was measured, 1024 used the full sidebar, 768 used the six direct icon-only bottom destinations, tables scrolled internally, map markers remained aligned, and Team/Station edit drawers fit portrait. This is local verification, not Production or physical-device verification.
 - Automated verification passed: Frontend Vitest `158/158`, lint, i18n parity `458` keys, font guard, TypeScript/Vite production build, and bundle budget. Vite still reports the Admin V2 chunk above its generic 500 kB warning threshold (`502.64 KiB` raw) while remaining below the enforced 512 KiB raw budget.
 - Cutover, V1 removal, deploy, commit, and push were not performed.
+
+## User-approved Phase 15 controlled cutover record — 2026-08-20
+
+- `/admin` hiện redirect bằng history replacement sang `/admin-v2/dashboard`; `/admin-v2/*` tiếp tục là canonical V2 namespace.
+- Admin username/password login và unknown-route fallback dùng cùng shared home resolver để đi qua `/admin`. Auth token, role guard, `expiresAt`, logout, `401` cleanup và Backend authorization không đổi.
+- Exact V1 legacy route là `/admin-v1/*`. Entry này redirect sang V1 `/teams`, sau đó toàn bộ V1 route/auth/layout hiện hữu tiếp tục xử lý. Các URL V1 `/teams`, `/teams/:teamId/stations`, `/leaderboard`, `/admin/operations` và `/system-config` không bị xóa hoặc redirect sang V2.
+- Dashboard, Teams, Stations, Leaderboard, Operations và Settings navigation của V2 vẫn trỏ hoàn toàn vào `/admin-v2/*`; không thêm version switcher hoặc legacy link vào normal-user navigation.
+- Automated verification PASS: focused cutover/auth tests `14/14`; full Frontend Vitest `174/174`; lint; i18n parity `460` keys; font guard; TypeScript/Vite production build và bundle budget. Admin V2 chunk `503.30 KiB` raw vẫn dưới enforced `512 KiB` budget dù Vite cảnh báo generic `500 kB`.
+- Local Chrome headless/CDP smoke trên production build PASS cho `/admin`, `/admin-v2`, toàn bộ 17 implemented V2 child routes, bốn Operations child links, `/admin-v1`, anonymous, Team `403`, expired session và Back/Forward. Viewport `1440x900`, `1024x768`, `768x1024` giữ đúng sáu V2 primary links, đúng sidebar/mobile-nav mode và không có horizontal page overflow.
+- Historical parity blockers trong final audit ngày 2026-08-19 không được sửa hoặc che giấu bởi cutover này. Production deploy và physical-device verification không được thực hiện.
+
+### Rollback procedure
+
+1. Trong `fe/src/features/movement/routes.tsx`, đổi target của route `ADMIN_PRIMARY_PATH` từ `ADMIN_V2_HOME_PATH` sang `ADMIN_V1_HOME_PATH`; không đổi login/session/authorization code. Vì Admin post-login và fallback đều đi qua `/admin`, đây là một route switch tập trung.
+2. Giữ `/admin-v2/*`, `/admin-v1/*` và toàn bộ V1 route/component/API nguyên vẹn để có thể so sánh hoặc khôi phục lại V2 sau đó.
+3. Chạy focused routing tests, full Frontend test/lint/i18n/font/build và direct-route smoke trước khi deploy rollback. Deploy vẫn là thao tác riêng, không thuộc record này.
