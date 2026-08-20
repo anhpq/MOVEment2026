@@ -68,4 +68,10 @@ attempt started before Event end, and enters Final only from `finalStartsAt`.
 - `eventEndTime` đóng Check-in mới; operator nên đặt đúng Final trừ 5 phút, UI Admin cảnh báo nhưng vẫn cho phép lưu khác.
 - V2 gửi notice persistent từ `notifyBeforeMinutes` (mặc định 15) và urgent notice ở mốc đóng Station; Final start hủy attempt chưa Check-out, nhưng pending score còn được submit.
 - Final takeover giữ HUD Team V2, không đổi URL; map/gameplay overlays bị ẩn khi Team có thể vào Final.
-- Sai đáp án dùng cooldown `1, 3, 5, 10, 15, ... 50` giây, cap 50, và thử lại đến khi đúng.
+- Sai đáp án dùng cooldown `3, 5, 10, 15, 20, ... 50` giây, cap 50, và thử lại đến khi đúng.
+
+## 2026-08-20 ST009 Final cutoff reconciliation
+
+- Check-out và Final reconciliation dùng cùng PostgreSQL transaction advisory lock; request không thể vượt qua `finalStartsAt` sau preflight rồi vẫn commit.
+- Sau khi hủy attempt chưa Check-out, Backend normalize ST009 legacy về provisional `10`, xếp hạng toàn bộ completed set theo duration ms, Check-out ms, Team ID và ghi delta/rank idempotently.
+- Final, Leaderboard và Team Results Excel đều reconcile trước khi đọc snapshot.

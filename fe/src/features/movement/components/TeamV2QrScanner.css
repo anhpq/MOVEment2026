@@ -97,12 +97,13 @@
 .team-v2-qr-scanner__camera-error {
   position: absolute;
   z-index: 5;
-  top: 50%;
-  left: 50%;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px));
+  left: max(16px, env(safe-area-inset-left, 0px));
   display: grid;
   width: min(520px, calc(100% - 32px));
   gap: 10px;
-  transform: translate(-50%, -50%);
+  margin-inline: auto;
 }
 
 .team-v2-qr-scanner__manual {
@@ -121,6 +122,11 @@
 .team-v2-qr-scanner__manual > * {
   width: min(620px, 100%);
   margin-inline: auto;
+}
+
+.team-v2-qr-scanner__manual .ant-input {
+  font-size: 1.5em;
+  min-height: 48px;
 }
 
 @media (orientation: landscape) and (max-height: 430px) {

@@ -17,6 +17,7 @@ export const STATUS_ORDER: Record<StationStatus, number> = {
 };
 
 export const DEFAULT_STATION_MAX_POINTS = 30;
+export const DEFAULT_SCORE_ENTRY_MAX = 105;
 
 export const GAME_TYPES = ["ST", "STANDARD"] as const;
 

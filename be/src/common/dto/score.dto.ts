@@ -6,12 +6,14 @@ import {
   IsOptional,
   IsString,
   MaxLength,
+  Max,
   Min,
 } from 'class-validator';
 
 export class SubmitScoreDto {
   @IsInt()
   @Min(0)
+  @Max(105)
   score!: number;
 
   @IsOptional()
@@ -23,6 +25,7 @@ export class SubmitScoreDto {
 export class AdminScoreDto {
   @IsInt()
   @Min(0)
+  @Max(105)
   score!: number;
 
   @IsString()

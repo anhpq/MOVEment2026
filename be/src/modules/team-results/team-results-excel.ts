@@ -3,7 +3,9 @@ import { RankedTeamResults } from './team-results.service';
 
 const HCMC_TIME_ZONE = 'Asia/Ho_Chi_Minh';
 const DATETIME_NUM_FMT = 'dd/mm/yyyy hh:mm:ss';
+const MILLIS_DATETIME_NUM_FMT = 'dd/mm/yyyy hh:mm:ss.000';
 const DURATION_NUM_FMT = '[h]:mm:ss';
+const MILLIS_DURATION_NUM_FMT = '[h]:mm:ss.000';
 const STATION_TRACKING_MODE_LABELS = {
   SCORE: 'Score only',
   TIME: 'Time only',
@@ -31,13 +33,20 @@ export async function buildTeamResultsWorkbook(results: RankedTeamResults) {
     'Total Play Time',
     'Total Score',
     'Computed Score',
+    'Warnings',
     'Rank',
     'Final Submitted At',
     'Final Rank',
     'Final Bonus Score',
     ...results.stationColumns.flatMap((station) => {
       const stationHeader = `${station.header} [${STATION_TRACKING_MODE_LABELS[station.trackingMode]}]`;
-      return [
+      return station.id === 'ST009' ? [
+        `${stationHeader} - Check-in`,
+        `${stationHeader} - Check-out`,
+        `${stationHeader} - Duration`,
+        `${stationHeader} - Station Rank`,
+        `${stationHeader} - Score`,
+      ] : [
         `${stationHeader} - Check-in`,
         `${stationHeader} - Check-out`,
         `${stationHeader} - Score`,
@@ -58,12 +67,18 @@ export async function buildTeamResultsWorkbook(results: RankedTeamResults) {
       secondsToExcelDuration(row.rankTotalPlaySeconds),
       row.rankTotalScore,
       row.computedScore,
+      row.warnings ?? '',
       row.rank,
       dateToHcmcExcelSerial(row.finalSubmittedAt),
       row.finalRank ?? '',
       row.finalBonusScore,
       ...results.stationColumns.flatMap((station) => {
         const result = row.stations[station.id];
+        if (station.id === 'ST009') {
+          const durationMs = result?.checkedInAt && result.checkedOutAt
+            ? Math.max(0, result.checkedOutAt.getTime() - result.checkedInAt.getTime()) : 0;
+          return [dateToHcmcExcelSerial(result?.checkedInAt ?? null), dateToHcmcExcelSerial(result?.checkedOutAt ?? null), durationMs / 86_400_000, result?.stationRank ?? '', result?.score ?? 0];
+        }
         return [
           dateToHcmcExcelSerial(result?.checkedInAt ?? null),
           dateToHcmcExcelSerial(result?.checkedOutAt ?? null),
@@ -81,10 +96,30 @@ export async function buildTeamResultsWorkbook(results: RankedTeamResults) {
     column.width = getColumnWidth(headers[index] ?? '');
   });
   worksheet.getColumn(6).numFmt = DURATION_NUM_FMT;
-  worksheet.getColumn(10).numFmt = DATETIME_NUM_FMT;
-  for (let columnIndex = 13; columnIndex <= headers.length; columnIndex += 3) {
-    worksheet.getColumn(columnIndex).numFmt = DATETIME_NUM_FMT;
-    worksheet.getColumn(columnIndex + 1).numFmt = DATETIME_NUM_FMT;
+  worksheet.getColumn(11).numFmt = DATETIME_NUM_FMT;
+  let columnIndex = 14;
+  for (const station of results.stationColumns) {
+    worksheet.getColumn(columnIndex).numFmt = station.id === 'ST009' ? MILLIS_DATETIME_NUM_FMT : DATETIME_NUM_FMT;
+    worksheet.getColumn(columnIndex + 1).numFmt = station.id === 'ST009' ? MILLIS_DATETIME_NUM_FMT : DATETIME_NUM_FMT;
+    if (station.id === 'ST009') {
+      worksheet.getColumn(columnIndex + 2).numFmt = MILLIS_DURATION_NUM_FMT;
+      columnIndex += 5;
+    } else {
+      columnIndex += 3;
+    }
+  }
+  for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex += 1) {
+    let scoreColumn = 16;
+    for (const station of results.stationColumns) {
+      if (station.id !== 'ST009' && station.referencePoints !== null && station.referencePoints !== undefined) {
+        const scoreCell = worksheet.getCell(rowIndex, scoreColumn);
+        if (typeof scoreCell.value === 'number' && scoreCell.value > station.referencePoints) {
+          scoreCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF0000' } };
+          scoreCell.font = { color: { argb: 'FFFFFFFF' }, bold: true };
+        }
+      }
+      scoreColumn += station.id === 'ST009' ? 5 : 3;
+    }
   }
 
   const buffer = await workbook.xlsx.writeBuffer();
@@ -131,6 +166,7 @@ function dateToHcmcExcelSerial(date: Date | null) {
     parts.hour,
     parts.minute,
     parts.second,
+    date.getMilliseconds(),
   );
   return utcMs / 86_400_000 + 25_569;
 }

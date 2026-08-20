@@ -1,12 +1,10 @@
 import { StationTrackingMode } from '@prisma/client';
 
 export const TIME_STATION_AUTO_SCORE = 10;
+export const SCORE_ENTRY_MAX = 105;
 
-export function getEffectiveStationMaxPoints(
-  trackingMode: StationTrackingMode,
-  maxPoints: number,
-) {
-  return trackingMode === StationTrackingMode.TIME ? TIME_STATION_AUTO_SCORE : maxPoints;
+export function isReferenceExceeded(maxPoints: number | null, score: number) {
+  return maxPoints !== null && score > maxPoints;
 }
 
 export function getStationPlaySeconds(

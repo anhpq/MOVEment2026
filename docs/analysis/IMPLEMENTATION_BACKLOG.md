@@ -1,5 +1,76 @@
 # MOVEment 2026 - Implementation Backlog
 
+## 2026-08-20 Station reference points and Ba Tiêu follow-up
+
+- [x] Run the new migration and seed twice against an isolated non-Production database, then run `db:verify`.
+- [x] Add deterministic unit coverage for ST009 millisecond ties, ranks `1..25`, positive/zero/negative deltas, legacy normalization, durable-rank retry, concurrent reconciliation and exact Final checkout cutoff.
+- [ ] Add disposable-database concurrency coverage for ST009 Final ranking and exact final-start checkout race.
+- [ ] Manually inspect the generated Team Results workbook in Excel/Google Sheets and smoke V1/V2/Admin reference display, including ST007 `???`.
+- [ ] Reconcile pre-existing Prisma drift for `updated_at` defaults and the Final submission index name in a separate migration scope.
+
+## Admin V2 final audit — NOT READY for cutover (2026-08-19)
+
+- [x] Restore direct Team detail/edit/QR route behavior and nested Teams/Stations active navigation.
+- [x] Replace the Operations root placeholder with a responsive navigation hub for Score Queue, Event Control, Final Challenge, and Activity Logs.
+- [x] Correct Event Control timeline initialization and reject incomplete Dashboard Event Config data instead of showing fake zero/false values.
+- [x] Pass Frontend Vitest (`158/158`), lint, i18n parity (`458` keys), font guard, production build/bundle budget, and authenticated local visual QA at `1440x900`, `1024x768`, and `768x1024`.
+- [ ] Implement Team creation using the existing API and block Team #26 while allowing any count below 25.
+- [ ] Implement per-Team Station progress detail plus existing completed-score correction, reopen, and force-status operations without changing Backend rules.
+- [ ] Add Team Results Excel export using the existing download API.
+- [ ] Decide and implement V1-equivalent visible/online Leaderboard polling or explicitly approve manual refresh as an intentional difference.
+- [ ] Add explicit localized confirmation before Event Control and Final Challenge configuration mutations; keep Backend validation and post-open Final rejection authoritative.
+- [ ] Re-run the parity matrix and Production/physical-device smoke before any primary-route switch. V1 removal, redirect, deploy, commit, and push remain out of scope.
+
+## Admin V2 Phase 3 — Teams List completed 2026-08-19
+
+- [x] Replace `/admin-v2/teams` with a read-only, searchable/filterable table
+  based only on the existing progress matrix and Team QR status summary APIs.
+- [x] Show supported Team identity, captain/username, score, completed Station
+  count, total play time, latest progress timestamp, derived activity state,
+  and QR availability without mock data or full-row Team-color styling.
+- [x] Keep zero, loading, empty, error, and QR-status-unavailable states
+  distinct; use localized VI/EN copy and display-localized seed Team names.
+- [x] Correct partially completed progress so it is never represented as no
+  activity. Focused test coverage includes this state and name localization.
+- [x] Pass Frontend Vitest (`111/111`), lint, i18n parity (`458` keys), font
+  guard, Vite build/bundle budget, and `/admin-v2/teams` Vite HTTP smoke.
+- [ ] Perform authenticated visual smoke at `1024x768` and `768x1024` when a
+  controlled browser/E2E runner is available.
+- [ ] Phase 4: implement Team Detail, Edit, and QR management. These actions
+  remain intentionally disabled/deferred in the Phase 3 list.
+
+## Admin V2 Phase 1 — completed 2026-08-18
+
+- [x] Add isolated, lazy, admin-only `/admin-v2/*` namespace without V1 cutover.
+- [x] Add `AdminV2Shell` foundation with desktop sidebar, tablet rail, mobile
+  navigation, header, localized resources, V2 fallback, and planned-module
+  placeholders only.
+- [x] Use viewport-width navigation breakpoints: full icon-and-label sidebar at
+  `>=1024px`, accessible icon rail at `769–1023px`, and icon-and-label bottom
+  navigation at `<=768px`.
+- [x] Improve narrow bottom-navigation contrast and provide compact, accessible
+  Admin identity/build/logout access through the existing session behavior.
+- [x] Keep narrow navigation to one icon-only six-item row with direct Dashboard,
+  Teams, Stations, Leaderboard, Operations, and Settings destinations; no More
+  menu is rendered.
+- [x] Preserve V1 presentation and Backend/API/database behavior; the shared
+  router is the sole existing Source Code file changed.
+- [x] Verify focused V2 tests, full Frontend Vitest (`95/95`), lint, i18n
+  parity, font guard, and production build/bundle budget.
+- [ ] Perform authenticated graphical-browser smoke at 1440x900, 1280x800,
+  1024x768, and 768x1024, including V1 Admin non-regression and browser
+  console review. No tracked E2E/browser runner exists yet.
+- [x] Phase 2: replace only `/admin-v2/dashboard` with a real Dashboard using
+  authoritative Dashboard, Score Queue, and Final Submission data. Keep V1,
+  Backend, API contracts, schema, and Business Rules unchanged.
+- [x] Show Event Overview, supported metrics, data-backed Needs Attention,
+  Quick Actions, and the newest five human-readable activity records; keep
+  loading, zero, empty, partial, and error states distinct.
+- [x] Omit Event Progress and Active Stations because current APIs provide only
+  aggregate counts, not a reliable denominator or Station-level activity data.
+- [ ] Perform authenticated graphical-browser Dashboard review at `1440x900`,
+  `1024x768`, and `768x1024`; no controlled browser/E2E runner is tracked.
+
 ## 2026-08-18 Team V2 QR, Final retry and compact runtime
 
 - [x] Split scanner into camera-first `Quét QR` and `Dán QR` tabs with camera
@@ -1431,3 +1502,16 @@ Acceptance:
 - [x] Final V2 native takeover, manual character cells (space included), success UI và cooldown 1–50 giây.
 - [x] Event timing notice, Station Check-in closure, Final-start forced cancellation và pending-score preservation.
 - [x] Admin mốc đóng Station QR warning, Backend/Frontend build, i18n parity và unit tests.
+
+# Admin V2 Stations — 2026-08-19
+
+- [x] Read-only Stations List at `/admin-v2/stations` with search, API-backed game/tracking/QR filters, total count, refresh, loading/error/empty states, and VI/EN display fallback.
+- [ ] Implement Station Detail/Edit and read-only individual QR workspace in a later approved phase; do not add/delete Stations or add QR mutation controls.
+- [ ] Implement Station Map in its dedicated later phase.
+
+# Admin V2 Final Challenge — 2026-08-19
+
+- [x] Implemented `/admin-v2/operations/final-challenge` with localized config loading/saving, Backend-authoritative Final schedule and scoring summary, submissions search/result filters, and distinct loading, empty, error, stale, mutation-success, and mutation-error states.
+- [x] Kept configured keyword undisclosed: blank rotation preserves it, nonblank rotation is sent to the existing Backend normalization path, and no hashing, versioning, or API change was introduced.
+- [x] Added focused Frontend coverage for config loading, blank/nonblank keyword behavior, submissions rendering, validation, duplicate-save prevention, and success/error states.
+- [ ] Perform authenticated visual smoke at 1024x768 and 768x1024; no graphical browser runner is tracked in this workspace.

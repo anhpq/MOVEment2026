@@ -18,7 +18,7 @@ import {
   formatDateTime,
   formatDurationFromMs,
   getStationDisplayCode,
-  getStationEffectiveMaxPoints,
+  getStationReferencePointsDisplay,
 } from "../utils";
 import "./TeamV2StationDetailOverlay.css";
 
@@ -48,7 +48,7 @@ export function TeamV2StationDetailOverlay({
     station.status === "New" &&
     (!station.backendStatus || station.backendStatus === "AVAILABLE");
   const isInProgress = station.status === "In Progress";
-  const stationMaxPoints = getStationEffectiveMaxPoints(station);
+  const stationMaxPoints = getStationReferencePointsDisplay(station);
   const elapsed =
     isInProgress && station.startTime ?
       formatDurationFromMs(clockTick - new Date(station.startTime).getTime())

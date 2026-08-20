@@ -8,6 +8,12 @@
 | Runtime/Production Verification | Local automated build/cache/polling verification completed; Production pending |
 | Browser/Manual Verification | Pending verification |
 
+## 2026-08-20 Station reference display
+
+- V1 and Team V2 markers use `Game.maxPoints` only as reference/display data.
+- `ST007` keeps a nullable reference and renders exactly `???` on marker, list and detail surfaces; the UI must not apply the noncanonical default `30` to this explicit null.
+- Score-entry validation is separate and consumes Backend `scoreEntryMax = 105`.
+
 ## 2026-08-01 Completed and Locked marker appearance
 
 - Completed and Locked markers remain visible and tappable on the Station map.

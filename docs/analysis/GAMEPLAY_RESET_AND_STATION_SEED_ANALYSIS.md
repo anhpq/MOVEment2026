@@ -34,7 +34,7 @@ Normal Production seed/deploy must not trigger destructive replacement.
 ## Decisions and Stale Assumptions
 
 - Never use `prisma migrate reset` for Production gameplay reset.
-- `maxPossiblePoints = 300`; historical `267`/`287` values are superseded.
+- `maxPossiblePoints = 1785`; historical `267`/`287`/`300` values and sums of Station references are superseded.
 - Team QR is reusable and non-expiring; historical TTL rotation requirements
   are superseded.
 - Normal Production seed remains non-destructive. Explicit guarded commands own

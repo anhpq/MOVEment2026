@@ -39,8 +39,9 @@ import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { createWorkbookXlsx, XlsxCell, XlsxSheet } from './xlsx-report';
 import { isSupportedYoutubeUrl } from '../../common/game/game-type';
 import {
-  getEffectiveStationMaxPoints,
   getStationPlaySeconds,
+  isReferenceExceeded,
+  SCORE_ENTRY_MAX,
 } from '../../common/station/station-scoring';
 
 const DEFAULT_STATION_MAX_POINTS = 30;
@@ -125,11 +126,7 @@ export class AdminService {
           captainName: dto.captainName?.trim() || dto.name.trim(),
           passwordHash,
           ...(teamColor !== undefined ? { color: teamColor } : {}),
-          maxPossiblePoints: games.reduce(
-            (sum, game) =>
-              sum + getEffectiveStationMaxPoints(game.station.trackingMode, game.maxPoints),
-            0,
-          ),
+      maxPossiblePoints: 1785,
         },
       });
       const createdQrLoginToken = await tx.qrLoginToken.create({
@@ -424,6 +421,11 @@ export class AdminService {
                 status: item.status,
                 scoreAchieved: item.scoreAchieved,
                 maxPoints: item.game.maxPoints,
+                scoreEntryMax: SCORE_ENTRY_MAX,
+                referenceExceeded: isReferenceExceeded(
+                  item.game.maxPoints,
+                  item.scoreAchieved,
+                ),
                 checkedInAt: item.checkedInAt,
                 checkedOutAt: item.checkedOutAt,
                 completedAt: item.completedAt,
@@ -497,6 +499,9 @@ export class AdminService {
   }
 
   async updateStation(userId: number, stationId: string, dto: UpdateStationDto) {
+    if (dto.maxPoints !== undefined) {
+      this.validateStationReferencePoints(stationId, dto.maxPoints);
+    }
     const checkInQrToken = this.getOptionalQrToken(dto.checkInQrToken);
     const checkOutQrToken = this.getOptionalQrToken(dto.checkOutQrToken);
     const imageUrls =
@@ -509,12 +514,6 @@ export class AdminService {
         dto.maxPoints !== undefined ||
         dto.gameType !== undefined ||
         dto.mediaUrl !== undefined;
-      const currentStation = needsActiveGame
-        ? await tx.station.findUniqueOrThrow({
-            where: { id: stationId },
-            select: { trackingMode: true },
-          })
-        : null;
       const activeGame = needsActiveGame
         ? await tx.game.findFirstOrThrow({
             where: { stationId, isActive: true },
@@ -558,28 +557,7 @@ export class AdminService {
       if (imageUrls !== undefined) {
         await this.replaceStationImages(tx, stationId, imageUrls);
       }
-      if (activeGame && currentStation) {
-        const oldEffectiveMax = getEffectiveStationMaxPoints(
-          currentStation.trackingMode,
-          activeGame.maxPoints,
-        );
-        const newEffectiveMax = getEffectiveStationMaxPoints(
-          dto.trackingMode ?? currentStation.trackingMode,
-          dto.maxPoints ?? activeGame.maxPoints,
-        );
-        const maxPointsDelta = newEffectiveMax - oldEffectiveMax;
-        if (maxPointsDelta !== 0) {
-          await tx.team.updateMany({
-            data: { maxPossiblePoints: { increment: maxPointsDelta } },
-          });
-        }
-      }
-      const effectiveMaxPoints = activeGame && currentStation
-        ? getEffectiveStationMaxPoints(
-            dto.trackingMode ?? currentStation.trackingMode,
-            dto.maxPoints ?? activeGame.maxPoints,
-          )
-        : undefined;
+      const effectiveMaxPoints = SCORE_ENTRY_MAX;
       const qrTokens = [];
       if (checkInQrToken) {
         qrTokens.push(await this.replaceStationQrToken(tx, stationId, QrPurpose.CHECK_IN, checkInQrToken));
@@ -634,8 +612,10 @@ export class AdminService {
 
   async createStation(userId: number, dto: CreateStationDto) {
     const stationId = dto.id.trim().toUpperCase();
-    const maxPoints = dto.maxPoints ?? DEFAULT_STATION_MAX_POINTS;
-    const effectiveMaxPoints = getEffectiveStationMaxPoints(dto.trackingMode, maxPoints);
+    this.validateStationReferencePoints(stationId, dto.maxPoints);
+    const maxPoints =
+      dto.maxPoints === undefined ? DEFAULT_STATION_MAX_POINTS : dto.maxPoints;
+    const effectiveMaxPoints = SCORE_ENTRY_MAX;
     const imageUrls = this.normalizeStationImageUrls(dto.imageUrls ?? []);
     this.validateGameVideoConfiguration(dto.gameType, dto.mediaUrl);
     const [teamIds, sortOrder] = await Promise.all([
@@ -687,9 +667,7 @@ export class AdminService {
             status: ProgressStatus.AVAILABLE,
           })),
         });
-        await tx.team.updateMany({
-          data: { maxPossiblePoints: { increment: effectiveMaxPoints } },
-        });
+        await tx.team.updateMany({ data: { maxPossiblePoints: 1785 } });
       }
       return {
         station: { ...created, imageUrls },
@@ -825,9 +803,6 @@ export class AdminService {
   }
 
   async deleteStation(userId: number, stationId: string) {
-    const game = await this.prisma.game.findFirst({
-      where: { stationId, isActive: true },
-    });
     const station = await this.prisma.$transaction(async (tx) => {
       const updated = await tx.station.update({
         where: { id: stationId },
@@ -841,17 +816,6 @@ export class AdminService {
         where: { stationId },
         data: { isActive: false },
       });
-      if (game?.maxPoints) {
-        const teams = await tx.team.findMany({
-          select: { id: true, maxPossiblePoints: true },
-        });
-        for (const team of teams) {
-          await tx.team.update({
-            where: { id: team.id },
-            data: { maxPossiblePoints: Math.max(0, team.maxPossiblePoints - game.maxPoints) },
-          });
-        }
-      }
       return updated;
     });
     await this.activityLog.log({
@@ -1279,10 +1243,7 @@ export class AdminService {
     if (progress.station.trackingMode === 'TIME') {
       throw new BadRequestException('Time-only station does not accept score');
     }
-    this.validateScoreValue(
-      score,
-      getEffectiveStationMaxPoints(progress.station.trackingMode, progress.game.maxPoints),
-    );
+    this.validateScoreValue(score);
 
     const scoreBefore = progress.team.totalPoints;
     const oldProgressScore = isEdit ? progress.scoreAchieved : 0;
@@ -1344,7 +1305,11 @@ export class AdminService {
       entityId: progressId,
       metadata: { score, reason: reason ?? null, delta },
     });
-    return updated;
+    return {
+      ...updated,
+      scoreEntryMax: SCORE_ENTRY_MAX,
+      referenceExceeded: isReferenceExceeded(progress.game.maxPoints, score),
+    };
   }
 
   private toPublicProgress<T extends { game: Game }>(progress: T) {
@@ -1352,6 +1317,13 @@ export class AdminService {
     return {
       ...rest,
       game: this.toPublicGame(game),
+      scoreEntryMax: SCORE_ENTRY_MAX,
+      referenceExceeded: isReferenceExceeded(
+        game.maxPoints,
+        'scoreAchieved' in rest && typeof rest.scoreAchieved === 'number'
+          ? rest.scoreAchieved
+          : 0,
+      ),
     };
   }
 
@@ -1363,6 +1335,7 @@ export class AdminService {
       type: game.type,
       difficulty: game.difficulty,
       maxPoints: game.maxPoints,
+      scoreEntryMax: SCORE_ENTRY_MAX,
       clueText: game.clueText,
       mediaUrl: game.mediaUrl,
       isActive: game.isActive,
@@ -1475,15 +1448,26 @@ export class AdminService {
     }
   }
 
-  private validateScoreValue(score: number, maxPoints: number) {
+  private validateScoreValue(score: number) {
     if (!Number.isInteger(score)) {
       throw new BadRequestException('Score must be an integer');
     }
     if (score < 0) {
       throw new BadRequestException('Score must be at least 0');
     }
-    if (score > maxPoints) {
-      throw new BadRequestException('Score exceeds game max points');
+    if (score > SCORE_ENTRY_MAX) {
+      throw new BadRequestException(`Score must not exceed ${SCORE_ENTRY_MAX}`);
+    }
+  }
+
+  private validateStationReferencePoints(
+    stationId: string,
+    referencePoints: number | null | undefined,
+  ) {
+    if (referencePoints === null && stationId !== 'ST007') {
+      throw new BadRequestException(
+        'Only ST007 may have an unknown reference point value',
+      );
     }
   }
 

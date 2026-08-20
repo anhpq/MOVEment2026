@@ -211,10 +211,12 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | QR Login token | Token phải là Opaque Random Token, không suy ra từ `teamId`, username hoặc dữ liệu nghiệp vụ. |
 | Team QR expiry | Team QR Login token không tự hết hạn theo thời gian. `expires_at` có thể `null`; token mới/active phải dùng `expiresAt: null`. Revoke và rotate là cơ chế vô hiệu hóa chính. |
 | Team creation | Khi tạo Team mới, backend tự động tạo Team QR Login token nếu request không cung cấp token hợp lệ. |
+| Team inventory | MOVEMENT 2026 hỗ trợ từ `0` đến tối đa `25` Teams. Mọi flow tạo Team trong tương lai phải chặn Team thứ 26; Dashboard và các danh sách tiếp tục hiển thị số Team thực tế từ API, không hard-code `25`. |
 | Team seed | Khi seed Team mới, seed tự động tạo Team QR Login token theo cùng policy. |
 | Missing token repair | Seed hoặc maintenance command phải có khả năng bổ sung token cho Team đang thiếu token. |
 | Team QR rotation | Admin có thể rotate Team QR Login token. Token cũ phải bị revoke. |
 | Team QR revocation | Admin có thể revoke Team QR Login token mà không cần xóa Team. |
+| Admin V2 QR boundary | Admin V2 chỉ hiển thị Team QR preview, status/info khi có và Download PNG; không expose generate, rotate hoặc revoke. Backend/V1 lifecycle hiện có không thay đổi bởi giới hạn UI này. |
 | Admin raw token display | Backend lưu raw Team QR Login token cho token mới hoặc token được seed repair/rotate để Admin có thể xem và in lại QR Login dạng string/URL. |
 | QR Login error | Nếu auto-login thất bại, frontend phải hiển thị lỗi rõ ràng và cho phép thử lại hoặc dùng login thủ công. |
 
@@ -243,6 +245,7 @@ trừ khi đây chỉ là dữ liệu Legacy cần migration.
 | Chuyển Station | Check-in B khi A đang `CHECKED_IN` hoặc `PLAYING` và chưa Check-out sẽ đưa A về `AVAILABLE` không tính điểm/thời gian rồi bắt đầu B atomically. A được phép chơi lại. Station đã Check-out chờ score phải được hoàn thành trước khi vào B. |
 | Locked Station | `LOCKED` chỉ sử dụng khi Admin khóa Station hoặc Station bị giới hạn theo event time. |
 | Station status | Không sử dụng `WAITING_SCORE`, `CANCELLED` hoặc `REOPENED` làm status chính thức của Team Station flow. |
+| Station inventory | MOVEMENT 2026 có đúng `17` Station predefined. Admin V2 không cung cấp Add Station hoặc Delete Station; Dashboard và các màn hình đọc dữ liệu tiếp tục lấy số Station thực tế từ API, không hard-code `17`. |
 
 ---
 
@@ -519,6 +522,40 @@ Rotate Check-out không được tự rotate Check-in.
 
 ---
 
+## 6.1 Station Reference Points and Score Entry (confirmed 2026-08-19)
+
+The decisions in this section supersede earlier `max score`, `effective max`, and `TIME = 10 final score` wording in sections 5 and 6.
+
+| Topic | Confirmed decision |
+| --- | --- |
+| Reference points | `Game.maxPoints` is display/reference data only, not a score validation limit. A noncanonical Station defaults to `30`; only `ST007` may have `null`, displayed exactly as `???`. |
+| Score entry | Team submit, Admin pending-score submit, and Admin correction accept integers `0..105` only. Backend is authoritative, has no Admin override, and returns `scoreEntryMax: 105`. |
+| Reference warning | A score above a non-null reference is valid and returns `referenceExceeded`; it is a UI/audit warning, not a rejection. |
+| Team maximum | Every Team has fixed `maxPossiblePoints = 105 * 17 = 1785`; Station edits, activation, references, and tracking changes do not alter it. |
+| TIME | A TIME Check-out completes with provisional score `10` and no score modal. `ST009` is finalized separately at Final and never accepts score entry. |
+
+| ID | Reference | Tracking |
+| --- | ---: | --- |
+| ST001 | 20 | Existing |
+| ST002 | 20 | Existing |
+| ST003 | 36 | Existing |
+| ST004 | 15 | Existing |
+| ST005 | 105 | Existing |
+| ST006 | 20 | Existing |
+| ST007 | `null` / `???` | Existing |
+| ST008 | 36 | Existing |
+| ST009 | 25 | `TIME` |
+| ST010 | 15 | Existing |
+| ST011 | 20 | Existing |
+| ST012 | 40 | Existing |
+| ST013 | 36 | Existing |
+| ST014 | 10 | Existing |
+| ST015 | 30 | Existing |
+| ST016 | 30 | Existing |
+| ST017 | 20 | Existing |
+
+Canonical Station ID, name, and order remain unchanged; do not add a `Bonus` label.
+
 ## 7. Event Time và Final Challenge
 
 | Final keyword | `EVERY MOVE COUNTS`; so sánh không phân biệt hoa/thường, `trim()` hai đầu và giữ nguyên whitespace bên trong. |
@@ -550,6 +587,12 @@ Rotate Check-out không được tự rotate Check-in.
 | Duplicate protection | Một Team không được nhận Final rank hoặc bonus nhiều hơn một lần. |
 
 ---
+
+### 7.1 Ba Tiêu Cuồng Phong Final ranking (confirmed 2026-08-19)
+
+At `finalStartsAt`, all completed `ST009` attempts rank by duration milliseconds ascending, Check-out milliseconds ascending, then numeric `Team.id` ascending. `stationRank` `1..25` receives score `26 - stationRank` (`25..1`). A Team without a completed attempt has neither rank nor ST009 score.
+
+`team_station_progress.stationRank` is constrained to `1..25`, unique per Station, and is the durable idempotency marker. Finalization adjusts `team.totalPoints` by the score delta (including negative deltas) in one transaction with a ScoreEvent and SYSTEM activity record. Existing completed/pending ST009 attempts are normalized to provisional `10`; after Final, reconciliation finalizes them before Final, Leaderboard, or Excel reads. An Admin correction after finalization preserves the Station rank and cannot be overwritten by lifecycle retry. A Check-out cannot be accepted across `finalStartsAt` after a preflight race.
 
 ## 8. Leaderboard
 
@@ -594,6 +637,10 @@ Player Station list, Station map drawer và Station detail có thể hiển th�
 | Security | New Team Results workbook không được chứa raw QR token, token hash/fingerprint, password, session token, scoring code, Final answer text hoặc secrets. |
 
 ---
+
+### 9.1 Station reference and Ba Tiêu Excel (confirmed 2026-08-19)
+
+The Team Results base columns include `Warnings` immediately after `Computed Score`. Normal Stations retain `Check-in`, `Check-out`, `Score`; a completed score above its non-null reference has red fill, white bold text. `ST007` is never compared. `ST009` has `Check-in`, `Check-out`, `Duration`, `Station Rank`, `Score`; timestamps use `dd/mm/yyyy hh:mm:ss.000`, duration uses `[h]:mm:ss.000`, and millisecond values are preserved as numeric Excel serials. A completed ST009 row is marked provisional in Warnings until Final gives it rank and final score.
 
 ## 10. Team Color
 
@@ -754,29 +801,29 @@ Nếu environment không xác định hoặc không an toàn, seed phải dừng
 
 ### 10.6 Canonical Station Inventory
 
-Canonical active Station inventory hiện tại có đúng `17` Station, `17` active Game, Team `maxPossiblePoints = 300`, đúng `4` Game Type `ST`, đúng `13` Game Type `STANDARD`, và đúng `34` active Station QR token (`CHECK_IN` + `CHECK_OUT` cho mỗi Station). Tổng các `games.max_points` theo danh sách hiện tại là dữ liệu cấu hình Station, không được dùng làm validation cứng cho `maxPossiblePoints`.
+Canonical active Station inventory hiện tại có đúng `17` Station, `17` active Game, Team `maxPossiblePoints = 1785`, đúng `4` Game Type `ST`, đúng `13` Game Type `STANDARD`, và đúng `34` active Station QR token (`CHECK_IN` + `CHECK_OUT` cho mỗi Station). `games.max_points` là reference/display data; score-entry cap cố định là `105` và không suy ra từ tổng reference.
 
 Station technical ID vẫn là `ST001`...`ST017` cho database, API, route, React key, select value và QR mapping. UI danh sách Station và map hiển thị display code rút gọn `01`...`17` cho các Station canonical tương ứng và hỗ trợ sẵn `ST018` hiển thị là `18` nếu xuất hiện sau này. ID không canonical khác như `ST047` hoặc `ST15A` giữ nguyên khi hiển thị.
 
-| ID | Name | Game Type | Max Score |
+| ID | Name | Game Type | Reference Points |
 | --- | --- | --- | --- |
-| `ST001` | Thủy Lộ Ký Ức | `ST` | 10 |
-| `ST002` | Ngự Ảnh Tái Hiện | `ST` | 10 |
-| `ST003` | Vạn Vật Ghi Tâm | `ST` | 12 |
-| `ST004` | Thiên Địa Chao Đảo | `ST` | 10 |
-| `ST005` | Phi Thuyền Xuyên Không | `STANDARD` | 10 |
+| `ST001` | Thủy Lộ Ký Ức | `ST` | 20 |
+| `ST002` | Ngự Ảnh Tái Hiện | `ST` | 20 |
+| `ST003` | Vạn Vật Ghi Tâm | `ST` | 36 |
+| `ST004` | Thiên Địa Chao Đảo | `ST` | 15 |
+| `ST005` | Phi Thuyền Xuyên Không | `STANDARD` | 105 |
 | `ST006` | Tâm Đầu Ý Lon | `STANDARD` | 20 |
-| `ST007` | Vòng Quay Công Lý | `STANDARD` | 50 |
-| `ST008` | Song Tâm Dẫn Ngọc | `STANDARD` | 50 |
+| `ST007` | Vòng Quay Công Lý | `STANDARD` | `null` / `???` |
+| `ST008` | Song Tâm Dẫn Ngọc | `STANDARD` | 36 |
 | `ST009` | Ba Tiêu Cuồng Phong | `STANDARD` | 25 |
-| `ST010` | Bách Thú Quy Hội | `STANDARD` | 10 |
-| `ST011` | Mê Trận Đồng Tâm | `STANDARD` | 10 |
-| `ST012` | Trụ Vững Càn Khôn | `STANDARD` | 15 |
-| `ST013` | Liên Hoàn Thần Chưởng | `STANDARD` | 15 |
+| `ST010` | Bách Thú Quy Hội | `STANDARD` | 15 |
+| `ST011` | Mê Trận Đồng Tâm | `STANDARD` | 20 |
+| `ST012` | Trụ Vững Càn Khôn | `STANDARD` | 40 |
+| `ST013` | Liên Hoàn Thần Chưởng | `STANDARD` | 36 |
 | `ST014` | Hỏa Nhãn Kim Tinh | `STANDARD` | 10 |
-| `ST015` | Tam Sao Thất Vậy | `STANDARD` | 10 |
-| `ST016` | Vạn Ly Trường Thành | `STANDARD` | 10 |
-| `ST017` | Nhất Nhịp Đồng Tâm | `STANDARD` | 10 |
+| `ST015` | Tam Sao Thất Vậy | `STANDARD` | 30 |
+| `ST016` | Vạn Ly Trường Thành | `STANDARD` | 30 |
+| `ST017` | Nhất Nhịp Đồng Tâm | `STANDARD` | 20 |
 
 Canonical designated `ST` set là `ST001`, `ST002`, `ST003`, và `ST004`; mọi Station còn lại là `STANDARD`.
 

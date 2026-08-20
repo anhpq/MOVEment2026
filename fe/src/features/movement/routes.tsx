@@ -72,6 +72,11 @@ const AdminOperationsPage = lazyRoute(() =>
     default: component,
   })),
 );
+const AdminV2Entry = lazyRoute(() =>
+  import("../admin-v2/AdminV2Entry").then(({AdminV2Entry: component}) => ({
+    default: component,
+  })),
+);
 
 export function MovementRoutes() {
   return (
@@ -227,6 +232,10 @@ export function MovementRoutes() {
             </ProtectedRoute>
           </LazyRouteBoundary>
         }
+      />
+      <Route
+        path="/admin-v2/*"
+        element={<LazyRouteBoundary><AdminV2Entry /></LazyRouteBoundary>}
       />
       <Route path="*" element={<RoleAwareFallback />} />
     </Routes>

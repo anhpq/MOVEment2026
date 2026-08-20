@@ -146,7 +146,7 @@ model Game {
   title      String
   type       String
   difficulty Int      @default(1)
-  maxPoints  Int      @default(30) @map("max_points")
+  maxPoints  Int?     @default(30) @map("max_points")
   clueText   String?  @map("clue_text")
   mediaUrl   String?  @map("media_url")
   isActive   Boolean  @default(true) @map("is_active")
@@ -176,6 +176,7 @@ model TeamStationProgress {
   reopenedAt           DateTime?      @map("reopened_at")
   nextCheckInAllowedAt DateTime?      @map("next_check_in_allowed_at")
   scoreAchieved        Int            @default(0) @map("score_achieved")
+  stationRank          Int?           @map("station_rank")
   scoreEnteredByUserId Int?           @map("score_entered_by_user_id")
   notes                String?
   createdAt            DateTime       @default(now()) @map("created_at")
@@ -186,6 +187,7 @@ model TeamStationProgress {
   @@unique([teamId, stationId])
   @@index([status])
   @@index([checkedOutAt, completedAt])
+  @@unique([stationId, stationRank])
   @@map("team_station_progress")
 }
 

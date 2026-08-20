@@ -610,6 +610,27 @@ Dùng cho:
 
 ---
 
+### `13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md`
+
+```text
+docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
+```
+
+Dùng cho approved cross-module change:
+
+- Station `maxPoints` chuyển thành điểm tham chiếu/display;
+- global Team/Admin score-entry cap `105`;
+- Team `maxPossiblePoints = 1785`;
+- Vòng Quay Công Lý hiển thị `???`;
+- Ba Tiêu Cuồng Phong auto-score và Final Station ranking;
+- Team Results Excel warning, duration, rank, và millisecond audit.
+
+Prompt này supersede Prompt 12 chỉ cho approved plan được ghi trong
+`STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_ANALYSIS.md`. Các Station scoring task
+khác tiếp tục dùng Prompt 12.
+
+---
+
 # 6. Feature-to-Prompt Routing
 
 | Feature | Primary Prompt |
@@ -626,6 +647,7 @@ Dùng cho:
 | Automatic URL QR Login và Team QR seed | `10_CODEX_QR_AUTO_LOGIN_AND_SEED_TOKENS_PROMPT.md` |
 | Final Challenge | `11_CODEX_FINAL_GAME_KEYWORD_AND_SCORING_PROMPT.md` |
 | Station scoring và score limits | `12_CODEX_STATION_SCORE_ENTRY_LIMITS_PROMPT.md` |
+| Station reference points, Ba Tiêu Final ranking, và Excel audit | `13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md` |
 
 Chi tiết Required Reading và Must Update nằm trong:
 

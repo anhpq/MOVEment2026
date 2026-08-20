@@ -8,6 +8,12 @@
 | Runtime/Production Verification | Pending verification |
 | Browser/Manual Verification | Pending verification |
 
+## 2026-08-20 Reference points and ST009 audit columns
+
+- `Warnings` follows `Computed Score`. Completed normal-Station scores above a non-null reference use red fill with white bold text; ST007 is never compared.
+- ST009 exports `Check-in`, `Check-out`, `Duration`, `Station Rank`, `Score`; timestamps and duration preserve milliseconds with `dd/mm/yyyy hh:mm:ss.000` and `[h]:mm:ss.000` numeric formats.
+- A completed ST009 attempt without rank exports provisional score `10` plus `ST009 provisional score`; post-Final reads reconcile rank/score before producing the shared ranking snapshot.
+
 ## Purpose
 
 This document records the confirmed requirements for:

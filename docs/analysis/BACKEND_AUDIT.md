@@ -1,4 +1,79 @@
+# 2026-08-20 Station reference points and Ba Tiêu
+
+- `maxPoints` is nullable reference data; score entry uses backend global `0..105` cap and Team maximum is fixed at `1785`.
+- Added ST009 provisional TIME completion and Final lifecycle ranking by millisecond duration, checkout time, then Team ID, with a PostgreSQL transaction advisory lock, full-candidate ranking, transactional score deltas and durable `stationRank`.
+- Added Team Results Excel `Warnings`, ST009 audit columns/millisecond formats, and red reference-exceeded score cells.
+- Verified on local non-Production DB: migration status current (`21` migrations), Prisma validate/generate, seed twice, and `db:verify` (`25` Teams, `17` Stations, `425` progress, `34` Station QR, `25` Team QR). Backend lint/build and full Jest passed (`201/201`). Frontend full Vitest (`163/163`), i18n parity (`460` keys), font guard, lint, production build and bundle gate passed. Workbook reopen tests cover milliseconds, rank, provisional warning and reference styling; manual Excel/Google Sheets and authenticated browser smoke remain pending.
+- Graphify code graph update completed (`3644` nodes, `6120` edges). Graphify reported one empty `hooks.json` source and skipped SQL topology because optional `tree_sitter_sql` is not installed; neither warning blocked code verification.
+- `prisma migrate diff --from-schema-datasource ... --to-schema-datamodel ... --exit-code` remains non-zero only for pre-existing `updated_at` default drift and the existing Final submission index name. The new Station rank unique index no longer appears in the diff after the alignment migration.
+
+# 2026-08-19 Admin V2 Phase 3 Teams List follow-up
+
+- Kept `/admin-v2/teams` on the existing read-only `GET /api/admin/progress-matrix`
+  and `GET /api/admin/qr-status-summary` sources. No Backend, API contract,
+  schema, migration, seed, authentication, or V1 presentation changed.
+- Corrected the presentation-derived progress label so a Team with completed
+  Station cells but incomplete overall progress is `PARTIALLY_COMPLETED`, not
+  `NO_ACTIVITY`. Team names now use the existing VI/EN display localization
+  helper; this does not alter raw Team data.
+- Verification PASS: focused Teams List tests (`4/4`), full Frontend Vitest
+  (`111/111`), lint, i18n parity (`458` keys), font guard, Vite build/bundle
+  budget, and Vite `/admin-v2/teams` HTTP smoke. Visual browser verification at
+  `1024x768` and `768x1024` remains pending because no local browser runner is
+  available.
+
+# 2026-08-19 Admin V2 Phase 2 Dashboard
+
+- Replaced the Admin V2 Dashboard placeholder with a read-only, typed adapter
+  over `GET /api/admin/dashboard`, `GET /api/admin/score-queue`, and
+  `GET /api/admin/final/submissions`. Backend implementation, API contracts,
+  schema, migration, seed, authentication, and Business Rules are unchanged.
+- The UI reports authoritative Event Config timing/status, six supported
+  metrics, data-backed attention items, localized recent activity, and route
+  actions. It does not manufacture Event Progress or Active Station details
+  from aggregate counts.
+- Verification PASS: focused Dashboard tests, Frontend Vitest `103/103`, lint,
+  i18n parity `458`, font guard, Vite build/bundle budget, and Vite dev-server
+  HTTP smoke. Responsive authenticated browser review remains pending.
+
 # 2026-08-18 Team V2 QR, Final retry, typography and compact runtime
+
+# 2026-08-18 Admin V2 Phase 1 foundation
+
+- Added the isolated, admin-protected lazy namespace `/admin-v2/*` with a
+  dedicated V2 shell, scoped styles, bundled Space Grotesk, VI/EN resources,
+  desktop sidebar, tablet rail, and compact mobile navigation.
+- Corrected the V2 navigation breakpoint to preserve its full `200px`
+  icon-and-label sidebar at `>=1024px`; only `769–1023px` now uses the compact
+  icon rail, with accessible hover/focus tooltips. Bottom navigation is
+  icon-only at `<=768px`, with Ant Design tooltips and accessible labels.
+- Narrow V2 header now keeps language selection plus a compact Ant Design
+  account popover for Admin identity, build metadata, and the existing logout
+  behavior. Inactive bottom navigation uses `--admin-v2-nav-inactive` for
+  readable contrast while the coral active treatment remains unchanged. No global
+  V2 anchor color reset is applied; sidebar link inheritance is scoped to
+  `.admin-v2-nav-link`.
+- Narrow V2 navigation now has one icon-only six-item row: Dashboard, Teams,
+  Stations, Leaderboard, Operations, and Settings. Each destination is direct,
+  has a localized Ant Design Tooltip/`aria-label`, and uses the coral active
+  treatment; the More popover was removed.
+- `/admin-v2` redirects internally to `/admin-v2/dashboard`; known future
+  modules show intentional planned states and unknown V2 URLs remain in the
+  V2-specific 404. No operational data or Backend contract is mocked.
+- The only shared Source Code integration is the lazy route registration in
+  `fe/src/features/movement/routes.tsx`. V1 presentation, Backend, schema,
+  migration, seed, and API contracts remain untouched.
+- Verification PASS: focused V2 Vitest (`4/4`), full Frontend Vitest
+  (`95/95`), lint, i18n parity (`458` keys), font guard, and production
+  build/bundle gate. Manual graphical-browser verification remains pending.
+- Foundation-only follow-up standardized Admin V2 on Ant Design `Tooltip`,
+  `Button`, `Popover`, `Space`, `Typography`, `Alert`, and `Result`; removed
+  inline More-menu styling and the hand-built rail tooltip. Route-aware links,
+  shell geometry, MOVEMENT tokens, and responsive bottom navigation remain
+  intentionally scoped custom code. Focused V2 Vitest (`8/8`), full Frontend
+  Vitest (`99/99`), lint, i18n parity (`458`), font guard, and production build
+  with the bundle gate passed. No V1, Backend, API, schema, migration, or seed
+  source changed.
 
 - Added camera-first/paste QR tabs with explicit camera lifecycle, full scanner
   viewport and safe-area controls. Wrong-first Final retry now revalidates
@@ -1760,3 +1835,22 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 # Final lifecycle — cập nhật 2026-08-17
 
 `EventLifecycleService` reconcile mỗi 5 giây và tại các Player/Final read-write boundary. Reconcile idempotent theo `updateMany`, chỉ cancel progress `CHECKED_IN`/`PLAYING` chưa `checkedOutAt`, reset attempt state và ghi System activity log. Public event/final/player state trả phase, timing, pending score để V2 takeover.
+
+# 2026-08-19 Admin V2 Stations List
+
+- Admin V2 reuses only the existing read endpoints `GET /api/admin/progress-matrix` and `GET /api/admin/qr-status-summary` for Station list data; no Backend mutation or contract change was required.
+- The current QR summary supports only API status plus `activeCount`; V2 therefore does not infer, expose, or mutate individual Check-in/Check-out QR tokens in this phase.
+
+# 2026-08-19 Admin V2 Final Challenge
+
+- Admin V2 now reuses `GET/PATCH /api/admin/final-config`, `GET /api/admin/final/submissions`, and read-only `GET /api/admin/event-config` at `/admin-v2/operations/final-challenge`.
+- The V2 mutation sends only the existing supported `title`, `clueText`, `isActive`, and nonblank `answer` fields. The blank-by-default password control does not redisplay `currentKeyword`; Backend normalization, post-open rejection, rank, bonus, and duplicate protection remain unchanged.
+- The submission table presents the existing Backend order and values. No review, score, result, rank, or submission mutation was added because the Final Admin API exposes none.
+
+# 2026-08-19 Admin V2 final production-readiness audit
+
+- Result: **NOT READY** for primary Admin routing. Existing V2 data and mutations continue to use the current Frontend API wrappers and Backend authority; no Backend, contract, schema, migration, or seed change was required.
+- Read-only local API inventory verified 25 Teams, 17 Stations, active Team QR for all 25 Teams, and two active Station QR tokens for all 17 Stations. No raw token was printed.
+- Safe Frontend fixes restored direct Team edit/QR URLs, nested active navigation/header context, Operations access on mobile/tablet, correct initial Event Control timeline values, and strict Dashboard Event Config parsing.
+- Required parity still missing: Team create with Team #26 prevention, Team Station progress/correction/reopen/status operations, Team Results Excel export, V1-equivalent automatic Leaderboard refresh, and explicit confirmation before Event/Final configuration mutations.
+- Verification passed: Frontend Vitest `158/158`, lint, i18n parity `458`, font guard, production build/bundle budget, plus authenticated local Vite visual QA at `1440x900`, `1024x768`, and `768x1024`. Production, physical-device, deploy, and cutover checks were not performed.

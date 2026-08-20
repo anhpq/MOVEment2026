@@ -13,8 +13,9 @@ import { createHash } from 'node:crypto';
 import { ActivityLogService } from '../../common/activity/activity-log.service';
 import { SubmitScoreDto } from '../../common/dto/score.dto';
 import {
-  getEffectiveStationMaxPoints,
   getStationPlaySeconds,
+  isReferenceExceeded,
+  SCORE_ENTRY_MAX,
   TIME_STATION_AUTO_SCORE,
 } from '../../common/station/station-scoring';
 import {
@@ -135,6 +136,7 @@ export class PlayerService {
               type: station.games[0].type,
               difficulty: station.games[0].difficulty,
               maxPoints: station.games[0].maxPoints,
+              scoreEntryMax: SCORE_ENTRY_MAX,
               clueText: station.games[0].clueText,
               mediaUrl: station.games[0].mediaUrl,
             }
@@ -195,6 +197,7 @@ export class PlayerService {
                 nextCheckInAllowedAt: true,
                 scoreAchieved: true,
                 attemptNo: true,
+                game: { select: { maxPoints: true } },
               },
             },
           },
@@ -208,11 +211,16 @@ export class PlayerService {
           select: { id: true },
         }),
       ]);
-    const progress = team.progress.map((item) => ({
+    const progress = team.progress.map(({ game, ...item }) => ({
       ...item,
       status: this.toEffectiveProgressStatus(
         item.status,
         eventConfig.isPastEventEnd || eventConfig.isPastFinalStart,
+      ),
+      scoreEntryMax: SCORE_ENTRY_MAX,
+      referenceExceeded: isReferenceExceeded(
+        game?.maxPoints ?? null,
+        item.scoreAchieved,
       ),
     }));
     const activeProgress = progress.find(
@@ -359,6 +367,7 @@ export class PlayerService {
             type: station.games[0].type,
             difficulty: station.games[0].difficulty,
             maxPoints: station.games[0].maxPoints,
+            scoreEntryMax: SCORE_ENTRY_MAX,
             clueText: station.games[0].clueText,
             mediaUrl: station.games[0].mediaUrl,
           }
@@ -401,6 +410,8 @@ export class PlayerService {
       status: this.toEffectiveProgressStatus(item.status, eventConfig.isPastEventEnd || eventConfig.isPastFinalStart),
       station: this.toPublicStation(station, locale),
       game: this.toPublicGame(game),
+      scoreEntryMax: SCORE_ENTRY_MAX,
+      referenceExceeded: isReferenceExceeded(game.maxPoints, item.scoreAchieved),
     }));
   }
 
@@ -656,6 +667,13 @@ export class PlayerService {
       );
       try {
         const result = await this.prisma.$transaction(async (tx) => {
+          if (!(await this.eventLifecycle.isCheckoutBeforeFinalStart(tx))) {
+            throw this.playerError(
+              HttpStatus.FORBIDDEN,
+              PLAYER_ERROR_CODES.stationsClosed,
+              'Stations are closed',
+            );
+          }
           const claimed = await tx.teamStationProgress.updateMany({
             where: {
               id: progress.id,
@@ -742,14 +760,23 @@ export class PlayerService {
       }
     }
 
-    const claimed = await this.prisma.teamStationProgress.updateMany({
-      where: {
-        id: progress.id,
-        checkedOutAt: null,
-        completedAt: null,
-        status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
-      },
-      data: { checkedOutAt },
+    const claimed = await this.prisma.$transaction(async (tx) => {
+      if (!(await this.eventLifecycle.isCheckoutBeforeFinalStart(tx))) {
+        throw this.playerError(
+          HttpStatus.FORBIDDEN,
+          PLAYER_ERROR_CODES.stationsClosed,
+          'Stations are closed',
+        );
+      }
+      return tx.teamStationProgress.updateMany({
+        where: {
+          id: progress.id,
+          checkedOutAt: null,
+          completedAt: null,
+          status: { in: [ProgressStatus.PLAYING, ProgressStatus.CHECKED_IN] },
+        },
+        data: { checkedOutAt },
+      });
     });
     const updated = await this.prisma.teamStationProgress.findUniqueOrThrow({
       where: { id: progress.id },
@@ -880,10 +907,7 @@ export class PlayerService {
         'Time-only station does not accept score',
       );
     }
-    this.validateScoreValue(
-      dto.score,
-      getEffectiveStationMaxPoints(progress.station.trackingMode, progress.game.maxPoints),
-    );
+    this.validateScoreValue(dto.score);
 
     const scoreBefore = progress.team.totalPoints;
     const scoreAfter = scoreBefore + dto.score;
@@ -957,7 +981,14 @@ export class PlayerService {
           metadata: { stationId, score: dto.score, reason: dto.reason ?? null },
         });
       }
-      return result.progress;
+      return {
+        ...result.progress,
+        scoreEntryMax: SCORE_ENTRY_MAX,
+        referenceExceeded: isReferenceExceeded(
+          progress.game.maxPoints,
+          result.progress.scoreAchieved,
+        ),
+      };
     } catch (error) {
       if (this.isConcurrentTransitionError(error)) {
         const current = await this.prisma.teamStationProgress.findUnique({
@@ -1140,7 +1171,7 @@ export class PlayerService {
     return Math.min((wrongAttemptCount - 1) * 5, 50);
   }
 
-  private validateScoreValue(score: number, maxPoints: number) {
+  private validateScoreValue(score: number) {
     if (!Number.isInteger(score)) {
       throw this.playerError(
         HttpStatus.BAD_REQUEST,
@@ -1155,11 +1186,11 @@ export class PlayerService {
         'Score must be at least 0',
       );
     }
-    if (score > maxPoints) {
+    if (score > SCORE_ENTRY_MAX) {
       throw this.playerError(
         HttpStatus.BAD_REQUEST,
         PLAYER_ERROR_CODES.scoreInvalid,
-        'Score exceeds game max points',
+        `Score must not exceed ${SCORE_ENTRY_MAX}`,
       );
     }
   }
@@ -1182,6 +1213,7 @@ export class PlayerService {
       type: game.type,
       difficulty: game.difficulty,
       maxPoints: game.maxPoints,
+      scoreEntryMax: SCORE_ENTRY_MAX,
       clueText: game.clueText,
       mediaUrl: game.mediaUrl,
       isActive: game.isActive,
