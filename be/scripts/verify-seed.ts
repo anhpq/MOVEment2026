@@ -110,6 +110,11 @@ async function main() {
     expected: 1,
   });
   assertExact({
+    name: 'non-ST009 SCORE tracking modes',
+    actual: await prisma.station.count({where: {id: {not: 'ST009'}, trackingMode: 'SCORE'}}),
+    expected: CANONICAL_STATION_COUNT - 1,
+  });
+  assertExact({
     name: 'seed-managed team max possible points',
     actual: await prisma.team.count({where: {maxPossiblePoints: CANONICAL_TOTAL_MAX_SCORE}}),
     expected: teams,

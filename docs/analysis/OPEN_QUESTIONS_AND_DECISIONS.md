@@ -549,25 +549,27 @@ The decisions in this section supersede earlier `max score`, `effective max`, an
 | Team maximum | Every Team has fixed `maxPossiblePoints = 105 * 17 = 1785`; Station edits, activation, references, and tracking changes do not alter it. |
 | TIME | A TIME Check-out completes with provisional score `10` and no score modal. `ST009` is finalized separately at Final and never accepts score entry. |
 
+Canonical tracking policy: `ST001`...`ST008` and `ST010`...`ST017` use `SCORE`; only `ST009` Ba Tiêu Cuồng Phong uses `TIME`. Every Station, including `SCORE` Stations, keeps one active `CHECK_IN` and one active `CHECK_OUT` QR token.
+
 | ID | Reference | Tracking |
 | --- | ---: | --- |
-| ST001 | 20 | Existing |
-| ST002 | 20 | Existing |
-| ST003 | 36 | Existing |
-| ST004 | 15 | Existing |
-| ST005 | 105 | Existing |
-| ST006 | 20 | Existing |
-| ST007 | `null` / `???` | Existing |
-| ST008 | 36 | Existing |
+| ST001 | 20 | `SCORE` |
+| ST002 | 20 | `SCORE` |
+| ST003 | 36 | `SCORE` |
+| ST004 | 15 | `SCORE` |
+| ST005 | 105 | `SCORE` |
+| ST006 | 20 | `SCORE` |
+| ST007 | `null` / `???` | `SCORE` |
+| ST008 | 36 | `SCORE` |
 | ST009 | 25 | `TIME` |
-| ST010 | 15 | Existing |
-| ST011 | 20 | Existing |
-| ST012 | 40 | Existing |
-| ST013 | 36 | Existing |
-| ST014 | 10 | Existing |
-| ST015 | 30 | Existing |
-| ST016 | 30 | Existing |
-| ST017 | 20 | Existing |
+| ST010 | 15 | `SCORE` |
+| ST011 | 20 | `SCORE` |
+| ST012 | 40 | `SCORE` |
+| ST013 | 36 | `SCORE` |
+| ST014 | 10 | `SCORE` |
+| ST015 | 30 | `SCORE` |
+| ST016 | 30 | `SCORE` |
+| ST017 | 20 | `SCORE` |
 
 Canonical Station ID, name, and order remain unchanged; do not add a `Bonus` label.
 

@@ -1,3 +1,14 @@
+# 2026-08-20 Canonical Station tracking mode update
+
+- Updated canonical Station policy: `ST001`...`ST008` and `ST010`...`ST017`
+  now seed as `SCORE`; `ST009` Ba Tiêu Cuồng Phong remains `TIME` for Final
+  ranking. All 17 Stations retain their existing CHECK_IN/CHECK_OUT QR pairs.
+- Fixed normal seed synchronization to update an existing Station's
+  `trackingMode` in place, without resetting progress or rotating QR tokens.
+- Verification PASS: Backend lint/build, local seed, and `db:verify` confirmed
+  25 Teams, 17 canonical Stations, 425 progress rows, and 34 active SQ1 Station
+  QR tokens. Production was not changed.
+
 # 2026-08-20 Team V2 map layout regression and Gathering Point
 
 - Frontend-only follow-up sửa implicit CSS grid track từng làm Total Score lệch

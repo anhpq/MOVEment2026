@@ -471,6 +471,7 @@ docs/prompts/13_CODEX_STATION_REFERENCE_POINTS_BA_TIEU_EXCEL_PROMPT.md
 
 - `Game.maxPoints` is reference/display data; noncanonical Stations default to `30`, and only `ST007` may be `null`/displayed as `???`.
 - Team/Admin score writes accept integers `0..105`; Backend returns `scoreEntryMax: 105` and an above-reference score is valid with `referenceExceeded` warning.
+- Canonical Stations use `SCORE` except `ST009` Ba Tiêu Cuồng Phong, which remains `TIME`; every Station retains CHECK_IN and CHECK_OUT QR tokens.
 - `TIME` Check-out auto-completes provisionally with `10`; `ST009` is finalized by rank at `finalStartsAt` and never accepts score entry.
 - Backend is the final validation authority.
 - Duplicate submissions must not create duplicate completion or score records.

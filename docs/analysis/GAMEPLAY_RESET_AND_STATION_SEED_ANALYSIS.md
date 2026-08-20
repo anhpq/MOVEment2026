@@ -47,6 +47,9 @@ Normal Production seed/deploy must not trigger destructive replacement.
   canonical Station and active Game content for the 17 Station IDs in place.
   This content synchronization does not reset progress, scoring, or QR tokens
   and does not require destructive replacement confirmation.
+- Canonical tracking modes are synchronized in place: `ST009` is `TIME`; the
+  other 16 Stations are `SCORE`. This does not rotate their CHECK_IN/CHECK_OUT
+  QR tokens.
 - Do not print raw token, QR URL, password, or database secret.
 
 ## Interfaces and Data

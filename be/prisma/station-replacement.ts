@@ -10,6 +10,7 @@ import {
   CANONICAL_STATION_IDS,
   CANONICAL_ST_COUNT,
   CANONICAL_TOTAL_MAX_SCORE,
+  canonicalStationTrackingMode,
 } from './station-seed-data';
 
 export type StationReplacementResult = {
@@ -80,7 +81,7 @@ export async function replaceAllStations(tx: Prisma.TransactionClient): Promise<
         descriptionEn: station.shortDescriptionEn,
         mapX: station.mapX,
         mapY: station.mapY,
-        trackingMode: station.id === 'ST009' ? 'TIME' : 'BOTH',
+        trackingMode: canonicalStationTrackingMode(station.id),
         isActive: true,
         sortOrder: station.sortOrder,
       },
