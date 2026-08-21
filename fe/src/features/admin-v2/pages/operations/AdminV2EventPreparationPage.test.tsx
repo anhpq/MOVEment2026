@@ -4,7 +4,10 @@ import userEvent from "@testing-library/user-event";
 import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
 import i18n from "../../../movement/i18n";
 import {ensureAdminV2Resources} from "../../i18n/resources";
-import {AdminV2EventPreparationPage} from "./AdminV2EventPreparationPage";
+import {
+  AdminV2EventPreparationPage,
+  isEventPreparationResetAvailable,
+} from "./AdminV2EventPreparationPage";
 
 const api = vi.hoisted(() => ({
   getAdminEventPreparation: vi.fn(),
@@ -76,5 +79,13 @@ describe("AdminV2EventPreparationPage", () => {
 
     expect(await screen.findByText("Rehearsal reset is locked")).toBeVisible();
     expect(screen.getByRole("button", {name: /Reset rehearsal/})).toBeDisabled();
+  });
+
+  it("uses elapsed time from the server response to close reset at the cutoff", () => {
+    const serverNow = Date.parse("2026-08-26T22:59:59.000Z");
+    const preparationStatus = status({serverNow: new Date(serverNow).toISOString()});
+
+    expect(isEventPreparationResetAvailable(preparationStatus, 1_000, 1_999)).toBe(true);
+    expect(isEventPreparationResetAvailable(preparationStatus, 1_000, 2_000)).toBe(false);
   });
 });

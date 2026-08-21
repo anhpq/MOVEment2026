@@ -191,6 +191,7 @@
   "189": "CreateStationDto",
   "190": "Decision Log",
   "191": "Visual Design Specification",
+  "192": "fetchAdminDatabase",
   "193": "Q: đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè",
   "194": "17. Team Runtime Stability and Data Loading",
   "195": "apiGet",
@@ -298,8 +299,8 @@
   "297": "final.service.spec.ts",
   "298": "verify-seed.ts",
   "299": "MOVEment 2026 - Feature Index",
+  "300": "16. Admin Token Management",
   "302": "QrLoginPage.tsx",
   "303": "CreateTeamDto",
-  "307": "AdminV2LeaderboardPage.test.tsx",
-  "309": ".logout"
+  "307": "AdminV2LeaderboardPage.test.tsx"
 }

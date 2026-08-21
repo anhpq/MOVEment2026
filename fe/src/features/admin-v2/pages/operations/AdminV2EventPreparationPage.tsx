@@ -13,6 +13,18 @@ type EventPreparationAction = "rotate" | "reset" | null;
 
 const confirmationPhrase = "RESET MOVEMENT2026 GAMEPLAY";
 
+export function isEventPreparationResetAvailable(
+  status: AdminEventPreparationStatus | null,
+  statusReceivedAt: number | null,
+  clientNow: number,
+) {
+  if (!status?.resetEnabled || !status.inventory.ready || statusReceivedAt === null) return false;
+  const serverNow = new Date(status.serverNow).getTime();
+  const cutoff = new Date(status.resetCutoff).getTime();
+  if (!Number.isFinite(serverNow) || !Number.isFinite(cutoff)) return false;
+  return serverNow + Math.max(0, clientNow - statusReceivedAt) < cutoff;
+}
+
 function formatHcmcDate(value: string, language: "vi" | "en") {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "—";
@@ -28,6 +40,7 @@ export function AdminV2EventPreparationPage() {
   const {i18n, t} = useTranslation();
   const language = i18n.language === "en" ? "en" : "vi";
   const [status, setStatus] = useState<AdminEventPreparationStatus | null>(null);
+  const [statusReceivedAt, setStatusReceivedAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [action, setAction] = useState<EventPreparationAction>(null);
@@ -40,7 +53,9 @@ export function AdminV2EventPreparationPage() {
     setLoading(true);
     setLoadError(false);
     try {
-      setStatus(await getAdminEventPreparation());
+      const nextStatus = await getAdminEventPreparation();
+      setStatus(nextStatus);
+      setStatusReceivedAt(Date.now());
     } catch {
       setLoadError(true);
     } finally {
@@ -59,12 +74,8 @@ export function AdminV2EventPreparationPage() {
   }, []);
 
   const resetEnabled = useMemo(() => {
-    if (!status?.resetEnabled || !status.inventory.ready) return false;
-    const serverNow = new Date(status.serverNow).getTime();
-    const cutoff = new Date(status.resetCutoff).getTime();
-    if (!Number.isFinite(serverNow) || !Number.isFinite(cutoff)) return false;
-    return clientNow + (serverNow - Date.now()) < cutoff;
-  }, [clientNow, status]);
+    return isEventPreparationResetAvailable(status, statusReceivedAt, clientNow);
+  }, [clientNow, status, statusReceivedAt]);
 
   const closeAction = () => {
     if (submitting) return;

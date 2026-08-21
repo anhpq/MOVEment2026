@@ -998,9 +998,10 @@ Rollout ban đầu kết thúc ở coexistence. User đã phê duyệt riêng co
   reset preserves the QR set and Event/Station/Final configuration while
   clearing rehearsal state and application logs.
 - Reset is disabled in the UI at the server-synchronized cutoff and rejected by
-  Backend at/after `2026-08-27 06:00 Asia/Ho_Chi_Minh`. The page currently ships
-  in the Admin V2 chunk; its `516.94 KiB` raw size exceeds the enforced `512 KiB`
-  bundle limit and requires a separate follow-up.
+  Backend at/after `2026-08-27 06:00 Asia/Ho_Chi_Minh`. The UI advances the
+  server time from the response receipt time, so an open page disables reset at
+  the cutoff without requiring a manual refresh. The Admin V2 chunk is
+  `497.10 KiB` raw, below the enforced `512 KiB` bundle limit.
 - The Admin V2 primary-navigation boundary remains unchanged: mobile still has
   the same six direct primary destinations, while Event Preparation is nested
   beneath Operations.

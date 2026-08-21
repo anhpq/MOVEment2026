@@ -1620,7 +1620,8 @@ Acceptance:
 - [x] Reset transaction verifies canonical Station/progress/Event/Final/Team QR/session/gameplay invariants.
 - [x] Runtime map asset uses 1280/1920/2950 WebP variants; original large PNG is retained under `fe/source-assets`.
 - [x] Targeted Backend tests, Backend lint/build, Frontend lint/build, and Prisma generate passed during implementation.
-- [ ] Full Backend Jest suite, disposable DB reset execute/idempotency, `db:verify`, Graphify update, and final diff check remain pending in the active run.
+- [x] Backend Jest suite, Frontend Vitest, lint, i18n/font guards, production build/bundle gate, Graphify update, and final diff check passed.
+- [ ] Disposable database reset execute/idempotency and `db:verify` remain pending; they require a deliberately provisioned non-Production database target.
 - [ ] Manual browser smoke for live counts, hidden-tab polling, fixed nav safe-area, map persistence, WebP network requests, Team QR lifecycle, and Leaderboard polling remains pending.
 - [ ] Production mutation, push, deploy, and Production runtime verification remain out of scope without explicit approval.
 

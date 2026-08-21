@@ -2020,9 +2020,8 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   with a Backend-enforced reset cutoff at 06:00 Asia/Ho_Chi_Minh on 2026-08-27.
 - QR ZIP rendering now includes a payload-free `manifest.csv` alongside
   printable labelled PNGs.
-- Verification passed: Backend reset-script Jest `6/6`, Event Preparation core
-  Jest `4/4`, Backend lint/build; Frontend Event Preparation Vitest `2/2`,
-  Admin V2 entry Vitest `4/4`, and QR manifest Vitest `2/2`. Frontend
-  TypeScript/Vite build completed, but the bundle gate failed: Admin V2 is
-  `516.94 KiB` raw, `4.94 KiB` above the `512 KiB` limit. No Production
+- Verification passed: Backend Jest `16` suites / `207` tests, Frontend Vitest
+  `41` suites / `201` tests, Backend and Frontend lint, i18n parity `461`, Team V2 font
+  guard, and Frontend TypeScript/Vite production build. The bundle gate passed:
+  Admin V2 is `497.10 KiB` raw, below the `512 KiB` limit. No Production
   deployment, mutation, bulk QR rotation, or physical QR scan ran.
