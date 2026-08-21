@@ -119,7 +119,7 @@ export function AdminV2EventPreparationPage() {
 
     {loadError && <Alert showIcon title={t("adminV2.eventPreparation.stale")} type="warning" />}
     {inventory && !inventory.ready && <Alert description={inventory.issues.join(", ")} showIcon title={t("adminV2.eventPreparation.inventoryInvalid")} type="error" />}
-    {status && !resetEnabled && <Alert description={t("adminV2.eventPreparation.resetClosedDescription", {cutoff: formatHcmcDate(status.resetCutoff, language)})} showIcon title={t("adminV2.eventPreparation.resetClosed")} type="warning" />}
+    {status && status.inventory.ready && !resetEnabled && <Alert description={t("adminV2.eventPreparation.resetClosedDescription", {cutoff: formatHcmcDate(status.resetCutoff, language)})} showIcon title={t("adminV2.eventPreparation.resetClosed")} type="warning" />}
 
     <Card title={<Space><SafetyCertificateOutlined />{t("adminV2.eventPreparation.inventoryTitle")}</Space>}>
       <Descriptions column={{xs: 1, sm: 2}} items={[

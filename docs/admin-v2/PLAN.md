@@ -987,3 +987,20 @@ Rollout ban đầu kết thúc ở coexistence. User đã phê duyệt riêng co
   thiếu/rawless theo purpose, không expose lifecycle control và không log secret.
 - Team navigation icon nhận cyan từ route `iconTone`; không style trực tiếp
   `.anticon-team` và không đổi Team icon ngoài navigation.
+
+## Event Preparation implementation record — 2026-08-21
+
+- Added the admin-only route `/admin-v2/operations/event-preparation` as an
+  Operations child. It shows Backend-authoritative inventory and separates
+  bulk QR rotation from gameplay reset.
+- Both destructive actions require the exact confirmation phrase and backup
+  acknowledgement. Rotation invalidates Team sessions and QR old credentials;
+  reset preserves the QR set and Event/Station/Final configuration while
+  clearing rehearsal state and application logs.
+- Reset is disabled in the UI at the server-synchronized cutoff and rejected by
+  Backend at/after `2026-08-27 06:00 Asia/Ho_Chi_Minh`. The page currently ships
+  in the Admin V2 chunk; its `516.94 KiB` raw size exceeds the enforced `512 KiB`
+  bundle limit and requires a separate follow-up.
+- The Admin V2 primary-navigation boundary remains unchanged: mobile still has
+  the same six direct primary destinations, while Event Preparation is nested
+  beneath Operations.

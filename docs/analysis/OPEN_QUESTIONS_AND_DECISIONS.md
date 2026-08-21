@@ -865,11 +865,24 @@ Input `gameType: null`, `undefined`, `standard`, hoặc `STANDARD` normalize th�
 `mapX` và `mapY` hiện là deterministic implementation placeholders theo thứ tự canonical cho đến khi có tọa độ map thật; chúng không phải Business Rule về vị trí thực tế.
 
 Gameplay reset phục vụ rehearsal phải dry-run mặc định. Khi chạy destructive
-execute, mọi target đều cần `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"`;
+CLI execute, mọi target đều cần `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"`;
 Production-like target cần thêm `RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"`.
-Reset phải giữ Team/User identity, vô hiệu hóa session cũ, tạo đúng một active
-Team QR non-expiring cho mỗi Team, khôi phục 17 Station canonical và verify
-invariant trong transaction.
+Admin Event Preparation cũng yêu cầu nhập đúng câu xác nhận và xác nhận backup.
+
+Reset chỉ xóa runtime/rehearsal state: Team session, Team Station progress,
+score event, Final submission, Team aggregate/play state, Team QR usage metadata
+và toàn bộ application `ActivityLog`. Reset giữ nguyên Team/User identity,
+password, Team/Station QR credential, Station/Game/media/map, Event Config và
+Final Challenge config; không được dựng lại Station hoặc hard-code Event time.
+Sau reset, mọi Team active có một row `AVAILABLE` cho từng Station active và
+Team QR vẫn là credential cũ, active, non-expiring.
+
+Bulk QR rotation là thao tác tách biệt, explicit và transactional: revoke toàn
+bộ Team QR/Station QR active, invalidate Team session cũ, sinh một Team QR và
+một cặp CHECK_IN/CHECK_OUT opaque mới cho từng entity active, rồi verify
+inventory. ZIP export gồm PNG QR và `manifest.csv` không chứa raw token, hash
+hoặc URL. Reset rehearsal bị Backend và Admin V2 từ chối tại/sau
+`2026-08-27 06:00:00 Asia/Ho_Chi_Minh`; download ZIP vẫn được phép.
 
 ---
 

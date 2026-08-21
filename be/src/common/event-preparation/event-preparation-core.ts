@@ -253,7 +253,11 @@ export async function resetGameplayInTransaction(
   };
 }
 
-async function createUniqueTeamQrToken(tx: Prisma.TransactionClient, teamId: number) {
+async function createUniqueTeamQrToken(
+  tx: Prisma.TransactionClient,
+  teamId: number,
+  createdByUserId?: number,
+) {
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const rawToken = createSecureQrLoginToken();
     const tokenHash = createQrTokenFingerprint(rawToken);
@@ -261,7 +265,7 @@ async function createUniqueTeamQrToken(tx: Prisma.TransactionClient, teamId: num
       continue;
     }
     await tx.qrLoginToken.create({
-      data: { teamId, tokenHash, rawToken, expiresAt: null },
+      data: { teamId, tokenHash, rawToken, expiresAt: null, createdByUserId },
     });
     return;
   }
@@ -297,6 +301,7 @@ async function createUniqueStationQrToken(
 export async function rotateAllQrInTransaction(
   tx: Prisma.TransactionClient,
   now = new Date(),
+  createdByUserId?: number,
 ): Promise<QrRotationResult> {
   const inventory = await readEventPreparationInventory(tx, now);
   assertEventPreparationInventory(inventory);
@@ -319,7 +324,7 @@ export async function rotateAllQrInTransaction(
     data: { isActive: false, revokedAt: now },
   });
   for (const team of teams) {
-    await createUniqueTeamQrToken(tx, team.id);
+    await createUniqueTeamQrToken(tx, team.id, createdByUserId);
   }
   for (const station of stations) {
     await createUniqueStationQrToken(tx, station.id, QrPurpose.CHECK_IN);

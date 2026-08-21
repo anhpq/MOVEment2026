@@ -986,7 +986,17 @@ Production seed must not print raw secrets or create local test credentials auto
 `npm run reset:gameplay` is dry-run by default. `--execute` requires
 `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"` for all targets and
 `RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"` for Production-like
-targets.
+targets. The reset preserves Team/User identity, Team/Station QR credentials,
+Station/Game content, Event Config, and Final configuration; it clears only
+rehearsal runtime data, Team QR usage metadata, and application Activity Logs.
+
+Admin V2 Event Preparation exposes the same guarded reset before
+`2026-08-27 06:00:00 Asia/Ho_Chi_Minh`; Backend rejects the request at or after
+that cutoff. Its separate bulk QR rotation revokes all current QR credentials,
+invalidates Team sessions, creates one Team QR plus one Check-in/Check-out QR
+pair per active Station, and requires the same typed confirmation plus backup
+acknowledgement. QR ZIP export contains printable PNGs and a secret-free
+`manifest.csv` inventory.
 
 Temporary Production Final Challenge seed override remains enabled through `2026-08-21 23:59:59 Asia/Ho_Chi_Minh`: each seed run overwrites only seed-managed Final Challenge fields with canonical values. Starting `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`, Production seed preserves an existing Final Challenge record and only creates it if missing.
 

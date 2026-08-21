@@ -1623,6 +1623,15 @@ Acceptance:
 - [ ] Full Backend Jest suite, disposable DB reset execute/idempotency, `db:verify`, Graphify update, and final diff check remain pending in the active run.
 - [ ] Manual browser smoke for live counts, hidden-tab polling, fixed nav safe-area, map persistence, WebP network requests, Team QR lifecycle, and Leaderboard polling remains pending.
 - [ ] Production mutation, push, deploy, and Production runtime verification remain out of scope without explicit approval.
+
+## 2026-08-21 Event Preparation and rehearsal handoff
+
+- [x] Reset rehearsal runtime without replacing Station/Event/Final configuration or rotating the verified QR set.
+- [x] Add guarded bulk Team/Station QR rotation with transaction inventory checks and session invalidation.
+- [x] Add Admin V2 Event Preparation route with typed confirmation, backup acknowledgement, server cutoff, and protected API authority.
+- [x] Add a QR ZIP `manifest.csv` that contains no payload, raw token, login URL, or hash.
+- [ ] Before Production use: create and verify a database backup, deploy through the approved `master` workflow, rotate QR once, download/secure the ZIP, scan each QR, then execute reset before the cutoff.
+- [ ] Verify the protected Admin workflow and physical Team/Station QR scan on the Production target; this workspace did not access Production.
 # Final Challenge V2 — completed 2026-08-17
 
 - [x] Final V2 native takeover, manual character cells (space included), success UI và cooldown 1–50 giây.

@@ -2003,3 +2003,26 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Verification PASS: focused tests `14/14`; full Frontend Vitest `174/174`; lint; i18n parity `460`; font guard; TypeScript/Vite production build and bundle budget. One intermediate full run exposed an unrelated async Team QR test flake; its focused rerun passed `5/5` and the final full rerun passed.
 - Local Chrome headless/CDP smoke against the production build passed direct refresh/navigation for `/admin`, `/admin-v2`, all 17 implemented V2 child routes, four Operations links, `/admin-v1`, anonymous, Team-denied, expired-session, and Back/Forward cases. `1440x900`, `1024x768`, and `768x1024` retained the approved six-link navigation with no horizontal page overflow.
 - The 2026-08-19 parity gaps remain open. No Production deploy, physical-device smoke, commit, or push was performed.
+
+## 2026-08-21 Event Preparation, rehearsal reset, and QR artifact manifest
+
+- Added Admin-only Event Preparation status, reset, and bulk QR rotation APIs,
+  protected by exact confirmation, backup acknowledgement, a PostgreSQL
+  transaction advisory lock, and canonical Team/Station/QR inventory checks.
+- Reset now preserves Team/User identity, Team/Station QR credentials,
+  Station/Game/media/map, Event Config, and Final config. It clears only
+  rehearsal runtime data, QR usage metadata, sessions, and application logs;
+  the prior reset behavior that recreated Station/Event data is superseded.
+- Bulk rotation revokes all active credentials, invalidates Team sessions,
+  recreates 1 Team QR plus 2 Station QR per active Station, and records only
+  safe aggregate metadata. Raw tokens are never written to activity logs.
+- Admin V2 Operations now exposes the protected Event Preparation workspace
+  with a Backend-enforced reset cutoff at 06:00 Asia/Ho_Chi_Minh on 2026-08-27.
+- QR ZIP rendering now includes a payload-free `manifest.csv` alongside
+  printable labelled PNGs.
+- Verification passed: Backend reset-script Jest `6/6`, Event Preparation core
+  Jest `4/4`, Backend lint/build; Frontend Event Preparation Vitest `2/2`,
+  Admin V2 entry Vitest `4/4`, and QR manifest Vitest `2/2`. Frontend
+  TypeScript/Vite build completed, but the bundle gate failed: Admin V2 is
+  `516.94 KiB` raw, `4.94 KiB` above the `512 KiB` limit. No Production
+  deployment, mutation, bulk QR rotation, or physical QR scan ran.

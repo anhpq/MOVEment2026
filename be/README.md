@@ -195,6 +195,12 @@ Destructive execution requires explicit guards:
 RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY" npm run reset:gameplay -- --execute
 ```
 
+This command clears only rehearsal runtime data (progress, scores, Final
+submissions, Team sessions, QR usage metadata, and application activity logs).
+It preserves Team/User identity, current Team/Station QR credentials, Station
+and Game content, Event Config, and Final configuration. It validates the
+canonical active inventory before changing data.
+
 Production-like targets also require:
 
 ```bash

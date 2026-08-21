@@ -1,7 +1,7 @@
 # Graph Report - MOVEment2026  (2026-08-21)
 
 ## Corpus Check
-- 343 files · ~508,677 words
+- 343 files · ~509,028 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `14ba0abc`
+- Built from commit: `c1a95cc9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -353,8 +353,8 @@ Cohesion: 0.03
 Nodes (70): 2026-07-29 Runtime Stability Integration, 2026-07-30 Marker anchor and footer reference refinement, 2026-07-30 Team V2 scanner-pin marker refinement, 2026-07-30 V2-owned Detail and map HUD refinement, 2026-07-31 Background-only overlay opacity, 2026-07-31 Centered score-only map header, 2026-07-31 Detail sizing and footer readability, 2026-07-31 Exact Bézier Konva marker reference (+62 more)
 
 ### Community 4 - "dependencies"
-Cohesion: 0.15
-Nodes (12): Business Rule Change, Change Classification, Current Known Documentation Conflicts, Documentation Reconciliation, Documentation Roles, Feature Analysis Lifecycle, Global Reading Priority, Implementation Fix (+4 more)
+Cohesion: 0.14
+Nodes (13): Automatic URL QR Login and Seed Tokens, Business Rule Change, Change Classification, Current Known Documentation Conflicts, Documentation and Workflow, Documentation Reconciliation, Final Challenge, Implementation Fix (+5 more)
 
 ### Community 5 - "devDependencies"
 Cohesion: 0.09
@@ -542,7 +542,7 @@ Nodes (22): 2026-07-29 Runtime Stability Integration, 2026-08-02 Shared accessib
 
 ### Community 52 - "certs/README.md"
 Cohesion: 0.09
-Nodes (23): @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh (+15 more)
+Nodes (23): eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, eslint, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, jsdom (+15 more)
 
 ### Community 53 - "extraction-spec.md"
 Cohesion: 0.14
@@ -873,8 +873,8 @@ Cohesion: 0.33
 Nodes (6): 1. Authentication and Session, Must Update After Change, Read When QR Login Is Included, Relevant Prompts, Required Reading, Scope
 
 ### Community 139 - "Prompt Routing"
-Cohesion: 0.33
-Nodes (6): Automatic URL QR Login and Seed Tokens, Documentation and Workflow, Final Challenge, Prompt Routing, Station Reference Points, Ba Tiêu Ranking, and Excel, Station Score Entry and Limits
+Cohesion: 0.40
+Nodes (5): Documentation Roles, Feature Analysis Lifecycle, Global Reading Priority, MOVEment 2026 - Feature Index, Purpose
 
 ### Community 140 - "2. Phân biệt các loại QR"
 Cohesion: 0.33

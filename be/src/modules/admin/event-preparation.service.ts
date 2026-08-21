@@ -57,7 +57,7 @@ export class EventPreparationService {
     const result = await this.prisma.$transaction(
       async (tx) => {
         await acquireEventPreparationLock(tx);
-        return rotateAllQrInTransaction(tx, now);
+        return rotateAllQrInTransaction(tx, now, userId);
       },
       { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
     );
