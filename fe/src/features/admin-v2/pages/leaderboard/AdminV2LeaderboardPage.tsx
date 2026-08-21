@@ -1,10 +1,11 @@
-import {CrownFilled, SearchOutlined} from "@ant-design/icons";
-import {Alert, Avatar, Badge, Button, Empty, Flex, Input, Skeleton, Space, Table, Tag, Tooltip, Typography, type TableColumnsType} from "antd";
+import {CrownFilled, FileExcelOutlined, QrcodeOutlined, SearchOutlined} from "@ant-design/icons";
+import {Alert, App as AntdApp, Avatar, Badge, Button, Empty, Flex, Input, Skeleton, Space, Table, Tag, Tooltip, Typography, type TableColumnsType} from "antd";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
-import {getLeaderboard, type LeaderboardEntryResponse} from "../../../movement/api";
+import {downloadAdminTeamResults, getLeaderboard, prepareAdminQrCodeExport, type LeaderboardEntryResponse} from "../../../movement/api";
 import {getLocalizedTeamName} from "../../../movement/utils";
+import {downloadQrCodeZip} from "./qrCodeExport";
 
 type LeaderboardState = Readonly<{
   rows: readonly LeaderboardEntryResponse[] | null;
@@ -54,10 +55,13 @@ function RankCell({rank, t}: Readonly<{rank: number; t: (key: string) => string}
 }
 
 export function AdminV2LeaderboardPage() {
+  const {message} = AntdApp.useApp();
   const {t, i18n} = useTranslation();
   const isNarrow = useNarrowAdminV2Layout();
   const [state, setState] = useState(initialState);
   const [query, setQuery] = useState("");
+  const [exportingExcel, setExportingExcel] = useState(false);
+  const [exportingQr, setExportingQr] = useState(false);
 
   const refresh = useCallback(async () => {
     setState((current) => ({...current, error: false, refreshing: true}));
@@ -108,6 +112,28 @@ export function AdminV2LeaderboardPage() {
 
   const isInitialLoading = state.rows === null && !state.error;
   const hasStaleData = state.error && state.rows !== null;
+  const exportExcel = async () => {
+    setExportingExcel(true);
+    try {
+      await downloadAdminTeamResults();
+    } catch {
+      message.error(t("adminV2.leaderboard.exportExcelError"));
+    } finally {
+      setExportingExcel(false);
+    }
+  };
+  const exportQr = async () => {
+    setExportingQr(true);
+    try {
+      const data = await prepareAdminQrCodeExport();
+      const result = await downloadQrCodeZip(data);
+      message.success(t("adminV2.leaderboard.exportQrSuccess", result));
+    } catch {
+      message.error(t("adminV2.leaderboard.exportQrError"));
+    } finally {
+      setExportingQr(false);
+    }
+  };
   return (
     <section className="admin-v2-leaderboard" aria-labelledby="admin-v2-leaderboard-title">
       <Flex align="flex-start" className="admin-v2-leaderboard__heading" gap="middle" justify="space-between" wrap>
@@ -116,7 +142,11 @@ export function AdminV2LeaderboardPage() {
           <Typography.Title id="admin-v2-leaderboard-title" level={1}>{t("adminV2.leaderboard.title")}</Typography.Title>
           <Typography.Paragraph type="secondary">{state.rows === null ? t("adminV2.leaderboard.loadingCount") : t("adminV2.leaderboard.count", {count: state.rows.length})}</Typography.Paragraph>
         </div>
-        <Button loading={state.refreshing} onClick={() => void refresh()}>{t("adminV2.leaderboard.refresh")}</Button>
+        <Space wrap>
+          <Button icon={<FileExcelOutlined aria-hidden="true" />} loading={exportingExcel} onClick={() => void exportExcel()}>{t("adminV2.leaderboard.exportExcel")}</Button>
+          <Button icon={<QrcodeOutlined aria-hidden="true" />} loading={exportingQr} onClick={() => void exportQr()}>{t("adminV2.leaderboard.exportQr")}</Button>
+          <Button loading={state.refreshing} onClick={() => void refresh()}>{t("adminV2.leaderboard.refresh")}</Button>
+        </Space>
       </Flex>
 
       {state.error && <Alert action={<Button size="small" onClick={() => void refresh()}>{t("adminV2.leaderboard.retry")}</Button>} className="admin-v2-leaderboard__alert" description={hasStaleData ? t("adminV2.leaderboard.staleDescription") : t("adminV2.leaderboard.errorDescription")} showIcon title={hasStaleData ? t("adminV2.leaderboard.stale") : t("adminV2.leaderboard.error")} type={hasStaleData ? "warning" : "error"} />}

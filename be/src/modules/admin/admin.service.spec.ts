@@ -334,6 +334,96 @@ describe('AdminService Team QR login lifecycle', () => {
     );
   });
 
+  it('prepares a QR ZIP inventory without rotating exportable active tokens', async () => {
+    mockPrisma.team.findMany.mockResolvedValueOnce([
+      {id: 1, qrLoginTokens: [{id: 11, rawToken: 'existing-team-token'}]},
+    ]);
+    mockPrisma.station.findMany.mockResolvedValueOnce([
+      {
+        id: 'ST001',
+        qrTokens: [
+          {id: 21, purpose: QrPurpose.CHECK_IN, rawToken: 'existing-check-in', expiresAt: null},
+          {id: 22, purpose: QrPurpose.CHECK_OUT, rawToken: 'existing-check-out', expiresAt: null},
+        ],
+      },
+    ]);
+
+    const result = await service.qrCodesReport(1);
+
+    expect(result.teams).toEqual([
+      {teamId: 1, loginUrl: 'https://movement.example/qr-login?token=existing-team-token'},
+    ]);
+    expect(result.stations).toEqual([
+      {stationId: 'ST001', purpose: QrPurpose.CHECK_IN, rawToken: 'existing-check-in'},
+      {stationId: 'ST001', purpose: QrPurpose.CHECK_OUT, rawToken: 'existing-check-out'},
+    ]);
+    expect(result.repaired).toEqual({teamIds: [], stationTokens: []});
+    expect(mockPrisma.qrLoginToken.updateMany).not.toHaveBeenCalled();
+    expect(mockPrisma.qrToken.updateMany).not.toHaveBeenCalled();
+    expect(mockPrisma.$transaction).toHaveBeenCalledWith(
+      expect.any(Function),
+      {isolationLevel: 'Serializable'},
+    );
+  });
+
+  it('repairs only missing or rawless QR credentials and is idempotent on retry', async () => {
+    const createdStationTokens = new Map<string, string>();
+    mockPrisma.team.findMany
+      .mockResolvedValueOnce([{
+        id: 2,
+        qrLoginTokens: [{id: 12, rawToken: 'expired-team-token', expiresAt: new Date(0)}],
+      }])
+      .mockResolvedValueOnce([{id: 2, qrLoginTokens: [{id: 13, rawToken: 'repaired-team-token'}]}]);
+    mockPrisma.station.findMany
+      .mockResolvedValueOnce([{
+        id: 'ST001',
+        qrTokens: [
+          {id: 21, purpose: QrPurpose.CHECK_IN, rawToken: 'existing-check-in', expiresAt: null},
+          {id: 22, purpose: QrPurpose.CHECK_OUT, rawToken: null, expiresAt: null},
+        ],
+      }])
+      .mockResolvedValueOnce([{
+        id: 'ST001',
+        qrTokens: [
+          {id: 21, purpose: QrPurpose.CHECK_IN, rawToken: 'existing-check-in', expiresAt: null},
+          {id: 23, purpose: QrPurpose.CHECK_OUT, rawToken: 'repaired-check-out', expiresAt: null},
+        ],
+      }]);
+    mockPrisma.qrLoginToken.create.mockResolvedValue({
+      id: 13,
+      teamId: 2,
+      rawToken: 'repaired-team-token',
+      expiresAt: null,
+      usageCount: 0,
+      createdAt: new Date(),
+    });
+    mockPrisma.qrToken.create.mockImplementation(({data}) => {
+      const rawToken = data.rawToken as string;
+      createdStationTokens.set(data.purpose, rawToken);
+      return Promise.resolve({id: 23, createdAt: new Date(), expiresAt: null, ...data});
+    });
+
+    const first = await service.qrCodesReport(1);
+    const repairedStationToken = createdStationTokens.get(QrPurpose.CHECK_OUT);
+    expect(first.repaired.teamIds).toEqual([2]);
+    expect(first.repaired.stationTokens).toEqual([
+      {stationId: 'ST001', purpose: QrPurpose.CHECK_OUT},
+    ]);
+    expect(first.stations.find(({purpose}) => purpose === QrPurpose.CHECK_IN)?.rawToken)
+      .toBe('existing-check-in');
+    expect(repairedStationToken).toMatch(/^MV26-SQ1-O-/);
+    expect(mockPrisma.qrToken.updateMany).toHaveBeenCalledTimes(1);
+    expect(mockPrisma.qrToken.updateMany).toHaveBeenCalledWith(expect.objectContaining({
+      where: {stationId: 'ST001', purpose: QrPurpose.CHECK_OUT, isActive: true},
+    }));
+
+    await service.qrCodesReport(1);
+    expect(mockPrisma.qrLoginToken.create).toHaveBeenCalledTimes(1);
+    expect(mockPrisma.qrToken.create).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(mockActivityLog.log.mock.calls)).not.toContain('repaired-team-token');
+    expect(JSON.stringify(mockActivityLog.log.mock.calls)).not.toContain(repairedStationToken);
+  });
+
   it('rotates by revoking the active token before creating a replacement', async () => {
     await service.generateTeamQrLoginToken(1, 7, {}, true);
 

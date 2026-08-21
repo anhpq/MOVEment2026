@@ -81,6 +81,8 @@ const adminV2Resources = {
       leaderboard: {
         title: "Bảng xếp hạng", count: "{{count}} đội", loadingCount: "Đang tải số lượng đội…",
         refresh: "Làm mới", retry: "Thử lại", error: "Không thể tải Bảng xếp hạng", errorDescription: "Hãy thử lại để tải bảng xếp hạng mới nhất.",
+        exportExcel: "Export Excel", exportExcelError: "Không thể tải file Excel",
+        exportQr: "Export toàn bộ QR", exportQrError: "Không thể tạo file ZIP QR", exportQrSuccess: "Đã tạo ZIP gồm {{total}} QR; {{repaired}} mã được bổ sung hoặc thay riêng.",
         stale: "Không thể làm mới Bảng xếp hạng", staleDescription: "Dữ liệu gần nhất vẫn đang hiển thị. Hãy thử lại để cập nhật.",
         searchLabel: "Tìm kiếm bảng xếp hạng", searchPlaceholder: "Tìm theo tên hoặc ID đội",
         columns: {rank: "Hạng", team: "Đội", score: "Điểm", stations: "Trạm hoàn thành", time: "Tổng thời gian"},
@@ -244,6 +246,8 @@ const adminV2Resources = {
       leaderboard: {
         title: "Leaderboard", count: "{{count}} teams", loadingCount: "Loading team count…",
         refresh: "Refresh", retry: "Retry", error: "Unable to load Leaderboard", errorDescription: "Retry to load the latest Leaderboard.",
+        exportExcel: "Export Excel", exportExcelError: "Unable to download the Excel file",
+        exportQr: "Export all QR codes", exportQrError: "Unable to create the QR ZIP file", exportQrSuccess: "Created a ZIP with {{total}} QR codes; {{repaired}} credentials were added or replaced individually.",
         stale: "Unable to refresh Leaderboard", staleDescription: "The most recent data is still shown. Retry to update it.",
         searchLabel: "Search leaderboard", searchPlaceholder: "Search Team name or ID",
         columns: {rank: "Rank", team: "Team", score: "Score", stations: "Stations completed", time: "Total time"},

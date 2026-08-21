@@ -39,6 +39,7 @@
 .admin-v2-nav-link:hover { background: rgba(255, 255, 255, .09); color: #fff; }
 .admin-v2-nav-link.is-active { background: var(--admin-v2-coral); color: #fff; font-weight: 700; }
 .admin-v2-nav-link .anticon { font-size: 1.1rem; }
+.admin-v2-nav-icon.is-cyan { color: var(--admin-v2-cyan); }
 [data-admin-v2-navigation-density="compact"] .admin-v2-sidebar { padding-block: var(--admin-v2-space-2); }
 [data-admin-v2-navigation-density="compact"] .admin-v2-sidebar__brand { padding-bottom: var(--admin-v2-space-2); }
 [data-admin-v2-navigation-density="compact"] .admin-v2-sidebar__nav { margin-top: var(--admin-v2-space-2); }

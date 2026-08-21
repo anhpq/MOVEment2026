@@ -322,6 +322,12 @@ export class AdminController {
     res.send(report.buffer);
   }
 
+  @Post('reports/qr-codes')
+  @Header('Cache-Control', 'no-store')
+  qrCodesReport(@CurrentAuth() auth: AuthContext) {
+    return this.adminService.qrCodesReport(this.requireAdminId(auth));
+  }
+
   @Get('reports/summary.xlsx')
   async summaryReport(@CurrentAuth() auth: AuthContext, @Res() res: Response) {
     const report = await this.adminService.summaryReport(this.requireAdminId(auth));

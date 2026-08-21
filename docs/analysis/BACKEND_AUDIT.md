@@ -1,3 +1,23 @@
+# 2026-08-21 Admin V2 Leaderboard exports and Team navigation icon
+
+- Restored the Team Results Excel action on `/admin-v2/leaderboard` by reusing
+  `GET /api/admin/reports/team-results.xlsx`; workbook and ranking logic did not change.
+- Added Admin-only `POST /api/admin/reports/qr-codes` to prepare active Team and
+  Station QR inventory. The Serializable transaction preserves exportable active
+  credentials, repairs only missing/expired/rawless credentials by entity/purpose,
+  and returns no hashes. Audit metadata contains counts/identifiers, not raw tokens.
+- Frontend lazily loads JSZip, creates one labelled PNG per QR, and downloads a
+  timestamped ZIP. Station notes are above the image; Team numbers are below.
+- Applied cyan to the Admin V2 Teams navigation icon through route `iconTone`,
+  not through a global `.anticon-team` selector.
+- Verification: Backend targeted `45/45`, full Backend `203/203`, Backend lint/build;
+  Frontend targeted `22/22`, full Frontend `197/197`, Frontend lint/i18n/font/build.
+  An earlier concurrent full-suite run hit three 5-second test timeouts; the
+  affected direct-route/Score Queue tests and the final full suite all passed on
+  isolated rerun. Vite retains the generic chunk warning; enforced bundle budget
+  passed (`505.66 KiB` Admin V2 raw, limit `512 KiB`).
+- Not performed: Production deploy/runtime verification or physical print/scanner QA.
+
 # 2026-08-20 Team V2 compact footer, closed Stations and ST014 reference
 
 - Footer phải hiển thị canonical Team name không có leading zero, V2 footer và

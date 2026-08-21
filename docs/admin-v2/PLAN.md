@@ -978,3 +978,12 @@ Rollout ban đầu kết thúc ở coexistence. User đã phê duyệt riêng co
 1. Trong `fe/src/features/movement/routes.tsx`, đổi target của route `ADMIN_PRIMARY_PATH` từ `ADMIN_V2_HOME_PATH` sang `ADMIN_V1_HOME_PATH`; không đổi login/session/authorization code. Vì Admin post-login và fallback đều đi qua `/admin`, đây là một route switch tập trung.
 2. Giữ `/admin-v2/*`, `/admin-v1/*` và toàn bộ V1 route/component/API nguyên vẹn để có thể so sánh hoặc khôi phục lại V2 sau đó.
 3. Chạy focused routing tests, full Frontend test/lint/i18n/font/build và direct-route smoke trước khi deploy rollback. Deploy vẫn là thao tác riêng, không thuộc record này.
+
+## Leaderboard export completion record — 2026-08-21
+
+- `/admin-v2/leaderboard` có lại Team Results Excel action dùng endpoint hiện có
+  và có bulk QR ZIP action cho Team/Station active.
+- Bulk QR preparation giữ nguyên credential export được, chỉ repair credential
+  thiếu/rawless theo purpose, không expose lifecycle control và không log secret.
+- Team navigation icon nhận cyan từ route `iconTone`; không style trực tiếp
+  `.anticon-team` và không đổi Team icon ngoài navigation.

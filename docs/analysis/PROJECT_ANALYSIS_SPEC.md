@@ -771,6 +771,14 @@ response body.
 
 Admin can export a new one-worksheet Team Results `.xlsx` file with exactly one row per non-deleted Team.
 
+Admin V2 Leaderboard exposes this existing Team Results download and a bulk QR
+ZIP export. The QR export covers active Teams and active Stations, keeps every
+active credential whose raw value can still be rendered, provisions only a
+missing credential, and replaces only an active Legacy credential whose raw
+value is unavailable. Station PNGs label Check-in/Check-out above the QR; Team
+Login PNGs label the Team number below it. Raw token text is not printed or
+logged.
+
 Base columns are `Team Code`, `Team Name`, `Captain Name`, `Username`, `Total Stations Completed`, `Total Play Time`, `Total Score`, `Computed Score`, `Rank`, `Final Submitted At`, `Final Rank`, and `Final Bonus Score`.
 
 `Team Code` is `Team.id`; the export omits duplicate `Team ID`, `Team Color`, `Team Status`, `Total Stations`, and `Final Challenge Status` columns.

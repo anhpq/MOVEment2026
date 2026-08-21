@@ -47,6 +47,20 @@ import {
 const DEFAULT_STATION_MAX_POINTS = 30;
 const MAX_STATION_IMAGES = 10;
 const MAX_STATION_IMAGE_URL_LENGTH = 2048;
+const QR_EXPORT_TRANSACTION_ATTEMPTS = 3;
+
+type QrCodeExportData = {
+  teams: Array<{ teamId: number; loginUrl: string }>;
+  stations: Array<{
+    stationId: string;
+    purpose: QrPurpose;
+    rawToken: string;
+  }>;
+  repaired: {
+    teamIds: number[];
+    stationTokens: Array<{ stationId: string; purpose: QrPurpose }>;
+  };
+};
 
 @Injectable()
 export class AdminService {
@@ -1039,6 +1053,138 @@ export class AdminService {
     });
 
     return { fileName, buffer };
+  }
+
+  async qrCodesReport(userId: number) {
+    let exportData: QrCodeExportData | undefined;
+
+    for (let attempt = 0; attempt < QR_EXPORT_TRANSACTION_ATTEMPTS; attempt += 1) {
+      try {
+        exportData = await this.prisma.$transaction(
+          async (tx) => {
+            const now = new Date();
+            const [teams, stations] = await Promise.all([
+              tx.team.findMany({
+                where: { status: 'ACTIVE' },
+                orderBy: { id: 'asc' },
+                select: {
+                  id: true,
+                  qrLoginTokens: {
+                    where: {
+                      isActive: true,
+                      consumedAt: null,
+                      revokedAt: null,
+                    },
+                    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+                  },
+                },
+              }),
+              tx.station.findMany({
+                where: { isActive: true },
+                orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+                select: {
+                  id: true,
+                  qrTokens: {
+                    where: { isActive: true, revokedAt: null },
+                    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+                  },
+                },
+              }),
+            ]);
+
+            const result: QrCodeExportData = {
+              teams: [],
+              stations: [],
+              repaired: { teamIds: [], stationTokens: [] },
+            };
+
+            for (const team of teams) {
+              const existing = team.qrLoginTokens.find(
+                (token) => (!token.expiresAt || token.expiresAt.getTime() > now.getTime())
+                  && typeof token.rawToken === 'string'
+                  && token.rawToken.trim(),
+              );
+              if (existing?.rawToken) {
+                result.teams.push({
+                  teamId: team.id,
+                  loginUrl: this.buildQrLoginUrl(existing.rawToken),
+                });
+                continue;
+              }
+
+              const replacement = await this.replaceTeamQrLoginToken(
+                tx,
+                userId,
+                team.id,
+                createSecureQrLoginToken(),
+              );
+              result.teams.push({ teamId: team.id, loginUrl: replacement.qrLoginUrl });
+              result.repaired.teamIds.push(team.id);
+            }
+
+            for (const station of stations) {
+              for (const purpose of [QrPurpose.CHECK_IN, QrPurpose.CHECK_OUT]) {
+                const existing = station.qrTokens.find(
+                  (token) => token.purpose === purpose
+                    && (!token.expiresAt || token.expiresAt.getTime() > now.getTime())
+                    && typeof token.rawToken === 'string'
+                    && token.rawToken.trim(),
+                );
+                if (existing?.rawToken) {
+                  result.stations.push({
+                    stationId: station.id,
+                    purpose,
+                    rawToken: existing.rawToken,
+                  });
+                  continue;
+                }
+
+                const replacement = await this.createStationQrToken(tx, station.id, purpose);
+                result.stations.push({
+                  stationId: station.id,
+                  purpose,
+                  rawToken: replacement.rawToken,
+                });
+                result.repaired.stationTokens.push({ stationId: station.id, purpose });
+              }
+            }
+
+            return result;
+          },
+          { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+        );
+        break;
+      } catch (error) {
+        const retryable = error instanceof Prisma.PrismaClientKnownRequestError
+          && error.code === 'P2034';
+        if (!retryable || attempt === QR_EXPORT_TRANSACTION_ATTEMPTS - 1) {
+          throw error;
+        }
+      }
+    }
+
+    if (!exportData) {
+      throw new BadRequestException('QR_EXPORT_PREPARATION_FAILED');
+    }
+
+    const generatedAt = new Date();
+    const fileName = `movement-2026-qr-codes-${formatHcmcTimestampForFileName(generatedAt)}.zip`;
+    await this.activityLog.log({
+      actorType: ActorType.USER,
+      actorId: userId,
+      userId,
+      action: 'EXPORT_QR_ARTIFACTS',
+      entityType: 'REPORT',
+      entityId: fileName,
+      metadata: {
+        teams: exportData.teams.length,
+        stationTokens: exportData.stations.length,
+        repairedTeamIds: exportData.repaired.teamIds,
+        repairedStationTokens: exportData.repaired.stationTokens,
+      },
+    });
+
+    return { fileName, generatedAt, ...exportData };
   }
 
   async summaryReport(userId: number) {

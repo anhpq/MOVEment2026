@@ -20,6 +20,14 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-21: Admin V2 Leaderboard tại `/admin-v2/leaderboard` có action tải
+  Team Results Excel từ endpoint authoritative hiện có và action export một ZIP
+  chứa toàn bộ QR của Team/Station đang active. Bulk QR export giữ nguyên mọi
+  active token có `raw_token`; chỉ provision credential đang thiếu và chỉ thay
+  token Legacy active không có `raw_token`, không rotate credential đang in lại
+  được. Station PNG ghi `MÃ CHECK IN/OUT - TRẠM NN` phía trên; Team Login PNG ghi
+  `TEAM NN` phía dưới. Export không in raw token thành text và không log secret.
+
 - 2026-08-20: Footer trái của Team Gameplay V2 hiển thị `BXH`/`RANK` và mở
   Leaderboard khi Team không chơi Station. Khi có Station `In Progress`, cùng
   control này phải thay bằng thời gian chơi `HH:MM:SS`; bấm vào mở V2 Station
@@ -238,6 +246,7 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | Team QR rotation | Admin có thể rotate Team QR Login token. Token cũ phải bị revoke. |
 | Team QR revocation | Admin có thể revoke Team QR Login token mà không cần xóa Team. |
 | Admin V2 QR boundary | Admin V2 chỉ hiển thị Team QR preview, status/info khi có và Download PNG; không expose generate, rotate hoặc revoke. Backend/V1 lifecycle hiện có không thay đổi bởi giới hạn UI này. |
+| Admin V2 bulk QR export | Leaderboard Admin V2 cho phép tải một ZIP gồm QR Login của mọi Team `ACTIVE` và cặp `CHECK_IN`/`CHECK_OUT` của mọi Station active. Export giữ nguyên active credential có `raw_token`; credential thiếu/hết hiệu lực được provision, còn active Legacy credential không có `raw_token` được thay riêng để có thể in lại. Không thay credential active khác, không thêm lifecycle control, không cache/log raw token và chỉ encode secret bên trong QR image. |
 | Admin raw token display | Backend lưu raw Team QR Login token cho token mới hoặc token được seed repair/rotate để Admin có thể xem và in lại QR Login dạng string/URL. |
 | QR Login error | Nếu auto-login thất bại, frontend phải hiển thị lỗi rõ ràng và cho phép thử lại hoặc dùng login thủ công. |
 

@@ -1,5 +1,14 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Admin V2 Leaderboard exports — 2026-08-21
+
+- [x] Restore Team Results Excel download on `/admin-v2/leaderboard`.
+- [x] Export active Team Login and Station Check-in/Check-out QR as labelled PNGs in one ZIP.
+- [x] Preserve exportable active credentials and repair only missing/rawless credential scope.
+- [x] Apply cyan to the Teams navigation icon through its route metadata.
+- [ ] Perform physical print/scan QA for representative Team, Check-in and Check-out PNGs.
+- [ ] Verify export against Production data after an explicitly authorized deploy.
+
 ## Team V2 compact footer, closed Stations and ST014 reference — 2026-08-20
 
 - [x] Hiển thị `Đội 03`/`Team 03` thành `Đội 3`/`Team 3` chỉ ở footer V2 và giữ

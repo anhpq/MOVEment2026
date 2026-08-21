@@ -291,15 +291,5 @@
   "289": "migration.sql",
   "290": "migration.sql",
   "291": "migration.sql",
-  "292": "migration.sql",
-  "293": "migration.sql",
-  "294": "migration.sql",
-  "295": "migration.sql",
-  "296": "migration.sql",
-  "297": "migration.sql",
-  "298": "migration.sql",
-  "299": "migration.sql",
-  "300": "AdminV2SettingsPage.test.tsx",
-  "302": "QrLoginPage.tsx",
-  "304": "TeamV2QrScanner.test.tsx"
+  "292": "migration.sql"
 }

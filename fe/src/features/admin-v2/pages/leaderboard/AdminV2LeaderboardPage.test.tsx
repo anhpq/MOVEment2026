@@ -1,4 +1,5 @@
-import {render, screen} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
+import {App as AntdApp} from "antd";
 import userEvent from "@testing-library/user-event";
 import {MemoryRouter} from "react-router-dom";
 import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
@@ -6,8 +7,14 @@ import i18n from "../../../movement/i18n";
 import {ensureAdminV2Resources} from "../../i18n/resources";
 import {AdminV2LeaderboardPage} from "./AdminV2LeaderboardPage";
 
-const api = vi.hoisted(() => ({getLeaderboard: vi.fn()}));
+const api = vi.hoisted(() => ({
+  downloadAdminTeamResults: vi.fn(),
+  getLeaderboard: vi.fn(),
+  prepareAdminQrCodeExport: vi.fn(),
+}));
+const qrExport = vi.hoisted(() => ({downloadQrCodeZip: vi.fn()}));
 vi.mock("../../../movement/api", () => api);
+vi.mock("./qrCodeExport", () => qrExport);
 
 const rows = [
   {rank: 1, teamId: 7, teamName: "Team 7", totalPoints: 120, completedStations: 4, totalPlaySeconds: 2400},
@@ -16,7 +23,7 @@ const rows = [
 ];
 
 function renderPage() {
-  return render(<MemoryRouter><AdminV2LeaderboardPage /></MemoryRouter>);
+  return render(<AntdApp><MemoryRouter><AdminV2LeaderboardPage /></MemoryRouter></AntdApp>);
 }
 
 describe("AdminV2LeaderboardPage", () => {
@@ -29,6 +36,15 @@ describe("AdminV2LeaderboardPage", () => {
     });
     await i18n.changeLanguage("en");
     api.getLeaderboard.mockResolvedValue(rows);
+    api.downloadAdminTeamResults.mockResolvedValue(undefined);
+    api.prepareAdminQrCodeExport.mockResolvedValue({
+      fileName: "movement-2026-qr-codes.zip",
+      generatedAt: "2026-08-20T00:00:00.000Z",
+      teams: [],
+      stations: [],
+      repaired: {teamIds: [], stationTokens: []},
+    });
+    qrExport.downloadQrCodeZip.mockResolvedValue({total: 59, repaired: 0});
   });
 
   afterEach(() => {
@@ -70,5 +86,19 @@ describe("AdminV2LeaderboardPage", () => {
     await user.type(screen.getByRole("searchbox", {name: "Search leaderboard"}), "team 09");
     expect(screen.queryByText("Team 07")).not.toBeInTheDocument();
     expect(screen.getByText("Team 09")).toBeVisible();
+  });
+
+  it("downloads Team Results Excel and the complete QR ZIP from the page header", async () => {
+    const user = userEvent.setup();
+    renderPage();
+
+    await user.click(screen.getByRole("button", {name: "Export Excel"}));
+    expect(api.downloadAdminTeamResults).toHaveBeenCalledTimes(1);
+
+    await user.click(screen.getByRole("button", {name: "Export all QR codes"}));
+    await waitFor(() => expect(api.prepareAdminQrCodeExport).toHaveBeenCalledTimes(1));
+    expect(qrExport.downloadQrCodeZip).toHaveBeenCalledWith(
+      expect.objectContaining({fileName: "movement-2026-qr-codes.zip"}),
+    );
   });
 });

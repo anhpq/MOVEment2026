@@ -668,6 +668,27 @@ export async function downloadAdminTeamResults() {
   await downloadFile('/api/admin/reports/team-results.xlsx', 'movement-2026-team-results.xlsx')
 }
 
+export type AdminQrCodeExportResponse = {
+  fileName: string
+  generatedAt: string
+  teams: Array<{teamId: number; loginUrl: string}>
+  stations: Array<{
+    stationId: string
+    purpose: 'CHECK_IN' | 'CHECK_OUT'
+    rawToken: string
+  }>
+  repaired: {
+    teamIds: number[]
+    stationTokens: Array<{
+      stationId: string
+      purpose: 'CHECK_IN' | 'CHECK_OUT'
+    }>
+  }
+}
+
+export const prepareAdminQrCodeExport = () =>
+  apiPost<AdminQrCodeExportResponse>('/api/admin/reports/qr-codes', {})
+
 async function downloadFile(path: string, fallbackFileName: string) {
   const {blob, fileName} = await apiDownloadFile(path, fallbackFileName)
   const objectUrl = URL.createObjectURL(blob)

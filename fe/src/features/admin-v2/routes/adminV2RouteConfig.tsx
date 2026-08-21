@@ -29,12 +29,13 @@ export type AdminV2RouteDefinition = Readonly<{
   path: string;
   labelKey: string;
   icon: AdminV2Icon;
+  iconTone?: "cyan";
   parentKey?: "operations";
 }>;
 
 export const adminV2PrimaryRoutes: readonly AdminV2RouteDefinition[] = [
   {key: "dashboard", path: "/admin-v2/dashboard", labelKey: "adminV2.nav.dashboard", icon: DashboardOutlined},
-  {key: "teams", path: "/admin-v2/teams", labelKey: "adminV2.nav.teams", icon: TeamOutlined},
+  {key: "teams", path: "/admin-v2/teams", labelKey: "adminV2.nav.teams", icon: TeamOutlined, iconTone: "cyan"},
   {key: "stations", path: "/admin-v2/stations", labelKey: "adminV2.nav.stations", icon: EnvironmentOutlined},
   {key: "leaderboard", path: "/admin-v2/leaderboard", labelKey: "adminV2.nav.leaderboard", icon: TrophyOutlined},
   {key: "operations", path: "/admin-v2/operations", labelKey: "adminV2.nav.operations", icon: ToolOutlined},
