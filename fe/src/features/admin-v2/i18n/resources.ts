@@ -20,6 +20,7 @@ const adminV2Resources = {
         eventControl: "Điều phối sự kiện",
         finalChallenge: "Thử thách cuối cùng",
         activityLogs: "Nhật ký hoạt động",
+        eventPreparation: "Chuẩn bị sự kiện",
       },
       header: {
         pageContext: "Khu vực quản trị",
@@ -44,6 +45,7 @@ const adminV2Resources = {
           eventControl: "Quản lý mốc đóng Check-in, bắt đầu Final và cấu hình thời gian.",
           finalChallenge: "Cập nhật cấu hình Final và theo dõi lượt nộp.",
           activityLogs: "Tra cứu lịch sử vận hành và chi tiết kỹ thuật đã lọc dữ liệu nhạy cảm.",
+          eventPreparation: "Tạo bộ QR mới và làm sạch dữ liệu rehearsal trước giờ khóa vận hành.",
         },
       },
       settings: {
@@ -141,6 +143,14 @@ const adminV2Resources = {
         timezone: {title: "Timezone", description: "Mốc thời gian được diễn giải trong timezone này. Nhập IANA timezone hợp lệ, ví dụ Asia/Ho_Chi_Minh.", label: "Timezone cấu hình", required: "Timezone là bắt buộc.", invalid: "Nhập IANA timezone hợp lệ."},
         requiredTime: "Chọn thời gian hợp lệ.", save: "Lưu cấu hình", saveSuccess: "Đã cập nhật cấu hình sự kiện", saveError: "Không thể cập nhật cấu hình sự kiện",
       },
+      eventPreparation: {
+        title: "Chuẩn bị sự kiện", subtitle: "Quản lý bộ QR rehearsal và làm sạch dữ liệu gameplay trước Event chính thức.", refresh: "Làm mới", retry: "Thử lại",
+        loadError: "Không thể tải trạng thái chuẩn bị", loadErrorDescription: "Hãy thử lại để tải inventory hiện tại.", stale: "Không thể làm mới trạng thái chuẩn bị",
+        inventoryTitle: "Kiểm tra inventory", teams: "Đội", stations: "Trạm hoạt động", games: "Game hoạt động", teamQr: "Team QR hoạt động", stationQr: "Station QR hoạt động", status: "Trạng thái", ready: "Sẵn sàng", notReady: "Chưa sẵn sàng", inventoryInvalid: "Inventory không hợp lệ",
+        rotateCardTitle: "Tạo bộ QR mới", rotateDescription: "Thu hồi toàn bộ Team QR và Station QR cũ, tạo một bộ QR mới, rồi tải ZIP từ Bảng xếp hạng để in.", rotate: "Tạo QR mới", rotateTitle: "Tạo toàn bộ QR mới?", rotateConfirm: "QR cũ sẽ mất hiệu lực ngay và mọi Team session hiện tại sẽ bị đăng xuất.", rotateSuccess: "Đã tạo {{teams}} Team QR và {{stations}} Station QR mới.", rotateError: "Không thể tạo bộ QR mới.",
+        resetCardTitle: "Reset dữ liệu rehearsal", resetDescription: "Xóa toàn bộ gameplay rehearsal, session và Activity Log nhưng giữ nguyên QR và cấu hình hiện tại. Nút bị khóa từ {{cutoff}} (Asia/Ho_Chi_Minh).", reset: "Reset rehearsal", resetTitle: "Reset dữ liệu rehearsal?", resetConfirm: "Thao tác này không thể hoàn tác: toàn bộ progress, điểm, lượt nộp Final, session và Activity Log sẽ bị xóa. QR, Station, Event Config và Final Config vẫn giữ nguyên.", resetSuccess: "Đã reset {{rows}} progress rows.", resetError: "Không thể reset dữ liệu rehearsal.", resetClosed: "Reset rehearsal đã bị khóa", resetClosedDescription: "Reset chỉ khả dụng trước {{cutoff}} (Asia/Ho_Chi_Minh).",
+        confirmationLabel: "Câu xác nhận", confirmationPlaceholder: "Nhập đúng câu xác nhận", backupConfirmed: "Tôi đã xác nhận backup trước khi tiếp tục.",
+      },
       activityLogs: {
         title: "Nhật ký hoạt động", loadingCount: "Đang tải nhật ký…", count: "{{visible}} / {{count}} bản ghi đang hiển thị", refresh: "Làm mới", retry: "Thử lại",
         error: "Không thể tải nhật ký hoạt động", errorDescription: "Hãy thử lại để tải lịch sử vận hành mới nhất.", stale: "Không thể làm mới nhật ký", staleDescription: "Dữ liệu gần nhất vẫn đang hiển thị.",
@@ -185,6 +195,7 @@ const adminV2Resources = {
         eventControl: "Event Control",
         finalChallenge: "Final Challenge",
         activityLogs: "Activity Logs",
+        eventPreparation: "Event Preparation",
       },
       header: {
         pageContext: "Administration workspace",
@@ -209,6 +220,7 @@ const adminV2Resources = {
           eventControl: "Manage Station check-in closing, Final start, and event timing settings.",
           finalChallenge: "Update Final configuration and review submissions.",
           activityLogs: "Review operational history and sanitized technical details.",
+          eventPreparation: "Create a new QR set and clear rehearsal data before the operational lock.",
         },
       },
       settings: {
@@ -305,6 +317,14 @@ const adminV2Resources = {
         notifications: {title: "Notifications", description: "These values retain their existing Backend semantics.", notifyBefore: "Notify before Final (minutes)", cooldown: "Cancel cooldown (minutes)", notifyBounds: "Enter a whole number of 1 or more.", cooldownBounds: "Enter a whole number of 0 or more."},
         timezone: {title: "Timezone", description: "Times are interpreted in this timezone. Enter a valid IANA timezone, for example Asia/Ho_Chi_Minh.", label: "Configured timezone", required: "Timezone is required.", invalid: "Enter a valid IANA timezone."},
         requiredTime: "Select a valid time.", save: "Save configuration", saveSuccess: "Event configuration updated", saveError: "Unable to update event configuration",
+      },
+      eventPreparation: {
+        title: "Event Preparation", subtitle: "Manage rehearsal QR credentials and clear gameplay data before the official Event.", refresh: "Refresh", retry: "Retry",
+        loadError: "Unable to load preparation status", loadErrorDescription: "Retry to load the current inventory.", stale: "Unable to refresh preparation status",
+        inventoryTitle: "Inventory check", teams: "Teams", stations: "Active Stations", games: "Active Games", teamQr: "Active Team QR", stationQr: "Active Station QR", status: "Status", ready: "Ready", notReady: "Not ready", inventoryInvalid: "Inventory is invalid",
+        rotateCardTitle: "Create new QR set", rotateDescription: "Revoke every current Team and Station QR, create a new QR set, then download the ZIP from Leaderboard for printing.", rotate: "Create new QR", rotateTitle: "Create all new QR codes?", rotateConfirm: "Current QR codes become invalid immediately and all current Team sessions will be signed out.", rotateSuccess: "Created {{teams}} Team QR codes and {{stations}} Station QR codes.", rotateError: "Unable to create the new QR set.",
+        resetCardTitle: "Reset rehearsal data", resetDescription: "Delete all rehearsal gameplay, sessions, and Activity Logs while retaining the current QR set and configuration. The button locks at {{cutoff}} (Asia/Ho_Chi_Minh).", reset: "Reset rehearsal", resetTitle: "Reset rehearsal data?", resetConfirm: "This cannot be undone: all progress, scores, Final submissions, sessions, and Activity Logs will be deleted. QR codes, Stations, Event Config, and Final Config are retained.", resetSuccess: "Reset {{rows}} progress rows.", resetError: "Unable to reset rehearsal data.", resetClosed: "Rehearsal reset is locked", resetClosedDescription: "Reset is available only before {{cutoff}} (Asia/Ho_Chi_Minh).",
+        confirmationLabel: "Confirmation phrase", confirmationPlaceholder: "Enter the exact confirmation phrase", backupConfirmed: "I confirmed a backup before continuing.",
       },
       activityLogs: {
         title: "Activity Logs", loadingCount: "Loading activity logs…", count: "Showing {{visible}} of {{count}} logs", refresh: "Refresh", retry: "Retry",

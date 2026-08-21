@@ -1,19 +1,13 @@
 import 'dotenv/config';
-import { Prisma, PrismaClient, TeamStatus } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import {
-  createQrTokenFingerprint,
-  createSecureQrLoginToken,
-} from '../src/common/qr/qr-token';
-import { getCanonicalFinalChallengeSeedData } from './final-challenge-seed';
-import {
-  CANONICAL_QR_TOKEN_COUNT,
-  CANONICAL_STATION_COUNT,
-  CANONICAL_TOTAL_MAX_SCORE,
-  validateCanonicalStations,
-} from './station-seed-data';
-import { replaceAllStations } from './station-replacement';
+  acquireEventPreparationLock,
+  EVENT_PREPARATION_CONFIRMATION,
+  readEventPreparationInventory,
+  resetGameplayInTransaction,
+} from '../src/common/event-preparation/event-preparation-core';
 
-export const RESET_GAMEPLAY_CONFIRM_VALUE = 'RESET MOVEMENT2026 GAMEPLAY';
+export const RESET_GAMEPLAY_CONFIRM_VALUE = EVENT_PREPARATION_CONFIRMATION;
 export const RESET_GAMEPLAY_BACKUP_VALUE = 'BACKUP_CONFIRMED';
 
 export type ResetMode = 'dry-run' | 'execute';
@@ -49,16 +43,15 @@ export type ResetGameplayPlan = {
   };
   planned: {
     preservedTeams: number;
-    revokedTeamSessions: number;
-    rotatedTeamQrLoginTokens: number;
-    stations: number;
-    games: number;
-    stationQrTokens: number;
+    preservedTeamQrLoginTokens: number;
+    preservedStationQrTokens: number;
     progressRows: number;
     teamMaxPossiblePoints: number;
     eventConfigRows: number;
-    finalChallenges: number;
+    activeFinalChallenges: number;
     activityLogsAfterReset: number;
+    inventoryReady: boolean;
+    inventoryIssues: string[];
   };
 };
 
@@ -69,10 +62,7 @@ export type ExecuteResetGameplayOptions = {
 };
 
 export function parseResetMode(argv = process.argv.slice(2)): ResetMode {
-  if (argv.includes('--execute')) {
-    return 'execute';
-  }
-  return 'dry-run';
+  return argv.includes('--execute') ? 'execute' : 'dry-run';
 }
 
 export function getResetTarget(databaseUrl = process.env.DATABASE_URL): ResetTarget {
@@ -121,59 +111,41 @@ export function assertResetGuards(
   }
 }
 
-async function createUniqueQrLoginToken(tx: Prisma.TransactionClient) {
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    const rawToken = createSecureQrLoginToken();
-    const tokenHash = createQrTokenFingerprint(rawToken);
-    const existing = await tx.qrLoginToken.findUnique({ where: { tokenHash } });
-    if (!existing) {
-      return { rawToken, tokenHash };
-    }
-  }
-  throw new Error('QR_LOGIN_TOKEN_GENERATION_FAILED');
-}
-
 export async function buildResetGameplayPlan(
   db: PrismaClient,
   mode: ResetMode,
   target: ResetTarget,
 ): Promise<ResetGameplayPlan> {
   const [
-    teams,
     teamSessions,
     qrLoginTokens,
-    stations,
-    games,
-    stationQrTokens,
     progressRows,
     scoreEvents,
     finalSubmissions,
-    finalChallenges,
     activityLogs,
+    finalChallenges,
+    inventory,
   ] = await Promise.all([
-    db.team.count(),
     db.teamSession.count(),
     db.qrLoginToken.count(),
-    db.station.count(),
-    db.game.count(),
-    db.qrToken.count(),
     db.teamStationProgress.count(),
     db.scoreEvent.count(),
     db.finalSubmission.count(),
-    db.finalChallenge.count(),
     db.activityLog.count(),
+    db.finalChallenge.count(),
+    readEventPreparationInventory(db),
   ]);
 
   return {
     mode,
     target,
     current: {
-      teams,
+      teams: inventory.teams,
       teamSessions,
       qrLoginTokens,
-      stations,
-      games,
-      stationQrTokens,
+      stations: inventory.activeStations,
+      games: inventory.activeGames,
+      stationQrTokens: inventory.activeStationQrTokens,
       progressRows,
       scoreEvents,
       finalSubmissions,
@@ -181,17 +153,16 @@ export async function buildResetGameplayPlan(
       activityLogs,
     },
     planned: {
-      preservedTeams: teams,
-      revokedTeamSessions: teamSessions,
-      rotatedTeamQrLoginTokens: teams,
-      stations: CANONICAL_STATION_COUNT,
-      games: CANONICAL_STATION_COUNT,
-      stationQrTokens: CANONICAL_QR_TOKEN_COUNT,
-      progressRows: teams * CANONICAL_STATION_COUNT,
-      teamMaxPossiblePoints: CANONICAL_TOTAL_MAX_SCORE,
-      eventConfigRows: 1,
-      finalChallenges: 1,
+      preservedTeams: inventory.teams,
+      preservedTeamQrLoginTokens: inventory.activeTeamQrTokens,
+      preservedStationQrTokens: inventory.activeStationQrTokens,
+      progressRows: inventory.teams * inventory.activeGames,
+      teamMaxPossiblePoints: 1785,
+      eventConfigRows: inventory.eventConfigRows,
+      activeFinalChallenges: inventory.activeFinalChallenges,
       activityLogsAfterReset: 0,
+      inventoryReady: inventory.ready,
+      inventoryIssues: inventory.issues,
     },
   };
 }
@@ -208,158 +179,16 @@ export async function executeResetGameplayWithGuards(
   options: ExecuteResetGameplayOptions,
 ) {
   assertResetGuards(options.mode, options.target, options.guards);
-  validateCanonicalStations();
-  return db.$transaction(async (tx) => {
-    const [teams, users] = await Promise.all([
-      tx.team.findMany({ select: { id: true } }),
-      tx.user.findMany({ select: { id: true } }),
-    ]);
-    const stationResult = await replaceAllStations(tx);
-
-    await tx.teamSession.deleteMany();
-    await tx.qrLoginToken.deleteMany();
-    await tx.finalChallenge.deleteMany();
-    await tx.eventConfig.deleteMany();
-    await tx.activityLog.deleteMany();
-
-    await tx.team.updateMany({
-      data: {
-        totalPoints: 0,
-        totalPlaySeconds: 0,
-        maxPossiblePoints: CANONICAL_TOTAL_MAX_SCORE,
-        startedAt: null,
-        status: TeamStatus.ACTIVE,
-        activeSessionId: null,
-        loginQrHash: null,
-        loginQrFingerprint: null,
-      },
-    });
-
-    await tx.eventConfig.create({
-      data: {
-        id: 1,
-        eventEndTime: '11:30',
-        finalStartsAt: '11:45',
-        notifyBeforeMinutes: 15,
-        cancelCooldownMinutes: 0,
-        timezone: 'Asia/Ho_Chi_Minh',
-      },
-    });
-
-    await tx.finalChallenge.create({
-      data: getCanonicalFinalChallengeSeedData(new Date()),
-    });
-
-    for (const team of teams) {
-      const { rawToken, tokenHash } = await createUniqueQrLoginToken(tx);
-      await tx.qrLoginToken.create({
-        data: {
-          teamId: team.id,
-          tokenHash,
-          rawToken,
-          expiresAt: null,
-        },
-      });
-    }
-
-    await verifyResetGameplayState(tx, {
-      teamIds: teams.map((team) => team.id),
-      userIds: users.map((user) => user.id),
-    });
-
-    return {
-      ...stationResult,
-      teamSessions: 0,
-      teamQrLoginTokens: teams.length,
-      eventConfigRows: 1,
-      finalChallenges: 1,
-      activityLogs: 0,
-    };
-  });
-}
-
-async function verifyResetGameplayState(
-  tx: Prisma.TransactionClient,
-  expected: { teamIds: number[]; userIds: number[] },
-) {
-  const [
-    teams,
-    users,
-    teamSessions,
-    teamQrTokens,
-    eventConfigs,
-    finalChallenges,
-    scoreEvents,
-    finalSubmissions,
-    activityLogs,
-    progressRows,
-  ] = await Promise.all([
-    tx.team.findMany({
-      select: {
-        id: true,
-        totalPoints: true,
-        totalPlaySeconds: true,
-        maxPossiblePoints: true,
-        startedAt: true,
-        status: true,
-        activeSessionId: true,
-      },
-    }),
-    tx.user.findMany({ select: { id: true } }),
-    tx.teamSession.count(),
-    tx.qrLoginToken.findMany({
-      where: { isActive: true, revokedAt: null, consumedAt: null },
-      select: { teamId: true, expiresAt: true },
-    }),
-    tx.eventConfig.count(),
-    tx.finalChallenge.count(),
-    tx.scoreEvent.count(),
-    tx.finalSubmission.count(),
-    tx.activityLog.count(),
-    tx.teamStationProgress.count(),
-  ]);
-
-  const expectedTeamIds = [...expected.teamIds].sort((left, right) => left - right);
-  const actualTeamIds = teams.map((team) => team.id).sort((left, right) => left - right);
-  const expectedUserIds = [...expected.userIds].sort((left, right) => left - right);
-  const actualUserIds = users.map((user) => user.id).sort((left, right) => left - right);
-
-  if (JSON.stringify(actualTeamIds) !== JSON.stringify(expectedTeamIds)) {
-    throw new Error('Reset verification failed: Team identity changed');
+  if (options.mode !== 'execute') {
+    throw new Error('Reset execution requires --execute');
   }
-  if (JSON.stringify(actualUserIds) !== JSON.stringify(expectedUserIds)) {
-    throw new Error('Reset verification failed: User identity changed');
-  }
-  if (teamSessions !== 0) {
-    throw new Error('Reset verification failed: old Team sessions remain');
-  }
-  if (scoreEvents !== 0 || finalSubmissions !== 0 || activityLogs !== 0) {
-    throw new Error('Reset verification failed: old gameplay/audit rows remain');
-  }
-  if (eventConfigs !== 1 || finalChallenges !== 1) {
-    throw new Error('Reset verification failed: canonical Event/Final state missing');
-  }
-  if (progressRows !== teams.length * CANONICAL_STATION_COUNT) {
-    throw new Error('Reset verification failed: Team Station progress row count mismatch');
-  }
-
-  for (const team of teams) {
-    if (
-      team.totalPoints !== 0 ||
-      team.totalPlaySeconds !== 0 ||
-      team.maxPossiblePoints !== CANONICAL_TOTAL_MAX_SCORE ||
-      team.startedAt !== null ||
-      team.status !== TeamStatus.ACTIVE ||
-      team.activeSessionId !== null
-    ) {
-      throw new Error(`Reset verification failed: Team ${team.id} aggregate state is not reset`);
-    }
-
-    const tokens = teamQrTokens.filter((token) => token.teamId === team.id);
-    if (tokens.length !== 1 || tokens[0].expiresAt !== null) {
-      throw new Error(`Reset verification failed: Team ${team.id} QR token invariant failed`);
-    }
-  }
+  return db.$transaction(
+    async (tx) => {
+      await acquireEventPreparationLock(tx);
+      return resetGameplayInTransaction(tx);
+    },
+    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+  );
 }
 
 async function main() {

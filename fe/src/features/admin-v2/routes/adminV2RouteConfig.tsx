@@ -8,6 +8,7 @@ import {
   UnorderedListOutlined,
   EnvironmentOutlined,
   HistoryOutlined,
+  SafetyCertificateOutlined,
 } from "@ant-design/icons";
 
 type AdminV2Icon = typeof DashboardOutlined;
@@ -22,6 +23,7 @@ export type AdminV2RouteKey =
   | "eventControl"
   | "finalChallenge"
   | "activityLogs"
+  | "eventPreparation"
   | "settings";
 
 export type AdminV2RouteDefinition = Readonly<{
@@ -47,6 +49,7 @@ export const adminV2OperationsRoutes: readonly AdminV2RouteDefinition[] = [
   {key: "eventControl", path: "/admin-v2/operations/event-control", labelKey: "adminV2.nav.eventControl", icon: DashboardOutlined, parentKey: "operations"},
   {key: "finalChallenge", path: "/admin-v2/operations/final-challenge", labelKey: "adminV2.nav.finalChallenge", icon: FlagOutlined, parentKey: "operations"},
   {key: "activityLogs", path: "/admin-v2/operations/activity-logs", labelKey: "adminV2.nav.activityLogs", icon: HistoryOutlined, parentKey: "operations"},
+  {key: "eventPreparation", path: "/admin-v2/operations/event-preparation", labelKey: "adminV2.nav.eventPreparation", icon: SafetyCertificateOutlined, parentKey: "operations"},
 ];
 
 export const adminV2Routes = [...adminV2PrimaryRoutes, ...adminV2OperationsRoutes] as const;

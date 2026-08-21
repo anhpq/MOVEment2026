@@ -14,6 +14,9 @@ export type QrCodeExportEntry = Readonly<{
   payload: string;
   note: string;
   notePosition: "TOP" | "BOTTOM";
+  kind: "STATION" | "TEAM";
+  entityId: string;
+  purpose: "CHECK_IN" | "CHECK_OUT" | "LOGIN";
 }>;
 
 function fileSegment(value: string) {
@@ -28,6 +31,9 @@ export function getQrCodeExportEntries(data: AdminQrCodeExportResponse): QrCodeE
       payload: loginUrl,
       note: `TEAM ${number}`,
       notePosition: "BOTTOM",
+      kind: "TEAM",
+      entityId: String(teamId),
+      purpose: "LOGIN",
     };
   });
   const stations = data.stations.map<QrCodeExportEntry>(({stationId, purpose, rawToken}) => {
@@ -39,9 +45,28 @@ export function getQrCodeExportEntries(data: AdminQrCodeExportResponse): QrCodeE
       payload: rawToken,
       note: `MÃ ${purposeLabel} - TRẠM ${displayCode}`,
       notePosition: "TOP",
+      kind: "STATION",
+      entityId: stationId,
+      purpose,
     };
   });
   return [...stations, ...teams];
+}
+
+function escapeCsv(value: string) {
+  return `"${value.replaceAll('"', '""')}"`;
+}
+
+export function buildQrCodeManifest(entries: readonly QrCodeExportEntry[]) {
+  const header = ["path", "kind", "entity_id", "purpose", "label"];
+  const rows = entries.map((entry) => [
+    entry.path,
+    entry.kind,
+    entry.entityId,
+    entry.purpose,
+    entry.note,
+  ].map(escapeCsv).join(","));
+  return `\uFEFF${header.join(",")}\n${rows.join("\n")}\n`;
 }
 
 async function renderQrPng(entry: QrCodeExportEntry) {
@@ -89,6 +114,9 @@ export async function downloadQrCodeZip(data: AdminQrCodeExportResponse) {
   for (const entry of entries) {
     zip.file(entry.path, await renderQrPng(entry));
   }
+  // The manifest helps operators verify the printed inventory without copying
+  // any QR payload, URL, hash, or token material into a text file.
+  zip.file("manifest.csv", buildQrCodeManifest(entries));
   const blob = await zip.generateAsync({
     type: "blob",
     compression: "DEFLATE",

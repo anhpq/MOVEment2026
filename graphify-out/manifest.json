@@ -85,14 +85,14 @@
     "semantic_hash": "d023c640c6b70c2d00833e8b7f59382d"
   },
   "be/src/modules/admin/admin.controller.ts": {
-    "mtime": 1787232487.8341203,
-    "ast_hash": "ecffdf52778f6d5337ef3e9ffd91160d",
+    "mtime": 1787329397.464983,
+    "ast_hash": "2c45d0a2ec6f0cbe070db010b2879ef7",
     "semantic_hash": ""
   },
   "be/src/modules/admin/admin.module.ts": {
-    "mtime": 1785122405.3313985,
-    "ast_hash": "45d645d772a428aceb04c8c8a535bbbb",
-    "semantic_hash": "45d645d772a428aceb04c8c8a535bbbb"
+    "mtime": 1787329398.0402882,
+    "ast_hash": "2cfbe8ba55b0855ffd402e6559271f69",
+    "semantic_hash": ""
   },
   "be/src/modules/admin/admin.service.ts": {
     "mtime": 1787328537.518507,
@@ -240,8 +240,8 @@
     "semantic_hash": "20cb7af747960758a923f4b92b096edb"
   },
   "fe/src/features/movement/api.ts": {
-    "mtime": 1787232577.805281,
-    "ast_hash": "5d53eb43b81e4b5cde6b0ef9c5f8e8f9",
+    "mtime": 1787329553.4207482,
+    "ast_hash": "c86b5188fc288bc3846121cb4325d0ae",
     "semantic_hash": ""
   },
   "fe/src/features/movement/components/StationsMapPanel.tsx": {
@@ -895,9 +895,9 @@
     "semantic_hash": "3c66821a185a3951d310cea3eee9ddde"
   },
   "be/prisma/reset-gameplay-seed.ts": {
-    "mtime": 1786678487.6689343,
-    "ast_hash": "e5563fb9f6683dc5214851812361b6e7",
-    "semantic_hash": "e5563fb9f6683dc5214851812361b6e7"
+    "mtime": 1787329502.2755673,
+    "ast_hash": "478f743888ff308ce1caea4bcdd61a8b",
+    "semantic_hash": ""
   },
   "fe/src/features/movement/hooks/useStationPlayingCounts.ts": {
     "mtime": 1787055803.455351,
@@ -1425,9 +1425,9 @@
     "semantic_hash": "536e4c7d7d6cfce903eeaf6349254667"
   },
   "fe/src/features/admin-v2/AdminV2Entry.test.tsx": {
-    "mtime": 1787201987.065596,
-    "ast_hash": "2a8c206e76f9ea9d9c0024dd07fd6f2f",
-    "semantic_hash": "2a8c206e76f9ea9d9c0024dd07fd6f2f"
+    "mtime": 1787329821.7789392,
+    "ast_hash": "af25bc0d39c9fbea557e182c842b34d3",
+    "semantic_hash": ""
   },
   "fe/src/features/admin-v2/AdminV2Entry.tsx": {
     "mtime": 1787108079.8626635,
@@ -1435,8 +1435,8 @@
     "semantic_hash": "b37adef8d1e6a4168f5e0693c52a9e74"
   },
   "fe/src/features/admin-v2/i18n/resources.ts": {
-    "mtime": 1787232648.245877,
-    "ast_hash": "d11289062ca9888c5ac47246ebb0066c",
+    "mtime": 1787329701.5074985,
+    "ast_hash": "5928fca0b0d8e3ee22e97c3d33f99b19",
     "semantic_hash": ""
   },
   "fe/src/features/admin-v2/layout/AdminV2Header.tsx": {
@@ -1475,13 +1475,13 @@
     "semantic_hash": "6cecc87c317fa9972f914eaf92a89dd4"
   },
   "fe/src/features/admin-v2/routes/AdminV2Routes.tsx": {
-    "mtime": 1787132877.8625922,
-    "ast_hash": "cb2260a040f68e74751e04e85ad5522e",
-    "semantic_hash": "cb2260a040f68e74751e04e85ad5522e"
+    "mtime": 1787329977.8364506,
+    "ast_hash": "5f627d28c556c27be83242a993982cc2",
+    "semantic_hash": ""
   },
   "fe/src/features/admin-v2/routes/adminV2RouteConfig.tsx": {
-    "mtime": 1787233136.9810786,
-    "ast_hash": "b66a5f881f59b3d4566e6ebcb296e01a",
+    "mtime": 1787329616.8344085,
+    "ast_hash": "81a357515093ba647cbd713e7a6f86e0",
     "semantic_hash": ""
   },
   "docs/admin-v2/PLAN.md": {
@@ -1750,13 +1750,43 @@
     "semantic_hash": "06dbd950e9e36f8fa63dbbc89f0a5bcd"
   },
   "fe/src/features/admin-v2/pages/leaderboard/qrCodeExport.test.ts": {
-    "mtime": 1787232710.0699027,
-    "ast_hash": "4032a2b7c76f05e9f20edf6028dc2c86",
+    "mtime": 1787329246.1011639,
+    "ast_hash": "0dcc9272c138e5871ea37752396ded43",
     "semantic_hash": ""
   },
   "fe/src/features/admin-v2/pages/leaderboard/qrCodeExport.ts": {
-    "mtime": 1787232608.7936037,
-    "ast_hash": "fca745aeb73eab24ea5f48b92bf36fa4",
+    "mtime": 1787329245.4802263,
+    "ast_hash": "257f9e404d81667d7e326edc3a25ee29",
+    "semantic_hash": ""
+  },
+  "be/src/common/event-preparation/event-preparation-core.ts": {
+    "mtime": 1787329376.8474865,
+    "ast_hash": "d1c88e7956db65263cf3562b6fbec8a0",
+    "semantic_hash": ""
+  },
+  "be/src/modules/admin/dto/event-preparation.dto.ts": {
+    "mtime": 1787329377.5106301,
+    "ast_hash": "7a626e2f3162a369f5e561dd8404d3fc",
+    "semantic_hash": ""
+  },
+  "be/src/modules/admin/event-preparation.service.ts": {
+    "mtime": 1787329396.8766115,
+    "ast_hash": "750d2fabbb1dc8bf4debbde63d779572",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/operations/AdminV2EventPreparationPage.tsx": {
+    "mtime": 1787329604.3306644,
+    "ast_hash": "f769defbceefb7c5a850a8469a8271bd",
+    "semantic_hash": ""
+  },
+  "be/src/common/event-preparation/event-preparation-core.spec.ts": {
+    "mtime": 1787329777.3579903,
+    "ast_hash": "d6b0006190176f0824f8bf75f20ba9ee",
+    "semantic_hash": ""
+  },
+  "fe/src/features/admin-v2/pages/operations/AdminV2EventPreparationPage.test.tsx": {
+    "mtime": 1787329933.8263958,
+    "ast_hash": "8cc6f069baceaf7ec210ed21ca4e0fff",
     "semantic_hash": ""
   }
 }

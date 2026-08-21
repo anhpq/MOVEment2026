@@ -1,4 +1,5 @@
 import {Navigate, Route, Routes} from "react-router-dom";
+import {lazy, Suspense} from "react";
 import {AdminV2DashboardPage} from "../pages/dashboard/AdminV2DashboardPage";
 import {AdminV2LeaderboardPage} from "../pages/leaderboard/AdminV2LeaderboardPage";
 import {AdminV2NotFoundPage} from "../pages/foundation/AdminV2NotFoundPage";
@@ -13,6 +14,10 @@ import {AdminV2FinalChallengePage} from "../pages/operations/AdminV2FinalChallen
 import {AdminV2ActivityLogsPage} from "../pages/operations/AdminV2ActivityLogsPage";
 import {AdminV2OperationsPage} from "../pages/operations/AdminV2OperationsPage";
 import {AdminV2SettingsPage} from "../pages/settings/AdminV2SettingsPage";
+
+const AdminV2EventPreparationPage = lazy(async () => ({
+  default: (await import("../pages/operations/AdminV2EventPreparationPage")).AdminV2EventPreparationPage,
+}));
 
 export function AdminV2Routes() {
   return (
@@ -34,6 +39,7 @@ export function AdminV2Routes() {
       <Route path="operations/event-control" element={<AdminV2EventControlPage />} />
       <Route path="operations/final-challenge" element={<AdminV2FinalChallengePage />} />
       <Route path="operations/activity-logs" element={<AdminV2ActivityLogsPage />} />
+      <Route path="operations/event-preparation" element={<Suspense fallback={null}><AdminV2EventPreparationPage /></Suspense>} />
       <Route path="settings" element={<AdminV2SettingsPage />} />
       <Route path="*" element={<AdminV2NotFoundPage />} />
     </Routes>
