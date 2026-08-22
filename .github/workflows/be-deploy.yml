@@ -11,7 +11,7 @@ on:
         options:
           - master
       backup_confirmed:
-        description: Type BACKUP_CONFIRMED after verifying a fresh Production backup
+        description: Type BACKUP_CONFIRMED, or SKIP_BACKUP_USER_APPROVED only after explicit user approval
         required: true
         type: string
       deploy_backend:
@@ -67,10 +67,18 @@ jobs:
           script: |
             set -euo pipefail
 
-            if [ "${BACKUP_CONFIRMED}" != "BACKUP_CONFIRMED" ]; then
-              echo "Fresh Production backup confirmation is required."
-              exit 1
-            fi
+            case "${BACKUP_CONFIRMED}" in
+              BACKUP_CONFIRMED)
+                echo "Fresh Production backup confirmed."
+                ;;
+              SKIP_BACKUP_USER_APPROVED)
+                echo "WARNING: Production backup skipped by explicit user approval."
+                ;;
+              *)
+                echo "Use BACKUP_CONFIRMED or the explicitly approved SKIP_BACKUP_USER_APPROVED override."
+                exit 1
+                ;;
+            esac
             if [ "${DEPLOY_BACKEND}" != "deploy-backend" ]; then
               echo "Backend deployment authorization is invalid."
               exit 1

@@ -5,7 +5,7 @@
     "semantic_hash": "13340609a8bffa479ab83ed07a0d6dd3"
   },
   "be/deploy/deploy.sh": {
-    "mtime": 1787391817.3015416,
+    "mtime": 1787392964.882079,
     "ast_hash": "2d40b26970261a2530c2161dcb8beaba",
     "semantic_hash": ""
   },
@@ -20,8 +20,8 @@
     "semantic_hash": "fa439650fa28a1a7aa8c2b6d81c8cc20"
   },
   "be/package.json": {
-    "mtime": 1787391819.3033493,
-    "ast_hash": "8b8c8253befa1a01a33cb88224146e6f",
+    "mtime": 1787392964.8826213,
+    "ast_hash": "11c6a30a8af1d3aee0d6e15cee6ccf35",
     "semantic_hash": ""
   },
   "be/prisma/init.sql": {
@@ -410,8 +410,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1787391818.6193318,
-    "ast_hash": "862b8daa36eb6174de9b7636cc037f40",
+    "mtime": 1787395720.9750617,
+    "ast_hash": "c2e73cce58e9b4461745be45215f8e69",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1787391965.481314,
-    "ast_hash": "1bc13ae95b956add7b4183c4a3f31da0",
+    "mtime": 1787392964.8852615,
+    "ast_hash": "5d1e06635b742884050d8da612944a78",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": "2d79ecf88ee3cbeea887adb22bd2ad56"
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1787391964.791726,
-    "ast_hash": "ad0bf1f8920d59d2efa33cf23b868d11",
+    "mtime": 1787395722.9597652,
+    "ast_hash": "a263da46c9b201134cc52bc5f9052623",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -740,8 +740,8 @@
     "semantic_hash": ""
   },
   "deploy/PRODUCTION_STAGED_DEPLOY.md": {
-    "mtime": 1787391964.1373873,
-    "ast_hash": "9273ceab1b6985f2badc84829e356c13",
+    "mtime": 1787395722.2916374,
+    "ast_hash": "101d50fd38544823d7910b33d0d37158",
     "semantic_hash": ""
   },
   "be/deploy/plan-database-steps.js": {
@@ -1790,8 +1790,8 @@
     "semantic_hash": ""
   },
   "be/deploy/runtime-entrypoint.test.js": {
-    "mtime": 1787391819.9592962,
-    "ast_hash": "a5fda6ba3b073bbf3e8930005a66495f",
+    "mtime": 1787395721.6313806,
+    "ast_hash": "7953ed0be415bdb1f5f7a4e9d8fa487f",
     "semantic_hash": ""
   }
 }

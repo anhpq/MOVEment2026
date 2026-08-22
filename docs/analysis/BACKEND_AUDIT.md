@@ -2055,3 +2055,7 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   shell syntax, and diff checks. Production remains unrecovered until the fix
   is merged to `master`, pushed, deployed through the approved Backend
   workflow, and the live API health check passes.
+- The user explicitly approved skipping a fresh Production backup for this
+  outage recovery. The workflow records that exceptional choice through
+  `SKIP_BACKUP_USER_APPROVED` instead of falsely reporting
+  `BACKUP_CONFIRMED`; normal deployments retain the backup gate.

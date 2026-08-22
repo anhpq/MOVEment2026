@@ -50,6 +50,11 @@ target_commit: optional, defaults to origin/master on the ECS host
 force_database_steps: false
 ```
 
+When the user explicitly accepts deployment without a fresh backup, use the
+auditable emergency override `backup_confirmed: SKIP_BACKUP_USER_APPROVED`.
+This removes the restore safety net and must never be inferred from silence or
+routine deployment approval.
+
 If the `production-backend` GitHub Environment has required reviewers, wait for
 approval before the job proceeds.
 

@@ -33,6 +33,7 @@ assert.match(systemdService, /ExecStart=\/usr\/bin\/node dist\/src\/main\.js/);
 assert.match(backendWorkflow, /^\s{2}workflow_dispatch:/m);
 assert.doesNotMatch(backendWorkflow, /^\s{2}push:/m);
 assert.match(backendWorkflow, /BACKUP_CONFIRMED/);
+assert.match(backendWorkflow, /SKIP_BACKUP_USER_APPROVED/);
 assert.match(backendWorkflow, /deploy-backend/);
 
 console.log('Backend deployment entrypoint and manual workflow invariants passed.');

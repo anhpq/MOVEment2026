@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-08-22)
 
 ## Corpus Check
-- 344 files · ~510,441 words
+- 344 files · ~510,529 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3821 nodes · 6475 edges · 280 communities (247 shown, 33 thin omitted)
+- 3821 nodes · 6475 edges · 281 communities (248 shown, 33 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d6453d0f`
+- Built from commit: `89fe9630`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -207,7 +207,7 @@
 - 13. Seed Requirements
 - 20. Required Tests
 - 8. Station Scoring
-- Prompt Routing
+- createQrTokenFingerprint
 - @testing-library/jest-dom
 - Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?
 - Q: be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau
@@ -257,6 +257,7 @@
 - sass
 - @testing-library/user-event
 - certs/README.md
+- Change Classification
 - extraction-spec.md
 - 2026-08-20 Admin V2 controlled route cutover
 - 2026-07-30 Team V2 score and banner rails refinement
@@ -314,7 +315,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (280 total, 33 thin omitted)
+## Communities (281 total, 33 thin omitted)
 
 ### Community 0 - "BACKEND_AUDIT.md"
 Cohesion: 0.02
@@ -333,16 +334,16 @@ Cohesion: 0.03
 Nodes (70): 2026-07-29 Runtime Stability Integration, 2026-07-30 Marker anchor and footer reference refinement, 2026-07-30 Team V2 scanner-pin marker refinement, 2026-07-30 V2-owned Detail and map HUD refinement, 2026-07-31 Background-only overlay opacity, 2026-07-31 Centered score-only map header, 2026-07-31 Detail sizing and footer readability, 2026-07-31 Exact Bézier Konva marker reference (+62 more)
 
 ### Community 4 - "FEATURE_INDEX.md"
-Cohesion: 0.15
-Nodes (12): Business Rule Change, Change Classification, Current Known Documentation Conflicts, Documentation Reconciliation, Documentation Roles, Feature Analysis Lifecycle, Global Reading Priority, Implementation Fix (+4 more)
+Cohesion: 0.14
+Nodes (13): Automatic URL QR Login and Seed Tokens, Current Known Documentation Conflicts, Documentation and Workflow, Documentation Roles, Feature Analysis Lifecycle, Final Challenge, Global Reading Priority, MOVEment 2026 - Feature Index (+5 more)
 
 ### Community 5 - "auth.service.ts"
 Cohesion: 0.07
 Nodes (30): AuthController, mockAuthService, Body, Controller, Get, Post, UseGuards, AuthService (+22 more)
 
 ### Community 6 - "AdminService"
-Cohesion: 0.08
-Nodes (9): buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), isOfficialQrLoginToken(), isOfficialStationQrToken(), isOfficialStationQrTokenForPurpose(), normalizeQrToken(), AdminService (+1 more)
+Cohesion: 0.09
+Nodes (4): getStationPlaySeconds(), isReferenceExceeded(), AdminService, Injectable
 
 ### Community 7 - "2026-07-28 Station Media Gallery and Player action layout"
 Cohesion: 0.04
@@ -358,7 +359,7 @@ Nodes (6): AdminController, Controller, Get, Res, UseGuards, Header()
 
 ### Community 10 - "playerData.ts"
 Cohesion: 0.10
-Nodes (38): getPlayerCatalog(), getPlayerDashboard(), getPlayerProgress(), getPlayerState(), getPlayerStationImages(), getPlayerStations(), PlayerCatalogStationResponse, PlayerProgressResponse (+30 more)
+Nodes (37): getPlayerCatalog(), getPlayerDashboard(), getPlayerProgress(), getPlayerState(), getPlayerStationImages(), getPlayerStations(), PlayerCatalogStationResponse, PlayerProgressResponse (+29 more)
 
 ### Community 11 - "Quyết định đã chốt"
 Cohesion: 0.04
@@ -373,8 +374,8 @@ Cohesion: 0.10
 Nodes (34): checkInStation(), getSafeApiErrorTranslationKey(), StationImageGallery(), StationImageGalleryProps, buildFallbackPositions(), buildMarkerPosition(), clampMapScale(), clampPercent() (+26 more)
 
 ### Community 15 - "EventLifecycleService"
-Cohesion: 0.09
-Nodes (9): EventLifecycleService, Candidate, Injectable, LeaderboardController, Controller, Get, compareTeamResultRows(), TeamResultsService (+1 more)
+Cohesion: 0.10
+Nodes (7): EventLifecycleService, Candidate, Injectable, Get, compareTeamResultRows(), TeamResultsService, Injectable
 
 ### Community 16 - "09_CODEX_MASTER_EXECUTION_PROMPT.md"
 Cohesion: 0.05
@@ -437,7 +438,7 @@ Cohesion: 0.15
 Nodes (28): qrcode, AdminV2StationDetailPage(), download(), isHttpsUrl(), QrPreview, Station, StationFormValues, displayStatus() (+20 more)
 
 ### Community 31 - "xlsx-report.ts"
-Cohesion: 0.21
+Cohesion: 0.26
 Nodes (13): cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml(), sanitizeSheetName(), sheetXml() (+5 more)
 
 ### Community 32 - "seed.ts"
@@ -477,8 +478,8 @@ Cohesion: 0.15
 Nodes (21): cancelPlayerStation(), checkOutStation(), editAdminProgressScore(), forceAdminProgressStatus(), reopenAdminProgress(), submitStationScore(), apiPatch(), TeamV2StationDetailOverlay() (+13 more)
 
 ### Community 41 - "player.service.ts"
-Cohesion: 0.15
-Nodes (13): getStationPlaySeconds(), isReferenceExceeded(), SCORE_ENTRY_MAX, TIME_STATION_AUTO_SCORE, PLAYER_ERROR_CODES, PlayerActionException, PlayerErrorCode, mockActivityLog (+5 more)
+Cohesion: 0.14
+Nodes (13): SCORE_ENTRY_MAX, TIME_STATION_AUTO_SCORE, LeaderboardController, Controller, PLAYER_ERROR_CODES, PlayerActionException, PlayerErrorCode, mockActivityLog (+5 more)
 
 ### Community 42 - "EventConfigService"
 Cohesion: 0.13
@@ -693,8 +694,8 @@ Cohesion: 0.19
 Nodes (10): CameraErrorKey, getCameraErrorKey(), ScannerState, ScannerTab, TeamV2QrScanner(), TeamV2QrScannerProps, FakeMediaStream, qrMocks (+2 more)
 
 ### Community 95 - "runtimeCoordinator.ts"
-Cohesion: 0.16
-Nodes (12): getPlayerV2Runtime(), runPlayerRead(), clearRuntimeRequestCoordinator(), getNetworkConnection(), getTeamRuntimePollIntervalMs(), inFlightRequests, isReducedDataMode(), NetworkConnectionLike (+4 more)
+Cohesion: 0.15
+Nodes (13): getPlayerV2Runtime(), runPlayerRead(), clearRuntimeRequestCoordinator(), clearSingleFlight(), getNetworkConnection(), getTeamRuntimePollIntervalMs(), inFlightRequests, isReducedDataMode() (+5 more)
 
 ### Community 96 - "playerData.test.ts"
 Cohesion: 0.17
@@ -1052,9 +1053,9 @@ Nodes (5): 20.1 Backend, 20.2 Seed, 20.3 Frontend, 20.4 Migration, 20. Required 
 Cohesion: 0.33
 Nodes (6): 8. Station Scoring, Confirmed Rules, Must Update After Change, Relevant Prompt, Required Reading, Scope
 
-### Community 192 - "Prompt Routing"
-Cohesion: 0.33
-Nodes (6): Automatic URL QR Login and Seed Tokens, Documentation and Workflow, Final Challenge, Prompt Routing, Station Reference Points, Ba Tiêu Ranking, and Excel, Station Score Entry and Limits
+### Community 192 - "createQrTokenFingerprint"
+Cohesion: 0.25
+Nodes (7): buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), isOfficialQrLoginToken(), isOfficialStationQrToken(), isOfficialStationQrTokenForPurpose(), normalizeQrToken()
 
 ### Community 194 - "Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
 Cohesion: 0.40
@@ -1200,6 +1201,10 @@ Nodes (3): Backend, Frontend, Target Interfaces
 Cohesion: 0.67
 Nodes (3): 9. Generated Data và Seed Workflow, Khi tạo Station mới, Khi tạo Team mới
 
+### Community 243 - "Change Classification"
+Cohesion: 0.40
+Nodes (5): Business Rule Change, Change Classification, Documentation Reconciliation, Implementation Fix, Refactor
+
 ### Community 259 - "2026-08-20 Admin V2 controlled route cutover"
 Cohesion: 0.50
 Nodes (4): 2026-08-20 Admin V2 controlled route cutover, 2026-08-21 Event Preparation, rehearsal reset, and QR artifact manifest, 2026-08-22 Build artifact startup alignment, 2026-08-22 Production Backend 502 incident
@@ -1290,7 +1295,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `@prisma/client` connect `reset-gameplay-seed.ts` to `seed.ts`, `station-seed-data.ts`, `dependencies`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `createQrTokenFingerprint()` connect `AdminService` to `seed.ts`, `auth.service.ts`, `player.service.ts`, `PlayerService`, `admin.service.ts`, `station-seed-data.ts`, `event-preparation-core.ts`?**
+- **Why does `createQrTokenFingerprint()` connect `createQrTokenFingerprint` to `seed.ts`, `auth.service.ts`, `AdminService`, `player.service.ts`, `PlayerService`, `admin.service.ts`, `station-seed-data.ts`, `event-preparation-core.ts`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `fs`, `input` to the rest of the system?**
   _1975 weakly-connected nodes found - possible documentation gaps or missing edges._
