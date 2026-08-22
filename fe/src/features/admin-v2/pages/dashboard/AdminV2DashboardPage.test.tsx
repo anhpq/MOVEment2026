@@ -19,7 +19,7 @@ const dashboard = (overrides: Record<string, unknown> = {}) => ({
   completedCount: 24,
   activePlayingCount: 3,
   eventConfig: {
-    eventEndTime: "11:40",
+    eventEndTime: "11:30",
     finalStartsAt: "11:45",
     timezone: "Asia/Ho_Chi_Minh",
     notifyBeforeMinutes: 15,
@@ -69,14 +69,14 @@ describe("AdminV2DashboardPage", () => {
   });
 
   it("surfaces only data-supported attention conditions and their owner routes", async () => {
-    api.getAdminDashboard.mockResolvedValue(dashboard({eventConfig: {...dashboard().eventConfig, eventEndTime: "11:30"}}));
+    api.getAdminDashboard.mockResolvedValue(dashboard({eventConfig: {...dashboard().eventConfig, eventEndTime: "11:40"}}));
     api.getAdminScoreQueue.mockResolvedValue([{id: 1}, {id: 2}]);
     api.getAdminFinalSubmissions.mockResolvedValue([{id: 1}]);
 
     renderDashboard();
 
     expect(await screen.findByText("2 scores are pending")).toBeVisible();
-    expect(screen.getByText("Station closing is not five minutes before Final")).toBeVisible();
+    expect(screen.getByText("Station closing is not fifteen minutes before Final")).toBeVisible();
     expect(screen.getByText("1 Final submissions")).toBeVisible();
     const attention = screen.getByText("Needs attention").closest(".ant-card") as HTMLElement;
     expect(within(attention).getAllByRole("link", {name: "Review"})[0]).toHaveAttribute("href", "/admin-v2/operations/score-queue");

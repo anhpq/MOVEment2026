@@ -10,6 +10,21 @@ export type AdminV2EventConfig = Readonly<{
   secondsUntilFinal?: number;
 }>;
 
+export function formatAdminV2ServerTime(value: string, timezone: string, language: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "â€”";
+  return new Intl.DateTimeFormat(language === "vi" ? "vi-VN" : "en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: timezone,
+  }).format(date);
+}
+
 function string(value: unknown) { return typeof value === "string" ? value : ""; }
 function number(value: unknown) { return typeof value === "number" && Number.isFinite(value) ? value : null; }
 

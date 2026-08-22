@@ -62,7 +62,7 @@ describe("AdminV2Shell", () => {
     expect(screen.getAllByRole("link", {name: label}).some((link) => link.getAttribute("aria-current") === "page")).toBe(true);
   });
 
-  it("applies the cyan route tone only to the Teams navigation icon", () => {
+  it("uses the standard navigation tone for the Teams icon", () => {
     render(
       <MemoryRouter initialEntries={["/admin-v2/leaderboard"]}>
         <AdminV2Shell><div>content</div></AdminV2Shell>
@@ -71,7 +71,7 @@ describe("AdminV2Shell", () => {
 
     const teamsLink = screen.getAllByRole("link", {name: "Teams"})[0];
     const leaderboardLink = screen.getAllByRole("link", {name: "Leaderboard"})[0];
-    expect(teamsLink.querySelector(".admin-v2-nav-icon")).toHaveClass("is-cyan");
+    expect(teamsLink.querySelector(".admin-v2-nav-icon")).not.toHaveClass("is-cyan");
     expect(leaderboardLink.querySelector(".admin-v2-nav-icon")).not.toHaveClass("is-cyan");
   });
 

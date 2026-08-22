@@ -285,6 +285,10 @@ deploy_backend=deploy-backend
 force_database_steps=false
 ```
 
+For a separately explicit one-time no-backup authorization, the workflow also
+accepts `backup_confirmed=NO_BACKUP_DATA_LOSS_RISK_ACCEPTED` and emits a warning.
+It must never be used to represent a backup that was not taken.
+
 `base_commit` must identify the actual currently deployed Backend commit if the deployment marker is absent.
 
 Do not use `HEAD~1` as a substitute for the deployed base.

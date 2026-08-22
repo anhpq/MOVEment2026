@@ -1,5 +1,11 @@
 # Team Gameplay V2 Analysis
 
+## 2026-08-22 Team footer cyan correction
+
+- The Team/progress footer icon uses fixed cyan `#2FE4F0`. QR purple remains
+  part of the dedicated QR badge palette; Footer geometry and behavior are
+  unchanged.
+
 ## 2026-08-20 Compact Team identity, V2 timers, icon accents and closed Stations
 
 - Footer phải hiển thị localized canonical Team name không có leading zero

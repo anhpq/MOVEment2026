@@ -21,6 +21,12 @@ attempt started before Event end, and enters Final only from `finalStartsAt`.
 
 ## Current Implementation
 
+- 2026-08-22 operational migration sets the existing Event Config to Station
+  close `11:30`, Final `11:45`, notification lead `20`, and
+  `Asia/Ho_Chi_Minh`. Runtime behavior remains HH:mm-based and configurable.
+- The close-to-Final `15` minute gap is an advisory only; Admin may save a
+  different valid configuration.
+
 - Commit `b23bc321` separated Final start from Event end.
 - Backend Station actions enforce Event end and preserve completion of an
   already-started attempt.

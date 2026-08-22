@@ -37,7 +37,7 @@ import {
 } from "../api";
 import {
   getRecommendedStationCloseTime,
-  isFiveMinutesBeforeFinal,
+  isRecommendedStationCloseTime,
 } from "../eventTimeRecommendation";
 import "./AdminOperationsPage.css";
 
@@ -232,7 +232,7 @@ export function AdminOperationsPage() {
             <div className="ops-info-note">
               {t("ops.eventNote")}
             </div>
-            {!isFiveMinutesBeforeFinal(eventEndTime, finalStartsAt) && (
+            {!isRecommendedStationCloseTime(eventEndTime, finalStartsAt) && (
               <div className="ops-info-note ops-info-note-warning">
                 <span>
                   {recommendedStationCloseTime ?

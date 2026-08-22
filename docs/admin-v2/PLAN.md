@@ -569,7 +569,7 @@ Pan/zoom bị tách khỏi placement mode để click kéo map không vô tình 
 - Tests: HH:mm, notify/cooldown bounds, timezone reject, serverNow/countdown, Final-minus-5 advisory, save alternative allowed.
 - Acceptance: labels state exact semantics; recommendation is copy-ready/advisory; Backend response refreshes phase; no hard-coded event time.
 
-Completed 2026-08-19: `/admin-v2/operations/event-control` now reuses the existing Admin Event Config read/update API and renders the authoritative Station Check-in close time, Final start, notification lead time, cancel cooldown, and IANA timezone. The `Final - 5 minutes` check remains advisory and saving a different supported configuration remains allowed. No Admin V1, Backend, API contract, schema, migration, seed, or Business Rule was changed.
+Completed 2026-08-19: `/admin-v2/operations/event-control` now reuses the existing Admin Event Config read/update API and renders the authoritative Station Check-in close time, Final start, notification lead time, cancel cooldown, and IANA timezone. The current `Final - 15 minutes` check remains advisory and saving a different supported configuration remains allowed.
 
 ### Phase 11 — Final Challenge
 
@@ -895,7 +895,7 @@ Không sửa Backend, Prisma, migration, seed, deploy config hoặc root redirec
 - Event Overview shows the authoritative Station Check-in close time, Final
   start time, timezone, and a state derived only from existing Event Config
   flags/countdown. Needs Attention contains only pending scores, the existing
-  advisory that Station close should be five minutes before Final, and Final
+  advisory that Station close should be fifteen minutes before Final, and Final
   submissions when present.
 - Key metrics preserve the Backend meaning of `completedCount` as completed
   Station attempts. Loading uses skeletons; real zero, empty, per-source error,
@@ -987,6 +987,15 @@ Rollout ban đầu kết thúc ở coexistence. User đã phê duyệt riêng co
   thiếu/rawless theo purpose, không expose lifecycle control và không log secret.
 - Team navigation icon nhận cyan từ route `iconTone`; không style trực tiếp
   `.anticon-team` và không đổi Team icon ngoài navigation.
+
+## Event timing and visual corrections — 2026-08-22
+
+- Event Control presents a live, server-synchronized local time in its configured
+  IANA timezone; API `serverNow` remains UTC ISO.
+- The close-to-Final recommendation is 15 minutes and remains advisory.
+- Leaderboard export actions use green for Excel and cyan for QR ZIP.
+- Teams navigation uses the shared Admin V2 navigation tone; Team V2 footer uses
+  cyan for the Team icon without changing QR purple.
 
 ## Event Preparation implementation record — 2026-08-21
 

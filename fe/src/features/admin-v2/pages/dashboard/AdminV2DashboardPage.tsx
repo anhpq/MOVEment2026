@@ -14,7 +14,7 @@ import {Alert, Button, Card, Col, Empty, Flex, List, Row, Skeleton, Statistic, T
 import {useCallback, useEffect, useState, type ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
-import {isFiveMinutesBeforeFinal} from "../../../movement/eventTimeRecommendation";
+import {isRecommendedStationCloseTime} from "../../../movement/eventTimeRecommendation";
 import {
   getAdminV2DashboardData,
   type AdminV2ActivityLog,
@@ -146,7 +146,7 @@ export function AdminV2DashboardPage() {
       to: "/admin-v2/operations/score-queue",
       type: "warning" as const,
     } : null,
-    eventConfig && !isFiveMinutesBeforeFinal(eventConfig.eventEndTime, eventConfig.finalStartsAt) ? {
+    eventConfig && !isRecommendedStationCloseTime(eventConfig.eventEndTime, eventConfig.finalStartsAt) ? {
       key: "timing",
       to: "/admin-v2/operations/event-control",
       type: "warning" as const,

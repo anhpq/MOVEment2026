@@ -67,7 +67,7 @@ const adminV2Resources = {
         needsAttention: "Cần chú ý", noAttention: "Chưa có việc cần xử lý ngay.", review: "Xem xử lý",
         attention: {
           pendingScores: "{{count}} điểm đang chờ xử lý", pendingScoresDescription: "Mở Hàng đợi điểm để hoàn tất chấm điểm.",
-          timing: "Mốc đóng Trạm chưa cách Final 5 phút", timingDescription: "Kiểm tra lại cấu hình thời gian sự kiện.",
+          timing: "Mốc đóng Trạm chưa cách Final 15 phút", timingDescription: "Kiểm tra lại cấu hình thời gian sự kiện.",
           finalSubmissions: "{{count}} lượt nộp Final", finalSubmissionsDescription: "Mở Final Challenge để xem danh sách lượt nộp.",
         },
         keyMetrics: "Chỉ số chính",
@@ -242,7 +242,7 @@ const adminV2Resources = {
         needsAttention: "Needs attention", noAttention: "Nothing needs immediate action.", review: "Review",
         attention: {
           pendingScores: "{{count}} scores are pending", pendingScoresDescription: "Open Score Queue to complete scoring.",
-          timing: "Station closing is not five minutes before Final", timingDescription: "Review the event timing configuration.",
+          timing: "Station closing is not fifteen minutes before Final", timingDescription: "Review the event timing configuration.",
           finalSubmissions: "{{count}} Final submissions", finalSubmissionsDescription: "Open Final Challenge to view submitted entries.",
         },
         keyMetrics: "Key metrics",

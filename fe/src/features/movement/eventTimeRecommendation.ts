@@ -1,3 +1,5 @@
+export const RECOMMENDED_STATION_CLOSE_LEAD_MINUTES = 15;
+
 function parseTimeToMinutes(value?: string) {
   const match = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(value?.trim() ?? "");
   if (!match) return null;
@@ -10,15 +12,15 @@ function parseTimeToMinutes(value?: string) {
 
 export function getRecommendedStationCloseTime(finalStartsAt?: string) {
   const finalStart = parseTimeToMinutes(finalStartsAt);
-  if (finalStart === null || finalStart < 5) return null;
+  if (finalStart === null || finalStart < RECOMMENDED_STATION_CLOSE_LEAD_MINUTES) return null;
 
-  const closeTime = finalStart - 5;
+  const closeTime = finalStart - RECOMMENDED_STATION_CLOSE_LEAD_MINUTES;
   const hours = Math.floor(closeTime / 60);
   const minutes = closeTime % 60;
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-export function isFiveMinutesBeforeFinal(eventEndTime?: string, finalStartsAt?: string) {
+export function isRecommendedStationCloseTime(eventEndTime?: string, finalStartsAt?: string) {
   const eventEnd = parseTimeToMinutes(eventEndTime);
   const recommendedTime = getRecommendedStationCloseTime(finalStartsAt);
   const recommendedMinutes = parseTimeToMinutes(recommendedTime ?? undefined);

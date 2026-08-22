@@ -75,7 +75,7 @@
 ## 2026-08-18 Admin Event time recommendation
 
 - When `Close Station start QR at` differs from the recommended offset, Admin
-  Event Config calculates and displays `Final starts at - 5 minutes` as a
+  Event Config calculates and displays `Final starts at - 15 minutes` as a
   copy-ready `HH:mm` value.
 - The recommendation remains advisory: Admin can copy it into the field or save
   another close time. Backend validation and Event/Final timing rules are unchanged.

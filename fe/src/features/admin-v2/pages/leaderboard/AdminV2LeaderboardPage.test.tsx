@@ -92,10 +92,14 @@ describe("AdminV2LeaderboardPage", () => {
     const user = userEvent.setup();
     renderPage();
 
-    await user.click(screen.getByRole("button", {name: "Export Excel"}));
+    const exportExcelButton = screen.getByRole("button", {name: "Export Excel"});
+    await user.click(exportExcelButton);
+    expect(exportExcelButton).toHaveClass("admin-v2-leaderboard__export-excel");
     expect(api.downloadAdminTeamResults).toHaveBeenCalledTimes(1);
 
-    await user.click(screen.getByRole("button", {name: "Export all QR codes"}));
+    const exportQrButton = screen.getByRole("button", {name: "Export all QR codes"});
+    await user.click(exportQrButton);
+    expect(exportQrButton).toHaveClass("admin-v2-leaderboard__export-qr");
     await waitFor(() => expect(api.prepareAdminQrCodeExport).toHaveBeenCalledTimes(1));
     expect(qrExport.downloadQrCodeZip).toHaveBeenCalledWith(
       expect.objectContaining({fileName: "movement-2026-qr-codes.zip"}),

@@ -5,7 +5,7 @@ import {Alert, App as AntdApp, Button, Card, Divider, Flex, Form, Input, InputNu
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {getAdminEventConfig, updateAdminEventConfig} from "../../../movement/api";
-import {parseAdminV2EventConfig, type AdminV2EventConfig} from "./adminV2EventControlData";
+import {formatAdminV2ServerTime, parseAdminV2EventConfig, type AdminV2EventConfig} from "./adminV2EventControlData";
 import {validCancelCooldownMinutes, validNotifyBeforeMinutes, validTimezone} from "./eventControlValidation";
 
 type EventControlFormValues = Readonly<{
@@ -16,11 +16,17 @@ type EventControlFormValues = Readonly<{
   timezone: string;
 }>;
 
+type ServerClock = Readonly<{
+  serverNow: string;
+  receivedAt: number;
+}>;
+
 const time = (value: string) => dayjs(value, "HH:mm", true);
 dayjs.extend(customParseFormat);
 const timeValue = (value: Dayjs) => value.format("HH:mm");
+
 export function AdminV2EventControlPage() {
-  const {t} = useTranslation();
+  const {i18n, t} = useTranslation();
   const {message} = AntdApp.useApp();
   const [form] = Form.useForm<EventControlFormValues>();
   const [config, setConfig] = useState<AdminV2EventConfig | null>(null);
@@ -28,6 +34,8 @@ export function AdminV2EventControlPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  const [serverClock, setServerClock] = useState<ServerClock | null>(null);
+  const [clockTick, setClockTick] = useState(() => Date.now());
   const eventEndTime = Form.useWatch("eventEndTime", form);
   const finalStartsAt = Form.useWatch("finalStartsAt", form);
   const currentEnd = eventEndTime?.isValid() ? timeValue(eventEndTime) : config?.eventEndTime;
@@ -39,11 +47,18 @@ export function AdminV2EventControlPage() {
       const next = parseAdminV2EventConfig(await getAdminEventConfig());
       if (!next) throw new Error("invalid event configuration");
       setConfig(next);
+      setServerClock(next.serverNow ? {serverNow: next.serverNow, receivedAt: Date.now()} : null);
       form.setFieldsValue({eventEndTime: time(next.eventEndTime), finalStartsAt: time(next.finalStartsAt), notifyBeforeMinutes: next.notifyBeforeMinutes, cancelCooldownMinutes: next.cancelCooldownMinutes, timezone: next.timezone});
     } catch { setLoadError(true); } finally { setLoading(false); }
   }, [form]);
 
   useEffect(() => { const timer = window.setTimeout(() => void refresh(), 0); return () => window.clearTimeout(timer); }, [refresh]);
+
+  useEffect(() => {
+    if (!serverClock) return undefined;
+    const timer = window.setInterval(() => setClockTick(Date.now()), 1_000);
+    return () => window.clearInterval(timer);
+  }, [serverClock]);
 
   const phase = useMemo(() => {
     if (!config) return null;
@@ -51,6 +66,16 @@ export function AdminV2EventControlPage() {
     if (config.isPastEventEnd) return "stationClosed";
     return "stationOpen";
   }, [config]);
+  const displayedServerNow = useMemo(() => {
+    if (!config || !serverClock) return undefined;
+    const sourceTime = new Date(serverClock.serverNow).getTime();
+    if (!Number.isFinite(sourceTime)) return undefined;
+    return formatAdminV2ServerTime(
+      new Date(sourceTime + Math.max(0, clockTick - serverClock.receivedAt)).toISOString(),
+      config.timezone,
+      i18n.language,
+    );
+  }, [clockTick, config, i18n.language, serverClock]);
 
   const save = async (values: EventControlFormValues) => {
     if (saving) return;
@@ -80,7 +105,7 @@ export function AdminV2EventControlPage() {
           <div className="admin-v2-event-control__timeline-gap"><span aria-hidden="true">↓</span></div>
           <div><Typography.Text type="secondary">{t("adminV2.eventControl.finalTiming.opensAt")}</Typography.Text><Typography.Title level={2}>{currentFinal ?? "—"}</Typography.Title></div>
         </div>
-        {phase && <Alert showIcon type="info" title={t(`adminV2.eventControl.phase.${phase}`)} description={config?.serverNow ? t("adminV2.eventControl.serverNow", {serverNow: config.serverNow, timezone: config.timezone}) : undefined} />}
+        {phase && <Alert showIcon type="info" title={t(`adminV2.eventControl.phase.${phase}`)} description={displayedServerNow ? t("adminV2.eventControl.serverNow", {serverNow: displayedServerNow, timezone: config?.timezone}) : undefined} />}
       </Card>
 
       <div className="admin-v2-event-control__grid">

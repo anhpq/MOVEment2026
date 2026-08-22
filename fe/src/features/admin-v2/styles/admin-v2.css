@@ -121,6 +121,10 @@
 .admin-v2-leaderboard__team-link:hover { color: var(--admin-v2-blue); }
 .admin-v2-leaderboard__team-link .ant-typography { min-width: 0; }
 .admin-v2-leaderboard__avatar { background: var(--admin-v2-blue); color: #fff; flex: 0 0 auto; font-weight: 700; }
+.admin-v2-root .admin-v2-leaderboard__export-excel.ant-btn { background: var(--admin-v2-green); border-color: var(--admin-v2-green); color: #fff; }
+.admin-v2-root .admin-v2-leaderboard__export-excel.ant-btn:not(:disabled):hover { background: #126b3e; border-color: #126b3e; color: #fff; }
+.admin-v2-root .admin-v2-leaderboard__export-qr.ant-btn { background: var(--admin-v2-cyan); border-color: var(--admin-v2-cyan); color: #fff; }
+.admin-v2-root .admin-v2-leaderboard__export-qr.ant-btn:not(:disabled):hover { background: #06778f; border-color: #06778f; color: #fff; }
 
 .admin-v2-stations { display: grid; gap: var(--admin-v2-space-3); margin: 0 auto; max-width: 1440px; }
 .admin-v2-stations__heading h1 { margin: 0; }

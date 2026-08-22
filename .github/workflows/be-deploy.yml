@@ -11,7 +11,7 @@ on:
         options:
           - master
       backup_confirmed:
-        description: Type BACKUP_CONFIRMED after verifying a fresh Production backup
+        description: Type BACKUP_CONFIRMED after a fresh backup, or NO_BACKUP_DATA_LOSS_RISK_ACCEPTED for an explicitly authorized one-time risk override
         required: true
         type: string
       deploy_backend:
@@ -67,9 +67,12 @@ jobs:
           script: |
             set -euo pipefail
 
-            if [ "${BACKUP_CONFIRMED}" != "BACKUP_CONFIRMED" ]; then
-              echo "Fresh Production backup confirmation is required."
+            if [ "${BACKUP_CONFIRMED}" != "BACKUP_CONFIRMED" ] && [ "${BACKUP_CONFIRMED}" != "NO_BACKUP_DATA_LOSS_RISK_ACCEPTED" ]; then
+              echo "A fresh backup confirmation or explicit no-backup risk acknowledgement is required."
               exit 1
+            fi
+            if [ "${BACKUP_CONFIRMED}" = "NO_BACKUP_DATA_LOSS_RISK_ACCEPTED" ]; then
+              echo "WARNING: proceeding without a Production backup under an explicit risk acknowledgement."
             fi
             if [ "${DEPLOY_BACKEND}" != "deploy-backend" ]; then
               echo "Backend deployment authorization is invalid."

@@ -5,7 +5,7 @@
 - [x] Restore Team Results Excel download on `/admin-v2/leaderboard`.
 - [x] Export active Team Login and Station Check-in/Check-out QR as labelled PNGs in one ZIP.
 - [x] Preserve exportable active credentials and repair only missing/rawless credential scope.
-- [x] Apply cyan to the Teams navigation icon through its route metadata.
+- [x] Keep the Teams navigation icon on the standard Admin V2 active/inactive tone.
 - [ ] Perform physical print/scan QA for representative Team, Check-in and Check-out PNGs.
 - [ ] Verify export against Production data after an explicitly authorized deploy.
 
@@ -228,7 +228,7 @@
 
 ## 2026-08-18 Admin Event close-time recommendation (superseded 2026-08-20)
 
-- [x] Calculate the recommended Station start QR close time as Final minus 5 minutes.
+- [x] Calculate the recommended Station start QR close time as Final minus 15 minutes.
 - [x] Display the `HH:mm` recommendation with a copy action in the existing warning.
 - [x] Preserve non-blocking saves for a different close time.
 - [x] Cover calculation, invalid input, optional seconds, and match detection.

@@ -25,6 +25,10 @@ This document records the confirmed requirements for:
 
 ## Current Implementation and Verification
 
+- 2026-08-22: Admin V2 gives Export Excel a green action treatment and QR ZIP
+  download a cyan action treatment. This is presentation-only; export payload,
+  credentials, and workbook behavior are unchanged.
+
 - Commit `c7bac12e` added Team Results export and scoped Team Color theming.
 - Commit `147ff07b` added the 25-color seed palette and Team gradients.
 - Commit `d9cccd48` aligned Excel Station headers with tracking modes.

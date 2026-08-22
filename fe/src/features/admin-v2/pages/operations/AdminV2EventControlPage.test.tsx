@@ -5,6 +5,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
 import i18n from "../../../movement/i18n";
 import {ensureAdminV2Resources} from "../../i18n/resources";
 import {AdminV2EventControlPage} from "./AdminV2EventControlPage";
+import {formatAdminV2ServerTime} from "./adminV2EventControlData";
 import {validCancelCooldownMinutes, validNotifyBeforeMinutes, validTimezone} from "./eventControlValidation";
 
 const api = vi.hoisted(() => ({getAdminEventConfig: vi.fn(), updateAdminEventConfig: vi.fn()}));
@@ -28,7 +29,11 @@ describe("AdminV2EventControlPage", () => {
     expect(screen.getByDisplayValue("11:45")).toBeVisible();
     expect(screen.getByDisplayValue("Asia/Ho_Chi_Minh")).toBeVisible();
     expect(screen.queryByText("Review the timing gap")).not.toBeInTheDocument();
-    expect(screen.getByText(/Server time: 2026-08-19T12:00:00.000Z/)).toBeVisible();
+    expect(screen.getByText(/Server time: 19\/08\/2026.*19:00:0\d.*Asia\/Ho_Chi_Minh/)).toBeVisible();
+  });
+
+  it("formats and advances the server clock in the configured timezone", () => {
+    expect(formatAdminV2ServerTime("2026-08-19T12:00:00.000Z", "Asia/Ho_Chi_Minh", "en")).toBe("19/08/2026, 19:00:00");
   });
 
   it("saves the configured Station close and Final opening times without a timing advisory", async () => {

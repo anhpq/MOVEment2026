@@ -1,4 +1,6 @@
 import {App} from "antd";
+import {readFileSync} from "node:fs";
+import {resolve} from "node:path";
 import {act, fireEvent, render, screen} from "@testing-library/react";
 import {afterEach, describe, expect, it, vi} from "vitest";
 import i18n from "../i18n";
@@ -90,5 +92,11 @@ describe("Team Gameplay V2 footer", () => {
 
     expect(onActiveStation).toHaveBeenCalledWith("ST001");
     expect(onLeaderboard).not.toHaveBeenCalled();
+  });
+
+  it("uses cyan for the Team footer icon without changing the QR purple token", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/features/movement/pages/TeamGameplayV2Demo.css"), "utf8");
+
+    expect(styles).toContain(".team-v2-demo-footer .team-v2-progress-panel .team-v2-bottom-icon { border-color: color-mix(in srgb, #2fe4f0 64%, transparent); color: #2fe4f0;");
   });
 });

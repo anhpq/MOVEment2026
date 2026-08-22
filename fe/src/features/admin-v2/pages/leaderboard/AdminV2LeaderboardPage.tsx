@@ -143,8 +143,8 @@ export function AdminV2LeaderboardPage() {
           <Typography.Paragraph type="secondary">{state.rows === null ? t("adminV2.leaderboard.loadingCount") : t("adminV2.leaderboard.count", {count: state.rows.length})}</Typography.Paragraph>
         </div>
         <Space wrap>
-          <Button icon={<FileExcelOutlined aria-hidden="true" />} loading={exportingExcel} onClick={() => void exportExcel()}>{t("adminV2.leaderboard.exportExcel")}</Button>
-          <Button icon={<QrcodeOutlined aria-hidden="true" />} loading={exportingQr} onClick={() => void exportQr()}>{t("adminV2.leaderboard.exportQr")}</Button>
+          <Button className="admin-v2-leaderboard__export-excel" icon={<FileExcelOutlined aria-hidden="true" />} loading={exportingExcel} onClick={() => void exportExcel()}>{t("adminV2.leaderboard.exportExcel")}</Button>
+          <Button className="admin-v2-leaderboard__export-qr" icon={<QrcodeOutlined aria-hidden="true" />} loading={exportingQr} onClick={() => void exportQr()}>{t("adminV2.leaderboard.exportQr")}</Button>
           <Button loading={state.refreshing} onClick={() => void refresh()}>{t("adminV2.leaderboard.refresh")}</Button>
         </Space>
       </Flex>
