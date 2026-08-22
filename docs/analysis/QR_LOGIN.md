@@ -457,6 +457,10 @@ Khi Team QR Login thành công trên thiết bị mới:
 4. QR token vẫn active nếu chưa bị revoke hoặc rotate; session expiry không làm
    Team QR hết hạn theo thời gian.
 
+Public route `/qr-login` không được chặn QR login chỉ vì browser đang giữ một
+session local. QR hợp lệ phải luôn tới Backend để thay session local đó và
+revoke session đang active của Team trên thiết bị khác.
+
 Phân biệt:
 
 ```text
@@ -620,6 +624,18 @@ Không hiển thị stack trace, SQL error, raw server HTML, token hash hoặc r
 ---
 
 # 16. Admin Token Management
+
+## 16.1 Event Preparation bulk rotation
+
+Admin Event Preparation có thể rotate toàn bộ QR cho rehearsal bằng một
+transaction explicit sau typed confirmation và backup acknowledgement. Mỗi Team
+nhận đúng một Team QR non-expiring mới, mỗi Station active nhận đúng một cặp
+CHECK_IN/CHECK_OUT mới; QR cũ bị revoke và Team session hiện tại bị vô hiệu hóa.
+
+Bulk rotation không reset Station, Event Config, Final config hoặc gameplay.
+Gameplay reset là thao tác riêng: giữ bộ QR đã rotate/test, xóa progress, điểm,
+Final submission, Team session, QR usage metadata và application Activity Log.
+Reset bị Backend chặn tại/sau `2026-08-27 06:00 Asia/Ho_Chi_Minh`.
 
 Admin UI hoặc Admin API phải hỗ trợ:
 

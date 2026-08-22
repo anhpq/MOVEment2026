@@ -978,3 +978,30 @@ Rollout ban đầu kết thúc ở coexistence. User đã phê duyệt riêng co
 1. Trong `fe/src/features/movement/routes.tsx`, đổi target của route `ADMIN_PRIMARY_PATH` từ `ADMIN_V2_HOME_PATH` sang `ADMIN_V1_HOME_PATH`; không đổi login/session/authorization code. Vì Admin post-login và fallback đều đi qua `/admin`, đây là một route switch tập trung.
 2. Giữ `/admin-v2/*`, `/admin-v1/*` và toàn bộ V1 route/component/API nguyên vẹn để có thể so sánh hoặc khôi phục lại V2 sau đó.
 3. Chạy focused routing tests, full Frontend test/lint/i18n/font/build và direct-route smoke trước khi deploy rollback. Deploy vẫn là thao tác riêng, không thuộc record này.
+
+## Leaderboard export completion record — 2026-08-21
+
+- `/admin-v2/leaderboard` có lại Team Results Excel action dùng endpoint hiện có
+  và có bulk QR ZIP action cho Team/Station active.
+- Bulk QR preparation giữ nguyên credential export được, chỉ repair credential
+  thiếu/rawless theo purpose, không expose lifecycle control và không log secret.
+- Team navigation icon nhận cyan từ route `iconTone`; không style trực tiếp
+  `.anticon-team` và không đổi Team icon ngoài navigation.
+
+## Event Preparation implementation record — 2026-08-21
+
+- Added the admin-only route `/admin-v2/operations/event-preparation` as an
+  Operations child. It shows Backend-authoritative inventory and separates
+  bulk QR rotation from gameplay reset.
+- Both destructive actions require the exact confirmation phrase and backup
+  acknowledgement. Rotation invalidates Team sessions and QR old credentials;
+  reset preserves the QR set and Event/Station/Final configuration while
+  clearing rehearsal state and application logs.
+- Reset is disabled in the UI at the server-synchronized cutoff and rejected by
+  Backend at/after `2026-08-27 06:00 Asia/Ho_Chi_Minh`. The UI advances the
+  server time from the response receipt time, so an open page disables reset at
+  the cutoff without requiring a manual refresh. The Admin V2 chunk is
+  `497.10 KiB` raw, below the enforced `512 KiB` bundle limit.
+- The Admin V2 primary-navigation boundary remains unchanged: mobile still has
+  the same six direct primary destinations, while Event Preparation is nested
+  beneath Operations.

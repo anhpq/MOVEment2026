@@ -1,5 +1,63 @@
 # MOVEment 2026 - Implementation Backlog
 
+## Admin V2 Leaderboard exports — 2026-08-21
+
+- [x] Restore Team Results Excel download on `/admin-v2/leaderboard`.
+- [x] Export active Team Login and Station Check-in/Check-out QR as labelled PNGs in one ZIP.
+- [x] Preserve exportable active credentials and repair only missing/rawless credential scope.
+- [x] Apply cyan to the Teams navigation icon through its route metadata.
+- [ ] Perform physical print/scan QA for representative Team, Check-in and Check-out PNGs.
+- [ ] Verify export against Production data after an explicitly authorized deploy.
+
+## Team V2 compact footer, closed Stations and ST014 reference — 2026-08-20
+
+- [x] Hiển thị `Đội 03`/`Team 03` thành `Đội 3`/`Team 3` chỉ ở footer V2 và giữ
+  custom Team name.
+- [x] Đổi timer footer/Detail V2 sang tổng phút/giây `MM:SS`; giữ V1
+  `HH:MM:SS`.
+- [x] Dùng trophy gold `#FFC94D`, Team icon purple `#B06BFF` mà không đổi
+  Footer geometry hoặc active clock.
+- [x] Chỉ giảm Station marker/label xuống `0.55` opacity trong
+  `STATIONS_CLOSED`; giữ map, Điểm tập trung, banner, HUD và hit area.
+- [x] Đổi ST014 reference sang `20` bằng Business Rule, canonical seed và
+  data-only migration; giữ Team maximum `1785`.
+- [x] PASS focused/full Frontend, full Backend, i18n/font/lint/build/bundle,
+  Prisma validate, local migration, seed hai lần và `db:verify`.
+- [x] Graphify incremental code-only update hoàn tất sau khi semantic update
+  không có LLM key trên host.
+- [ ] Browser computed-style smoke còn pending vì host không có browser/driver.
+- [ ] Production migration/runtime verification chưa thực hiện.
+
+## Team V2 focused UI and map stability fixes — 2026-08-20
+
+- [x] Make V2 score-entry label, numeric input and note readable without
+  changing other forms.
+- [x] Remove only the specified Total Score text shadow.
+- [x] Prevent immediate wheel-to-pan and viewport-resize paths from restoring a
+  stale map transform.
+- [x] Replace the left footer Leaderboard control with a live `MM:SS` timer
+  and active Station Detail action only while a Station is `In Progress`.
+- [x] Change only the V2 completion CTA to explicit QR Check-out copy/icon while
+  preserving `COMPLETE`, scanner lifecycle and V1 behavior.
+- [x] Pass focused/full tests, i18n/font/lint/build/bundle checks and authenticated
+  Chrome desktop/portrait/landscape style plus wheel-pan-resize smoke.
+- [ ] Physical touch/pinch verification remains pending.
+- [ ] Existing `TeamGameplayV2Demo.css` still applies full-viewport map-under-HUD
+  presentation while the latest documented layout rule says Header/Footer are
+  outside Konva. Header/Footer reconciliation was explicitly out of scope here.
+- [ ] Investigate the existing Backend `ERR_HTTP_HEADERS_SENT` error observed
+  when repeated Team runtime/playing-count polling receives `304`; Backend
+  changes were outside this Frontend-only request.
+
+## QR login session replacement route fix — 2026-08-20
+
+- [x] Allow a valid Team QR to replace an existing local browser session.
+- [x] Preserve Backend one-active-session enforcement and session-replacement
+  rejection for the prior device.
+- [x] Pass Frontend regression test, Backend auth/JWT tests, Frontend lint, and
+  production build/bundle gate.
+- [ ] Physical two-device QR scan verification remains pending.
+
 ## Canonical Station tracking mode update — 2026-08-20
 
 - [x] Set the 16 canonical Stations other than `ST009` to `SCORE`, while
@@ -1562,9 +1620,19 @@ Acceptance:
 - [x] Reset transaction verifies canonical Station/progress/Event/Final/Team QR/session/gameplay invariants.
 - [x] Runtime map asset uses 1280/1920/2950 WebP variants; original large PNG is retained under `fe/source-assets`.
 - [x] Targeted Backend tests, Backend lint/build, Frontend lint/build, and Prisma generate passed during implementation.
-- [ ] Full Backend Jest suite, disposable DB reset execute/idempotency, `db:verify`, Graphify update, and final diff check remain pending in the active run.
+- [x] Backend Jest suite, Frontend Vitest, lint, i18n/font guards, production build/bundle gate, Graphify update, and final diff check passed.
+- [ ] Disposable database reset execute/idempotency and `db:verify` remain pending; they require a deliberately provisioned non-Production database target.
 - [ ] Manual browser smoke for live counts, hidden-tab polling, fixed nav safe-area, map persistence, WebP network requests, Team QR lifecycle, and Leaderboard polling remains pending.
 - [ ] Production mutation, push, deploy, and Production runtime verification remain out of scope without explicit approval.
+
+## 2026-08-21 Event Preparation and rehearsal handoff
+
+- [x] Reset rehearsal runtime without replacing Station/Event/Final configuration or rotating the verified QR set.
+- [x] Add guarded bulk Team/Station QR rotation with transaction inventory checks and session invalidation.
+- [x] Add Admin V2 Event Preparation route with typed confirmation, backup acknowledgement, server cutoff, and protected API authority.
+- [x] Add a QR ZIP `manifest.csv` that contains no payload, raw token, login URL, or hash.
+- [ ] Before Production use: create and verify a database backup, deploy through the approved `master` workflow, rotate QR once, download/secure the ZIP, scan each QR, then execute reset before the cutoff.
+- [ ] Verify the protected Admin workflow and physical Team/Station QR scan on the Production target; this workspace did not access Production.
 # Final Challenge V2 — completed 2026-08-17
 
 - [x] Final V2 native takeover, manual character cells (space included), success UI và cooldown 1–50 giây.

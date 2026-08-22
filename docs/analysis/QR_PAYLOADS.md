@@ -457,6 +457,19 @@ Station QR hiện dùng strategy lưu `raw_token` trong protected backend databa
 
 Token cũ đã được tạo trước khi có `raw_token` không thể tự phục hồi từ hash; cần seed repair, rotate hoặc Admin nhập replacement token một lần.
 
+Admin V2 bulk artifact export dùng protected raw-token strategy này cho Team
+active và Station active. Export giữ nguyên active token có `raw_token`; chỉ tạo
+token khi purpose/Team thiếu credential usable và chỉ thay riêng active Legacy
+token không có `raw_token`. ZIP chứa từng PNG độc lập; Station note nằm phía trên,
+Team note nằm phía dưới, có thêm `manifest.csv` chỉ chứa path/type/entity/purpose/
+label, và raw token không được in thành text hoặc ghi log.
+
+Event Preparation bulk rotation là operation riêng với typed confirmation và
+backup acknowledgement. Operation revoke toàn bộ active Team QR/Station QR,
+invalidate Team session, tạo lại một Team QR và một Station pair cho mỗi entity
+active trong một transaction, rồi kiểm tra lại inventory. QR đã in trước đó sẽ
+không còn hợp lệ sau rotation.
+
 ---
 
 # 8. Payload Classification

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T03:54:08.071880+00:00",
+  "generated_at": "2026-08-20T13:23:46.158168+00:00",
   "nodes": {
     "be_src_common_auth_jwt_auth_guard": {
       "code_fingerprint": "59241f318f435acd7bbb7f23942612e13ae00568c70cd3254ae1e1258570767e",
@@ -12,7 +12,7 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 0.586695206,
+      "score": 0.581357341,
       "source_file": "be/src/common/auth/jwt-auth.guard.ts",
       "status": "tentative",
       "uses": 1
@@ -28,7 +28,7 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 0.586695206,
+      "score": 0.581357341,
       "source_file": "be/src/modules/admin/admin.service.ts",
       "status": "tentative",
       "uses": 1
@@ -44,7 +44,7 @@
           "q": "Implement Station Media Gallery and new action layout"
         }
       ],
-      "score": 0.587703579,
+      "score": 0.58235654,
       "source_file": "be/src/modules/admin/admin.service.ts",
       "status": "tentative",
       "uses": 1
@@ -65,7 +65,7 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 1.173626128,
+      "score": 1.162948254,
       "source_file": "be/src/modules/auth/auth.module.ts",
       "status": "preferred",
       "uses": 2
@@ -86,10 +86,26 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 1.173626128,
+      "score": 1.162948254,
       "source_file": "be/src/modules/auth/auth.service.ts",
       "status": "preferred",
       "uses": 2
+    },
+    "be_src_modules_event_config_event_config_service_eventconfigservice": {
+      "code_fingerprint": "0df021589c0c2c183f302dfdee2b2bc875e408acc8b23a1f93d6b81ee0e59d86",
+      "label": "EventConfigService",
+      "last": "2026-08-20T04:11:53.434174+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T04:11:53.434174+00:00",
+          "outcome": "useful",
+          "q": "Set Station check-in close to 11:30, Final Challenge open to 11:45, remove the timing-gap advisory, and explain Cancel cooldown"
+        }
+      ],
+      "score": 0.991184155,
+      "source_file": "be/src/modules/event-config/event-config.service.ts",
+      "status": "tentative",
+      "uses": 1
     },
     "be_src_modules_player_player_service": {
       "code_fingerprint": "4ea2307dd3a6600b8ce2655c2b91206e553d2e7e1ef7dcb06f556ee15ec2b4fc",
@@ -102,7 +118,7 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 0.586695206,
+      "score": 0.581357341,
       "source_file": "be/src/modules/player/player.service.ts",
       "status": "tentative",
       "uses": 1
@@ -110,18 +126,76 @@
     "be_src_modules_player_player_service_playerservice": {
       "code_fingerprint": "4ea2307dd3a6600b8ce2655c2b91206e553d2e7e1ef7dcb06f556ee15ec2b4fc",
       "label": "PlayerService",
-      "last": "2026-07-28T03:46:40.321338+00:00",
+      "last": "2026-08-20T04:11:53.434174+00:00",
       "provenance": [
+        {
+          "date": "2026-08-20T04:11:53.434174+00:00",
+          "outcome": "useful",
+          "q": "Set Station check-in close to 11:30, Final Challenge open to 11:45, remove the timing-gap advisory, and explain Cancel cooldown"
+        },
         {
           "date": "2026-07-28T03:46:40.321338+00:00",
           "outcome": "useful",
           "q": "Implement Station Media Gallery and new action layout"
         }
       ],
-      "score": 0.587703579,
+      "score": 1.573540695,
       "source_file": "be/src/modules/player/player.service.ts",
+      "status": "preferred",
+      "uses": 2
+    },
+    "docs_analysis_open_questions_and_decisions": {
+      "code_fingerprint": "f8da3d71d8702daa5e91ed1d226f5aeac7fbc818e50a9b44e6fcb9f652715fe2",
+      "label": "OPEN_QUESTIONS_AND_DECISIONS.md",
+      "last": "2026-08-20T04:11:53.434174+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T04:11:53.434174+00:00",
+          "outcome": "useful",
+          "q": "Set Station check-in close to 11:30, Final Challenge open to 11:45, remove the timing-gap advisory, and explain Cancel cooldown"
+        }
+      ],
+      "score": 0.991184155,
+      "source_file": "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md",
       "status": "tentative",
       "uses": 1
+    },
+    "fe_src_features_admin_v2_i18n_resources": {
+      "code_fingerprint": "156bec504cdff74bbcb5119bad31a218bdefbb4240b56e527d4e7d69f023a2e7",
+      "label": "resources.ts",
+      "last": "2026-08-20T04:01:44.487871+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T04:01:44.487871+00:00",
+          "outcome": "useful",
+          "q": "http://localhost:4173/admin-v2/operations/event-control - cái này là gì \"Configured gap differs from the recommendation\", vui lòng sửa"
+        }
+      ],
+      "score": 0.99102276,
+      "source_file": "fe/src/features/admin-v2/i18n/resources.ts",
+      "status": "tentative",
+      "uses": 1
+    },
+    "fe_src_features_admin_v2_pages_operations_adminv2eventcontrolpage": {
+      "code_fingerprint": "81fc02649e5688fda1aaf2aa32a33cf013b85f2fd2a6ecef64adb47993756504",
+      "label": "AdminV2EventControlPage.tsx",
+      "last": "2026-08-20T04:11:53.434174+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T04:11:53.434174+00:00",
+          "outcome": "useful",
+          "q": "Set Station check-in close to 11:30, Final Challenge open to 11:45, remove the timing-gap advisory, and explain Cancel cooldown"
+        },
+        {
+          "date": "2026-08-20T04:01:44.487871+00:00",
+          "outcome": "useful",
+          "q": "http://localhost:4173/admin-v2/operations/event-control - cái này là gì \"Configured gap differs from the recommendation\", vui lòng sửa"
+        }
+      ],
+      "score": 1.982206915,
+      "source_file": "fe/src/features/admin-v2/pages/operations/AdminV2EventControlPage.tsx",
+      "status": "preferred",
+      "uses": 2
     },
     "fe_src_features_admin_v2_routes_adminv2routeconfig": {
       "code_fingerprint": "e6eafec5e8d3ce44e6cedbfe487a82b20750dfb5daf239af0eddaefbdda8c89b",
@@ -134,7 +208,7 @@
           "q": "Trace current Admin V1 and Admin V2 routes, authentication guards, and Admin V2 navigation links for the controlled cutover"
         }
       ],
-      "score": 0.999997583,
+      "score": 0.990899414,
       "source_file": "fe/src/features/admin-v2/routes/adminV2RouteConfig.tsx",
       "status": "tentative",
       "uses": 1
@@ -150,7 +224,7 @@
           "q": "Trace current Admin V1 and Admin V2 routes, authentication guards, and Admin V2 navigation links for the controlled cutover"
         }
       ],
-      "score": 0.999997583,
+      "score": 0.990899414,
       "source_file": "fe/src/features/admin-v2/routes/AdminV2Routes.tsx",
       "status": "tentative",
       "uses": 1
@@ -166,7 +240,7 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.586930923,
+      "score": 0.581590913,
       "source_file": "fe/src/features/movement/api.ts",
       "status": "tentative",
       "uses": 1
@@ -182,7 +256,7 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.586930923,
+      "score": 0.581590913,
       "source_file": "fe/src/features/movement/apiClient.ts",
       "status": "tentative",
       "uses": 1
@@ -198,7 +272,7 @@
           "q": "Implement Station Media Gallery and new action layout"
         }
       ],
-      "score": 0.587703579,
+      "score": 0.58235654,
       "source_file": "fe/src/features/movement/components/StationsMapPanel.tsx",
       "status": "tentative",
       "uses": 1
@@ -214,7 +288,7 @@
           "q": "đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè"
         }
       ],
-      "score": 0.602657136,
+      "score": 0.597174046,
       "source_file": "fe/src/features/movement/components/TeamV2QrBadge.tsx",
       "status": "tentative",
       "uses": 1
@@ -230,7 +304,7 @@
           "q": "đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè"
         }
       ],
-      "score": 0.602657136,
+      "score": 0.597174046,
       "source_file": "fe/src/features/movement/components/TeamV2QrScanner.tsx",
       "status": "tentative",
       "uses": 1
@@ -246,7 +320,7 @@
           "q": "đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè"
         }
       ],
-      "score": 0.602657136,
+      "score": 0.597174046,
       "source_file": "fe/src/features/movement/layout/AppFrame.tsx",
       "status": "tentative",
       "uses": 1
@@ -262,13 +336,13 @@
           "q": "Trace current Admin V1 and Admin V2 routes, authentication guards, and Admin V2 navigation links for the controlled cutover"
         }
       ],
-      "score": 0.999997583,
+      "score": 0.990899414,
       "source_file": "fe/src/features/movement/layout/ProtectedRoute.tsx",
       "status": "tentative",
       "uses": 1
     },
     "fe_src_features_movement_pages_loginpage": {
-      "code_fingerprint": "437b3efc583940df649cca6842e73a5200c52858f31698507d184b179214eae4",
+      "code_fingerprint": "c6171a6ba02e8f584161a630594d2e2c6ecd954db385789f40e5f078f6b7bd63",
       "label": "LoginPage.tsx",
       "last": "2026-08-20T03:53:59.032930+00:00",
       "provenance": [
@@ -283,13 +357,13 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 1.586928505,
+      "score": 1.572490327,
       "source_file": "fe/src/features/movement/pages/LoginPage.tsx",
       "status": "preferred",
       "uses": 2
     },
     "fe_src_features_movement_pages_qrloginpage": {
-      "code_fingerprint": "ab10bba4faabf904fe32bde1795b75f43d74b79bd11a2fac38c573c781d2ebec",
+      "code_fingerprint": "72d74a83d30014c29b59fcc64346329b476d5fec107df4d01fbf7adc132a1f3a",
       "label": "QrLoginPage.tsx",
       "last": "2026-07-28T02:24:40.793157+00:00",
       "provenance": [
@@ -299,7 +373,7 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.586930923,
+      "score": 0.581590913,
       "source_file": "fe/src/features/movement/pages/QrLoginPage.tsx",
       "status": "tentative",
       "uses": 1
@@ -315,7 +389,7 @@
           "q": "Implement Station Media Gallery and new action layout"
         }
       ],
-      "score": 0.587703579,
+      "score": 0.58235654,
       "source_file": "fe/src/features/movement/pages/StationDetailPage.tsx",
       "status": "tentative",
       "uses": 1
@@ -331,7 +405,7 @@
           "q": "Implement Station Media Gallery and new action layout"
         }
       ],
-      "score": 0.587703579,
+      "score": 0.58235654,
       "source_file": "fe/src/features/movement/pages/StationEditorPage.tsx",
       "status": "tentative",
       "uses": 1
@@ -347,13 +421,13 @@
           "q": "Implement Station Media Gallery and new action layout"
         }
       ],
-      "score": 0.587703579,
+      "score": 0.58235654,
       "source_file": "fe/src/features/movement/pages/StationListPage.tsx",
       "status": "tentative",
       "uses": 1
     },
     "fe_src_features_movement_pages_teamgameplayv2page": {
-      "code_fingerprint": "f1da52e7dbbb01cd1ae387a23b17ea93019be09fcd4fb07fc98604a890a1708f",
+      "code_fingerprint": "7dade8bdd708bc84f8ad6e7492ebc3074ea15efda96b9080f8ab7e3e41d61b9d",
       "label": "TeamGameplayV2Page.tsx",
       "last": "2026-07-29T05:52:37.137302+00:00",
       "provenance": [
@@ -363,13 +437,13 @@
           "q": "đây là giao diện và màu sắc, hãy làm tương tự, lưu ý đừng để màu sắc của đội ghi đè"
         }
       ],
-      "score": 0.602657136,
+      "score": 0.597174046,
       "source_file": "fe/src/features/movement/pages/TeamGameplayV2Page.tsx",
       "status": "tentative",
       "uses": 1
     },
     "fe_src_features_movement_routes": {
-      "code_fingerprint": "40d3322a86f2d2937349fdf44e5d87cca00d4d726c631d47ad3a0a3ddc94ceac",
+      "code_fingerprint": "5c7f0af6d7f827a416e9c53c00f137f732ec3dc818ca9561326b8c53ee6c18ee",
       "label": "routes.tsx",
       "last": "2026-08-20T03:53:59.032930+00:00",
       "provenance": [
@@ -379,7 +453,7 @@
           "q": "Trace current Admin V1 and Admin V2 routes, authentication guards, and Admin V2 navigation links for the controlled cutover"
         }
       ],
-      "score": 0.999997583,
+      "score": 0.990899414,
       "source_file": "fe/src/features/movement/routes.tsx",
       "status": "tentative",
       "uses": 1
@@ -400,7 +474,7 @@
           "q": "Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
         }
       ],
-      "score": 1.173626128,
+      "score": 1.162948254,
       "source_file": "fe/src/features/movement/store.ts",
       "status": "preferred",
       "uses": 2
@@ -416,7 +490,7 @@
           "q": "be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau"
         }
       ],
-      "score": 0.586930923,
+      "score": 0.581590913,
       "source_file": "fe/src/MovementProviders.tsx",
       "status": "tentative",
       "uses": 1

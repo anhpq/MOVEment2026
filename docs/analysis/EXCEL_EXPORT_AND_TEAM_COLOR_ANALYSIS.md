@@ -170,6 +170,8 @@ Comparator order:
 ## Frontend Export UI
 
 - Admin Operations `Export Excel` downloads the new Team Results export.
+- Admin V2 Leaderboard cũng expose cùng Team Results export tại page header; nút
+  này reuse endpoint/helper hiện có và không thay đổi workbook.
 - Frontend reads filename from `Content-Disposition`.
 - Fallback filename: `movement-2026-team-results.xlsx`.
 - Legacy `/api/admin/reports/summary.xlsx` remains for compatibility but is no longer the Admin Operations button target.

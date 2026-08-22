@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/purity, react-hooks/set-state-in-effect */
 import {
+  ClockCircleOutlined,
   CloseOutlined,
   CustomerServiceOutlined,
   SettingOutlined,
@@ -48,10 +49,10 @@ import {
 } from "./teamV2MarkerAnimation";
 import {getTeamV2LeaderboardRows} from "./teamV2Leaderboard";
 import {
-  clampTeamV2MapScale as clampScale,
   getTeamV2BaseMapScale as getBaseMapScale,
   getTeamV2DefaultMapTransform as getDefaultMapTransform,
   getTeamV2WheelZoomFactor,
+  rebaseTeamV2MapTransform,
   scaleTeamV2MapAtPoint,
   scaleTeamV2MapFromGesture,
   TEAM_V2_MAP_WORLD_HEIGHT as MAP_WORLD_HEIGHT,
@@ -66,6 +67,7 @@ import {
   unlockLandscapeOrientation,
 } from "./teamV2Fullscreen";
 import {
+  getTeamV2StationPhaseOpacity,
   shouldAnimateTeamV2GatheringPoint,
   shouldShowTeamV2GatheringPoint,
   TEAM_V2_GATHERING_POINT,
@@ -90,7 +92,9 @@ import {
 import {useMovementStore} from "../store";
 import type {StationDefinition, SupportedLanguage, Team, TeamStation} from "../types";
 import {
+  getCompactLocalizedTeamName,
   getLocalizedTeamName,
+  formatMinutesSecondsFromMs,
   getStationDisplayCode,
   getStationReferencePointsDisplay,
   getStationScoreEntryMax,
@@ -710,33 +714,57 @@ function DemoMarkerLegend({open, onToggle}: {open: boolean; onToggle: () => void
   );
 }
 
-function DemoFooter({
+export function DemoFooter({
   activeStation,
   footerScale,
+  language,
+  onActiveStation,
   onLeaderboard,
   onMyTeam,
   onScan,
+  teamName,
 }: {
   activeStation: TeamStation | null;
   footerScale: number;
+  language: SupportedLanguage;
+  onActiveStation: (stationId: string) => void;
   onLeaderboard: () => void;
   onMyTeam: () => void;
   onScan: () => void;
+  teamName: string;
 }) {
   const {t} = useTranslation();
+  const [clockTick, setClockTick] = useState(() => Date.now());
   const footerFontCompensation = 1 / Math.sqrt(footerScale);
+  const compactTeamName = getCompactLocalizedTeamName(teamName, language);
+  const activeStationStart = activeStation?.startTime ? new Date(activeStation.startTime).getTime() : NaN;
+  const activeElapsed = activeStation && Number.isFinite(activeStationStart) ?
+    formatMinutesSecondsFromMs(clockTick - activeStationStart)
+  : "00:00";
+
+  useEffect(() => {
+    if (!activeStation) return;
+    setClockTick(Date.now());
+    const timer = globalThis.setInterval(() => setClockTick(Date.now()), 1000);
+    return () => globalThis.clearInterval(timer);
+  }, [activeStation]);
+
   return (
     <footer className="team-v2-bottom team-v2-demo-footer" style={{"--team-v2-footer-scale": footerScale, "--team-v2-footer-font-compensation": footerFontCompensation} as CSSProperties}>
-      <button type="button" className="team-v2-footer-panel team-v2-leaderboard-chip" onClick={onLeaderboard}>
-        <span className="team-v2-footer-content"><span className="team-v2-bottom-icon"><TrophyFilled /></span><span className="team-v2-bottom-copy"><strong>{t("teamV2.leaderboardControl")}</strong></span></span>
+      <button
+        type="button"
+        className={`team-v2-footer-panel team-v2-leaderboard-chip${activeStation ? " is-active-station" : ""}`}
+        aria-label={activeStation ? `${t("teamV2.activeStation")}: ${getStationDisplayCode(activeStation.stationId)} - ${activeStation.name}, ${t("teamV2.elapsedTime")}: ${activeElapsed}` : t("teamV2.leaderboardControl")}
+        onClick={() => activeStation ? onActiveStation(activeStation.stationId) : onLeaderboard()}>
+        <span className="team-v2-footer-content"><span className="team-v2-bottom-icon">{activeStation ? <ClockCircleOutlined /> : <TrophyFilled />}</span><span className="team-v2-bottom-copy"><strong className={activeStation ? "team-v2-active-station-timer" : undefined}>{activeStation ? activeElapsed : t("teamV2.leaderboardControl")}</strong></span></span>
       </button>
       <div className="team-v2-scan-action">
         <TeamV2QrBadge ariaLabel={t("teamV2.openScanner")} onClick={onScan} />
         <strong>{t("teamV2.scan")}</strong>
         <small className={activeStation ? "is-active-context" : undefined}>{activeStation ? `${getStationDisplayCode(activeStation.stationId)} · ${activeStation.name}` : t("teamV2.scanGameHint")}</small>
       </div>
-      <button type="button" className="team-v2-footer-panel team-v2-progress-panel" onClick={onMyTeam}>
-        <span className="team-v2-footer-content"><span className="team-v2-bottom-icon"><TeamOutlined /></span><span className="team-v2-bottom-copy team-v2-my-team-copy"><strong>{t("teamV2.myTeam")}</strong></span></span>
+      <button type="button" className="team-v2-footer-panel team-v2-progress-panel" aria-label={compactTeamName} onClick={onMyTeam}>
+        <span className="team-v2-footer-content"><span className="team-v2-bottom-icon"><TeamOutlined /></span><span className="team-v2-bottom-copy team-v2-my-team-copy"><strong>{compactTeamName}</strong></span></span>
       </button>
     </footer>
   );
@@ -1139,11 +1167,13 @@ export function TeamGameplayV2Page() {
         isCompleted: appearance.isCompleted,
         isLocked: appearance.isLocked,
         isSelected,
-        opacity:
+        opacity: getTeamV2StationPhaseOpacity(
           appearance.isCompleted ? (isSelected ? 0.86 : 0.74) : appearance.opacity,
+          finalSummary?.phase,
+        ),
       };
     });
-  }, [activeTeamStations, selectedStationId, stationDefinitions]);
+  }, [activeTeamStations, finalSummary?.phase, selectedStationId, stationDefinitions]);
 
   const markerScreenLayouts = useMemo(
     () => getStationLabelLayouts(markerViewModels, viewportSize, mapTransform),
@@ -1278,28 +1308,12 @@ export function TeamGameplayV2Page() {
       return;
     }
     const previousViewport = previousViewportRef.current;
-    setMapTransform((current) => {
-      if (!previousViewport) {
-        const next = getDefaultMapTransform(viewportSize);
-        liveMapTransformRef.current = next;
-        return next;
-      }
-      const previousBaseScale = getBaseMapScale(previousViewport);
-      const nextBaseScale = getBaseMapScale(viewportSize);
-      const zoomRatio = current.scale / previousBaseScale;
-      const worldCenter = {
-        x: (previousViewport.width / 2 - current.x) / current.scale,
-        y: (previousViewport.height / 2 - current.y) / current.scale,
-      };
-      const scale = clampScale(nextBaseScale * zoomRatio, viewportSize);
-      const next = {
-        scale,
-        x: viewportSize.width / 2 - worldCenter.x * scale,
-        y: viewportSize.height / 2 - worldCenter.y * scale,
-      };
-      liveMapTransformRef.current = next;
-      return next;
-    });
+    mapTransformSchedulerRef.current?.cancel();
+    const next = previousViewport ?
+      rebaseTeamV2MapTransform(liveMapTransformRef.current, previousViewport, viewportSize)
+    : getDefaultMapTransform(viewportSize);
+    liveMapTransformRef.current = next;
+    setMapTransform(next);
     previousViewportRef.current = viewportSize;
   }, [viewportSize]);
 
@@ -1404,7 +1418,7 @@ export function TeamGameplayV2Page() {
     panRef.current = {
       clientX: event.evt.clientX,
       clientY: event.evt.clientY,
-      transform: mapTransform,
+      transform: liveMapTransformRef.current,
       moved: false,
     };
   };
@@ -1800,6 +1814,15 @@ export function TeamGameplayV2Page() {
       {!isFinalMode && <DemoFooter
         activeStation={activeStation}
         footerScale={footerScale}
+        language={language}
+        onActiveStation={(stationId) => {
+          setIsSettingsOpen(false);
+          setIsLeaderboardOpen(false);
+          setIsScannerOpen(false);
+          setIsTeamPanelOpen(false);
+          setSelectedStationId(stationId);
+          setIsStationDetailOpen(true);
+        }}
         onLeaderboard={() => {
           setIsSettingsOpen(false);
           setIsScannerOpen(false);
@@ -1817,6 +1840,7 @@ export function TeamGameplayV2Page() {
           setIsScannerOpen(false);
           setIsTeamPanelOpen(true);
         }}
+        teamName={activeTeam.name}
       />}
 
       {!isFinalMode && <TeamOverviewOverlay

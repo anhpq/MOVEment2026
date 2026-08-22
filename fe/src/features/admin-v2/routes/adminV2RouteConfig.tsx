@@ -8,6 +8,7 @@ import {
   UnorderedListOutlined,
   EnvironmentOutlined,
   HistoryOutlined,
+  SafetyCertificateOutlined,
 } from "@ant-design/icons";
 
 type AdminV2Icon = typeof DashboardOutlined;
@@ -22,6 +23,7 @@ export type AdminV2RouteKey =
   | "eventControl"
   | "finalChallenge"
   | "activityLogs"
+  | "eventPreparation"
   | "settings";
 
 export type AdminV2RouteDefinition = Readonly<{
@@ -29,12 +31,13 @@ export type AdminV2RouteDefinition = Readonly<{
   path: string;
   labelKey: string;
   icon: AdminV2Icon;
+  iconTone?: "cyan";
   parentKey?: "operations";
 }>;
 
 export const adminV2PrimaryRoutes: readonly AdminV2RouteDefinition[] = [
   {key: "dashboard", path: "/admin-v2/dashboard", labelKey: "adminV2.nav.dashboard", icon: DashboardOutlined},
-  {key: "teams", path: "/admin-v2/teams", labelKey: "adminV2.nav.teams", icon: TeamOutlined},
+  {key: "teams", path: "/admin-v2/teams", labelKey: "adminV2.nav.teams", icon: TeamOutlined, iconTone: "cyan"},
   {key: "stations", path: "/admin-v2/stations", labelKey: "adminV2.nav.stations", icon: EnvironmentOutlined},
   {key: "leaderboard", path: "/admin-v2/leaderboard", labelKey: "adminV2.nav.leaderboard", icon: TrophyOutlined},
   {key: "operations", path: "/admin-v2/operations", labelKey: "adminV2.nav.operations", icon: ToolOutlined},
@@ -46,6 +49,7 @@ export const adminV2OperationsRoutes: readonly AdminV2RouteDefinition[] = [
   {key: "eventControl", path: "/admin-v2/operations/event-control", labelKey: "adminV2.nav.eventControl", icon: DashboardOutlined, parentKey: "operations"},
   {key: "finalChallenge", path: "/admin-v2/operations/final-challenge", labelKey: "adminV2.nav.finalChallenge", icon: FlagOutlined, parentKey: "operations"},
   {key: "activityLogs", path: "/admin-v2/operations/activity-logs", labelKey: "adminV2.nav.activityLogs", icon: HistoryOutlined, parentKey: "operations"},
+  {key: "eventPreparation", path: "/admin-v2/operations/event-preparation", labelKey: "adminV2.nav.eventPreparation", icon: SafetyCertificateOutlined, parentKey: "operations"},
 ];
 
 export const adminV2Routes = [...adminV2PrimaryRoutes, ...adminV2OperationsRoutes] as const;

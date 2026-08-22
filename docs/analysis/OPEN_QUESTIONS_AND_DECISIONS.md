@@ -20,6 +20,20 @@ Whenever a Business Rule changes:
 
 ## Decision History
 
+- 2026-08-21: Admin V2 Leaderboard tại `/admin-v2/leaderboard` có action tải
+  Team Results Excel từ endpoint authoritative hiện có và action export một ZIP
+  chứa toàn bộ QR của Team/Station đang active. Bulk QR export giữ nguyên mọi
+  active token có `raw_token`; chỉ provision credential đang thiếu và chỉ thay
+  token Legacy active không có `raw_token`, không rotate credential đang in lại
+  được. Station PNG ghi `MÃ CHECK IN/OUT - TRẠM NN` phía trên; Team Login PNG ghi
+  `TEAM NN` phía dưới. Export không in raw token thành text và không log secret.
+
+- 2026-08-20: Footer trái của Team Gameplay V2 hiển thị `BXH`/`RANK` và mở
+  Leaderboard khi Team không chơi Station. Khi có Station `In Progress`, cùng
+  control này phải thay bằng thời gian chơi `HH:MM:SS`; bấm vào mở V2 Station
+  Detail của đúng Station đang chơi. Geometry Footer, Leaderboard Backend,
+  Station lifecycle, QR Check-out và các màn hình V1 không đổi.
+
 - 2026-08-20: Final phase toast của Team Gameplay V2 phải có action Close để
   Team tự dismiss ngay; Final banner/countdown persistent không đổi.
 
@@ -232,6 +246,7 @@ Codex must not silently preserve an old behavior that conflicts with this docume
 | Team QR rotation | Admin có thể rotate Team QR Login token. Token cũ phải bị revoke. |
 | Team QR revocation | Admin có thể revoke Team QR Login token mà không cần xóa Team. |
 | Admin V2 QR boundary | Admin V2 chỉ hiển thị Team QR preview, status/info khi có và Download PNG; không expose generate, rotate hoặc revoke. Backend/V1 lifecycle hiện có không thay đổi bởi giới hạn UI này. |
+| Admin V2 bulk QR export | Leaderboard Admin V2 cho phép tải một ZIP gồm QR Login của mọi Team `ACTIVE` và cặp `CHECK_IN`/`CHECK_OUT` của mọi Station active. Export giữ nguyên active credential có `raw_token`; credential thiếu/hết hiệu lực được provision, còn active Legacy credential không có `raw_token` được thay riêng để có thể in lại. Không thay credential active khác, không thêm lifecycle control, không cache/log raw token và chỉ encode secret bên trong QR image. |
 | Admin raw token display | Backend lưu raw Team QR Login token cho token mới hoặc token được seed repair/rotate để Admin có thể xem và in lại QR Login dạng string/URL. |
 | QR Login error | Nếu auto-login thất bại, frontend phải hiển thị lỗi rõ ràng và cho phép thử lại hoặc dùng login thủ công. |
 
@@ -566,7 +581,7 @@ Canonical tracking policy: `ST001`...`ST008` and `ST010`...`ST017` use `SCORE`; 
 | ST011 | 20 | `SCORE` |
 | ST012 | 40 | `SCORE` |
 | ST013 | 36 | `SCORE` |
-| ST014 | 10 | `SCORE` |
+| ST014 | 20 | `SCORE` |
 | ST015 | 30 | `SCORE` |
 | ST016 | 30 | `SCORE` |
 | ST017 | 20 | `SCORE` |
@@ -675,6 +690,7 @@ The Team Results base columns include `Warnings` immediately after `Computed Sco
 | Team-facing UI | Team UI dùng scoped Team Color vars từ Team hiện tại, không mutate global `:root` hoặc global Ant Design theme. |
 | Team Gameplay V2 palette | `/team/v2` là ngoại lệ có fixed reference palette riêng: accent/active cyan `#2FE4F0`, cyan-soft `#7DF3F9`, score/completed green `#4DFF8A`, selected pink `#FF3FD8`, secondary QR purple `#B06BFF`, leaderboard gold `#FFC94D`, background ink `#030C14`, text `#EAFCFF`, muted text `#9FD4D9`, và panel `rgba(3,14,20,0.82)`. Route này không được derive hoặc ghi đè HUD/marker/control colors từ `Team.color`, `--team-primary`, body Team theme, hoặc global Ant Design theme. Team Color vẫn áp dụng cho các Team UI ngoài V2. |
 | Team Gameplay V2 HUD layout | Header V2 dùng clipped brand tab ở top-center và Settings ở top-right; Fullscreen nằm trong Settings. Settings cũng có control xoay ngang: browser hỗ trợ sẽ lock landscape sau khi thử fullscreen, browser/API không hỗ trợ (bao gồm Safari phù hợp) hiển thị hướng dẫn xoay thiết bị thủ công, không báo thành công giả. Không hiển thị Team identity block trên map HUD và luôn đặt total score ở chính giữa viewport. Fullscreen dùng browser Fullscreen API với Safari `webkit*` fallback; iPhone Safari không hỗ trợ fullscreen DOM phải hướng dẫn mở từ Home Screen ở standalone mode. Bottom HUD dùng ba vùng sci-fi độc lập: Leaderboard ở trái, QR CTA/pedestal nổi giữa, Team/progress ở phải, chỉ nối bằng rail cyan mảnh. Giữ product copy, safe-area, accessibility và gameplay behavior hiện có. |
+| Team Gameplay V2 footer và Station đóng | Footer phải hiển thị tên Team canonical dạng compact theo locale (`Đội 03` → `Đội 3`, `Team 03` → `Team 3`) nhưng giữ nguyên custom name; footer active Station và V2 Station Detail hiển thị elapsed time dạng tổng phút và giây `MM:SS`, trong khi V1 giữ `HH:MM:SS`. Trophy dùng leaderboard gold `#FFC94D`, Team icon dùng QR purple `#B06BFF`. Chỉ trong phase `STATIONS_CLOSED`, marker/label Station nhân opacity hiện tại với `0.55`; map image, Điểm tập trung, banner, HUD và marker hit area không đổi. |
 | Team Gameplay V2 QR badge | QR CTA trung tâm của `/team/v2` dùng inline SVG/CSS theo reference với static conic ring pink `#FF3FD8` → purple `#B06BFF` → cyan `#2FE4F0`, dark core và light QR glyph. SVG badge dùng toàn bộ diện tích control với `translateY(-5px)` ở mọi breakpoint; không có idle animation. |
 | Team Gameplay V2 scanner | Scanner riêng của V2 auto-start camera. API rejection giữ camera/preview mở, hiển thị safe localized error và mở manual token input. Token vừa lỗi không được gửi lặp; chỉ re-arm khi QR rời frame liên tục ít nhất 600ms hoặc detector thấy token khác. Success/close/unmount phải cleanup camera tracks và decode callbacks. V1, Login và shared `QrTokenInput` giữ nguyên behavior. |
 | Team Gameplay V2 Station Detail | Marker/label trong `/team/v2` mở near-fullscreen Station Detail overlay riêng mà không đổi URL hoặc route qua `/stations/:stationId`. Overlay hiển thị localized Station content, stats, live timer, YouTube Video và action theo trạng thái; dùng V2-owned presentation và reuse shared data/API/mutation helpers. V2 Detail không sở hữu/render gallery. Không dùng `?from=team-v2`. |
@@ -837,7 +853,7 @@ Station technical ID vẫn là `ST001`...`ST017` cho database, API, route, React
 | `ST011` | Mê Trận Đồng Tâm | `STANDARD` | 20 |
 | `ST012` | Trụ Vững Càn Khôn | `STANDARD` | 40 |
 | `ST013` | Liên Hoàn Thần Chưởng | `STANDARD` | 36 |
-| `ST014` | Hỏa Nhãn Kim Tinh | `STANDARD` | 10 |
+| `ST014` | Hỏa Nhãn Kim Tinh | `STANDARD` | 20 |
 | `ST015` | Tam Sao Thất Vậy | `STANDARD` | 30 |
 | `ST016` | Vạn Ly Trường Thành | `STANDARD` | 30 |
 | `ST017` | Nhất Nhịp Đồng Tâm | `STANDARD` | 20 |
@@ -849,11 +865,24 @@ Input `gameType: null`, `undefined`, `standard`, hoặc `STANDARD` normalize th�
 `mapX` và `mapY` hiện là deterministic implementation placeholders theo thứ tự canonical cho đến khi có tọa độ map thật; chúng không phải Business Rule về vị trí thực tế.
 
 Gameplay reset phục vụ rehearsal phải dry-run mặc định. Khi chạy destructive
-execute, mọi target đều cần `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"`;
+CLI execute, mọi target đều cần `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"`;
 Production-like target cần thêm `RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"`.
-Reset phải giữ Team/User identity, vô hiệu hóa session cũ, tạo đúng một active
-Team QR non-expiring cho mỗi Team, khôi phục 17 Station canonical và verify
-invariant trong transaction.
+Admin Event Preparation cũng yêu cầu nhập đúng câu xác nhận và xác nhận backup.
+
+Reset chỉ xóa runtime/rehearsal state: Team session, Team Station progress,
+score event, Final submission, Team aggregate/play state, Team QR usage metadata
+và toàn bộ application `ActivityLog`. Reset giữ nguyên Team/User identity,
+password, Team/Station QR credential, Station/Game/media/map, Event Config và
+Final Challenge config; không được dựng lại Station hoặc hard-code Event time.
+Sau reset, mọi Team active có một row `AVAILABLE` cho từng Station active và
+Team QR vẫn là credential cũ, active, non-expiring.
+
+Bulk QR rotation là thao tác tách biệt, explicit và transactional: revoke toàn
+bộ Team QR/Station QR active, invalidate Team session cũ, sinh một Team QR và
+một cặp CHECK_IN/CHECK_OUT opaque mới cho từng entity active, rồi verify
+inventory. ZIP export gồm PNG QR và `manifest.csv` không chứa raw token, hash
+hoặc URL. Reset rehearsal bị Backend và Admin V2 từ chối tại/sau
+`2026-08-27 06:00:00 Asia/Ho_Chi_Minh`; download ZIP vẫn được phép.
 
 ---
 

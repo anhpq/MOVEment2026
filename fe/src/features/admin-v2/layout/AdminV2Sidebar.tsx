@@ -20,7 +20,7 @@ function NavigationLink({route, compact = false}: {route: AdminV2RouteDefinition
       className={`admin-v2-nav-link${active ? " is-active" : ""}${compact ? " is-compact" : ""}`}
       to={route.path}
     >
-      <Icon aria-hidden="true" />
+      <Icon aria-hidden="true" className={route.iconTone ? `admin-v2-nav-icon is-${route.iconTone}` : "admin-v2-nav-icon"} />
       <span>{label}</span>
     </NavLink>
   );

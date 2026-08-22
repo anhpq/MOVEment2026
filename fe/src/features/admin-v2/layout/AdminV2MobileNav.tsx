@@ -21,7 +21,7 @@ export function AdminV2MobileNav() {
               className={`admin-v2-mobile-nav__link${active ? " is-active" : ""}`}
               to={route.path}
             >
-              <Icon aria-hidden="true" />
+              <Icon aria-hidden="true" className={route.iconTone ? `admin-v2-nav-icon is-${route.iconTone}` : "admin-v2-nav-icon"} />
             </NavLink>
           </Tooltip>
         );

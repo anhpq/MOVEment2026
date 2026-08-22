@@ -1,5 +1,4 @@
 import {
-  CheckCircleOutlined,
   CloseOutlined,
   FlagOutlined,
   PlayCircleFilled,
@@ -16,7 +15,7 @@ import type {SupportedLanguage, TeamStation} from "../types";
 import {getTeamV2OverlayStyle} from "./teamV2OverlayOpacity";
 import {
   formatDateTime,
-  formatDurationFromMs,
+  formatMinutesSecondsFromMs,
   getStationDisplayCode,
   getStationReferencePointsDisplay,
 } from "../utils";
@@ -51,8 +50,8 @@ export function TeamV2StationDetailOverlay({
   const stationMaxPoints = getStationReferencePointsDisplay(station);
   const elapsed =
     isInProgress && station.startTime ?
-      formatDurationFromMs(clockTick - new Date(station.startTime).getTime())
-    : "00:00:00";
+      formatMinutesSecondsFromMs(clockTick - new Date(station.startTime).getTime())
+    : "00:00";
 
   useEffect(() => {
     if (!isInProgress || !station.startTime) {
@@ -153,10 +152,10 @@ export function TeamV2StationDetailOverlay({
               <Button
                 type="primary"
                 size="large"
-                icon={<CheckCircleOutlined />}
-                aria-label={t("stationDetail.completedButton")}
+                icon={<QrcodeOutlined />}
+                aria-label={t("teamV2.scanToComplete")}
                 onClick={() => onRequestScan("COMPLETE")}>
-                {t("stationDetail.completedButton")}
+                {t("teamV2.scanToComplete")}
               </Button>
               <Button
                 danger

@@ -1,5 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {
+  getTeamV2StationPhaseOpacity,
   shouldAnimateTeamV2GatheringPoint,
   shouldShowTeamV2GatheringPoint,
   TEAM_V2_GATHERING_POINT,
@@ -27,4 +28,10 @@ describe("Team V2 gathering point notice marker", () => {
       expect(shouldAnimateTeamV2GatheringPoint(phase)).toBe(false);
     },
   );
+
+  it("dims only Station presentation after Station play closes", () => {
+    expect(getTeamV2StationPhaseOpacity(0.8, "STATIONS_CLOSED")).toBeCloseTo(0.44);
+    expect(getTeamV2StationPhaseOpacity(0.8, "NOTICE")).toBe(0.8);
+    expect(getTeamV2StationPhaseOpacity(0.8, "NORMAL")).toBe(0.8);
+  });
 });

@@ -1,3 +1,76 @@
+# 2026-08-21 Admin V2 Leaderboard exports and Team navigation icon
+
+- Restored the Team Results Excel action on `/admin-v2/leaderboard` by reusing
+  `GET /api/admin/reports/team-results.xlsx`; workbook and ranking logic did not change.
+- Added Admin-only `POST /api/admin/reports/qr-codes` to prepare active Team and
+  Station QR inventory. The Serializable transaction preserves exportable active
+  credentials, repairs only missing/expired/rawless credentials by entity/purpose,
+  and returns no hashes. Audit metadata contains counts/identifiers, not raw tokens.
+- Frontend lazily loads JSZip, creates one labelled PNG per QR, and downloads a
+  timestamped ZIP. Station notes are above the image; Team numbers are below.
+- Applied cyan to the Admin V2 Teams navigation icon through route `iconTone`,
+  not through a global `.anticon-team` selector.
+- Verification: Backend targeted `45/45`, full Backend `203/203`, Backend lint/build;
+  Frontend targeted `22/22`, full Frontend `197/197`, Frontend lint/i18n/font/build.
+  An earlier concurrent full-suite run hit three 5-second test timeouts; the
+  affected direct-route/Score Queue tests and the final full suite all passed on
+  isolated rerun. Vite retains the generic chunk warning; enforced bundle budget
+  passed (`505.66 KiB` Admin V2 raw, limit `512 KiB`).
+- Not performed: Production deploy/runtime verification or physical print/scanner QA.
+
+# 2026-08-20 Team V2 compact footer, closed Stations and ST014 reference
+
+- Footer phải hiển thị canonical Team name không có leading zero, V2 footer và
+  V2 Detail dùng tổng phút/giây `MM:SS`, trophy dùng `#FFC94D` và Team icon dùng
+  `#B06BFF`. V1 timer và Header/Footer geometry không đổi.
+- `STATIONS_CLOSED` chỉ nhân Station marker/label opacity với `0.55`; map image,
+  Điểm tập trung, banner, HUD và hit area không đổi.
+- ST014 reference đổi từ `10` sang `20` trong Business Rule, canonical seed và
+  forward data-only migration; schema, tracking, score cap, API và Team maximum
+  `1785` không đổi.
+- Verification PASS: focused Frontend `25/25`, full Frontend `194/194`, full
+  Backend `201/201`, i18n parity `461`, font guard, Frontend/Backend lint và
+  build, production bundle gate, Prisma validate, local migration deploy, seed
+  hai lần và `db:verify` (`25` Team, `17` Station, `425` progress, `34` Station
+  QR, `25` Team QR). Browser computed-style smoke không chạy được vì host không
+  có browser/driver khả dụng. Graphify incremental semantic update thiếu LLM
+  key nên fallback code-only đã cập nhật thành công `3677` nodes/`6235` edges;
+  Production không được truy cập.
+
+# 2026-08-20 Team V2 focused UI and map stability fixes
+
+- Frontend-only: corrected V2 score-entry foreground colors, removed the exact
+  Total Score neon text shadow, replaced active footer Leaderboard content with
+  a live Station timer/detail action, and renamed the V2 completion CTA to an
+  explicit QR Check-out action.
+- Fixed the map jump path by starting mouse pan from the live imperative
+  transform and rebasing that live transform across viewport changes after
+  cancelling queued frames. Header/Footer geometry, V1, Backend, API, schema,
+  migration, seed and QR lifecycle were not changed.
+- Verification PASS: focused Vitest `17/17`; full Frontend `187/187` with one
+  worker; i18n parity `461`; font guard; ESLint; production build/bundle gate;
+  authenticated Chrome 151 desktop/portrait/landscape computed-style and
+  wheel-pan-resize smoke. Two default-concurrency full runs each timed out the
+  same unrelated Admin V2 test at 5 seconds; its focused rerun passed `10/10`.
+- Browser smoke used response interception only to keep the already-started
+  local Final phase from taking over the map, so Event/gameplay data was not
+  changed. Normal local `team01` login created/replaced its active Team session
+  according to the one-active-session policy; Production was untouched.
+
+# 2026-08-20 QR login session replacement route fix
+
+- Removed the Frontend `/qr-login` guard that stopped a valid Team QR from
+  reaching Backend whenever the scanning browser already had a local session.
+  A successful scan now replaces that local session; Backend revokes the prior
+  active Team session, so another device is rejected at its next authenticated
+  request.
+- Added Frontend regression coverage for QR login with an existing local
+  session. Targeted Backend auth/JWT-guard coverage confirms the revoke and
+  `SESSION_REPLACED` enforcement.
+- Verification PASS: Frontend targeted Vitest (`1/1`), Backend auth/JWT Jest
+  (`18/18`), Frontend lint, and production build/bundle gate. No schema,
+  migration, seed, or Production deployment change was made.
+
 # 2026-08-20 Canonical Station tracking mode update
 
 - Updated canonical Station policy: `ST001`...`ST008` and `ST010`...`ST017`
@@ -1930,3 +2003,35 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
 - Verification PASS: focused tests `14/14`; full Frontend Vitest `174/174`; lint; i18n parity `460`; font guard; TypeScript/Vite production build and bundle budget. One intermediate full run exposed an unrelated async Team QR test flake; its focused rerun passed `5/5` and the final full rerun passed.
 - Local Chrome headless/CDP smoke against the production build passed direct refresh/navigation for `/admin`, `/admin-v2`, all 17 implemented V2 child routes, four Operations links, `/admin-v1`, anonymous, Team-denied, expired-session, and Back/Forward cases. `1440x900`, `1024x768`, and `768x1024` retained the approved six-link navigation with no horizontal page overflow.
 - The 2026-08-19 parity gaps remain open. No Production deploy, physical-device smoke, commit, or push was performed.
+
+## 2026-08-21 Event Preparation, rehearsal reset, and QR artifact manifest
+
+- Added Admin-only Event Preparation status, reset, and bulk QR rotation APIs,
+  protected by exact confirmation, backup acknowledgement, a PostgreSQL
+  transaction advisory lock, and canonical Team/Station/QR inventory checks.
+- Reset now preserves Team/User identity, Team/Station QR credentials,
+  Station/Game/media/map, Event Config, and Final config. It clears only
+  rehearsal runtime data, QR usage metadata, sessions, and application logs;
+  the prior reset behavior that recreated Station/Event data is superseded.
+- Bulk rotation revokes all active credentials, invalidates Team sessions,
+  recreates 1 Team QR plus 2 Station QR per active Station, and records only
+  safe aggregate metadata. Raw tokens are never written to activity logs.
+- Admin V2 Operations now exposes the protected Event Preparation workspace
+  with a Backend-enforced reset cutoff at 06:00 Asia/Ho_Chi_Minh on 2026-08-27.
+- QR ZIP rendering now includes a payload-free `manifest.csv` alongside
+  printable labelled PNGs.
+- Verification passed: Backend Jest `16` suites / `207` tests, Frontend Vitest
+  `41` suites / `201` tests, Backend and Frontend lint, i18n parity `461`, Team V2 font
+  guard, and Frontend TypeScript/Vite production build. The bundle gate passed:
+  Admin V2 is `497.10 KiB` raw, below the `512 KiB` limit. No Production
+  deployment, mutation, bulk QR rotation, or physical QR scan ran.
+
+## 2026-08-22 Build artifact startup alignment
+
+- Corrected the Backend `start:prod` entrypoint to `dist/src/main.js`, matching
+  the current Nest build output. This restores local tester-run startup after
+  a successful Backend build.
+- The Frontend `jszip` build error was an incomplete local `node_modules`
+  installation: its package manifest and lockfile already declare
+  `jszip@3.10.1`; `npm ci` restored the dependency without source or lockfile
+  changes.

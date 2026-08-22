@@ -1,5 +1,13 @@
 # Station Reference Points, Ba Tiêu Ranking, and Excel Analysis
 
+## 2026-08-20 ST014 reference update
+
+- Approved follow-up changes only `ST014` Hỏa Nhãn Kim Tinh reference points
+  from `10` to `20`.
+- Canonical seed and a forward data-only migration update existing Game rows.
+  Tracking mode, score-entry cap, schema and Team `maxPossiblePoints = 1785`
+  remain unchanged.
+
 ## Status
 
 | Area | Status |
@@ -51,7 +59,7 @@ approved behavior changes existing Business Rules.
 | `ST011` | Mê Trận Đồng Tâm | 20 | `SCORE` |
 | `ST012` | Trụ Vững Càn Khôn | 40 | `SCORE` |
 | `ST013` | Liên Hoàn Thần Chưởng | 36 | `SCORE` |
-| `ST014` | Hỏa Nhãn Kim Tinh | 10 | `SCORE` |
+| `ST014` | Hỏa Nhãn Kim Tinh | 20 | `SCORE` |
 | `ST015` | Tam Sao Thất Vậy | 30 | `SCORE` |
 | `ST016` | Vạn Ly Trường Thành | 30 | `SCORE` |
 | `ST017` | Nhất Nhịp Đồng Tâm | 20 | `SCORE` |

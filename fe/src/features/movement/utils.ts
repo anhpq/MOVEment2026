@@ -99,6 +99,19 @@ export function getLocalizedTeamName(teamName: string, language: "vi" | "en") {
   return language === "en" ? `Team ${number}` : `Đội ${number}`;
 }
 
+export function getCompactLocalizedTeamName(
+  teamName: string,
+  language: "vi" | "en",
+) {
+  const match = /^(?:Team|Đội)\s*(\d{1,3})$/i.exec(teamName.trim());
+  if (!match) {
+    return teamName;
+  }
+
+  const number = String(Number(match[1]));
+  return language === "en" ? `Team ${number}` : `Đội ${number}`;
+}
+
 export const DEFAULT_DATABASE: LocalDatabase = {
   dataSessionKey: null,
   finalSummary: null,
@@ -316,6 +329,13 @@ export function formatDurationFromMs(durationMs: number) {
   );
   const seconds = String(safeDuration % 60).padStart(2, "0");
   return `${hours}:${minutes}:${seconds}`;
+}
+
+export function formatMinutesSecondsFromMs(durationMs: number) {
+  const safeDuration = Math.max(0, Math.floor(durationMs / 1000));
+  const minutes = String(Math.floor(safeDuration / 60)).padStart(2, "0");
+  const seconds = String(safeDuration % 60).padStart(2, "0");
+  return `${minutes}:${seconds}`;
 }
 
 export function getStationCooldownRemainingSeconds(

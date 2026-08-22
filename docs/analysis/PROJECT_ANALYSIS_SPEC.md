@@ -1,5 +1,27 @@
 # MOVEment 2026 - Current Specification
 
+## 2026-08-20 Team V2 compact footer and closed-Station presentation
+
+- Footer phải hiển thị canonical Team name dạng compact theo locale, giữ custom
+  name; footer active Station và V2 Detail dùng tổng phút/giây `MM:SS`.
+- Trophy dùng gold `#FFC94D`, Team icon dùng purple `#B06BFF`; Header/Footer
+  geometry và V1 timer không đổi.
+- Trong `STATIONS_CLOSED`, chỉ Station marker/label nhân opacity với `0.55`;
+  map image, Điểm tập trung, banner, HUD và marker interaction giữ nguyên.
+- ST014 reference points là `20`; Team `maxPossiblePoints` tiếp tục là `1785`.
+
+## 2026-08-20 Team V2 active footer and focused UI stability
+
+- The left Team V2 footer control opens Leaderboard as `BXH`/`RANK` when no
+  Station is active. During `In Progress`, it displays a live `MM:SS` timer
+  and opens the active Station's V2 Detail.
+- V2 score entry uses readable `#EAFCFF` label/input/note text, while Total
+  Score no longer uses the retired green text shadow.
+- V2 completion copy explicitly requests a Check-out QR and keeps the existing
+  `COMPLETE` scanner intent. V1 and Backend QR behavior remain unchanged.
+- Wheel-to-pan and viewport resize use the latest imperative transform so stale
+  React state cannot recenter the map. Header/Footer geometry is unchanged.
+
 ## 2026-08-20 Team V2 map performance and framed layout
 
 - Team V2 map uses four Konva layers: non-listening background, cached
@@ -749,6 +771,14 @@ response body.
 
 Admin can export a new one-worksheet Team Results `.xlsx` file with exactly one row per non-deleted Team.
 
+Admin V2 Leaderboard exposes this existing Team Results download and a bulk QR
+ZIP export. The QR export covers active Teams and active Stations, keeps every
+active credential whose raw value can still be rendered, provisions only a
+missing credential, and replaces only an active Legacy credential whose raw
+value is unavailable. Station PNGs label Check-in/Check-out above the QR; Team
+Login PNGs label the Team number below it. Raw token text is not printed or
+logged.
+
 Base columns are `Team Code`, `Team Name`, `Captain Name`, `Username`, `Total Stations Completed`, `Total Play Time`, `Total Score`, `Computed Score`, `Rank`, `Final Submitted At`, `Final Rank`, and `Final Bonus Score`.
 
 `Team Code` is `Team.id`; the export omits duplicate `Team ID`, `Team Color`, `Team Status`, `Total Stations`, and `Final Challenge Status` columns.
@@ -956,7 +986,17 @@ Production seed must not print raw secrets or create local test credentials auto
 `npm run reset:gameplay` is dry-run by default. `--execute` requires
 `RESET_GAMEPLAY_CONFIRM="RESET MOVEMENT2026 GAMEPLAY"` for all targets and
 `RESET_GAMEPLAY_BACKUP_CONFIRMED="BACKUP_CONFIRMED"` for Production-like
-targets.
+targets. The reset preserves Team/User identity, Team/Station QR credentials,
+Station/Game content, Event Config, and Final configuration; it clears only
+rehearsal runtime data, Team QR usage metadata, and application Activity Logs.
+
+Admin V2 Event Preparation exposes the same guarded reset before
+`2026-08-27 06:00:00 Asia/Ho_Chi_Minh`; Backend rejects the request at or after
+that cutoff. Its separate bulk QR rotation revokes all current QR credentials,
+invalidates Team sessions, creates one Team QR plus one Check-in/Check-out QR
+pair per active Station, and requires the same typed confirmation plus backup
+acknowledgement. QR ZIP export contains printable PNGs and a secret-free
+`manifest.csv` inventory.
 
 Temporary Production Final Challenge seed override remains enabled through `2026-08-21 23:59:59 Asia/Ho_Chi_Minh`: each seed run overwrites only seed-managed Final Challenge fields with canonical values. Starting `2026-08-22 00:00:00 Asia/Ho_Chi_Minh`, Production seed preserves an existing Final Challenge record and only creates it if missing.
 

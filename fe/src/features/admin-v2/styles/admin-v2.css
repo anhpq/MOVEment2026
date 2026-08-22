@@ -39,6 +39,7 @@
 .admin-v2-nav-link:hover { background: rgba(255, 255, 255, .09); color: #fff; }
 .admin-v2-nav-link.is-active { background: var(--admin-v2-coral); color: #fff; font-weight: 700; }
 .admin-v2-nav-link .anticon { font-size: 1.1rem; }
+.admin-v2-nav-icon.is-cyan { color: var(--admin-v2-cyan); }
 [data-admin-v2-navigation-density="compact"] .admin-v2-sidebar { padding-block: var(--admin-v2-space-2); }
 [data-admin-v2-navigation-density="compact"] .admin-v2-sidebar__brand { padding-bottom: var(--admin-v2-space-2); }
 [data-admin-v2-navigation-density="compact"] .admin-v2-sidebar__nav { margin-top: var(--admin-v2-space-2); }
@@ -202,6 +203,14 @@
 .admin-v2-event-control__timeline-gap { align-items: center; color: var(--admin-v2-muted); display: flex; flex-direction: column; justify-content: center; text-align: center; }
 .admin-v2-event-control__timeline-gap > span { color: var(--admin-v2-blue); font-size: 1.5rem; line-height: 1; }
 .admin-v2-event-control__form-actions { background: var(--admin-v2-surface, #fff); bottom: 0; padding: var(--admin-v2-space-2) 0 calc(var(--admin-v2-space-2) + env(safe-area-inset-bottom)); position: sticky; z-index: 1; }
+.admin-v2-event-preparation { display: grid; gap: var(--admin-v2-space-3); margin: 0 auto; max-width: 980px; }
+.admin-v2-event-preparation__heading h1 { margin: 0; }
+.admin-v2-event-preparation__heading .ant-typography.ant-typography-secondary { margin: 4px 0 0; }
+.admin-v2-event-preparation .ant-card { border-color: var(--admin-v2-border); box-shadow: none; }
+.admin-v2-event-preparation__actions { display: grid; gap: var(--admin-v2-space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.admin-v2-event-preparation__reset-card { border-color: #e4a7a0 !important; }
+.admin-v2-event-preparation__confirmation { display: flex; width: 100%; }
+.admin-v2-event-preparation__confirmation .ant-input { font-family: var(--admin-v2-font-ui); }
 .admin-v2-final-challenge { display: grid; gap: var(--admin-v2-space-3); margin: 0 auto; max-width: 1180px; }
 .admin-v2-final-challenge__heading h1 { margin: 0; }
 .admin-v2-final-challenge__heading .ant-typography.ant-typography-secondary { margin: 4px 0 0; }
@@ -274,16 +283,18 @@
   .admin-v2-operations { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .admin-v2-score-queue { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .admin-v2-event-control { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
+  .admin-v2-event-preparation { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .admin-v2-final-challenge { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .admin-v2-activity-logs { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .admin-v2-settings { gap: var(--admin-v2-space-2); padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .admin-v2-team-detail__grid { grid-template-columns: 1fr; gap: var(--admin-v2-space-2); }
   .admin-v2-station-detail__grid { grid-template-columns: 1fr; gap: var(--admin-v2-space-2); }
   .admin-v2-station-map__layout { gap: var(--admin-v2-space-2); grid-template-columns: 1fr; }
-  .admin-v2-event-control__grid, .admin-v2-event-control__timeline { grid-template-columns: 1fr; }
+  .admin-v2-event-control__grid, .admin-v2-event-control__timeline, .admin-v2-event-preparation__actions { grid-template-columns: 1fr; }
   .admin-v2-final-challenge__summary, .admin-v2-final-challenge__form-grid { grid-template-columns: 1fr; }
   .admin-v2-event-control__timeline-gap { flex-direction: row; gap: 8px; justify-content: flex-start; text-align: left; }
   .admin-v2-event-control__heading .ant-btn { width: 100%; }
+  .admin-v2-event-preparation__heading .ant-btn, .admin-v2-event-preparation__actions .ant-btn { width: 100%; }
   .admin-v2-station-map__controls { max-height: none; }
   .admin-v2-station-map__station-list { max-height: 180px; }
   .admin-v2-station-map__heading .ant-btn { width: 100%; }

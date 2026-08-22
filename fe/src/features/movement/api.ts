@@ -655,6 +655,43 @@ export const getAdminEventConfig = () => apiGet<Record<string, unknown>>('/api/a
 export const updateAdminEventConfig = (values: Record<string, unknown>) =>
   apiPatch('/api/admin/event-config', values)
 export const getAdminActivityLogs = () => apiGet<Array<Record<string, unknown>>>('/api/admin/activity-logs')
+export type AdminEventPreparationStatus = {
+  serverNow: string
+  resetCutoff: string
+  resetEnabled: boolean
+  inventory: {
+    teams: number
+    activeStations: number
+    activeGames: number
+    activeTeamQrTokens: number
+    activeStationQrTokens: number
+    eventConfigRows: number
+    activeFinalChallenges: number
+    ready: boolean
+    issues: string[]
+  }
+}
+export type AdminGameplayResetResponse = {
+  teams: number
+  progressRows: number
+  teamSessions: number
+  scoreEvents: number
+  finalSubmissions: number
+  activityLogs: number
+}
+export type AdminBulkQrRotationResponse = {
+  teams: number
+  stations: number
+  teamQrTokens: number
+  stationQrTokens: number
+  revokedTeamSessions: number
+}
+export const getAdminEventPreparation = () =>
+  apiGet<AdminEventPreparationStatus>('/api/admin/event-preparation')
+export const resetAdminGameplay = (confirmation: string, backupConfirmed: boolean) =>
+  apiPost<AdminGameplayResetResponse>('/api/admin/event-preparation/reset', {confirmation, backupConfirmed})
+export const rotateAdminEventPreparationQr = (confirmation: string, backupConfirmed: boolean) =>
+  apiPost<AdminBulkQrRotationResponse>('/api/admin/event-preparation/rotate-qr', {confirmation, backupConfirmed})
 export const getAdminFinalConfig = () => apiGet<Record<string, unknown>>('/api/admin/final-config')
 export const getAdminFinalSubmissions = () => apiGet<Array<Record<string, unknown>>>('/api/admin/final/submissions')
 export const updateAdminFinalConfig = (values: Record<string, unknown>) =>
@@ -667,6 +704,27 @@ export async function downloadAdminSummary() {
 export async function downloadAdminTeamResults() {
   await downloadFile('/api/admin/reports/team-results.xlsx', 'movement-2026-team-results.xlsx')
 }
+
+export type AdminQrCodeExportResponse = {
+  fileName: string
+  generatedAt: string
+  teams: Array<{teamId: number; loginUrl: string}>
+  stations: Array<{
+    stationId: string
+    purpose: 'CHECK_IN' | 'CHECK_OUT'
+    rawToken: string
+  }>
+  repaired: {
+    teamIds: number[]
+    stationTokens: Array<{
+      stationId: string
+      purpose: 'CHECK_IN' | 'CHECK_OUT'
+    }>
+  }
+}
+
+export const prepareAdminQrCodeExport = () =>
+  apiPost<AdminQrCodeExportResponse>('/api/admin/reports/qr-codes', {})
 
 async function downloadFile(path: string, fallbackFileName: string) {
   const {blob, fileName} = await apiDownloadFile(path, fallbackFileName)

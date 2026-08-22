@@ -77,5 +77,6 @@ describe("AdminV2Entry", () => {
     expect(screen.getByRole("link", {name: /Open Event Control/})).toHaveAttribute("href", "/admin-v2/operations/event-control");
     expect(screen.getByRole("link", {name: /Open Final Challenge/})).toHaveAttribute("href", "/admin-v2/operations/final-challenge");
     expect(screen.getByRole("link", {name: /Open Activity Logs/})).toHaveAttribute("href", "/admin-v2/operations/activity-logs");
+    expect(screen.getByRole("link", {name: /Open Event Preparation/})).toHaveAttribute("href", "/admin-v2/operations/event-preparation");
   });
 });

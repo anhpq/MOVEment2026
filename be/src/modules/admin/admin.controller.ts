@@ -29,12 +29,17 @@ import { UpdateStationDto } from './dto/update-station.dto';
 import { CreateStationDto } from './dto/create-station.dto';
 import { GenerateQrLoginTokenDto } from './dto/qr-login-token.dto';
 import { CreateTeamDto, UpdateTeamDto } from './dto/team.dto';
+import { ExecuteEventPreparationDto } from './dto/event-preparation.dto';
+import { EventPreparationService } from './event-preparation.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.ADMIN)
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly eventPreparation: EventPreparationService,
+  ) {}
 
   @Get('dashboard')
   dashboard() {
@@ -311,6 +316,31 @@ export class AdminController {
     return this.adminService.activityLogs();
   }
 
+  @Get('event-preparation')
+  @Header('Cache-Control', 'no-store')
+  eventPreparationStatus() {
+    return this.eventPreparation.status();
+  }
+
+  @Post('event-preparation/reset')
+  @Header('Cache-Control', 'no-store')
+  resetEventPreparation(@Body() dto: ExecuteEventPreparationDto) {
+    return this.eventPreparation.resetGameplay(dto.confirmation, dto.backupConfirmed);
+  }
+
+  @Post('event-preparation/rotate-qr')
+  @Header('Cache-Control', 'no-store')
+  rotateAllEventPreparationQr(
+    @CurrentAuth() auth: AuthContext,
+    @Body() dto: ExecuteEventPreparationDto,
+  ) {
+    return this.eventPreparation.rotateAllQr(
+      this.requireAdminId(auth),
+      dto.confirmation,
+      dto.backupConfirmed,
+    );
+  }
+
   @Get('reports/team-results.xlsx')
   async teamResultsReport(@CurrentAuth() auth: AuthContext, @Res() res: Response) {
     const report = await this.adminService.teamResultsReport(this.requireAdminId(auth));
@@ -320,6 +350,12 @@ export class AdminController {
     );
     res.setHeader('Content-Disposition', `attachment; filename="${report.fileName}"`);
     res.send(report.buffer);
+  }
+
+  @Post('reports/qr-codes')
+  @Header('Cache-Control', 'no-store')
+  qrCodesReport(@CurrentAuth() auth: AuthContext) {
+    return this.adminService.qrCodesReport(this.requireAdminId(auth));
   }
 
   @Get('reports/summary.xlsx')

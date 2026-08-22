@@ -4,9 +4,9 @@
 
 | Area | Status |
 | --- | --- |
-| Implementation | Completed |
+| Implementation | Completed 2026-08-21 |
 | Runtime/Production Verification | Out of scope / pending explicit execution |
-| Browser/Manual Verification | Pending verification |
+| Browser/Manual Verification | Pending protected-admin verification |
 
 ## Objective and Scope
 
@@ -25,9 +25,19 @@ Normal Production seed/deploy must not trigger destructive replacement.
 - Canonical Station data and replacement helpers are shared by seed/sync paths.
 - `npm run reset:gameplay` is dry-run by default; execute mode enforces
   confirmation and backup guards at the executable entrypoint.
-- Commit `d0b15023` added reset invariants and safe output behavior.
-- Reset preserves Team/User identity, recreates canonical gameplay state, uses
-  non-expiring Team QR, and verifies exact Station/QR/progress/config counts.
+- Reset preserves Team/User identity, QR credentials, Station/Game/media/map,
+  Event Config, and Final config. It clears only rehearsal progress, scoring,
+  Final submissions, sessions, Team QR usage metadata, and application logs.
+- Reset recreates `AVAILABLE` progress from the active Station/Game inventory,
+  validates the canonical 17-Station/34-Station-QR inventory first, and never
+  restores the obsolete fixed `11:30`/`11:45` Event Config values.
+- Admin V2 `/admin-v2/operations/event-preparation` uses protected status,
+  reset, and bulk-rotation APIs. Reset rejects at/after
+  `2026-08-27 06:00:00 Asia/Ho_Chi_Minh`; both reset and rotation require a
+  typed confirmation and backup acknowledgement.
+- Bulk rotation is a separate transaction: old Team/Station QR are revoked,
+  Team sessions are invalidated, one Team QR plus each Station QR pair is
+  regenerated, and the Admin exports PNGs with a payload-free `manifest.csv`.
 - Production execution was intentionally not performed by the implementation
   task and must never be inferred from local verification.
 
@@ -59,7 +69,7 @@ Normal Production seed/deploy must not trigger destructive replacement.
   provisional English `name_en`/`description_en`.
 - Exact 34 Station QR records: one check-in and one check-out per Station.
 - One progress row per Team and Station after reset.
-- One active non-expiring Team QR per Team after gameplay reset.
+- One active non-expiring Team QR per Team is preserved after gameplay reset.
 
 ## Verification and Risks
 
@@ -74,10 +84,11 @@ Normal Production seed/deploy must not trigger destructive replacement.
 1. Dataset review: use one canonical 17-Station source.
 2. Seed review: keep normal Production seed non-destructive.
 3. Sync review: require explicit confirmation for Station replacement.
-4. Reset review: enforce backup/confirmation in the executable path.
-5. Invariant review: verify exact post-reset state inside the transaction.
-6. Security review: suppress raw secrets and token material.
-7. Consolidation review: replace obsolete score/TTL assumptions with current rules.
+4. Reset review: enforce backup/confirmation in the executable path and Admin UI.
+5. Invariant review: verify exact post-reset state inside the transaction while preserving QR/configuration.
+6. Security review: suppress raw secrets and token material; ZIP manifest is payload-free.
+7. Cutoff review: deny reset at/after 06:00 Asia/Ho_Chi_Minh on 2026-08-27.
+8. Consolidation review: replace obsolete score/TTL assumptions with current rules.
 
 ## Provenance
 
