@@ -1651,3 +1651,19 @@ Acceptance:
 - [x] Kept configured keyword undisclosed: blank rotation preserves it, nonblank rotation is sent to the existing Backend normalization path, and no hashing, versioning, or API change was introduced.
 - [x] Added focused Frontend coverage for config loading, blank/nonblank keyword behavior, submissions rendering, validation, duplicate-save prevention, and success/error states.
 - [ ] Perform authenticated visual smoke at 1024x768 and 768x1024; no graphical browser runner is tracked in this workspace.
+
+## 2026-08-22 Production Backend 502 recovery
+
+- [x] Confirm the public Frontend remains available while all `/api` routes
+  return `502`.
+- [x] Confirm the failed Production workflow and PM2 crash loop reference the
+  removed `dist/main.js` artifact.
+- [x] Align package, PM2 deployment, and systemd entrypoints on
+  `dist/src/main.js`, with a regression check.
+- [x] Restore the documented manual Backend deployment and backup gates.
+- [ ] Merge the recovery commit to `master`, push it, confirm a fresh
+  Production database backup, and run the manual Backend workflow.
+- [ ] Verify live `/api/docs`, `/api/event-config`, Admin login, and Team login
+  after deployment.
+- [ ] Reconcile the Frontend OBS workflow push trigger with the manual-only
+  staged-deployment rule before the next Frontend release.

@@ -1,13 +1,36 @@
 name: Deploy Backend (ECS)
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'be/**'
-      - '.github/workflows/be-deploy.yml'
   workflow_dispatch:
+    inputs:
+      target_branch:
+        description: Branch to deploy
+        required: true
+        default: master
+        type: choice
+        options:
+          - master
+      backup_confirmed:
+        description: Type BACKUP_CONFIRMED after verifying a fresh Production backup
+        required: true
+        type: string
+      deploy_backend:
+        description: Type deploy-backend to authorize the Backend deployment
+        required: true
+        type: string
+      base_commit:
+        description: Currently deployed commit when the server marker is unavailable
+        required: false
+        type: string
+      target_commit:
+        description: Optional commit reachable from target_branch; defaults to origin/target_branch
+        required: false
+        type: string
+      force_database_steps:
+        description: Force migration, seed, and database verification
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: be-deploy-${{ github.ref }}
@@ -27,17 +50,31 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         env:
           DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
-          DEPLOY_BRANCH: master
+          DEPLOY_BRANCH: ${{ inputs.target_branch }}
           GIT_REPO_URL: git@github.com:${{ github.repository }}.git
           APP_NAME: ${{ env.APP_NAME }}
+          BACKUP_CONFIRMED: ${{ inputs.backup_confirmed }}
+          DEPLOY_BACKEND: ${{ inputs.deploy_backend }}
+          BASE_COMMIT: ${{ inputs.base_commit }}
+          TARGET_COMMIT: ${{ inputs.target_commit }}
+          FORCE_DATABASE_STEPS: ${{ inputs.force_database_steps }}
         with:
           host: ${{ secrets.ECS_HOST }}
           username: ${{ secrets.ECS_USER }}
           key: ${{ secrets.ECS_SSH_KEY }}
           port: 22
-          envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,APP_NAME
+          envs: DEPLOY_PATH,DEPLOY_BRANCH,GIT_REPO_URL,APP_NAME,BACKUP_CONFIRMED,DEPLOY_BACKEND,BASE_COMMIT,TARGET_COMMIT,FORCE_DATABASE_STEPS
           script: |
             set -euo pipefail
+
+            if [ "${BACKUP_CONFIRMED}" != "BACKUP_CONFIRMED" ]; then
+              echo "Fresh Production backup confirmation is required."
+              exit 1
+            fi
+            if [ "${DEPLOY_BACKEND}" != "deploy-backend" ]; then
+              echo "Backend deployment authorization is invalid."
+              exit 1
+            fi
 
             # Handle three cases without deleting the tree (preserves be/.env):
             # 1) no .git + non-empty dir -> init/fetch/checkout in place
@@ -68,5 +105,5 @@ jobs:
               exit 1
             fi
 
-            export DEPLOY_PATH DEPLOY_BRANCH GIT_REPO_URL APP_NAME
+            export DEPLOY_PATH DEPLOY_BRANCH GIT_REPO_URL APP_NAME BASE_COMMIT TARGET_COMMIT FORCE_DATABASE_STEPS
             bash "${DEPLOY_PATH}/be/deploy/deploy.sh"

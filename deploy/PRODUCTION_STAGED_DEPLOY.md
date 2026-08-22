@@ -68,7 +68,9 @@ The workflow:
 10. conditionally runs `npm run prisma:seed`;
 11. conditionally runs `npm run db:verify`;
 12. runs `npm run build`;
-13. restarts `movement-api` through PM2 or systemd;
+13. validates `be/dist/src/main.js`, recreates the PM2 process definition with
+    that entrypoint (or restarts the verified systemd unit), and starts
+    `movement-api`;
 14. conditionally runs post-restart `npm run db:verify`;
 15. checks `http://127.0.0.1:8080/api/docs`;
 16. updates `/opt/movement/deploy-markers/movement-api.commit` only after all

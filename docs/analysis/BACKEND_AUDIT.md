@@ -2035,3 +2035,23 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   installation: its package manifest and lockfile already declare
   `jszip@3.10.1`; `npm ci` restored the dependency without source or lockfile
   changes.
+
+## 2026-08-22 Production Backend 502 incident
+
+- Live read-only checks found `https://heroes.nalth.top/` healthy with `200`,
+  while `/api/docs` and `/api/event-config` returned `502`, isolating the
+  outage to the Backend upstream rather than Frontend routing or login input.
+- GitHub Actions run `32550865297` failed after the Backend build and restart.
+  PM2 logs confirmed a crash loop at the historical
+  `/opt/movement/app/be/dist/main.js` path; the current Nest build emits
+  `dist/src/main.js`.
+- Deployment now validates the built entrypoint and recreates the PM2 process
+  definition with `dist/src/main.js`; the checked-in systemd unit uses the
+  same path. A deployment invariant test covers package, PM2, systemd, and
+  workflow configuration.
+- Backend deployment is now manual-only and requires explicit backup and
+  deployment authorization inputs, matching the staged Production runbook.
+- Local verification passed for the deployment invariant test, Backend build,
+  shell syntax, and diff checks. Production remains unrecovered until the fix
+  is merged to `master`, pushed, deployed through the approved Backend
+  workflow, and the live API health check passes.

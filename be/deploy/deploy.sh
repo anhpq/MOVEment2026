@@ -12,6 +12,7 @@ DEPLOY_MARKER_PATH="${DEPLOY_MARKER_PATH:-/opt/movement/deploy-markers/movement-
 HEALTHCHECK_URL="${HEALTHCHECK_URL:-http://127.0.0.1:8080/api/docs}"
 HEALTHCHECK_RETRIES="${HEALTHCHECK_RETRIES:-30}"
 HEALTHCHECK_INTERVAL_SECONDS="${HEALTHCHECK_INTERVAL_SECONDS:-2}"
+BACKEND_ENTRYPOINT="${BACKEND_ENTRYPOINT:-dist/src/main.js}"
 
 if [ "${FORCE_DATABASE_STEPS}" != "true" ] && [ "${FORCE_DATABASE_STEPS}" != "false" ]; then
   echo "FORCE_DATABASE_STEPS must be true or false."
@@ -112,8 +113,18 @@ fi
 
 npm run build
 
+if [ ! -f "${BACKEND_ENTRYPOINT}" ]; then
+  echo "Backend entrypoint is missing after build: ${BACKEND_ENTRYPOINT}"
+  exit 1
+fi
+
 if command -v pm2 >/dev/null 2>&1; then
-  pm2 restart "${APP_NAME}" --update-env 2>/dev/null || pm2 start dist/main.js --name "${APP_NAME}" --cwd "$(pwd)"
+  # Recreate the PM2 definition so a historical dist/main.js script path cannot
+  # survive a successful build and leave the API in a crash loop.
+  if pm2 describe "${APP_NAME}" >/dev/null 2>&1; then
+    pm2 delete "${APP_NAME}"
+  fi
+  pm2 start "${BACKEND_ENTRYPOINT}" --name "${APP_NAME}" --cwd "$(pwd)"
   pm2 save
 elif systemctl list-unit-files | grep -q "^${APP_NAME}.service"; then
   sudo systemctl restart "${APP_NAME}"

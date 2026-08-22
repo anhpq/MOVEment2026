@@ -20,7 +20,8 @@
     "stations:sync": "ts-node scripts/sync-stations.ts",
     "reset:gameplay": "ts-node prisma/reset-gameplay-seed.ts",
     "db:reset": "prisma migrate reset --force && prisma generate && prisma db seed",
-    "db:verify": "ts-node scripts/verify-seed.ts"
+    "db:verify": "ts-node scripts/verify-seed.ts",
+    "deploy:verify": "node deploy/runtime-entrypoint.test.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.9",

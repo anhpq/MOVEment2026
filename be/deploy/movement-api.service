@@ -7,7 +7,7 @@ Type=simple
 User=root
 WorkingDirectory=/opt/movement/app/be
 EnvironmentFile=/opt/movement/app/be/.env
-ExecStart=/usr/bin/node dist/main.js
+ExecStart=/usr/bin/node dist/src/main.js
 Restart=on-failure
 RestartSec=5
 
