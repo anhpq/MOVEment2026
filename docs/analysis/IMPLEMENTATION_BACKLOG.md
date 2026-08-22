@@ -1661,9 +1661,9 @@ Acceptance:
 - [x] Align package, PM2 deployment, and systemd entrypoints on
   `dist/src/main.js`, with a regression check.
 - [x] Restore the documented manual Backend deployment and backup gates.
-- [ ] Merge the recovery commit to `master`, push it, confirm a fresh
-  Production database backup, and run the manual Backend workflow.
-- [ ] Verify live `/api/docs`, `/api/event-config`, Admin login, and Team login
+- [x] Merge and push the recovery to `master`; run manual Backend workflow
+  `32568755530` without a fresh backup under explicit user approval.
+- [x] Verify live `/api/docs`, `/api/event-config`, Admin login, and Team login
   after deployment.
 - [ ] Reconcile the Frontend OBS workflow push trigger with the manual-only
   staged-deployment rule before the next Frontend release.

@@ -410,8 +410,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/be-deploy.yml": {
-    "mtime": 1787395720.9750617,
-    "ast_hash": "c2e73cce58e9b4461745be45215f8e69",
+    "mtime": 1787396077.3341098,
+    "ast_hash": "862b8daa36eb6174de9b7636cc037f40",
     "semantic_hash": ""
   },
   ".github/workflows/fe-deploy.yml": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "docs/analysis/IMPLEMENTATION_BACKLOG.md": {
-    "mtime": 1787392964.8852615,
-    "ast_hash": "5d1e06635b742884050d8da612944a78",
+    "mtime": 1787396080.001635,
+    "ast_hash": "5847afbc0a37510b03406f64be7b25d7",
     "semantic_hash": ""
   },
   "docs/analysis/OPEN_QUESTIONS_AND_DECISIONS.md": {
@@ -510,8 +510,8 @@
     "semantic_hash": "2d79ecf88ee3cbeea887adb22bd2ad56"
   },
   "docs/analysis/BACKEND_AUDIT.md": {
-    "mtime": 1787395722.9597652,
-    "ast_hash": "a263da46c9b201134cc52bc5f9052623",
+    "mtime": 1787396079.3180003,
+    "ast_hash": "1a11bf4c95ca093d5a184e96ebea9654",
     "semantic_hash": ""
   },
   "docs/analysis/TEAM_LOGIN_DATA.md": {
@@ -740,8 +740,8 @@
     "semantic_hash": ""
   },
   "deploy/PRODUCTION_STAGED_DEPLOY.md": {
-    "mtime": 1787395722.2916374,
-    "ast_hash": "101d50fd38544823d7910b33d0d37158",
+    "mtime": 1787396078.6540494,
+    "ast_hash": "f15aa0867ed3b9b2e75e6762f3025d9a",
     "semantic_hash": ""
   },
   "be/deploy/plan-database-steps.js": {
@@ -1790,8 +1790,8 @@
     "semantic_hash": ""
   },
   "be/deploy/runtime-entrypoint.test.js": {
-    "mtime": 1787395721.6313806,
-    "ast_hash": "7953ed0be415bdb1f5f7a4e9d8fa487f",
+    "mtime": 1787396078.0076797,
+    "ast_hash": "6bc26341823e2832159b39ecf153f66c",
     "semantic_hash": ""
   }
 }

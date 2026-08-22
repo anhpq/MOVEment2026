@@ -1,16 +1,16 @@
 # Graph Report - MOVEment2026  (2026-08-22)
 
 ## Corpus Check
-- 344 files · ~510,529 words
+- 344 files · ~510,507 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3821 nodes · 6475 edges · 281 communities (248 shown, 33 thin omitted)
+- 3821 nodes · 6475 edges · 280 communities (247 shown, 33 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `89fe9630`
+- Built from commit: `ee25e87a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -207,7 +207,7 @@
 - 13. Seed Requirements
 - 20. Required Tests
 - 8. Station Scoring
-- createQrTokenFingerprint
+- source-map-support
 - @testing-library/jest-dom
 - Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?
 - Q: be và fe cần thống nhất, session sẽ hết vào 10 giờ tối; mỗi ngày, login 22:00 hôm nay hết hạn 22:00 hôm sau
@@ -242,7 +242,6 @@
 - graphify reference: GitHub clone and cross-repo merge
 - graphify reference: transcribe video and audio
 - movement2026-react-konva/tsconfig.json
-- @nestjs/testing
 - 13. Feature Integration
 - Actors
 - 6. Automatic Token Provisioning
@@ -315,7 +314,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (281 total, 33 thin omitted)
+## Communities (280 total, 33 thin omitted)
 
 ### Community 0 - "BACKEND_AUDIT.md"
 Cohesion: 0.02
@@ -342,8 +341,8 @@ Cohesion: 0.07
 Nodes (30): AuthController, mockAuthService, Body, Controller, Get, Post, UseGuards, AuthService (+22 more)
 
 ### Community 6 - "AdminService"
-Cohesion: 0.09
-Nodes (4): getStationPlaySeconds(), isReferenceExceeded(), AdminService, Injectable
+Cohesion: 0.08
+Nodes (11): buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), isOfficialQrLoginToken(), isOfficialStationQrToken(), isOfficialStationQrTokenForPurpose(), normalizeQrToken(), getStationPlaySeconds() (+3 more)
 
 ### Community 7 - "2026-07-28 Station Media Gallery and Player action layout"
 Cohesion: 0.04
@@ -438,7 +437,7 @@ Cohesion: 0.15
 Nodes (28): qrcode, AdminV2StationDetailPage(), download(), isHttpsUrl(), QrPreview, Station, StationFormValues, displayStatus() (+20 more)
 
 ### Community 31 - "xlsx-report.ts"
-Cohesion: 0.26
+Cohesion: 0.21
 Nodes (13): cellXml(), columnName(), crc32(), crcTable, createWorkbookXlsx(), escapeXml(), sanitizeSheetName(), sheetXml() (+5 more)
 
 ### Community 32 - "seed.ts"
@@ -455,7 +454,7 @@ Nodes (23): adminQrFiles, adminQrLeaksIntoTeam, DEFERRED_CHUNK_MARKERS, deferred
 
 ### Community 35 - "devDependencies"
 Cohesion: 0.07
-Nodes (29): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schematics, prisma, source-map-support (+21 more)
+Nodes (29): devDependencies, eslint, globals, jest, @nestjs/cli, @nestjs/schematics, @nestjs/testing, prisma (+21 more)
 
 ### Community 36 - "Backend Audit Status"
 Cohesion: 0.07
@@ -1053,10 +1052,6 @@ Nodes (5): 20.1 Backend, 20.2 Seed, 20.3 Frontend, 20.4 Migration, 20. Required 
 Cohesion: 0.33
 Nodes (6): 8. Station Scoring, Confirmed Rules, Must Update After Change, Relevant Prompt, Required Reading, Scope
 
-### Community 192 - "createQrTokenFingerprint"
-Cohesion: 0.25
-Nodes (7): buildQrLoginUrl(), createQrTokenFingerprint(), createSecureQrLoginToken(), isOfficialQrLoginToken(), isOfficialStationQrToken(), isOfficialStationQrTokenForPurpose(), normalizeQrToken()
-
 ### Community 194 - "Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?"
 Cohesion: 0.40
 Nodes (4): Answer, Outcome, Q: Sau khi login thì bao lâu hết session? Tất cả QR có hết hạn hay không? Frontend build failed exit code 2 vì sao?, Source Nodes
@@ -1295,7 +1290,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `@prisma/client` connect `reset-gameplay-seed.ts` to `seed.ts`, `station-seed-data.ts`, `dependencies`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `createQrTokenFingerprint()` connect `createQrTokenFingerprint` to `seed.ts`, `auth.service.ts`, `AdminService`, `player.service.ts`, `PlayerService`, `admin.service.ts`, `station-seed-data.ts`, `event-preparation-core.ts`?**
+- **Why does `createQrTokenFingerprint()` connect `AdminService` to `seed.ts`, `auth.service.ts`, `player.service.ts`, `PlayerService`, `admin.service.ts`, `station-seed-data.ts`, `event-preparation-core.ts`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `deploy.sh script`, `fs`, `input` to the rest of the system?**
   _1975 weakly-connected nodes found - possible documentation gaps or missing edges._

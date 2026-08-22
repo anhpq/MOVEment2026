@@ -2055,7 +2055,10 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   shell syntax, and diff checks. Production remains unrecovered until the fix
   is merged to `master`, pushed, deployed through the approved Backend
   workflow, and the live API health check passes.
-- The user explicitly approved skipping a fresh Production backup for this
-  outage recovery. The workflow records that exceptional choice through
-  `SKIP_BACKUP_USER_APPROVED` instead of falsely reporting
-  `BACKUP_CONFIRMED`; normal deployments retain the backup gate.
+- For emergency recovery run `32568755530`, the user explicitly approved
+  deploying once without a fresh Production backup and accepted the data-loss
+  risk. The temporary audited override was removed immediately after the run;
+  normal deployments again require `BACKUP_CONFIRMED`.
+- The recovery workflow completed successfully. Live verification passed for
+  `/`, `/api/docs`, `/api/event-config`, Admin login, and Team login; no access
+  token was printed. The Production API and login flow were restored.
