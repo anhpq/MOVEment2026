@@ -2025,3 +2025,13 @@ Run Actions **Deploy Backend (ECS)** after merging the workflow/`deploy.sh` chan
   guard, and Frontend TypeScript/Vite production build. The bundle gate passed:
   Admin V2 is `497.10 KiB` raw, below the `512 KiB` limit. No Production
   deployment, mutation, bulk QR rotation, or physical QR scan ran.
+
+## 2026-08-22 Build artifact startup alignment
+
+- Corrected the Backend `start:prod` entrypoint to `dist/src/main.js`, matching
+  the current Nest build output. This restores local tester-run startup after
+  a successful Backend build.
+- The Frontend `jszip` build error was an incomplete local `node_modules`
+  installation: its package manifest and lockfile already declare
+  `jszip@3.10.1`; `npm ci` restored the dependency without source or lockfile
+  changes.
